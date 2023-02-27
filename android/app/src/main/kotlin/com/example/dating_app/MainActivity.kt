@@ -1,4 +1,4 @@
-package com.company.appname
+package app.fren
 
 import io.flutter.embedding.android.FlutterActivity
 
