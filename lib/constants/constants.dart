@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 /// APP SETINGS INFO CONSTANTS - SECTION ///
 ///
 const String APP_NAME = "Fren";
-const Color APP_PRIMARY_COLOR = Colors.fromARGB(48, 209, 200); 
-const Color APP_ACCENT_COLOR = Colors.fromARGB(33,148,141);
+const Color APP_PRIMARY_COLOR = Colors.pink;
+const Color APP_ACCENT_COLOR = Colors.pinkAccent;
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
