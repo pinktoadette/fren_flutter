@@ -14,6 +14,9 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
+
 // TODO: Please "scroll down" to see the instructions to fix it.
 import 'firebase_options.dart';
 
@@ -30,7 +33,7 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   // Initialize Google Mobile Ads SDK
-  await MobileAds.instance.initialize();
+  // await MobileAds.instance.initialize();
 
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.
@@ -98,6 +101,7 @@ class MyApp extends StatelessWidget {
 
   // App theme
   ThemeData _appTheme() {
+
     return ThemeData(
       primaryColor: APP_PRIMARY_COLOR,
       colorScheme: const ColorScheme.light().copyWith(
@@ -105,6 +109,7 @@ class MyApp extends StatelessWidget {
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_COLOR),
       scaffoldBackgroundColor: Colors.white,
+      fontFamily: 'Opensans',
       inputDecorationTheme: InputDecorationTheme(
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
@@ -112,7 +117,7 @@ class MyApp extends StatelessWidget {
           )),
       appBarTheme: AppBarTheme(
         color: Colors.white,
-        elevation: Platform.isIOS ? 0 : 4.0,
+        elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: const IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
         titleTextStyle: const TextStyle(color: Colors.grey, fontSize: 18),

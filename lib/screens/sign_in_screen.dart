@@ -7,6 +7,7 @@ import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 
+
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
@@ -29,47 +30,68 @@ class _SignInScreenState extends State<SignInScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.transparent,
       body: Container(
-        decoration: const BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/images/background_image.jpg"),
-              fit: BoxFit.cover,
-              repeat: ImageRepeat.noRepeat),
-        ),
+        // Background image
+        // decoration: const BoxDecoration(
+        //   image: DecorationImage(
+        //       image: AssetImage("assets/images/background_image.jpg"),
+        //       fit: BoxFit.cover,
+        //       repeat: ImageRepeat.noRepeat),
+        // ),
         child: Container(
           decoration: BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.bottomRight,
                   colors: [
-                    Theme.of(context).primaryColor, 
-                    Colors.black.withOpacity(.4)])),
+                    Theme.of(context).primaryColor,
+                    //.withOpacity(.4)
+                    Colors.white])),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
 
+            Spacer(),
+
             /// App logo
             const AppLogo(),
-            const SizedBox(height: 10),
 
             /// App name
             const Text(APP_NAME,
                 style: TextStyle(
                     fontSize: 22,
+                    fontFamily: 'RaleWay',
                     fontWeight: FontWeight.bold,
-                    color: Colors.white)),
+                    color:APP_PRIMARY_COLOR)),
 
-            const SizedBox(height: 10),
-
-            Text(_i18n.translate("welcome_back"),
-              textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 18, color: Colors.white)),
+            // const SizedBox(height: 5),
+            // Text(_i18n.translate("welcome_back"),
+            //   textAlign: TextAlign.center,
+            //   style: const TextStyle(fontSize: 18, color: Colors.white)),
 
             const SizedBox(height: 10),
 
             Text(_i18n.translate("app_short_description"),
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, color: Colors.white)),
+                style: const TextStyle(fontSize: 18, color: Colors.pinkAccent)),
 
-            const SizedBox(height: 50),
+            Spacer(),
+
+              /// Sign in with Social
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: SizedBox(
+                  width: double.maxFinite,
+                  child: DefaultButton(
+                    child: Text(
+                        "Sign in with Google",
+                        style: const TextStyle(fontSize: 18)),
+                    onPressed: () {
+                      /// Go to phone number screen
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const PhoneNumberScreen()));
+                    },
+                  ),
+                ),
+              ),
 
               /// Sign in with Phone Number
               Padding(
@@ -88,7 +110,8 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
+
+              Spacer(),
 
               // Terms of Service section
               Text(
