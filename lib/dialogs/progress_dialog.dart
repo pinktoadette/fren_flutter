@@ -18,24 +18,42 @@ class ProgressDialog {
         context: context,
         barrierDismissible: isDismissible,
         builder: (BuildContext context) {
-          _dismissingContext = context;
-          return WillPopScope(
-            onWillPop: () async => isDismissible,
-            child: Dialog(
-                backgroundColor: Colors.white,
-                insetAnimationCurve: Curves.easeInOut,
-                insetAnimationDuration: const Duration(milliseconds: 100),
-                elevation: 8.0,
-                shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(8.8))),
-                child: _dialog(message)),
+          return const SimpleDialog(
+            elevation: 8.0,
+            backgroundColor: Colors.transparent,
+            children: <Widget>[
+              Center(
+                child: CircularProgressIndicator(),
+              )
+            ],
           );
         },
+        // builder: (BuildContext context) {
+        //   _dismissingContext = context;
+        //   return WillPopScope(
+        //     // onWillPop: () async => isDismissible,
+        //     // child: Dialog(
+        //     //     backgroundColor: Colors.transparent,
+        //     //     child: Center(
+        //     //       child: CircularProgressIndicator(),
+        //     //     )
+        //     // ),
+        //     child: Dialog(
+        //         backgroundColor: Colors.pinkAccent,
+        //         insetAnimationCurve: Curves.easeInOut,
+        //         insetAnimationDuration: const Duration(milliseconds: 100),
+        //         elevation: 8.0,
+        //         shape: const RoundedRectangleBorder(
+        //             borderRadius: BorderRadius.all(Radius.circular(8.8))),
+        //         child: _dialog(message)
+        //     ),
+        //   );
+        // },
       );
       // Delaying the function for 200 milliseconds
       // [Default transitionDuration of DialogRoute]
       await Future.delayed(const Duration(milliseconds: 200));
-      debugPrint('show progress dialog() -> sucess');
+      debugPrint('show progress dialog() -> success');
       return true;
     } catch (err) {
       debugPrint('Exception while showing the progress dialog');

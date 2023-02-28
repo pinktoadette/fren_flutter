@@ -20,7 +20,6 @@ class _SignInScreenState extends State<SignInScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
 
-
   @override
   Widget build(BuildContext context) {
     /// Initialization
@@ -28,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       body: Container(
         // Background image
         // decoration: const BoxDecoration(
@@ -38,13 +37,13 @@ class _SignInScreenState extends State<SignInScreen> {
         //       repeat: ImageRepeat.noRepeat),
         // ),
         child: Container(
-          decoration: BoxDecoration(
-              gradient: LinearGradient(
-                  begin: Alignment.bottomRight,
-                  colors: [
-                    Theme.of(context).primaryColor,
-                    //.withOpacity(.4)
-                    Colors.white])),
+          // decoration: BoxDecoration(
+          //     gradient: LinearGradient(
+          //         begin: Alignment.bottomRight,
+          //         colors: [
+          //           Theme.of(context).primaryColor,
+          //           //.withOpacity(.4)
+          //           Colors.white])),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -52,15 +51,11 @@ class _SignInScreenState extends State<SignInScreen> {
             Spacer(),
 
             /// App logo
-            const AppLogo(),
+            // const AppLogo(),
 
             /// App name
-            const Text(APP_NAME,
-                style: TextStyle(
-                    fontSize: 22,
-                    fontFamily: 'RaleWay',
-                    fontWeight: FontWeight.bold,
-                    color:APP_PRIMARY_COLOR)),
+            Text(APP_NAME,
+                style: Theme.of(context).textTheme.headline1),
 
             // const SizedBox(height: 5),
             // Text(_i18n.translate("welcome_back"),
@@ -71,7 +66,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
             Text(_i18n.translate("app_short_description"),
                 textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18, color: Colors.pinkAccent)),
+                style: const TextStyle(fontSize: 18)),
 
             Spacer(),
 
