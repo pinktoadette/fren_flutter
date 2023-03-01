@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/my_circular_progress.dart';
 
 class ProgressDialog {
   // Paramiteres
@@ -20,10 +21,10 @@ class ProgressDialog {
         builder: (BuildContext context) {
           return const SimpleDialog(
             elevation: 8.0,
-            backgroundColor: Colors.transparent,
+            backgroundColor: Colors.white,
             children: <Widget>[
               Center(
-                child: CircularProgressIndicator(),
+                child: LottieLoader(),
               )
             ],
           );
@@ -90,7 +91,8 @@ class ProgressDialog {
                   message,
                   textAlign: TextAlign.left,
                   style: const TextStyle(
-                      color: Colors.black, fontSize: 18.0, 
+                      color: Colors.black,
+                      fontSize: 18.0,
                       fontWeight: FontWeight.w600),
                 ),
               ),
@@ -105,14 +107,13 @@ class ProgressDialog {
   // Hide progress dialog
   Future<bool> hide() async {
     try {
-        Navigator.of(_dismissingContext).pop();
-        debugPrint('ProgressDialog dismissed');
-        return Future.value(true);
+      Navigator.of(_dismissingContext).pop();
+      debugPrint('ProgressDialog dismissed');
+      return Future.value(true);
     } catch (err) {
       debugPrint('Seems there is an issue hiding dialog');
       debugPrint(err.toString());
       return Future.value(false);
     }
   }
-
 }

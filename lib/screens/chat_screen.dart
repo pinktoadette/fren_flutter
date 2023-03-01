@@ -473,7 +473,7 @@ class _ChatScreenState extends State<ChatScreen> {
         builder: (context, snapshot) {
           // Check data
           if (!snapshot.hasData) {
-            return const MyCircularProgress();
+            return const LottieLoader();
           } else {
             return ListView.builder(
                 controller: _messagesController,

@@ -13,8 +13,8 @@ class Processing extends StatelessWidget {
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          const MyCircularProgress(),
+        children: const <Widget>[
+          LottieLoader(),
           // const SizedBox(height: 10),
           // Text(text ?? i18n.translate("processing"), style: const TextStyle(fontSize: 18,
           // fontWeight: FontWeight.w500)),

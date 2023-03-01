@@ -91,7 +91,7 @@ class _SplashScreenState extends State<SplashScreen> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 18, color: Colors.grey)),
                   const SizedBox(height: 20),
-                  const MyCircularProgress()
+                  const LottieLoader()
                 ],
               ),
             ),

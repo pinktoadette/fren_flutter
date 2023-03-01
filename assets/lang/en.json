@@ -296,6 +296,29 @@
   "oops_your_profile_has_been_blocked_by_this_user_so_you_can_send_a_message": "Oops, your profile has been blocked by this user, so you can't send a message!",
   
   "_New_Version_1.0.8": "*** New version 1.0.8 Translations ***",
-  "you_canceled_the_purchase_please_try_again": "You canceled the purchase, please try again!"
+  "you_canceled_the_purchase_please_try_again": "You canceled the purchase, please try again!",
 
+  "intro_1": "Hi, I'm Frank!",
+  "intro_2": "I am the general manager for Fren",
+  "intro_3": "Fren is a personal assistance to help you with everyday life and pair with other human professionals based on your questions and their profile. \n\nAs a general manager, my knowledge can only fit so much. I’ll try my best to help you find the most fitted human and bot, if available.",
+  "intro_4": "Let's get started!",
+  "intro_fullname": "What is your name?",
+  "intro_PA_name": "What would you like to name your personal assistance?",
+  "intro_age_year": "What is your age?",
+  "intro_location": "What is your location?",
+  "intro_professional_service": "Fren helps you offer and find other skilled professionals. ",
+  "intro_profession_service_prompt": "Would you like to be matched to offer your services?",
+  "intro_professional_occupation": "What is your occupation?",
+  "intro_professional_rate": "What is the rate of service?",
+  "intro_professional_certs": "Do you have any certifications title, ie CPA, JD, LSW?",
+  "intro_professional_certs_text_muted": "Verification is needed. We will reach out to you.",
+  "intro_professional_scrape": "I will be reading the following, please make sure you want me to understand it",
+  "intro_professional_website": "Website",
+  "intro_professional_linkedin": "LinkedIn",
+  "intro_professional_twitter": "Twitter",
+  "intro_professional_G_review": "Google Review",
+  "Intro_professional_Y_review": "Yelp Review",
+
+  "sign_in_with_google": "Continue with Google",
+  "sign_in_with_apple": "Continue with Apple"
 }

@@ -143,12 +143,12 @@ class MyApp extends StatelessWidget {
         overline: GoogleFonts.poppins(
             fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
       ),
-      appBarTheme: AppBarTheme(
+      appBarTheme: const AppBarTheme(
         color: Colors.white,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleTextStyle: const TextStyle(color: Colors.grey, fontSize: 18),
+        titleTextStyle: TextStyle(color: Colors.grey, fontSize: 18),
       ),
     );
   }
