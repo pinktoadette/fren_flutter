@@ -7,11 +7,12 @@ class GoogleAuthentication {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: [
+        'email',
         'https://www.googleapis.com/auth/userinfo.email',
         'https://www.googleapis.com/auth/userinfo.profile'],
   );
 
-  Future<void> signInWithGoogle({required BuildContext context}) async {
+  Future<UserCredential> signInWithGoogle() async {
 
       try {
         print("helloooooo");
@@ -25,7 +26,7 @@ class GoogleAuthentication {
           accessToken: googleSignInAuthentication.accessToken,
           idToken: googleSignInAuthentication.idToken,
         );
-        await _auth.signInWithCredential(credential);
+        return await _auth.signInWithCredential(credential);
       } on FirebaseAuthException catch (e) {
         print(e.message);
         throw e;

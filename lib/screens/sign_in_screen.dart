@@ -9,7 +9,8 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import '../utils/google_auth.dart';
+import 'package:fren_app/utils/google_auth.dart';
+import 'on_boarding_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -22,8 +23,8 @@ class _SignInScreenState extends State<SignInScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
+  User? user = FirebaseAuth.instance.currentUser;
 
-  bool _isSignIn =false;
   bool google =false;
 
   @override
@@ -81,29 +82,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   children: <Widget>[
                     SignInButton(
                       Buttons.Google,
-                      onPressed:  () async{
-                        setState(() {
-                          _isSignIn = true;
-                        });
-
-                        GoogleAuthentication service = GoogleAuthentication();
-                        try {
-                            await service.signInWithGoogle(context: context);
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                  builder: (context) => const HomeScreen()
-                                // UserInfoScreen(user: user),
-                              ),
-                            );
-                        } catch(error) {
-                          if(error is FirebaseAuthException){
-                            print(error.message);
-                          }
-                        }
-                        setState(() {
-                          _isSignIn = false;
-                        });
-                      },
+                      onPressed:  () {
+                        GoogleAuthentication()
+                            .signInWithGoogle()
+                            .then((UserCredential value){
+                              user = value.user;
+                              print(user);
+                              if (user?.email != null) {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const OnboardingScreen()));
+                              }
+                            });
+                      }
                     ),
                     SignInButton(
                       Buttons.Apple,
