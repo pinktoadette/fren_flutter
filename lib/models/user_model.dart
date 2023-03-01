@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/screens/first_time_user.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
 import 'package:place_picker/place_picker.dart';
@@ -301,6 +302,7 @@ class UserModel extends Model {
   /// Create the User Account method
   ///
   Future<void> signUp({
+    required bool isProfileFilled,
     required File userPhotoFile,
     required String userFullName,
     required String userGender,
@@ -336,6 +338,7 @@ class UserModel extends Model {
         .doc(getFirebaseUser!.uid)
         .set(<String, dynamic>{
       USER_ID: getFirebaseUser!.uid,
+      USER_PROFILE_FILLED: isProfileFilled,
       USER_PROFILE_PHOTO: imageProfileUrl,
       USER_FULLNAME: userFullName,
       USER_GENDER: userGender,
@@ -627,6 +630,15 @@ class UserModel extends Model {
     }
     debugPrint('Profile Gallery list: ${images.length}');
     return images;
+  }
+
+  /// Get user by email
+  ///
+  ///
+  Future<DocumentSnapshot<Map<String, dynamic>>> getUserByEmail(String email) async {
+    return await _firestore.collection(C_USERS)
+        .where('email', isEqualTo: email).get()
+        .then((snapshot) => snapshot.docs[0].data()['users ID']);
   }
 
   // Sign out

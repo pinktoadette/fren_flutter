@@ -44,6 +44,7 @@ const NOTIFY_USERS = "NOTIFY_USERS";
 /// DATABASE COLLECTION NAMES USED IN APP
 ///
 const String C_APP_INFO = "AppInfo";
+const String C_USER = "User";
 const String C_USERS = "Users";
 const String C_FLAGGED_USERS = "FlaggedUsers";
 const String C_CONNECTIONS = "Connections";
@@ -76,6 +77,7 @@ const String ADMOB_INTERSTITIAL_AD_ID = "admob_interstitial_ad_id";
 /// DATABASE FIELDS FOR USER COLLECTION  ///
 ///
 const String USER_ID = "user_id";
+const String USER_PROFILE_FILLED = "user_profile_filled";
 const String USER_PROFILE_PHOTO = "user_photo_link";
 const String USER_FULLNAME = "user_fullname";
 const String USER_GENDER = "user_gender";

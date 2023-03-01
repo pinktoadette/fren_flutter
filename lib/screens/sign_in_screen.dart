@@ -10,6 +10,7 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:fren_app/utils/google_auth.dart';
+import 'first_time_user.dart';
 import 'on_boarding_screen.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -87,10 +88,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             .signInWithGoogle()
                             .then((UserCredential value){
                               user = value.user;
-                              print(user);
-                              if (user?.email != null) {
+                              // if (value?.additionalUserInfo?.isNewUser == true) {
+                             if (user?.email != null) {
                                 Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => const OnboardingScreen()));
+                                    builder: (context) => RegisterScreen()));
+                              } else {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) => const HomeScreen()));
                               }
                             });
                       }

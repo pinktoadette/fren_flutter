@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -5,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 
+import '../widgets/svg_icon.dart';
+
 class OnboardingScreen extends StatefulWidget {
-  const OnboardingScreen({Key? key}) : super(key: key);
+  const OnboardingScreen(User? user, {Key? key}) : super(key: key);
 
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
@@ -45,7 +48,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: EdgeInsets.symmetric(horizontal: 45.0),
                 child: Align(
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  child:
+                  Text(
                     'SECURED BACKUP',
                     style: pageTitleStyle,
                     textAlign: TextAlign.left,
@@ -204,6 +208,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     super.initState();
     materialButton = _skipButton();
     index = 0;
+    bool isDisabledButton = true;
   }
 
   Material _skipButton({void Function(int)? setIndex}) {
@@ -216,6 +221,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           if (setIndex != null) {
             index = 2;
             setIndex(2);
+          } else {
+            return null;
           }
         },
         child: const Padding(

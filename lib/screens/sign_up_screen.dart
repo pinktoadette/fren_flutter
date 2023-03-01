@@ -379,6 +379,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
       /// Call sign up method
       UserModel().signUp(
+        isProfileFilled: true,
         userPhotoFile: _imageFile!,
         userFullName: _nameController.text.trim(),
         userGender: _selectedGender!,

@@ -4,6 +4,7 @@ import 'package:fren_app/constants/constants.dart';
 class User {
   /// User info
   final String userId;
+  final bool isProfileFilled;
   final String userProfilePhoto;
   final String userFullname;
   final String userGender;
@@ -33,6 +34,7 @@ class User {
   // Constructor
   User({
     required this.userId,
+    required this.isProfileFilled,
     required this.userProfilePhoto,
     required this.userFullname,
     required this.userGender,
@@ -64,6 +66,7 @@ class User {
   factory User.fromDocument(Map<String, dynamic> doc) {
     return User(
       userId: doc[USER_ID],
+      isProfileFilled: doc[USER_PROFILE_FILLED],
       userProfilePhoto: doc[USER_PROFILE_PHOTO],
       userFullname: doc[USER_FULLNAME],
       userGender: doc[USER_GENDER],
