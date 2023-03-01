@@ -52,13 +52,6 @@ class _RegisterFormState extends State<RegisterScreen> {
     );
   }
 
-  void _nextFormStep() {
-    _formsPageViewController.nextPage(
-      duration: Duration(milliseconds: 300),
-      curve: Curves.ease,
-    );
-  }
-
   bool onWillPop() {
     if (_formsPageViewController.page?.round() ==
         _formsPageViewController.initialPage) return true;
@@ -75,59 +68,177 @@ class _RegisterFormState extends State<RegisterScreen> {
 class Step1Container extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final _i18n = AppLocalizations.of(context);
     final _formKey = GlobalKey<FormState>();
-    final i18n = AppLocalizations.of(context);
-    final _nameController = TextEditingController();
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    final _nameController = TextEditingController();
+    final _schoolController = TextEditingController();
+    final _jobController = TextEditingController();
+    final _bioController = TextEditingController();
+    final List<String> _genders = ['Male', 'Female', 'LGTQ'];
 
     return Scaffold(
-        resizeToAvoidBottomInset: true,
-        body: SingleChildScrollView(
-            child: Column(
-                children: <Widget>[
-                  const LottieLoader(),
-                  Text(i18n.translate('intro_1')),
-                  Text(i18n.translate('intro_2')),
-                  Text(i18n.translate('intro_3')),
-                  Text(i18n.translate('intro_4')),
-                  Text(i18n.translate('intro_fullname')),
-                  Form(
-                    // key: _formKey,
-                    child: Column(
-                      children: <Widget>[
+      body: ScopedModelDescendant<UserModel>(
+          builder: (context, child, userModel) {
+        /// Check loading status
+        if (userModel.isLoading) return const Processing();
+        return SingleChildScrollView(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: <Widget>[
+              const LottieLoader(),
+              Text(_i18n.translate('intro_1'), style: const TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold)),
+              Text(_i18n.translate('intro_2')),
+              const SizedBox(height: 50),
+              Text(_i18n.translate('intro_quick_start')),
 
-                        /// FullName field
-                        TextFormField(
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                              labelText: i18n.translate("fullname"),
-                              hintText: i18n.translate(
-                                  "enter_your_fullname"),
-                              floatingLabelBehavior: FloatingLabelBehavior
-                                  .always,
-                              prefixIcon: const Padding(
-                                padding: EdgeInsets.all(12.0),
-                                child: SvgIcon(
-                                    "assets/icons/user_icon.svg"),
-                              )),
-                          validator: (name) {
-                            // Basic validation
-                            if (name?.isEmpty ?? false) {
-                              return i18n.translate(
-                                  "please_enter_your_fullname");
-                            }
-                            return null;
-                          },
-                        ),
-                      ],
+              const SizedBox(height: 50),
+
+              /// Form
+              Form(
+                key: _formKey,
+                child: Column(
+                  children: <Widget>[
+                    /// FullName field
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                          labelText: _i18n.translate("fullname"),
+                          hintText: _i18n.translate("enter_your_fullname"),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                          prefixIcon: const Padding(
+                            padding: EdgeInsets.all(12.0),
+                            child: SvgIcon("assets/icons/user_icon.svg"),
+                          )
+                      ),
+                      validator: (name) {
+                        // Basic validation
+                        if (name?.isEmpty ?? false) {
+                          return _i18n.translate("please_enter_your_fullname");
+                        }
+                        return null;
+                      },
                     ),
-                  ),
-                ]
-            )
-        )
+                    const SizedBox(height: 20),
+
+                    /// Bio field
+                    TextFormField(
+                      controller: _bioController,
+                      maxLines: 4,
+                      decoration: InputDecoration(
+                        labelText: _i18n.translate("bio"),
+                        hintText: _i18n.translate("please_write_your_bio"),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        prefixIcon: const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: SvgIcon("assets/icons/info_icon.svg"),
+                        ),
+                      ),
+                      validator: (bio) {
+                        if (bio?.isEmpty ?? false) {
+                          return _i18n.translate("please_write_your_bio");
+                        }
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    /// Sign Up button
+                    SizedBox(
+                      width: double.maxFinite,
+                      child: DefaultButton(
+                        child: Text(_i18n.translate("next_step"),
+                            style: const TextStyle(fontSize: 18)),
+                        onPressed: () {
+                          /// Sign up
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }
+// class Step1Container extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     final _formKey = GlobalKey<FormState>();
+//     final i18n = AppLocalizations.of(context);
+//     final _nameController = TextEditingController();
+//     final _scaffoldKey = GlobalKey<ScaffoldState>();
+//
+//     return Scaffold(
+//         resizeToAvoidBottomInset: true,
+//         body: SingleChildScrollView(
+//             child: Column(
+//                 mainAxisSize: MainAxisSize.max,
+//                 children: <Widget>[
+//                   const LottieLoader(),
+//                   Padding(
+//                       padding: const EdgeInsets.all(16.0),
+//                       child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                         children: <Widget>[
+//                           Text(i18n.translate('intro_1')),
+//                           Text(i18n.translate('intro_2')),
+//                           Text(i18n.translate('intro_3')),
+//                           Text(i18n.translate('intro_4')),
+//                           Text(i18n.translate('intro_fullname')),
+//                         ]
+//                       )
+//                   ),
+//                   Form(
+//                     key: _formKey,
+//                     child: Column(
+//                       children: <Widget>[
+//                         TextFormField(
+//                           controller: _nameController,
+//                           decoration: const InputDecoration(
+//                             hintText: 'Enter your email',
+//                           ),
+//                           validator: (String? value) {
+//                             if (value == null || value.isEmpty) {
+//                               return 'Please enter some text';
+//                             }
+//                             return null;
+//                           },
+//                         ),
+//                         Padding(
+//                           padding: const EdgeInsets.symmetric(vertical: 50.0),
+//                           child: Align(
+//                             alignment: Alignment.bottomCenter,
+//                             child: Container(
+//                               margin: const EdgeInsets.all(5),
+//                               width: double.infinity,
+//                               child: ElevatedButton(
+//                                 onPressed: () {
+//                                   // Validate will return true if the form is valid, or false if
+//                                   // the form is invalid.
+//                                   if (_formKey.currentState!.validate()) {
+//                                     // Process data.
+//                                   }
+//                                 },
+//                                 child: const Text('Next'),
+//                               ),
+//                             ),
+//                           ),
+//                         ),
+//                       ],
+//                     ),
+//                   )
+//                 ]
+//             )
+//         )
+//     );
+//   }
+// }
 
 class Step2Container extends StatelessWidget {
   @override

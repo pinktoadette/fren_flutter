@@ -298,11 +298,11 @@
   "_New_Version_1.0.8": "*** New version 1.0.8 Translations ***",
   "you_canceled_the_purchase_please_try_again": "You canceled the purchase, please try again!",
 
+  "next_step": "Next",
   "intro_1": "Hi, I'm Frank!",
   "intro_2": "I am the general manager for Fren",
   "intro_3": "I am a personal assistance. I can also match other humans you may be looking for.",
-  "intro_4": "Let's get started!",
-  "intro_fullname": "What is your name?",
+  "intro_quick_start": "No one likes form, but let me get to know you better.",
   "intro_PA_name": "What would you like to name your personal assistance?",
   "intro_age_year": "What is your age?",
   "intro_location": "What is your location?",
