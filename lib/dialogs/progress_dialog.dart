@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/my_circular_progress.dart';
 
 class ProgressDialog {
   // Paramiteres
@@ -24,7 +23,7 @@ class ProgressDialog {
             backgroundColor: Colors.white,
             children: <Widget>[
               Center(
-                child: LottieLoader(),
+                child: CircularProgressIndicator(),
               )
             ],
           );
