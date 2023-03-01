@@ -1,21 +1,12 @@
-import 'dart:io';
-
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/sign_in_screen.dart';
-import 'package:fren_app/screens/update_location_sceen.dart';
-import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
-import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/default_button.dart';
-import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -87,11 +78,31 @@ class Step1Container extends StatelessWidget {
           child: Column(
             children: <Widget>[
               const LottieLoader(),
-              Text(_i18n.translate('intro_1'), style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.bold)),
-              Text(_i18n.translate('intro_2')),
+              AnimatedTextKit(
+                  animatedTexts: [
+                    TypewriterAnimatedText(
+                        _i18n.translate('intro_1'),
+                        textStyle: const TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                        speed: const Duration(milliseconds: 200),
+                    ),
+                  ]
+              ),
+
+              AnimatedTextKit(
+                animatedTexts: [
+                  TypewriterAnimatedText(
+                      _i18n.translate('intro_2'),
+                    speed: const Duration(milliseconds: 200),
+                  ),
+                  TypewriterAnimatedText(
+                    _i18n.translate('intro_quick_start'),
+                    speed: const Duration(milliseconds: 200),
+                  ),
+                ]
+              ),
+
               const SizedBox(height: 50),
-              Text(_i18n.translate('intro_quick_start')),
 
               const SizedBox(height: 50),
 
@@ -153,6 +164,10 @@ class Step1Container extends StatelessWidget {
                             style: const TextStyle(fontSize: 18)),
                         onPressed: () {
                           /// Sign up
+                            Navigator.of(context).pushAndRemoveUntil(
+                                MaterialPageRoute(
+                                    builder: (context) => Step2Container()),
+                                    (route) => false);
                         },
                       ),
                     ),
@@ -166,79 +181,6 @@ class Step1Container extends StatelessWidget {
     );
   }
 }
-// class Step1Container extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     final _formKey = GlobalKey<FormState>();
-//     final i18n = AppLocalizations.of(context);
-//     final _nameController = TextEditingController();
-//     final _scaffoldKey = GlobalKey<ScaffoldState>();
-//
-//     return Scaffold(
-//         resizeToAvoidBottomInset: true,
-//         body: SingleChildScrollView(
-//             child: Column(
-//                 mainAxisSize: MainAxisSize.max,
-//                 children: <Widget>[
-//                   const LottieLoader(),
-//                   Padding(
-//                       padding: const EdgeInsets.all(16.0),
-//                       child: Column(
-//                           crossAxisAlignment: CrossAxisAlignment.start,
-//                         children: <Widget>[
-//                           Text(i18n.translate('intro_1')),
-//                           Text(i18n.translate('intro_2')),
-//                           Text(i18n.translate('intro_3')),
-//                           Text(i18n.translate('intro_4')),
-//                           Text(i18n.translate('intro_fullname')),
-//                         ]
-//                       )
-//                   ),
-//                   Form(
-//                     key: _formKey,
-//                     child: Column(
-//                       children: <Widget>[
-//                         TextFormField(
-//                           controller: _nameController,
-//                           decoration: const InputDecoration(
-//                             hintText: 'Enter your email',
-//                           ),
-//                           validator: (String? value) {
-//                             if (value == null || value.isEmpty) {
-//                               return 'Please enter some text';
-//                             }
-//                             return null;
-//                           },
-//                         ),
-//                         Padding(
-//                           padding: const EdgeInsets.symmetric(vertical: 50.0),
-//                           child: Align(
-//                             alignment: Alignment.bottomCenter,
-//                             child: Container(
-//                               margin: const EdgeInsets.all(5),
-//                               width: double.infinity,
-//                               child: ElevatedButton(
-//                                 onPressed: () {
-//                                   // Validate will return true if the form is valid, or false if
-//                                   // the form is invalid.
-//                                   if (_formKey.currentState!.validate()) {
-//                                     // Process data.
-//                                   }
-//                                 },
-//                                 child: const Text('Next'),
-//                               ),
-//                             ),
-//                           ),
-//                         ),
-//                       ],
-//                     ),
-//                   )
-//                 ]
-//             )
-//         )
-//     );
-//   }
-// }
 
 class Step2Container extends StatelessWidget {
   @override
