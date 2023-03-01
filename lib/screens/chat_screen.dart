@@ -16,7 +16,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/widgets/chat_message.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
-import 'package:fren_app/widgets/my_circular_progress.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';

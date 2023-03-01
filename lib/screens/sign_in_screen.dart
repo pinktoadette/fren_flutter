@@ -1,5 +1,5 @@
-
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/phone_number_screen.dart';
 import 'package:fren_app/widgets/app_logo.dart';
 import 'package:fren_app/widgets/default_button.dart';
@@ -7,7 +7,9 @@ import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
+import '../utils/google_auth.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -20,6 +22,9 @@ class _SignInScreenState extends State<SignInScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
+
+  bool _isSignIn =false;
+  bool google =false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,23 +39,21 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              const Spacer(),
 
-            Spacer(),
+              /// App logo
+              const AppLogo(),
 
-            /// App logo
-            const AppLogo(),
+              /// App name
+              Text(APP_NAME, style: Theme.of(context).textTheme.displayLarge),
 
-            /// App name
-            Text(APP_NAME,
-                style: Theme.of(context).textTheme.displayLarge),
+              const SizedBox(height: 10),
 
-            const SizedBox(height: 10),
+              Text(_i18n.translate("app_short_description"),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 18)),
 
-            Text(_i18n.translate("app_short_description"),
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontSize: 18)),
-
-            const Spacer(),
+              const Spacer(),
 
               /// Sign in with Social
               Padding(
@@ -58,9 +61,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: SizedBox(
                   width: double.maxFinite,
                   child: DefaultButton(
-                    child: const Text(
-                        "Continue with Google",
-                        style: TextStyle(fontSize: 18)),
+                    child: const Text("Login with Phone Number", style: TextStyle(fontSize: 18)),
                     onPressed: () {
                       /// Go to google
                       Navigator.of(context).push(MaterialPageRoute(
@@ -70,22 +71,47 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
               ),
 
+              const Divider(),
+
               /// Sign in
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
+                padding: const EdgeInsets.all(20),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    SignInButtonBuilder(
-                      text:  _i18n.translate("sign_in_with_google"),
-                      icon: Icons.email,
+                    SignInButton(
+                      Buttons.Google,
+                      onPressed:  () async{
+                        setState(() {
+                          _isSignIn = true;
+                        });
+
+                        GoogleAuthentication service = GoogleAuthentication();
+                        try {
+                            await service.signInWithGoogle(context: context);
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(
+                                  builder: (context) => const HomeScreen()
+                                // UserInfoScreen(user: user),
+                              ),
+                            );
+                        } catch(error) {
+                          if(error is FirebaseAuthException){
+                            print(error.message);
+                          }
+                        }
+                        setState(() {
+                          _isSignIn = false;
+                        });
+                      },
+                    ),
+                    SignInButton(
+                      Buttons.Apple,
                       onPressed: () {
                       },
-                      backgroundColor: Colors.white,
                     ),
-                      const Divider(),
-                      ],
-                    ),
+                  ],
+                ),
               ),
 
               const Spacer(),

@@ -8,7 +8,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/screens/update_app_screen.dart';
 import 'package:fren_app/widgets/app_logo.dart';
-import 'package:fren_app/widgets/my_circular_progress.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/sign_up_screen.dart';
@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                  const AppLogo(),
+                  const LottieLoader(),
                   const SizedBox(height: 10),
                   const Text(APP_NAME,
                       style:
@@ -91,7 +91,6 @@ class _SplashScreenState extends State<SplashScreen> {
                       textAlign: TextAlign.center,
                       style: const TextStyle(fontSize: 18, color: Colors.grey)),
                   const SizedBox(height: 20),
-                  const LottieLoader()
                 ],
               ),
             ),

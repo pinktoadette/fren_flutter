@@ -1,5 +1,5 @@
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/my_circular_progress.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 
 class Processing extends StatelessWidget {
