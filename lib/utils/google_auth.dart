@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/datas/user.dart' as fren;
@@ -15,12 +16,11 @@ class GoogleAuthentication {
         'https://www.googleapis.com/auth/userinfo.profile'],
   );
 
-  Future<UserCredential> signInWithGoogle() async {
+  Future<fren.User> signInWithGoogle() async {
 
       try {
         final GoogleSignInAccount? googleSignInAccount =
         await _googleSignIn.signIn();
-        print (googleSignInAccount);
 
         final GoogleSignInAuthentication googleSignInAuthentication =
         await googleSignInAccount!.authentication;
@@ -30,9 +30,9 @@ class GoogleAuthentication {
         );
 
         UserCredential cred =  await _auth.signInWithCredential(credential);
-        print (cred);
-        //await UserModel().getUserByEmail(cred.user?.email);
-        return cred;
+        fren.User user = await UserModel().getCreateUser(cred.user!);
+
+        return user;
       } on FirebaseAuthException catch (e) {
         print(e.message);
         throw e;

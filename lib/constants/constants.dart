@@ -10,9 +10,9 @@ const Color APP_ACCENT_COLOR = Colors.grey;
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
-// 
+//
 // Add Google Maps - API KEY required for Passport feature
-// 
+//
 const String ANDROID_MAPS_API_KEY = "YOUR ANDROID API KEY";
 const String IOS_MAPS_API_KEY = "YOUR IOS API KEY";
 //
@@ -31,21 +31,38 @@ const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 const List<Locale> SUPPORTED_LOCALES = [
   Locale('en'),
 ];
+
 ///
 /// END APP SETINGS - SECTION
 
-
-/// 
+///
 /// DATABASE COLLECTIONS FIELD - SECTION
-/// 
+///
 /// FIREBASE MESSAGING TOPIC
 const NOTIFY_USERS = "NOTIFY_USERS";
+
+/// Bot
+const DEFAULT_BOT_ID = 'Bot_GgQ0c3cqypSmKcpfUA9M';
+const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
+
+/// Bot Database Collection
+const BOT_ID = 'bot_id';
+const BOT_REG_DATE = 'bot_register_date';
+const BOT_PROFILE_PHOTO = 'bot_photo';
+const BOT_NAME = 'bot_name';
+const BOT_MODEL = 'bot_model';
+const BOT_SPECIALTY = 'bot_specialty';
+const BOT_OWNER_ID = 'bot_owner_id';
+const BOT_HUGGING_FACE_MODEL = "hugging_face_model";
+const BOT_MODEL_API_URL = "bot_url_api";
 
 /// DATABASE COLLECTION NAMES USED IN APP
 ///
 const String C_APP_INFO = "AppInfo";
-const String C_USER = "User";
 const String C_USERS = "Users";
+const String C_BOT = "Bots";
+const String C_BOT_INTRO = "BotIntro";
+const String C_BOT_USER_MATCH = "BotUserMatch";
 const String C_FLAGGED_USERS = "FlaggedUsers";
 const String C_CONNECTIONS = "Connections";
 const String C_MATCHES = "Matches";

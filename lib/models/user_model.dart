@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/datas/user.dart';
@@ -161,6 +162,7 @@ class UserModel extends Model {
     // Optional functions called on app start
     VoidCallback? signInScreen,
     VoidCallback? blockedScreen,
+    ValueSetter? botChatScreen
   }) async {
     /// Check user auth
     if (getFirebaseUser != null) {
@@ -193,7 +195,11 @@ class UserModel extends Model {
               updateLocationScreen();
               return;
             }
-
+            // if user didn't complete profile then go to chat intro bot
+            if (userDoc[USER_PROFILE_FILLED] == false) {
+              debugPrint("profile incomplete");
+              botChatScreen!(userDoc);
+            }
             // Go to home screen
             homeScreen();
           }
@@ -632,13 +638,38 @@ class UserModel extends Model {
     return images;
   }
 
-  /// Get user by email
-  ///
-  ///
-  Future<DocumentSnapshot<Map<String, dynamic>>> getUserByEmail(String email) async {
-    return await _firestore.collection(C_USERS)
-        .where('email', isEqualTo: email).get()
-        .then((snapshot) => snapshot.docs[0].data()['users ID']);
+  /// Get or create temp user by email
+  Future<User> getCreateUser(fire_auth.User user) async {
+    DocumentSnapshot<Map<String, dynamic>> usr;
+    final String userId = user!.uid;
+    usr = await _firestore.collection(C_USERS).doc(userId).get();
+
+    if (!usr.exists) {
+      // add some default values
+      final GeoFirePoint geoPoint = _geo.point(latitude: 40.7128, longitude: 74.0060);
+        await _firestore
+          .collection(C_USERS)
+          .doc(user.uid)
+          .set(<String, dynamic>{
+            USER_ID: user!.uid,
+            USER_PROFILE_FILLED: false,
+            USER_PROFILE_PHOTO: user.photoURL,
+            USER_FULLNAME: user.displayName,
+            USER_GEO_POINT: geoPoint.data,
+            USER_LAST_LOGIN: FieldValue.serverTimestamp(),
+            USER_REG_DATE: FieldValue.serverTimestamp(),
+            USER_SETTINGS: {
+              USER_MIN_AGE: 18, // int
+              USER_MAX_AGE: 100, // int
+              //USER_SHOW_ME: 'everyone',
+              USER_MAX_DISTANCE: AppModel().appInfo.freeAccountMaxDistance,
+            }
+          });
+        usr = await _firestore.collection(C_USERS).doc(userId).get();
+    }
+    final User u = User.fromDocument(usr.data()!);
+
+    return u;
   }
 
   // Sign out

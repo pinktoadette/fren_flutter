@@ -14,6 +14,8 @@ import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/sign_up_screen.dart';
 import 'package:fren_app/screens/sign_in_screen.dart';
 
+import 'chat_bot.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
 
@@ -63,6 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
             updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
+            botChatScreen: (user) => _nextScreen(BotChatScreen(user: user, botId: DEFAULT_BOT_ID)),
             homeScreen: () => _nextScreen(const HomeScreen()),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
       }

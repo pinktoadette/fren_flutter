@@ -6,7 +6,6 @@ import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/default_button.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({Key? key}) : super(key: key);
@@ -78,31 +77,11 @@ class Step1Container extends StatelessWidget {
           child: Column(
             children: <Widget>[
               const LottieLoader(),
-              AnimatedTextKit(
-                  animatedTexts: [
-                    TypewriterAnimatedText(
-                        _i18n.translate('intro_1'),
-                        textStyle: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                        speed: const Duration(milliseconds: 200),
-                    ),
-                  ]
-              ),
-
-              AnimatedTextKit(
-                animatedTexts: [
-                  TypewriterAnimatedText(
-                      _i18n.translate('intro_2'),
-                    speed: const Duration(milliseconds: 200),
-                  ),
-                  TypewriterAnimatedText(
-                    _i18n.translate('intro_quick_start'),
-                    speed: const Duration(milliseconds: 200),
-                  ),
-                ]
-              ),
-
+              Text(_i18n.translate('intro_1'), style: const TextStyle(
+                  fontSize: 20, fontWeight: FontWeight.bold)),
+              Text(_i18n.translate('intro_2')),
               const SizedBox(height: 50),
+              Text(_i18n.translate('intro_quick_start')),
 
               const SizedBox(height: 50),
 
