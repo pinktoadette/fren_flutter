@@ -45,7 +45,6 @@ class BotModel extends Model {
 
   /// get matched bot
   Future<QuerySnapshot<Map<String, dynamic>>> getBotMatch(String botId, String userId) async {
-    print(botId + UserModel().user.userId);
     return await _firestore.collection(C_BOT_USER_MATCH)
         .where(BOT_ID, isEqualTo: botId)
         .where(USER_ID, isEqualTo: userId)

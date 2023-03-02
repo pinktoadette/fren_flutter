@@ -52,7 +52,7 @@ class BotApi {
   Stream<QuerySnapshot<Map<String, dynamic>>> getUserReplies(String userId) {
     return _firestore
         .collection(C_BOT_USER_MATCH)
-        .doc(UserModel().user.userId)
+        .doc(userId)
         .collection(DEFAULT_BOT_ID)
         .orderBy(TIMESTAMP)
         .snapshots();

@@ -198,7 +198,8 @@ class UserModel extends Model {
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               debugPrint("profile incomplete");
-              botChatScreen!(User.fromDocument(userDoc.data()!));
+              final User u = User.fromDocument(userDoc.data()!);
+              botChatScreen!(u);
             }
             // Go to home screen
             homeScreen();
