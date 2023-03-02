@@ -13,6 +13,7 @@ class Bot {
   final Object? botOwnerId;
   final String? huggingFaceModel;
   final String? apiUrlModel;
+  final String? about;
 
   // Constructor
   Bot({
@@ -25,6 +26,7 @@ class Bot {
     this.botOwnerId,
     this.huggingFaceModel,
     this.apiUrlModel,
+    this.about
   });
 
   /// factory bot object
@@ -38,7 +40,8 @@ class Bot {
       botRegDate: doc[BOT_REG_DATE].toDate(),
       botOwnerId: doc[BOT_OWNER_ID],
       huggingFaceModel: doc[BOT_HUGGING_FACE_MODEL],
-      apiUrlModel: doc[BOT_MODEL_API_URL]
+      apiUrlModel: doc[BOT_MODEL_API_URL],
+      about: doc[BOT_ABOUT]
     );
   }
 }

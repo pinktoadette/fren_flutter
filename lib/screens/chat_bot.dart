@@ -1,10 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/blocked_users_api.dart';
-import 'package:fren_app/api/likes_api.dart';
-import 'package:fren_app/api/matches_api.dart';
-import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/api/messages_bot.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/constants/constants.dart';
@@ -15,12 +11,9 @@ import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/main.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/widgets/chat_message.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/loader.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -32,7 +25,8 @@ class BotChatScreen extends StatefulWidget {
   final User user;
   final String botId;
 
-  const BotChatScreen({Key? key, required this.user,  required this.botId}) : super(key: key);
+  const BotChatScreen({Key? key, required this.user, required this.botId})
+      : super(key: key);
 
   @override
   _BotChatScreenState createState() => _BotChatScreenState();
@@ -45,12 +39,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final _messagesApi = MessagesBotApi();
   final _botApi = BotApi();
   final _notificationsApi = NotificationsApi();
-  late Stream<DocumentSnapshot<Map<String, dynamic>>> _messages;
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _replies;
   bool _isComposing = false;
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
   late final Bot _botInfo;
   late final Future<Object> _prompt;
+  int _promptSeq = 0;
 
   // Close dialog method
   void _close() => navigatorKey.currentState?.pop();
@@ -138,28 +133,38 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   @override
-  void initState()  {
+  void initState() {
     super.initState();
     getBotInfo();
     _prompt = _botApi.getBotIntroPrompt(widget.botId);
+    _botApi.initalChatBot(widget.botId, widget.user.userId);
+    _replies = _botApi.getUserReplies(widget.user.userId);
+    print(_replies);
+    print("replies");
   }
 
-  Future<Bot> getBotInfo() async{
+  Future<Bot> getBotInfo() async {
     try {
       return await _botApi.getBotInfo(widget.botId);
-    } catch(error) {
-      print (error);
+    } catch (error) {
+      print(error);
       rethrow;
     }
   }
 
-  Future<Object> getBotIntro() async{
+  Future<Object> getBotIntro() async {
     return await _botApi.getBotIntroPrompt(widget.botId);
+  }
+
+  void _promptIncr() {
+    setState(() {
+      _promptSeq++;
+    });
   }
 
   @override
   void dispose() {
-    _messages.drain();
+    _replies.drain();
     _textController.dispose();
     _messagesController.dispose();
     super.dispose();
@@ -172,200 +177,137 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _pr = ProgressDialog(context);
 
     return FutureBuilder<Bot>(
-      future: getBotInfo(),
-      builder: (context, snapshot) {
-        if (!snapshot.hasData) {
-          return const LottieLoader();
-        } else {
-          return Scaffold(
-            appBar: AppBar(
-              // Show User profile info
-              title: GestureDetector(
-                child: ListTile(
-                  contentPadding: const EdgeInsets.only(left: 0),
-                  title: Text(snapshot.data!.name ?? "Bot",
-                      style: const TextStyle(fontSize: 18)),
+        future: getBotInfo(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return const LottieLoader();
+          } else {
+            return Scaffold(
+                appBar: AppBar(
+                  // Show User profile info
+                  title: GestureDetector(
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.only(left: 0),
+                      title: Text(snapshot.data!.name ?? "Bot",
+                          style: const TextStyle(fontSize: 18)),
+                    ),
+                    onTap: () {
+                      /// Show bot info
+                      confirmDialog(context,
+                          title: _i18n.translate("about") + snapshot.data!.name,
+                          message:
+                              "${snapshot.data!.name} is a ${snapshot.data!.specialty} bot, using ${snapshot.data!.model}. \n${snapshot.data?.about} ",
+                          positiveText: _i18n.translate("OK"),
+                          positiveAction: () async {
+                        // Close the confirm dialog
+                        Navigator.of(context).pop();
+                        // Hide progress
+                        await _pr.hide();
+                      });
+                    },
+                  ),
                 ),
-                onTap: () {
-                  /// Go to profile screen
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) =>
-                          ProfileScreen(user: widget.user, showButtons: false)));
-                },
-              ),
-              actions: <Widget>[
-                /// Actions list
-                PopupMenuButton<String>(
-                  initialValue: "",
-                  itemBuilder: (context) => <PopupMenuEntry<String>>[
-                   /// view bot info
-                    PopupMenuItem(
-                        value: "bot_info",
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Iconsax.information),
-                            const SizedBox(width: 5),
-                            Text(_i18n.translate("about") + snapshot.data!.name ),
-                          ],
-                        )),
+                body: Column(
+                  children: <Widget>[
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: const [
+                          LottieLoader(),
+                        ],
+                    ),
+                    Expanded(child: _showMessages()),
                   ],
-                  onSelected: (val) {
-                    /// Control selected value
-                    switch (val) {
-                      case "bot_info":
-                      /// Delete chat
-                        confirmDialog(context,
-                            title: _i18n.translate("about") + snapshot.data!.name,
-                            message: "${snapshot.data!.name} is a ${snapshot.data!.specialty} bot, using ${snapshot.data!.model}. \n"
-                                "Find the owner ${snapshot.data!.botOwnerId} ",
-                            positiveText: _i18n.translate("OK"),
-                            positiveAction: () async {
-                              // Close the confirm dialog
-                              Navigator.of(context).pop();
-                              // Hide progress
-                              await _pr.hide();
-                            });
-                        break;
-                    }
-                  },
-                ),
-              ],
-            ),
+                ));
+          }
+        });
+  }
+
+  /// Show prompt 
+  Widget _promptQuestion() {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _replies,
+        builder: (context, snapshot) {
+          print (snapshot);
+          return ListView.builder (
+            controller: _messagesController,
+            itemCount: _promptSeq,
+            itemBuilder: (BuildContext context, int index) {
+              print("test");
+              print (snapshot.data!.docs.length);
+              // Get message list
+              final List<DocumentSnapshot<Map<String, dynamic>>> messages =
+              snapshot.data!.docs.reversed.toList();
+              print (messages);
+              // Get message doc map
+              final Map<String, dynamic> msg = messages[index].data()!;
+              print (msg);
+              final String timeAgo = timeago.format(msg[TIMESTAMP].toDate());
+
+              return ChatMessage(
+                isUserSender: true,
+                isImage: false,
+                userPhotoLink: widget.user.userProfilePhoto,
+                textMessage: "ok",
+                imageLink: "",
+                timeAgo: timeAgo,
+              );
+            },
           );
-        }
-      }
-    );
-
-    return Scaffold(
-      appBar: AppBar(
-        // Show User profile info
-        title: GestureDetector(
-          child: ListTile(
-            contentPadding: const EdgeInsets.only(left: 0),
-            title: Text(_botInfo?.name ?? "Bot",
-                style: const TextStyle(fontSize: 18)),
-          ),
-          onTap: () {
-            /// Go to profile screen
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    ProfileScreen(user: widget.user, showButtons: false)));
-          },
-        ),
-      ),
-      body: Column(
-        children: <Widget>[
-          /// how message list
-          // Expanded(child: _showMessages()),
-
-          /// Text Composer
-          Container(
-            color: Colors.grey.withAlpha(50),
-            child: ListTile(
-                leading: IconButton(
-                    icon: const SvgIcon("assets/icons/camera_icon.svg",
-                        width: 20, height: 20),
-                    onPressed: () async {
-                      /// Send image file
-                      await _getImage();
-
-                      /// Update scroll
-                      _scrollMessageList();
-                    }),
-                title: TextField(
-                  controller: _textController,
-                  minLines: 1,
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                      hintText: _i18n.translate("type_a_message"),
-                      border: InputBorder.none),
-                  onChanged: (text) {
-                    setState(() {
-                      _isComposing = text.isNotEmpty;
-                    });
-                  },
-                ),
-                trailing: IconButton(
-                    icon: Icon(Icons.send,
-                        color: _isComposing
-                            ? Theme.of(context).primaryColor
-                            : Colors.grey),
-                    onPressed: _isComposing
-                        ? () async {
-                            /// Get text
-                            final text = _textController.text.trim();
-
-                            /// clear input text
-                            _textController.clear();
-                            setState(() {
-                              _isComposing = false;
-                            });
-
-                            /// Send text message
-                            await _sendMessage(type: 'text', text: text);
-
-                            /// Update scroll
-                            _scrollMessageList();
-                          }
-                        : null)),
-          ),
-        ],
-      ),
-    );
+        });
   }
 
   /// Build bubble message
-  // Widget _showMessages() {
-  //   return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-  //       stream: _messages,
-  //       builder: (context, snapshot) {
-  //         // Check data
-  //         if (!snapshot.hasData) {
-  //           return const LottieLoader();
-  //         }
-  //         // else {
-  //         //   return ListView.builder(
-  //         //       controller: _messagesController,
-  //         //       itemCount: snapshot.data!.prompt.length,
-  //         //       itemBuilder: (context, index) {
-  //         //         print("test");
-  //         //         print (snapshot.data!.docs.length);
-  //         //         // Get message list
-  //         //         final List<DocumentSnapshot<Map<String, dynamic>>> messages =
-  //         //             snapshot.data!.docs.reversed.toList();
-  //         //         print (messages);
-  //         //         // Get message doc map
-  //         //         final Map<String, dynamic> msg = messages[index].data()!;
-  //         //         print (msg);
-  //         //
-  //         //         /// Variables
-  //         //         bool isUserSender;
-  //         //         String userPhotoLink;
-  //         //         final bool isImage = msg[MESSAGE_TYPE] == 'image';
-  //         //         final String textMessage = msg[MESSAGE_TEXT];
-  //         //         final String? imageLink = msg[MESSAGE_IMG_LINK];
-  //         //         final String timeAgo =
-  //         //             timeago.format(msg[TIMESTAMP].toDate());
-  //         //
-  //         //         /// Check user id to get info
-  //         //         if (msg[USER_ID] == UserModel().user.userId) {
-  //         //           isUserSender = true;
-  //         //           userPhotoLink = UserModel().user.userProfilePhoto;
-  //         //         } else {
-  //         //           isUserSender = false;
-  //         //           userPhotoLink = widget.user.userProfilePhoto;
-  //         //         }
-  //         //         // Show chat bubble
-  //         //         return ChatMessage(
-  //         //           isUserSender: isUserSender,
-  //         //           isImage: isImage,
-  //         //           userPhotoLink: userPhotoLink,
-  //         //           textMessage: textMessage,
-  //         //           imageLink: imageLink,
-  //         //           timeAgo: timeAgo,
-  //         //         );
-  //         //       });
-  //         // }
-  //       });
-  // }
+  Widget _showMessages() {
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _replies,
+        builder: (context, snapshot) {
+          // Check data
+          if (!snapshot.hasData) {
+            return Text("no");
+          }
+          else {
+            return ListView.builder(
+                controller: _messagesController,
+                itemCount: snapshot.data!.docs.length,
+                itemBuilder: (context, index) {
+                  print("test");
+                  print (snapshot.data!.docs.length);
+                  // Get message list
+                  final List<DocumentSnapshot<Map<String, dynamic>>> messages =
+                      snapshot.data!.docs.reversed.toList();
+                  print (messages);
+                  // Get message doc map
+                  final Map<String, dynamic> msg = messages[index].data()!;
+                  print (msg);
+
+                  /// Variables
+                  bool isUserSender;
+                  String userPhotoLink;
+                  final bool isImage = msg[MESSAGE_TYPE] == 'image';
+                  final String textMessage = msg[MESSAGE_TEXT];
+                  final String? imageLink = msg[MESSAGE_IMG_LINK];
+                  final String timeAgo =
+                      timeago.format(msg[TIMESTAMP].toDate());
+
+                  /// Check user id to get info
+                  if (msg[USER_ID] == UserModel().user.userId) {
+                    isUserSender = true;
+                    userPhotoLink = UserModel().user.userProfilePhoto;
+                  } else {
+                    isUserSender = false;
+                    userPhotoLink = widget.user.userProfilePhoto;
+                  }
+                  // Show chat bubble
+                  return ChatMessage(
+                    isUserSender: isUserSender,
+                    isImage: isImage,
+                    userPhotoLink: userPhotoLink,
+                    textMessage: textMessage,
+                    imageLink: imageLink,
+                    timeAgo: timeAgo,
+                  );
+                });
+          }
+        });
+  }
 }

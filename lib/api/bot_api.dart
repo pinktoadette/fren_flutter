@@ -36,5 +36,27 @@ class BotApi {
         .snapshots();
   }
 
+  /// initialize start messages
+  Future<QuerySnapshot<Map<String, dynamic>>> initalChatBot(String botId, String userId) async {
+    QuerySnapshot<Map<String, dynamic>> botDoc =
+    await BotModel().getBotMatch(botId, userId);
+
+    if(botDoc.docs.isEmpty) {
+      await BotModel().saveBotMatch(botId);
+    }
+
+    return botDoc;
+  }
+
+  /// Get stream messages for current user
+  Stream<QuerySnapshot<Map<String, dynamic>>> getUserReplies(String userId) {
+    return _firestore
+        .collection(C_BOT_USER_MATCH)
+        .doc(UserModel().user.userId)
+        .collection(DEFAULT_BOT_ID)
+        .orderBy(TIMESTAMP)
+        .snapshots();
+  }
+
 
 }

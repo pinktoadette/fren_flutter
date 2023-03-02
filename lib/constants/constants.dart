@@ -55,6 +55,7 @@ const BOT_SPECIALTY = 'bot_specialty';
 const BOT_OWNER_ID = 'bot_owner_id';
 const BOT_HUGGING_FACE_MODEL = "hugging_face_model";
 const BOT_MODEL_API_URL = "bot_url_api";
+const BOT_ABOUT = "about";
 
 /// DATABASE COLLECTION NAMES USED IN APP
 ///

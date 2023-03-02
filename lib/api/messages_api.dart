@@ -39,11 +39,11 @@ class MessagesApi {
         .collection(receiverId)
         .doc()
         .set(<String, dynamic>{
-      USER_ID: fromUserId,
-      MESSAGE_TYPE: type,
-      MESSAGE_TEXT: textMsg,
-      MESSAGE_IMG_LINK: imgLink,
-      TIMESTAMP: FieldValue.serverTimestamp(),
+          USER_ID: fromUserId,
+          MESSAGE_TYPE: type,
+          MESSAGE_TEXT: textMsg,
+          MESSAGE_IMG_LINK: imgLink,
+          TIMESTAMP: FieldValue.serverTimestamp(),
     });
 
     /// Save last conversation

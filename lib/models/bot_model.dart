@@ -8,6 +8,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/first_time_user.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
@@ -41,6 +42,25 @@ class BotModel extends Model {
   Future<DocumentSnapshot<Map<String, dynamic>>> getBotIntro(String botId) async {
     return await _firestore.collection(C_BOT_INTRO).doc(botId).get();
   }
+
+  /// get matched bot
+  Future<QuerySnapshot<Map<String, dynamic>>> getBotMatch(String botId, String userId) async {
+    print(botId + UserModel().user.userId);
+    return await _firestore.collection(C_BOT_USER_MATCH)
+        .where(BOT_ID, isEqualTo: botId)
+        .where(USER_ID, isEqualTo: userId)
+        .limit(1)
+        .get();
+  }
+
+  // save the matched bot
+  Future<DocumentReference<Map<String, dynamic>>> saveBotMatch(String botId) async {
+    return await _firestore.collection(C_BOT_USER_MATCH).add({
+      USER_ID:  UserModel().user.userId,
+      BOT_ID: botId
+    });
+  }
+
 
 }
 
