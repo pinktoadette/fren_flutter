@@ -83,18 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  const LottieLoader(),
-                  const SizedBox(height: 10),
-                  const Text(APP_NAME,
-                      style:
-                          TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
-                  const SizedBox(height: 5),
-                  Text(_i18n.translate("app_short_description"),
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 18, color: Colors.grey)),
-                  const SizedBox(height: 20),
-                ],
+                children: const [LottieLoader()],
               ),
             ),
           ),

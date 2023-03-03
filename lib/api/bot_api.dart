@@ -16,32 +16,33 @@ class BotApi {
   Future<Bot> getBotInfo(String botId) async {
     final DocumentSnapshot<Map<String, dynamic>> botDoc =
         await BotModel().getBot(botId);
+
     /// return bot object
     return Bot.fromDocument(botDoc.data()!);
   }
 
   /// get bot introduction
-  Future<Map<String, dynamic>> getBotIntroPrompt(String botId) async {
+  Future<List> getBotIntroPrompt(String botId) async {
     final DocumentSnapshot<Map<String, dynamic>> botDoc =
         await BotModel().getBotIntro(botId);
+    // String<Array> data = botDoc.data()!.prompt;
+    BotIntro a = BotIntro.fromDocument(botDoc.data()!);
 
-    return botDoc.data()!;
+    return a!.prompt;
   }
 
   /// Get stream messages for current user
   Stream<DocumentSnapshot<Map<String, dynamic>>> getBotIntro(String botId) {
-    return _firestore
-        .collection(C_BOT_INTRO)
-        .doc(botId)
-        .snapshots();
+    return _firestore.collection(C_BOT_INTRO).doc(botId).snapshots();
   }
 
   /// initialize start messages
-  Future<QuerySnapshot<Map<String, dynamic>>> initalChatBot(String botId, String userId) async {
+  Future<QuerySnapshot<Map<String, dynamic>>> initalChatBot(
+      String botId, String userId) async {
     QuerySnapshot<Map<String, dynamic>> botDoc =
-    await BotModel().getBotMatch(botId, userId);
+        await BotModel().getBotMatch(botId, userId);
 
-    if(botDoc.docs.isEmpty) {
+    if (botDoc.docs.isEmpty) {
       await BotModel().saveBotMatch(botId);
     }
 
@@ -57,6 +58,4 @@ class BotApi {
         .orderBy(TIMESTAMP)
         .snapshots();
   }
-
-
 }

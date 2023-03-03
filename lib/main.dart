@@ -10,18 +10,23 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:iconsax/iconsax.dart';
+
 
 // TODO: Please "scroll down" to see the instructions to fix it.
 import 'firebase_options.dart';
 
 void main() async {
 
+  final result = await InternetAddress.lookup('google.com');
+  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+    print('Has Internet');
+  } else {
+    print("no internet");
+  }
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -31,7 +36,7 @@ void main() async {
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   /// TODO:
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-
+  print("start");
   // Initialize Google Mobile Ads SDK
   // await MobileAds.instance.initialize();
 
