@@ -1,24 +1,17 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-// import 'package:file_picker/file_picker.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/date_symbol_data_local.dart';
-import 'package:mime/mime.dart';
-// import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
 import '../api/bot_api.dart';
 import '../api/messages_bot.dart';
-import '../constants/constants.dart';
 import '../datas/bot.dart';
 import '../datas/user.dart';
 import '../dialogs/common_dialogs.dart';
@@ -38,21 +31,21 @@ class BotChatScreen extends StatefulWidget {
 }
 
 class _BotChatScreenState extends State<BotChatScreen> {
-
   late types.User _user;
+  late types.User _bot;
   late Stream<QuerySnapshot<Map<String, dynamic>>> _replies;
   late AppLocalizations _i18n;
-  late final Future<Object> _prompt;
+  late final List<dynamic> _prompt;
   final _messagesApi = MessagesBotApi();
   final _botApi = BotApi();
   late Bot _botInfo;
-  List<types.Message> _messages = [];
+  final List<types.Message> _messages = [];
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
-      isTextSelectable: true,
-      // void Function(String)? onLinkPressed,
-      // bool openOnPreviewImageTap = false,
-      // bool openOnPreviewTitleTap = false,
-      //     List<MatchText> matchers = const [],
+    isTextSelectable: true,
+    // void Function(String)? onLinkPressed,
+    // bool openOnPreviewImageTap = false,
+    // bool openOnPreviewTitleTap = false,
+    //     List<MatchText> matchers = const [],
   );
   var counter = 0;
 
@@ -63,14 +56,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       id: widget.user.userId,
       firstName: widget.user.userFullname,
     );
+    _getInfo();
     _botApi.initalChatBot(widget.botId, widget.user.userId);
-    _replies = _botApi.getUserReplies(widget.user.userId);
   }
 
-  Future<Bot> getBotInfo() async {
+  Future<Object> getChat() async {
     try {
-      _botInfo = await _botApi.getBotInfo(widget.botId);
-      _loadMessages();
       return _botInfo;
     } catch (error) {
       print(error);
@@ -78,63 +69,133 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-  Future<Object> getBotIntro() async {
-    return await _botApi.getBotIntroPrompt(widget.botId);
+  void _getInfo() async {
+    Future<List> p = _botApi.getBotIntroPrompt(widget.botId);
+    _prompt = await p;
+
+    _botInfo = await _botApi.getBotInfo(widget.botId);
+    _bot = types.User(
+      id: _botInfo.botId,
+      firstName: _botInfo.name,
+    );
+    _loadMessages();
+  }
+
+  void _loadMessages() async {
+    types.Message message = createMessage(_prompt[counter], _bot);
+    _addMessage(message);
+    waitTask(10);
+    while(counter < 3) {
+      _loadMessages();
+    }
+    counter++;
   }
 
   @override
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    return FutureBuilder<Bot>(
-        future: getBotInfo(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const LottieLoader();
-          } else {
-            return Scaffold(
-              appBar: AppBar(
-                // Show User profile info
-                title: GestureDetector(
-                  child: ListTile(
-                    contentPadding: const EdgeInsets.only(left: 0),
-                    title: Text(_botInfo!.name ?? "Bot",
-                        style: const TextStyle(fontSize: 18)),
-                  ),
-                  onTap: () {
-                    /// Show bot info
-                    confirmDialog(context,
-                        title: _i18n.translate("about") + _botInfo!.name,
-                        message:
-                        "${_botInfo!.name} is a ${_botInfo
-                            ?.specialty} bot, using ${_botInfo
-                            ?.model}. \n${_botInfo?.about} ",
-                        positiveText: _i18n.translate("OK"),
-                        positiveAction: () async {
-                          // Close the confirm dialog
-                          Navigator.of(context).pop();
-                        });
-                  },
-                ),
-              ),
-              body: Chat(
-                messages: _messages,
-                onAttachmentPressed: _handleAttachmentPressed,
-                onMessageTap: _handleMessageTap,
-                onPreviewDataFetched: _handlePreviewDataFetched,
-                onSendPressed: _handleSendPressed,
-                showUserAvatars: true,
-                showUserNames: true,
-                user: _user,
-              ),
-            );
-          }
-        });
+    return Scaffold(
+      appBar: AppBar(
+        // Show User profile info
+        title: GestureDetector(
+          child: ListTile(
+            contentPadding: const EdgeInsets.only(left: 0),
+            title: Text(_botInfo!.name ?? "Bot",
+                style: const TextStyle(fontSize: 24)),
+          ),
+          onTap: () {
+            /// Show bot info
+            confirmDialog(context,
+                title: _i18n.translate("about") + _botInfo!.name,
+                message:
+                "${_botInfo!.name} is a ${_botInfo?.specialty} bot, using ${_botInfo?.model}. \n${_botInfo?.about} ",
+                positiveText: _i18n.translate("OK"),
+                positiveAction: () async {
+                  // Close the confirm dialog
+                  Navigator.of(context).pop();
+                });
+          },
+        ),
+      ),
+      body: Chat(
+        messages: _messages,
+        onAttachmentPressed: _handleAttachmentPressed,
+        onMessageTap: _handleMessageTap,
+        onPreviewDataFetched: _handlePreviewDataFetched,
+        onSendPressed: _handleSendPressed,
+        showUserAvatars: true,
+        showUserNames: true,
+        user: _user,
+      ),
+
+      // Chat(
+      //   messages: _messages,
+      //   onAttachmentPressed: _handleAttachmentPressed,
+      //   onMessageTap: _handleMessageTap,
+      //   onPreviewDataFetched: _handlePreviewDataFetched,
+      //   onSendPressed: _handleSendPressed,
+      //   showUserAvatars: true,
+      //   showUserNames: true,
+      //   user: _user,
+      // ),
+    );
+    // return FutureBuilder<Object>(
+    //     future: getChat(),
+    //     builder: (context, snapshot) {
+    //       if (!snapshot.hasData) {
+    //         return const LottieLoader();
+    //       } else {
+    //         return Scaffold(
+    //           appBar: AppBar(
+    //             // Show User profile info
+    //             title: GestureDetector(
+    //               child: ListTile(
+    //                 contentPadding: const EdgeInsets.only(left: 0),
+    //                 title: Text(_botInfo!.name ?? "Bot",
+    //                     style: const TextStyle(fontSize: 24)),
+    //               ),
+    //               onTap: () {
+    //                 /// Show bot info
+    //                 confirmDialog(context,
+    //                     title: _i18n.translate("about") + _botInfo!.name,
+    //                     message:
+    //                         "${_botInfo!.name} is a ${_botInfo?.specialty} bot, using ${_botInfo?.model}. \n${_botInfo?.about} ",
+    //                     positiveText: _i18n.translate("OK"),
+    //                     positiveAction: () async {
+    //                   // Close the confirm dialog
+    //                   Navigator.of(context).pop();
+    //                 });
+    //               },
+    //             ),
+    //           ),
+    //           body: Chat(
+    //             messages: _messages,
+    //             onAttachmentPressed: _handleAttachmentPressed,
+    //             onMessageTap: _handleMessageTap,
+    //             onPreviewDataFetched: _handlePreviewDataFetched,
+    //             onSendPressed: _handleSendPressed,
+    //             showUserAvatars: true,
+    //             showUserNames: true,
+    //             user: _user,
+    //           ),
+    //
+    //           // Chat(
+    //           //   messages: _messages,
+    //           //   onAttachmentPressed: _handleAttachmentPressed,
+    //           //   onMessageTap: _handleMessageTap,
+    //           //   onPreviewDataFetched: _handlePreviewDataFetched,
+    //           //   onSendPressed: _handleSendPressed,
+    //           //   showUserAvatars: true,
+    //           //   showUserNames: true,
+    //           //   user: _user,
+    //           // ),
+    //         );
+    //       }
+    //     });
   }
 
   Future<void> _addMessage(types.Message message) async {
-    print (message);
-    print ("hello");
     setState(() {
       _messages.insert(0, message);
     });
@@ -206,9 +267,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
       if (message.uri.startsWith('http')) {
         try {
           final index =
-          _messages.indexWhere((element) => element.id == message.id);
+              _messages.indexWhere((element) => element.id == message.id);
           final updatedMessage =
-          (_messages[index] as types.FileMessage).copyWith(
+              (_messages[index] as types.FileMessage).copyWith(
             isLoading: true,
           );
 
@@ -228,9 +289,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
           }
         } finally {
           final index =
-          _messages.indexWhere((element) => element.id == message.id);
+              _messages.indexWhere((element) => element.id == message.id);
           final updatedMessage =
-          (_messages[index] as types.FileMessage).copyWith(
+              (_messages[index] as types.FileMessage).copyWith(
             isLoading: null,
           );
 
@@ -243,9 +304,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
     final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
       previewData: previewData,
@@ -257,38 +318,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: _user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: message.text,
-    );
-
+    types.TextMessage textMessage;
+    if (counter > 10) {
+      textMessage = createMessage(message.text, _user);
+    } else {
+      String text = "Hold on. \n" + _prompt[counter];
+      textMessage = createMessage(text, _bot);
+    }
     _addMessage(textMessage);
   }
 
-  void _loadMessages() async {
-
-    Future<List> p = _botApi.getBotIntroPrompt(widget.botId);
-    List prompt = await p ;
-
-    types.User bot = types.User(
-      id: _botInfo.botId,
-      firstName: _botInfo.name,
-    );
-    types.Message message = types.TextMessage(
-      author: bot,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: prompt[counter]
-    );
-    _addMessage(message);
-    waitTask(5);
-    counter++;
+  types.TextMessage createMessage(String text, types.User user) {
+    return types.TextMessage(
+        author: user,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
+        text: text);
   }
 
-  // Returns [string] after five seconds.
   void waitTask(int seconds) async {
-     Timer(Duration(seconds: seconds), () => print('done'));;
+    Timer(Duration(seconds: seconds), () => print('done'));
   }
 }
