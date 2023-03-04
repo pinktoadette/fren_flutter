@@ -37,7 +37,7 @@ class BotApi {
   }
 
   /// initialize start messages
-  Future<QuerySnapshot<Map<String, dynamic>>> initalChatBot(
+  Future<QuerySnapshot<Map<String, dynamic>>> botMatch(
       String botId, String userId) async {
     QuerySnapshot<Map<String, dynamic>> botDoc =
         await BotModel().getBotMatch(botId, userId);

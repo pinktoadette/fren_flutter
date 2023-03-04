@@ -38,6 +38,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final _botApi = BotApi();
   final _externalBot = ExternalBotApi();
   bool _isLoading = false;
+  bool _isNewMatch = true;
 
   final List<types.Message> _messages = [];
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
@@ -70,7 +71,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         _isLoading = false;
       })
     });
-    _botApi.initalChatBot(widget.bot.botId, _u.userId);
+    _botApi.botMatch(widget.bot.botId, _u.userId);
   }
 
   Future<void> _loadMessages() async {
@@ -90,9 +91,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
 
-    print("loadin");
-    print(widget.bot.botId);
     if (_isLoading) {
+      debugPrint("loading chat bot");
       return Scaffold(
         body: SafeArea(
           child: Container(
@@ -107,6 +107,50 @@ class _BotChatScreenState extends State<BotChatScreen> {
             ),
           ),
         ),
+      );
+    }
+    else if(_isNewMatch){
+      return Scaffold(
+        appBar: AppBar(
+          // Show User profile info
+          title: GestureDetector(
+            child: ListTile(
+              contentPadding: const EdgeInsets.only(left: 0),
+              title: Text(widget.bot.name ?? "Bot",
+                  style: const TextStyle(fontSize: 24)),
+            ),
+            onTap: () {
+              /// Show bot info
+              confirmDialog(context,
+                  title: "${_i18n.translate("about")} ${widget.bot.name}",
+                  message:
+                  "${widget.bot.name} is a ${widget.bot.specialty} bot, using ${widget.bot.model}. \n${widget.bot.about} ",
+                  positiveText: _i18n.translate("OK"),
+                  positiveAction: () async {
+                    // Close the confirm dialog
+                    Navigator.of(context).pop();
+                  });
+            },
+          ),
+        ),
+        body: Center(
+          child:       Chat(
+            messages: _messages,
+            onAttachmentPressed: _handleAttachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            showUserAvatars: true,
+            showUserNames: true,
+            user: _user,
+          ),
+        ),
+        floatingActionButton: const FloatingActionButton(
+          onPressed:null,
+          backgroundColor: Colors.white,
+          child: LottieLoader(),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
       );
     }
     return Scaffold(
@@ -132,15 +176,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
           },
         ),
       ),
-      body: Chat(
-        messages: _messages,
-        onAttachmentPressed: _handleAttachmentPressed,
-        onMessageTap: _handleMessageTap,
-        onPreviewDataFetched: _handlePreviewDataFetched,
-        onSendPressed: _handleSendPressed,
-        showUserAvatars: true,
-        showUserNames: true,
-        user: _user,
+      body: Center(
+        child:       Chat(
+          messages: _messages,
+          onAttachmentPressed: _handleAttachmentPressed,
+          onMessageTap: _handleMessageTap,
+          onPreviewDataFetched: _handlePreviewDataFetched,
+          onSendPressed: _handleSendPressed,
+          showUserAvatars: true,
+          showUserNames: true,
+          user: _user,
+        ),
       ),
     );
   }
@@ -283,6 +329,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void waitTask(int seconds) async {
-    Timer(Duration(seconds: seconds), () => print('done'));
+    Timer(Duration(seconds: seconds), () => debugPrint('done waiting'));
   }
 }
