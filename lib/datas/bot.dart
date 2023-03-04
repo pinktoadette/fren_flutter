@@ -2,6 +2,30 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 
+
+class BotPrompt {
+  final String text;
+  final int wait;
+  final String? selection;
+  final bool hasNext;
+
+  BotPrompt({
+    required this.text,
+    required this.wait,
+    required this.selection,
+    required this.hasNext
+  });
+
+  factory BotPrompt.fromJson(Map<String, dynamic> doc) {
+    return BotPrompt(
+        text: doc['text'],
+        wait: doc['wait'],
+        selection: doc['selection'],
+        hasNext: doc['hasNext'],
+    );
+  }
+}
+
 class Bot {
   /// Bot info
   final String botId;
