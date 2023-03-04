@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -9,14 +10,16 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/screens/first_time_user.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+
+import '../datas/bot.dart';
 
 class UserModel extends Model {
   /// Final Variables
@@ -159,15 +162,15 @@ class UserModel extends Model {
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
     required VoidCallback updateLocationScreen,
+    required Function botChatScreen,
     // Optional functions called on app start
     VoidCallback? signInScreen,
     VoidCallback? blockedScreen,
-    ValueSetter? botChatScreen
   }) async {
     /// Check user auth
     if (getFirebaseUser != null) {
       /// Get current user in database
-      await getUser(getFirebaseUser!.uid).then((userDoc) {
+      await getUser(getFirebaseUser!.uid).then((userDoc) async {
         /// Check user account in database
         /// if exists check status and take action
         if (userDoc.exists) {
@@ -198,8 +201,10 @@ class UserModel extends Model {
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               debugPrint("profile incomplete");
-              final User u = User.fromDocument(userDoc.data()!);
-              botChatScreen!(u);
+              final _botApi = BotApi();
+              Bot botInfo = await _botApi.getBotInfo(DEFAULT_BOT_ID);
+              botChatScreen(botInfo);
+              return;
             }
             // Go to home screen
             homeScreen();
@@ -292,6 +297,41 @@ class UserModel extends Model {
     final fire_auth.AuthCredential credential =
         fire_auth.PhoneAuthProvider.credential(
             verificationId: verificationId, smsCode: otp);
+
+    /// Try to sign in with provided credential
+    await _firebaseAuth
+        .signInWithCredential(credential)
+        .then((fire_auth.UserCredential userCredential) {
+      /// Auth user account
+      checkUserAccount();
+    }).catchError((error) {
+      // Callback function
+      onError();
+    });
+  }
+
+  /// Sign in with Google
+  Future<void> signInWithGoogle({
+    required Function() checkUserAccount,
+    required VoidCallback onError
+  }) async {
+    final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: [
+        'email',
+        'https://www.googleapis.com/auth/userinfo.email',
+        'https://www.googleapis.com/auth/userinfo.profile'],
+    );
+
+    final GoogleSignInAccount? googleSignInAccount =
+    await _googleSignIn.signIn();
+
+    final GoogleSignInAuthentication googleSignInAuthentication =
+    await googleSignInAccount!.authentication;
+
+    final fire_auth.AuthCredential credential = fire_auth.GoogleAuthProvider.credential(
+      accessToken: googleSignInAuthentication.accessToken,
+      idToken: googleSignInAuthentication.idToken,
+    );
 
     /// Try to sign in with provided credential
     await _firebaseAuth

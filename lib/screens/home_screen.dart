@@ -243,8 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Row(
           children: [
             Image.asset("assets/images/app_logo.png", width: 40, height: 40),
-            const SizedBox(width: 5),
-            const Text(APP_NAME),
+            const SizedBox(width: 10),
           ],
         ),
         actions: [

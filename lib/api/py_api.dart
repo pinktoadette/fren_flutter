@@ -10,15 +10,14 @@ class ExternalBotApi {
     "api-key": "3e27dcb9-5c20-4658-abd2-fe333ae7721a",
   };
 
-  Future<BotPrompt> fetchIntroBot(int index) async {
+  Future<BotPrompt> fetchIntroBot(String botId, int index) async {
     final url = '$baseUri/bot_intro?q=$index';
     final res = await http.get(
         Uri.parse(url),
         headers: _header
     );
-    print ("here");
+    print ("bot intro");
     Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-    print (jsonResponse);
     return BotPrompt.fromJson(jsonResponse);
   }
 

@@ -65,7 +65,7 @@ class _SplashScreenState extends State<SplashScreen> {
             updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
-            botChatScreen: (user) => _nextScreen(BotChatScreen(user: user, botId: DEFAULT_BOT_ID)),
+            botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
             homeScreen: () => _nextScreen(const HomeScreen()),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
       }

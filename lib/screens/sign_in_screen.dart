@@ -1,20 +1,18 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:async';
+
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/screens/phone_number_screen.dart';
+import 'package:fren_app/screens/sign_up_screen.dart';
+import 'package:fren_app/screens/update_location_sceen.dart';
 import 'package:fren_app/widgets/app_logo.dart';
-import 'package:fren_app/widgets/default_button.dart';
-import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
-import 'package:fren_app/utils/google_auth.dart';
+import '../dialogs/common_dialogs.dart';
+import 'blocked_account_screen.dart';
 import 'chat_bot.dart';
-import 'first_time_user.dart';
-import 'package:fren_app/datas/user.dart' as fren;
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -31,6 +29,14 @@ class _SignInScreenState extends State<SignInScreen> {
 
   bool google =false;
 
+  /// Navigate to next page
+  void _nextScreen(screen) {
+    // Go to next page route
+    Future(() {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => screen), (route) => false);
+    });
+  }
   @override
   Widget build(BuildContext context) {
     /// Initialization
@@ -75,18 +81,25 @@ class _SignInScreenState extends State<SignInScreen> {
                         SignInButton(
                             Buttons.Google,
                             onPressed:  () {
-                              GoogleAuthentication()
-                                  .signInWithGoogle()
-                                  .then((fren.User usr){
-                                    if (usr.isProfileFilled == false) {
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => BotChatScreen(botId: DEFAULT_BOT_ID,user: usr)
-                                      ));
-                                    } else {
-                                      Navigator.of(context).push(MaterialPageRoute(
-                                          builder: (context) => const HomeScreen()));
-                                    }
-                              });
+                                UserModel().signInWithGoogle(
+                                  checkUserAccount: () {
+                                    /// Authenticate User Account
+                                    UserModel().authUserAccount(
+                                        updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
+                                        signInScreen: () => _nextScreen(const SignInScreen()),
+                                        signUpScreen: () => _nextScreen(const SignUpScreen()),
+                                        botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
+                                        homeScreen: () => _nextScreen(const HomeScreen()),
+                                        blockedScreen: () => _nextScreen(const BlockedAccountScreen())
+                                    );
+                                  },
+                                    onError: () async {
+                                      // Hide dialog
+                                      // await _pr.hide();
+                                      // Show error message to user
+                                      errorDialog(context,
+                                          message: _i18n.translate("an_error_has_occurred"));
+                                    });
                             }
                         ),
                         SignInButton(

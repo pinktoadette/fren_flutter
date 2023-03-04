@@ -19,9 +19,9 @@ class BotPrompt {
   factory BotPrompt.fromJson(Map<String, dynamic> doc) {
     return BotPrompt(
         text: doc['text'],
-        wait: doc['wait'],
+        wait: doc['wait'] as int,
         selection: doc['selection'],
-        hasNext: doc['hasNext'],
+        hasNext: doc['hasNext'] as bool,
     );
   }
 }

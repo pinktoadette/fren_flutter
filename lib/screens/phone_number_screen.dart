@@ -13,6 +13,9 @@ import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../constants/constants.dart';
+import 'chat_bot.dart';
+
 class PhoneNumberScreen extends StatefulWidget {
   const PhoneNumberScreen({Key? key}) : super(key: key);
 
@@ -147,6 +150,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
             homeScreen: () => _nextScreen(const HomeScreen()),
+            botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
           // END   
         },

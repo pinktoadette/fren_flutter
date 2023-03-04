@@ -9,6 +9,9 @@ import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 
+import '../constants/constants.dart';
+import 'chat_bot.dart';
+
 class VerificationCodeScreen extends StatefulWidget {
   // Variables
   final String verificationId;
@@ -50,8 +53,9 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
           /// Auth user account
           UserModel().authUserAccount(
             updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
-            homeScreen: () => _nextScreen(const HomeScreen()), 
-            signUpScreen: () => _nextScreen(const SignUpScreen()));
+            homeScreen: () => _nextScreen(const HomeScreen()),
+              botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
+              signUpScreen: () => _nextScreen(const SignUpScreen()));
         },
         onError: () async {
           // Hide dialog
