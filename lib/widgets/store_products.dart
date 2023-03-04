@@ -80,7 +80,7 @@ class _StoreProductsState extends State<StoreProducts> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const LottieLoader(),
+              const Frankloader(),
               const SizedBox(height: 5),
               Text(_i18n.translate("processing"),
                   style: const TextStyle(fontSize: 18),

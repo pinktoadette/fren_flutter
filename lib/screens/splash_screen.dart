@@ -83,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> {
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [LottieLoader()],
+                children: const [Frankloader()],
               ),
             ),
           ),

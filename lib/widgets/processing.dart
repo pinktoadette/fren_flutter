@@ -14,7 +14,7 @@ class Processing extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: const <Widget>[
-          LottieLoader(),
+          Frankloader(),
           // const SizedBox(height: 10),
           // Text(text ?? i18n.translate("processing"), style: const TextStyle(fontSize: 18,
           // fontWeight: FontWeight.w500)),

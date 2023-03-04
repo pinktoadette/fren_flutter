@@ -181,7 +181,7 @@
 //         future: getBotInfo(),
 //         builder: (context, snapshot) {
 //           if (!snapshot.hasData) {
-//             return const LottieLoader();
+//             return const Frankloader();
 //           } else {
 //             return Scaffold(
 //                 appBar: AppBar(
@@ -213,7 +213,7 @@
 //                     Row(
 //                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
 //                       children: const [
-//                         LottieLoader(),
+//                         Frankloader(),
 //                       ],
 //                     ),
 //                     Expanded(child: _promptQuestion()),

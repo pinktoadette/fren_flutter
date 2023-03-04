@@ -18,6 +18,8 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/loader.dart';
 
+import '../widgets/float_frank.dart';
+
 class BotChatScreen extends StatefulWidget {
   /// Get user object from firebase
   final Bot bot;
@@ -101,7 +103,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               child: SingleChildScrollView(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [LottieLoader()],
+                  children: const [Frankloader()],
                 ),
               ),
             ),
@@ -148,7 +150,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         floatingActionButton: const FloatingActionButton(
           onPressed:null,
           backgroundColor: Colors.white,
-          child: LottieLoader(),
+          child: FrankImage(),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
       );
