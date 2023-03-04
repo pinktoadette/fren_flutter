@@ -31,7 +31,7 @@
     </queries>
 
    <application
-        android:label="Fren"
+        android:label="Matchi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

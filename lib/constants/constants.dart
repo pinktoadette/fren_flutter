@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 /// APP SETINGS INFO CONSTANTS - SECTION ///
 ///
-const String APP_NAME = "Fren";
+const String APP_NAME = "machi";
 const Color APP_PRIMARY_COLOR = Colors.black;
 const Color APP_ACCENT_COLOR = Colors.grey;
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
