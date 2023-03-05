@@ -160,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.white,
-                            backgroundImage: const AssetImage("assets/images/face.png"),
+                            backgroundImage: const AssetImage("assets/images/face.jpg"),
                             child: Stack(
                                 children: const [
                                   Align(
@@ -205,7 +205,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             prefixIcon: const Padding(
                               padding: EdgeInsets.all(12.0),
-                              child: const Icon(Iconsax.user),
+                              child: Icon(Iconsax.user),
                             )
                         ),
                         validator: (name) {
@@ -220,6 +220,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                       /// User gender
                       DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Iconsax.woman),
+                        ),
                         items: _genders.map((gender) {
                           return DropdownMenuItem(
                             value: gender,
@@ -251,8 +254,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               borderRadius: BorderRadius.circular(28),
                               side: BorderSide(color: Colors.grey[350] as Color)),
                           child: ListTile(
-                            leading:
-                            const SvgIcon("assets/icons/calendar_icon.svg"),
+                            leading: Icon(Iconsax.calendar),
                             title: Text(_birthday!,
                                 style: const TextStyle(color: Colors.grey)),
                             trailing: const Icon(Icons.arrow_drop_down),
