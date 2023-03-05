@@ -256,9 +256,17 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         ),
                       ),
                       index == pagesLength - 1
-                          ? TextButton(
-                            child: Text(_i18n.translate('sign_in'),
-                                style: TextStyle(color: Theme.of(context).primaryColor)),
+                          ? ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(50))),
+                            child: Container(
+                              color: Theme.of(context).colorScheme.primary,
+                                child: Text(_i18n.translate("sign_up"),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context).colorScheme.background))
+                            ),
                             onPressed: () {
                               Navigator.of(context).pushReplacement(MaterialPageRoute(
                                   builder: (context) => const SignUpScreen()));
