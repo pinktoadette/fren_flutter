@@ -40,7 +40,7 @@
   "please_enter_the_sms_code_sent": "Please enter the SMS code sent\n to your device",
 
   "_SignUpScreen": "*** SignUp Screen Translations ***",
-  "select_your_birthday": "Select your Birthday",
+  "select_your_birthday": "Birthdate",
   "sign_up": "Sign Up",
   "create_account": "Create Account",
   "profile_photo": "Profile photo",
@@ -51,6 +51,7 @@
   "select_gender": "Select gender",
   "male": "Male", 
   "female": "Female",
+  "non_bindary": "Non-Binary",
   "gender": "Gender",
   "only_female": "Only Female",
   "please_select_your_gender": "Please select your gender",
@@ -63,7 +64,7 @@
   "bio": "Bio",
   "write_about_you": "Write about you",
   "please_write_your_bio": "Please write your bio",
-  "i_agree_with": "I agree with ",
+  "i_agree_with": "By signing in, you agree with ",
   "privacy_policy": "Privacy Policy",
   "you_must_agree_to_our_privacy_policy": "You must agree to our privacy policy",
   "your_account_has_been_created_successfully": "Your account has been created successfully!",
@@ -200,7 +201,7 @@
   "information": "Information",
   "ENABLE": "ENABLE",
   "CONTINUE": "CONTINUE",
-  "CREATE_ACCOUNT": "CREATE ACCOUNT",
+  "register": "Register",
   "CANCEL": "CANCEL",
   "OK": "OK",
   "edit_crop_image": "Edit / Crop image",
@@ -321,6 +322,7 @@
 
   "sign_in_with_google": "Continue with Google",
   "sign_in_with_apple": "Continue with Apple",
+  "continue": "continue",
 
   "bot": "Bot",
   "about": "About ",
@@ -329,6 +331,6 @@
   "onboard_page1_subtitle": "Look for humans and bots, describe the problem and let Frankie solve the problem",
   "onboard_page2_title": "Import your AI",
   "onboard_page2_subtitle": "Allow others to use your bot and earn",
-  "onboard_page3_title": "Dating and Professionals",
+  "onboard_page3_title": "Dating and Professional Services",
   "onboard_page3_subtitle": "Request match with other humans from Frankie's recommendation"
 }

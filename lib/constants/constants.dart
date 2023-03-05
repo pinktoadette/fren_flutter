@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 ///
 const String APP_NAME = "machi";
 const Color APP_PRIMARY_COLOR = Colors.black;
+const Color APP_MUTED_COLOR = Colors.black12;
 const Color APP_ACCENT_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";

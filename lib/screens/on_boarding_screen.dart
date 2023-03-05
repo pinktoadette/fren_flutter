@@ -96,7 +96,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       color: Theme.of(context).colorScheme.onPrimary),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 45.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -203,7 +203,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -257,21 +257,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       index == pagesLength - 1
                           ? ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(50))),
-                            child: Container(
-                              color: Theme.of(context).colorScheme.primary,
-                                child: Text(_i18n.translate("sign_up"),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).colorScheme.background))
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                                  builder: (context) => const SignUpScreen()));
-                            },
-                          )
+                        style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50))),
+                        child: Container(
+                            color: Theme.of(context).colorScheme.primary,
+                            child: Text(_i18n.translate("continue"),
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    color: Theme.of(context).colorScheme.background))
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(
+                              builder: (context) => const SignUpScreen()));
+                        },
+                      )
                           : _skipButton(setIndex: setIndex)
                     ],
                   ),
@@ -279,7 +279,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             );
           },
-        ),
+        )
     );
   }
 }

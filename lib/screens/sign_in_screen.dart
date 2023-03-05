@@ -27,7 +27,7 @@ class _SignInScreenState extends State<SignInScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
   User? user = FirebaseAuth.instance.currentUser;
-
+  bool isLoading = false;
   bool google =false;
 
   /// Navigate to next page
@@ -66,9 +66,11 @@ class _SignInScreenState extends State<SignInScreen> {
 
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 18)),
+                  style: const TextStyle(fontSize: 18, color: Colors.black )),
 
               const Spacer(),
+              if (isLoading == true) const CircularProgressIndicator(),
+
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
@@ -82,6 +84,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         SignInButton(
                             Buttons.Google,
                             onPressed:  () {
+                                isLoading = true;
                                 UserModel().signInWithGoogle(
                                   checkUserAccount: () {
                                     /// Authenticate User Account
@@ -101,7 +104,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                       // Show error message to user
                                       errorDialog(context,
                                           message: _i18n.translate("an_error_has_occurred"));
-                                    });
+                                    }).whenComplete(() => isLoading = false );
                             }
                         ),
                         SignInButton(

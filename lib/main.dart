@@ -101,6 +101,8 @@ class MyApp extends StatelessWidget {
           home: const SplashScreen(),
           darkTheme: _darkTheme(),
           theme: _lightTheme(),
+          themeMode: ThemeMode.system,
+
         ),
       ),
     );
@@ -149,9 +151,12 @@ class MyApp extends StatelessWidget {
             fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
         overline: GoogleFonts.poppins(
             fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+      ).apply(
+        bodyColor: APP_PRIMARY_COLOR,
+        displayColor: APP_MUTED_COLOR,
       ),
       appBarTheme: const AppBarTheme(
-        color: Colors.white,
+        color: APP_PRIMARY_COLOR,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle.dark,

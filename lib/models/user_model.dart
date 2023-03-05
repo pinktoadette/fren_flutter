@@ -358,9 +358,9 @@ class UserModel extends Model {
     required int userBirthDay,
     required int userBirthMonth,
     required int userBirthYear,
-    required String userSchool,
-    required String userJobTitle,
-    required String userBio,
+    String? userSchool,
+    String? userJobTitle,
+    String? userBio,
     // Callback functions
     required VoidCallback onSuccess,
     required Function(String) onFail,
