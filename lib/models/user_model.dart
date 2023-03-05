@@ -162,10 +162,11 @@ class UserModel extends Model {
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
     required VoidCallback updateLocationScreen,
-    required Function botChatScreen,
     // Optional functions called on app start
+    VoidCallback? onboardScreen,
     VoidCallback? signInScreen,
     VoidCallback? blockedScreen,
+    Function? botChatScreen,
   }) async {
     /// Check user auth
     if (getFirebaseUser != null) {
@@ -201,9 +202,10 @@ class UserModel extends Model {
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               debugPrint("profile incomplete");
-              final _botApi = BotApi();
-              Bot botInfo = await _botApi.getBotInfo(DEFAULT_BOT_ID);
-              botChatScreen(botInfo);
+              // final _botApi = BotApi();
+              // Bot botInfo = await _botApi.getBotInfo(DEFAULT_BOT_ID);
+              // botChatScreen(botInfo);
+              onboardScreen!();
               return;
             }
             // Go to home screen

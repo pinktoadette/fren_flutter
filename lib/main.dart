@@ -21,12 +21,12 @@ import 'firebase_options.dart';
 
 void main() async {
 
-  final result = await InternetAddress.lookup('google.com');
-  if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-    print('Has Internet');
-  } else {
-    print("no internet");
-  }
+  // final result = await InternetAddress.lookup('google.com');
+  // if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
+  //   print('Has Internet');
+  // } else {
+  //   print("no internet");
+  // }
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -36,7 +36,6 @@ void main() async {
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   /// TODO:
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  print("start");
   // Initialize Google Mobile Ads SDK
   // await MobileAds.instance.initialize();
 
@@ -100,21 +99,24 @@ class MyApp extends StatelessWidget {
             return supportedLocales.first;
           },
           home: const SplashScreen(),
-          theme: _appTheme(),
+          darkTheme: _darkTheme(),
+          theme: _lightTheme(),
         ),
       ),
     );
   }
 
   // App theme
-  ThemeData _appTheme() {
+  ThemeData _lightTheme() {
+// We'll just overwrite whatever's already there using ThemeData.light()
+    final ThemeData base = ThemeData.light();
 
-    return ThemeData(
+    return base.copyWith(
       primaryColor: APP_PRIMARY_COLOR,
       colorScheme: const ColorScheme.light().copyWith(
           primary: APP_PRIMARY_COLOR,
           secondary: APP_ACCENT_COLOR,
-          background: APP_PRIMARY_COLOR),
+          background: APP_PRIMARY_BACKGROUND),
       scaffoldBackgroundColor: Colors.white,
       inputDecorationTheme: InputDecorationTheme(
           errorStyle: const TextStyle(fontSize: 16),
@@ -150,6 +152,38 @@ class MyApp extends StatelessWidget {
       ),
       appBarTheme: const AppBarTheme(
         color: Colors.white,
+        elevation: 0, //Platform.isIOS ? 0 : 4.0,
+        iconTheme: IconThemeData(color: Colors.black),
+        systemOverlayStyle: SystemUiOverlayStyle.dark,
+        titleTextStyle: TextStyle(color: Colors.grey, fontSize: 18),
+      ),
+    );
+
+  }
+
+
+  // dark
+  ThemeData _darkTheme() {
+
+    final ThemeData darkTheme = ThemeData.dark();
+    const APP_PRIMARY_DARK_COLOR = Colors.white70;
+    const APP_PRIMARY_DARK_BACKGROUND = Colors.black54;
+
+    return darkTheme.copyWith(
+      primaryColor: APP_PRIMARY_DARK_COLOR,
+      colorScheme: const ColorScheme.dark().copyWith(
+          primary: APP_PRIMARY_DARK_COLOR,
+          secondary: APP_ACCENT_COLOR,
+          background: APP_PRIMARY_DARK_BACKGROUND),
+      scaffoldBackgroundColor: Colors.white,
+      inputDecorationTheme: InputDecorationTheme(
+          errorStyle: const TextStyle(fontSize: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(28),
+          )),
+      textTheme: TextTheme(  headline1: GoogleFonts.roboto(    fontSize: 96,    fontWeight: FontWeight.w300,    letterSpacing: -1.5  ),  headline2: GoogleFonts.roboto(    fontSize: 60,    fontWeight: FontWeight.w300,    letterSpacing: -0.5  ),  headline3: GoogleFonts.roboto(    fontSize: 48,    fontWeight: FontWeight.w400  ),  headline4: GoogleFonts.roboto(    fontSize: 34,    fontWeight: FontWeight.w400,    letterSpacing: 0.25  ),  headline5: GoogleFonts.roboto(    fontSize: 24,    fontWeight: FontWeight.w400  ),  headline6: GoogleFonts.roboto(    fontSize: 20,    fontWeight: FontWeight.w500,    letterSpacing: 0.15  ),  subtitle1: GoogleFonts.roboto(    fontSize: 16,    fontWeight: FontWeight.w400,    letterSpacing: 0.15  ),  subtitle2: GoogleFonts.roboto(    fontSize: 14,    fontWeight: FontWeight.w500,    letterSpacing: 0.1  ),  bodyText1: GoogleFonts.poppins(    fontSize: 16,    fontWeight: FontWeight.w400,    letterSpacing: 0.5  ),  bodyText2: GoogleFonts.poppins(    fontSize: 14,    fontWeight: FontWeight.w400,    letterSpacing: 0.25  ),  button: GoogleFonts.poppins(    fontSize: 14,    fontWeight: FontWeight.w500,    letterSpacing: 1.25  ),  caption: GoogleFonts.poppins(    fontSize: 12,    fontWeight: FontWeight.w400,    letterSpacing: 0.4  ),  overline: GoogleFonts.poppins(    fontSize: 10,    fontWeight: FontWeight.w400,    letterSpacing: 1.5  ),),
+      appBarTheme: const AppBarTheme(
+        color: APP_PRIMARY_DARK_COLOR,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle.dark,

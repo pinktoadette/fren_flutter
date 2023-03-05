@@ -13,6 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'chat_bot.dart';
+import 'on_boarding_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -88,7 +89,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                         updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
                                         signInScreen: () => _nextScreen(const SignInScreen()),
                                         signUpScreen: () => _nextScreen(const SignUpScreen()),
-                                        botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
+                                        // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
+                                        onboardScreen: () => _nextScreen(const OnboardingScreen()),
                                         homeScreen: () => _nextScreen(const HomeScreen()),
                                         blockedScreen: () => _nextScreen(const BlockedAccountScreen())
                                     );

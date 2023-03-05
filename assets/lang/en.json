@@ -323,5 +323,12 @@
   "sign_in_with_apple": "Continue with Apple",
 
   "bot": "Bot",
-  "about": "About "
+  "about": "About ",
+
+  "onboard_page1_title": "Recommendations from Frankie AI",
+  "onboard_page1_subtitle": "Look for humans and bots, describe the problem and let Frankie solve the problem",
+  "onboard_page2_title": "Import your AI",
+  "onboard_page2_subtitle": "Allow others to use your bot and earn",
+  "onboard_page3_title": "Dating and Professionals",
+  "onboard_page3_subtitle": "Request match with other humans from Frankie's recommendation",
 }

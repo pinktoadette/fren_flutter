@@ -152,7 +152,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           backgroundColor: Colors.white,
           child: FrankImage(),
         ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerTop,
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       );
     }
     return Scaffold(
