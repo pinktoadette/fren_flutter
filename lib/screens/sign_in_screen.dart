@@ -43,6 +43,7 @@ class _SignInScreenState extends State<SignInScreen> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       key: _scaffoldKey,
@@ -54,16 +55,12 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Spacer(),
-
+              SizedBox(height: screenHeight*0.2),
               /// App logo
               const AppLogo(),
 
-              /// App name
-              Text(APP_NAME, style: Theme.of(context).textTheme.displayLarge),
-
-              const SizedBox(height: 10),
-
+              Image.asset("assets/images/machi.png"),
+              
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18, color: Colors.black )),

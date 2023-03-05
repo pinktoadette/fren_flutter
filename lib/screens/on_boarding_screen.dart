@@ -37,12 +37,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: InkWell(
         borderRadius: defaultSkipButtonBorderRadius,
         onTap: () {
-          if (setIndex != null) {
-            index = 2;
-            setIndex(2);
-          } else {
-            return null;
-          }
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => const SignUpScreen()));
         },
         child: const Padding(
           padding: defaultSkipButtonPadding,

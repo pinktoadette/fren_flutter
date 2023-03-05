@@ -160,7 +160,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         ? CircleAvatar(
                             radius: 50,
                             backgroundColor: Colors.white,
-                            backgroundImage: const AssetImage("assets/images/frank1.png"),
+                            backgroundImage: const AssetImage("assets/images/face.png"),
                             child: Stack(
                                 children: const [
                                   Align(
