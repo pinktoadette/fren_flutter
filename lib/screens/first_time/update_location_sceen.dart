@@ -1,10 +1,16 @@
 import 'dart:async';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/chat_bot.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
@@ -106,9 +112,10 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
           locality = place.locality;
         }
 
+        String userId = UserModel().getFirebaseUser!.uid;
         // Update User location
         await _appHelper.updateUserLocation(
-            userId: UserModel().getFirebaseUser!.uid, // widget.userId
+            userId: userId, // widget.userId
             latitude: position.latitude,
             longitude: position.longitude,
             country: place.country.toString(),
@@ -116,13 +123,17 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
 
         // Hide progress dialog
         await _pr.hide();
+        User user = await UserModel().getUserObject(userId);
 
         // Show success message
         successDialog(context,
             message: '${_i18n.translate("location_updated_successfully")}\n\n'
                 '${place.country}, $locality', positiveAction: () {
           // Check
-          if (widget.isSignUpProcess) {
+          if (user.isFrankInitiated == false) {
+            _getFrankie();
+          }
+          else if (widget.isSignUpProcess) {
             // Go to home screen
             _nextScreen(const HomeScreen());
           } else {
@@ -141,6 +152,12 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
       });
       // End
     });
+  }
+
+  void _getFrankie() async {
+    DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(DEFAULT_BOT_ID);
+    final Bot frankie = Bot.fromDocument(bot.data()!);
+    _nextScreen(BotChatScreen(bot: frankie));
   }
 
   @override
