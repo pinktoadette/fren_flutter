@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -82,7 +83,7 @@ class ImageSourceSheet extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Icons.close, color: Colors.grey))
+                  icon: const Icon(Iconsax.image, color: Colors.grey))
             ],
           ),
 
@@ -93,7 +94,7 @@ class ImageSourceSheet extends StatelessWidget {
             padding: const EdgeInsets.only(left: 10.0),
             child: TextButton.icon(
               icon:
-                  const Icon(Icons.photo_library, color: Colors.grey, size: 27),
+                  const Icon(Iconsax.gallery, color: Colors.grey, size: 27),
               label: Text(i18n.translate("gallery"),
                   style: const TextStyle(fontSize: 16)),
               onPressed: () async {
@@ -111,8 +112,7 @@ class ImageSourceSheet extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: TextButton.icon(
-              icon: const SvgIcon("assets/icons/camera_icon.svg",
-                  width: 20, height: 20),
+              icon: const Icon(Iconsax.camera, color: Colors.grey),
               label: Text(i18n.translate("camera"),
                   style: const TextStyle(fontSize: 16)),
               onPressed: () async {

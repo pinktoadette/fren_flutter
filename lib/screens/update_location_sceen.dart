@@ -10,12 +10,12 @@ import 'package:fren_app/widgets/default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:iconsax/iconsax.dart';
+
+import '../widgets/rounded_top.dart';
 
 class UpdateLocationScreen extends StatefulWidget {
-  // Parameters
   final bool isSignUpProcess;
-
-  // Conastructor
   const UpdateLocationScreen({Key? key, this.isSignUpProcess = true}) : super(key: key);
 
   @override
@@ -150,61 +150,51 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
     _i18n = AppLocalizations.of(context);
     _pr = ProgressDialog(context, isDismissible: false);
 
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_i18n.translate('your_current_location')),
-        // actions: [
-        //   // SKIP BUTTON
-        //   // Check
-        //   if (widget.isSignUpProcess)
-        //     TextButton(
-        //       child: Text(_i18n.translate('SKIP'),
-        //           style: TextStyle(color: Theme.of(context).primaryColor)),
-        //       onPressed: () {
-        //         // Show info dialog
-        //         confirmDialog(context,
-        //             message: _i18n.translate(
-        //                 'if_you_SKIP_the_option_to_get_your_device_current_location'),
-        //             positiveText: _i18n.translate('SKIP'),
-        //             negativeAction: () => Navigator.of(context).pop(),
-        //             positiveAction: () {
-        //               // Actions
-        //               // Go to home screen
-        //               _nextScreen(HomeScreen());
-        //             });
-        //       },
-        //     )
-        // ],
-      ),
-      body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              // Location icon
-              Icon(Icons.location_on,
-                  size: 100, color: Theme.of(context).primaryColor),
-              const SizedBox(height: 5),
-              // Title description
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Text(
-                    _i18n.translate(
-                        'the_app_needs_your_permission_to_access_your_device_current_location'),
-                    style: const TextStyle(fontSize: 25, fontWeight: FontWeight.w400),
-                    textAlign: TextAlign.center),
+      body:SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            const RoundedTop(),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(height: screenHeight*0.2),
+                  Text(
+                      _i18n.translate(
+                          'enable_location'),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.center),
+                  // Location icon
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight*0.05),
+                    child: Icon(Iconsax.location,
+                        size: 100, color: Theme.of(context).primaryColor),
+                  ),
+
+                  // Title description
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight*0.05),
+                    child: Text(
+                        _i18n.translate(
+                            'the_app_needs_your_permission_to_access_your_device_current_location'),
+                        textAlign: TextAlign.center),
+                  ),
+                  SizedBox(height: screenHeight*0.05),
+                  // Get current location button
+                  ElevatedButton(
+                      child: Text(_i18n.translate('GET_LOCATION')),
+                      onPressed: () async {
+                        // Get location permission
+                        _getLocationPermission(context);
+                      })
+                ],
               ),
-              const SizedBox(height: 20),
-              // Get current location button
-              DefaultButton(
-                  child: Text(_i18n.translate('GET_LOCATION'),
-                      style:
-                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                  onPressed: () async {
-                    // Get location permission
-                    _getLocationPermission(context);
-                  })
-            ],
-          ),
+            ),
+          ]
         ),
       ),
     );

@@ -125,7 +125,23 @@ class MyApp extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(28),
           )),
-      textTheme: TextTheme(
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+      ),
+        bottomSheetTheme: const BottomSheetThemeData(
+            backgroundColor: Colors.black54,
+            clipBehavior: Clip.antiAlias,
+            // set shape to make top corners rounded
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+            ),
+        ),
+        textTheme: TextTheme(
         headline1: GoogleFonts.roboto(
             color: APP_PRIMARY_COLOR,
             fontSize: 97, fontWeight: FontWeight.w300, letterSpacing: -1.5),
@@ -153,14 +169,14 @@ class MyApp extends StatelessWidget {
             fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
       ).apply(
         bodyColor: APP_PRIMARY_COLOR,
-        displayColor: APP_MUTED_COLOR,
+        displayColor: APP_PRIMARY_COLOR,
       ),
       appBarTheme: const AppBarTheme(
-        color: APP_PRIMARY_COLOR,
+        color: APP_PRIMARY_BACKGROUND,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleTextStyle: TextStyle(color: Colors.grey, fontSize: 18),
+        systemOverlayStyle: SystemUiOverlayStyle.light,
+        titleTextStyle: TextStyle(color: APP_PRIMARY_BACKGROUND, fontSize: 18),
       ),
     );
 

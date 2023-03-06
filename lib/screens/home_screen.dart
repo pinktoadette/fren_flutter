@@ -242,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset("assets/images/app_logo.png", width: 40, height: 40),
+            Image.asset("assets/images/machi.png", height: 40),
             const SizedBox(width: 10),
           ],
         ),

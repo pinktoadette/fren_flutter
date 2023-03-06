@@ -599,12 +599,16 @@ class UserModel extends Model {
     }
   }
 
-  /// Upload file to firesrore
+  /// Upload file to firestore
   Future<String> uploadFile({
     required File file,
     required String path,
     required String userId,
   }) async {
+    print ("uploadfile");
+    print (file);
+    print ("path");
+    print(path + '/' + userId + '/');
     // Image name
     String imageName =
         userId + DateTime.now().millisecondsSinceEpoch.toString();

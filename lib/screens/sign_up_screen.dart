@@ -30,16 +30,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
-  final _schoolController = TextEditingController();
-  final _jobController = TextEditingController();
-  final _bioController = TextEditingController();
+  // final _schoolController = TextEditingController();
+  // final _jobController = TextEditingController();
+  // final _bioController = TextEditingController();
 
   /// User Birthday info
   int _userBirthDay = 0;
   int _userBirthMonth = 0;
-  int _userBirthYear = DateTime.now().year;
+  int _userBirthYear = DateTime.now().subtract(const Duration(days: 7300)).year;
   // End
-  DateTime _initialDateTime = DateTime.now();
+  DateTime _initialDateTime = DateTime.now().subtract(const Duration(days: 7300));
   String? _birthday;
   File? _imageFile;
   bool _agreeTerms = true;
@@ -58,7 +58,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void _getImage(BuildContext context) async {
     await showModalBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
         builder: (context) => ImageSourceSheet(
               onImageSelected: (image) {
                 if (image != null) {
@@ -153,9 +152,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: <Widget>[
               const RoundedTop(),
 
+              const SizedBox(height: 22),
+              Text(_i18n.translate("create_account"),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
               /// Profile photo
               GestureDetector(
-                child: Center(
+                child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: Colors.black, width: 3),
+                    ),
                     child: _imageFile == null
                         ? CircleAvatar(
                             radius: 50,
@@ -167,7 +174,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     alignment: Alignment.bottomRight,
                                     child: CircleAvatar(
                                       radius: 18,
-                                      backgroundColor: Colors.white70,
+                                      backgroundColor: Colors.white,
                                       child: Icon(Iconsax.camera),
                                     ),
                                   ),
@@ -183,11 +190,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   _getImage(context);
                 },
               ),
-              Text(_i18n.translate("create_account"),
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
 
-              const SizedBox(height: 22),
 
               Padding(
                 padding: const EdgeInsets.all(50),
@@ -221,7 +224,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       /// User gender
                       DropdownButtonFormField<String>(
                         decoration: const InputDecoration(
-                          prefixIcon: Icon(Iconsax.woman),
+                          prefixIcon: Icon(Iconsax.lovely),
                         ),
                         items: _genders.map((gender) {
                           return DropdownMenuItem(
@@ -254,7 +257,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               borderRadius: BorderRadius.circular(28),
                               side: BorderSide(color: Colors.grey[350] as Color)),
                           child: ListTile(
-                            leading: Icon(Iconsax.calendar),
+                            leading: const Icon(Iconsax.cake),
                             title: Text(_birthday!,
                                 style: const TextStyle(color: Colors.grey)),
                             trailing: const Icon(Icons.arrow_drop_down),
@@ -320,9 +323,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       SizedBox(
                         width: double.maxFinite,
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(50))),
+
                           child: Container(
                               color: Theme.of(context).colorScheme.primary,
                               child: Text(_i18n.translate("register"),

@@ -7,6 +7,7 @@ import 'package:fren_app/screens/sign_up_screen.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 
+import '../widgets/rounded_top.dart';
 import '../widgets/svg_icon.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -18,32 +19,30 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   late AppLocalizations _i18n;
-  late ProgressDialog _pr;
   late Material materialButton;
   late int index;
 
   @override
   void initState() {
     super.initState();
-    materialButton = _skipButton();
+    materialButton = _nextButton();
     index = 0;
-    bool isDisabledButton = true;
   }
 
-  Material _skipButton({void Function(int)? setIndex}) {
+  Material _nextButton({void Function(int)? setIndex}) {
     return Material(
       borderRadius: defaultSkipButtonBorderRadius,
       color: defaultSkipButtonColor,
       child: InkWell(
         borderRadius: defaultSkipButtonBorderRadius,
         onTap: () {
-          Navigator.of(context).pushReplacement(MaterialPageRoute(
-              builder: (context) => const SignUpScreen()));
+            index += 1;
+            setIndex!(index);
         },
         child: const Padding(
           padding: defaultSkipButtonPadding,
           child: Text(
-            'Skip',
+            'Next',
             style: defaultSkipButtonTextStyle,
           ),
         ),
@@ -69,8 +68,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       height: 1.5,
     );
 
-    final onboardingPagesList = [
-      PageModel(
+    final onboardingPagesList = [1,2,3].map((num){
+      return PageModel(
         widget: DecoratedBox(
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.background,
@@ -96,55 +95,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                        _i18n.translate('onboard_page1_title'),
-                      style: _pageTitleStyle,
-                      textAlign: TextAlign.left
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _i18n.translate('onboard_page1_subtitle'),
-                      style: _pageInfoStyle,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-      PageModel(
-        widget: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border.all(
-              width: 0.0,
-              color: Theme.of(context).colorScheme.background,
-            ),
-          ),
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 45.0,
-                    vertical: 10.0,
-                  ),
-                  child: Image.asset('assets/images/background_image.jpg',
-                      color: Theme.of(context).colorScheme.onPrimary),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                        _i18n.translate('onboard_page2_title'),
+                        _i18n.translate('onboard_page${num}_title'),
                         style: _pageTitleStyle,
                         textAlign: TextAlign.left
                     ),
@@ -155,7 +106,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      _i18n.translate('onboard_page2_subtitle'),
+                      _i18n.translate('onboard_page${num}_subtitle'),
                       style: _pageInfoStyle,
                       textAlign: TextAlign.left,
                     ),
@@ -165,59 +116,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ),
         ),
-      ),
-      PageModel(
-        widget: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border.all(
-              width: 0.0,
-              color: Theme.of(context).colorScheme.background,
-            ),
-          ),
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 45.0,
-                    vertical: 10.0,
-                  ),
-                  child: Image.asset('assets/images/background_image.jpg',
-                      color: Theme.of(context).colorScheme.onPrimary),
-                ),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                        _i18n.translate('onboard_page3_title'),
-                        style: _pageTitleStyle,
-                        textAlign: TextAlign.left
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _i18n.translate('onboard_page3_subtitle'),
-                      style: _pageInfoStyle,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    ];
+      );
+    }).toList();
 
     return Scaffold(
-        body: Onboarding(
+        appBar: AppBar(
+          toolbarHeight: 60,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => const SignUpScreen()));
+              },
+              child: Text('skip',
+                  style: TextStyle(color: Theme.of(context).primaryColor)),
+            ),
+          ],
+        ),
+        body:
+        Onboarding(
           pages: onboardingPagesList,
           onPageChange: (int pageIndex) {
             index = pageIndex;
@@ -253,9 +171,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       index == pagesLength - 1
                           ? ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50))),
                         child: Container(
                             color: Theme.of(context).colorScheme.primary,
                             child: Text(_i18n.translate("continue"),
@@ -268,7 +183,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               builder: (context) => const SignUpScreen()));
                         },
                       )
-                          : _skipButton(setIndex: setIndex)
+                          : _nextButton(setIndex: setIndex)
                     ],
                   ),
                 ),
