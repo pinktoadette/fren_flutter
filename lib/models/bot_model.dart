@@ -33,6 +33,12 @@ class BotModel extends Model {
   late Bot bot;
   bool isLoading = false;
 
+  static final BotModel _botModel = BotModel._internal();
+  factory BotModel() {
+    return _botModel;
+  }
+  BotModel._internal();
+
   /// Get bot info from database => [DocumentSnapshot<Map<String, dynamic>>]
   Future<DocumentSnapshot<Map<String, dynamic>>> getBot(String botId) async {
     return await _firestore.collection(C_BOT).doc(botId).get();

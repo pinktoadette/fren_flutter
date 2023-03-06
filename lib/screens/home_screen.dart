@@ -19,7 +19,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+
+import '../datas/bot.dart';
+import '../models/bot_model.dart';
+import '../widgets/float_frank.dart';
+import 'chat_bot.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -33,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
+  late Bot _frankInfo;
+
   int _selectedIndex = 0;
   late AppLocalizations _i18n;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
@@ -209,12 +217,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+  void _getFrankie() async {
+    DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(DEFAULT_BOT_ID);
+    final Bot frankie = Bot.fromDocument(bot.data()!);
+    _frankInfo = frankie;
+  }
+
   @override
   void initState() {
     super.initState();
 
     /// Restore VIP Subscription
     AppHelper().restoreVipAccount();
+
+    /// get Frankie
+    _getFrankie();
 
     /// Init streams
     _getCurrentUserUpdates();
@@ -246,15 +263,6 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 10),
           ],
         ),
-        actions: [
-          IconButton(
-              icon: _getNotificationCounter(),
-              onPressed: () async {
-                // Go to Notifications Screen
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NotificationsScreen()));
-              })
-        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -264,29 +272,37 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             /// Discover Tab
             BottomNavigationBarItem(
-                icon: SvgIcon("assets/icons/search_icon.svg",
-                    width: 27,
-                    height: 27,
-                    color: _selectedIndex == 0
-                        ? Theme.of(context).primaryColor
-                        : null),
+                icon: Icon(Iconsax.search_favorite,
+                      color: _selectedIndex == 0
+                          ? Theme.of(context).primaryColor
+                          : null),
                 label: _i18n.translate("discover")),
 
             /// Matches Tab
             BottomNavigationBarItem(
-                icon: SvgIcon(
-                    _selectedIndex == 1
-                        ? "assets/icons/heart_2_icon.svg"
-                        : "assets/icons/heart_icon.svg",
+                icon: Icon(Iconsax.receipt_square,
                     color: _selectedIndex == 1
                         ? Theme.of(context).primaryColor
                         : null),
+                // SvgIcon(
+                //     _selectedIndex == 1
+                //         ? "assets/icons/heart_2_icon.svg"
+                //         : "assets/icons/heart_icon.svg",
+                //     color: _selectedIndex == 1
+                //         ? Theme.of(context).primaryColor
+                //         : null),
                 label: _i18n.translate("matches")),
 
             /// Conversations Tab
             BottomNavigationBarItem(
                 icon: _getConversationCounter(),
                 label: _i18n.translate("conversations")),
+
+            /// notification tab
+            BottomNavigationBarItem(
+                icon:  _getNotificationCounter(),
+                label: _i18n.translate("notifications"),
+            ),
 
             /// Profile Tab
             BottomNavigationBarItem(
@@ -300,13 +316,26 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: _i18n.translate("profile")),
           ]),
       body: _showCurrentNavBar(),
+          floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Bot botInfo = await _botApi.getBotInfo(DEFAULT_BOT_ID);
+
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) =>
+                    BotChatScreen(bot: _frankInfo)
+                ));
+          },
+          backgroundColor: Colors.white,
+          child: const FrankImage(),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 
   /// Count unread notifications
   Widget _getNotificationCounter() {
     // Set icon
-    const icon = SvgIcon("assets/icons/bell_icon.svg", width: 33, height: 33);
+    const icon = Icon(Iconsax.notification);
 
     /// Handle stream
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
@@ -330,13 +359,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Count unread conversations
   Widget _getConversationCounter() {
     // Set icon
-    final icon = SvgIcon(
-        _selectedIndex == 2
-            ? "assets/icons/message_2_icon.svg"
-            : "assets/icons/message_icon.svg",
-        width: 30,
-        height: 30,
-        color: _selectedIndex == 2 ? Theme.of(context).primaryColor : null);
+    final icon = Icon(Iconsax.message, color: _selectedIndex == 2 ? Theme.of(context).primaryColor : null);
 
     /// Handle stream
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
