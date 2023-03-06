@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/api/py_api.dart';
+import 'package:fren_app/screens/home_screen.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
@@ -23,8 +24,9 @@ import '../widgets/float_frank.dart';
 class BotChatScreen extends StatefulWidget {
   /// Get user object from firebase
   final Bot bot;
+  final bool? isInitial;
 
-  const BotChatScreen({Key? key, required this.bot})
+  const BotChatScreen({Key? key, required this.bot, this.isInitial})
       : super(key: key);
 
   @override
@@ -68,11 +70,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
       firstName: widget.bot.name,
     );
 
-    _loadMessages().whenComplete(() => {
-      setState(() {
-        _isLoading = false;
-      })
-    });
+    // load initial
+    if (widget.isInitial == true) {
+      _loadMessages().whenComplete(() => {
+        setState(() {
+          _isLoading = false;
+        })
+      });
+    } else {
+      setState(() {_isLoading = false; });
+    }
+
     _botApi.botMatch(widget.bot.botId, _u.userId);
   }
 
@@ -96,6 +104,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (_isLoading) {
       debugPrint("loading chat bot");
       return Scaffold(
+
         body: SafeArea(
           child: Container(
             color: Colors.white,
@@ -114,6 +123,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
     else if(_isNewMatch){
       return Scaffold(
         appBar: AppBar(
+
+          leading: BackButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              Navigator.of(context).pushAndRemoveUntil(
+                  MaterialPageRoute(builder: (context) => const HomeScreen()),
+                      (route) => false);
+            },
+          ),
           // Show User profile info
           title: GestureDetector(
             child: ListTile(

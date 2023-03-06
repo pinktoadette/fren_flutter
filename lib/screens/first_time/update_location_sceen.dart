@@ -157,7 +157,7 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
   void _getFrankie() async {
     DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(DEFAULT_BOT_ID);
     final Bot frankie = Bot.fromDocument(bot.data()!);
-    _nextScreen(BotChatScreen(bot: frankie));
+    _nextScreen(BotChatScreen(bot: frankie, isInitial: true));
   }
 
   @override
