@@ -25,9 +25,7 @@ class BotApi {
   Future<List> getBotIntroPrompt(String botId) async {
     final DocumentSnapshot<Map<String, dynamic>> botDoc =
         await BotModel().getBotIntro(botId);
-    // String<Array> data = botDoc.data()!.prompt;
     BotIntro a = BotIntro.fromDocument(botDoc.data()!);
-
     return a!.prompt;
   }
 

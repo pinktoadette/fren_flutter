@@ -30,6 +30,7 @@ void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
+
   /// ***  Initialize Firebase App *** ///
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
@@ -50,8 +51,8 @@ void main() async {
       sound: true,
     );
   }
-
-  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(const MyApp()));
 }
 
 // Define the Navigator global key state to be used when the build context is not available!

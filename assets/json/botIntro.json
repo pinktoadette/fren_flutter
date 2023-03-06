@@ -1,0 +1,38 @@
+[
+    {
+        "text": "Hey fren, I'm Frankie!",
+        "wait": 3,
+        "selection": null,
+        "hasNext": true
+    },
+    {
+        "text": "I'm the general manager here at machi.",
+        "wait": 2,
+        "selection": null,
+        "hasNext": true
+    },
+    {
+        "text": "I can help you find humans or AI based on needs.",
+        "wait": 2,
+        "selection": null,
+        "hasNext": true
+    },
+    {
+        "text": "You can find @dates for dates or @services for professional services to get started with human recommendations.",
+        "wait": 3,
+        "selection": null,
+        "hasNext": true
+    },
+    {
+        "text": "I'll always be at the upper right-hand corner if you need me. You can find the bots model by tapping on the name at the top.",
+        "wait": 3,
+        "selection": null,
+        "hasNext": true
+    },
+    {
+        "text": "Ok, now you know where to find, what's on your mind today?",
+        "wait": 3,
+        "selection": null,
+        "hasNext": false
+    }
+]

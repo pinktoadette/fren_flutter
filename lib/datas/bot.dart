@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 
-
 class BotPrompt {
   final String text;
   final int wait;

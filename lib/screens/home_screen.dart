@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     color: _selectedIndex == 1
                 //         ? Theme.of(context).primaryColor
                 //         : null),
-                label: _i18n.translate("matches")),
+                label: _i18n.translate("requests")),
 
             /// Conversations Tab
             BottomNavigationBarItem(

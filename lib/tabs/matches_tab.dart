@@ -44,8 +44,7 @@ class _MatchesTabState extends State<MatchesTab> {
       children: [
         /// Header
         BuildTitle(
-          svgIconName: 'heart_icon',
-          title: _i18n.translate("matches"),
+          title: _i18n.translate("requests"),
         ),
 
         /// Show matches
@@ -61,7 +60,7 @@ class _MatchesTabState extends State<MatchesTab> {
       return Processing(text: _i18n.translate("loading"));
     } else if (_matches!.isEmpty) {
       /// No match
-      return NoData(svgName: 'heart_icon', text: _i18n.translate("no_match"));
+      return NoData( text: _i18n.translate("no_match"));
     } else {
       /// Load matches
       return UsersGrid(

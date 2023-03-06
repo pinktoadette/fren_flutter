@@ -26,8 +26,7 @@ class ConversationsTab extends StatelessWidget {
       children: [
         /// Header
         BuildTitle(
-          svgIconName: 'message_icon',
-          title: i18n.translate("conversations"),
+          title: i18n.translate("chat"),
         ),
 
         /// Conversations stream
