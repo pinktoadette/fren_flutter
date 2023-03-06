@@ -26,8 +26,8 @@ class ExternalBotApi {
   Future<Map<String, dynamic>?> getBotPrompt(String repoId, String inputs) async {
     final url = '${baseUri}huggable_bot';
     final data = {"repoId": repoId, "inputs": inputs};
-    String jsonBody = json.encode({"repoId": repoId, "inputs": inputs});
 
+    //@todo need catch error
     final dio = Dio();
     dio.options.headers['Accept'] = 'application/json';
     dio.options.headers['content-Type'] = 'application/json';
@@ -35,12 +35,9 @@ class ExternalBotApi {
     dio.options.followRedirects = false;
     final response = await dio.post(url, data: data);
 
-    print (_header);
-
     String jsonsDataString = response.toString(); // toString of Response's body is assigned to jsonDataString
     final _data = jsonDecode(jsonsDataString);
-    print(_data.toString());
-
+    return _data;
   }
 
 }

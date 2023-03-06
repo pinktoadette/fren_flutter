@@ -317,7 +317,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   Future<void> _callAPI(String message) async {
     /// call bot model api
-    _externalBot.getBotPrompt(widget.bot.model, message);
+    _externalBot.getBotPrompt(widget.bot.model, message).then((res){
+      types.TextMessage textMessage =  createMessage(res!["generated_text"], _bot);
+      _addMessage(textMessage);
+    });
   }
 
   types.TextMessage createMessage(String text, types.User user) {
