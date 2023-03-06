@@ -34,7 +34,10 @@ class _EnableModeState extends State<EnableMode> {
   late ProgressDialog _pr;
   List<ModeList> listRec = [];
   int selectedIndex = 0;
-  List<String> _selectedEnable = [];
+  Map<String, bool> values = {
+      USER_ENABLE_DATE: true,
+      USER_ENABLE_SERV: true,
+  };
 
   /// Navigate to next page
   void _nextScreen(screen) {
@@ -51,8 +54,21 @@ class _EnableModeState extends State<EnableMode> {
     super.initState();
   }
 
-  setSelection(int index, bool value) {
-    // User.userSettings![USER_MAX_DISTANCE].toDouble();
+  _setSelection(String key, bool value) {
+    setState(() {
+      values[key] = value;
+    });
+  }
+
+  _updateEnable() async {
+    String userId = UserModel().user.userId;
+    Map<String, Map<String, bool>> data = { USER_ENABLE_MODE: values };
+    await UserModel()
+        .updateUserData(userId: userId, data: data);
+    Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(
+            builder: (context) => const UpdateLocationScreen()),
+            (route) => false);
   }
 
   @override
@@ -65,13 +81,13 @@ class _EnableModeState extends State<EnableMode> {
             _i18n.translate('enable_mode_dates_subtitle'),
             style: const TextStyle(fontSize: 12),
           ),
-          isEnabled: true,
+          type: USER_ENABLE_DATE,
           icon: const Icon(Iconsax.like)),
       ModeList(
           title: Text(_i18n.translate('enable_mode_service_title')),
           subtitle: Text(_i18n.translate('enable_mode_service_subtitle'),
               style: const TextStyle(fontSize: 12)),
-          isEnabled: true,
+          type: USER_ENABLE_SERV,
           icon: const Icon(Iconsax.briefcase)),
     ];
 
@@ -122,20 +138,23 @@ class _EnableModeState extends State<EnableMode> {
                         title: listRec[index].title,
                         subtitle: listRec[index].subtitle,
                         onChanged: (bool? value) {
-                          setSelection(index, value!);
+                          _setSelection(listRec[index].type, value!);
                         },
                         secondary: Padding(
                           padding: const EdgeInsets.symmetric(
                               horizontal: 10, vertical: 20),
                           child: listRec[index].icon,
                         ),
-                        value: true,
+                        value: values[listRec[index].type],
                       ));
                 },
               ),
             ),
             ElevatedButton(
-                child: Text(_i18n.translate('enable')), onPressed: () async {})
+                child: Text(_i18n.translate('enable')),
+                onPressed: () async {
+                  _updateEnable();
+                })
           ])),
         ]),
       ),
@@ -146,11 +165,12 @@ class _EnableModeState extends State<EnableMode> {
 class ModeList {
   late Text title;
   late final Text subtitle;
-  late final bool isEnabled;
+  late String type;
   late Icon icon;
+
   ModeList(
       {required this.title,
       required this.subtitle,
-      required this.isEnabled,
+      required this.type,
       required this.icon});
 }
