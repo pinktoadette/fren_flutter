@@ -6,13 +6,12 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/widgets/default_button.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iconsax/iconsax.dart';
 
-import '../widgets/rounded_top.dart';
+import 'package:fren_app/widgets/rounded_top.dart';
 
 class UpdateLocationScreen extends StatefulWidget {
   final bool isSignUpProcess;
@@ -150,7 +149,6 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
     _i18n = AppLocalizations.of(context);
     _pr = ProgressDialog(context, isDismissible: false);
 
-    double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
@@ -162,28 +160,30 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
             Center(
               child: Column(
                 children: [
-                  SizedBox(height: screenHeight*0.2),
-                  Text(
-                      _i18n.translate(
-                          'enable_location'),
-                      style: Theme.of(context).textTheme.headlineMedium,
-                      textAlign: TextAlign.center),
-                  // Location icon
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight*0.05),
-                    child: Icon(Iconsax.location,
-                        size: 100, color: Theme.of(context).primaryColor),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                    child: Text(
+                        _i18n.translate(
+                            'enable_location'),
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        textAlign: TextAlign.left),
                   ),
-
                   // Title description
                   Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20, vertical: screenHeight*0.05),
+                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
                     child: Text(
                         _i18n.translate(
                             'the_app_needs_your_permission_to_access_your_device_current_location'),
-                        textAlign: TextAlign.center),
+                        textAlign: TextAlign.left),
                   ),
-                  SizedBox(height: screenHeight*0.05),
+                  // Location icon
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: screenHeight*0.05),
+                    child: Icon(Iconsax.location,
+                        size: 100, color: Theme.of(context).primaryColor),
+                  ),
+                  SizedBox(height: screenHeight*0.2),
+
                   // Get current location button
                   ElevatedButton(
                       child: Text(_i18n.translate('GET_LOCATION')),

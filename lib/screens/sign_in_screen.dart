@@ -3,8 +3,8 @@ import 'dart:async';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/screens/sign_up_screen.dart';
-import 'package:fren_app/screens/update_location_sceen.dart';
+import 'package:fren_app/screens/first_time/sign_up_screen.dart';
+import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -13,7 +13,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'chat_bot.dart';
-import 'on_boarding_screen.dart';
+import 'first_time/on_boarding_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -60,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
               const AppLogo(),
 
               Image.asset("assets/images/machi.png"),
-              
+
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18, color: Colors.black )),

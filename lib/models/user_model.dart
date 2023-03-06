@@ -193,21 +193,20 @@ class UserModel extends Model {
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();
 
+            // if user didn't complete profile then go to chat intro bot
+            if (userDoc[USER_PROFILE_FILLED] == false) {
+              debugPrint("profile incomplete");
+              onboardScreen!();
+              return;
+            }
+
             // Check location data
             if (latitude == 0.0 && longitude == 0.0) {
               // Show Update your current location message
               updateLocationScreen();
               return;
             }
-            // if user didn't complete profile then go to chat intro bot
-            if (userDoc[USER_PROFILE_FILLED] == false) {
-              debugPrint("profile incomplete");
-              // final _botApi = BotApi();
-              // Bot botInfo = await _botApi.getBotInfo(DEFAULT_BOT_ID);
-              // botChatScreen(botInfo);
-              onboardScreen!();
-              return;
-            }
+
             // Go to home screen
             homeScreen();
           }
@@ -361,6 +360,8 @@ class UserModel extends Model {
     String? userSchool,
     String? userJobTitle,
     String? userBio,
+    bool? enableDate,
+    bool? enableServ,
     // Callback functions
     required VoidCallback onSuccess,
     required Function(String) onFail,
@@ -409,6 +410,13 @@ class UserModel extends Model {
       USER_LAST_LOGIN: FieldValue.serverTimestamp(),
       USER_REG_DATE: FieldValue.serverTimestamp(),
       USER_DEVICE_TOKEN: userDeviceToken,
+
+      // enable
+      USER_ENABLE_MODE: {
+        USER_ENABLE_DATE: enableDate ?? true,
+        USER_ENABLE_SERV: enableServ ?? true
+      },
+
       // Set User default settings
       USER_SETTINGS: {
         USER_MIN_AGE: 18, // int
@@ -705,6 +713,10 @@ class UserModel extends Model {
             USER_GEO_POINT: geoPoint.data,
             USER_LAST_LOGIN: FieldValue.serverTimestamp(),
             USER_REG_DATE: FieldValue.serverTimestamp(),
+            USER_ENABLE_MODE: {
+              USER_ENABLE_DATE: true,
+              USER_ENABLE_SERV: true
+            },
             USER_SETTINGS: {
               USER_MIN_AGE: 18, // int
               USER_MAX_AGE: 100, // int
@@ -730,7 +742,7 @@ class UserModel extends Model {
     }
   }
 
-  // Filter the User Gender
+  // Filter the User Gender @todo
   Query<Map<String, dynamic>> filterUserGender(
       Query<Map<String, dynamic>> query) {
     // Get the opposite gender

@@ -300,14 +300,15 @@
   "you_canceled_the_purchase_please_try_again": "You canceled the purchase, please try again!",
 
   "next_step": "Next",
-  "intro_1": "Hi, I'm Frank!",
-  "intro_2": "I am the general manager for Fren",
-  "intro_3": "I am a personal assistance. I can also match other humans you may be looking for.",
-  "intro_quick_start": "No one likes form, but let me get to know you better.",
-  "intro_PA_name": "What would you like to name your personal assistance?",
-  "intro_age_year": "What is your age?",
-  "intro_location": "What is your location?",
-  "intro_professional_service": "Fren helps you offer and find other skilled professionals. ",
+  "enable": "Enable",
+  "enable_mode": "Enable Mode",
+  "enable_mode_des": "Allow Frankie to help you. The more you chat, the more it'll understand who you're looking for.",
+  "enable_mode_dates_title": "Date",
+  "enable_mode_dates_subtitle": "Find other dates by text and/or match with facial feature recognition",
+  "enable_mode_service_title": "Professional Services",
+  "enable_mode_service_subtitle": "Find or offer consultation services from professionals and request to network",
+
+  "intro_professional_service": "Machi helps you offer and find other skilled professionals. ",
   "intro_profession_service_prompt": "Would you like to be matched to offer your services?",
   "intro_professional_occupation": "What is your occupation?",
   "intro_professional_rate": "What is the rate of service?",
@@ -327,10 +328,10 @@
   "bot": "Bot",
   "about": "About ",
 
-  "onboard_page1_title": "Recommendations from Frankie AI",
-  "onboard_page1_subtitle": "Look for humans and bots, describe the problem and let Frankie solve the problem",
-  "onboard_page2_title": "Import your AI",
-  "onboard_page2_subtitle": "Allow others to use your bot and earn",
-  "onboard_page3_title": "Dating and Professional Services",
-  "onboard_page3_subtitle": "Request match with other humans from Frankie's recommendation"
+  "onboard_page1_title": "Chat with Frankie AI and Humans",
+  "onboard_page1_subtitle": "You are more than a few words in a form. Frankie is the main bot at machi. It can recommend human profiles based on your conversation with it",
+  "onboard_page2_title": "Meet Other Humans and AI",
+  "onboard_page2_subtitle": "Meet other humans and allow others to use your bot and earn",
+  "onboard_page3_title": "Enable Dating and Professional Mode",
+  "onboard_page3_subtitle": "Find or offer consultation services or request chat with other humans based on Frankie's recommendation"
 }

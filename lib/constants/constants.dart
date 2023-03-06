@@ -9,6 +9,10 @@ const Color APP_PRIMARY_COLOR = Colors.black;
 const Color APP_MUTED_COLOR = Colors.black12;
 const Color APP_ACCENT_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
+const Color APP_SUCCESS = Color.fromARGB(255, 85,236,110);
+const Color APP_WARNING = Color.fromARGB(255, 236,185,85);
+const Color APP_INFO = Color.fromARGB(255, 85,212,236);
+const Color APP_ERROR = Color.fromARGB(255, 236,110,85);
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
@@ -97,6 +101,8 @@ const String ADMOB_INTERSTITIAL_AD_ID = "admob_interstitial_ad_id";
 /// DATABASE FIELDS FOR USER COLLECTION  ///
 ///
 const String USER_ID = "user_id";
+const String USER_INITIATED_FRANK = "user_initiated_frank";
+const String USER_ENABLE_MODE = "user_enable_mode";
 const String USER_PROFILE_FILLED = "user_profile_filled";
 const String USER_PROFILE_PHOTO = "user_photo_link";
 const String USER_FULLNAME = "user_fullname";
@@ -128,6 +134,9 @@ const String USER_MIN_AGE = "user_min_age";
 const String USER_MAX_AGE = "user_max_age";
 const String USER_MAX_DISTANCE = "user_max_distance";
 const String USER_SHOW_ME = "user_show_me";
+// Enabled model
+const String USER_ENABLE_DATE = "user_enable_date";
+const String USER_ENABLE_SERV = "user_enable_service";
 
 /// DATABASE FIELDS FOR FlaggedUsers COLLECTION  ///
 ///

@@ -299,10 +299,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: _i18n.translate("conversations")),
 
             /// notification tab
-            BottomNavigationBarItem(
-                icon:  _getNotificationCounter(),
-                label: _i18n.translate("notifications"),
-            ),
+            // BottomNavigationBarItem(
+            //     icon:  _getNotificationCounter(),
+            //     label: _i18n.translate("notifications"),
+            // ),
 
             /// Profile Tab
             BottomNavigationBarItem(

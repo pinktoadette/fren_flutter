@@ -29,6 +29,9 @@ class UsersApi {
     /// Get user settings
     final Map<String, dynamic>? settings = UserModel().user.userSettings;
 
+    /// Get user enable
+    // final Map<String, dynamic>? enable = UserModel().user.userEnableMode;
+
     // // Get user geo center
     final GeoFirePoint center = geo.point(
         latitude: UserModel().user.userGeoPoint.latitude,

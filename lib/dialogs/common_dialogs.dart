@@ -1,6 +1,9 @@
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
+
+import '../constants/constants.dart';
 
 /// Success Dialog
 void successDialog(
@@ -108,36 +111,20 @@ void _buildDialog(
   // Control type
   switch (type) {
     case "success":
-      _icon = icon ??
-          const CircleAvatar(
-            backgroundColor: Colors.green,
-            child: Icon(Icons.check, color: Colors.white),
-          );
+      _icon = icon ?? const Icon(Iconsax.tick_circle, color: APP_SUCCESS);
       _title = title ?? i18n.translate("success");
       break;
     case "error":
-      _icon = icon ??
-          const CircleAvatar(
-            backgroundColor: Colors.red,
-            child: Icon(Icons.close, color: Colors.white),
-          );
+      _icon = icon ?? const Icon(Iconsax.flag, color: APP_ERROR);
       _title = title ?? i18n.translate("error");
       break;
     case "confirm":
-      _icon = icon ??
-          const CircleAvatar(
-            backgroundColor: Colors.amber,
-            child: Icon(Icons.help_outline, color: Colors.white),
-          );
+      _icon = icon ??  const Icon(Iconsax.tick_square, color: APP_WARNING);
       _title = title ?? i18n.translate("are_you_sure");
       break;
 
     case "info":
-      _icon = icon ??
-          const CircleAvatar(
-            backgroundColor: Colors.blue,
-            child: Icon(Icons.info_outline, color: Colors.white),
-          );
+      _icon = icon ??  const Icon(Iconsax.information, color: APP_INFO);
       _title = title ?? i18n.translate("information");
       break;
   }

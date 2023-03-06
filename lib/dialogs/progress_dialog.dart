@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/loader.dart';
 
 class ProgressDialog {
-  // Paramiteres
   final BuildContext context;
   bool isDismissible = true;
 
@@ -20,10 +20,10 @@ class ProgressDialog {
         builder: (BuildContext context) {
           return const SimpleDialog(
             elevation: 8.0,
-            backgroundColor: Colors.white,
+            backgroundColor: Colors.transparent,
             children: <Widget>[
               Center(
-                child: CircularProgressIndicator(),
+                child: Frankloader(),
               )
             ],
           );

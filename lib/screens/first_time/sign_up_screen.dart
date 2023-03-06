@@ -4,7 +4,7 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/sign_in_screen.dart';
-import 'package:fren_app/screens/update_location_sceen.dart';
+import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -16,7 +16,8 @@ import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_pic
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../widgets/rounded_top.dart';
+import 'package:fren_app/widgets/rounded_top.dart';
+import 'package:fren_app/screens/first_time/enable_mode.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -394,12 +395,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
               message:
                   _i18n.translate("your_account_has_been_created_successfully"),
               positiveAction: () {
-            // Execute action
-            // Go to get the user device's current location
+
             Future(() {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                      builder: (context) => const UpdateLocationScreen()),
+                      builder: (context) => const EnableMode()),
                   (route) => false);
             });
             // End

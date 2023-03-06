@@ -119,17 +119,20 @@ class MyApp extends StatelessWidget {
           primary: APP_PRIMARY_COLOR,
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_BACKGROUND),
-      scaffoldBackgroundColor: Colors.white,
-      inputDecorationTheme: InputDecorationTheme(
-          errorStyle: const TextStyle(fontSize: 16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
+          scaffoldBackgroundColor: Colors.white,
+          inputDecorationTheme: InputDecorationTheme(
+            errorStyle: const TextStyle(fontSize: 16),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(28),
           )),
-      elevatedButtonTheme: ElevatedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50))),
-      ),
+        progressIndicatorTheme: ProgressIndicatorThemeData(
+          color: APP_PRIMARY_COLOR,
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(50))),
+        ),
         bottomSheetTheme: const BottomSheetThemeData(
             backgroundColor: Colors.black54,
             clipBehavior: Clip.antiAlias,

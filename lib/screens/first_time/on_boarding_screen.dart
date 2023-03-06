@@ -3,12 +3,8 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/screens/sign_up_screen.dart';
+import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:onboarding/onboarding.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-
-import '../widgets/rounded_top.dart';
-import '../widgets/svg_icon.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);

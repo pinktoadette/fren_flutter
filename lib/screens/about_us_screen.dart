@@ -72,7 +72,7 @@ class AboutScreen extends StatelessWidget {
               const Text(APP_VERSION_NAME,
                   style: TextStyle(
                       color: Colors.grey,
-                      fontSize: 20,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold)),
               const Divider(height: 30, thickness: 1),
               Column(
@@ -81,14 +81,14 @@ class AboutScreen extends StatelessWidget {
                   // Contact
                   Text(i18n.translate('do_you_have_a_question'),
                       style:
-                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   Text(i18n.translate('send_your_message_to_our_email_address'),
                       style: const TextStyle(fontSize: 18),
                       textAlign: TextAlign.center),
                   Text(AppModel().appInfo.appEmail,
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Theme.of(context).primaryColor)),
                 ],

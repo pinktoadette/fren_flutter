@@ -5,6 +5,7 @@ class User {
   /// User info
   final String userId;
   final bool isProfileFilled;
+  final bool isFrankInitiated;
   final String userProfilePhoto;
   final String userFullname;
   final String userGender;
@@ -30,10 +31,12 @@ class User {
   final int userTotalDisliked;
   final Map<String, dynamic>? userGallery;
   final Map<String, dynamic>? userSettings;
+  final Map<String, dynamic>? userEnableMode;
 
   // Constructor
   User({
     required this.userId,
+    required this.isFrankInitiated,
     required this.isProfileFilled,
     required this.userProfilePhoto,
     required this.userFullname,
@@ -60,12 +63,14 @@ class User {
     required this.userTotalLikes,
     required this.userTotalVisits,
     required this.userTotalDisliked,
+    required this.userEnableMode
   });
 
   /// factory user object
   factory User.fromDocument(Map<String, dynamic> doc) {
     return User(
       userId: doc[USER_ID],
+      isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
       isProfileFilled: doc[USER_PROFILE_FILLED],
       userProfilePhoto: doc[USER_PROFILE_PHOTO],
       userFullname: doc[USER_FULLNAME],
@@ -76,6 +81,7 @@ class User {
       userSchool: doc[USER_SCHOOL] ?? '',
       userJobTitle: doc[USER_JOB_TITLE] ?? '',
       userBio: doc[USER_BIO] ?? '',
+      userEnableMode: doc[USER_ENABLE_MODE],
       userPhoneNumber: doc[USER_PHONE_NUMBER] ?? '',
       userEmail: doc[USER_EMAIL] ?? '',
       userGallery: doc[USER_GALLERY],
