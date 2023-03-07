@@ -37,8 +37,9 @@ class _ManageBotState extends State<ManageBot> {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> bots = await _botApi.getMyCreatedBot();
     List<Bot> result = [];
     bots.forEach((doc) {
-      print(doc);
-      // result.add(Bot(botId: doc.id, name: doc["name"], model: doc["model"], domain: doc["domain"], repoId: doc["repoId"], subdomain: doc["subdomain"], isActive: doc["isActive"], adminStatus: doc["adminStatus"], profilePhoto: '', botRegDate: doc["botRegDate"]));
+      print(doc.data()!);
+      print(doc.id);
+      result.add(Bot.fromDocument({...doc.data()!, "botId": doc.id}));
     });
     setState(() => _myOwnBot = result);
   }
