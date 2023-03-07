@@ -147,7 +147,7 @@ class MyApp extends StatelessWidget {
             ),
         ),
         textTheme: TextTheme(
-        labelMedium: TextStyle(
+        labelMedium: const TextStyle(
           fontSize: 35,
           decorationColor: Colors.red,
           ),

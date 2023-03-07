@@ -26,8 +26,8 @@ import '../rounded_top.dart';
 
 class BotProfileCard extends StatelessWidget {
   final Bot bot;
-  const BotProfileCard({Key? key, required this.bot}) : super(key: key);
-
+  final bool? showStatus;
+  const BotProfileCard({Key? key, required this.bot, this.showStatus }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +51,22 @@ class BotProfileCard extends StatelessWidget {
                 children: <Widget>[
                   Expanded(
                       child: Padding(
-                          padding: EdgeInsets.all(30),
+                          padding: const EdgeInsets.all(30),
                         child: Text("Price: ${bot.price ?? 0.00} \n\n${bot.about ?? ""}"),
                       )
                   ),
                 ]
+              ),
+              Row(
+                children: [
+                  if (showStatus == true) Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                        child: Text("Status: ${bot.isActive == false ? 'Unpublished': 'Published'}",
+                                style: TextStyle(color: bot.isActive == false ? APP_ERROR : APP_SUCCESS )),
+                      )
+                  ),
+                ],
               )
             ],
           ),

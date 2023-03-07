@@ -1,11 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/screens/bot/add_bot_step1.dart';
+import 'package:fren_app/screens/bot/add_bot_step2.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
@@ -37,9 +39,7 @@ class _ManageBotState extends State<ManageBot> {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> bots = await _botApi.getMyCreatedBot();
     List<Bot> result = [];
     bots.forEach((doc) {
-      print(doc.data()!);
-      print(doc.id);
-      result.add(Bot.fromDocument({...doc.data()!, "botId": doc.id}));
+      result.add(Bot.fromDocument({...doc.data()!, BOT_ID: doc.id}));
     });
     setState(() => _myOwnBot = result);
   }
@@ -78,11 +78,22 @@ class _ManageBotState extends State<ManageBot> {
         shrinkWrap: true,
         scrollDirection: Axis.horizontal,
         itemCount: _myOwnBot!.length,
-        itemBuilder: (context, index) => Column(
-          children: [
-            BotProfileCard(bot: _myOwnBot![index])
-          ],
-        ),
+        itemBuilder: (context, index) => InkWell(
+          onTap: (){
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => Step2Container(bot: _myOwnBot![index])),
+              );
+            },
+          child:      Column(
+            children: [
+              Padding(
+                  padding:  const EdgeInsets.all(30),
+                  child:BotProfileCard(bot: _myOwnBot![index], showStatus: true)
+              )
+            ],
+          ),
+        )
       );
     }
   }
