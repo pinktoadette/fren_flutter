@@ -12,6 +12,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/profile/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -47,29 +48,38 @@ class _Step2ContainerState extends State<Step2Container> {
           },
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 10),
-              child: Text("${widget.bot.name} is ready to be publish ${_i18n.translate('bot_prepub_headline')}",
-                  style: Theme
-                      .of(context)
-                      .textTheme
-                      .headlineSmall,
-                  textAlign: TextAlign.left),
-            ),
-            const SizedBox(height: 20),
+      body: SafeArea(
+        child: Padding(
+          
+            padding: const EdgeInsets.all(20),
+            child: Column(
+                children: [
+              Padding(
+                padding: const EdgeInsets.only(top: 10, bottom: 50),
+                child: Text("${widget.bot.name} ${_i18n.translate('bot_prepub_headline')}",
+                    style: Theme
+                        .of(context)
+                        .textTheme
+                        .headlineSmall,
+                    textAlign: TextAlign.left),
+              ),
+                  BotProfileCard(bot: widget.bot),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Text("${widget.bot.name} ${_i18n.translate('bot_prepublish')}",
+                        style: Theme
+                            .of(context)
+                            .textTheme
+                            .bodyMedium,
+                        textAlign: TextAlign.left),
+                  ),
+              const SizedBox(height: 20),
 
-            Text(_i18n.translate('bot_prepublish')),
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              child: Text(_i18n.translate('bot_test')),
-              onPressed: () {},
-            ),
-          ],
+              ElevatedButton(
+                child: Text(_i18n.translate('bot_test')),
+                onPressed: () {},
+              ),
+            ])
         ),
       ),
     );
