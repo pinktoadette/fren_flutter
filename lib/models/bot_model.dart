@@ -51,7 +51,7 @@ class BotModel extends Model {
     return Bot.fromDocument({...botDoc.data()!, BOT_ID: botId });
   }
 
-  // save the matched bot
+  /// save the matched bot
   Future<DocumentReference<Map<String, dynamic>>> saveBotMatch(String botId) async {
     return await _firestore.collection(C_BOT_USER_MATCH).add({
       USER_ID:  UserModel().user.userId,
@@ -59,7 +59,16 @@ class BotModel extends Model {
     });
   }
 
-  // create bot
+  /// get bot created
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getMyCreatedBot() async {
+    final QuerySnapshot<Map<String, dynamic>> query = await _firestore
+        .collection(C_BOT)
+        .where(BOT_OWNER_ID, isEqualTo: UserModel().user.userId)
+        .get();
+    return query.docs;
+  }
+
+  /// create bot
   Future<void> createBot({
     required ownerId,
     required name,

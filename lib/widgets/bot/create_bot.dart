@@ -1,6 +1,6 @@
-import 'package:fren_app/screens/profile/add_bot_screen.dart';
-import 'package:fren_app/dialogs/vip_dialog.dart';
+import 'package:fren_app/screens/bot/add_bot_screen.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/screens/bot/manage_bot_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -34,7 +34,7 @@ class CreateBotCard extends StatelessWidget {
                 style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AddBot()));
+                  MaterialPageRoute(builder: (context) => const ManageBot()));
             },
           ),
         ],

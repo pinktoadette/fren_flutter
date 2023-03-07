@@ -21,7 +21,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import '../../widgets/rounded_top.dart';
+import '../rounded_top.dart';
 
 
 class BotProfileCard extends StatelessWidget {
