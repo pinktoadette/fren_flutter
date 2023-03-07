@@ -19,7 +19,7 @@ class VipAccountCard extends StatelessWidget {
       child: ListTile(
         leading: const Icon(Iconsax.element_plus),
         title: Text(i18n.translate("subscription"),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            style: const TextStyle(fontSize: 18)),
         onTap: () {
           /// Show VIP dialog
           showDialog(context: context, 

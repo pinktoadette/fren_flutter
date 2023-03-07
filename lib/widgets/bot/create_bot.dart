@@ -22,7 +22,7 @@ class CreateBotCard extends StatelessWidget {
           ListTile(
             leading: const Icon(Iconsax.box_tick),
             title: Text(i18n.translate("create_bot"),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontSize: 18)),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const AddBot()));
@@ -31,7 +31,7 @@ class CreateBotCard extends StatelessWidget {
           ListTile(
             leading: const Icon(Iconsax.box_remove),
             title: Text(i18n.translate("manage_bot"),
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                style: const TextStyle(fontSize: 18)),
             onTap: () {
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const ManageBot()));

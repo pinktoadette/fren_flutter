@@ -111,11 +111,9 @@ class MyApp extends StatelessWidget {
 
   // App theme
   ThemeData _lightTheme() {
-// We'll just overwrite whatever's already there using ThemeData.light()
     final ThemeData base = ThemeData.light();
 
     return base.copyWith(
-
       primaryColor: APP_PRIMARY_COLOR,
       colorScheme: const ColorScheme.light().copyWith(
           primary: APP_PRIMARY_COLOR,

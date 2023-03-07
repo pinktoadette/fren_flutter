@@ -221,7 +221,10 @@ class _HomeScreenState extends State<HomeScreen> {
   void _getFrankie() async {
     DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(DEFAULT_BOT_ID);
     final Bot frankie = Bot.fromDocument(bot.data()!);
-    _frankInfo = frankie;
+    print (frankie);
+    setState(() {
+      _frankInfo = frankie;
+    });
   }
 
   @override
@@ -297,7 +300,7 @@ class _HomeScreenState extends State<HomeScreen> {
             /// Conversations Tab
             BottomNavigationBarItem(
                 icon: _getConversationCounter(),
-                label: _i18n.translate("conversations")),
+                label: _i18n.translate("chat")),
 
             /// notification tab
             // BottomNavigationBarItem(
@@ -318,8 +321,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ]),
       body: _showCurrentNavBar(),
           floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Bot botInfo = await _botApi.getBotInfo(DEFAULT_BOT_ID);
+          onPressed: () async {
 
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>

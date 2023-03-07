@@ -30,9 +30,9 @@ class _SearchBarState extends State<SearchBar> {
       padding: const EdgeInsets.only(right: 20, left: 20),
       child: TextField(
         controller: _searchQueryController,
-        autofocus: true,
+        autofocus: false,
         decoration: InputDecoration(
-          hintText: "Search AI...",
+          hintText: "Ask me a question",
           border: InputBorder.none,
           hintStyle: TextStyle(color: Theme.of(context).primaryColor),
         ),
