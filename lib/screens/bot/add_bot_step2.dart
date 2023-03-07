@@ -56,6 +56,10 @@ class _Step2ContainerState extends State<Step2Container> {
 
               ElevatedButton(
                 child: Text(_i18n.translate('bot_test')),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  elevation: 0,
+                ),
                 onPressed: () {
                   Future(() {
                     Navigator.of(context).push(
@@ -63,6 +67,13 @@ class _Step2ContainerState extends State<Step2Container> {
                   });
                 },
               ),
+              const Spacer(),
+              ElevatedButton(
+                child: Text(_i18n.translate('publish')),
+                onPressed: () {
+
+                    },
+                ),
             ])
         ),
       ),
