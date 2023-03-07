@@ -98,6 +98,7 @@
   "you_need_to_enable_location_permission_to_use_this_app": "You need to enable location permission to use this app",
   "click_continue": "Click Continue!",
 
+  "subscription": "Subscription",
   "_vip_dialog": "*** VIP Dialog ***",
   "vip_account": "VIP Account",
   "become_a_vip_member_and_enjoy_the_benefits_below": "become a VIP Member and enjoy the benefits below.",
@@ -335,5 +336,7 @@
   "onboard_page2_title": "Meet Other Humans and AI",
   "onboard_page2_subtitle": "Meet other humans and allow others to use your bot and earn",
   "onboard_page3_title": "Enable Dating and Professional Mode",
-  "onboard_page3_subtitle": "Find or offer consultation services or request chat with other humans based on Frankie's recommendation"
+  "onboard_page3_subtitle": "Find or offer consultation services or request chat with other humans based on Frankie's recommendation",
+
+  "search": "Search"
 }

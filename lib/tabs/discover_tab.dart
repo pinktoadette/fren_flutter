@@ -12,11 +12,15 @@ import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
 import 'package:fren_app/screens/disliked_profile_screen.dart';
 import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/widgets/cicle_button.dart';
+import 'package:fren_app/widgets/new_bots.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/users_api.dart';
+import 'package:fren_app/widgets/search.dart';
+import 'package:fren_app/widgets/shared_bot.dart';
+import 'package:iconsax/iconsax.dart';
 
 class DiscoverTab extends StatefulWidget {
   const DiscoverTab({Key? key}) : super(key: key);
@@ -75,8 +79,19 @@ class _DiscoverTabState extends State<DiscoverTab> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    return _showUsers();
+    // return _showUsers();
+    return Scaffold(
+      body: Column(
+        children: const [
+          SearchBar(),
+          NewBotWidget(),
+          ShareBotWidget()
+        ]
+      )
+    );
   }
+
+
 
   Widget _showUsers() {
     /// Check result

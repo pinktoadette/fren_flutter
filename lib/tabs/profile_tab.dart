@@ -28,9 +28,9 @@ class ProfileTab extends StatelessWidget {
             const SizedBox(height: 10),
 
             /// Profile Statistics Card
-            const ProfileStatisticsCard(),
-
-            const SizedBox(height: 10),
+            // const ProfileStatisticsCard(),
+            //
+            // const SizedBox(height: 10),
 
             /// Show VIP dialog
             const VipAccountCard(),

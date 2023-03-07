@@ -126,7 +126,7 @@ class MyApp extends StatelessWidget {
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(28),
           )),
-        progressIndicatorTheme: ProgressIndicatorThemeData(
+        progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: APP_PRIMARY_COLOR,
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
@@ -179,8 +179,11 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_BACKGROUND,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
-        systemOverlayStyle: SystemUiOverlayStyle.light,
-        titleTextStyle: TextStyle(color: APP_PRIMARY_BACKGROUND, fontSize: 18),
+        systemOverlayStyle: SystemUiOverlayStyle(
+          statusBarColor: Colors.white,               // Only honored in Android M and above
+          statusBarIconBrightness: Brightness.dark,  // Only honored in Android M and above
+          statusBarBrightness: Brightness.light),
+        titleTextStyle: TextStyle(color: APP_PRIMARY_COLOR, fontSize: 18),
       ),
     );
 
@@ -191,8 +194,8 @@ class MyApp extends StatelessWidget {
   ThemeData _darkTheme() {
 
     final ThemeData darkTheme = ThemeData.dark();
-    const APP_PRIMARY_DARK_COLOR = Colors.white70;
-    const APP_PRIMARY_DARK_BACKGROUND = Colors.black54;
+    const APP_PRIMARY_DARK_COLOR = Colors.white;
+    const APP_PRIMARY_DARK_BACKGROUND = Colors.black;
 
     return darkTheme.copyWith(
       primaryColor: APP_PRIMARY_DARK_COLOR,
@@ -211,8 +214,11 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_DARK_COLOR,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
-        systemOverlayStyle: SystemUiOverlayStyle.dark,
-        titleTextStyle: TextStyle(color: Colors.grey, fontSize: 18),
+        systemOverlayStyle: SystemUiOverlayStyle(
+            statusBarColor: Colors.black,               // Only honored in Android M and above
+            statusBarIconBrightness: Brightness.light,  // Only honored in Android M and above
+            statusBarBrightness: Brightness.dark),
+        titleTextStyle: TextStyle(color: APP_PRIMARY_DARK_COLOR, fontSize: 18),
       ),
     );
   }

@@ -6,6 +6,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/store_products.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:iconsax/iconsax.dart';
 
 class VipDialog extends StatelessWidget {
   const VipDialog({Key? key}) : super(key: key);
@@ -28,16 +29,12 @@ class VipDialog extends StatelessWidget {
                   child: Column(
                     children: <Widget>[
                       /// User image
-                      Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Image.asset('assets/images/crow_badge.png'),
-                          )),
+                      const Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Icon(Iconsax.element_plus)),
                       Padding(
                         padding: const EdgeInsets.all(5),
-                        child: Text(i18n.translate("vip_account"),
+                        child: Text(i18n.translate("subscription"),
                             style: const TextStyle(
                                 fontSize: 25,
                                 color: Colors.white,
@@ -82,7 +79,7 @@ class VipDialog extends StatelessWidget {
                 children: <Widget>[
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(i18n.translate("vip_subscriptions"),
+                    child: Text(i18n.translate("subscription"),
                         style: const TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold)),
                   ),
@@ -137,138 +134,6 @@ class VipDialog extends StatelessWidget {
                 ],
               ),
             ),
-            const Divider(),
-
-            /// VIP Benefits
-            Container(
-              color: Colors.white,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Text(i18n.translate("benefits"),
-                        style: const TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold)),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  // Passport
-                  ListTile(
-                    leading: CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: const Icon(Icons.flight, color: Colors.white),
-                    ),
-                    title: Text(i18n.translate("passport"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(i18n.translate(
-                        "travel_to_any_country_or_city_and_match_with_people_there")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  // Discover more people around you
-                  ListTile(
-                    leading: const CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.purple,
-                      child:
-                          Icon(Icons.location_on_outlined, color: Colors.white),
-                    ),
-                    title: Text(i18n.translate("discover_more_people"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text("${i18n.translate('get')} "
-                        "${AppModel().appInfo.vipAccountMaxDistance} km "
-                        "${i18n.translate('radius_away')}"),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  // Add more pictures
-                  ListTile(
-                    leading: const CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.green,
-                      child: Icon(Icons.camera_alt, color: Colors.white),
-                    ),
-                    title: Text(
-                        i18n.translate(
-                            "add_more_pictures_on_your_profile_gallery"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(i18n.translate(
-                        "make_your_profile_attractive_by_adding_more_photos")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  /// See who liked you
-                  ListTile(
-                    leading: const CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.pinkAccent,
-                      child: Icon(Icons.favorite, color: Colors.white),
-                    ),
-                    title: Text(i18n.translate("see_people_who_liked_you"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(i18n.translate(
-                        "unravel_the_mystery_and_find_out_who_liked_you")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  /// See who visited you
-                  ListTile(
-                    leading: const CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.grey,
-                      child: Icon(Icons.remove_red_eye, color: Colors.white),
-                    ),
-                    title: Text(
-                        i18n.translate("see_people_who_visited_your_profile"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(i18n.translate(
-                        "unravel_the_mystery_and_find_out_who_visited_your_profile")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  /// See disliked profiles
-                  ListTile(
-                    leading: CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Theme.of(context).primaryColor,
-                      child: const Icon(Icons.close, color: Colors.white),
-                    ),
-                    title: Text(i18n.translate("see_people_you_have_rejected"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(
-                        i18n.translate("retrieve_and_review_all_profiles")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  /// Verified account badge
-                  ListTile(
-                    leading: Image.asset('assets/images/verified_badge.png',
-                        width: 40, height: 40),
-                    title: Text(i18n.translate("verified_account_badge"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(i18n.translate(
-                        "let_other_users_know_that_you_are_a_real_person")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-
-                  /// No Ads
-                  ListTile(
-                    leading: const CircleAvatar(
-                      radius: 18,
-                      backgroundColor: Colors.red,
-                      child: Icon(Icons.block, color: Colors.white),
-                    ),
-                    title: Text(i18n.translate("no_ads"),
-                        style: const TextStyle(fontSize: 18)),
-                    subtitle: Text(i18n.translate("have_a_unique_experience")),
-                  ),
-                  const Divider(height: 10, thickness: 1),
-                  const SizedBox(height: 15)
-                ],
-              ),
-            )
           ],
         ),
       ),
