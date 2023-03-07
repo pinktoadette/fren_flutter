@@ -26,6 +26,7 @@ class _AddBotState extends State<AddBot> {
   @override
   void initState() {
     super.initState();
+
   }
 
   bool onWillPop() {
@@ -36,7 +37,6 @@ class _AddBotState extends State<AddBot> {
       duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
-
     return false;
   }
 
@@ -51,10 +51,6 @@ class _AddBotState extends State<AddBot> {
         onWillPop: () => Future.sync(onWillPop),
         child: const Step1Container(),
       ),
-      // WillPopScope(
-      //   onWillPop: () => Future.sync(onWillPop),
-      //   child: null,
-      // ),
     ];
 
     return Scaffold(

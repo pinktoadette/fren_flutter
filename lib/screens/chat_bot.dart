@@ -26,8 +26,9 @@ class BotChatScreen extends StatefulWidget {
   /// Get user object from firebase
   final Bot bot;
   final bool? isInitial;
+  final bool? isTest;
 
-  const BotChatScreen({Key? key, required this.bot, this.isInitial})
+  const BotChatScreen({Key? key, required this.bot, this.isInitial, this.isTest})
       : super(key: key);
 
   @override
@@ -83,7 +84,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
       setState(() {_isLoading = false; });
     }
 
-    _botApi.botMatch(widget.bot.botId, _u.userId);
+    if (widget?.isTest == false) {
+      _botApi.botMatch(widget.bot.botId, _u.userId);
+    }
   }
 
   /// static messages on intro, @todo if not frank get api db
@@ -109,7 +112,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
+    /// Initializationd
     _i18n = AppLocalizations.of(context);
 
     if (_isLoading) {
@@ -127,6 +130,42 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 ),
               ),
             ),
+          ),
+        ),
+      );
+    }
+    else if (widget?.isTest == true) {
+      return Scaffold(
+        appBar: AppBar(
+
+          leading: BackButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          // Show User profile info
+          title: GestureDetector(
+            child: ListTile(
+              contentPadding: const EdgeInsets.only(left: 0),
+              title: Text(widget.bot.name ?? "Bot",
+                  style: const TextStyle(fontSize: 24)),
+            ),
+            onTap: () {
+
+            },
+          ),
+        ),
+        body: Center(
+          child: Chat(
+            messages: _messages,
+            onAttachmentPressed: _handleAttachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            showUserAvatars: true,
+            showUserNames: true,
+            user: _user,
           ),
         ),
       );

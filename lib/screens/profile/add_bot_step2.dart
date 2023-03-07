@@ -12,6 +12,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/chat_bot.dart';
 import 'package:fren_app/screens/profile/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
@@ -77,7 +78,12 @@ class _Step2ContainerState extends State<Step2Container> {
 
               ElevatedButton(
                 child: Text(_i18n.translate('bot_test')),
-                onPressed: () {},
+                onPressed: () {
+                  Future(() {
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => BotChatScreen(bot:widget.bot)));
+                  });
+                },
               ),
             ])
         ),

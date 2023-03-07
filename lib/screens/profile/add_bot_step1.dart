@@ -259,14 +259,6 @@ class _Step1ContainerState extends State<Step1Container> {
           bgcolor: Colors.pinkAccent);
     } else {
       _formKey.currentState!.save();
-      print ({
-        "name": _nameController.value.text.trim(),
-        "domain": _selectedDomain,
-        "subdomain": _subdomain.value.text,
-        "repoId": _repoId.value.text,
-        "price": _price.value.text,
-        "about": _about.value.text.trim()
-      });
       BotModel().createBot(
         ownerId: UserModel().user.userId,
         name: _nameController.value.text.trim(),
@@ -276,10 +268,8 @@ class _Step1ContainerState extends State<Step1Container> {
         price: _price.value.text.trim(),
         about: _about.value.text.trim(),
         onSuccess: (botId) async {
-          debugPrint("Bot made ${botId}");
-          print (botId);
+          debugPrint("Bot made");
           Bot b = await BotModel().getBotObject(botId);
-          print (b);
           Future(() {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => Step2Container(bot: b)));

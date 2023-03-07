@@ -17,15 +17,28 @@ class CreateBotCard extends StatelessWidget {
       clipBehavior: Clip.antiAlias,
       elevation: 4.0,
       shape: defaultCardBorder(),
-      child: ListTile(
-        leading: const Icon(Iconsax.box_tick),
-        title: Text(i18n.translate("create_bot"),
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-        onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AddBot()));
-        },
-      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(Iconsax.box_tick),
+            title: Text(i18n.translate("create_bot"),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AddBot()));
+            },
+          ),
+          ListTile(
+            leading: const Icon(Iconsax.box_remove),
+            title: Text(i18n.translate("manage_bot"),
+                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            onTap: () {
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AddBot()));
+            },
+          ),
+        ],
+      )
     );
   }
 }
