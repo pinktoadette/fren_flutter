@@ -7,7 +7,6 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/chat_screen.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
-import 'package:fren_app/widgets/build_title.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:flutter/material.dart';
@@ -24,11 +23,6 @@ class ConversationsTab extends StatelessWidget {
 
     return Column(
       children: [
-        /// Header
-        BuildTitle(
-          title: i18n.translate("chat"),
-        ),
-
         /// Conversations stream
         Expanded(
           child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

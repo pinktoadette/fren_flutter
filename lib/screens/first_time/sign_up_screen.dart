@@ -11,7 +11,7 @@ import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/default_button.dart';
+import 'package:fren_app/widgets/button/default_button.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';

@@ -4,7 +4,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/edit_profile_screen.dart';
 import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/screens/settings_screen.dart';
-import 'package:fren_app/widgets/cicle_button.dart';
+import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
@@ -118,7 +118,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                                   user: UserModel().user, showButtons: false)));
                         }),
                   ),
-                  cicleButton(
+                  circleButton(
                     bgColor: APP_ACCENT_COLOR,
                     padding: 13,
                     icon: const SvgIcon("assets/icons/settings_icon.svg",

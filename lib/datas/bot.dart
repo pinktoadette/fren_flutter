@@ -28,14 +28,18 @@ class BotPrompt {
 class Bot {
   /// Bot info
   final String botId;
-  final String profilePhoto;
+  final String? profilePhoto;
   final String name;
   final String model;
-  final String specialty;
+  final String repoId;
+  final String domain;
+  final String subdomain;
   final DateTime botRegDate;
+  final bool isActive;
+  final String adminStatus;
+  final String? adminNote;
+  final double? price;
   final Object? botOwnerId;
-  final String? huggingFaceModel;
-  final String? apiUrlModel;
   final String? about;
 
   // Constructor
@@ -44,11 +48,15 @@ class Bot {
     required this.profilePhoto,
     required this.name,
     required this.model,
-    required this.specialty,
+    required this.domain,
+    required this.repoId,
+    required this.subdomain,
     required this.botRegDate,
+    required this.isActive,
+    required this.adminStatus,
+    this.adminNote,
+    this.price,
     this.botOwnerId,
-    this.huggingFaceModel,
-    this.apiUrlModel,
     this.about
   });
 
@@ -56,15 +64,19 @@ class Bot {
   factory Bot.fromDocument(Map<String, dynamic> doc) {
     return Bot(
       botId: doc[BOT_ID],
-      profilePhoto: doc[BOT_PROFILE_PHOTO],
+      profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
       name: doc[BOT_NAME],
-      model: doc[BOT_MODEL],
-      specialty: doc[BOT_SPECIALTY],
+      model: doc[BOT_MODEL] ?? '',
+      repoId: doc[BOT_REPO_ID] ?? '',
+      price: doc[BOT_PRICE],
+      subdomain: doc[BOT_SUBDOMAIN],
       botRegDate: doc[BOT_REG_DATE].toDate(),
       botOwnerId: doc[BOT_OWNER_ID],
-      huggingFaceModel: doc[BOT_HUGGING_FACE_MODEL],
-      apiUrlModel: doc[BOT_MODEL_API_URL],
-      about: doc[BOT_ABOUT]
+      about: doc[BOT_ABOUT],
+      domain: doc[BOT_DOMAIN],
+      isActive: doc[BOT_ACTIVE] ?? false,
+      adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
+      adminNote: doc[BOT_ADMIN_NOTE] ?? "",
     );
   }
 }

@@ -9,7 +9,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/plugins/carousel_pro/carousel_pro.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
-import 'package:fren_app/widgets/cicle_button.dart';
+import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
@@ -273,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           children: [
             /// Dislike profile button
             if (!widget.hideDislikeButton)
-              cicleButton(
+              circleButton(
                   padding: 8.0,
                   icon:
                       Icon(Icons.close, color: Theme.of(context).primaryColor),
@@ -295,7 +295,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   }),
 
             /// Like profile button
-            cicleButton(
+            circleButton(
                 padding: 8.0,
                 icon: const Icon(Icons.favorite_border, color: Colors.white),
                 bgColor: Theme.of(context).primaryColor,

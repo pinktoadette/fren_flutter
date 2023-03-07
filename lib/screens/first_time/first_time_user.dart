@@ -4,7 +4,7 @@ import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/default_button.dart';
+import 'package:fren_app/widgets/button/default_button.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class RegisterScreen extends StatefulWidget {

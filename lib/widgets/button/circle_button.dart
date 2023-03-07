@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-Widget cicleButton(
+Widget circleButton(
     {required Widget icon,
     required Color bgColor,
     required Function()? onTap,

@@ -56,12 +56,16 @@ const BOT_ID = 'bot_id';
 const BOT_REG_DATE = 'bot_register_date';
 const BOT_PROFILE_PHOTO = 'bot_photo';
 const BOT_NAME = 'bot_name';
+const BOT_REPO_ID = 'repo_id';
 const BOT_MODEL = 'bot_model';
-const BOT_SPECIALTY = 'bot_specialty';
+const BOT_SUBDOMAIN = 'bot_subdomain';
 const BOT_OWNER_ID = 'bot_owner_id';
-const BOT_HUGGING_FACE_MODEL = "hugging_face_model";
-const BOT_MODEL_API_URL = "bot_url_api";
 const BOT_ABOUT = "about";
+const BOT_DOMAIN = "bot_domain";
+const BOT_PRICE = "bot_price";
+const BOT_ACTIVE = "bot_active";
+const BOT_ADMIN_STATUS = "bot_admin_status";
+const BOT_ADMIN_NOTE = "bot_admin_note";
 
 /// DATABASE COLLECTION NAMES USED IN APP
 ///

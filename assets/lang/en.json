@@ -326,11 +326,24 @@
 
   "sign_in_with_google": "Continue with Google",
   "sign_in_with_apple": "Continue with Apple",
-  "continue": "continue",
+  "sign_in_with_github": "Continue with GitHub",
 
-  "bot": "Bot",
   "about": "About ",
-
+  "activity": "Activity",
+  "bot": "Bot",
+  "create_bot": "Create Domain Bot",
+  "create_bot_des": "Add a bot with domain knowledge by signing in your GitHub account and earn. \n\nYour GitHub account must be linked to hugging face dataset. \n\nYour data must be embedded.",
+  "bot_name": "Bot Name",
+  "bot_about": "About Bot",
+  "bot_domain": "Domain",
+  "bot_subdomain": "Subdomain",
+  "bot_repo": "Select repo",
+  "bot_pricing": "Price",
+  "bot_test": "Test",
+  "bot_prepub_headline": " is Ready",
+  "bot_prepublish": " is ready to be publish. You can test the chat first on the next page.",
+  "continue": "continue",
+  "my": "My",
   "onboard_page1_title": "Chat with Frankie AI and Humans",
   "onboard_page1_subtitle": "You are more than a few words in a form. Frankie is the main bot at machi. It can recommend human profiles based on your conversation with it",
   "onboard_page2_title": "Meet Other Humans and AI",
@@ -338,5 +351,7 @@
   "onboard_page3_title": "Enable Dating and Professional Mode",
   "onboard_page3_subtitle": "Find or offer consultation services or request chat with other humans based on Frankie's recommendation",
 
-  "search": "Search"
+  "publish": "Publish",
+  "search": "Search",
+  "required_field": "Please input required field"
 }

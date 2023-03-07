@@ -11,7 +11,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
 import 'package:fren_app/screens/disliked_profile_screen.dart';
 import 'package:fren_app/screens/profile_screen.dart';
-import 'package:fren_app/widgets/cicle_button.dart';
+import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/new_bots.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
@@ -19,7 +19,8 @@ import 'package:fren_app/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/users_api.dart';
 import 'package:fren_app/widgets/search.dart';
-import 'package:fren_app/widgets/shared_bot.dart';
+import 'package:fren_app/widgets/activity.dart';
+import 'package:fren_app/widgets/widget_title.dart';
 import 'package:iconsax/iconsax.dart';
 
 class DiscoverTab extends StatefulWidget {
@@ -82,10 +83,21 @@ class _DiscoverTabState extends State<DiscoverTab> {
     // return _showUsers();
     return Scaffold(
       body: Column(
-        children: const [
-          SearchBar(),
-          NewBotWidget(),
-          ShareBotWidget()
+        children:  [
+          const SearchBar(),
+
+          WidgetTitle(title: "${_i18n.translate("my") }Machi"),
+          const NewBotWidget(),
+
+        SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
+            child: Column(
+              children: [
+                WidgetTitle(title:_i18n.translate("activity")),
+                // ActivityWidget()
+              ],
+            ),
+        ),
         ]
       )
     );
@@ -170,7 +182,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
         /// Rewind profiles
         ///
         /// Go to Disliked Profiles
-        cicleButton(
+        circleButton(
             bgColor: Colors.white,
             padding: 8,
             icon: const Icon(Icons.restore, size: 22, color: Colors.grey),
@@ -183,7 +195,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
         const SizedBox(width: 20),
 
         /// Swipe left and reject user
-        cicleButton(
+        circleButton(
             bgColor: Colors.white,
             padding: 8,
             icon: const Icon(Icons.close, size: 35, color: Colors.grey),
@@ -201,7 +213,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
         const SizedBox(width: 20),
 
         /// Swipe right and like user
-        cicleButton(
+        circleButton(
             bgColor: Colors.white,
             padding: 8,
             icon: Icon(Icons.favorite_border,
@@ -220,7 +232,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
         const SizedBox(width: 20),
 
         /// Go to user profile
-        cicleButton(
+        circleButton(
             bgColor: Colors.white,
             padding: 8,
             icon: const Icon(Icons.remove_red_eye, size: 22, color: Colors.grey),

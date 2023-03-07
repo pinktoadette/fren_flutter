@@ -4,7 +4,6 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/chat_screen.dart';
-import 'package:fren_app/widgets/build_title.dart';
 import 'package:fren_app/widgets/loading_card.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
@@ -42,10 +41,6 @@ class _MatchesTabState extends State<MatchesTab> {
 
     return Column(
       children: [
-        /// Header
-        BuildTitle(
-          title: _i18n.translate("requests"),
-        ),
 
         /// Show matches
         Expanded(child: _showMatches()),

@@ -13,6 +13,7 @@ import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/discover_tab.dart';
 import 'package:fren_app/tabs/matches_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
+import 'package:fren_app/widgets/button/expandable_fab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

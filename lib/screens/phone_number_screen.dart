@@ -7,7 +7,7 @@ import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/screens/verification_code_screen.dart';
-import 'package:fren_app/widgets/default_button.dart';
+import 'package:fren_app/widgets/button/default_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';

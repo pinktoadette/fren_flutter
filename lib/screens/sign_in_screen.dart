@@ -80,6 +80,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       children: <Widget>[
                         SignInButton(
                             Buttons.Google,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(20.0),
+                            ),
                             onPressed:  () {
                                 isLoading = true;
                                 UserModel().signInWithGoogle(
@@ -108,6 +111,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           Buttons.Apple,
                           onPressed: () {
                           },
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                         ),
                       ],
                     ),

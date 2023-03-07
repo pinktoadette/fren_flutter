@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:lottie/lottie.dart';
 
-class ShareBotWidget extends StatelessWidget {
-  const ShareBotWidget({Key? key}) : super(key: key);
+class ActivityWidget extends StatefulWidget {
+  @override
+  _ActivityWidgetState createState() => _ActivityWidgetState();
+}
+
+class _ActivityWidgetState extends State<ActivityWidget> {
+  static const _pageSize = 20;
+
 
   @override
   Widget build(BuildContext context) {

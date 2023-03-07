@@ -73,6 +73,7 @@ dependencies:
   flutter_chat_ui: ^1.6.6
   uuid: ^3.0.7
   dio: ^5.0.1
+  infinite_scroll_pagination: ^3.2.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

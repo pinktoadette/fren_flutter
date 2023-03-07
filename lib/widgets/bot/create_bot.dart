@@ -1,11 +1,12 @@
+import 'package:fren_app/screens/profile/add_bot_screen.dart';
 import 'package:fren_app/dialogs/vip_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-class VipAccountCard extends StatelessWidget {
-  const VipAccountCard({Key? key}) : super(key: key);
+class CreateBotCard extends StatelessWidget {
+  const CreateBotCard({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,13 +18,12 @@ class VipAccountCard extends StatelessWidget {
       elevation: 4.0,
       shape: defaultCardBorder(),
       child: ListTile(
-        leading: const Icon(Iconsax.element_plus),
-        title: Text(i18n.translate("subscription"),
+        leading: const Icon(Iconsax.box_tick),
+        title: Text(i18n.translate("create_bot"),
             style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
         onTap: () {
-          /// Show VIP dialog
-          showDialog(context: context, 
-            builder: (context) => const VipDialog());
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const AddBot()));
         },
       ),
     );

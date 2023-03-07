@@ -1,32 +1,17 @@
-import 'dart:io';
+import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/models/app_model.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:fren_app/helpers/app_helper.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/first_time_user.dart';
-import 'package:geocoding/geocoding.dart';
-import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
-import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 import '../datas/bot.dart';
 
 class BotModel extends Model {
   /// Final Variables
   ///
-  final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
-  final _storageRef = FirebaseStorage.instance;
-  final _fcm = FirebaseMessaging.instance;
 
   /// Other variables
   ///
@@ -58,11 +43,54 @@ class BotModel extends Model {
         .get();
   }
 
+  /// Get bot object => [Bot]
+  Future<Bot> getBotObject(String botId) async {
+    final DocumentSnapshot<Map<String, dynamic>> botDoc =
+      await BotModel().getBot(botId);
+
+    return Bot.fromDocument({...botDoc.data()!, BOT_ID: botId });
+  }
+
   // save the matched bot
   Future<DocumentReference<Map<String, dynamic>>> saveBotMatch(String botId) async {
     return await _firestore.collection(C_BOT_USER_MATCH).add({
       USER_ID:  UserModel().user.userId,
       BOT_ID: botId
+    });
+  }
+
+  // create bot
+  Future<void> createBot({
+    required ownerId,
+    required name,
+    required domain,
+    required subdomain,
+    required repoId,
+    required price,
+    required about,
+    required ValueSetter onSuccess,
+    required Function(String) onError,
+  }) async {
+    _firestore
+        .collection(C_BOT)
+        .add(<String, dynamic> {
+          BOT_OWNER_ID: ownerId,
+          BOT_NAME: name,
+          BOT_DOMAIN: domain,
+          BOT_SUBDOMAIN: subdomain,
+          BOT_REPO_ID: repoId,
+          BOT_ABOUT: about,
+          BOT_ACTIVE: false,
+          BOT_ADMIN_STATUS: 'pending',
+          BOT_REG_DATE: FieldValue.serverTimestamp(),
+          BOT_PRICE: double.parse(price),
+        })
+        .then((bot) async{
+          onSuccess(bot.id);
+    }).catchError((onError) {
+      debugPrint('createBot() -> error');
+      // Callback function
+      onError(onError);
     });
   }
 

@@ -7,7 +7,6 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_screen.dart';
-import 'package:fren_app/widgets/build_title.dart';
 import 'package:fren_app/widgets/loading_card.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
@@ -106,12 +105,6 @@ class _ProfileVisitsScreenState extends State<ProfileVisitsScreen> {
         ),
         body: Column(
           children: [
-            /// Header Title
-            BuildTitle(
-              svgIconName: "eye_icon",
-              title: _i18n.translate("users_who_visited_you"),
-            ),
-
             /// Matches
             Expanded(child: _showProfiles())
           ],

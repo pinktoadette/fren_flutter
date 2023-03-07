@@ -155,7 +155,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               confirmDialog(context,
                   title: "${_i18n.translate("about")} ${widget.bot.name}",
                   message:
-                  "${widget.bot.name} is a ${widget.bot.specialty} bot, using ${widget.bot.model}. \n${widget.bot.about} ",
+                  "${widget.bot.name} is using ${widget.bot.model}. \n${widget.bot.about} ",
                   positiveText: _i18n.translate("OK"),
                   positiveAction: () async {
                     // Close the confirm dialog
