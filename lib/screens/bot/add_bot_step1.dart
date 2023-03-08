@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/bot_model.dart';
@@ -8,6 +10,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/add_bot_step2.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class Step1Container extends StatefulWidget {
   const Step1Container({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class Step1Container extends StatefulWidget {
 }
 
 class _Step1ContainerState extends State<Step1Container> {
+  final BotController botController = Get.find();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
@@ -35,7 +39,7 @@ class _Step1ContainerState extends State<Step1Container> {
     List<String> list = List.from(jsonDecode(data) as List<dynamic>);
 
     setState(() {
-      _domainList = list;//List.from(list);
+      _domainList = list; //List.from(list);
     });
   }
 
@@ -62,6 +66,9 @@ class _Step1ContainerState extends State<Step1Container> {
         leading: BackButton(
           color: Theme.of(context).primaryColor,
           onPressed: () {
+            debugPrint("Bot return to default");
+            botController.fetchCurrentBot(DEFAULT_BOT_ID);
+
             Navigator.of(context).pop();
           },
         ),
@@ -200,13 +207,16 @@ class _Step1ContainerState extends State<Step1Container> {
                   ),
                   const SizedBox(height: 20),
 
-
                   /// bot embedding on hugging face
                   CheckboxListTile(
-                    title: const Text('Embedding is on hugging face', style: TextStyle(color: Colors.grey),),
+                    title: const Text(
+                      'Embedding is on hugging face',
+                      style: TextStyle(color: Colors.grey),
+                    ),
                     value: _onHuggingFace,
                     onChanged: (value) {
-                      setState(() => _onHuggingFace = !_onHuggingFace);},
+                      setState(() => _onHuggingFace = !_onHuggingFace);
+                    },
                   ),
                   const SizedBox(height: 20),
 
@@ -237,7 +247,7 @@ class _Step1ContainerState extends State<Step1Container> {
           context: context,
           message: _i18n.translate("required_field"),
           bgcolor: Colors.pinkAccent);
-    } else if(!_onHuggingFace) {
+    } else if (!_onHuggingFace) {
       showScaffoldMessage(
           context: context,
           message: "Embedding must be on hugging face",
@@ -254,10 +264,10 @@ class _Step1ContainerState extends State<Step1Container> {
         about: _about.value.text.trim(),
         onSuccess: (botId) async {
           debugPrint("Bot made");
-          Bot b = await BotModel().getBotObject(botId);
+          botController.fetchCurrentBot(botId);
           Future(() {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Step2Container(bot: b)));
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Step2Container()));
           });
         },
         onError: (error) {

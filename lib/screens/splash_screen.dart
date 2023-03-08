@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/screens/blocked_account_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,13 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/screens/update_app_screen.dart';
-import 'package:fren_app/widgets/app_logo.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:fren_app/screens/sign_in_screen.dart';
+import 'package:get/get.dart';
 
 import 'chat_bot.dart';
 import 'first_time/on_boarding_screen.dart';
@@ -25,6 +27,9 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final BotController botController = Get.put(BotController());
+  final UserController userController = Get.put(UserController());
+
   // Variables
   final AppHelper _appHelper = AppHelper();
   late AppLocalizations _i18n;
@@ -40,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
+
     super.initState();
     _appHelper.getAppStoreVersion().then((storeVersion) async {
       debugPrint('storeVersion: $storeVersion');
@@ -66,7 +72,6 @@ class _SplashScreenState extends State<SplashScreen> {
             updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
-            // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
             onboardScreen: () => _nextScreen(const OnboardingScreen()),
             homeScreen: () => _nextScreen(const HomeScreen()),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
@@ -77,6 +82,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: Container(

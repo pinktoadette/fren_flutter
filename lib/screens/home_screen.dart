@@ -4,29 +4,29 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
+import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/discover_tab.dart';
 import 'package:fren_app/tabs/matches_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
-import 'package:fren_app/widgets/button/expandable_fab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
-
-import '../datas/bot.dart';
-import '../models/bot_model.dart';
 import '../widgets/float_frank.dart';
-import 'chat_bot.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -36,11 +36,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final ChatController chatController = Get.put(ChatController());
   /// Variables
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
-  late Bot _frankInfo;
 
   int _selectedIndex = 0;
   late AppLocalizations _i18n;
@@ -218,28 +218,16 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _getFrankie() async {
-    DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(DEFAULT_BOT_ID);
-    final Bot frankie = Bot.fromDocument(bot.data()!);
-    print (frankie);
-    setState(() {
-      _frankInfo = frankie;
-    });
-  }
 
   @override
   void initState() {
     super.initState();
-
     /// Restore VIP Subscription
     AppHelper().restoreVipAccount();
 
-    /// get Frankie
-    _getFrankie();
-
     /// Init streams
     _getCurrentUserUpdates();
-    _handlePurchaseUpdates();
+    // _handlePurchaseUpdates();
     _initFirebaseMessage();
 
     /// Request permission for IOS
@@ -258,6 +246,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
+
 
     return Scaffold(
       appBar: AppBar(
@@ -325,7 +314,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) =>
-                    BotChatScreen(bot: _frankInfo)
+                    BotChatScreen()
                 ));
           },
           backgroundColor: Colors.white,

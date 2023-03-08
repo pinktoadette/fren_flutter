@@ -54,7 +54,6 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
           UserModel().authUserAccount(
             updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             homeScreen: () => _nextScreen(const HomeScreen()),
-              botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
               signUpScreen: () => _nextScreen(const SignUpScreen()));
         },
         onError: () async {

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/bot_api.dart';
+import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -12,6 +13,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -88,6 +90,9 @@ class UserModel extends Model {
     user = User.fromDocument(userDoc);
     notifyListeners();
     debugPrint('User object -> updated!');
+
+    final UserController userController = Get.find();
+    userController.setUser(user);
   }
 
   /// Update user data

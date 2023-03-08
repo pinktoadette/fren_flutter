@@ -1,0 +1,41 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fren_app/constants/constants.dart';
+import 'package:get/get.dart';
+import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/models/bot_model.dart';
+
+class BotController extends GetxController {
+  Rx<Bot> _currentBot = Bot(
+      botId: DEFAULT_BOT_ID,
+      profilePhoto: '',
+      name: '',
+      model: '',
+      domain: '',
+      repoId: '',
+      subdomain: '',
+      botRegDate: DateTime.now(),
+      adminStatus: '',
+      isActive: false
+  ).obs;
+
+  Bot get bot => _currentBot.value;
+  set bot(Bot value) => _currentBot.value = value;
+
+  @override
+  void onInit() async {
+    await fetchCurrentBot(DEFAULT_BOT_ID);
+    super.onInit();
+    print('show post return value: $bot');
+  }
+
+  Future<void> fetchCurrentBot(String botId) async {
+    DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(botId);
+    print(bot.data()!);
+    final Bot botNow = Bot.fromDocument(bot.data()!);
+    _currentBot = botNow.obs;
+  }
+
+
+
+
+}

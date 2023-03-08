@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -14,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/users_grid.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ManageBot extends StatefulWidget {
@@ -65,6 +67,8 @@ class _ManageBotState extends State<ManageBot> {
   }
 
   Widget _showMyCreate() {
+    final BotController botController = Get.find();
+
     final _i18n = AppLocalizations.of(context);
     /// Check result
     if (_myOwnBot == null) {
@@ -80,9 +84,10 @@ class _ManageBotState extends State<ManageBot> {
         itemCount: _myOwnBot!.length,
         itemBuilder: (context, index) => InkWell(
           onTap: (){
+              botController.bot = _myOwnBot![index];
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => Step2Container(bot: _myOwnBot![index])),
+                MaterialPageRoute(builder: (context) => Step2Container()),
               );
             },
           child:      Column(

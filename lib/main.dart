@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -37,6 +38,13 @@ void main() async {
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   /// TODO:
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  if (Platform.isAndroid | Platform.isIOS) {
+    FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
+  } else if(Platform.isWindows | Platform.isMacOS ) {
+    await FirebaseFirestore.instance
+        .enablePersistence(const PersistenceSettings(synchronizeTabs: true));
+  }
   // Initialize Google Mobile Ads SDK
   // await MobileAds.instance.initialize();
 
@@ -65,7 +73,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    final textTheme = Theme.of(context).textTheme;
     return ScopedModel<AppModel>(
       model: AppModel(),
       child: ScopedModel<UserModel>(

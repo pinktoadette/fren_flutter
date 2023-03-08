@@ -2,34 +2,29 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/dio.dart';
+import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ExternalBotApi {
   final baseUri = 'https://fin-pyapi.vercel.app/api/';
-  final Map<String, String> _header = <String, String>{
-    "api-key": "3e27dcb9-5c20-4658-abd2-fe333ae7721a",
-    "Accept" : "application/json",
-    HttpHeaders.contentTypeHeader: "application/json"
-  };
+  final BotController botControl = Get.find();
 
-  Future<BotPrompt> fetchIntroBot(String botId, int index) async {
-    final url = '$baseUri/bot_intro?q=$index';
-    final res = await http.get(
-        Uri.parse(url),
-        headers: _header
-    );
-    Map<String, dynamic> jsonResponse = jsonDecode(res.body);
-    return BotPrompt.fromJson(jsonResponse);
-  }
+  Future<String> getBotPrompt(String domain, String repoId, String inputs) async {
+    String url = '${baseUri}machi_bot';
+    Map<String, String> data = {"domain": domain, "model": repoId, "prompt": inputs};
 
-  Future<Map<String, dynamic>?> getBotPrompt(String repoId, String inputs) async {
-    final url = '${baseUri}huggable_bot';
-    final data = {"repoId": repoId, "inputs": inputs};
+    print (botControl.bot.botId);
+    if (botControl.bot.botId == DEFAULT_BOT_ID) {
+      url = '${baseUri}huggable_bot';
+      data = {"domain": domain, "model": "facebook/blenderbot-400M-distill", "prompt": inputs};
+    }
 
     //@todo need catch error
     final dio = Dio();
-    dio.options.headers['Accept'] = 'application/json';
+    dio.options.headers['Accept'] = '*/*';
     dio.options.headers['content-Type'] = 'application/json';
     dio.options.headers["api-key"] = "3e27dcb9-5c20-4658-abd2-fe333ae7721a";
     dio.options.followRedirects = false;
@@ -37,7 +32,11 @@ class ExternalBotApi {
 
     String jsonsDataString = response.toString(); // toString of Response's body is assigned to jsonDataString
     final _data = jsonDecode(jsonsDataString);
-    return _data;
+
+    if (botControl.bot.botId == DEFAULT_BOT_ID) {
+      return _data!['generated_text'];
+    }
+    return _data!["message"];
   }
 
 }

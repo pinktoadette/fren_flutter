@@ -10,11 +10,13 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/chat_bot.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/controller/chat_controller.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:fren_app/widgets/rounded_top.dart';
@@ -28,6 +30,8 @@ class UpdateLocationScreen extends StatefulWidget {
 }
 
 class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
+  final ChatController chatController = Get.put(ChatController());
+
   // Variables
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
@@ -155,9 +159,7 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
   }
 
   void _getFrankie() async {
-    DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(DEFAULT_BOT_ID);
-    final Bot frankie = Bot.fromDocument(bot.data()!);
-    _nextScreen(BotChatScreen(bot: frankie, isInitial: true));
+    _nextScreen(BotChatScreen());
   }
 
   @override
