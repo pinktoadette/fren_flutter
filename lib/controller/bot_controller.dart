@@ -25,7 +25,6 @@ class BotController extends GetxController {
   void onInit() async {
     await fetchCurrentBot(DEFAULT_BOT_ID);
     super.onInit();
-    print('show post return value: $bot');
   }
 
   Future<void> fetchCurrentBot(String botId) async {

@@ -48,12 +48,13 @@ class _ManageBotState extends State<ManageBot> {
 
   @override
   Widget build(BuildContext context) {
-
+    final BotController botController = Get.find();
     return Scaffold(
         appBar: AppBar(
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () {
+              botController.fetchCurrentBot(DEFAULT_BOT_ID);
               Navigator.of(context).pop();
             },
           ),

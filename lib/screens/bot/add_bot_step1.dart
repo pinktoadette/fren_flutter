@@ -68,8 +68,9 @@ class _Step1ContainerState extends State<Step1Container> {
           onPressed: () {
             debugPrint("Bot return to default");
             botController.fetchCurrentBot(DEFAULT_BOT_ID);
-
-            Navigator.of(context).pop();
+            Future(() {
+              Navigator.of(context).pop();
+            });
           },
         ),
       ),
