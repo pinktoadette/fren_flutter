@@ -332,6 +332,7 @@
   "activity": "Activity",
   "bot": "Bot",
   "create_bot": "Create Domain Bot",
+  "create_bot_success": "Your bot is now published!",
   "manage_bot": "Manage Created Bot",
   "create_bot_des": "Add a bot with domain knowledge by signing in your GitHub account and earn. \n\nYour GitHub account must be linked to hugging face dataset. \n\nYour data must be embedded.",
   "bot_name": "Bot Name",

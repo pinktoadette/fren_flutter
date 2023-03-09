@@ -59,6 +59,22 @@ class BotModel extends Model {
     });
   }
 
+  /// update bot
+  Future<void> updateBotData({
+    required String botId,
+    required Map<String, dynamic> data,
+    required VoidCallback onSuccess,
+    required Function(String errorType) onError,
+  }) async {
+    _firestore.collection(C_BOT).doc(botId).update(data).then((bot) async{
+      onSuccess();
+    }).catchError((onError) {
+      debugPrint('createBot() -> error');
+      // Callback function
+      onError(onError);
+    });
+  }
+
   /// get bot created
   Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getMyCreatedBot() async {
     final QuerySnapshot<Map<String, dynamic>> query = await _firestore

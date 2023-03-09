@@ -139,12 +139,12 @@ void _buildDialog(
             children: [
               _icon,
               const SizedBox(width: 10),
-              Expanded(child: Text(_title, style: const TextStyle(fontSize: 22)))
+              Expanded(child: Text(_title, style: const TextStyle(fontSize: 20)))
             ],
           ),
           content: Text(
             message,
-            style: const TextStyle(fontSize: 18),
+            style: const TextStyle(fontSize: 16),
           ),
           actions: [
             /// Negative button
@@ -153,7 +153,7 @@ void _buildDialog(
                 : TextButton(
                     onPressed: negativeAction,
                     child: Text(negativeText ?? i18n.translate("CANCEL"),
-                        style: const TextStyle(fontSize: 18, color: Colors.grey))),
+                        style: const TextStyle(fontSize: 16, color: Colors.grey))),
 
             /// Positive button
             TextButton(

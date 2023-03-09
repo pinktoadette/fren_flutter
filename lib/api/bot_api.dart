@@ -12,7 +12,7 @@ class BotApi {
   ///
   final _firestore = FirebaseFirestore.instance;
 
-  // get Bot info
+  /// get Bot info
   Future<Bot> getBotInfo(String botId) async {
     final DocumentSnapshot<Map<String, dynamic>> botDoc =
         await BotModel().getBot(botId);
@@ -43,7 +43,6 @@ class BotApi {
     if (botDoc.docs.isEmpty) {
       await BotModel().saveBotMatch(botId);
     }
-
     return botDoc;
   }
 

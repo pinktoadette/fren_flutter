@@ -40,7 +40,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late Stream<QuerySnapshot<Map<String, dynamic>>> _replies;
   late AppLocalizations _i18n;
 
-  final _botApi = BotApi();
   late  List<BotPrompt> _prompts;
   final _externalBot = ExternalBotApi();
   bool _isLoading = false;
@@ -61,6 +60,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   void initState() {
     super.initState();
     setState(() {_isLoading = true; });
+    chatController.onChatLoad();
 
     if (chatController.isInitial == true) {
       _loadIntroMessages().whenComplete(() => {
@@ -118,52 +118,49 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
       );
     }
-    else if (chatController.isTest == true) {
+    // else if (chatController.isTest == true) {
+    //   return Scaffold(
+    //     appBar: AppBar(
+    //
+    //       leading: BackButton(
+    //         color: Theme.of(context).primaryColor,
+    //         onPressed: () {
+    //           Navigator.of(context).pop();
+    //         },
+    //       ),
+    //       // Show User profile info
+    //       title: GestureDetector(
+    //         child: ListTile(
+    //           contentPadding: const EdgeInsets.only(left: 0),
+    //           title: Text(botController.bot.name ?? "Bot",
+    //               style: const TextStyle(fontSize: 24)),
+    //         ),
+    //         onTap: () {
+    //
+    //         },
+    //       ),
+    //     ),
+    //     body: Center(
+    //       child: Chat(
+    //         messages: _messages,
+    //         onAttachmentPressed: _handleAttachmentPressed,
+    //         onMessageTap: _handleMessageTap,
+    //         onPreviewDataFetched: _handlePreviewDataFetched,
+    //         onSendPressed: _handleSendPressed,
+    //         showUserAvatars: true,
+    //         showUserNames: true,
+    //         user: chatController.chatUser,
+    //       ),
+    //     ),
+    //   );
+    // }
+    else {
       return Scaffold(
         appBar: AppBar(
-
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () {
               Navigator.of(context).pop();
-            },
-          ),
-          // Show User profile info
-          title: GestureDetector(
-            child: ListTile(
-              contentPadding: const EdgeInsets.only(left: 0),
-              title: Text(botController.bot.name ?? "Bot",
-                  style: const TextStyle(fontSize: 24)),
-            ),
-            onTap: () {
-
-            },
-          ),
-        ),
-        body: Center(
-          child: Chat(
-            messages: _messages,
-            onAttachmentPressed: _handleAttachmentPressed,
-            onMessageTap: _handleMessageTap,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
-            showUserAvatars: true,
-            showUserNames: true,
-            user: chatController.chatUser,
-          ),
-        ),
-      );
-    }
-    else {
-      return Scaffold(
-        appBar: AppBar(
-
-          leading: BackButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(builder: (context) => const HomeScreen()),
-                      (route) => false);
             },
           ),
           // Show User profile info
@@ -339,11 +336,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   Future<void> _callAPI(String message) async {
+    print (chatController.chatBot.firstName);
     /// call bot model api
-    _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
-      types.TextMessage textMessage =  createMessage(res, chatController.chatBot);
-      _addMessage(textMessage);
-    });
+    // _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
+    //   types.TextMessage textMessage =  createMessage(res, chatController.chatBot);
+    //   _addMessage(textMessage);
+    // });
   }
 
   types.TextMessage createMessage(String text, types.User user) {

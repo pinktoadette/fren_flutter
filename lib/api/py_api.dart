@@ -14,13 +14,15 @@ class ExternalBotApi {
 
   Future<String> getBotPrompt(String domain, String repoId, String inputs) async {
     String url = '${baseUri}machi_bot';
-    Map<String, String> data = {"domain": domain, "model": repoId, "prompt": inputs};
+    Map<String, String> data = {"domain": domain, "model": "train_data", "prompt": inputs};
 
     print (botControl.bot.botId);
     if (botControl.bot.botId == DEFAULT_BOT_ID) {
       url = '${baseUri}huggable_bot';
       data = {"domain": domain, "model": "facebook/blenderbot-400M-distill", "prompt": inputs};
     }
+
+    print (data);
 
     //@todo need catch error
     final dio = Dio();
@@ -30,13 +32,13 @@ class ExternalBotApi {
     dio.options.followRedirects = false;
     final response = await dio.post(url, data: data);
 
-    String jsonsDataString = response.toString(); // toString of Response's body is assigned to jsonDataString
-    final _data = jsonDecode(jsonsDataString);
-
     if (botControl.bot.botId == DEFAULT_BOT_ID) {
+      String jsonsDataString = response.toString(); // toString of Response's body is assigned to jsonDataString
+      final _data = jsonDecode(jsonsDataString);
       return _data!['generated_text'];
     }
-    return _data!["message"];
+
+    return response.toString();
   }
 
 }

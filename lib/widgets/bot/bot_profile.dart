@@ -12,6 +12,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -57,15 +58,34 @@ class BotProfileCard extends StatelessWidget {
                   ),
                 ]
               ),
-              Row(
+              if (showStatus == true) Row(
                 children: [
-                  if (showStatus == true) Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                        child: Text("Status: ${bot.isActive == false ? 'Unpublished': 'Published'}",
-                                style: TextStyle(color: bot.isActive == false ? APP_ERROR : APP_SUCCESS )),
-                      )
+                  Padding(padding: const EdgeInsets.all(20),
+                    child: Row(
+                      children: [
+                        Text(bot.isActive == false ? 'Unpublished': 'Published',
+                            style: TextStyle(color: bot.isActive == false ? APP_ERROR : APP_SUCCESS )),
+                        const SizedBox(width: 120),
+                        bot.isActive == false ? ElevatedButton(
+                            onPressed:() {
+                              Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => Step2Container()),
+                              );
+                            },
+                            child: const Text('Publish')
+                        ):
+                        OutlinedButton(
+                            onPressed:() {
+                              Navigator.push(
+                                context, MaterialPageRoute(builder: (context) => Step2Container()),
+                              );
+                            },
+                            child: const Text('Edit')
+                        )
+                      ],
+                    ),
                   ),
+
                 ],
               )
             ],

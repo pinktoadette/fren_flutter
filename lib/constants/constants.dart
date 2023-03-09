@@ -64,6 +64,7 @@ const BOT_ABOUT = "about";
 const BOT_DOMAIN = "bot_domain";
 const BOT_PRICE = "bot_price";
 const BOT_ACTIVE = "bot_active";
+const BOT_ACTIVE_STATUS = "bot_active_status"; //pause ?
 const BOT_ADMIN_STATUS = "bot_admin_status";
 const BOT_ADMIN_NOTE = "bot_admin_note";
 

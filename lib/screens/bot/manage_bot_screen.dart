@@ -18,14 +18,14 @@ import 'package:fren_app/widgets/users_grid.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-class ManageBot extends StatefulWidget {
-  const ManageBot({Key? key}) : super(key: key);
+class ManageBotScreen extends StatefulWidget {
+  const ManageBotScreen({Key? key}) : super(key: key);
 
   @override
   _ManageBotState createState() => _ManageBotState();
 }
 
-class _ManageBotState extends State<ManageBot> {
+class _ManageBotState extends State<ManageBotScreen> {
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
   final _botApi = BotModel();
@@ -84,14 +84,8 @@ class _ManageBotState extends State<ManageBot> {
         scrollDirection: Axis.horizontal,
         itemCount: _myOwnBot!.length,
         itemBuilder: (context, index) => InkWell(
-          onTap: (){
-              botController.bot = _myOwnBot![index];
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Step2Container()),
-              );
-            },
-          child:      Column(
+          child:
+          Column(
             children: [
               Padding(
                   padding:  const EdgeInsets.all(30),

@@ -34,7 +34,7 @@ class CreateBotCard extends StatelessWidget {
                 style: const TextStyle(fontSize: 18)),
             onTap: () {
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ManageBot()));
+                  MaterialPageRoute(builder: (context) => const ManageBotScreen()));
             },
           ),
         ],

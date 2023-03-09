@@ -58,7 +58,10 @@ class _AddBotState extends State<AddBot> {
           },
         ),
       ),
-      body: const Step0Container(),
+      body: SingleChildScrollView(
+        child: Column(
+        children: const [Step0Container()]
+        ))
     );
   }
 }
@@ -69,10 +72,8 @@ class Step0Container extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
-    return Scaffold(
-      body: SafeArea(
-        child: Center(
-            child: Column(children: [
+    return Center(
+        child: Column(children: [
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(_i18n.translate('create_bot'),
@@ -97,9 +98,7 @@ class Step0Container extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const Step1Container()));
             },
           )
-        ])),
-      ),
-    );
+        ]));
   }
 }
 
