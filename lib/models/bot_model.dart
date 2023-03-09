@@ -84,6 +84,15 @@ class BotModel extends Model {
     return query.docs;
   }
 
+  /// get all bots created @todo trending bots
+  /// need number of clicks
+  Future<List<QueryDocumentSnapshot<Map<String, dynamic>>>> getAllBotsTrend() async {
+    final QuerySnapshot<Map<String, dynamic>> query = await _firestore
+        .collection(C_BOT)
+        .get();
+    return query.docs;
+  }
+
   /// create bot
   Future<void> createBot({
     required ownerId,

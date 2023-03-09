@@ -22,7 +22,6 @@ class ChatController extends GetxController {
   late Rx<types.User> _chatBot;
   RxList<types.Message> _messages = <types.Message>[].obs;
   late List<BotPrompt> _prompts;
-  final _externalBotApi = ExternalBotApi();
 
   String? error;
   bool isLoading = false;
@@ -104,71 +103,5 @@ class ChatController extends GetxController {
 
   void waitTask(int seconds) async {
     Timer(Duration(seconds: seconds), () => debugPrint('done waiting'));
-  }
-
-  void handlePreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
-      previewData: previewData,
-    );
-    _messages[index] = updatedMessage;
-  }
-
-  void handleSendPressed(types.PartialText message) {
-    types.TextMessage textMessage =
-        createMessage(message.text, _chatUser.value);
-    addMessage(textMessage);
-    _callAPI(message.text);
-  }
-
-  void handleMessageTap(BuildContext _, types.Message message) async {
-    if (message is types.FileMessage) {
-      var localPath = message.uri;
-
-      if (message.uri.startsWith('http')) {
-        try {
-          final index =
-              messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-              (messages[index] as types.FileMessage).copyWith(
-            isLoading: true,
-          );
-
-          messages[index] = updatedMessage;
-
-          final client = http.Client();
-          final request = await client.get(Uri.parse(message.uri));
-          final bytes = request.bodyBytes;
-          final documentsDir = (await getApplicationDocumentsDirectory()).path;
-          localPath = '$documentsDir/${message.name}';
-
-          if (!File(localPath).existsSync()) {
-            final file = File(localPath);
-            await file.writeAsBytes(bytes);
-          }
-        } finally {
-          final index =
-              messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-              (messages[index] as types.FileMessage).copyWith(
-            isLoading: null,
-          );
-          messages[index] = updatedMessage;
-        }
-      }
-    }
-  }
-
-  Future<void> _callAPI(String message) async {
-    final BotController bot = Get.find();
-
-    /// call bot model api
-    String response = await _externalBotApi.getBotPrompt(
-        bot.bot.domain, bot.bot.repoId, message);
-    types.TextMessage textMessage = createMessage(response, _chatBot.value);
-    addMessage(textMessage);
   }
 }

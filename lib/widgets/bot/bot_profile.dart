@@ -65,21 +65,21 @@ class BotProfileCard extends StatelessWidget {
                       children: [
                         Text(bot.isActive == false ? 'Unpublished': 'Published',
                             style: TextStyle(color: bot.isActive == false ? APP_ERROR : APP_SUCCESS )),
-                        const SizedBox(width: 120),
-                        bot.isActive == false ? ElevatedButton(
-                            onPressed:() {
-                              Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => Step2Container()),
-                              );
-                            },
-                            child: const Text('Publish')
-                        ):
-                        OutlinedButton(
-                            onPressed:() {
-                              Navigator.push(
-                                context, MaterialPageRoute(builder: (context) => Step2Container()),
-                              );
-                            },
+                            const SizedBox(width: 120),
+                            bot.isActive == false ? ElevatedButton(
+                                onPressed:() {
+                                  Navigator.push(
+                                    context, MaterialPageRoute(builder: (context) => Step2Container()),
+                                  );
+                                },
+                                child: const Text('Publish')
+                            ):
+                            OutlinedButton(
+                                onPressed:() {
+                                  Navigator.push(
+                                    context, MaterialPageRoute(builder: (context) => Step2Container()),
+                                  );
+                                },
                             child: const Text('Edit')
                         )
                       ],

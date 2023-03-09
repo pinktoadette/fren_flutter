@@ -118,42 +118,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
       );
     }
-    // else if (chatController.isTest == true) {
-    //   return Scaffold(
-    //     appBar: AppBar(
-    //
-    //       leading: BackButton(
-    //         color: Theme.of(context).primaryColor,
-    //         onPressed: () {
-    //           Navigator.of(context).pop();
-    //         },
-    //       ),
-    //       // Show User profile info
-    //       title: GestureDetector(
-    //         child: ListTile(
-    //           contentPadding: const EdgeInsets.only(left: 0),
-    //           title: Text(botController.bot.name ?? "Bot",
-    //               style: const TextStyle(fontSize: 24)),
-    //         ),
-    //         onTap: () {
-    //
-    //         },
-    //       ),
-    //     ),
-    //     body: Center(
-    //       child: Chat(
-    //         messages: _messages,
-    //         onAttachmentPressed: _handleAttachmentPressed,
-    //         onMessageTap: _handleMessageTap,
-    //         onPreviewDataFetched: _handlePreviewDataFetched,
-    //         onSendPressed: _handleSendPressed,
-    //         showUserAvatars: true,
-    //         showUserNames: true,
-    //         user: chatController.chatUser,
-    //       ),
-    //     ),
-    //   );
-    // }
     else {
       return Scaffold(
         appBar: AppBar(

@@ -12,7 +12,7 @@ import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
 import 'package:fren_app/screens/disliked_profile_screen.dart';
 import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/widgets/button/circle_button.dart';
-import 'package:fren_app/widgets/new_bots.dart';
+import 'package:fren_app/widgets/bot/new_bots.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/profile_card.dart';
@@ -86,8 +86,8 @@ class _DiscoverTabState extends State<DiscoverTab> {
         children:  [
           const SearchBar(),
 
-          WidgetTitle(title: "${_i18n.translate("my") }Machi"),
-          const NewBotWidget(),
+          WidgetTitle(title: "Wikibot"),
+          const ListBotWidget(),
 
         SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),

@@ -29,7 +29,6 @@ class BotController extends GetxController {
 
   Future<void> fetchCurrentBot(String botId) async {
     DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(botId);
-    print(bot.data()!);
     final Bot botNow = Bot.fromDocument(bot.data()!);
     _currentBot = botNow.obs;
   }

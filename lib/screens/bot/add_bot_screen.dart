@@ -6,14 +6,14 @@ import 'package:fren_app/screens/bot/add_bot_step1.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 
-class AddBot extends StatefulWidget {
-  const AddBot({Key? key}) : super(key: key);
+class AddBotScreen extends StatefulWidget {
+  const AddBotScreen({Key? key}) : super(key: key);
 
   @override
   _AddBotState createState() => _AddBotState();
 }
 
-class _AddBotState extends State<AddBot> {
+class _AddBotState extends State<AddBotScreen> {
   final _formsPageViewController = PageController();
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
