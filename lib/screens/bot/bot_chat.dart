@@ -9,19 +9,15 @@ import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/api/py_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
-import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/widgets/float_frank.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:uuid/uuid.dart';
 
-import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/loader.dart';
 
 // can't use stateless for Chat class package
@@ -70,6 +66,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       });
     } else {
       setState(() {_isLoading = false; });
+    }
+
+    if (chatController.messages.isNotEmpty) {
+      for (var element in chatController.messages.reversed) {
+        _addMessage(element);
+      }
     }
 
   }
@@ -161,12 +163,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
           ),
         ),
-        floatingActionButton: const FloatingActionButton(
-          onPressed:null,
-          backgroundColor: Colors.white,
-          child: FrankImage(),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
       );
     }
   }

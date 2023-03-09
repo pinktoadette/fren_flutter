@@ -27,14 +27,15 @@ class _SearchBarState extends State<SearchBar> {
     _i18n = AppLocalizations.of(context);
 
     return Padding(
-      padding: const EdgeInsets.only(right: 20, left: 20),
+      padding: const EdgeInsets.only(right: 20),
       child: TextField(
         controller: _searchQueryController,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: "Ask me a question",
+          hintText: _i18n.translate("search"),
           border: InputBorder.none,
           hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+          prefixIcon: const Icon(Icons.search,)
         ),
         style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0),
         onChanged: (query) => updateSearchQuery(query),

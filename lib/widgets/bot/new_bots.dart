@@ -25,9 +25,9 @@ class _ListBotWidget extends State<ListBotWidget> {
   Future<void> _fetchAllBots() async {
     List<QueryDocumentSnapshot<Map<String, dynamic>>> bots = await _botApi.getAllBotsTrend();
     List<Bot> result = [];
-    bots.forEach((doc) {
+    for (var doc in bots) {
       result.add(Bot.fromDocument({...doc.data()!, BOT_ID: doc.id}));
-    });
+    }
     setState(() => _listBot = result);
   }
 

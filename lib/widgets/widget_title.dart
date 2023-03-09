@@ -10,23 +10,29 @@ class WidgetTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// Title
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: Row(
-        children: [
-          if (icon != null)
-            Icon(icon),
-  
-          Padding(
-            padding: const EdgeInsets.only(top: 5, bottom: 5),
-            child: Text(title,
-                style: const TextStyle(
-                    fontSize: 14,
-                    color:  Colors.grey,
-                    fontWeight: FontWeight.w200)),
-          )
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Padding(
+          padding: const EdgeInsets.only(left: 10, right: 40),
+          child: Row(
+            children: [
+              if (icon != null)
+                Icon(icon),
+
+              Padding(
+                padding: const EdgeInsets.only(top: 5, bottom: 5),
+                child: Text(title,
+                    style: const TextStyle(
+                        fontSize: 14,
+                        color:  Colors.grey,
+                        fontWeight: FontWeight.w200)),
+              )
+            ],
+          ),
+        ),
+
+      ],
     );
 
   }
