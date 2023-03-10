@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/api/messages_api.dart';
+import 'package:fren_app/api/py_api.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
@@ -15,7 +18,10 @@ class QuickChat extends StatefulWidget {
 
 class _QuickChatState extends State<QuickChat> {
   ChatController chatController = Get.find();
+  BotController botController = Get.find();
   final fieldText = TextEditingController();
+  final _messagesApi = MessagesApi();
+  final _externalBot = ExternalBotApi();
 
   @override
   void initState() {
@@ -34,10 +40,18 @@ class _QuickChatState extends State<QuickChat> {
     final _i18n = AppLocalizations.of(context);
     types.User user = chatController.chatUser;
 
-    _handleSendPressed() {
+    _handleSendPressed() async {
       chatController.onChatLoad();
-      types.TextMessage message = chatController.createMessage(fieldText.text, user);
-      chatController.addMessage(message);
+      final textMessage = types.PartialText(
+        text: fieldText.text,
+      );
+      await _messagesApi.saveChatMessage(textMessage, user);
+      _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, fieldText.text).then((res){
+        types.PartialText textMessage =  types.PartialText(
+          text: res,
+        );
+        _messagesApi.saveChatMessage(textMessage,  chatController.chatBot);
+      });
 
       fieldText.clear();
       Navigator.of(context).push(MaterialPageRoute(

@@ -1,9 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -144,36 +146,66 @@ class MessagesApi {
         .limit(1).get();
 
     if (query.docs.isEmpty) {
-       await _firestore
-          .collection(C_CHATROOM)
-          .doc(UserModel().user.userId)
-          .collection(botId)
-          .add({
-            "authorId": botId,
-            "name": botController.bot.name,
-            "createdAt": FieldValue.serverTimestamp(),
-            "id": const Uuid().v4(),
-            "text": "Hi! I'm ${botController.bot.name}. \n${botController.bot.about}"
-          });
+      ChatController chatController = Get.find();
+      final textMessage = types.PartialText(
+        text: "Hi! I'm ${botController.bot.name}. \n${botController.bot.about}",
+      );
+
+      saveChatMessage(textMessage, chatController.chatBot);
     }
   }
 
   /// Save messages as flutter-chat-ui structure except for author
   /// the structure will always have user => bot
   /// @todo handle error
-  Future<void> saveChatMessage(types.TextMessage message) async {
+  Future<void> saveChatMessage(dynamic partialMessage, types.User user) async {
+    types.Message? message;
 
-    await _firestore
-        .collection(C_CHATROOM)
-        .doc(UserModel().user.userId)
-        .collection(botController.bot.botId)
-        .add(<String, dynamic>{
-          "authorId": message.author.id,
-          "name": message.author.firstName,
-          "createdAt": FieldValue.serverTimestamp(),
-          "id": message.id,
-          "text": message.text
-        });
+    if (partialMessage is types.PartialCustom) {
+      message = types.CustomMessage.fromPartial(
+        author: types.User(id: user!.id),
+        id: '',
+        partialCustom: partialMessage,
+      );
+    } else if (partialMessage is types.PartialFile) {
+      message = types.FileMessage.fromPartial(
+        author: user,
+        id: '',
+        partialFile: partialMessage,
+      );
+    } else if (partialMessage is types.PartialImage) {
+      message = types.ImageMessage.fromPartial(
+        author: types.User(id: user!.id),
+        id: '',
+        partialImage: partialMessage,
+      );
+    } else if (partialMessage is types.PartialText) {
+      message = types.TextMessage.fromPartial(
+        author: types.User(id: user!.id),
+        id: '',
+        partialText: partialMessage,
+      );
+    }
+
+    if (message != null) {
+      final messageMap = message.toJson();
+      messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
+      messageMap['authorId'] = user!.id;
+      messageMap['createdAt'] = FieldValue.serverTimestamp();
+      messageMap['updatedAt'] = FieldValue.serverTimestamp();
+
+      await _firestore
+          .collection(C_CHATROOM)
+          .doc(UserModel().user.userId)
+          .collection(botController.bot.botId)
+          .add(messageMap);
+
+      // await _firestore
+      //     .collection(C_CHATROOM)
+      //     .doc(UserModel().user.userId)
+      //     .collection(botController.bot.botId)
+      //     .update({'updatedAt': FieldValue.serverTimestamp()});
+    }
   }
 
   /// Get messages based on flutter-chat-ui structure. Will not need to stream because it is already in state
@@ -223,9 +255,6 @@ class MessagesApi {
       data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
       data['id'] = doc.id;
       data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
-      data['text'] = data['text'];
-      print ("??????????????????????");
-      print (data);
       return [...previousValue, types.Message.fromJson(data)];
     }));
   }

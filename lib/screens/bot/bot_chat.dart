@@ -56,36 +56,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     super.initState();
     setState(() {_isLoading = true; });
     chatController.onChatLoad();
-
-    if (chatController.isInitial == true) {
-      _loadIntroMessages().whenComplete(() => {
-        setState(() {
-          _isLoading = false;
-        })
-      });
-    } else {
-      setState(() {_isLoading = false; });
-    }
-
-  }
-
-  /// static messages on intro, @todo if not frank get api db
-  Future<void> _loadIntroMessages() async {
-    String data = await DefaultAssetBundle.of(context).loadString(
-        "assets/json/botIntro.json");
-    final List<BotPrompt> prompt = jsonDecode(data);
-    setState(() { _prompts = prompt; });
-    _setIntroMessages();
-  }
-  /// static initial messages
-  Future<void> _setIntroMessages() async {
-    types.TextMessage message = createMessage(_prompts[counter].text, chatController.chatBot);
-    // _addMessage(message);
-    if (_prompts[counter].hasNext) {
-      waitTask(_prompts[counter].wait > 0 ? _prompts[counter].wait : 10);
-      counter++;
-      _setIntroMessages();
-    }
+    setState(() {_isLoading = false; });
   }
 
   @override
@@ -146,14 +117,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
             stream: _messagesApi.getChatMessages(),
             builder: (context, snapshot) {
               print (snapshot.data);
-              // Check data
               if (!snapshot.hasData) {
                 return const Frankloader();
               } else {
                 return Chat(
-                  // isAttachmentUploading: _isAttachmentUploading,
+                    isAttachmentUploading: _isAttachmentUploading,
                     messages: snapshot!.data!,
-                    // onAttachmentPressed: _handleAtachmentPressed,
+                    onAttachmentPressed: _handleAtachmentPressed,
                     onMessageTap: _handleMessageTap,
                     onPreviewDataFetched: _handlePreviewDataFetched,
                     onSendPressed: _handleSendPressed,
@@ -166,11 +136,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-  Future<void> _saveMessage(message) async {
+  Future<void> _saveMessage(message, user) async {
     // save as types.User
-    await _messagesApi.saveChatMessage(message);
+    await _messagesApi.saveChatMessage(message, user);
   }
-
 
   void _handleAtachmentPressed() {
     showModalBottomSheet<void>(
@@ -239,7 +208,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         );
 
         // FirebaseChatCore.instance.sendMessage(message, widget.room.id);
-        _saveMessage(message);
+        _saveMessage(message, chatController.chatUser);
         _setAttachmentUploading(false);
       } finally {
         _setAttachmentUploading(false);
@@ -300,12 +269,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
             final file = File(localPath);
             await file.writeAsBytes(bytes);
           }
+          _saveMessage(updatedMessage, chatController.chatUser);
         } finally {
           final updatedMessage = message.copyWith(isLoading: false);
-          _saveMessage(updatedMessage);
+          _saveMessage(updatedMessage, chatController.chatUser);
         }
       }
-
       await OpenFilex.open(localPath);
     }
   }
@@ -315,12 +284,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
       types.PreviewData previewData,
       ) {
     final updatedMessage = message.copyWith(previewData: previewData);
-    _saveMessage(updatedMessage);
+    _saveMessage(updatedMessage, chatController.chatUser);
   }
 
   void _handleSendPressed(types.PartialText message) {
-    types.TextMessage msg = createMessage(message.text, chatController.chatUser);
-    _saveMessage(msg);
+    _saveMessage(message, chatController.chatUser);
     _callAPI(message.text);
   }
 
@@ -333,16 +301,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Future<void> _callAPI(String message) async {
     /// call bot model api
     _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
-      types.TextMessage textMessage =  createMessage(res, chatController.chatBot);
-      _saveMessage(textMessage);
+      types.PartialText textMessage =  createMessage(res, chatController.chatBot);
+      _saveMessage(textMessage, chatController.chatBot);
     });
   }
 
-  types.TextMessage createMessage(String text, types.User user) {
-    final textMessage = types.TextMessage(
-      author: user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
+  types.PartialText createMessage(String text, types.User user) {
+    final textMessage = types.PartialText(
       text: text,
     );
     return textMessage;

@@ -60,27 +60,6 @@ class ChatController extends GetxController {
 
     //create or get room id
     _messagesApi.getOrCreateChatMessages();
-    //load previous messages to 50
-    onLoadFirebaseChat();
-
-    if (isInitial == true) {
-      _loadIntro();
-    }
-  }
-
-  /// load messages from firebase
-  /// only loads once, then we take from getx state afterwards
-  void onLoadFirebaseChat() async {
-    debugPrint("loading fire chat");
-    //
-    // Stream<List<types.Message>>  msgs =  _messagesApi.getChatMessages();
-    // msgs.listen((mgs) {
-    //   for (var msg in mgs) {
-    //     print (msgs);
-    //     addMessage(msg);
-    //   }
-    // });
-
   }
 
   /// add messages
@@ -88,40 +67,5 @@ class ChatController extends GetxController {
     _messages.insert(0, message);
   }
 
-  /// initial onboard intro to get the data
-  Future<void> _loadIntro() async {
-    final data = await rootBundle.loadString('assets/json/botIntro.json');
-    final List<BotPrompt> prompt = jsonDecode(data);
-    _prompts = prompt;
-    _setIntroMessages();
-  }
 
-  /// gets all prompts until retrieveAPI to get API conversations
-  Future<void> _setIntroMessages() async {
-    types.TextMessage message =
-        createMessage(_prompts[_counter].text, _chatBot.value);
-    addMessage(message);
-    if (_prompts[_counter].hasNext) {
-      waitTask(_prompts[_counter].wait > 0 ? _prompts[_counter].wait : 10);
-      _counter++;
-      _setIntroMessages();
-    } else {
-      retrieveAPI = true;
-    }
-  }
-
-  types.TextMessage createMessage(String text, types.User user) {
-    final textMessage = types.TextMessage(
-      author: user,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: text,
-    );
-
-    return textMessage;
-  }
-
-  void waitTask(int seconds) async {
-    Timer(Duration(seconds: seconds), () => debugPrint('done waiting'));
-  }
 }
