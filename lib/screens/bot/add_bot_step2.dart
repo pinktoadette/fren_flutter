@@ -27,9 +27,8 @@ class Step2Container extends StatelessWidget {
             onSuccess: () async {
               // Show success message
               successDialog(context,
-                  title: _i18n.translate("Success"),
                   message:
-                  _i18n.translate("create_bot_success"),
+                  _i18n.translate("Success"),
                   positiveAction: () {
 
                     Future(() {

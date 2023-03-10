@@ -3,26 +3,15 @@ import 'package:fren_app/api/dislikes_api.dart';
 import 'package:fren_app/api/likes_api.dart';
 import 'package:fren_app/api/matches_api.dart';
 import 'package:fren_app/api/visits_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/dialogs/its_match_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
-import 'package:fren_app/screens/disliked_profile_screen.dart';
-import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/widgets/bot/quick_chat.dart';
-import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/bot/new_bots.dart';
-import 'package:fren_app/widgets/no_data.dart';
-import 'package:fren_app/widgets/processing.dart';
-import 'package:fren_app/widgets/profile_card.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/users_api.dart';
 import 'package:fren_app/widgets/search.dart';
-import 'package:fren_app/widgets/activity.dart';
 import 'package:fren_app/widgets/widget_title.dart';
-import 'package:iconsax/iconsax.dart';
 
 class DiscoverTab extends StatefulWidget {
   const DiscoverTab({Key? key}) : super(key: key);

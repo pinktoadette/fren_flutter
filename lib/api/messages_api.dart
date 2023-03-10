@@ -1,14 +1,27 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/user_controller.dart';
+import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:async/async.dart';
+import 'package:get/get.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:uuid/uuid.dart';
+
+import 'firechat/firechat_utils.dart';
 
 class MessagesApi {
   /// FINAL VARIABLES
   ///
   final _firestore = FirebaseFirestore.instance;
   final _conversationsApi = ConversationsApi();
+  final BotController botController = Get.find();
+  final UserController userController = Get.find();
 
   /// Get stream messages for current user
   Stream<QuerySnapshot<Map<String, dynamic>>> getMessages(String withUserId) {
@@ -39,11 +52,11 @@ class MessagesApi {
         .collection(receiverId)
         .doc()
         .set(<String, dynamic>{
-          USER_ID: fromUserId,
-          MESSAGE_TYPE: type,
-          MESSAGE_TEXT: textMsg,
-          MESSAGE_IMG_LINK: imgLink,
-          TIMESTAMP: FieldValue.serverTimestamp(),
+      USER_ID: fromUserId,
+      MESSAGE_TYPE: type,
+      MESSAGE_TEXT: textMsg,
+      MESSAGE_IMG_LINK: imgLink,
+      TIMESTAMP: FieldValue.serverTimestamp(),
     });
 
     /// Save last conversation
@@ -116,5 +129,104 @@ class MessagesApi {
         }
       }
     }
+  }
+
+
+
+  /// Get or create chat messages
+  /// User -> Bots -> messages
+  Future getOrCreateChatMessages() async {
+    String botId = botController.bot.botId;
+    var query = await _firestore
+        .collection(C_CHATROOM)
+        .doc(UserModel().user.userId)
+        .collection(botId)
+        .limit(1).get();
+
+    if (query.docs.isEmpty) {
+       await _firestore
+          .collection(C_CHATROOM)
+          .doc(UserModel().user.userId)
+          .collection(botId)
+          .add({
+            "authorId": botId,
+            "name": botController.bot.name,
+            "createdAt": FieldValue.serverTimestamp(),
+            "id": const Uuid().v4(),
+            "text": "Hi! I'm ${botController.bot.name}. \n${botController.bot.about}"
+          });
+    }
+  }
+
+  /// Save messages as flutter-chat-ui structure except for author
+  /// the structure will always have user => bot
+  /// @todo handle error
+  Future<void> saveChatMessage(types.TextMessage message) async {
+
+    await _firestore
+        .collection(C_CHATROOM)
+        .doc(UserModel().user.userId)
+        .collection(botController.bot.botId)
+        .add(<String, dynamic>{
+          "authorId": message.author.id,
+          "name": message.author.firstName,
+          "createdAt": FieldValue.serverTimestamp(),
+          "id": message.id,
+          "text": message.text
+        });
+  }
+
+  /// Get messages based on flutter-chat-ui structure. Will not need to stream because it is already in state
+  /// @todo pagination
+  Stream<List<types.Message>> getChatMessages({
+    List<Object?>? endAt,
+    List<Object?>? endBefore,
+    int? limit,
+    List<Object?>? startAfter,
+    List<Object?>? startAt,
+  }) {
+
+    var query = _firestore
+        .collection(C_CHATROOM)
+        .doc(UserModel().user.userId)
+        .collection(botController.bot.botId)
+        .orderBy("createdAt", descending: true);
+
+    if (endAt != null) {
+      query = query.endAt(endAt);
+    }
+
+    if (endBefore != null) {
+      query = query.endBefore(endBefore);
+    }
+
+    if (limit != null) {
+      query = query.limit(limit);
+    }
+
+    if (startAfter != null) {
+      query = query.startAfter(startAfter);
+    }
+
+    if (startAt != null) {
+      query = query.startAt(startAt);
+    }
+
+    return query.snapshots().map(
+            (snapshot) => snapshot.docs.fold<List<types.Message>>(
+            [],
+                (previousValue, doc) {
+      final data = doc.data();
+      final author = types.User(id: data['authorId'] as String, firstName: data['name']);
+
+      data['author'] = author.toJson();
+      data['createdAt'] = data['createdAt']?.millisecondsSinceEpoch;
+      data['id'] = doc.id;
+      data['updatedAt'] = data['updatedAt']?.millisecondsSinceEpoch;
+      data['text'] = data['text'];
+      print ("??????????????????????");
+      print (data);
+      return [...previousValue, types.Message.fromJson(data)];
+    }));
   }
 }

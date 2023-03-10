@@ -1,8 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
@@ -18,16 +21,17 @@ class ChatController extends GetxController {
   RxList<types.Message> _messages = <types.Message>[].obs;
   late List<BotPrompt> _prompts;
 
+  final _messagesApi = MessagesApi();
+
   String? error;
+  bool retrieveAPI = true;
   bool isLoading = false;
   bool isInitial = false;
   bool isTest = false;
-  bool _retrieveAPI = false;
   int _counter = 0;
 
   types.User get chatUser => _chatUser.value;
   set chatUser(types.User value) => _chatUser.value = value;
-  set pchatUser(types.User value) => _chatUser.value = value;
 
   types.User get chatBot => _chatBot.value;
   set chatBot(types.User value) => _chatBot.value = value;
@@ -37,7 +41,6 @@ class ChatController extends GetxController {
 
   @override
   void onInit() async {
-    debugPrint(" in chat controller ");
     _chatUser = types.User(
       id: userController.user.userId,
       firstName: userController.user.userFullname,
@@ -48,21 +51,44 @@ class ChatController extends GetxController {
     super.onInit();
   }
 
+  /// load the current bot
   void onChatLoad() {
     _chatBot = types.User(
       id: botController.bot.botId,
       firstName: botController.bot.name,
     ).obs;
 
+    //create or get room id
+    _messagesApi.getOrCreateChatMessages();
+    //load previous messages to 50
+    onLoadFirebaseChat();
+
     if (isInitial == true) {
       _loadIntro();
     }
   }
 
+  /// load messages from firebase
+  /// only loads once, then we take from getx state afterwards
+  void onLoadFirebaseChat() async {
+    debugPrint("loading fire chat");
+    //
+    // Stream<List<types.Message>>  msgs =  _messagesApi.getChatMessages();
+    // msgs.listen((mgs) {
+    //   for (var msg in mgs) {
+    //     print (msgs);
+    //     addMessage(msg);
+    //   }
+    // });
+
+  }
+
+  /// add messages
   void addMessage(types.Message message) {
     _messages.insert(0, message);
   }
 
+  /// initial onboard intro to get the data
   Future<void> _loadIntro() async {
     final data = await rootBundle.loadString('assets/json/botIntro.json');
     final List<BotPrompt> prompt = jsonDecode(data);
@@ -70,6 +96,7 @@ class ChatController extends GetxController {
     _setIntroMessages();
   }
 
+  /// gets all prompts until retrieveAPI to get API conversations
   Future<void> _setIntroMessages() async {
     types.TextMessage message =
         createMessage(_prompts[_counter].text, _chatBot.value);
@@ -79,7 +106,7 @@ class ChatController extends GetxController {
       _counter++;
       _setIntroMessages();
     } else {
-      _retrieveAPI = true;
+      retrieveAPI = true;
     }
   }
 
@@ -90,6 +117,7 @@ class ChatController extends GetxController {
       id: const Uuid().v4(),
       text: text,
     );
+
     return textMessage;
   }
 

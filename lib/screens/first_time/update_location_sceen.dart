@@ -1,22 +1,16 @@
 import 'dart:async';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/controller/chat_controller.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:fren_app/widgets/rounded_top.dart';
@@ -30,7 +24,6 @@ class UpdateLocationScreen extends StatefulWidget {
 }
 
 class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
-  final ChatController chatController = Get.put(ChatController());
 
   // Variables
   late AppLocalizations _i18n;

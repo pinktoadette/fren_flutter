@@ -4,18 +4,15 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
-import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
-import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/discover_tab.dart';
-import 'package:fren_app/tabs/matches_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
@@ -52,8 +49,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _showCurrentNavBar() {
     List<Widget> options = <Widget>[
       const DiscoverTab(),
-      const MatchesTab(),
       const ConversationsTab(),
+      NotificationsScreen(),
       const ProfileTab()
     ];
 
@@ -265,18 +262,18 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             /// Discover Tab
             BottomNavigationBarItem(
+                label: _i18n.translate("discover"),
                 icon: Icon(Iconsax.search_favorite,
                       color: _selectedIndex == 0
                           ? Theme.of(context).primaryColor
-                          : null),
-                label: _i18n.translate("discover")),
+                          : null)),
 
             /// Matches Tab
-            BottomNavigationBarItem(
-                icon: Icon(Iconsax.receipt_square,
-                    color: _selectedIndex == 1
-                        ? Theme.of(context).primaryColor
-                        : null),
+            // BottomNavigationBarItem(
+            //     icon: Icon(Iconsax.receipt_square,
+            //         color: _selectedIndex == 1
+            //             ? Theme.of(context).primaryColor
+            //             : null),
                 // SvgIcon(
                 //     _selectedIndex == 1
                 //         ? "assets/icons/heart_2_icon.svg"
@@ -284,29 +281,29 @@ class _HomeScreenState extends State<HomeScreen> {
                 //     color: _selectedIndex == 1
                 //         ? Theme.of(context).primaryColor
                 //         : null),
-                label: _i18n.translate("requests")),
+                // label: _i18n.translate("requests")),
 
             /// Conversations Tab
             BottomNavigationBarItem(
-                icon: _getConversationCounter(),
-                label: _i18n.translate("chat")),
+                label: _i18n.translate("requests"),
+                icon: _getConversationCounter(),),
 
             /// notification tab
-            // BottomNavigationBarItem(
-            //     icon:  _getNotificationCounter(),
-            //     label: _i18n.translate("notifications"),
-            // ),
+            BottomNavigationBarItem(
+                icon:  _getNotificationCounter(),
+                label: _i18n.translate("requests")
+            ),
 
             /// Profile Tab
             BottomNavigationBarItem(
-                icon: SvgIcon(
+              label: _i18n.translate("profile"),
+              icon: SvgIcon(
                     _selectedIndex == 3
                         ? "assets/icons/user_2_icon.svg"
                         : "assets/icons/user_icon.svg",
                     color: _selectedIndex == 3
                         ? Theme.of(context).primaryColor
-                        : null),
-                label: _i18n.translate("profile")),
+                        : null),),
           ]),
       body: _showCurrentNavBar(),
           floatingActionButton: FloatingActionButton(

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/bot_api.dart';
+import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/app_model.dart';
@@ -93,6 +94,7 @@ class UserModel extends Model {
 
     final UserController userController = Get.find();
     userController.setUser(user);
+    Get.put(ChatController());
   }
 
   /// Update user data

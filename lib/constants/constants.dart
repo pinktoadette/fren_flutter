@@ -75,6 +75,7 @@ const String C_USERS = "Users";
 const String C_BOT = "Bots";
 const String C_BOT_INTRO = "BotIntro";
 const String C_BOT_USER_MATCH = "BotUserMatch";
+const String C_CHATROOM = "Chatroom";
 const String C_FLAGGED_USERS = "FlaggedUsers";
 const String C_CONNECTIONS = "Connections";
 const String C_MATCHES = "Matches";
