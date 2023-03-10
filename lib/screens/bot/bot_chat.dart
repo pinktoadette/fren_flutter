@@ -12,6 +12,7 @@ import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/api/py_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
@@ -40,6 +41,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
 
   late  List<BotPrompt> _prompts;
+  late Stream<List<types.Message>> _messages;
   final _messagesApi = MessagesApi();
   final _externalBot = ExternalBotApi();
   bool _isLoading = false;
@@ -57,6 +59,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {_isLoading = true; });
     chatController.onChatLoad();
     setState(() {_isLoading = false; });
+    _messages = _messagesApi.getChatMessages();
   }
 
   @override
@@ -114,16 +117,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
         body: StreamBuilder<List<types.Message>>(
             initialData: const [],
-            stream: _messagesApi.getChatMessages(),
+            stream: _messages,
             builder: (context, snapshot) {
-              print (snapshot.data);
               if (!snapshot.hasData) {
                 return const Frankloader();
               } else {
                 return Chat(
-                    theme: const DefaultChatTheme(
-                      inputBackgroundColor: Colors.red,
-                    ),
+                    showUserNames: true,
                     isAttachmentUploading: _isAttachmentUploading,
                     messages: snapshot!.data!,
                     onAttachmentPressed: _handleAtachmentPressed,
@@ -160,24 +160,24 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 },
                 child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Photo'),
+                  child: Text('Photo', style: TextStyle(color: Colors.white),),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleFileSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text('File'),
-                ),
-              ),
+              // TextButton(
+              //   onPressed: () {
+              //     Navigator.pop(context);
+              //     _handleFileSelection();
+              //   },
+              //   child: const Align(
+              //     alignment: Alignment.centerLeft,
+              //     child: Text('File', style: TextStyle(color: Colors.white),),
+              //   ),
+              // ),
               TextButton(
                 onPressed: () => Navigator.pop(context),
                 child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Cancel'),
+                  child: Text('Cancel', style: TextStyle(color: Colors.grey ),),
                 ),
               ),
             ],
@@ -301,12 +301,23 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
+  /// call bot model api
   Future<void> _callAPI(String message) async {
-    /// call bot model api
+    // hacky way - chat_ui package is not updated from repo for typing indicator
+     setState(() { _isAttachmentUploading = true; });
     _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
       types.PartialText textMessage =  createMessage(res, chatController.chatBot);
       _saveMessage(textMessage, chatController.chatBot);
-    });
+    }).catchError((error) {
+      showScaffoldMessage(
+          context: context,
+          message: _i18n.translate("an_error_has_occurred"),
+          bgcolor: Colors.pinkAccent);
+    }).whenComplete(() {
+      setState(() {
+        _isAttachmentUploading = false;
+      });
+    });;
   }
 
   types.PartialText createMessage(String text, types.User user) {

@@ -1,7 +1,6 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/bot_model.dart';

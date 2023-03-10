@@ -45,15 +45,20 @@ class _QuickChatState extends State<QuickChat> {
       final textMessage = types.PartialText(
         text: fieldText.text,
       );
+      //save user's comments
       await _messagesApi.saveChatMessage(textMessage, user);
       _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, fieldText.text).then((res){
         types.PartialText textMessage =  types.PartialText(
           text: res,
         );
+        // save bot's comments
         _messagesApi.saveChatMessage(textMessage,  chatController.chatBot);
       });
 
+      // clear text and dismiss keyboard
       fieldText.clear();
+      FocusScope.of(context).requestFocus(FocusNode());
+
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => const BotChatScreen()
       ));
