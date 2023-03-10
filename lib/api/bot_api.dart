@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -55,4 +56,30 @@ class BotApi {
         .orderBy(TIMESTAMP)
         .snapshots();
   }
+
+  Future<void> tryBot(Bot bot) async {
+    var query = await _firestore
+        .collection(C_BOT_TRIALS)
+        .doc(UserModel().user.userId)
+        .collection(bot.botId)
+        .limit(1).get();
+
+    if (query.docs.isEmpty) {
+      await _firestore
+          .collection(C_BOT_TRIALS)
+          .doc(UserModel().user.userId)
+          .collection(bot.botId)
+          .add({
+            BOT_TRIAL_BOT_ID: bot.botId,
+            BOT_TRIAL_OWNER_ID: UserModel().user.userId,
+            BOT_TRIAL_TIMES: 0
+          });
+    } else {
+
+
+    }
+
+
+  }
+
 }

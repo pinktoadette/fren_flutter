@@ -123,5 +123,10 @@ class BotProfileCard extends StatelessWidget {
       ),
     );
   }
+
+  void _tryBot() {
+    // save trial chances - limit to 5 chats
+
+  }
 }
 

@@ -68,6 +68,11 @@ const BOT_ACTIVE_STATUS = "bot_active_status"; //pause ?
 const BOT_ADMIN_STATUS = "bot_admin_status";
 const BOT_ADMIN_NOTE = "bot_admin_note";
 
+/// trials
+const BOT_TRIAL_BOT_ID = BOT_ID;
+const BOT_TRIAL_OWNER_ID = "bot_trial_user_id";
+const BOT_TRIAL_TIMES = "bot_trial_times"; // counter for how many times user tried
+
 /// DATABASE COLLECTION NAMES USED IN APP
 ///
 const String C_APP_INFO = "AppInfo";
@@ -76,6 +81,7 @@ const String C_BOT = "Bots";
 const String C_BOT_INTRO = "BotIntro";
 const String C_BOT_USER_MATCH = "BotUserMatch";
 const String C_CHATROOM = "Chatroom";
+const String C_BOT_TRIALS  = "BotTrials";
 const String C_FLAGGED_USERS = "FlaggedUsers";
 const String C_CONNECTIONS = "Connections";
 const String C_MATCHES = "Matches";
