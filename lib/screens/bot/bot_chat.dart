@@ -121,6 +121,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 return const Frankloader();
               } else {
                 return Chat(
+                    theme: const DefaultChatTheme(
+                      inputBackgroundColor: Colors.red,
+                    ),
                     isAttachmentUploading: _isAttachmentUploading,
                     messages: snapshot!.data!,
                     onAttachmentPressed: _handleAtachmentPressed,

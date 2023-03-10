@@ -4,6 +4,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:onboarding/onboarding.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -78,13 +79,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             controller: ScrollController(),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
+                const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 45.0,
                     vertical: 10.0,
                   ),
-                  child: Image.asset('assets/images/background_image.jpg',
-                      color: Theme.of(context).colorScheme.onPrimary),
+                  child: Frankloader(),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 45.0),

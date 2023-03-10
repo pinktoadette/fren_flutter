@@ -1,25 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
-import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:async/async.dart';
 import 'package:get/get.dart';
-import 'package:rxdart/rxdart.dart';
-import 'package:uuid/uuid.dart';
 
-import 'firechat/firechat_utils.dart';
 
 class MessagesApi {
-  /// FINAL VARIABLES
-  ///
   final _firestore = FirebaseFirestore.instance;
   final _conversationsApi = ConversationsApi();
   final BotController botController = Get.find();
