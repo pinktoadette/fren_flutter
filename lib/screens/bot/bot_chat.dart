@@ -313,8 +313,18 @@ class _BotChatScreenState extends State<BotChatScreen> {
     // hacky way - chat_ui package is not updated from repo for typing indicator
      setState(() { _isAttachmentUploading = true; });
     _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
-      types.PartialText textMessage =  createMessage(res, chatController.chatBot);
-      _saveMessage(textMessage, chatController.chatBot);
+      if (res["type"]=="image"){
+        final imageMessage = types.PartialImage(
+          name: res["image_url"],
+          uri: res["image_url"],
+          size: 256
+        );
+        _saveMessage(imageMessage, chatController.chatBot);
+      }else {
+        types.PartialText textMessage =  createMessage(res, chatController.chatBot);
+        _saveMessage(textMessage, chatController.chatBot);
+      }
+
     }).catchError((error) {
       showScaffoldMessage(
           context: context,

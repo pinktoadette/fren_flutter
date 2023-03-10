@@ -12,7 +12,7 @@ class ExternalBotApi {
   final baseUri = 'https://fin-pyapi.vercel.app/api/';
   final BotController botControl = Get.find();
 
-  Future<String> getBotPrompt(String domain, String repoId, String inputs) async {
+  Future<dynamic> getBotPrompt(String domain, String repoId, String inputs) async {
     String url = '${baseUri}machi_bot';
     Map<String, String> data = {"domain": domain, "model": "train_data", "prompt": inputs};
 
@@ -22,7 +22,6 @@ class ExternalBotApi {
       data = {"domain": domain, "model": "facebook/blenderbot-400M-distill", "prompt": inputs};
     }
 
-    print (data);
 
     //@todo need catch error
     final dio = Dio();
@@ -38,7 +37,7 @@ class ExternalBotApi {
       return _data!['generated_text'];
     }
 
-    return response.toString();
+    return response.data;
   }
 
 }
