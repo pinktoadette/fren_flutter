@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
@@ -12,6 +13,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
@@ -19,6 +21,7 @@ import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/store_products.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -28,7 +31,8 @@ import '../rounded_top.dart';
 class BotProfileCard extends StatelessWidget {
   final Bot bot;
   final bool? showStatus;
-  const BotProfileCard({Key? key, required this.bot, this.showStatus }) : super(key: key);
+  final bool? showPurchase;
+  const BotProfileCard({Key? key, required this.bot, this.showStatus, this.showPurchase }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +57,7 @@ class BotProfileCard extends StatelessWidget {
                   Expanded(
                       child: Padding(
                           padding: const EdgeInsets.all(30),
-                        child: Text("Price: ${bot.price ?? 0.00} \n\n${bot.about ?? ""}"),
+                        child: Text("Price: ${bot.price! <= 0 ? "Free" : bot.price} \n\n${bot.about ?? ""}"),
                       )
                   ),
                 ]
@@ -86,6 +90,31 @@ class BotProfileCard extends StatelessWidget {
                     ),
                   ),
 
+                ],
+              ),
+              if (showPurchase == true) Row(
+                children: [
+                  Padding(padding: const EdgeInsets.all(20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        Container(
+                          width: 250,
+                          alignment: Alignment.center,
+                          child: ElevatedButton(
+                            child: Text("Free to Try"),
+                            onPressed: () {
+                              final BotController botController = Get.find();
+                              botController.bot = bot;
+                              Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => const BotChatScreen() ));
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ],
               )
             ],

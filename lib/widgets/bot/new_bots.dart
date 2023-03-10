@@ -1,11 +1,12 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/bot_model.dart';
+import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
@@ -68,6 +69,9 @@ class _ListBotWidget extends State<ListBotWidget> {
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
                                   ListTile(
+                                    onTap: () {
+                                      _showBotInfo(_listBot![index]);
+                                    },
                                     // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                                     minLeadingWidth: 15,
                                     leading: _listBot![index]?.profilePhoto != "" ? CircleAvatar(
@@ -87,29 +91,28 @@ class _ListBotWidget extends State<ListBotWidget> {
                   ),
                 )
       ));
-
-      // return Container(
-      //   margin: const EdgeInsets.symmetric(vertical: 5.0),
-      //   height: 80.0,
-      //   child: ListView(
-      //     // This next line does the trick.
-      //     scrollDirection: Axis.horizontal,
-      //     children: <Widget>[
-      //       Card(
-      //           clipBehavior: Clip.antiAlias,
-      //           shape: RoundedRectangleBorder(
-      //               borderRadius: BorderRadius.circular(28)),
-      //           child: SizedBox(
-      //             width: 200,
-      //             child: Column(
-      //               children: [
-      //                 Text("data")
-      //               ],
-      //             ),
-      //           ))
-      //     ],
-      //   ),
-      // );
     }
+  }
+
+  void _showBotInfo(Bot bot) {
+    double height = MediaQuery.of(context).size.height;
+
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: max(height, 400),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(
+                height: 30,
+              ),
+              BotProfileCard(bot: bot, showPurchase: true,)
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

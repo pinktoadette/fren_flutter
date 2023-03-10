@@ -10,6 +10,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/api/py_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -91,7 +92,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () {
-              Navigator.of(context).pop();
+              if (chatController.isTest == false) {
+                botController.fetchCurrentBot(DEFAULT_BOT_ID);
+                Navigator.of(context).pop();
+              } else {
+                Navigator.of(context).pop();
+              }
+              // Navigator.of(context).pop();
             },
           ),
           // Show User profile info
