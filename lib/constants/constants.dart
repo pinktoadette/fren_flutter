@@ -137,7 +137,6 @@ const String USER_SETTINGS = "user_settings";
 const String USER_STATUS = "user_status";
 const String USER_IS_VERIFIED = "user_is_verified";
 const String USER_LEVEL = "user_level";
-const String USER_REG_DATE = "user_reg_date";
 const String USER_LAST_UPDATE = "user_last_update";
 const String USER_LAST_LOGIN = "user_last_login";
 const String USER_DEVICE_TOKEN = "user_device_token";

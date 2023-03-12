@@ -85,8 +85,8 @@ class UsersApi {
 
     /// Sort by newest
     allUsers.sort((a, b) {
-      final DateTime userRegDateA = a[USER_REG_DATE].toDate();
-      final DateTime userRegDateB = b[USER_REG_DATE].toDate();
+      final DateTime userRegDateA = a[CREATED_AT].toDate();
+      final DateTime userRegDateB = b[CREATED_AT].toDate();
       return userRegDateA.compareTo(userRegDateB);
     });
 

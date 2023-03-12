@@ -101,16 +101,15 @@ class DatabaseService {
     List<Map> result = await db.rawQuery('Select * from bot where fbId=?', [bot.id]);
     print (result);
     if (result.isEmpty) {
-      await db.rawInsert('INSERT INTO bot('
-          'createdAt INT,'
-          'updatedAt INT, '
-          'fbId TEXT, '
-          'price INT, '
-          'name TEXT, '
-          'domain TEXT, '
-          'subdomain TEXT, '
-          'repoId TEXT, '
-          'about TEXT, ) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+      await db.rawInsert('INSERT INTO bot(createdAt, '
+          'updatedAt, '
+          'fbId, '
+          'price, '
+          'name, '
+          'domain, '
+          'subdomain, '
+          'repoId, '
+          'about) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [
             bot[CREATED_AT].millisecondsSinceEpoch,
         bot[UPDATED_AT].millisecondsSinceEpoch,
         bot[BOT_ID],

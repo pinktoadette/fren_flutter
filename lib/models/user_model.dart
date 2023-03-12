@@ -419,7 +419,8 @@ class UserModel extends Model {
       USER_LOCALITY: '',
       // End
       USER_LAST_LOGIN: FieldValue.serverTimestamp(),
-      USER_REG_DATE: FieldValue.serverTimestamp(),
+      CREATED_AT: FieldValue.serverTimestamp(),
+      UPDATED_AT: FieldValue.serverTimestamp(),
       USER_DEVICE_TOKEN: userDeviceToken,
 
       // enable
@@ -723,7 +724,8 @@ class UserModel extends Model {
             USER_FULLNAME: user.displayName,
             USER_GEO_POINT: geoPoint.data,
             USER_LAST_LOGIN: FieldValue.serverTimestamp(),
-            USER_REG_DATE: FieldValue.serverTimestamp(),
+            CREATED_AT: FieldValue.serverTimestamp(),
+            UPDATED_AT: FieldValue.serverTimestamp(),
             USER_ENABLE_MODE: {
               USER_ENABLE_DATE: true,
               USER_ENABLE_SERV: true
