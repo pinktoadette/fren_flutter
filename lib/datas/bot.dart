@@ -88,7 +88,7 @@ class Bot {
       name: doc[BOT_NAME],
       model: doc[BOT_MODEL] ?? '',
       repoId: doc[BOT_REPO_ID] ?? '',
-      price: doc[BOT_PRICE] ?? 0,
+      price: doc[BOT_PRICE]*1.0 ?? 0,
       subdomain: doc[BOT_SUBDOMAIN] ?? '',
       botOwnerId: doc[BOT_OWNER_ID],
       about: doc[BOT_ABOUT],

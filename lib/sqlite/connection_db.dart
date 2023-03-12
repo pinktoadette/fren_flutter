@@ -62,7 +62,7 @@ class DatabaseService {
           'createdAt INT, '
           'updatedAt INT, '
           'fbId TEXT KEY UNIQUE, '
-          'price INT, '
+          'price REAL, '
           'name TEXT, '
           'domain TEXT, '
           'subdomain TEXT, '

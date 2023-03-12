@@ -31,6 +31,7 @@ class BotModel extends Model {
     var data = await _firestore.collection(C_BOT).doc(botId).get();
     /// Check user account in local database
     /// temporary to add frank
+    print (data);
     final DatabaseService _databaseService = DatabaseService();
     _databaseService.getOrAddBot(data);
 
