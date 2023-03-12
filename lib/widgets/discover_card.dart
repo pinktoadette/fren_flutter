@@ -16,9 +16,10 @@ class ButtonChanged extends Notification {
 class DiscoverCard extends StatelessWidget {
   final String title;
   final String subtitle;
+  final String btnText;
   final bool showFrankie = true;
 
-  const DiscoverCard({Key? key, required this.title, required this.subtitle}) : super(key: key);
+  const DiscoverCard({Key? key, required this.title, required this.subtitle, required this.btnText}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -54,7 +55,7 @@ class DiscoverCard extends StatelessWidget {
                 ),
                 ElevatedButton(onPressed: (){
                   ButtonChanged(true).dispatch(context);
-                }, child: Text(_i18n.translate("got_it")))
+                }, child: Text(btnText))
               ],
             ),
             ]

@@ -28,7 +28,6 @@ class _ActivityTabState extends State<ActivityTab> {
 
   Future<void> _fetchInitialFrankie() async {
     List steps = await _botApi.getInitialFrankie();
-    print (steps);
     setState(() => _listFeatures = steps);
   }
 
@@ -46,7 +45,6 @@ class _ActivityTabState extends State<ActivityTab> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    double screenHeight = MediaQuery.of(context).size.height;
     if(_listFeatures?.isEmpty == true) {
       return const Frankloader();
     }
@@ -83,12 +81,24 @@ class _ActivityTabState extends State<ActivityTab> {
         opacity: _visible ? 1.0 : 0.0,
         duration: const Duration(milliseconds: 500),
         // The green box must be a child of the AnimatedOpacity widget.
-        child: DiscoverCard(title: _listFeatures![_currentStep]['title'], subtitle: _listFeatures![_currentStep]['subtitle']),
+        child: DiscoverCard(
+            title: _listFeatures![_currentStep]['title'],
+            subtitle: _listFeatures![_currentStep]['subtitle'],
+            btnText: _listFeatures![_currentStep]['btn_text'],
+        ),
       ),
         onNotification: (n) {
           if (_currentStep < _listFeatures.length) {
-            setState(() {
-              _currentStep = _currentStep+1;
+            Future.delayed(const Duration(seconds: 1), (){
+              setState(() {_visible = false;});
+            });
+
+            Future.delayed(const Duration(seconds: 2), ()
+            {
+              setState(() {
+                _currentStep = _currentStep + 1;
+                _visible = true;
+              });
             });
           } else {
             setState(() {
