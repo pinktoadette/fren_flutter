@@ -262,17 +262,25 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             /// Discover Tab
             BottomNavigationBarItem(
-                label: _i18n.translate("discover"),
-                icon: Icon(Iconsax.search_favorite,
+                label: _i18n.translate("activity"),
+                icon: Icon(Iconsax.activity,
                       color: _selectedIndex == 0
                           ? Theme.of(context).primaryColor
                           : null)),
 
 
-            /// Conversations Tab
+            /// Discover new machi
             BottomNavigationBarItem(
-                label: _i18n.translate("chat"),
-                icon: _getConversationCounter(),),
+                label: "Machi",
+                icon: Icon(Iconsax.search_favorite,
+                    color: _selectedIndex == 0
+                        ? Theme.of(context).primaryColor
+                        : null)),
+
+            /// Conversations Tab
+            // BottomNavigationBarItem(
+            //     label: _i18n.translate("chat"),
+            //     icon: _getConversationCounter(),),
 
             /// notification tab
             BottomNavigationBarItem(
