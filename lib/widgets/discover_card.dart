@@ -41,7 +41,7 @@ class DiscoverCard extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             const SizedBox(
-              height: 30,
+              height: 20,
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
