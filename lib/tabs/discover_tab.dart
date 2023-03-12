@@ -10,6 +10,7 @@ import 'package:fren_app/widgets/bot/quick_chat.dart';
 import 'package:fren_app/widgets/bot/new_bots.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/users_api.dart';
+import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/search.dart';
 import 'package:fren_app/widgets/widget_title.dart';
 
@@ -23,47 +24,15 @@ class DiscoverTab extends StatefulWidget {
 class _DiscoverTabState extends State<DiscoverTab> {
   // Variables
   final GlobalKey<SwipeStackState> _swipeKey = GlobalKey<SwipeStackState>();
-  final LikesApi _likesApi = LikesApi();
-  final DislikesApi _dislikesApi = DislikesApi();
-  final MatchesApi _matchesApi = MatchesApi();
-  final VisitsApi _visitsApi = VisitsApi();
-  final UsersApi _usersApi = UsersApi();
   List<DocumentSnapshot<Map<String, dynamic>>>? _users;
   late AppLocalizations _i18n;
+  final _listFeatures = [
 
-  /// Get all Users
-  Future<void> _loadUsers(
-      List<DocumentSnapshot<Map<String, dynamic>>> dislikedUsers) async {
-    _usersApi.getUsers(dislikedUsers: dislikedUsers).then((users) {
-      // Check result
-      if (users.isNotEmpty) {
-        if (mounted) {
-          setState(() => _users = users);
-        }
-      } else {
-        if (mounted) {
-          setState(() => _users = []);
-        }
-      }
-      // Debug
-      debugPrint('getUsers() -> ${users.length}');
-      debugPrint('getDislikedUsers() -> ${dislikedUsers.length}');
-    });
-  }
+  ];
 
   @override
   void initState() {
     super.initState();
-
-    /// First: Load All Disliked Users to be filtered
-    _dislikesApi.getDislikedUsers(withLimit: false).then(
-        (List<DocumentSnapshot<Map<String, dynamic>>> dislikedUsers) async {
-      /// Validate user max distance
-      await UserModel().checkUserMaxDistance();
-
-      /// Load all users
-      await _loadUsers(dislikedUsers);
-    });
   }
 
   @override
@@ -79,12 +48,23 @@ class _DiscoverTabState extends State<DiscoverTab> {
           WidgetTitle(title: "${_i18n.translate("my")} machi"),
           const ListBotWidget(),
 
+          // Container(
+          // margin: const EdgeInsets.symmetric(vertical: 5.0),
+          // height: 350.0,
+          // child: ListView.builder(
+          //   shrinkWrap: true,
+          //   scrollDirection: Axis.horizontal,
+          //   itemCount: _listFeatures!.length,
+          //   itemBuilder: (context, index) => DiscoverCard()
+          // ),
+          // ),
           SingleChildScrollView(
               padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
               child: Column(
                 children: [
                   WidgetTitle(title:_i18n.translate("activity")),
                   // ActivityWidget()
+                  DiscoverCard()
                 ],
               ),
           ),

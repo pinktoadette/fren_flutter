@@ -22,7 +22,7 @@ class ExternalBotApi {
       url = '${baseUri}huggable_bot';
       data = {"domain": domain, "model": "facebook/blenderbot-400M-distill", "prompt": inputs};
     }
-    
+
     //@todo need catch error
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';

@@ -9,7 +9,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
-import 'package:fren_app/screens/notifications_screen.dart';
+import 'package:fren_app/tabs/notifications_screen.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/discover_tab.dart';
@@ -291,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
             /// notification tab
             BottomNavigationBarItem(
                 icon:  _getNotificationCounter(),
-                label: _i18n.translate("requests")
+                label: _i18n.translate("alerts")
             ),
 
             /// Profile Tab
