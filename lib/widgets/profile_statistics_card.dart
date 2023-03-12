@@ -1,11 +1,11 @@
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/disliked_profile_screen.dart';
 import 'package:fren_app/screens/profile_likes_screen.dart';
 import 'package:fren_app/screens/profile_visits_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ProfileStatisticsCard extends StatelessWidget {
   // Text style
@@ -29,8 +29,7 @@ class ProfileStatisticsCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: SvgIcon("assets/icons/heart_icon.svg",
-                width: 22, height: 22, color: Theme.of(context).primaryColor),
+            leading: Icon(Iconsax.message, color: Theme.of(context).primaryColor),
             title: Text(i18n.translate("LIKES"), style: _textStyle),
             trailing: _counter(context, UserModel().user.userTotalLikes),
             onTap: () {
@@ -42,8 +41,7 @@ class ProfileStatisticsCard extends StatelessWidget {
           ),
           const Divider(height: 0),
           ListTile(
-            leading: SvgIcon("assets/icons/eye_icon.svg",
-                width: 31, height: 31, color: Theme.of(context).primaryColor),
+            leading: Icon(Iconsax.eye, color: Theme.of(context).primaryColor),
             title: Text(i18n.translate("VISITS"), style: _textStyle),
             trailing: _counter(context, UserModel().user.userTotalVisits),
             onTap: () {
@@ -55,15 +53,11 @@ class ProfileStatisticsCard extends StatelessWidget {
           ),
           const Divider(height: 0),
           ListTile(
-            leading: SvgIcon("assets/icons/close_icon.svg",
-                width: 25, height: 25, color: Theme.of(context).primaryColor),
+            leading: Icon(Iconsax.close_circle, color: Theme.of(context).primaryColor),
             title: Text(i18n.translate("DISLIKED_PROFILES"), style: _textStyle),
             trailing: _counter(context, UserModel().user.userTotalDisliked),
             onTap: () {
-              /// Go to disliked profile screen
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const DislikedProfilesScreen()));
+
             },
           ),
         ],

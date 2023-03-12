@@ -8,6 +8,7 @@ import 'package:fren_app/widgets/show_like_or_dislike.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_helper.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ProfileCard extends StatelessWidget {
   /// User object
@@ -108,8 +109,8 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         children: [
                           // Icon
-                          const SvgIcon("assets/icons/location_point_icon.svg",
-                              color: Color(0xffFFFFFF), width: 24, height: 24),
+                          const Icon(Iconsax.location1, color: Color(0xffFFFFFF)),
+
 
                           const SizedBox(width: 5),
 
@@ -191,8 +192,8 @@ class ProfileCard extends StatelessWidget {
             left: page == 'discover' ? 8 : 5,
             child: CustomBadge(
                 icon: page == 'discover'
-                    ? const SvgIcon("assets/icons/location_point_icon.svg",
-                        color: Colors.white, width: 15, height: 15)
+                    ? const Icon(Iconsax.location1,
+                        color: Colors.white)
                     : null,
                 text:
                     '${_appHelper.getDistanceBetweenUsers(userLat: user.userGeoPoint.latitude, userLong: user.userGeoPoint.longitude)}km'),
@@ -214,8 +215,8 @@ class ProfileCard extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                       ),
-                      child: const SvgIcon("assets/icons/message_icon.svg",
-                          color: Colors.white, width: 30, height: 30)),
+                      child: const Icon(Iconsax.message,
+                          color: Colors.white)),
                 )
               : const SizedBox(width: 0, height: 0),
 

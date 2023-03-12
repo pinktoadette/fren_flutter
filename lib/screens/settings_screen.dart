@@ -4,10 +4,10 @@ import 'package:fren_app/dialogs/vip_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/passport_screen.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -68,23 +68,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     initUserSettings();
   }
 
-  // Go to Passport screen
-  Future<void> _goToPassportScreen() async {
-    // Get picked location result
-    LocationResult? result = await Navigator.of(context).push<LocationResult?>(
-        MaterialPageRoute(builder: (context) => const PassportScreen()));
-    // Handle the retur result
-    if (result != null) {
-      // Update current your location
-      _updateUserLocation(true, locationResult: result);
-      // Debug info
-      debugPrint(
-          '_goToPassportScreen() -> result: ${result.country!.name}, ${result.city!.name}');
-    } else {
-      debugPrint('_goToPassportScreen() -> result: empty');
-    }
-  }
-
   // Update User Location
   Future<void> _updateUserLocation(bool isPassport,
       {LocationResult? locationResult}) async {
@@ -125,52 +108,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               builder: (context, child, userModel) {
             return Column(
               children: [
-                /// Passport feature
-                /// Travel to any Country or City and Swipe Women there!
-                Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    elevation: 2.0,
-                    shadowColor: Theme.of(context).primaryColor,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(_i18n.translate("passport"),
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  color: Theme.of(context).primaryColor,
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                        ListTile(
-                          leading: Icon(Icons.flight,
-                              color: Theme.of(context).primaryColor, size: 40),
-                          title: Text(_i18n.translate(
-                              "travel_to_any_country_or_city_and_match_with_people_there")),
-                          trailing: TextButton(
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  Theme.of(context).primaryColor),
-                            ),
-                            child: Text(_i18n.translate("travel_now"),
-                                style: const TextStyle(color: Colors.white)),
-                            onPressed: () async {
-                              // // Check User VIP Account Status
-                              if (UserModel().userIsVip) {
-                                // Go to passport screen
-                                _goToPassportScreen();
-                              } else {
-                                /// Show VIP dialog
-                                showDialog(
-                                    context: context,
-                                    builder: (context) => const VipDialog());
-                              }
-                            },
-                          ),
-                        ),
-                      ],
-                    )),
-                const SizedBox(height: 20),
 
                 /// User current location
                 Card(
@@ -184,8 +121,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                               style: const TextStyle(fontSize: 18)),
                         ),
                         ListTile(
-                          leading: SvgIcon(
-                              "assets/icons/location_point_icon.svg",
+                          leading: Icon(Iconsax.location1,
                               color: Theme.of(context).primaryColor),
                           title: Text(
                               '${UserModel().user.userCountry}, ${UserModel().user.userLocality}'),

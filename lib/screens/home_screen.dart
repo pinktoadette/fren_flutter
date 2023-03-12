@@ -283,10 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
             /// Profile Tab
             BottomNavigationBarItem(
               label: _i18n.translate("profile"),
-              icon: SvgIcon(
-                    _selectedIndex == 3
-                        ? "assets/icons/user_2_icon.svg"
-                        : "assets/icons/user_icon.svg",
+              icon: Icon(Iconsax.user,
                     color: _selectedIndex == 3
                         ? Theme.of(context).primaryColor
                         : null),),

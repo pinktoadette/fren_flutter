@@ -28,14 +28,6 @@ class BotModel extends Model {
   /// Get bot info from database => [DocumentSnapshot<Map<String, dynamic>>]
   /// Original from fb, now get from localdb
   Future<DocumentSnapshot<Map<String, dynamic>>> getBot(String botId) async {
-    var data = await _firestore.collection(C_BOT).doc(botId).get();
-    /// Check user account in local database
-    /// temporary to add frank
-    print (data);
-    final DatabaseService _databaseService = DatabaseService();
-    _databaseService.getOrAddBot(data);
-
-
     return await _firestore.collection(C_BOT).doc(botId).get();
   }
 

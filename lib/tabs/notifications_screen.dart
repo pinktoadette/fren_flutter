@@ -10,6 +10,7 @@ import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsScreen extends StatelessWidget {
@@ -30,7 +31,7 @@ class NotificationsScreen extends StatelessWidget {
         title: Text(i18n.translate("notifications")),
         actions: [
           IconButton(
-              icon: const SvgIcon("assets/icons/trash_icon.svg"),
+              icon: const Icon(Iconsax.trash),
               onPressed: () async {
                 /// Delete all Notifications
                 ///

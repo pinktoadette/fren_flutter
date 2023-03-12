@@ -119,10 +119,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     labelText: _i18n.translate("bio"),
                     hintText: _i18n.translate("write_about_you"),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
-                    prefixIcon: const Padding(
-                      padding: EdgeInsets.all(12.0),
-                      child: SvgIcon("assets/icons/info_icon.svg"),
-                    ),
                   ),
                   validator: (bio) {
                     if (bio == null) {
@@ -139,11 +135,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   decoration: InputDecoration(
                       labelText: _i18n.translate("school"),
                       hintText: _i18n.translate("enter_your_school_name"),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.all(9.0),
-                        child: SvgIcon("assets/icons/university_icon.svg"),
-                      )),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,),
                   validator: (school) {
                     if (school == null) {
                       return _i18n.translate("please_enter_your_school_name");
@@ -160,10 +152,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       labelText: _i18n.translate("job_title"),
                       hintText: _i18n.translate("enter_your_job_title"),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      prefixIcon: const Padding(
-                        padding: EdgeInsets.all(12.0),
-                        child: SvgIcon("assets/icons/job_bag_icon.svg"),
-                      )),
+                      ),
                   validator: (job) {
                     if (job == null) {
                       return _i18n.translate("please_enter_your_job_title");

@@ -5,6 +5,7 @@ import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/button/default_button.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -99,7 +100,7 @@ class Step1Container extends StatelessWidget {
                           floatingLabelBehavior: FloatingLabelBehavior.always,
                           prefixIcon: const Padding(
                             padding: EdgeInsets.all(12.0),
-                            child: SvgIcon("assets/icons/user_icon.svg"),
+                            child: Icon(Iconsax.user),
                           )
                       ),
                       validator: (name) {
@@ -122,7 +123,7 @@ class Step1Container extends StatelessWidget {
                         floatingLabelBehavior: FloatingLabelBehavior.always,
                         prefixIcon: const Padding(
                           padding: EdgeInsets.all(12.0),
-                          child: SvgIcon("assets/icons/info_icon.svg"),
+                          child: Icon(Iconsax.information),
                         ),
                       ),
                       validator: (bio) {

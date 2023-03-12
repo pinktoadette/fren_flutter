@@ -8,6 +8,7 @@ import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ProfileBasicInfoCard extends StatelessWidget {
   const ProfileBasicInfoCard({Key? key}) : super(key: key);
@@ -71,7 +72,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       /// Location
                       Row(
                         children: [
-                          const SvgIcon("assets/icons/location_point_icon.svg",
+                          const Icon(Iconsax.location1,
                               color: Colors.white),
                           const SizedBox(width: 5),
                           Column(
@@ -121,8 +122,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                   circleButton(
                     bgColor: APP_ACCENT_COLOR,
                     padding: 13,
-                    icon: const SvgIcon("assets/icons/settings_icon.svg",
-                        color: Colors.white, width: 30, height: 30),
+                    icon: const Icon(Iconsax.setting, color: Colors.white),
                     onTap: () {
                       /// Go to profile settings
                       Navigator.of(context).push(MaterialPageRoute(

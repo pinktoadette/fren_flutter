@@ -40,13 +40,10 @@ class DatabaseService {
     );
   }
 
-  // When the database is first created, create a table to store breeds
-  // and a table to store dogs.
+
   Future<void> _onCreate(Database db, int version) async {
     //fbId = Firebase DocId
-    await db.execute("DROP TABLE IF EXISTS user");
-    await db.execute("DROP TABLE IF EXISTS bot");
-    await db.execute("DROP TABLE IF EXISTS message");
+    // await db.execute("DROP TABLE IF EXISTS table");
 
     // Run the CREATE {USER} TABLE statement on the database.
     await db.execute(
@@ -89,7 +86,7 @@ class DatabaseService {
     final db = await _databaseService.database;
     List<Map> result = await db.rawQuery('Select * from user where fbId=?', [user.id]);
     if (result.isEmpty) {
-      await db.rawInsert('INSERT INTO user(fbId, name, status, lastUpdate) VALUES(?, ?, ?, ?)', [user.id, user[USER_FULLNAME], user[USER_STATUS], user[USER_LAST_UPDATE].millisecondsSinceEpoch]);
+      await db.rawInsert('INSERT INTO user(fbId, name, status, updatedAt) VALUES(?, ?, ?, ?)', [user.id, user[USER_FULLNAME], user[USER_STATUS], user[UPDATED_AT].millisecondsSinceEpoch]);
     }
     return result;
   }
@@ -99,7 +96,6 @@ class DatabaseService {
   Future<List<Map>> getOrAddBot(DocumentSnapshot<Map<String, dynamic>> bot) async {
     final db = await _databaseService.database;
     List<Map> result = await db.rawQuery('Select * from bot where fbId=?', [bot.id]);
-    print (result);
     if (result.isEmpty) {
       await db.rawInsert('INSERT INTO bot(createdAt, '
           'updatedAt, '

@@ -8,6 +8,7 @@ import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:iconsax/iconsax.dart';
 
 
 class VerificationCodeScreen extends StatefulWidget {
@@ -83,8 +84,7 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
       icon: CircleAvatar(
         radius: 50,
         backgroundColor: Colors.white,
-        child: SvgIcon("assets/icons/phone_icon.svg",
-            width: 40, height: 40, color: Theme.of(context).primaryColor),
+        child: Icon(Iconsax.mobile, color: Theme.of(context).primaryColor),
       ),
       title: _i18n.translate("verification_code"),
       subTitle: _i18n.translate("please_enter_the_sms_code_sent"),

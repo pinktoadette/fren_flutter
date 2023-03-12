@@ -54,9 +54,7 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
             children: <Widget>[
               CircleAvatar(
                 radius: 50,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: const SvgIcon("assets/icons/call_icon.svg",
-                    width: 60, height: 60, color: Colors.white),
+                backgroundColor: Theme.of(context).primaryColor
               ),
               const SizedBox(height: 10),
               Text(_i18n.translate("sign_in_with_phone_number"),

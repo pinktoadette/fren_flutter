@@ -13,6 +13,7 @@ import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
@@ -138,11 +139,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                               /// Location distance
                               CustomBadge(
-                                  icon: const SvgIcon(
-                                      "assets/icons/location_point_icon.svg",
-                                      color: Colors.white,
-                                      width: 15,
-                                      height: 15),
+                                  icon: const Icon(Iconsax.location,
+                                      color: Colors.white),
                                   text:
                                       '${_appHelper.getDistanceBetweenUsers(userLat: widget.user.userGeoPoint.latitude, userLong: widget.user.userGeoPoint.longitude)}km')
                             ],
@@ -153,11 +151,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           /// Home location
                           _rowProfileInfo(
                             context,
-                            icon: SvgIcon(
-                                "assets/icons/location_point_icon.svg",
-                                color: Theme.of(context).primaryColor,
-                                width: 24,
-                                height: 24),
+                            icon: Icon(Iconsax.location1),
                             title:
                                 "${widget.user.userLocality}, ${widget.user.userCountry}",
                           ),
@@ -166,37 +160,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
                           /// Job title
                           _rowProfileInfo(context,
-                              icon: SvgIcon("assets/icons/job_bag_icon.svg",
-                                  color: Theme.of(context).primaryColor,
-                                  width: 27,
-                                  height: 27),
+                              icon: const Icon(Iconsax.briefcase),
                               title: widget.user.userJobTitle),
 
                           const SizedBox(height: 5),
 
                           /// Education
                           _rowProfileInfo(context,
-                              icon: SvgIcon("assets/icons/university_icon.svg",
-                                  color: Theme.of(context).primaryColor,
-                                  width: 34,
-                                  height: 34),
+                              icon: const Icon(Iconsax.building),
                               title: widget.user.userSchool),
 
                           /// Birthday
                           _rowProfileInfo(context,
-                              icon: SvgIcon("assets/icons/gift_icon.svg",
-                                  color: Theme.of(context).primaryColor,
-                                  width: 28,
-                                  height: 28),
+                              icon: Icon(Iconsax.cake1),
                               title:
                                   '${_i18n.translate('birthday')} ${widget.user.userBirthYear}/${widget.user.userBirthMonth}/${widget.user.userBirthDay}'),
 
                           /// Join date
                           _rowProfileInfo(context,
-                              icon: SvgIcon("assets/icons/info_icon.svg",
-                                  color: Theme.of(context).primaryColor,
-                                  width: 28,
-                                  height: 28),
+                              icon: const Icon(Iconsax.information),
                               title:
                                   '${_i18n.translate('join_date')} ${timeago.format(widget.user.userRegDate)}'),
 

@@ -6,6 +6,7 @@ import 'package:fren_app/screens/about_us_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class AppSectionCard extends StatelessWidget {
   // Variables
@@ -57,8 +58,7 @@ class AppSectionCard extends StatelessWidget {
           ),
           const Divider(height: 0),
           ListTile(
-            leading:
-                const SvgIcon("assets/icons/star_icon.svg", width: 22, height: 22),
+            leading: const Icon(Iconsax.star),
             title: Text(
                 i18n.translate(Platform.isAndroid
                     ? "rate_on_play_store"
@@ -71,8 +71,7 @@ class AppSectionCard extends StatelessWidget {
           ),
           const Divider(height: 0),
           ListTile(
-            leading:
-                const SvgIcon("assets/icons/lock_icon.svg", width: 22, height: 22),
+            leading: const Icon(Iconsax.lock),
             title: Text(i18n.translate("privacy_policy"), style: _textStyle),
             onTap: () async {
               /// Go to privacy policy
