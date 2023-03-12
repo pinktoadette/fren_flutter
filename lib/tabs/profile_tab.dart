@@ -1,21 +1,27 @@
+import 'package:fren_app/helpers/app_helper.dart';
+import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/app_section_card.dart';
 import 'package:fren_app/widgets/bot/create_bot.dart';
+import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/profile_basic_info_card.dart';
 import 'package:fren_app/widgets/profile_statistics_card.dart';
 import 'package:fren_app/widgets/delete_account_button.dart';
 import 'package:fren_app/widgets/sign_out_button_card.dart';
 import 'package:fren_app/widgets/vip_account_card.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
 
-  // Variables
 
   @override
   Widget build(BuildContext context) {
+    final AppHelper _appHelper = AppHelper();
+    final _i18n = AppLocalizations.of(context);
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(8.0),
       child: ScopedModelDescendant<UserModel>(
@@ -42,22 +48,38 @@ class ProfileTab extends StatelessWidget {
             const SizedBox(height: 20),
 
             /// enable dark mode
-
+            Card(
+                clipBehavior: Clip.antiAlias,
+                elevation: 4.0,
+                shape: defaultCardBorder(),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading:  const Icon(Icons.share),
+                      title: Text(_i18n.translate("share_with_friends")),
+                      onTap: () async{
+                        _appHelper.shareApp();
+                      },
+                    ),
+                    ListTile(
+                      leading: const Icon(Iconsax.moon),
+                      title: const Text("Dark mode"),
+                      onTap: () {},
+                    ),
+                  ],
+                )
+            ),
 
             /// App Section Card
-            AppSectionCard(),
+            // AppSectionCard(),
 
             const SizedBox(height: 20),
 
             /// Sign out button card
             const SignOutButtonCard(),
 
-            const SizedBox(height: 25),
-            
             /// Delete Account Button
-            const DeleteAccountButton(),
-
-            const SizedBox(height: 25),
+            // const DeleteAccountButton(),
 
           ],
         );

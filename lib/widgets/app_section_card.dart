@@ -48,16 +48,6 @@ class AppSectionCard extends StatelessWidget {
           ),
           const Divider(height: 0),
           ListTile(
-            leading: const Icon(Icons.share),
-            title:
-                Text(i18n.translate("share_with_friends"), style: _textStyle),
-            onTap: () async {
-              /// Share app
-              _appHelper.shareApp();
-            },
-          ),
-          const Divider(height: 0),
-          ListTile(
             leading: const Icon(Iconsax.star),
             title: Text(
                 i18n.translate(Platform.isAndroid
