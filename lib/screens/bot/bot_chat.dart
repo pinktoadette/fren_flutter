@@ -1,8 +1,6 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -19,9 +17,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:uuid/uuid.dart';
 
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
@@ -41,7 +37,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   late AppLocalizations _i18n;
 
-  late  List<BotPrompt> _prompts;
   late Stream<List<types.Message>> _messages;
   final _messagesApi = MessagesApi();
   final _externalBot = ExternalBotApi();
@@ -105,7 +100,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           title: GestureDetector(
             child: ListTile(
               contentPadding: const EdgeInsets.only(left: 0),
-              title: Text(botController.bot.name ?? "Bot",
+              title: Text(botController.bot.name,
                   style: const TextStyle(fontSize: 24)),
             ),
             onTap: () {
@@ -132,7 +127,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 return Chat(
                     showUserNames: true,
                     isAttachmentUploading: _isAttachmentUploading,
-                    messages: snapshot!.data!,
+                    messages: snapshot.data!,
                     onAttachmentPressed: _handleAtachmentPressed,
                     onMessageTap: _handleMessageTap,
                     onPreviewDataFetched: _handlePreviewDataFetched,
@@ -253,7 +248,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           uri: uri,
           width: image.width.toDouble(),
         );
-
+        _saveMessage(message, chatController.chatUser);
         _setAttachmentUploading(false);
       } finally {
         _setAttachmentUploading(false);
@@ -314,11 +309,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
      setState(() { _isAttachmentUploading = true; });
     _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
       if (res["type"]=="image"){
+        // display image
         final imageMessage = types.PartialImage(
+          height: 256,
           name: res["image_url"],
+          size: 197109,
           uri: res["image_url"],
-          size: 256
+          width: 256,
         );
+
         _saveMessage(imageMessage, chatController.chatBot);
       }else {
         types.PartialText textMessage =  createMessage(res, chatController.chatBot);

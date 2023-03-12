@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -249,4 +251,13 @@ class MessagesApi {
       return [...previousValue, types.Message.fromJson(data)];
     }));
   }
+
+  Future<String> uploadImages(String imagePath) async {
+    final  Reference storageReference = FirebaseStorage.instance.ref().child("uploads");
+    UploadTask uploadTask = storageReference.putFile(imagePath);
+
+    String url = await (await uploadTask).ref.getDownloadURL();
+    return url;
+  }
+
 }

@@ -9,7 +9,8 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 
 class ExternalBotApi {
-  final baseUri = 'https://fin-pyapi.vercel.app/api/';
+  // final baseUri = 'https://fin-pyapi.vercel.app/api/';
+  final baseUri = 'https://machi.herokuapp.com/api/';
   final BotController botControl = Get.find();
 
   Future<dynamic> getBotPrompt(String domain, String repoId, String inputs) async {
@@ -21,8 +22,7 @@ class ExternalBotApi {
       url = '${baseUri}huggable_bot';
       data = {"domain": domain, "model": "facebook/blenderbot-400M-distill", "prompt": inputs};
     }
-
-
+    print ()
     //@todo need catch error
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';
