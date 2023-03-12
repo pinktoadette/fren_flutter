@@ -12,14 +12,14 @@ import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 
-class ListNewBotWidget extends StatefulWidget {
-  const ListNewBotWidget({Key? key}) : super(key: key);
+class PopularBotWidget extends StatefulWidget {
+  const PopularBotWidget({Key? key}) : super(key: key);
 
   @override
-  _ListNewBotWidget createState() => _ListNewBotWidget();
+  _ListPopularBotWidget createState() => _ListPopularBotWidget();
 }
 
-class _ListNewBotWidget extends State<ListNewBotWidget> {
+class _ListPopularBotWidget extends State<PopularBotWidget> {
   final _botApi = BotModel();
   List<Bot>? _listBot;
 

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/screens/about_us_screen.dart';
+import 'package:fren_app/screens/Miscellaneous/about_us_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';

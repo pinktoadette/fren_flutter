@@ -12,14 +12,14 @@ import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:lottie/lottie.dart';
 
-class ListNewBotWidget extends StatefulWidget {
-  const ListNewBotWidget({Key? key}) : super(key: key);
+class ListAllBotsVertically extends StatefulWidget {
+  const ListAllBotsVertically({Key? key}) : super(key: key);
 
   @override
-  _ListNewBotWidget createState() => _ListNewBotWidget();
+  _ListAllBotWidget createState() => _ListAllBotWidget();
 }
 
-class _ListNewBotWidget extends State<ListNewBotWidget> {
+class _ListAllBotWidget extends State<ListAllBotsVertically> {
   final _botApi = BotModel();
   List<Bot>? _listBot;
 
@@ -50,10 +50,9 @@ class _ListNewBotWidget extends State<ListNewBotWidget> {
     } else {
       return Container(
           margin: const EdgeInsets.symmetric(vertical: 5.0),
-          height: 80.0,
           child: ListView.builder(
                 shrinkWrap: true,
-                scrollDirection: Axis.horizontal,
+                scrollDirection: Axis.vertical,
                 itemCount: _listBot!.length,
                 itemBuilder: (context, index) => InkWell(
                   child: Column(
@@ -63,8 +62,7 @@ class _ListNewBotWidget extends State<ListNewBotWidget> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28)),
                           child: SizedBox(
-                            width: 200,
-                            height: 70,
+                            height: 100,
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
@@ -82,7 +80,27 @@ class _ListNewBotWidget extends State<ListNewBotWidget> {
                                     dense: true,
                                     focusColor: Theme.of(context).secondaryHeaderColor,
                                     title: Text("${_listBot![index].name} - ${_listBot![index].domain}"),
-                                    subtitle: Text(_listBot![index].subdomain.substring(0, _listBot![index].subdomain.length > 10 ? 10:_listBot![index].subdomain.length )),
+                                    subtitle: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(_listBot![index].subdomain),
+                                            Column(
+                                              children:[
+                                              Row(
+                                               children: const [
+                                                   SizedBox(height: 50),
+                                                   Text("Downloads"),
+                                                   Spacer(),
+                                                   Text("Contributors")
+                                               ],
+                                              )
+                                              ],
+                                            ),
+                                          ],
+                                        )
+                                    )
                                 ),
                             ]),
                           )

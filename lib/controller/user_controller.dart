@@ -1,5 +1,6 @@
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/sqlite/connection_db.dart';
 import 'package:get/get.dart';
 
 
@@ -10,10 +11,15 @@ class UserController extends GetxController {
   set user(User value) => _user.value = value;
 
   void setUser(User user) {
-    print ("setUser");
+    /// homescreen subscribes to user event changes
+    /// calls udateUserObject and updates userController (here)
     _user = user.obs;
-    print (_user.value.userId);
+    updateLocalDB();
   }
 
+  void updateLocalDB() {
+    // final DatabaseService db = DatabaseService();
+
+  }
 
 }

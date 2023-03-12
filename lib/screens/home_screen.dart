@@ -9,10 +9,10 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
+import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/tabs/notifications_screen.dart';
 import 'package:fren_app/controller/chat_controller.dart';
-import 'package:fren_app/tabs/conversations_tab.dart';
-import 'package:fren_app/tabs/discover_tab.dart';
+import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
@@ -45,11 +45,36 @@ class _HomeScreenState extends State<HomeScreen> {
   // in_app_purchase stream
   late StreamSubscription<List<PurchaseDetails>> _inAppPurchaseStream;
 
+  @override
+  void initState() {
+    super.initState();
+    /// Restore VIP Subscription
+    AppHelper().restoreVipAccount();
+
+    /// Init streams
+    _getCurrentUserUpdates();
+    // _handlePurchaseUpdates();
+    _initFirebaseMessage();
+
+    /// Request permission for IOS
+    ///@todo should be saved in table rather than keep asking
+    _requestPermissionForIOS();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    // Close streams
+    _userStream.drain();
+    _inAppPurchaseStream.cancel();
+  }
+
+
   /// Tab navigation
   Widget _showCurrentNavBar() {
     List<Widget> options = <Widget>[
-      const DiscoverTab(),
-      const ConversationsTab(),
+      const ActivityTab(),
+      const ExploreBotTab(),
       NotificationsScreen(),
       const ProfileTab()
     ];
@@ -213,30 +238,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // Handle notification data
       await _handleNotificationClick(message?.data);
     });
-  }
-
-
-  @override
-  void initState() {
-    super.initState();
-    /// Restore VIP Subscription
-    AppHelper().restoreVipAccount();
-
-    /// Init streams
-    _getCurrentUserUpdates();
-    // _handlePurchaseUpdates();
-    _initFirebaseMessage();
-
-    /// Request permission for IOS
-    _requestPermissionForIOS();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    // Close streams
-    _userStream.drain();
-    _inAppPurchaseStream.cancel();
   }
 
   @override

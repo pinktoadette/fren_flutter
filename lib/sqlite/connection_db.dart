@@ -116,11 +116,23 @@ class DatabaseService {
     return result;
   }
 
-  // Map<String, dynamic> _helperDoc2String(DocumentSnapshot<Map<String, dynamic>> docSnapshot) {
-  //   docSnapshot.docs.map(doc => doc.data());
-  // }
+  Future<void> updateUser(User user) async {
+
+    final db = await _databaseService.database;
+    await db.rawUpdate('''
+    UPDATE user 
+    SET name = ?, status = ?, updatedAt = ? 
+    WHERE _id = ?
+    ''',
+        [user.userFullname, user.userStatus, user.userLastUpdate.millisecondsSinceEpoch, user.userId]);
+  }
 
 
+  Future<Map> getUser(User user) async {
+    final db = await _databaseService.database;
+    List<Map> result = await db.rawQuery('Select * from user where fbId=?', [user.userId]);
+    return result[0];
+  }
 
 
   // Future<void> insertChat(Message message) async {
@@ -140,22 +152,6 @@ class DatabaseService {
   //
   //   // Convert the List<Map<String, dynamic> into a List<Breed>.
   //   return List.generate(maps.length, (index) => Breed.fromMap(maps[index]));
-  // }
-
-  // A method that updates a breed data from the breeds table.
-  // Future<void> updateBreed(Breed breed) async {
-  //   // Get a reference to the database.
-  //   final db = await _databaseService.database;
-  //
-  //   // Update the given breed
-  //   await db.update(
-  //     'breeds',
-  //     breed.toMap(),
-  //     // Ensure that the Breed has a matching id.
-  //     where: 'id = ?',
-  //     // Pass the Breed's id as a whereArg to prevent SQL injection.
-  //     whereArgs: [breed.id],
-  //   );
   // }
 
 

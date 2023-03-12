@@ -1,10 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:flutter/material.dart';
 
 import '../datas/bot.dart';
 
