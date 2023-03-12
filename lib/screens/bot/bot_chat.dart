@@ -24,8 +24,7 @@ import 'package:fren_app/widgets/loader.dart';
 
 // can't use stateless for Chat class package
 class BotChatScreen extends StatefulWidget {
-  const BotChatScreen({Key? key})
-      : super(key: key);
+  const BotChatScreen({Key? key}) : super(key: key);
 
   @override
   _BotChatScreenState createState() => _BotChatScreenState();
@@ -52,9 +51,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {_isLoading = true; });
+    setState(() {
+      _isLoading = true;
+    });
     chatController.onChatLoad();
-    setState(() {_isLoading = false; });
+    setState(() {
+      _isLoading = false;
+    });
     _messages = _messagesApi.getChatMessages();
   }
 
@@ -80,8 +83,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
         ),
       );
-    }
-    else {
+    } else {
       return Scaffold(
         appBar: AppBar(
           leading: BackButton(
@@ -106,14 +108,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onTap: () {
               /// Show bot info
               confirmDialog(context,
-                  title: "${_i18n.translate("about")} ${botController.bot.name}",
+                  title:
+                      "${_i18n.translate("about")} ${botController.bot.name}",
                   message:
-                  "${botController.bot.name} is using ${botController.bot.model}. \n${botController.bot.about} ",
+                      "${botController.bot.name} is using ${botController.bot.model}. \n${botController.bot.about} ",
                   positiveText: _i18n.translate("OK"),
                   positiveAction: () async {
-                    // Close the confirm dialog
-                    Navigator.of(context).pop();
-                  });
+                // Close the confirm dialog
+                Navigator.of(context).pop();
+              });
             },
           ),
         ),
@@ -126,24 +129,27 @@ class _BotChatScreenState extends State<BotChatScreen> {
               } else {
                 return Chat(
                     showUserNames: true,
+                    onMessageLongPress: _handleLongPress,
                     isAttachmentUploading: _isAttachmentUploading,
                     messages: snapshot.data!,
                     onAttachmentPressed: _handleAtachmentPressed,
                     onMessageTap: _handleMessageTap,
                     onPreviewDataFetched: _handlePreviewDataFetched,
                     onSendPressed: _handleSendPressed,
-                    user: chatController.chatUser
-                );
+                    user: chatController.chatUser);
               }
-            }
-          ),
-        );
+            }),
+      );
     }
   }
 
   Future<void> _saveMessage(message, user) async {
     // save as types.User
     await _messagesApi.saveChatMessage(message, user);
+  }
+
+  void _handleLongPress(BuildContext _, types.Message message) {
+    showDialog(context: context, builder: (context)=> Frankloader());
   }
 
   void _handleAtachmentPressed() {
@@ -162,7 +168,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 },
                 child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Photo', style: TextStyle(color: Colors.white),),
+                  child: Text(
+                    'Photo',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
               ),
               // TextButton(
@@ -179,7 +188,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 onPressed: () => Navigator.pop(context),
                 child: const Align(
                   alignment: Alignment.centerLeft,
-                  child: Text('Cancel', style: TextStyle(color: Colors.grey ),),
+                  child: Text(
+                    'Cancel',
+                    style: TextStyle(color: Colors.grey),
+                  ),
                 ),
               ),
             ],
@@ -285,9 +297,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
     final updatedMessage = message.copyWith(previewData: previewData);
     _saveMessage(updatedMessage, chatController.chatUser);
   }
@@ -306,9 +318,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
   /// call bot model api
   Future<void> _callAPI(String message) async {
     // hacky way - chat_ui package is not updated from repo for typing indicator
-     setState(() { _isAttachmentUploading = true; });
-    _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, message).then((res){
-      if (res["type"]=="image"){
+    setState(() {
+      _isAttachmentUploading = true;
+    });
+    _externalBot
+        .getBotPrompt(
+            botController.bot.domain, botController.bot.model, message)
+        .then((res) {
+      if (res["type"] == "image") {
         // display image
         final imageMessage = types.PartialImage(
           height: 256,
@@ -319,11 +336,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
         );
 
         _saveMessage(imageMessage, chatController.chatBot);
-      }else {
-        types.PartialText textMessage =  createMessage(res, chatController.chatBot);
+      } else {
+        types.PartialText textMessage =
+            createMessage(res, chatController.chatBot);
         _saveMessage(textMessage, chatController.chatBot);
       }
-
     }).catchError((error) {
       showScaffoldMessage(
           context: context,
@@ -333,7 +350,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
       setState(() {
         _isAttachmentUploading = false;
       });
-    });;
+    });
+    ;
   }
 
   types.PartialText createMessage(String text, types.User user) {
@@ -347,4 +365,3 @@ class _BotChatScreenState extends State<BotChatScreen> {
     Timer(Duration(seconds: seconds), () => debugPrint('done waiting'));
   }
 }
-

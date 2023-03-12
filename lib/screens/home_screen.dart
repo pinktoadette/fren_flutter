@@ -268,20 +268,6 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? Theme.of(context).primaryColor
                           : null)),
 
-            /// Matches Tab
-            // BottomNavigationBarItem(
-            //     icon: Icon(Iconsax.receipt_square,
-            //         color: _selectedIndex == 1
-            //             ? Theme.of(context).primaryColor
-            //             : null),
-                // SvgIcon(
-                //     _selectedIndex == 1
-                //         ? "assets/icons/heart_2_icon.svg"
-                //         : "assets/icons/heart_icon.svg",
-                //     color: _selectedIndex == 1
-                //         ? Theme.of(context).primaryColor
-                //         : null),
-                // label: _i18n.translate("requests")),
 
             /// Conversations Tab
             BottomNavigationBarItem(

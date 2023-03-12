@@ -34,7 +34,8 @@ class Bot {
   final String repoId;
   final String domain;
   final String subdomain;
-  final DateTime botRegDate;
+  final DateTime createdAt;
+  final DateTime updatedAt;
   final bool isActive;
   final String adminStatus;
   final String? adminNote;
@@ -51,14 +52,33 @@ class Bot {
     required this.domain,
     required this.repoId,
     required this.subdomain,
-    required this.botRegDate,
+    required this.createdAt,
     required this.isActive,
     required this.adminStatus,
+    required this.updatedAt,
     this.adminNote,
     this.price,
     this.botOwnerId,
     this.about
   });
+
+  Map<String, dynamic> toJson() => {
+    'botId': botId,
+    'profilePhoto': profilePhoto,
+    'name': name,
+    'model': model,
+    'domain': domain,
+    'subdomain': subdomain,
+    'repoId': repoId,
+    'regDate': createdAt,
+    'isActive': isActive,
+    'adminState': adminStatus,
+    'updatedAt': updatedAt,
+    'adminNote': adminNote,
+    'price': price,
+    'botOwnerId': botOwnerId,
+    'about': about
+  };
 
   /// factory bot object
   factory Bot.fromDocument(Map<String, dynamic> doc) {
@@ -70,11 +90,12 @@ class Bot {
       repoId: doc[BOT_REPO_ID] ?? '',
       price: doc[BOT_PRICE] ?? 0,
       subdomain: doc[BOT_SUBDOMAIN] ?? '',
-      botRegDate: doc[BOT_REG_DATE].toDate(),
       botOwnerId: doc[BOT_OWNER_ID],
       about: doc[BOT_ABOUT],
       domain: doc[BOT_DOMAIN],
       isActive: doc[BOT_ACTIVE] ?? false,
+      createdAt: doc[CREATED_AT].toDate(),
+      updatedAt: doc[UPDATED_AT].toDate(),
       adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
       adminNote: doc[BOT_ADMIN_NOTE] ?? "",
     );

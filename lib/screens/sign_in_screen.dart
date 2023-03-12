@@ -12,7 +12,6 @@ import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
-import 'chat_bot.dart';
 import 'first_time/on_boarding_screen.dart';
 
 class SignInScreen extends StatefulWidget {

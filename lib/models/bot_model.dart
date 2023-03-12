@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/sqlite/connection_db.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fren_app/constants/constants.dart';
 
@@ -25,7 +26,15 @@ class BotModel extends Model {
   BotModel._internal();
 
   /// Get bot info from database => [DocumentSnapshot<Map<String, dynamic>>]
+  /// Original from fb, now get from localdb
   Future<DocumentSnapshot<Map<String, dynamic>>> getBot(String botId) async {
+    var data = await _firestore.collection(C_BOT).doc(botId).get();
+    /// Check user account in local database
+    /// temporary to add frank
+    final DatabaseService _databaseService = DatabaseService();
+    _databaseService.getOrAddBot(data);
+
+
     return await _firestore.collection(C_BOT).doc(botId).get();
   }
 
@@ -116,10 +125,13 @@ class BotModel extends Model {
           BOT_ABOUT: about,
           BOT_ACTIVE: false,
           BOT_ADMIN_STATUS: 'pending',
-          BOT_REG_DATE: FieldValue.serverTimestamp(),
+          CREATED_AT: FieldValue.serverTimestamp(),
+          UPDATED_AT: FieldValue.serverTimestamp(),
           BOT_PRICE: double.parse(price),
         })
         .then((bot) async{
+
+
           onSuccess(bot.id);
     }).catchError((onError) {
       debugPrint('createBot() -> error');

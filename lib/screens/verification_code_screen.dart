@@ -9,8 +9,6 @@ import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 
-import '../constants/constants.dart';
-import 'chat_bot.dart';
 
 class VerificationCodeScreen extends StatefulWidget {
   // Variables

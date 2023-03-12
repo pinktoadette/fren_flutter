@@ -235,6 +235,7 @@ class MessagesApi {
       query = query.startAt(startAt);
     }
 
+
     return query.snapshots().map(
             (snapshot) => snapshot.docs.fold<List<types.Message>>(
             [],

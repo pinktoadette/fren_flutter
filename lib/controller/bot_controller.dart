@@ -13,7 +13,8 @@ class BotController extends GetxController {
       domain: '',
       repoId: '',
       subdomain: '',
-      botRegDate: DateTime.now(),
+      createdAt: DateTime.now(),
+      updatedAt: DateTime.now(),
       adminStatus: '',
       isActive: false
   ).obs;

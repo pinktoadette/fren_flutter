@@ -53,7 +53,6 @@ const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
 
 /// Bot Database Collection
 const BOT_ID = 'bot_id';
-const BOT_REG_DATE = 'bot_register_date';
 const BOT_PROFILE_PHOTO = 'bot_photo';
 const BOT_NAME = 'bot_name';
 const BOT_REPO_ID = 'repo_id';
@@ -139,6 +138,7 @@ const String USER_STATUS = "user_status";
 const String USER_IS_VERIFIED = "user_is_verified";
 const String USER_LEVEL = "user_level";
 const String USER_REG_DATE = "user_reg_date";
+const String USER_LAST_UPDATE = "user_last_update";
 const String USER_LAST_LOGIN = "user_last_login";
 const String USER_DEVICE_TOKEN = "user_device_token";
 const String USER_TOTAL_LIKES = "user_total_likes";
@@ -201,3 +201,5 @@ const String BLOCKED_BY_USER_ID = 'blocked_by_user_id';
 /// DATABASE SHARED FIELDS FOR COLLECTION
 ///
 const String TIMESTAMP = "timestamp";
+const String UPDATED_AT = "updated_at";
+const String CREATED_AT = "created_at";

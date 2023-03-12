@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/constants/constants.dart';
 
+
 class User {
   /// User info
   final String userId;
@@ -24,6 +25,7 @@ class User {
   final bool userIsVerified;
   final String userLevel;
   final DateTime userRegDate;
+  final DateTime userLastUpdate;
   final DateTime userLastLogin;
   final String userDeviceToken;
   final int userTotalLikes;
@@ -59,6 +61,7 @@ class User {
     required this.userIsVerified,
     required this.userRegDate,
     required this.userLastLogin,
+    required this.userLastUpdate,
     required this.userDeviceToken,
     required this.userTotalLikes,
     required this.userTotalVisits,
@@ -93,7 +96,8 @@ class User {
       userIsVerified: doc[USER_IS_VERIFIED] ?? false,
       userLevel: doc[USER_LEVEL] ?? 'user',
       userRegDate: doc[USER_REG_DATE].toDate(), // Firestore Timestamp
-      userLastLogin: doc[USER_LAST_LOGIN].toDate(), // Firestore Timestamp
+      userLastLogin: doc[USER_LAST_LOGIN].toDate(),
+      userLastUpdate: doc[USER_LAST_UPDATE].toDate() ?? FieldValue.serverTimestamp(),
       userDeviceToken: doc[USER_DEVICE_TOKEN] ?? '',
       userTotalLikes: doc[USER_TOTAL_LIKES] ?? 0,
       userTotalVisits: doc[USER_TOTAL_VISITS] ?? 0,

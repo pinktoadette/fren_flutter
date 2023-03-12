@@ -12,6 +12,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/sqlite/connection_db.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
 import 'package:get/get.dart';
@@ -179,7 +180,10 @@ class UserModel extends Model {
     if (getFirebaseUser != null) {
       /// Get current user in database
       await getUser(getFirebaseUser!.uid).then((userDoc) async {
-        /// Check user account in database
+        /// Check user account in local database
+        final DatabaseService _databaseService = DatabaseService();
+        _databaseService.getOrAddUser(userDoc);
+
         /// if exists check status and take action
         if (userDoc.exists) {
           // Check location data:
