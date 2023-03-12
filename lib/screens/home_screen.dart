@@ -285,13 +285,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
             /// Conversations Tab
             BottomNavigationBarItem(
-                label: _i18n.translate("requests"),
+                label: _i18n.translate("chat"),
                 icon: _getConversationCounter(),),
 
             /// notification tab
             BottomNavigationBarItem(
                 icon:  _getNotificationCounter(),
-                label: _i18n.translate("alerts")
+                label: _i18n.translate("notif")
             ),
 
             /// Profile Tab

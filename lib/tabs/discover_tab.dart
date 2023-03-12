@@ -71,7 +71,7 @@ class _DiscoverTabState extends State<DiscoverTab> {
 
           const Spacer(),
 
-          QuickChat(),
+          const QuickChat(),
 
         ]
       )

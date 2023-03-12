@@ -22,7 +22,7 @@ class DiscoverCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// Initialization
-    final i18n = AppLocalizations.of(context);
+    final _i18n = AppLocalizations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenheight = MediaQuery.of(context).size.width;
 
@@ -59,7 +59,7 @@ class DiscoverCard extends StatelessWidget {
                 ),
                 const Text("Need a reminder? Let Frankie know and it'll send you a notification"),
                 const SizedBox(height: 30),
-                ElevatedButton(onPressed: (){}, child: Text("Got It"))
+                ElevatedButton(onPressed: (){}, child: Text(_i18n.translate("got_it")))
               ],
             ),
             ]
