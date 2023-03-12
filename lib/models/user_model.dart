@@ -169,7 +169,7 @@ class UserModel extends Model {
     // Callback functions for route
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
-    required VoidCallback updateLocationScreen,
+    // required VoidCallback updateLocationScreen,
     // Optional functions called on app start
     VoidCallback? onboardScreen,
     VoidCallback? signInScreen,
@@ -212,11 +212,11 @@ class UserModel extends Model {
             }
 
             // Check location data
-            if (latitude == 0.0 && longitude == 0.0) {
-              // Show Update your current location message
-              updateLocationScreen();
-              return;
-            }
+            // if (latitude == 0.0 && longitude == 0.0) {
+            //   // Show Update your current location message
+            //   updateLocationScreen();
+            //   return;
+            // }
 
             // Go to home screen
             homeScreen();

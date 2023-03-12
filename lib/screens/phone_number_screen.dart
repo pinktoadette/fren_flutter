@@ -144,10 +144,8 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         checkUserAccount: () {
           /// Authenticate User Account
           UserModel().authUserAccount(
-            updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
             homeScreen: () => _nextScreen(const HomeScreen()),
-            // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
           // END   
         },

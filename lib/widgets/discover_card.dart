@@ -4,62 +4,57 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/Miscellaneous/about_us_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 
-class DiscoverCard extends StatelessWidget {
-  // Variables
-  final AppHelper _appHelper = AppHelper();
-  // Text style
-  final _textStyle = const TextStyle(
-    color: Colors.black,
-    fontSize: 16.0,
-    fontWeight: FontWeight.w500,
-  );
+class ButtonChanged extends Notification {
+  final bool val;
+  ButtonChanged(this.val);
+}
 
-  DiscoverCard({Key? key}) : super(key: key);
+class DiscoverCard extends StatelessWidget {
+  final String title;
+  final String subtitle;
+  final bool showFrankie = true;
+
+  const DiscoverCard({Key? key, required this.title, required this.subtitle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     /// Initialization
     final _i18n = AppLocalizations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.width;
+    double screenheight = MediaQuery.of(context).size.height;
 
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 4.0,
       shape: defaultCardBorder(),
-      child: Container(
-        height: 300,
+      child: SizedBox(
+        height: screenheight-300,
         width: screenWidth,
-        // decoration: const BoxDecoration(
-        //   gradient: LinearGradient(
-        //     colors: [
-        //       Colors.yellow,
-        //       Colors.orangeAccent,
-        //       // Colors.yellow.shade300,
-        //     ],
-        //     begin: Alignment.topLeft,
-        //     end: Alignment.bottomRight,
-        //   ),
-        // ),
         child: Container(
           padding: const EdgeInsets.all(40),
-          height: screenheight - 150,
+          height: screenheight*0.85,
           child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
+            const SizedBox(
+              height: 30,
+            ),
             Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text('Get Reminders', style: Theme.of(context).textTheme.headlineSmall,),
+                const Frankloader(),
+                Text(title, style: Theme.of(context).textTheme.headlineSmall,),
+                Text(subtitle),
                 const SizedBox(
                   height: 30,
                 ),
-                const Text("Need a reminder? Let Frankie know and it'll send you a notification"),
-                const SizedBox(height: 30),
-                ElevatedButton(onPressed: (){}, child: Text(_i18n.translate("got_it")))
+                ElevatedButton(onPressed: (){
+                  ButtonChanged(true).dispatch(context);
+                }, child: Text(_i18n.translate("got_it")))
               ],
             ),
             ]

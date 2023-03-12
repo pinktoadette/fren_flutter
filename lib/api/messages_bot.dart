@@ -10,16 +10,6 @@ class MessagesBotApi {
   final _firestore = FirebaseFirestore.instance;
   final _conversationsApi = ConversationsApi();
 
-  /// Get initial messages from bot
-  Stream<QuerySnapshot<Map<String, dynamic>>> getBotMessages(String withUserId) {
-    return _firestore
-        .collection(C_BOT_INTRO)
-        .doc('BotIntro')
-        .collection(DEFAULT_BOT_ID)
-        .orderBy(TIMESTAMP)
-        .snapshots();
-  }
-
   /// Save chat message
   Future<void> saveMessage({
     required String type,

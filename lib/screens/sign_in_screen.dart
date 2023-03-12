@@ -88,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   checkUserAccount: () {
                                     /// Authenticate User Account
                                     UserModel().authUserAccount(
-                                        updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
+                                        // updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
                                         signInScreen: () => _nextScreen(const SignInScreen()),
                                         signUpScreen: () => _nextScreen(const SignUpScreen()),
                                         // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),

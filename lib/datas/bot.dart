@@ -101,17 +101,3 @@ class Bot {
     );
   }
 }
-
-class BotIntro {
-  final List prompt;
-
-  BotIntro({
-    required this.prompt
-  });
-
-  factory BotIntro.fromDocument(Map<String, dynamic> doc) {
-    return BotIntro(
-      prompt: doc['prompt'],
-    );
-  }
-}

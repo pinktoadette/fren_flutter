@@ -19,17 +19,15 @@ class BotApi {
     return Bot.fromDocument(botDoc.data()!);
   }
 
-  /// get bot introduction
-  Future<List> getBotIntroPrompt(String botId) async {
-    final DocumentSnapshot<Map<String, dynamic>> botDoc =
-        await BotModel().getBotIntro(botId);
-    BotIntro a = BotIntro.fromDocument(botDoc.data()!);
-    return a!.prompt;
-  }
-
-  /// Get stream messages for current user
-  Stream<DocumentSnapshot<Map<String, dynamic>>> getBotIntro(String botId) {
-    return _firestore.collection(C_BOT_INTRO).doc(botId).snapshots();
+  /// get inital frankie
+  Future getInitialFrankie() async {
+    QuerySnapshot<Map<String, dynamic>> data = await _firestore.collection(C_BOT_WALKTHRU).orderBy('sequence').get();
+    List steps = [];
+    for (var element in data.docs) {
+      final ele = element.data();
+      steps.add(ele);
+    }
+    return steps;
   }
 
   /// initialize start messages

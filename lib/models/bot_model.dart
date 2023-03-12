@@ -31,11 +31,6 @@ class BotModel extends Model {
     return await _firestore.collection(C_BOT).doc(botId).get();
   }
 
-  /// Get bot intro
-  Future<DocumentSnapshot<Map<String, dynamic>>> getBotIntro(String botId) async {
-    return await _firestore.collection(C_BOT_INTRO).doc(botId).get();
-  }
-
   /// get matched bot
   Future<QuerySnapshot<Map<String, dynamic>>> getBotMatch(String botId, String userId) async {
     return await _firestore.collection(C_BOT_USER_MATCH)
