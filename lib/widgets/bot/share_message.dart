@@ -1,3 +1,4 @@
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -26,6 +27,9 @@ class _ShareMessageState extends State<ShareMessage> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
+    print(widget.message);
 
     return Center(
       child: Card(
@@ -33,14 +37,15 @@ class _ShareMessageState extends State<ShareMessage> {
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(28)),
         child: SizedBox(
-          width: 300,
+          width: screenWidth,
+          height: screenHeight / 2,
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               ListTile(
                 leading: const Icon(Iconsax.box_tick),
                 title: const Text("Share Message"),
-                subtitle: Text(widget.message.author.id),
+                subtitle: Text(widget.message.id),
               ),
               Row(
                   children: <Widget>[

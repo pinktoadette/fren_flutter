@@ -8,6 +8,7 @@ class BotController extends GetxController {
   Rx<Bot> _currentBot = Bot(
       botId: DEFAULT_BOT_ID,
       profilePhoto: '',
+      about: '',
       name: '',
       model: '',
       domain: '',

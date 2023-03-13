@@ -173,12 +173,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
 
   void _handleLongPress(BuildContext _, types.Message message) {
+    print (message);
+    showModalBottomSheet(context: context,
+        builder: (context)=> ShareMessage( message: message ));
 
-    showModalBottomSheet(context: context, builder: (context)=> ShareMessage( message: message ));
-    //
-    // if (message.author.id == chatController.chatUser.id) {
-    //   showDialog(context: context, builder: (context)=> Frankloader());
-    // }
   }
 
   void _handleAtachmentPressed() {

@@ -62,7 +62,7 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28)),
                           child: SizedBox(
-                            height: 100,
+                            height: 135,
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
@@ -82,44 +82,30 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
                                     title: Text("${_listBot![index].name} - ${_listBot![index].domain}"),
                                     subtitle: Align(
                                         alignment: Alignment.topLeft,
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5),
-                                          child: Row(
-                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                            children: <Widget>[
-                                              TextButton(
-                                                child: Text(_i18n.translate("CANCEL")),
-                                                onPressed: () {
-                                                  Navigator.of(context).pop();
-                                                },
-                                              ),
-                                              TextButton(
-                                                onPressed: () {  },
-                                                child: const Text("Contribute"),
-                                              ),
-                                            ],
-                                          ),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Text(_listBot![index].subdomain),
+                                            Column(
+                                              children:[
+                                                Row(
+                                                  children: [
+                                                    Flexible(
+                                                        child: Text( _listBot![index].about.length > 80 ? _listBot![index].about.substring(0, 80)+'...' : _listBot![index].about)
+                                                    )],
+                                                ),
+                                              Row(
+                                               children: const [
+                                                   SizedBox(height: 50),
+                                                   Text("Downloads"),
+                                                   Spacer(),
+                                                   Text("Contributors")
+                                               ],
+                                              )
+                                              ],
+                                            ),
+                                          ],
                                         )
-
-
-                                        // Column(
-                                        //   crossAxisAlignment: CrossAxisAlignment.start,
-                                        //   children: [
-                                        //     Text(_listBot![index].subdomain),
-                                        //     Column(
-                                        //       children:[
-                                        //       Row(
-                                        //        children: const [
-                                        //            SizedBox(height: 50),
-                                        //            Text("Downloads"),
-                                        //            Spacer(),
-                                        //            Text("Contributors")
-                                        //        ],
-                                        //       )
-                                        //       ],
-                                        //     ),
-                                        //   ],
-                                        // )
                                     )
                                 ),
                             ]),

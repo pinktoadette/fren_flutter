@@ -37,11 +37,11 @@ class Bot {
   final DateTime createdAt;
   final DateTime updatedAt;
   final bool isActive;
+  final String about;
   final String adminStatus;
   final String? adminNote;
   final double? price;
   final Object? botOwnerId;
-  final String? about;
 
   // Constructor
   Bot({
@@ -54,12 +54,12 @@ class Bot {
     required this.subdomain,
     required this.createdAt,
     required this.isActive,
+    required this.about,
     required this.adminStatus,
     required this.updatedAt,
     this.adminNote,
     this.price,
-    this.botOwnerId,
-    this.about
+    this.botOwnerId
   });
 
   Map<String, dynamic> toJson() => {
