@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/messages_api.dart';
-import 'package:fren_app/api/py_api.dart';
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -21,7 +21,7 @@ class _QuickChatState extends State<QuickChat> {
   BotController botController = Get.find();
   final fieldText = TextEditingController();
   final _messagesApi = MessagesApi();
-  final _externalBot = ExternalBotApi();
+  final _externalBot = BotApi();
 
   @override
   void initState() {

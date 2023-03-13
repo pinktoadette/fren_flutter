@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 
@@ -176,21 +177,19 @@ class UserModel extends Model {
     VoidCallback? blockedScreen,
     Function? botChatScreen,
   }) async {
+    UserController userController = Get.find();
+
     /// Check user auth
     if (getFirebaseUser != null) {
       /// Get current user in database
       await getUser(getFirebaseUser!.uid).then((userDoc) async {
         /// Check user account in local database
+        /// and get idToken
         final DatabaseService _databaseService = DatabaseService();
         _databaseService.getOrAddUser(userDoc);
 
         /// if exists check status and take action
         if (userDoc.exists) {
-          // Check location data:
-          // Get User's latitude & longitude
-          final GeoPoint userGeoPoint = userDoc[USER_GEO_POINT]['geopoint'];
-          final double latitude = userGeoPoint.latitude;
-          final double longitude = userGeoPoint.longitude;
 
           /// Check User Account Status
           if (userDoc[USER_STATUS] == 'blocked') {
@@ -210,13 +209,6 @@ class UserModel extends Model {
               onboardScreen!();
               return;
             }
-
-            // Check location data
-            // if (latitude == 0.0 && longitude == 0.0) {
-            //   // Show Update your current location message
-            //   updateLocationScreen();
-            //   return;
-            // }
 
             // Go to home screen
             homeScreen();

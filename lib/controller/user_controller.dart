@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 //@todo remove scope model to getX
 class UserController extends GetxController {
   late Rx<User> _user;
+  late Rx<String> _idToken;
+
   User get user => _user.value;
   set user(User value) => _user.value = value;
 
@@ -17,9 +19,15 @@ class UserController extends GetxController {
     updateLocalDB();
   }
 
+  String get idToken => _idToken.value;
+  set idToken(String value) => _idToken.value = value;
+
+  setIdToken(String token) {
+    _idToken = token.obs;
+  }
+
   void updateLocalDB() {
     // final DatabaseService db = DatabaseService();
-
   }
 
 }

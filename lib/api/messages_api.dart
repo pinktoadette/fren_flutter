@@ -185,11 +185,15 @@ class MessagesApi {
       messageMap['createdAt'] = FieldValue.serverTimestamp();
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
 
-      await _firestore
-          .collection(C_CHATROOM)
-          .doc(UserModel().user.userId)
-          .collection(botController.bot.botId)
-          .add(messageMap);
+      // await
+
+
+      // fb suckss
+      // await _firestore
+      //     .collection(C_CHATROOM)
+      //     .doc(UserModel().user.userId)
+      //     .collection(botController.bot.botId)
+      //     .add(messageMap);
 
       // await _firestore
       //     .collection(C_CHATROOM)

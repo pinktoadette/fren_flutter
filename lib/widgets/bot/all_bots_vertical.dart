@@ -82,24 +82,44 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
                                     title: Text("${_listBot![index].name} - ${_listBot![index].domain}"),
                                     subtitle: Align(
                                         alignment: Alignment.topLeft,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(_listBot![index].subdomain),
-                                            Column(
-                                              children:[
-                                              Row(
-                                               children: const [
-                                                   SizedBox(height: 50),
-                                                   Text("Downloads"),
-                                                   Spacer(),
-                                                   Text("Contributors")
-                                               ],
-                                              )
-                                              ],
-                                            ),
-                                          ],
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(5),
+                                          child: Row(
+                                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                            children: <Widget>[
+                                              TextButton(
+                                                child: Text(_i18n.translate("CANCEL")),
+                                                onPressed: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                              ),
+                                              TextButton(
+                                                onPressed: () {  },
+                                                child: const Text("Contribute"),
+                                              ),
+                                            ],
+                                          ),
                                         )
+
+
+                                        // Column(
+                                        //   crossAxisAlignment: CrossAxisAlignment.start,
+                                        //   children: [
+                                        //     Text(_listBot![index].subdomain),
+                                        //     Column(
+                                        //       children:[
+                                        //       Row(
+                                        //        children: const [
+                                        //            SizedBox(height: 50),
+                                        //            Text("Downloads"),
+                                        //            Spacer(),
+                                        //            Text("Contributors")
+                                        //        ],
+                                        //       )
+                                        //       ],
+                                        //     ),
+                                        //   ],
+                                        // )
                                     )
                                 ),
                             ]),

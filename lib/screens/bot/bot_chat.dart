@@ -6,11 +6,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/api/messages_api.dart';
-import 'package:fren_app/api/py_api.dart';
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/widgets/bot/share_message.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
@@ -21,6 +23,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
+import 'package:uuid/uuid.dart';
 
 // can't use stateless for Chat class package
 class BotChatScreen extends StatefulWidget {
@@ -36,9 +39,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   late AppLocalizations _i18n;
 
-  late Stream<List<types.Message>> _messages;
-  final _messagesApi = MessagesApi();
-  final _externalBot = ExternalBotApi();
+  // no streams, just get list and push to state
+  List<types.Message> _messages = [];
+  final _messagesApi = MessageApi();
+  // final _botApi = BotApi();
   bool _isLoading = false;
   bool _isAttachmentUploading = false;
 
@@ -58,7 +62,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isLoading = false;
     });
-    _messages = _messagesApi.getChatMessages();
+    _fetchUserMessages();
+  }
+
+  Future<void> _fetchUserMessages() async {
+    List<types.Message> message = await _messagesApi.getMessages();
+    setState(() {
+      _messages = message;
+    });
   }
 
   @override
@@ -66,7 +77,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
 
-    if (_isLoading) {
+    if (_isLoading ) {
       debugPrint("loading chat bot");
       return Scaffold(
         body: SafeArea(
@@ -120,36 +131,54 @@ class _BotChatScreenState extends State<BotChatScreen> {
             },
           ),
         ),
-        body: StreamBuilder<List<types.Message>>(
-            initialData: const [],
-            stream: _messages,
-            builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return const Frankloader();
-              } else {
-                return Chat(
-                    showUserNames: true,
-                    onMessageLongPress: _handleLongPress,
-                    isAttachmentUploading: _isAttachmentUploading,
-                    messages: snapshot.data!,
-                    onAttachmentPressed: _handleAtachmentPressed,
-                    onMessageTap: _handleMessageTap,
-                    onPreviewDataFetched: _handlePreviewDataFetched,
-                    onSendPressed: _handleSendPressed,
-                    user: chatController.chatUser);
-              }
-            }),
+        body: Chat(
+            showUserNames: true,
+            onMessageLongPress: _handleLongPress,
+            isAttachmentUploading: _isAttachmentUploading,
+            messages: _messages,
+            onAttachmentPressed: _handleAtachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            onSendPressed: _handleSendPressed,
+            user: chatController.chatUser),
+
+        // StreamBuilder<List<types.Message>>(
+        //     initialData: const [],
+        //     stream: _messages,
+        //     builder: (context, snapshot) {
+        //       if (!snapshot.hasData) {
+        //         return const Frankloader();
+        //       } else {
+        //         return Chat(
+        //             showUserNames: true,
+        //             onMessageLongPress: _handleLongPress,
+        //             isAttachmentUploading: _isAttachmentUploading,
+        //             messages: snapshot.data!,
+        //             onAttachmentPressed: _handleAtachmentPressed,
+        //             onMessageTap: _handleMessageTap,
+        //             onPreviewDataFetched: _handlePreviewDataFetched,
+        //             onSendPressed: _handleSendPressed,
+        //             user: chatController.chatUser);
+        //       }
+        //     }),
       );
     }
   }
 
-  Future<void> _saveMessage(message, user) async {
-    // save as types.User
-    await _messagesApi.saveChatMessage(message, user);
+  void _addMessage(types.Message message) {
+    setState(() {
+      _messages.insert(0, message);
+    });
   }
 
+
   void _handleLongPress(BuildContext _, types.Message message) {
-    showDialog(context: context, builder: (context)=> Frankloader());
+
+    showModalBottomSheet(context: context, builder: (context)=> ShareMessage( message: message ));
+    //
+    // if (message.author.id == chatController.chatUser.id) {
+    //   showDialog(context: context, builder: (context)=> Frankloader());
+    // }
   }
 
   void _handleAtachmentPressed() {
@@ -207,29 +236,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
 
     if (result != null && result.files.single.path != null) {
-      _setAttachmentUploading(true);
-      final name = result.files.single.name;
-      final filePath = result.files.single.path!;
-      final file = File(filePath);
+      final message = types.FileMessage(
+        author: chatController.chatUser,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        id: const Uuid().v4(),
+        // mimeType: lookupMimeType(result.files.single.path!),
+        name: result.files.single.name,
+        size: result.files.single.size,
+        uri: result.files.single.path!,
+      );
 
-      try {
-        final reference = FirebaseStorage.instance.ref(name);
-        await reference.putFile(file);
-        final uri = await reference.getDownloadURL();
-
-        final message = types.PartialFile(
-          // mimeType: lookupMimeType(filePath),
-          name: name,
-          size: result.files.single.size,
-          uri: uri,
-        );
-
-        // FirebaseChatCore.instance.sendMessage(message, widget.room.id);
-        _saveMessage(message, chatController.chatUser);
-        _setAttachmentUploading(false);
-      } finally {
-        _setAttachmentUploading(false);
-      }
+      _addMessage(message);
     }
   }
 
@@ -241,30 +258,21 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
 
     if (result != null) {
-      _setAttachmentUploading(true);
-      final file = File(result.path);
-      final size = file.lengthSync();
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
-      final name = result.name;
 
-      try {
-        final reference = FirebaseStorage.instance.ref(name);
-        await reference.putFile(file);
-        final uri = await reference.getDownloadURL();
+      final message = types.ImageMessage(
+        author: chatController.chatUser,
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        height: image.height.toDouble(),
+        id: const Uuid().v4(),
+        name: result.name,
+        size: bytes.length,
+        uri: result.path,
+        width: image.width.toDouble(),
+      );
 
-        final message = types.PartialImage(
-          height: image.height.toDouble(),
-          name: name,
-          size: size,
-          uri: uri,
-          width: image.width.toDouble(),
-        );
-        _saveMessage(message, chatController.chatUser);
-        _setAttachmentUploading(false);
-      } finally {
-        _setAttachmentUploading(false);
-      }
+      _addMessage(message);
     }
   }
 
@@ -274,7 +282,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       if (message.uri.startsWith('http')) {
         try {
-          final updatedMessage = message.copyWith(isLoading: true);
+          final index =
+          _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+          (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
 
           final client = http.Client();
           final request = await client.get(Uri.parse(message.uri));
@@ -286,27 +303,49 @@ class _BotChatScreenState extends State<BotChatScreen> {
             final file = File(localPath);
             await file.writeAsBytes(bytes);
           }
-          _saveMessage(updatedMessage, chatController.chatUser);
         } finally {
-          final updatedMessage = message.copyWith(isLoading: false);
-          _saveMessage(updatedMessage, chatController.chatUser);
+          final index =
+          _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+          (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
         }
       }
+
       await OpenFilex.open(localPath);
     }
   }
 
   void _handlePreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-    final updatedMessage = message.copyWith(previewData: previewData);
-    _saveMessage(updatedMessage, chatController.chatUser);
+      types.TextMessage message,
+      types.PreviewData previewData,
+      ) {
+    final index = _messages.indexWhere((element) => element.id == message.id);
+    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+      previewData: previewData,
+    );
+
+    setState(() {
+      _messages[index] = updatedMessage;
+    });
   }
 
   void _handleSendPressed(types.PartialText message) {
-    _saveMessage(message, chatController.chatUser);
-    _callAPI(message.text);
+    final textMessage = types.TextMessage(
+      author: chatController.chatUser,
+      createdAt: DateTime.now().millisecondsSinceEpoch,
+      id: const Uuid().v4(),
+      text: message.text,
+    );
+
+    _addMessage(textMessage);
+
+    _callAPI(message);
   }
 
   void _setAttachmentUploading(bool uploading) {
@@ -316,31 +355,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   /// call bot model api
-  Future<void> _callAPI(String message) async {
+  Future<void> _callAPI(dynamic message) async {
     // hacky way - chat_ui package is not updated from repo for typing indicator
     setState(() {
       _isAttachmentUploading = true;
     });
-    _externalBot
-        .getBotPrompt(
-            botController.bot.domain, botController.bot.model, message)
+    _messagesApi
+        .saveChatMessage(message)
         .then((res) {
-      if (res["type"] == "image") {
-        // display image
-        final imageMessage = types.PartialImage(
-          height: 256,
-          name: res["image_url"],
-          size: 197109,
-          uri: res["image_url"],
-          width: 256,
-        );
-
-        _saveMessage(imageMessage, chatController.chatBot);
-      } else {
-        types.PartialText textMessage =
-            createMessage(res, chatController.chatBot);
-        _saveMessage(textMessage, chatController.chatBot);
-      }
+          // returns bot response
+        return res;
     }).catchError((error) {
       showScaffoldMessage(
           context: context,
@@ -350,8 +374,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       setState(() {
         _isAttachmentUploading = false;
       });
-    });
-    ;
+    });;
   }
 
   types.PartialText createMessage(String text, types.User user) {

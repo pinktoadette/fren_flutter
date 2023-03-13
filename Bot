@@ -1,0 +1,26 @@
+{"users": [
+{
+  "localId": "FTcYEQjKBeSFDGOJ16JzgjFysiN2",
+  "lastSignedInAt": "1677533342361",
+  "createdAt": "1677533342361",
+  "phoneNumber": "+16505551111",
+  "providerUserInfo": []
+},
+{
+  "localId": "FZz8HdT1F6PtjwxXE6KENMqHlJ12",
+  "email": "pink.toadette@gmail.com",
+  "emailVerified": true,
+  "displayName": "Jamie L",
+  "photoUrl": "https://lh3.googleusercontent.com/a/AGNmyxbunb99lDZzOXE20sLEYS3orAo7fWta3ojfHUPO=s96-c",
+  "lastSignedInAt": "1678712774680",
+  "createdAt": "1677693156744",
+  "providerUserInfo": [
+    {
+      "providerId": "google.com",
+      "rawId": "110721461169593078762",
+      "email": "pink.toadette@gmail.com",
+      "displayName": "Jamie L",
+      "photoUrl": "https://lh3.googleusercontent.com/a/AGNmyxbunb99lDZzOXE20sLEYS3orAo7fWta3ojfHUPO=s96-c"
+    }
+  ]
+}]}
