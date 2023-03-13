@@ -89,11 +89,11 @@ class _ActivityTabState extends State<ActivityTab> {
       ),
         onNotification: (n) {
           if (_currentStep < _listFeatures.length) {
-            Future.delayed(const Duration(seconds: 1), (){
+            Future.delayed(const Duration(milliseconds: 100), (){
               setState(() {_visible = false;});
             });
 
-            Future.delayed(const Duration(seconds: 2), ()
+            Future.delayed(const Duration(seconds: 1), ()
             {
               setState(() {
                 _currentStep = _currentStep + 1;
