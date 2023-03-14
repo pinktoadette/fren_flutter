@@ -23,7 +23,7 @@ class TermsOfServiceRow extends StatelessWidget {
             i18n.translate("terms_of_service"),
             style: TextStyle(
                 color: color,
-                fontSize: 12,
+                fontSize: 10,
                 decoration: TextDecoration.underline,
                 fontWeight: FontWeight.bold),
           ),
@@ -35,14 +35,14 @@ class TermsOfServiceRow extends StatelessWidget {
         Text(
           ' | ',
           style: TextStyle(
-              color: color, fontSize: 17, fontWeight: FontWeight.bold),
+              color: color, fontSize: 10, fontWeight: FontWeight.bold),
         ),
         GestureDetector(
           child: Text(
             i18n.translate("privacy_policy"),
             style: TextStyle(
                 color: color,
-                fontSize: 12,
+                fontSize: 10,
                 decoration: TextDecoration.underline,
                 fontWeight: FontWeight.bold),
           ),

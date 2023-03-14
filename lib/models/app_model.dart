@@ -22,3 +22,13 @@ class AppModel extends Model {
     debugPrint('AppInfo object -> updated!');
   }
 }
+
+class SelectDropdown {
+  final int id;
+  final String name;
+
+  SelectDropdown({
+    required this.id,
+    required this.name,
+  });
+}

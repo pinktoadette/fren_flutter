@@ -29,7 +29,7 @@ class User {
   final int userTotalLikes;
   final int userTotalVisits;
   final int userTotalDisliked;
-  final String userInterest;
+  final List<String> userInterest;
   final String userIndustry;
   final String userJob;
   final String? userBio;
@@ -78,7 +78,7 @@ class User {
     return User(
       userId: doc[USER_ID],
       isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
-      isProfileFilled: doc[USER_PROFILE_FILLED],
+      isProfileFilled: doc[USER_PROFILE_FILLED] ?? false,
       userProfilePhoto: doc[USER_PROFILE_PHOTO],
       userFullname: doc[USER_FULLNAME],
       userGender: doc[USER_GENDER] ?? '',
@@ -87,7 +87,7 @@ class User {
       userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
       userSchool: doc[USER_SCHOOL] ?? '',
       userJob: doc[USER_JOB] ?? '',
-      userInterest: doc[USER_INTERESTS] ?? '',
+      userInterest: doc[USER_INTERESTS] ?? [],
       userIndustry: doc[USER_INDUSTRY] ?? '',
       userBio: doc[USER_BIO] ?? '',
       userEnableMode: doc[USER_ENABLE_MODE],

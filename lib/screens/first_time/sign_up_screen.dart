@@ -1,26 +1,22 @@
+import 'dart:convert';
 import 'dart:io';
 
+import 'package:chips_choice/chips_choice.dart';
 import 'package:fren_app/api/machi/error_api.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/screens/sign_in_screen.dart';
-import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/button/default_button.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-import 'package:fren_app/widgets/rounded_top.dart';
-import 'package:fren_app/screens/first_time/enable_mode.dart';
+import 'package:flutter/services.dart' show rootBundle;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -34,9 +30,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
-  // final _schoolController = TextEditingController();
-  // final _jobController = TextEditingController();
-  // final _bioController = TextEditingController();
+  final _multiSelectKey = GlobalKey<FormFieldState>();
 
   /// User Birthday info
   int _userBirthDay = 0;
@@ -47,9 +41,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _birthday;
   File? _imageFile;
   bool _agreeTerms = true;
-  String? _selectedGender;
-  final List<String> _genders = ['Male', 'Female', 'Non-Binary'];
+  String? _selectedIndustry;
+  final List<String> _selectedInterest = [];
+  List<String> _tags = [];
+  late List<String> _industryList = [];
+  late List<String> _interestList = [];
   late AppLocalizations _i18n;
+
+  @override
+  void initState() {
+    super.initState();
+    getJson();
+  }
+
+  Future<void> getJson() async {
+    String _indu = await rootBundle.loadString('assets/json/industry.json');
+    List<String> industryList = List.from(jsonDecode(_indu) as List<dynamic>);
+
+    String _inter = await rootBundle.loadString('assets/json/interest.json');
+    List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
+
+    setState(() {
+      _industryList = industryList;
+      _interestList = interestList;
+    });
+  }
 
   /// Set terms
   void _setAgreeTerms(bool value) {
@@ -90,7 +106,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   // Get Date time picker app locale
   DateTimePickerLocale _getDatePickerLocale() {
-    // Inicial value
     DateTimePickerLocale _locale = DateTimePickerLocale.en_us;
     // Get the name of the current locale.
     switch (_i18n.translate('lang')) {
@@ -151,53 +166,50 @@ class _SignUpScreenState extends State<SignUpScreen> {
         /// Check loading status
         if (userModel.isLoading) return const Processing();
         return SingleChildScrollView(
-          // padding: const EdgeInsets.all(15),
+          padding: const EdgeInsets.only(top: 50),
           child: Column(
             children: <Widget>[
-              const RoundedTop(),
-
-              const SizedBox(height: 22),
-              Text(_i18n.translate("create_account"),
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 50),
+              Text(_i18n.translate('sign_up'),
+                style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.left),
               /// Profile photo
-              GestureDetector(
-                child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      border: Border.all(color: Colors.black, width: 3),
-                    ),
-                    child: _imageFile == null
-                        ? CircleAvatar(
-                            radius: 50,
-                            backgroundColor: Colors.white,
-                            backgroundImage: const AssetImage("assets/images/face.jpg"),
-                            child: Stack(
-                                children: const [
-                                  Align(
-                                    alignment: Alignment.bottomRight,
-                                    child: CircleAvatar(
-                                      radius: 18,
-                                      backgroundColor: Colors.white,
-                                      child: Icon(Iconsax.camera),
-                                    ),
-                                  ),
-                                ]
-                            ),
-                          )
-                        : CircleAvatar(
-                            radius: 60,
-                            backgroundImage: FileImage(_imageFile!),
-                          )),
-                onTap: () {
-                  /// Get profile image
-                  _getImage(context);
-                },
-              ),
-
+              // GestureDetector(
+              //   child: Container(
+              //       decoration: BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         border: Border.all(color: Colors.black, width: 3),
+              //       ),
+              //       child: _imageFile == null
+              //           ? CircleAvatar(
+              //               radius: 50,
+              //               backgroundColor: Colors.white,
+              //               backgroundImage: const AssetImage("assets/images/face.jpg"),
+              //               child: Stack(
+              //                   children: const [
+              //                     Align(
+              //                       alignment: Alignment.bottomRight,
+              //                       child: CircleAvatar(
+              //                         radius: 18,
+              //                         backgroundColor: Colors.white,
+              //                         child: Icon(Iconsax.camera),
+              //                       ),
+              //                     ),
+              //                   ]
+              //               ),
+              //             )
+              //           : CircleAvatar(
+              //               radius: 60,
+              //               backgroundImage: FileImage(_imageFile!),
+              //             )),
+              //   onTap: () {
+              //     /// Get profile image
+              //     _getImage(context);
+              //   },
+              // ),
 
               Padding(
-                padding: const EdgeInsets.all(50),
+                padding: const EdgeInsets.all(25),
                 /// Form
                 child: Form(
                   key: _formKey,
@@ -225,35 +237,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 20),
 
-                      /// User gender
-                      DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Iconsax.lovely),
-                        ),
-                        items: _genders.map((gender) {
-                          return DropdownMenuItem(
-                            value: gender,
-                            child: _i18n.translate("lang") != 'en'
-                                ? Text(
-                                '${gender.toString()} - ${_i18n.translate(gender.toString().toLowerCase())}')
-                                : Text(gender.toString()),
-                          );
-                        }).toList(),
-                        hint: Text(_i18n.translate("select_gender")),
-                        onChanged: (gender) {
-                          setState(() {
-                            _selectedGender = gender;
-                          });
-                        },
-                        validator: (String? value) {
-                          if (value == null) {
-                            return _i18n.translate("please_select_your_gender");
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-
                       /// Birthday card
                       Card(
                           clipBehavior: Clip.antiAlias,
@@ -272,62 +255,60 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           )),
                       const SizedBox(height: 20),
 
-                      // /// School field
-                      // TextFormField(
-                      //   controller: _schoolController,
-                      //   decoration: InputDecoration(
-                      //       labelText: _i18n.translate("school"),
-                      //       hintText: _i18n.translate("enter_your_school_name"),
-                      //       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      //       prefixIcon: const Padding(
-                      //         padding: EdgeInsets.all(9.0),
-                      //         child: SvgIcon("assets/icons/university_icon.svg"),
-                      //       )),
-                      // ),
-                      // const SizedBox(height: 20),
-                      //
-                      // /// Job title field
-                      // TextFormField(
-                      //   controller: _jobController,
-                      //   decoration: InputDecoration(
-                      //       labelText: _i18n.translate("job_title"),
-                      //       hintText: _i18n.translate("enter_your_job_title"),
-                      //       floatingLabelBehavior: FloatingLabelBehavior.always,
-                      //       prefixIcon: const Padding(
-                      //         padding: EdgeInsets.all(12.0),
-                      //         child: SvgIcon("assets/icons/job_bag_icon.svg"),
-                      //       )),
-                      // ),
-                      // const SizedBox(height: 20),
-                      //
-                      // /// Bio field
-                      // TextFormField(
-                      //   controller: _bioController,
-                      //   maxLines: 4,
-                      //   decoration: InputDecoration(
-                      //     labelText: _i18n.translate("bio"),
-                      //     hintText: _i18n.translate("please_write_your_bio"),
-                      //     floatingLabelBehavior: FloatingLabelBehavior.always,
-                      //     prefixIcon: const Padding(
-                      //       padding: EdgeInsets.all(12.0),
-                      //       child: SvgIcon("assets/icons/info_icon.svg"),
-                      //     ),
-                      //   ),
-                      //   validator: (bio) {
-                      //     if (bio?.isEmpty ?? false) {
-                      //       return _i18n.translate("please_write_your_bio");
-                      //     }
-                      //     return null;
-                      //   },
-                      // ),
+                      /// User industry
+                      DropdownButtonFormField<String>(
+                        decoration: const InputDecoration(
+                          prefixIcon: Icon(Iconsax.briefcase1),
+                        ),
+                        items: _industryList.map((industry) {
+                          return DropdownMenuItem(
+                            value: industry,
+                            child: Text(industry),
+                          );
+                        }).toList(),
+                        hint: Text(_i18n.translate("select_industry")),
+                        onChanged: (industry) {
+                          setState(() {
+                            _selectedIndustry = industry;
+                          });
+                        },
+                        validator: (String? value) {
+                          if (value == null) {
+                            return _i18n.translate("select_industry");
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
 
-                      _agreePrivacy(),
+
+                      /// User interest
+                      const Text("What are your interest? Select 3.",
+                          style: TextStyle(color: Colors.grey)),
+
+                  SizedBox(
+                    height: 200,
+                    child: SingleChildScrollView(
+                        child: ChipsChoice<String>.multiple(
+                          value: _tags,
+                          onChanged: (val) => setState(() => _tags = val),
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: _interestList,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                            tooltip: (i, v) => v,
+                          ),
+                          choiceCheckmark: true,
+                          choiceStyle: C2ChipStyle.outlined(),
+                          wrapped: true,
+                      ),
+                    )),
+
                       const SizedBox(height: 50),
 
                       SizedBox(
                         width: double.maxFinite,
                         child: ElevatedButton(
-
                           child: Container(
                               color: Theme.of(context).colorScheme.primary,
                               child: Text(_i18n.translate("register"),
@@ -340,7 +321,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           },
                         )
                       ),
-                      /// Sign Up button
+                      const SizedBox(height: 20),
+                      _agreePrivacy(),
                     ],
                   ),
                 ),
@@ -355,13 +337,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// Handle Create account
   void _createAccount() async {
     /// check image file
-    if (_imageFile == null) {
-      // Show error message
+    // if (_imageFile == null) {
+    //   // Show error message
+    //   showScaffoldMessage(
+    //       context: context,
+    //       message: _i18n.translate("please_select_your_profile_photo"),
+    //       bgcolor: Colors.pinkAccent);
+    //   // validate terms
+    // } else
+    if (_selectedInterest.length < 3) {
       showScaffoldMessage(
           context: context,
-          message: _i18n.translate("please_select_your_profile_photo"),
+          message: _i18n.translate("select_three_interest"),
           bgcolor: Colors.pinkAccent);
-      // validate terms
     } else if (!_agreeTerms) {
       // Show error message
       showScaffoldMessage(
@@ -388,16 +376,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
         isProfileFilled: true,
         userPhotoFile: _imageFile!,
         userFullName: _nameController.text.trim(),
-        userGender: _selectedGender!,
+        userIndustry: _selectedIndustry!,
+        userInterest: _selectedInterest,
         userBirthDay: _userBirthDay,
         userBirthMonth: _userBirthMonth,
         userBirthYear: _userBirthYear,
         onSuccess: () async {
           // Show success message
-          successDialog(context,
-              message:
-                  _i18n.translate("your_account_has_been_created_successfully"),
-              positiveAction: () {
+          showScaffoldMessage(message: _i18n
+              .translate("your_account_has_been_created_successfully"), bgcolor: APP_SUCCESS);
 
             Future(() {
               Navigator.of(context).pushAndRemoveUntil(
@@ -405,8 +392,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       builder: (context) => const HomeScreen()),
                   (route) => false);
             });
-            // End
-          });
         },
         onFail: (error) async {
           // Debug error
@@ -435,7 +420,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               GestureDetector(
                   onTap: () => _setAgreeTerms(!_agreeTerms),
                   child: Text(_i18n.translate("i_agree_with"),
-                      style: const TextStyle(fontSize: 12))),
+                      style: const TextStyle(fontSize: 10))),
               // Terms of Service and Privacy Policy
               TermsOfServiceRow(color: Colors.black),
             ],

@@ -206,7 +206,7 @@ class UserModel extends Model {
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               debugPrint("profile incomplete");
-              onboardScreen!();
+              signUpScreen!();
               return;
             }
 
@@ -329,24 +329,26 @@ class UserModel extends Model {
     final GoogleSignInAccount? googleSignInAccount =
     await _googleSignIn.signIn();
 
-    final GoogleSignInAuthentication googleSignInAuthentication =
-    await googleSignInAccount!.authentication;
+    /// if not null continue, otherwise do nothing
+    if (googleSignInAccount != null) {
+      final GoogleSignInAuthentication googleSignInAuthentication =
+      await googleSignInAccount.authentication;
 
-    final fire_auth.AuthCredential credential = fire_auth.GoogleAuthProvider.credential(
-      accessToken: googleSignInAuthentication.accessToken,
-      idToken: googleSignInAuthentication.idToken,
-    );
-
-    /// Try to sign in with provided credential
-    await _firebaseAuth
-        .signInWithCredential(credential)
-        .then((fire_auth.UserCredential userCredential) {
-      /// Auth user account
-      checkUserAccount();
-    }).catchError((error) {
-      // Callback function
-      onError();
-    });
+      final fire_auth.AuthCredential credential = fire_auth.GoogleAuthProvider.credential(
+        accessToken: googleSignInAuthentication.accessToken,
+        idToken: googleSignInAuthentication.idToken,
+      );
+      /// Try to sign in with provided credential
+      await _firebaseAuth
+          .signInWithCredential(credential)
+          .then((fire_auth.UserCredential userCredential) {
+        /// Auth user account
+        checkUserAccount();
+      }).catchError((error) {
+        // Callback function
+        onError();
+      });
+    }
   }
 
   ///
@@ -356,15 +358,11 @@ class UserModel extends Model {
     required bool isProfileFilled,
     required File userPhotoFile,
     required String userFullName,
-    required String userGender,
     required int userBirthDay,
     required int userBirthMonth,
     required int userBirthYear,
-    String? userBio,
-    String? job,
     String? userIndustry,
-    String? interests,
-    bool? enableServ,
+    List<String>? userInterest,
     // Callback functions
     required VoidCallback onSuccess,
     required Function(String) onFail,
@@ -386,7 +384,6 @@ class UserModel extends Model {
         userId: getFirebaseUser!.uid);
 
 
-
     /// Save user information in database
     await _firestore
         .collection(C_USERS)
@@ -395,10 +392,11 @@ class UserModel extends Model {
       USER_ID: getFirebaseUser!.uid,
       USER_PROFILE_PHOTO: imageProfileUrl,
       USER_FULLNAME: userFullName,
-      USER_GENDER: userGender,
       USER_BIRTH_DAY: userBirthDay,
       USER_BIRTH_MONTH: userBirthMonth,
       USER_BIRTH_YEAR: userBirthYear,
+      USER_INDUSTRY: userIndustry,
+      USER_INTERESTS: userInterest,
       USER_EMAIL: getFirebaseUser!.email ?? '',
       // End
       USER_LAST_LOGIN: FieldValue.serverTimestamp(),
