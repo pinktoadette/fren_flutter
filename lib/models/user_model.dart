@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/bot_api.dart';
+import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
@@ -356,7 +357,6 @@ class UserModel extends Model {
   ///
   Future<void> signUp({
     required bool isProfileFilled,
-    required File userPhotoFile,
     required String userFullName,
     required int userBirthDay,
     required int userBirthMonth,
@@ -370,41 +370,44 @@ class UserModel extends Model {
     // Notify
     isLoading = true;
     notifyListeners();
+    DateTime time = DateTime.now();
 
-    /// Set Geolocation point
-    final GeoFirePoint geoPoint = _geo.point(latitude: 0.0, longitude: 0.0);
-
-    /// Get user device token for push notifications
-    final userDeviceToken = await _fcm.getToken();
-
-    /// Upload user profile image
-    final String imageProfileUrl = await uploadFile(
-        file: userPhotoFile,
-        path: 'uploads/users/profiles',
-        userId: getFirebaseUser!.uid);
-
-
-    /// Save user information in database
-    await _firestore
-        .collection(C_USERS)
-        .doc(getFirebaseUser!.uid)
-        .set(<String, dynamic>{
+    /// @TODO need to get error callback
+    final mApi = UserApi();
+    await mApi.saveUser({
       USER_ID: getFirebaseUser!.uid,
-      USER_PROFILE_PHOTO: imageProfileUrl,
       USER_FULLNAME: userFullName,
-      USER_BIRTH_DAY: userBirthDay,
-      USER_BIRTH_MONTH: userBirthMonth,
       USER_BIRTH_YEAR: userBirthYear,
       USER_INDUSTRY: userIndustry,
       USER_INTERESTS: userInterest,
       USER_EMAIL: getFirebaseUser!.email ?? '',
-      // End
-      USER_LAST_LOGIN: FieldValue.serverTimestamp(),
-      CREATED_AT: FieldValue.serverTimestamp(),
-      UPDATED_AT: FieldValue.serverTimestamp(),
-      USER_DEVICE_TOKEN: userDeviceToken,
-    }).then((_) async {
+      USER_LAST_LOGIN: time.millisecondsSinceEpoch,
+      CREATED_AT: time.millisecondsSinceEpoch,
+      UPDATED_AT: time.millisecondsSinceEpoch
+    });
 
+    /// Save user information in database
+    /// Get user device token for push notifications
+    final userDeviceToken = await _fcm.getToken();
+    await _firestore
+        .collection(C_USERS)
+        .doc(getFirebaseUser!.uid)
+        .set(<String, dynamic>{
+          USER_ID: getFirebaseUser!.uid,
+          USER_FULLNAME: userFullName,
+          USER_BIRTH_DAY: userBirthDay,
+          USER_BIRTH_MONTH: userBirthMonth,
+          USER_BIRTH_YEAR: userBirthYear,
+          USER_INDUSTRY: userIndustry,
+          USER_INTERESTS: userInterest,
+          USER_STATUS: 'active',
+          USER_EMAIL: getFirebaseUser!.email ?? '',
+          USER_LAST_LOGIN: FieldValue.serverTimestamp(),
+          CREATED_AT: FieldValue.serverTimestamp(),
+          UPDATED_AT: FieldValue.serverTimestamp(),
+          USER_DEVICE_TOKEN: userDeviceToken,
+    }).then((_) async {
+      /// save a copy in machi api
 
       /// Get current user in database
       final DocumentSnapshot<Map<String, dynamic>> userDoc =
@@ -425,7 +428,7 @@ class UserModel extends Model {
       notifyListeners();
       debugPrint('signUp() -> error');
       // Callback function
-      onFail(onError);
+      onFail(onError.toString());
     });
   }
 

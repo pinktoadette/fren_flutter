@@ -8,7 +8,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
-import 'package:fren_app/widgets/processing.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
@@ -30,7 +30,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
-  final _multiSelectKey = GlobalKey<FormFieldState>();
 
   /// User Birthday info
   int _userBirthDay = 0;
@@ -39,11 +38,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
   // End
   DateTime _initialDateTime = DateTime.now().subtract(const Duration(days: 7300));
   String? _birthday;
-  File? _imageFile;
   bool _agreeTerms = true;
   String? _selectedIndustry;
-  final List<String> _selectedInterest = [];
-  List<String> _tags = [];
+  List<String> _tags = ['Animals and Pets'];
   late List<String> _industryList = [];
   late List<String> _interestList = [];
   late AppLocalizations _i18n;
@@ -75,21 +72,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   /// Get image from camera / gallery
-  void _getImage(BuildContext context) async {
-    await showModalBottomSheet(
-        context: context,
-        builder: (context) => ImageSourceSheet(
-              onImageSelected: (image) {
-                if (image != null) {
-                  setState(() {
-                    _imageFile = image;
-                  });
-                  // close modal
-                  Navigator.of(context).pop();
-                }
-              },
-            ));
-  }
+  // void _getImage(BuildContext context) async {
+  //   await showModalBottomSheet(
+  //       context: context,
+  //       builder: (context) => ImageSourceSheet(
+  //             onImageSelected: (image) {
+  //               if (image != null) {
+  //                 setState(() {
+  //                   _imageFile = image;
+  //                 });
+  //                 // close modal
+  //                 Navigator.of(context).pop();
+  //               }
+  //             },
+  //           ));
+  // }
 
   void _updateUserBithdayInfo(DateTime date) {
     setState(() {
@@ -159,12 +156,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       key: _scaffoldKey,
       body: ScopedModelDescendant<UserModel>(
           builder: (context, child, userModel) {
         /// Check loading status
-        if (userModel.isLoading) return const Processing();
         return SingleChildScrollView(
           padding: const EdgeInsets.only(top: 50),
           child: Column(
@@ -286,12 +283,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const Text("What are your interest? Select 3.",
                           style: TextStyle(color: Colors.grey)),
 
-                  SizedBox(
+                    if (_interestList.isNotEmpty) SizedBox(
                     height: 200,
                     child: SingleChildScrollView(
                         child: ChipsChoice<String>.multiple(
                           value: _tags,
-                          onChanged: (val) => setState(() => _tags = val),
+                          onChanged: (val) => {
+                            setState((){
+                              _tags = val;
+                            })
+                          },
                           choiceItems: C2Choice.listFrom<String, String>(
                             source: _interestList,
                             value: (i, v) => v,
@@ -304,8 +305,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                     )),
 
-                      const SizedBox(height: 50),
 
+                      const SizedBox(height: 50),
+                      if (userModel.isLoading) const CircularProgressIndicator(),
                       SizedBox(
                         width: double.maxFinite,
                         child: ElevatedButton(
@@ -336,16 +338,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   /// Handle Create account
   void _createAccount() async {
-    /// check image file
-    // if (_imageFile == null) {
-    //   // Show error message
-    //   showScaffoldMessage(
-    //       context: context,
-    //       message: _i18n.translate("please_select_your_profile_photo"),
-    //       bgcolor: Colors.pinkAccent);
-    //   // validate terms
-    // } else
-    if (_selectedInterest.length < 3) {
+
+    if (_tags.length < 3) {
       showScaffoldMessage(
           context: context,
           message: _i18n.translate("select_three_interest"),
@@ -374,18 +368,13 @@ class _SignUpScreenState extends State<SignUpScreen> {
       /// Call sign up method
       UserModel().signUp(
         isProfileFilled: true,
-        userPhotoFile: _imageFile!,
         userFullName: _nameController.text.trim(),
         userIndustry: _selectedIndustry!,
-        userInterest: _selectedInterest,
+        userInterest: _tags,
         userBirthDay: _userBirthDay,
         userBirthMonth: _userBirthMonth,
         userBirthYear: _userBirthYear,
         onSuccess: () async {
-          // Show success message
-          showScaffoldMessage(message: _i18n
-              .translate("your_account_has_been_created_successfully"), bgcolor: APP_SUCCESS);
-
             Future(() {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
@@ -400,9 +389,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
           showScaffoldMessage(message: _i18n
               .translate("an_error_occurred_while_creating_your_account"), bgcolor: APP_ACCENT_COLOR);
 
-          await _errorLogged.postError(
-              errorMessage: error,
-              errorLocation: "sign up screen - creating account");
+          // await _errorLogged.postError(
+          //     errorMessage: error,
+          //     errorLocation: "sign up screen - creating account");
 
         },
       );

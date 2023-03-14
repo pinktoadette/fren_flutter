@@ -25,12 +25,12 @@ class UserApi {
     return getData.toJson();
   }
 
-  Future<User> saveUser(Map<String, dynamic> data) async {
+  Future<void> saveUser(Map<String, dynamic> data) async {
     String url = '${baseUri}create_user';
     final dio = await auth.getDio();
     final response = await dio.post(url, data: data);
     final getData = response.data;
-    return getData.toJson();
+    print (getData);
   }
 
 }
