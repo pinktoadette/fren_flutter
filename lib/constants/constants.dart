@@ -29,7 +29,7 @@ const String ANDROID_INTERSTITIAL_ID = "YOUR ANDROID AD ID";
 // For IOS Platform
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
-const PY_API = "https://machi.herokuapp.com/api/";
+const PY_API = "https://api.mymachi.app/api/";
 
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.
@@ -57,14 +57,14 @@ const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
 const BOT_ID = 'botId';
 const BOT_ABOUT = "about";
 const BOT_NAME = 'name';
-const BOT_PROFILE_PHOTO = 'photo';
+const BOT_PROFILE_PHOTO = 'photoUrl';
 const BOT_REPO_ID = 'repoId';
 const BOT_MODEL = 'model';
 const BOT_DOMAIN = "domain";
 const BOT_SUBDOMAIN = 'subdomain';
 const BOT_OWNER_ID = 'ownerId';
 const BOT_PRICE = "price";
-const BOT_PRICE_UNIT = "priceInit"; //
+const BOT_PRICE_UNIT = "priceUnit"; //
 const BOT_ACTIVE = "isActive";
 const BOT_ACTIVE_STATUS = "activeStatus"; //pause ?
 const BOT_ADMIN_STATUS = "adminStatus";

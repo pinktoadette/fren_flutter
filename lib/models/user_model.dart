@@ -385,50 +385,29 @@ class UserModel extends Model {
         path: 'uploads/users/profiles',
         userId: getFirebaseUser!.uid);
 
+
+
     /// Save user information in database
     await _firestore
         .collection(C_USERS)
         .doc(getFirebaseUser!.uid)
         .set(<String, dynamic>{
       USER_ID: getFirebaseUser!.uid,
-      USER_PROFILE_FILLED: isProfileFilled,
       USER_PROFILE_PHOTO: imageProfileUrl,
       USER_FULLNAME: userFullName,
       USER_GENDER: userGender,
       USER_BIRTH_DAY: userBirthDay,
       USER_BIRTH_MONTH: userBirthMonth,
       USER_BIRTH_YEAR: userBirthYear,
-      USER_INDUSTRY: userIndustry,
-      USER_JOB: job,
-      USER_INTERESTS: interests,
-      USER_BIO: userBio,
-      USER_PHONE_NUMBER: getFirebaseUser!.phoneNumber ?? '',
       USER_EMAIL: getFirebaseUser!.email ?? '',
-      USER_STATUS: 'active',
-      USER_LEVEL: 'user',
-      // User location info
-      USER_GEO_POINT: geoPoint.data,
-      USER_COUNTRY: '',
-      USER_LOCALITY: '',
       // End
       USER_LAST_LOGIN: FieldValue.serverTimestamp(),
       CREATED_AT: FieldValue.serverTimestamp(),
       UPDATED_AT: FieldValue.serverTimestamp(),
       USER_DEVICE_TOKEN: userDeviceToken,
-
-      // enable
-      USER_ENABLE_MODE: {
-        USER_ENABLE_SERV: enableServ ?? true
-      },
-
-      // Set User default settings
-      USER_SETTINGS: {
-        USER_MIN_AGE: 18, // int
-        USER_MAX_AGE: 100, // int
-        //USER_SHOW_ME: 'everyone',
-        USER_MAX_DISTANCE: AppModel().appInfo.freeAccountMaxDistance, // double
-      },
     }).then((_) async {
+
+
       /// Get current user in database
       final DocumentSnapshot<Map<String, dynamic>> userDoc =
           await getUser(getFirebaseUser!.uid);
@@ -448,7 +427,7 @@ class UserModel extends Model {
       notifyListeners();
       debugPrint('signUp() -> error');
       // Callback function
-      onError(onError);
+      onFail(onError);
     });
   }
 

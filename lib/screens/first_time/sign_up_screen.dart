@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:fren_app/api/machi/error_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -410,10 +411,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onFail: (error) async {
           // Debug error
           debugPrint(error);
-          // Show error message
-          errorDialog(context,
-              message: _i18n
-                  .translate("an_error_occurred_while_creating_your_account"));
+
+          showScaffoldMessage(message: _i18n
+              .translate("an_error_occurred_while_creating_your_account"), bgcolor: APP_ACCENT_COLOR);
+
           await _errorLogged.postError(
               errorMessage: error,
               errorLocation: "sign up screen - creating account");

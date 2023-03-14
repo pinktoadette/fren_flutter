@@ -66,12 +66,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    //
-    // Get User Birthday
-    final DateTime userBirthday = DateTime(widget.user.userBirthYear,
-        widget.user.userBirthMonth, widget.user.userBirthDay);
-    // Get User Current Age
-    final int userAge = UserModel().calculateUserAge(userBirthday);
+
 
     return Scaffold(
         key: _scaffoldKey,
@@ -108,8 +103,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               /// Full Name
                               Expanded(
                                 child: Text(
-                                  '${widget.user.userFullname}, '
-                                  '${userAge.toString()}',
+                                  widget.user.userFullname,
                                   style: const TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold),
@@ -149,9 +143,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(height: 5),
 
                           /// Home location
-                          _rowProfileInfo(
+                          if(widget.user.userLocality != '' ) _rowProfileInfo(
                             context,
-                            icon: Icon(Iconsax.location1),
+                            icon: const Icon(Iconsax.location1),
                             title:
                                 "${widget.user.userLocality}, ${widget.user.userCountry}",
                           ),
@@ -164,23 +158,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               title: widget.user.userJob),
 
                           const SizedBox(height: 5),
-
-                          /// Education
-                          _rowProfileInfo(context,
-                              icon: const Icon(Iconsax.building),
-                              title: widget.user.userSchool),
-
-                          /// Birthday
-                          _rowProfileInfo(context,
-                              icon: Icon(Iconsax.cake1),
-                              title:
-                                  '${_i18n.translate('birthday')} ${widget.user.userBirthYear}/${widget.user.userBirthMonth}/${widget.user.userBirthDay}'),
-
-                          /// Join date
-                          _rowProfileInfo(context,
-                              icon: const Icon(Iconsax.information),
-                              title:
-                                  '${_i18n.translate('join_date')} ${timeago.format(widget.user.userRegDate)}'),
 
                           const Divider(),
 

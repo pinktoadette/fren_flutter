@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:fren_app/screens/sign_in_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -25,6 +26,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late RangeLabels _selectedAgeRangeLabels;
   late double _selectedMaxDistance;
   bool _hideProfile = false;
+  bool _isDarkMode = false;
   late AppLocalizations _i18n;
 
   /// Initialize user settings
@@ -33,17 +35,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final Map<String, dynamic> _userSettings = UserModel().user.userSettings!;
     // Update variables state
     setState(() {
-      // Get user max distance
-      _selectedMaxDistance = _userSettings[USER_MAX_DISTANCE].toDouble();
-
-      // Get age range
-      final double minAge = _userSettings[USER_MIN_AGE].toDouble();
-      final double maxAge = _userSettings[USER_MAX_AGE].toDouble();
-
-      // Set range values
-      _selectedAgeRange = RangeValues(minAge, maxAge);
-      _selectedAgeRangeLabels = RangeLabels('$minAge', '$maxAge');
-
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
@@ -141,162 +132,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     )),
                 const SizedBox(height: 15),
-
-                /// User Max distance
-                Card(
-                    margin: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: <Widget>[
-                              Text(
-                                  '${_i18n.translate("maximum_distance")} ${_selectedMaxDistance.round()} km',
-                                  style: const TextStyle(fontSize: 18)),
-                              const SizedBox(height: 3),
-                              Text(
-                                  _i18n.translate(
-                                      "show_people_within_this_radius"),
-                                  style: const TextStyle(color: Colors.grey)),
-                            ],
-                          ),
-                        ),
-                        Slider(
-                          activeColor: Theme.of(context).primaryColor,
-                          value: _selectedMaxDistance,
-                          label:
-                              _selectedMaxDistance.round().toString() + ' km',
-                          divisions: 100,
-                          min: 0,
-
-                          /// Check User VIP Account to set max distance available
-                          max: UserModel().userIsVip
-                              ? AppModel().appInfo.vipAccountMaxDistance
-                              : AppModel().appInfo.freeAccountMaxDistance,
-                          onChanged: (radius) {
-                            setState(() {
-                              _selectedMaxDistance = radius;
-                            });
-                            // debug
-                            debugPrint('_selectedMaxDistance: '
-                                '${radius.toStringAsFixed(2)}');
-                          },
-                          onChangeEnd: (radius) {
-                            /// Update user max distance
-                            UserModel().updateUserData(
-                                userId: UserModel().user.userId,
-                                data: {
-                                  '$USER_SETTINGS.$USER_MAX_DISTANCE':
-                                      double.parse(radius.toStringAsFixed(2))
-                                }).then((_) {
-                              debugPrint(
-                                  'User max distance updated -> ${radius.toStringAsFixed(2)}');
-                            });
-                          },
-                        ),
-                        // Show message for non VIP user
-                        UserModel().userIsVip
-                            ? const SizedBox(width: 0, height: 0)
-                            : Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                    "${_i18n.translate("need_more_radius_away")} "
-                                    "${AppModel().appInfo.vipAccountMaxDistance} km "
-                                    "${_i18n.translate('radius_away')}",
-                                    style: TextStyle(
-                                        color: Theme.of(context).primaryColor)),
-                              ),
-                      ],
-                    )),
-                const SizedBox(height: 15),
-
-                // User age range
-                Card(
-                    child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    ListTile(
-                      title: Text(_i18n.translate("age_range"),
-                          style: const TextStyle(fontSize: 19)),
-                      subtitle: Text(
-                          _i18n.translate("show_people_within_this_age_range")),
-                      trailing: Text(
-                          "${_selectedAgeRange.start.toStringAsFixed(0)} - "
-                          "${_selectedAgeRange.end.toStringAsFixed(0)}",
-                          style: const TextStyle(
-                              fontSize: 18, fontWeight: FontWeight.bold)),
-                    ),
-                    RangeSlider(
-                        activeColor: Theme.of(context).primaryColor,
-                        values: _selectedAgeRange,
-                        labels: _selectedAgeRangeLabels,
-                        divisions: 100,
-                        min: 18,
-                        max: 100,
-                        onChanged: (newRange) {
-                          // Update state
-                          setState(() {
-                            _selectedAgeRange = newRange;
-                            _selectedAgeRangeLabels = RangeLabels(
-                                newRange.start.toStringAsFixed(0),
-                                newRange.end.toStringAsFixed(0));
-                          });
-                          debugPrint('_selectedAgeRange: $_selectedAgeRange');
-                        },
-                        onChangeEnd: (endValues) {
-                          /// Update age range
-                          ///
-                          /// Get start value
-                          final int minAge =
-                              int.parse(endValues.start.toStringAsFixed(0));
-
-                          /// Get end value
-                          final int maxAge =
-                              int.parse(endValues.end.toStringAsFixed(0));
-
-                          // Update age range
-                          UserModel().updateUserData(
-                              userId: UserModel().user.userId,
-                              data: {
-                                '$USER_SETTINGS.$USER_MIN_AGE': minAge,
-                                '$USER_SETTINGS.$USER_MAX_AGE': maxAge,
-                              }).then((_) {
-                            debugPrint('Age range updated');
-                          });
-                        })
-                  ],
-                )),
-
-                const SizedBox(height: 15),
-                // Show me option
-                Card(
-                  child: ListTile(
-                    leading: Icon(
-                      Icons.wc_outlined,
-                      color: Theme.of(context).primaryColor,
-                      size: 30,
-                    ),
-                    title: Text(_i18n.translate('show_me'),
-                        style: const TextStyle(fontSize: 18)),
-                    trailing: Text(_showMeOption(_i18n),
-                        style: const TextStyle(fontSize: 18)),
-                    onTap: () {
-                      /// Choose Show me option
-                      showDialog(
-                          context: context,
-                          barrierDismissible: false,
-                          builder: (context) {
-                            return const ShowMeDialog();
-                          });
-                    },
-                  ),
-                ),
-
-                const SizedBox(height: 15),
-
                 /// Hide user profile setting
                 Card(
                   child: ListTile(
@@ -342,6 +177,65 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ),
                   ),
                 ),
+
+                /// dark mode
+                const SizedBox(height: 15),
+                Card(
+                  child: ListTile(
+                    leading: _isDarkMode
+                        ? Icon(Iconsax.sun,
+                        color: Theme.of(context).primaryColor, size: 30)
+                        : Icon(Iconsax.moon,
+                        color: Theme.of(context).primaryColor, size: 30),
+                    title: Text(_i18n.translate('dark_mode'),
+                        style: const TextStyle(fontSize: 18)),
+                    subtitle:  Text(_i18n.translate('enable_mode')),
+                    trailing: Switch(
+                      activeColor: Theme.of(context).primaryColor,
+                      value: _isDarkMode,
+                      onChanged: (newValue) {
+                        // Update UI
+                        setState(() {
+                          _isDarkMode = newValue;
+                        });
+                        // User status
+                        String userStatus = 'active';
+                        // Check status
+                        if (newValue) {
+                          userStatus = 'hidden';
+                        }
+
+                        // Update profile status
+                        UserModel().updateUserData(
+                            userId: UserModel().user.userId,
+                            data: {USER_STATUS: userStatus}).then((_) {
+                          debugPrint('Profile hidden: $newValue');
+                        });
+                      },
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 15),
+                /// sign out
+                Card(
+                  child: ListTile(
+                    leading: const Icon(Icons.exit_to_app),
+                    title: Text(_i18n.translate("sign_out"), style: const TextStyle(fontSize: 18)),
+                    trailing: const Icon(Icons.arrow_forward),
+                    onTap: () {
+                      // Log out button
+                      UserModel().signOut().then((_) {
+                        /// Go to login screen
+                        Future(() {
+                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => const SignInScreen()));
+                        });
+                      });
+                    },
+                  ),
+                )
               ],
             );
           }),

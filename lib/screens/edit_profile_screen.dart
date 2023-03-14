@@ -93,40 +93,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         path: 'profile');
                   },
                 ),
-                const SizedBox(height: 10),
-                Center(
-                  child: Text(_i18n.translate("profile_photo"),
-                      style: const TextStyle(fontSize: 18),
-                      textAlign: TextAlign.center),
-                ),
 
-                /// Profile gallery
-                Text(_i18n.translate("gallery"),
-                    style: const TextStyle(fontSize: 18, color: Colors.grey),
-                    textAlign: TextAlign.left),
-                const SizedBox(height: 5),
 
-                /// Show gallery
-                const UserGallery(),
-
-                const SizedBox(height: 20),
-
-                /// Bio field
-                TextFormField(
-                  controller: _bioController,
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    labelText: _i18n.translate("bio"),
-                    hintText: _i18n.translate("write_about_you"),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
-                  ),
-                  validator: (bio) {
-                    if (bio == null) {
-                      return _i18n.translate("please_write_your_bio");
-                    }
-                    return null;
-                  },
-                ),
                 const SizedBox(height: 20),
 
                 /// School field
@@ -161,6 +129,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   },
                 ),
                 const SizedBox(height: 20),
+
+                /// Bio field
+                TextFormField(
+                  controller: _bioController,
+                  maxLines: 4,
+                  decoration: InputDecoration(
+                    labelText: _i18n.translate("bio"),
+                    hintText: _i18n.translate("write_about_you"),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
+                  validator: (bio) {
+                    if (bio == null) {
+                      return _i18n.translate("please_write_your_bio");
+                    }
+                    return null;
+                  },
+                ),
               ],
             );
           }),

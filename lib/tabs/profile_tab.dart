@@ -1,12 +1,11 @@
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/app_section_card.dart';
+import 'package:fren_app/screens/settings_screen.dart';
 import 'package:fren_app/widgets/bot/create_bot.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/profile_basic_info_card.dart';
-import 'package:fren_app/widgets/profile_statistics_card.dart';
-import 'package:fren_app/widgets/delete_account_button.dart';
 import 'package:fren_app/widgets/sign_out_button_card.dart';
 import 'package:fren_app/widgets/vip_account_card.dart';
 import 'package:flutter/material.dart';
@@ -55,16 +54,20 @@ class ProfileTab extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
+                      leading: const Icon(Iconsax.moon),
+                      title: Text(_i18n.translate("settings")),
+                      onTap: () {
+                        /// Go to profile settings
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const SettingsScreen()));
+                      },
+                    ),
+                    ListTile(
                       leading:  const Icon(Icons.share),
                       title: Text(_i18n.translate("share_with_friends")),
                       onTap: () async{
                         _appHelper.shareApp();
                       },
-                    ),
-                    ListTile(
-                      leading: const Icon(Iconsax.moon),
-                      title: const Text("Dark mode"),
-                      onTap: () {},
                     ),
                   ],
                 )

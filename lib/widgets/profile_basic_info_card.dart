@@ -60,8 +60,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${UserModel().user.userFullname.split(' ')[0]}, "
-                        "${userAge.toString()}",
+                        UserModel().user.userFullname.split(' ')[0],
                         style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -69,26 +68,6 @@ class ProfileBasicInfoCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
 
-                      /// Location
-                      Row(
-                        children: [
-                          const Icon(Iconsax.location1,
-                              color: Colors.white),
-                          const SizedBox(width: 5),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              // City
-                              Text("${UserModel().user.userLocality},",
-                                  style: const TextStyle(color: Colors.white)),
-                              // Country
-                              Text(UserModel().user.userCountry,
-                                  style: const TextStyle(color: Colors.white)),
-                            ],
-                          )
-                        ],
-                      )
                     ],
                   ),
                 ],
@@ -119,16 +98,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                                   user: UserModel().user, showButtons: false)));
                         }),
                   ),
-                  circleButton(
-                    bgColor: APP_ACCENT_COLOR,
-                    padding: 13,
-                    icon: const Icon(Iconsax.setting, color: Colors.white),
-                    onTap: () {
-                      /// Go to profile settings
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const SettingsScreen()));
-                    },
-                  ),
+
                   SizedBox(
                     height: 35,
                     child: TextButton.icon(
