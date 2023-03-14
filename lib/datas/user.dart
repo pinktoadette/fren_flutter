@@ -14,8 +14,6 @@ class User {
   final int userBirthMonth;
   final int userBirthYear;
   final String userSchool;
-  final String userJobTitle;
-  final String userBio;
   final String userPhoneNumber;
   final String userEmail;
   final String userCountry;
@@ -31,6 +29,10 @@ class User {
   final int userTotalLikes;
   final int userTotalVisits;
   final int userTotalDisliked;
+  final String userInterest;
+  final String userIndustry;
+  final String userJob;
+  final String? userBio;
   final Map<String, dynamic>? userGallery;
   final Map<String, dynamic>? userSettings;
   final Map<String, dynamic>? userEnableMode;
@@ -47,7 +49,6 @@ class User {
     required this.userBirthMonth,
     required this.userBirthYear,
     required this.userSchool,
-    required this.userJobTitle,
     required this.userBio,
     required this.userPhoneNumber,
     required this.userEmail,
@@ -66,7 +67,10 @@ class User {
     required this.userTotalLikes,
     required this.userTotalVisits,
     required this.userTotalDisliked,
-    required this.userEnableMode
+    required this.userEnableMode,
+    required this.userInterest,
+    required this.userIndustry,
+    required this.userJob
   });
 
   /// factory user object
@@ -82,7 +86,9 @@ class User {
       userBirthMonth: doc[USER_BIRTH_MONTH] ?? 1,
       userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
       userSchool: doc[USER_SCHOOL] ?? '',
-      userJobTitle: doc[USER_JOB_TITLE] ?? '',
+      userJob: doc[USER_JOB] ?? '',
+      userInterest: doc[USER_INTERESTS],
+      userIndustry: doc[USER_INDUSTRY],
       userBio: doc[USER_BIO] ?? '',
       userEnableMode: doc[USER_ENABLE_MODE],
       userPhoneNumber: doc[USER_PHONE_NUMBER] ?? '',

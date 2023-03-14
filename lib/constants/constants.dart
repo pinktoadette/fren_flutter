@@ -29,6 +29,8 @@ const String ANDROID_INTERSTITIAL_ID = "YOUR ANDROID AD ID";
 // For IOS Platform
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
+const PY_API = "https://machi.herokuapp.com/api/";
+
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.
 ///
@@ -52,20 +54,21 @@ const DEFAULT_BOT_ID = 'Bot_GgQ0c3cqypSmKcpfUA9M';
 const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
 
 /// Bot Database Collection
-const BOT_ID = 'bot_id';
-const BOT_PROFILE_PHOTO = 'bot_photo';
-const BOT_NAME = 'bot_name';
-const BOT_REPO_ID = 'repo_id';
-const BOT_MODEL = 'bot_model';
-const BOT_SUBDOMAIN = 'bot_subdomain';
-const BOT_OWNER_ID = 'bot_owner_id';
+const BOT_ID = 'botId';
 const BOT_ABOUT = "about";
-const BOT_DOMAIN = "bot_domain";
-const BOT_PRICE = "bot_price";
-const BOT_ACTIVE = "bot_active";
-const BOT_ACTIVE_STATUS = "bot_active_status"; //pause ?
-const BOT_ADMIN_STATUS = "bot_admin_status";
-const BOT_ADMIN_NOTE = "bot_admin_note";
+const BOT_NAME = 'name';
+const BOT_PROFILE_PHOTO = 'photo';
+const BOT_REPO_ID = 'repoId';
+const BOT_MODEL = 'model';
+const BOT_DOMAIN = "domain";
+const BOT_SUBDOMAIN = 'subdomain';
+const BOT_OWNER_ID = 'ownerId';
+const BOT_PRICE = "price";
+const BOT_PRICE_UNIT = "priceInit"; //
+const BOT_ACTIVE = "isActive";
+const BOT_ACTIVE_STATUS = "activeStatus"; //pause ?
+const BOT_ADMIN_STATUS = "adminStatus";
+const BOT_ADMIN_NOTE = "adminNote";
 
 /// trials
 const BOT_TRIAL_BOT_ID = BOT_ID;
@@ -114,49 +117,51 @@ const String ADMOB_INTERSTITIAL_AD_ID = "admob_interstitial_ad_id";
 
 /// DATABASE FIELDS FOR USER COLLECTION  ///
 ///
-const String USER_ID = "user_id";
-const String USER_INITIATED_FRANK = "user_initiated_frank";
-const String USER_ENABLE_MODE = "user_enable_mode";
-const String USER_PROFILE_FILLED = "user_profile_filled";
-const String USER_PROFILE_PHOTO = "user_photo_link";
-const String USER_FULLNAME = "user_fullname";
-const String USER_GENDER = "user_gender";
-const String USER_BIRTH_DAY = "user_birth_day";
-const String USER_BIRTH_MONTH = "user_birth_month";
-const String USER_BIRTH_YEAR = "user_birth_year";
-const String USER_SCHOOL = "user_school";
-const String USER_JOB_TITLE = "user_job_title";
-const String USER_BIO = "user_bio";
-const String USER_PHONE_NUMBER = "user_phone_number";
-const String USER_EMAIL = "user_email";
-const String USER_GALLERY = "user_gallery";
-const String USER_COUNTRY = "user_country";
-const String USER_LOCALITY = "user_locality";
-const String USER_GEO_POINT = "user_geo_point";
-const String USER_SETTINGS = "user_settings";
-const String USER_STATUS = "user_status";
-const String USER_IS_VERIFIED = "user_is_verified";
-const String USER_LEVEL = "user_level";
-const String USER_LAST_UPDATE = "user_last_update";
-const String USER_LAST_LOGIN = "user_last_login";
-const String USER_DEVICE_TOKEN = "user_device_token";
-const String USER_TOTAL_LIKES = "user_total_likes";
-const String USER_TOTAL_VISITS = "user_total_visits";
-const String USER_TOTAL_DISLIKED = "user_total_disliked";
+const String USER_ID = "userId";
+const String USER_INITIATED_FRANK = "initiatedFrank";
+const String USER_ENABLE_MODE = "enablMode";
+const String USER_PROFILE_FILLED = "profileFilled";
+const String USER_PROFILE_PHOTO = "photoUrl";
+const String USER_FULLNAME = "fullname";
+const String USER_GENDER = "gender";
+const String USER_BIRTH_DAY = "birthDay";
+const String USER_BIRTH_MONTH = "birthMonth";
+const String USER_BIRTH_YEAR = "birthYear";
+const String USER_SCHOOL = "school";
+const String USER_INDUSTRY = "industry";
+const String USER_JOB = "job";
+const String USER_INTERESTS = "interests";
+const String USER_BIO = "bio";
+const String USER_PHONE_NUMBER = "phoneNumber";
+const String USER_EMAIL = "email";
+const String USER_GALLERY = "gallery";
+const String USER_COUNTRY = "country";
+const String USER_LOCALITY = "locality";
+const String USER_GEO_POINT = "geoPoint";
+const String USER_SETTINGS = "settings";
+const String USER_STATUS = "status";
+const String USER_IS_VERIFIED = "isVerified";
+const String USER_LEVEL = "level";
+const String USER_LAST_UPDATE = "lastUpdate";
+const String USER_LAST_LOGIN = "lastLogin";
+const String USER_DEVICE_TOKEN = "deviceToken";
+const String USER_TOTAL_LIKES = "totalLikes";
+const String USER_TOTAL_VISITS = "totalVisits";
+const String USER_TOTAL_DISLIKED = "totalDisliked";
 // User Setting map - fields
-const String USER_MIN_AGE = "user_min_age";
-const String USER_MAX_AGE = "user_max_age";
-const String USER_MAX_DISTANCE = "user_max_distance";
-const String USER_SHOW_ME = "user_show_me";
+const String USER_MIN_AGE = "minAge";
+const String USER_MAX_AGE = "maxAge";
+const String USER_MAX_DISTANCE = "maxDistance";
+const String USER_SHOW_ME = "showMe";
 // Enabled model
-const String USER_ENABLE_DATE = "user_enable_date";
-const String USER_ENABLE_SERV = "user_enable_service";
+const String USER_ENABLE_DATE = "enableDate";
+const String USER_ENABLE_SERV = "enableService";
 
 /// DATABASE FIELDS FOR FlaggedUsers COLLECTION  ///
 ///
-const String FLAGGED_USER_ID = "flagged_user_id";
-const String FLAG_REASON = "flag_reason";
-const String FLAGGED_BY_USER_ID = "flagged_by_user_id";
+const String FLAGGED_USER_ID = "flaggedUserId";
+const String FLAG_REASON = "flaggedReason";
+const String FLAGGED_BY_USER_ID = "flaggedByUserId";
 
 /// DATABASE FIELDS FOR Messages and Conversations COLLECTION ///
 ///
@@ -178,9 +183,9 @@ const N_READ = "n_read";
 
 /// DATABASE FIELDS FOR Likes COLLECTION
 ///
-const String LIKED_USER_ID = 'liked_user_id';
-const String LIKED_BY_USER_ID = 'liked_by_user_id';
-const String LIKE_TYPE = 'like_type';
+const String LIKED_USER_ID = 'likedUserId';
+const String LIKED_BY_USER_ID = 'likedByUserId';
+const String LIKE_TYPE = 'likeType';
 
 /// DATABASE FIELDS FOR Dislikes COLLECTION
 ///
@@ -194,11 +199,11 @@ const String VISITED_BY_USER_ID = 'visited_by_user_id';
 
 /// DATABASE FIELDS FOR [BlockedUsers] (NEW) COLLECTION
 ///
-const String BLOCKED_USER_ID = 'blocked_user_id';
-const String BLOCKED_BY_USER_ID = 'blocked_by_user_id';
+const String BLOCKED_USER_ID = 'blockedUserId';
+const String BLOCKED_BY_USER_ID = 'blockedByUserId';
 
 /// DATABASE SHARED FIELDS FOR COLLECTION
 ///
 const String TIMESTAMP = "timestamp";
-const String UPDATED_AT = "updated_at";
-const String CREATED_AT = "created_at";
+const String UPDATED_AT = "updatedAt";
+const String CREATED_AT = "createdAt";

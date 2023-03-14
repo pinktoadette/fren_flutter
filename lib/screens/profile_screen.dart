@@ -161,7 +161,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           /// Job title
                           _rowProfileInfo(context,
                               icon: const Icon(Iconsax.briefcase),
-                              title: widget.user.userJobTitle),
+                              title: widget.user.userJob),
 
                           const SizedBox(height: 5),
 
@@ -192,7 +192,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     fontSize: 22,
                                     color: Theme.of(context).primaryColor)),
                           ),
-                          Text(widget.user.userBio,
+                          Text(widget.user?.userBio ?? "",
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.grey)),
                         ],

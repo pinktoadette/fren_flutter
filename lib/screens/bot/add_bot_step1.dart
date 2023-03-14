@@ -12,14 +12,14 @@ import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class Step1Container extends StatefulWidget {
-  const Step1Container({Key? key}) : super(key: key);
+class Step1CreateBot extends StatefulWidget {
+  const Step1CreateBot({Key? key}) : super(key: key);
 
   @override
   _Step1ContainerState createState() => _Step1ContainerState();
 }
 
-class _Step1ContainerState extends State<Step1Container> {
+class _Step1ContainerState extends State<Step1CreateBot> {
   final BotController botController = Get.find();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -268,7 +268,7 @@ class _Step1ContainerState extends State<Step1Container> {
           botController.fetchCurrentBot(botId);
           Future(() {
             Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Step2Container()));
+                MaterialPageRoute(builder: (context) => Step2CreateBot()));
           });
         },
         onError: (error) {

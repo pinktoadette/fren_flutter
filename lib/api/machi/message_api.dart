@@ -12,8 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class MessageApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  // final baseUri = 'https://machi.herokuapp.com/api/';
-  final baseUri = 'http://10.0.2.2:8000/api/';
+  final baseUri = PY_API;
   final BotController botControl = Get.find();
   final ChatController chatController = Get.find();
   final auth = AuthApi();
@@ -22,6 +21,9 @@ class MessageApi {
 
   /// saves user message to backend, backend will save bot response automatically
   Future saveChatMessage(dynamic partialMessage) async {
+    // save will always be user, because backend will already save bot;
+    String url = '${baseUri}machi_bot';
+
     types.Message? message;
     types.User user = chatController.chatUser;
 
@@ -53,8 +55,6 @@ class MessageApi {
 
     if (message != null) {
       String botId = botControl.bot.botId;
-      // save will always be user, because backend will already save bot;
-      String url = '${baseUri}machi_bo';
 
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
@@ -72,7 +72,6 @@ class MessageApi {
     }
     return [];
   }
-
 
   Future<List<types.Message>> getMessages() async{
     String botId = botControl.bot.botId;

@@ -360,10 +360,10 @@ class UserModel extends Model {
     required int userBirthDay,
     required int userBirthMonth,
     required int userBirthYear,
-    String? userSchool,
-    String? userJobTitle,
     String? userBio,
-    bool? enableDate,
+    String? job,
+    String? userIndustry,
+    String? interests,
     bool? enableServ,
     // Callback functions
     required VoidCallback onSuccess,
@@ -398,8 +398,9 @@ class UserModel extends Model {
       USER_BIRTH_DAY: userBirthDay,
       USER_BIRTH_MONTH: userBirthMonth,
       USER_BIRTH_YEAR: userBirthYear,
-      USER_SCHOOL: userSchool,
-      USER_JOB_TITLE: userJobTitle,
+      USER_INDUSTRY: userIndustry,
+      USER_JOB: job,
+      USER_INTERESTS: interests,
       USER_BIO: userBio,
       USER_PHONE_NUMBER: getFirebaseUser!.phoneNumber ?? '',
       USER_EMAIL: getFirebaseUser!.email ?? '',
@@ -417,7 +418,6 @@ class UserModel extends Model {
 
       // enable
       USER_ENABLE_MODE: {
-        USER_ENABLE_DATE: enableDate ?? true,
         USER_ENABLE_SERV: enableServ ?? true
       },
 
@@ -454,8 +454,9 @@ class UserModel extends Model {
 
   /// Update current user profile
   Future<void> updateProfile({
-    required String userSchool,
-    required String userJobTitle,
+    required String userIndustry,
+    required String job,
+    required String interests,
     required String userBio,
     // Callback functions
     required VoidCallback onSuccess,
@@ -463,9 +464,10 @@ class UserModel extends Model {
   }) async {
     /// Update user profile
     updateUserData(userId: user.userId, data: {
-      USER_SCHOOL: userSchool,
-      USER_JOB_TITLE: userJobTitle,
-      USER_BIO: userBio,
+      USER_INDUSTRY: userIndustry,
+      USER_JOB: job,
+      USER_INTERESTS: interests,
+      USER_BIO: userBio
     }).then((_) {
       isLoading = false;
       notifyListeners();

@@ -1,8 +1,10 @@
 import 'dart:io';
 
+import 'package:fren_app/api/machi/error_api.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/sign_in_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
@@ -27,7 +29,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  // Variables
+  final _errorLogged = ErrorLoggedApi();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
@@ -399,19 +401,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
             Future(() {
               Navigator.of(context).pushAndRemoveUntil(
                   MaterialPageRoute(
-                      builder: (context) => const EnableMode()),
+                      builder: (context) => const HomeScreen()),
                   (route) => false);
             });
             // End
           });
         },
-        onFail: (error) {
+        onFail: (error) async {
           // Debug error
           debugPrint(error);
           // Show error message
           errorDialog(context,
               message: _i18n
                   .translate("an_error_occurred_while_creating_your_account"));
+          await _errorLogged.postError(
+              errorMessage: error,
+              errorLocation: "sign up screen - creating account");
+
         },
       );
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
@@ -20,8 +21,7 @@ class _QuickChatState extends State<QuickChat> {
   ChatController chatController = Get.find();
   BotController botController = Get.find();
   final fieldText = TextEditingController();
-  final _messagesApi = MessagesApi();
-  final _externalBot = BotApi();
+  final _messagesApi = MessageApi();
 
   @override
   void initState() {
@@ -46,14 +46,7 @@ class _QuickChatState extends State<QuickChat> {
         text: fieldText.text,
       );
       //save user's comments
-      await _messagesApi.saveChatMessage(textMessage, user);
-      _externalBot.getBotPrompt(botController.bot.domain, botController.bot.model, fieldText.text).then((res){
-        types.PartialText textMessage =  types.PartialText(
-          text: res,
-        );
-        // save bot's comments
-        _messagesApi.saveChatMessage(textMessage,  chatController.chatBot);
-      });
+      await _messagesApi.saveChatMessage(textMessage);
 
       // clear text and dismiss keyboard
       fieldText.clear();

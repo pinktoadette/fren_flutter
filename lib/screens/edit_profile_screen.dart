@@ -20,10 +20,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   // Variables
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _schoolController =
-      TextEditingController(text: UserModel().user.userSchool);
+  final _induController =
+      TextEditingController(text: UserModel().user.userIndustry);
   final _jobController =
-      TextEditingController(text: UserModel().user.userJobTitle);
+      TextEditingController(text: UserModel().user.userJob);
   final _bioController = TextEditingController(text: UserModel().user.userBio);
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
@@ -131,9 +131,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 /// School field
                 TextFormField(
-                  controller: _schoolController,
+                  controller: _induController,
                   decoration: InputDecoration(
-                      labelText: _i18n.translate("school"),
+                      labelText: "Industry",
                       hintText: _i18n.translate("enter_your_school_name"),
                       floatingLabelBehavior: FloatingLabelBehavior.always,),
                   validator: (school) {
@@ -196,8 +196,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _saveChanges() {
     /// Update uer profile
     UserModel().updateProfile(
-        userSchool: _schoolController.text.trim(),
-        userJobTitle: _jobController.text.trim(),
+        userIndustry: _induController.text.trim(),
+        job: _jobController.text.trim(),
+        interests: _jobController.text.trim(),
         userBio: _bioController.text.trim(),
         onSuccess: () {
           /// Show success message

@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 
-class Step2Container extends StatelessWidget {
+class Step2CreateBot extends StatelessWidget {
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
 

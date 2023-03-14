@@ -41,11 +41,11 @@ class _AddBotState extends State<AddBotScreen> {
     _steps = [
       WillPopScope(
         onWillPop: () => Future.sync(onWillPop),
-        child: const Step0Container(),
+        child: const Step0CreateBot(),
       ),
       WillPopScope(
         onWillPop: () => Future.sync(onWillPop),
-        child: const Step1Container(),
+        child: const Step1CreateBot(),
       ),
     ];
 
@@ -60,14 +60,14 @@ class _AddBotState extends State<AddBotScreen> {
       ),
       body: SingleChildScrollView(
         child: Column(
-        children: const [Step0Container()]
+        children: const [Step0CreateBot()]
         ))
     );
   }
 }
 
-class Step0Container extends StatelessWidget {
-  const Step0Container({Key? key}) : super(key: key);
+class Step0CreateBot extends StatelessWidget {
+  const Step0CreateBot({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class Step0Container extends StatelessWidget {
             onPressed: () {
               //@todo make temporary form
               Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const Step1Container()));
+                  MaterialPageRoute(builder: (context) => const Step1CreateBot()));
             },
           )
         ]));

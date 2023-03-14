@@ -1,64 +1,110 @@
-import 'dart:convert';
-import 'dart:developer';
 
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/foundation.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/datas/bot.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:uuid/uuid.dart';
 
 class BotApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = 'https://machi.herokuapp.com/api/';
+  final baseUri = PY_API;
   final BotController botControl = Get.find();
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<dynamic> getBotPrompt(String domain, String repoId, String inputs) async {
-    String url = '${baseUri}machi_bot';
-    Map<String, String> data = {"domain": domain, "model": "train_data", "prompt": inputs};
+  Future<void> createBot({
+    required ownerId,
+    required name,
+    required domain,
+    required subdomain,
+    required repoId,
+    required price,
+    required priceUnit,
+    required about,
+    required ValueSetter onSuccess,
+    required Function(String) onError,
+  }) async {
 
-    if (botControl.bot.botId == DEFAULT_BOT_ID) {
-      url = '${baseUri}huggable_bot';
-      data = {"domain": domain, "model": "facebook/blenderbot-400M-distill", "prompt": inputs};
-    }
+    String url = '${baseUri}create_bot';
+    String uid = const Uuid().v1().substring(0, 8);
 
-    //@todo need catch error
+    var data = {
+      BOT_ID: "MACHI_$uid", // external botId
+      BOT_ABOUT: about,
+      BOT_NAME: name,
+      BOT_OWNER_ID: ownerId,
+      BOT_DOMAIN: domain,
+      BOT_SUBDOMAIN: subdomain,
+      BOT_REPO_ID: repoId,
+      BOT_PRICE: double.parse(price),
+      BOT_PRICE_UNIT: priceUnit,
+      BOT_ACTIVE: false,
+      BOT_ADMIN_STATUS: 'pending',
+      CREATED_AT: FieldValue.serverTimestamp(),
+      UPDATED_AT: FieldValue.serverTimestamp(),
+    };
+
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: data);
+    dio.post(url, data: { ...data }).then((response) async{
+      final created = response.data;
+      final Bot bot = created.toJson();
+      onSuccess(bot.botId);
+    }).catchError((onError) {
+      debugPrint('createBot() -> error');
+      // Callback function
+      onError(onError);
+    });
 
-    if (botControl.bot.botId == DEFAULT_BOT_ID) {
-      String jsonsDataString = response.toString(); // toString of Response's body is assigned to jsonDataString
-      final _data = jsonDecode(jsonsDataString);
-      return _data!['generated_text'];
-    }
-
-    return response.data;
   }
 
-  Future<List<types.Message>> getUserTypesMessages() async{
-    String botId = botControl.bot.botId;
-
-    String url = '${baseUri}machi_bot';
+  Future<Bot> getBot({
+    required botId,
+    required ValueSetter onSuccess,
+    required Function(String) onError,
+  }) async {
+    String url = '${baseUri}get_bot';
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: { botId: botId });
+    final response = await dio.get(url, data: { botId: botId });
+    final getData = response.data;
 
-    List<types.Message> listMessage =  response.data.map((message){
-      final author = types.User(id: message['authorId'] as String, firstName: message['name']);
-      message['author'] = author.toJson();
-      message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
-      message['id'] = message.id;
-      message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
+    return getData.toJson();
 
-      if (message['type'] == 'image') {
-        return types.ImageMessage.fromJson(message);
-      }
+  }
 
-      return types.Message.fromJson(message);
-    });
-    return listMessage;
+  Future<Bot> updateBot({
+    required botId,
+    required Map<String, dynamic> data,
+    required ValueSetter onSuccess,
+    required Function(String) onError,
+  }) async {
+    String url = '${baseUri}update_bot';
+    final dio = await auth.getDio();
+    final response = await dio.put(url, data: { ...data, botId: botId });
+    final getData = response.data;
+    return getData.toJson();
+  }
+
+  Future<List<Bot>> getAllBotsTrend() async {
+    String url = '${baseUri}trending_bots';
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    final getData = response.data;
+
+    return getData.toJson();
+  }
+
+  Future<List<Bot>> getMyCreatedBots() async {
+    String url = '${baseUri}own_created_bot';
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    final getData = response.data;
+
+    return getData.toJson();
   }
 
 }

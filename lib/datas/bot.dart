@@ -1,6 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/user.dart';
 
 class BotPrompt {
   final String text;
@@ -28,19 +26,20 @@ class BotPrompt {
 class Bot {
   /// Bot info
   final String botId;
-  final String? profilePhoto;
+  final String about;
   final String name;
   final String model;
   final String repoId;
   final String domain;
   final String subdomain;
+  final bool isActive;
+  final String adminStatus;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final bool isActive;
-  final String about;
-  final String adminStatus;
+  final String? profilePhoto;
   final String? adminNote;
   final double? price;
+  final String? priceUnit;
   final Object? botOwnerId;
 
   // Constructor
@@ -59,25 +58,27 @@ class Bot {
     required this.updatedAt,
     this.adminNote,
     this.price,
+    this.priceUnit,
     this.botOwnerId
   });
 
   Map<String, dynamic> toJson() => {
     'botId': botId,
     'profilePhoto': profilePhoto,
+    'about': about,
     'name': name,
     'model': model,
     'domain': domain,
     'subdomain': subdomain,
     'repoId': repoId,
-    'regDate': createdAt,
+    'price': price,
+    'priceUnit': priceUnit,
+    'botOwnerId': botOwnerId,
     'isActive': isActive,
     'adminState': adminStatus,
-    'updatedAt': updatedAt,
     'adminNote': adminNote,
-    'price': price,
-    'botOwnerId': botOwnerId,
-    'about': about
+    'createdAt': createdAt,
+    'updatedAt': updatedAt
   };
 
   /// factory bot object
