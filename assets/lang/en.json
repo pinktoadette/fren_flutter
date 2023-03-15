@@ -64,7 +64,7 @@
   "enter_your_job_title": "Enter your job title",
   "please_enter_your_job_title": "Please enter your job title",
   "bio": "Bio",
-  "write_about_you": "Write about you",
+  "write_about_you": "Describe your super powers/domain knowledge",
   "select_three_interest": "Please select 3 interests",
   "please_write_your_bio": "Please write your bio",
   "i_agree_with": "By signing in you agree with ",
@@ -360,7 +360,7 @@
 
   "publish": "Publish",
   "search": "Search",
-  "select_industry": "Select your work industry",
+  "select_industry": "Select your major or industry",
   "select_interest": "Select your interest",
   "required_field": "Please input required field"
 }

@@ -8,6 +8,7 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/plugins/carousel_pro/carousel_pro.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
 import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -100,25 +101,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(5.0),
-                          decoration: const BoxDecoration(
-                              color: Colors.black, shape: BoxShape.circle),
-                          child: CircleAvatar(
-                            radius: 50,
-                            child: (widget.user.userProfilePhoto == '')
-                                ? Center(
-                              child: Text(widget.user.userFullname.substring(0,1).toUpperCase(),
-                                  style: Theme.of(context).textTheme.headlineSmall),
-                            )
-                                : null,
-                            foregroundImage: widget.user.userProfilePhoto == '' ? null : NetworkImage(widget.user.userProfilePhoto),
-                            backgroundColor: Colors.white,
-                          ),
-                        ),
+                        AvatarInitials(user: widget.user),
                         const SizedBox(width: 20),
                         Text( widget.user.userFullname,
-                          style: Theme.of(context).textTheme.headlineMedium,
+                          style: Theme.of(context).textTheme.headlineSmall,
                         ),
                         /// Show verified badge
                         widget.user.userIsVerified

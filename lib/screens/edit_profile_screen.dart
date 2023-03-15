@@ -7,6 +7,7 @@ import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_screen.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
@@ -28,8 +29,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _bioController = TextEditingController(text: UserModel().user.userBio);
 
-  String _selectedIndustry = UserModel().user.userIndustry;
-  List<String> _selectedInterest = ['Animals and Pets'];
+  late String _selectedIndustry;
+  late List<String> _selectedInterest;
   late List<String> _industryList = [];
   late List<String> _interestList = [];
 
@@ -40,6 +41,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void initState() {
     super.initState();
     getJson();
+    setState(() {
+      _selectedIndustry = UserModel().user.userIndustry;
+      _selectedInterest = UserModel().user.userInterest;
+    });
   }
 
   Future<void> getJson() async {
@@ -93,19 +98,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Center(
                     child: Stack(
                       children: <Widget>[
-                        
-                        CircleAvatar(
-                          child: (userModel.user.userProfilePhoto != '')
-                              ? Center(
-                            child: Text(userModel.user.userFullname.substring(0,1),
-                                style: TextStyle(
-                                  color: Theme.of(context).primaryColor,
-                                )),
-                          )
-                              : null,
-                          foregroundImage: userModel.user.userProfilePhoto != '' ? null : NetworkImage(userModel.user.userProfilePhoto),
-                          backgroundColor: Theme.of(context).colorScheme.background,
-                        ),
+                        AvatarInitials(user: userModel.user),
 
                         /// Edit icon
                         Positioned(
@@ -148,6 +141,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       _selectedIndustry = industry!;
                     });
                   },
+                  value: _selectedIndustry,
                   validator: (String? value) {
                     if (value == null) {
                       return _i18n.translate("select_industry");
@@ -181,20 +175,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     )),
 
                 /// Bio field
-                TextFormField(
-                  controller: _bioController,
-                  maxLines: 4,
-                  decoration: InputDecoration(
-                    labelText: _i18n.translate("bio"),
-                    hintText: _i18n.translate("write_about_you"),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: TextFormField(
+                    controller: _bioController,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                      labelText: _i18n.translate("bio"),
+                      hintText: _i18n.translate("write_about_you"),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    validator: (bio) {
+                      if (bio == null) {
+                        return _i18n.translate("please_write_your_bio");
+                      }
+                      return null;
+                    },
                   ),
-                  validator: (bio) {
-                    if (bio == null) {
-                      return _i18n.translate("please_write_your_bio");
-                    }
-                    return null;
-                  },
                 ),
               ],
             );

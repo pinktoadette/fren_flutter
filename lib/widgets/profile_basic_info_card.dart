@@ -4,6 +4,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/edit_profile_screen.dart';
 import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/screens/settings_screen.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
@@ -40,18 +41,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
               /// Profile image
               Row(
                 children: [
-                  Container(
-                    padding: const EdgeInsets.all(3.0),
-                    decoration: const BoxDecoration(
-                        color: Colors.white, shape: BoxShape.circle),
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).primaryColor,
-                      radius: 40,
-                      backgroundImage:
-                          NetworkImage(UserModel().user.userProfilePhoto),
-                      onBackgroundImageError: (e, s) => { debugPrint(e.toString()) },
-                    ),
-                  ),
+                  AvatarInitials(user: UserModel().user),
 
                   const SizedBox(width: 10),
 
