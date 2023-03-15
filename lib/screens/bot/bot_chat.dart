@@ -2,13 +2,10 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/api/machi/message_api.dart';
-import 'package:fren_app/api/messages_api.dart';
-import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
@@ -25,7 +22,6 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:uuid/uuid.dart';
 
-// can't use stateless for Chat class package
 class BotChatScreen extends StatefulWidget {
   const BotChatScreen({Key? key}) : super(key: key);
 

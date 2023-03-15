@@ -2,13 +2,16 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/datas/bot.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:uuid/uuid.dart';
 
 class MessageApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -74,26 +77,53 @@ class MessageApi {
   }
 
   Future<List<types.Message>> getMessages() async{
-    String botId = botControl.bot.botId;
+    Bot bot = botControl.bot;
 
-    String url = '${baseUri}get_prompts';
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: { botId: botId });
+    String url = '${baseUri}get_prompts'; // get last n messages
+    debugPrint ("Requesting URL $url");
+    final dioRequest = await auth.getDio();
+    final response = await dioRequest.post(url, data: { "botId": bot.botId });
+    final oldMessages = response.data;
+
+    if ((oldMessages as List).isEmpty) {
+      // create bot first message
+      DateTime dateTime = DateTime.now();
+
+      Map<String, dynamic> message = {'author': ''};
+      message['authorId'] = bot.botId;
+      message['name'] = bot.name;
+      message['createdAt'] = dateTime;
+      message['id'] = const Uuid().v1();
+      message['updatedAt'] = dateTime;
+      message['text'] = bot.about;
+      message['type'] = "text";
+
+      types.Message fin = _createTypesMessages(message);
+      List<types.Message> finalMessage = [];
+      finalMessage.add(fin);
+      return finalMessage;
+    }
 
     List<types.Message> listMessage =  response.data.map((message){
-      final author = types.User(id: message['authorId'] as String, firstName: message['name']);
-      message['author'] = author.toJson();
-      message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
-      message['id'] = message.id;
-      message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
-
-      if (message['type'] == 'image') {
-        return types.ImageMessage.fromJson(message);
-      }
-
-      return types.Message.fromJson(message);
+      return _createTypesMessages(message);
     });
     return listMessage;
+  }
+
+
+  types.Message _createTypesMessages(Map<String, dynamic> message) {
+    print( message);
+    final author = types.User(id: message['authorId'] as String, firstName: message['name']);
+    message['author'] = author.toJson();
+    message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
+    message['id'] = message['id'];
+    message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
+
+    if (message['type'] == 'image') {
+      return types.ImageMessage.fromJson(message);
+    }
+
+    return types.Message.fromJson(message);
   }
 
 }

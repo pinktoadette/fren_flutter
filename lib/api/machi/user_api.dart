@@ -27,11 +27,14 @@ class UserApi {
   }
 
   Future<void> saveUser(Map<String, dynamic> data) async {
-    String url = '${baseUri}create_user';
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: data);
-    final getData = response.data;
-    print (getData);
+    try {
+      String url = '${baseUri}create_user';
+      final dio = await auth.getDio();
+      await dio.post(url, data: data);
+    } catch(error) {
+      debugPrint(error.toString());
+    }
+
   }
 
   Future<void> updateUser(Map<String, dynamic> data) async {
@@ -42,7 +45,6 @@ class UserApi {
     } catch (error) {
       debugPrint(error.toString());
     }
-
   }
 
 }
