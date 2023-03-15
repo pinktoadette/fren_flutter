@@ -13,7 +13,7 @@ import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/main.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/profile_screen.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/chat_message.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/loader.dart';

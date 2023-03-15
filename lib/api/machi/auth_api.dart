@@ -2,12 +2,15 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
 
+/// Sets headers
 class AuthApi {
+
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = 'https://machi.herokuapp.com/api/';
+  final baseUri = PY_API;
   final BotController botControl = Get.find();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

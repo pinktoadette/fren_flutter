@@ -7,7 +7,7 @@ import 'package:fren_app/dialogs/vip_dialog.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/profile_screen.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/loading_card.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
@@ -11,7 +12,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class UserApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = 'https://machi.herokuapp.com/api/';
+  final baseUri =PY_API;
   final BotController botControl = Get.find();
   final auth = AuthApi();
 
@@ -34,11 +35,14 @@ class UserApi {
   }
 
   Future<void> updateUser(Map<String, dynamic> data) async {
-    String url = '${baseUri}updated';
-    final dio = await auth.getDio();
-    final response = await dio.put(url, data: data);
-    final getData = response.data;
-    print (getData);
+    try {
+      String url = '${baseUri}update_user';
+      final dio = await auth.getDio();
+      await dio.put(url, data: data);
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
   }
 
 }

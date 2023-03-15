@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -117,14 +118,15 @@ class DatabaseService {
   }
 
   Future<void> updateUser(Map<String, dynamic> user) async {
+    var dt = DateTime.now();
 
     final db = await _databaseService.database;
     await db.rawUpdate('''
     UPDATE user 
     SET name = ?, status = ?, updatedAt = ? 
-    WHERE _id = ?
+    WHERE fbId = ?
     ''',
-        [user[USER_FULLNAME], user[USER_STATUS], user[UPDATED_AT].millisecondsSinceEpoch, user[USER_ID]]);
+        [user[USER_FULLNAME], user[USER_STATUS], dt.millisecondsSinceEpoch, UserModel().user.userId ]);
   }
 
 

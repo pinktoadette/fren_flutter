@@ -9,8 +9,10 @@ void showScaffoldMessage({
   Duration? duration,
 }) {
   scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
-    content: Text(message, style: const TextStyle(fontSize: 18)),
+    content: Text(message, style: const TextStyle(fontSize: 16)),
     duration: duration ?? const Duration(seconds: 5),
     backgroundColor: bgcolor ?? APP_PRIMARY_COLOR,
+    margin: const EdgeInsets.all(20),
+    behavior: SnackBarBehavior.floating,
   ));
 }

@@ -3,8 +3,8 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_likes_screen.dart';
-import 'package:fren_app/screens/profile_screen.dart';
-import 'package:fren_app/screens/profile_visits_screen.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
+import 'package:fren_app/screens/user/profile_visits_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppNotifications {

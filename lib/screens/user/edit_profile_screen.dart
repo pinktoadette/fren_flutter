@@ -6,7 +6,7 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/profile_screen.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -15,6 +15,8 @@ import 'package:fren_app/widgets/user_gallery.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
+
+import '../../constants/constants.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -73,8 +75,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         actions: [
           // Save changes button
           TextButton(
-            child: Text(_i18n.translate("SAVE"),
-                style: TextStyle(color: Theme.of(context).primaryColor)),
+            child: Text(_i18n.translate("SAVE")),
             onPressed: () {
               /// Validate form
               if (_formKey.currentState!.validate()) {
@@ -178,6 +179,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
+                    textCapitalization: TextCapitalization.sentences,
                     controller: _bioController,
                     maxLines: 4,
                     decoration: InputDecoration(
@@ -238,27 +240,19 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         userIndustry: _selectedIndustry,
         interests: _selectedInterest,
         userBio: _bioController.text.trim(),
-        onSuccess: () {
+        onSuccess: () async {
           /// Show success message
-          successDialog(context,
-              message: _i18n.translate("profile_updated_successfully"),
-              positiveAction: () {
-            /// Close dialog
-            Navigator.of(context).pop();
-
-            /// Go to profilescreen
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                    ProfileScreen(user: UserModel().user, showButtons: false)));
-          });
+          showScaffoldMessage(
+              message:  _i18n.translate("profile_updated_successfully"));
         },
         onFail: (error) {
           // Debug error
           debugPrint(error);
           // Show error message
-          errorDialog(context,
-              message: _i18n
-                  .translate("an_error_occurred_while_updating_your_profile"));
+          showScaffoldMessage(
+              message:  _i18n
+                  .translate("an_error_occurred_while_updating_your_profile"), bgcolor: APP_ERROR);
+
         });
   }
 }

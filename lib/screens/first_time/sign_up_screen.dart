@@ -211,6 +211,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     children: <Widget>[
                       /// FullName field
                       TextFormField(
+                        textCapitalization: TextCapitalization.sentences,
                         controller: _nameController,
                         decoration: InputDecoration(
                             labelText: _i18n.translate("fullname"),

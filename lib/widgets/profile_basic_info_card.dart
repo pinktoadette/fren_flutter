@@ -1,8 +1,8 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/edit_profile_screen.dart';
-import 'package:fren_app/screens/profile_screen.dart';
+import 'package:fren_app/screens/user/edit_profile_screen.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/screens/settings_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/button/circle_button.dart';

@@ -1,7 +1,7 @@
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_likes_screen.dart';
-import 'package:fren_app/screens/profile_visits_screen.dart';
+import 'package:fren_app/screens/user/profile_visits_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
