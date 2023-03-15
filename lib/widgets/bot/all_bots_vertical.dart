@@ -51,6 +51,7 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
       return Container(
           margin: const EdgeInsets.symmetric(vertical: 5.0),
           child: ListView.builder(
+                physics: const ClampingScrollPhysics(),
                 shrinkWrap: true,
                 scrollDirection: Axis.vertical,
                 itemCount: _listBot!.length,

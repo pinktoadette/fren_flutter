@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -135,6 +136,11 @@ class MyApp extends StatelessWidget {
         progressIndicatorTheme: const ProgressIndicatorThemeData(
           color: APP_PRIMARY_COLOR,
         ),
+      cardTheme: CardTheme(
+        clipBehavior: Clip.antiAlias,
+        elevation: 4.0,
+        shape: defaultCardBorder(),
+      ),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -219,6 +225,27 @@ class MyApp extends StatelessWidget {
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_DARK_BACKGROUND),
       scaffoldBackgroundColor: Colors.white,
+      textButtonTheme: TextButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.white30,
+        clipBehavior: Clip.antiAlias,
+        // set shape to make top corners rounded
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
+        ),
+      ),
       inputDecorationTheme: InputDecorationTheme(
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(

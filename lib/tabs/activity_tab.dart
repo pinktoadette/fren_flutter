@@ -28,6 +28,7 @@ class _ActivityTabState extends State<ActivityTab> {
   int _currentStep = 0;
   bool _visible = true;
   bool _isInitiatedFrank = false;
+  bool _frankieFinish = false;
 
   Future<void> _fetchInitialFrankie() async {
     List steps = await _botApi.getInitialFrankie();
@@ -51,8 +52,25 @@ class _ActivityTabState extends State<ActivityTab> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    if(_listFeatures?.isEmpty == true) {
-      return ActivityWidget();
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    if(_isInitiatedFrank == true) {
+      return Scaffold(
+        body: Stack(
+            children:  [
+              SingleChildScrollView(
+                child: ActivityWidget()
+              ),
+              Positioned(
+                  bottom: 0.0,
+                  child: SizedBox(
+                    width: screenWidth,
+                    child: const QuickChat(),
+                  )
+              ),
+          ]
+        )
+      );
     }
     return Scaffold(
       body: Column(
@@ -62,20 +80,18 @@ class _ActivityTabState extends State<ActivityTab> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   // ActivityWidget()
-                  if (_currentStep < _listFeatures.length - 1) _onCardClick()
+                  if (_currentStep < _listFeatures.length) _onCardClick()
                 ],
               ),
           ),
           const Spacer(),
-
-          const QuickChat(),
         ]
       )
     );
   }
 
   Widget _onCardClick() {
-    if(_visible == false) {
+    if((_currentStep == _listFeatures.length - 1) & (_visible == false)) {
       /// update user isFrankieInitaited false
       _updateUser();
     }
@@ -93,7 +109,7 @@ class _ActivityTabState extends State<ActivityTab> {
         ),
       ),
         onNotification: (n) {
-          if (_currentStep < _listFeatures.length) {
+          if (_currentStep <= _listFeatures.length) {
             Future.delayed(const Duration(milliseconds: 100), (){
               setState(() {_visible = false;});
             });
@@ -107,6 +123,7 @@ class _ActivityTabState extends State<ActivityTab> {
             });
           } else {
             setState(() {
+              _currentStep = _currentStep + 1;
               _visible = false;
             });
           }

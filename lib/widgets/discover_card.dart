@@ -29,9 +29,6 @@ class DiscoverCard extends StatelessWidget {
     double screenheight = MediaQuery.of(context).size.height;
 
     return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 4.0,
-      shape: defaultCardBorder(),
       child: SizedBox(
         height: screenheight-250,
         width: screenWidth,
