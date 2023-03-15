@@ -105,6 +105,14 @@ class UserModel extends Model {
       {required String userId, required Map<String, dynamic> data}) async {
     // Update user data
     _firestore.collection(C_USERS).doc(userId).update(data);
+
+    // external api
+    final mApi = UserApi();
+    await mApi.updateUser(data);
+
+    // local device
+    final DatabaseService _databaseService = DatabaseService();
+    _databaseService.updateUser(data);
   }
 
   /// Update user device token and

@@ -33,4 +33,12 @@ class UserApi {
     print (getData);
   }
 
+  Future<void> updateUser(Map<String, dynamic> data) async {
+    String url = '${baseUri}updated';
+    final dio = await auth.getDio();
+    final response = await dio.put(url, data: data);
+    final getData = response.data;
+    print (getData);
+  }
+
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/bot_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -25,6 +26,7 @@ class _ActivityTabState extends State<ActivityTab> {
   List _listFeatures = [];
   int _currentStep = 0;
   bool _visible = true;
+  bool _isInitiatedFrank = false;
 
   Future<void> _fetchInitialFrankie() async {
     List steps = await _botApi.getInitialFrankie();
@@ -39,6 +41,9 @@ class _ActivityTabState extends State<ActivityTab> {
     if (user.isFrankInitiated == false) {
       _fetchInitialFrankie();
     }
+    setState(() {
+      _isInitiatedFrank = user.isFrankInitiated;
+    });
   }
 
   @override
@@ -51,23 +56,18 @@ class _ActivityTabState extends State<ActivityTab> {
     return Scaffold(
       body: Column(
         children:  [
-          Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // ActivityWidget()
-                    if (_currentStep < _listFeatures.length - 1) _onCardClick()
-                  ],
-                ),
-              )
+          SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // ActivityWidget()
+                  if (_currentStep < _listFeatures.length - 1) _onCardClick()
+                ],
+              ),
           ),
-
           const Spacer(),
 
-          const QuickChat(),
-
+          if (_isInitiatedFrank == true) const QuickChat(),
         ]
       )
     );
@@ -104,13 +104,20 @@ class _ActivityTabState extends State<ActivityTab> {
             setState(() {
               _visible = false;
             });
+            /// update user isFrankieInitaited false
+            _updateUser();
           }
-
           return true;
       }
     );
 
   }
 
+  void _updateUser() async {
+    Map<String, bool> data = { USER_INITIATED_FRANK : true };
+    print (data);
+    await UserModel()
+        .updateUserData(userId: UserModel().user.userId, data: data);
+  }
 
 }

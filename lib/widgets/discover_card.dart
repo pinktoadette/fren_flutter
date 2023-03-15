@@ -33,7 +33,7 @@ class DiscoverCard extends StatelessWidget {
       elevation: 4.0,
       shape: defaultCardBorder(),
       child: SizedBox(
-        height: screenheight-300,
+        height: screenheight-250,
         width: screenWidth,
         child: Container(
           padding: const EdgeInsets.all(40),

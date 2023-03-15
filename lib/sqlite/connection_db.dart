@@ -116,7 +116,7 @@ class DatabaseService {
     return result;
   }
 
-  Future<void> updateUser(User user) async {
+  Future<void> updateUser(Map<String, dynamic> user) async {
 
     final db = await _databaseService.database;
     await db.rawUpdate('''
@@ -124,7 +124,7 @@ class DatabaseService {
     SET name = ?, status = ?, updatedAt = ? 
     WHERE _id = ?
     ''',
-        [user.userFullname, user.userStatus, user.userLastUpdate.millisecondsSinceEpoch, user.userId]);
+        [user[USER_FULLNAME], user[USER_STATUS], user[UPDATED_AT].millisecondsSinceEpoch, user[USER_ID]]);
   }
 
 

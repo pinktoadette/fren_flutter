@@ -15,7 +15,6 @@ import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
