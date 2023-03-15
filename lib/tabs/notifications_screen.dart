@@ -6,6 +6,7 @@ import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/processing.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
@@ -61,12 +62,10 @@ class NotificationsScreen extends StatelessWidget {
           builder: (context, snapshot) {
             /// Check data
             if (!snapshot.hasData) {
-              return Processing(text: i18n.translate("loading"));
+              return const Frankloader();
             } else if (snapshot.data!.docs.isEmpty) {
               /// No notification
-              return NoData(
-                  svgName: 'bell_icon',
-                  text: i18n.translate("no_notification"));
+              return Text(i18n.translate("no_notification"));
             } else {
               return ListView.separated(
                 shrinkWrap: true,

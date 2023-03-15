@@ -5,6 +5,7 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
+import 'package:fren_app/widgets/activity.dart';
 import 'package:fren_app/widgets/bot/quick_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/discover_card.dart';
@@ -51,7 +52,7 @@ class _ActivityTabState extends State<ActivityTab> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
     if(_listFeatures?.isEmpty == true) {
-      return const Frankloader();
+      return ActivityWidget();
     }
     return Scaffold(
       body: Column(
@@ -67,13 +68,17 @@ class _ActivityTabState extends State<ActivityTab> {
           ),
           const Spacer(),
 
-          if (_isInitiatedFrank == true) const QuickChat(),
+          const QuickChat(),
         ]
       )
     );
   }
 
   Widget _onCardClick() {
+    if(_visible == false) {
+      /// update user isFrankieInitaited false
+      _updateUser();
+    }
     return NotificationListener<ButtonChanged>(
       child: AnimatedOpacity(
         // If the widget is visible, animate to 0.0 (invisible).
@@ -104,8 +109,6 @@ class _ActivityTabState extends State<ActivityTab> {
             setState(() {
               _visible = false;
             });
-            /// update user isFrankieInitaited false
-            _updateUser();
           }
           return true;
       }
@@ -115,9 +118,11 @@ class _ActivityTabState extends State<ActivityTab> {
 
   void _updateUser() async {
     Map<String, bool> data = { USER_INITIATED_FRANK : true };
-    print (data);
     await UserModel()
         .updateUserData(userId: UserModel().user.userId, data: data);
+    setState(() {
+      _isInitiatedFrank = true;
+    });
   }
 
 }

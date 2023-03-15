@@ -20,7 +20,7 @@ class _ActivityWidgetState extends State<ActivityWidget> {
         physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-          itemCount: 3,
+          itemCount: 10,
           itemBuilder: (context, int index) {
           return Container(
             height: 100,
