@@ -373,6 +373,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           // returns bot response
         return res;
     }).catchError((error) {
+      FocusScope.of(context).unfocus();
       showScaffoldMessage(
           context: context,
           message: _i18n.translate("an_error_has_occurred"),

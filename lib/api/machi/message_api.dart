@@ -67,10 +67,10 @@ class MessageApi {
       messageMap['createdAt'] = dateTime;
       messageMap['name'] = user.firstName;
 
-      print (messageMap);
+      print ({...messageMap, "botId": botId });
       // save to local db
       final DatabaseService _databaseService = DatabaseService();
-      await _databaseService.insertChat(messageMap);
+      await _databaseService.insertChat({...messageMap, "botId": botId });
 
 
       return [];
@@ -120,23 +120,36 @@ class MessageApi {
   Future<List<types.Message>> getLocalDbMessages() async {
     Bot bot = botControl.bot;
     final DatabaseService _databaseService = DatabaseService();
-    final List<Map<dynamic, dynamic>> messages = await _databaseService.getLastMessages(bot.botId);
+    final List<Map<String, dynamic>> messages = await _databaseService.getLastMessages(bot.botId);
     print ("lcal get");
-    print (messages);
+
+    final List<types.Message> finalMessages = [];
+
+    for (var element in messages) {
+      Map<String, dynamic> newMessage = Map.from(element);
+      types.Message msg = _createTypesMessages(newMessage);
+      finalMessages.add(msg);
+    }
+
+    return finalMessages;
+
+    Iterable<types.Message> listMessage =  messages.map((message){
+      return _createTypesMessages(message);
+    });
+    print (listMessage);
     return [];
-    // List<types.Message> listMessage =  messages.map((message){
-    //   return _createTypesMessages(message);
-    // });
     // return listMessage;
   }
 
   types.Message _createTypesMessages(Map<String, dynamic> message) {
-    print( message);
     final author = types.User(id: message['authorId'] as String, firstName: message['name']);
     message['author'] = author.toJson();
-    message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
     message['id'] = message['id'];
-    message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
+
+    if (int.tryParse(message['createdAt']) != null) {
+      message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
+      message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
+    }
 
     if (message['type'] == 'image') {
       return types.ImageMessage.fromJson(message);
@@ -144,5 +157,7 @@ class MessageApi {
 
     return types.Message.fromJson(message);
   }
+
+
 
 }

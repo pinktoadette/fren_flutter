@@ -75,10 +75,12 @@ class DatabaseService {
           'createdAt INT,'
           'updatedAt INT, '
           'name TEXT, '
-          'authorId TEXT, '
-          'botId TEXT, '
-          'message TEXT, '
-          'messageType TEXT)',
+          'authorId TEXT NOT NULL, '
+          'botId TEXT NOT NULL, '
+          'uri TEXT, '
+          'fileSize TEXT, '
+          'message TEXT NOT NULL, '
+          'messageType TEXT NOT NULL)',
     );
   }
 
@@ -137,33 +139,34 @@ class DatabaseService {
     return result[0];
   }
 
-  Future<List<Map>> getLastMessages(String botId) async {
+  Future<List<Map<String, dynamic>>> getLastMessages(String botId) async {
     /// This is all the user info, so just need to select where botId=botId;
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from message where authorId=?', [UserModel().user.userId]);
+    List<Map<String, dynamic>> result = await db.rawQuery('Select * from message where botId=? limit 50', [botId]);
     print (result);
     return result;
   }
 
   Future<int> insertChat(Map<String, dynamic> message) async {
     final db = await _databaseService.database;
-    print (message);
-    final result  = await db.rawInsert('INSERT INTO message'
-        'createdAt,'
+
+    final result  = await db.rawInsert('INSERT INTO message ('
+        'createdAt, '
         'updatedAt, '
         'name, '
         'authorId, '
         'botId, '
         'message, '
-        'messageType'
-        ' VALUES(?, ?)', [message['createdAt'].millisecondsSinceEpoch,
-      message['updatedAt'].millisecondsSinceEpoch,
+        'messageType) VALUES(?, ?, ?, ?, ?, ?, ?)', [message['createdAt'].millisecondsSinceEpoch,
+      message['createdAt'].millisecondsSinceEpoch,
       message['name'],
       message['authorId'],
-      message['message'],
+      message['botId'],
+      message['text'],
       message['type']
     ]);
     print (result);
+    print (">>>>>>>>>>>>>>>>>>>>>>>>>");
     return result;
   }
 
