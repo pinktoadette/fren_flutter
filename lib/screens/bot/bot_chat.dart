@@ -28,7 +28,13 @@ class BotChatScreen extends StatefulWidget {
   @override
   _BotChatScreenState createState() => _BotChatScreenState();
 }
-
+/// _messages are state;
+/// instead of continuously retrieving -
+/// 1. Get last message on server
+/// 2. Check local database an compare timestamp
+/// 3. if not match, fetch all messages
+/// 4. set state to messages
+/// 5. chatController will save of all messages
 class _BotChatScreenState extends State<BotChatScreen> {
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
@@ -58,7 +64,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isLoading = false;
     });
-    _fetchUserMessages();
+    _fetchLocalMessages();
+  }
+
+  Future<void> _fetchLocalMessages() async {
+    List<types.Message> message = await _messagesApi.getLocalDbMessages();
+    setState(() {
+      _messages = message;
+    });
   }
 
   Future<void> _fetchUserMessages() async {

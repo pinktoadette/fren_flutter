@@ -9,6 +9,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/sqlite/connection_db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
@@ -58,16 +59,22 @@ class MessageApi {
 
     if (message != null) {
       String botId = botControl.bot.botId;
+      DateTime dateTime = DateTime.now();
 
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
-      messageMap['authorId'] = user!.id;
-      messageMap['createdAt'] = FieldValue.serverTimestamp();
+      messageMap['authorId'] = user.id;
+      messageMap['createdAt'] = dateTime;
       messageMap['name'] = user.firstName;
 
-
       print (messageMap);
+      // save to local db
+      final DatabaseService _databaseService = DatabaseService();
+      await _databaseService.insertChat(messageMap);
 
+
+      return [];
+      // need to do if saveChat is user or bot. authorId can't be assigned to user.id
       final dio = await auth.getDio();
       final response = await dio.post(url, data: { ...messageMap, "respondToId": botId });
 
@@ -110,6 +117,18 @@ class MessageApi {
     return listMessage;
   }
 
+  Future<List<types.Message>> getLocalDbMessages() async {
+    Bot bot = botControl.bot;
+    final DatabaseService _databaseService = DatabaseService();
+    final List<Map<dynamic, dynamic>> messages = await _databaseService.getLastMessages(bot.botId);
+    print ("lcal get");
+    print (messages);
+    return [];
+    // List<types.Message> listMessage =  messages.map((message){
+    //   return _createTypesMessages(message);
+    // });
+    // return listMessage;
+  }
 
   types.Message _createTypesMessages(Map<String, dynamic> message) {
     print( message);

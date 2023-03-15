@@ -44,7 +44,7 @@ class DatabaseService {
 
   Future<void> _onCreate(Database db, int version) async {
     //fbId = Firebase DocId
-    // await db.execute("DROP TABLE IF EXISTS table");
+    // await db.execute("DROP TABLE IF EXISTS message");
 
     // Run the CREATE {USER} TABLE statement on the database.
     await db.execute(
@@ -69,14 +69,15 @@ class DatabaseService {
     );
 
     // msg table createdAt, updatedAt - millisecondsSinceEpoch
+    // botId is to identify on select * from bot
     await db.execute(
       'CREATE TABLE IF NOT EXISTS message(id INTEGER PRIMARY KEY, '
           'createdAt INT,'
           'updatedAt INT, '
-          'fbId TEXT KEY UNIQUE, '
-          'botId TEXT, '
+          'name TEXT, '
           'authorId TEXT, '
-          'message Text, '
+          'botId TEXT, '
+          'message TEXT, '
           'messageType TEXT)',
     );
   }
@@ -136,13 +137,35 @@ class DatabaseService {
     return result[0];
   }
 
+  Future<List<Map>> getLastMessages(String botId) async {
+    /// This is all the user info, so just need to select where botId=botId;
+    final db = await _databaseService.database;
+    List<Map> result = await db.rawQuery('Select * from message where authorId=?', [UserModel().user.userId]);
+    print (result);
+    return result;
+  }
 
-  // Future<void> insertChat(Message message) async {
-  //   final db = await _databaseService.database;
-  //
-  //   db.rawInsert('INSERT INTO chat(createdAt, name, status) VALUES(?, ?)', [user.userId, user.name, user.userStatus]);
-  //
-  // }
+  Future<int> insertChat(Map<String, dynamic> message) async {
+    final db = await _databaseService.database;
+    print (message);
+    final result  = await db.rawInsert('INSERT INTO message'
+        'createdAt,'
+        'updatedAt, '
+        'name, '
+        'authorId, '
+        'botId, '
+        'message, '
+        'messageType'
+        ' VALUES(?, ?)', [message['createdAt'].millisecondsSinceEpoch,
+      message['updatedAt'].millisecondsSinceEpoch,
+      message['name'],
+      message['authorId'],
+      message['message'],
+      message['type']
+    ]);
+    print (result);
+    return result;
+  }
 
   // A method that retrieves all the breeds from the breeds table.
   // Future<List<User>> breeds() async {
