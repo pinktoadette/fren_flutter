@@ -13,6 +13,7 @@ import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:timeago/timeago.dart' as timeago;
@@ -46,6 +47,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final DislikesApi _dislikesApi = DislikesApi();
   final MatchesApi _matchesApi = MatchesApi();
   late AppLocalizations _i18n;
+  final double _iconSize = 16;
 
   @override
   void initState() {
@@ -67,29 +69,69 @@ class _ProfileScreenState extends State<ProfileScreen> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
 
-
     return Scaffold(
         key: _scaffoldKey,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme:
+          IconThemeData(color: Theme.of(context).primaryColor),
+          actions: <Widget>[
+            // Check the current User ID
+            if (UserModel().user.userId != widget.user.userId)
+              IconButton(
+                icon: Icon(Icons.flag,
+                    color: Theme.of(context).primaryColor, size: 32),
+                // Report/Block profile dialog
+                onPressed: () =>
+                    ReportDialog(userId: widget.user.userId).show(),
+              )
+          ],
+        ),
         body: ScopedModelDescendant<UserModel>(
             builder: (context, child, userModel) {
           return Stack(
             children: [
               SingleChildScrollView(
-                padding: const EdgeInsets.only(bottom: 50),
+                padding: const EdgeInsets.all(10.0),
                 child: Column(
                   children: [
-                    /// Carousel Profile images
-                    AspectRatio(
-                      aspectRatio: 1 / 1,
-                      child: Carousel(
-                          autoplay: false,
-                          dotBgColor: Colors.transparent,
-                          dotIncreasedColor: Theme.of(context).primaryColor,
-                          images: UserModel()
-                              .getUserProfileImages(widget.user)
-                              .map((url) => NetworkImage(url))
-                              .toList()),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.all(5.0),
+                          decoration: const BoxDecoration(
+                              color: Colors.black, shape: BoxShape.circle),
+                          child: CircleAvatar(
+                            radius: 50,
+                            child: (widget.user.userProfilePhoto == '')
+                                ? Center(
+                              child: Text(widget.user.userFullname.substring(0,1).toUpperCase(),
+                                  style: Theme.of(context).textTheme.headlineSmall),
+                            )
+                                : null,
+                            foregroundImage: widget.user.userProfilePhoto == '' ? null : NetworkImage(widget.user.userProfilePhoto),
+                            backgroundColor: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(width: 20),
+                        Text( widget.user.userFullname,
+                          style: Theme.of(context).textTheme.headlineMedium,
+                        ),
+                        /// Show verified badge
+                        widget.user.userIsVerified
+                            ? Container(
+                            margin: const EdgeInsets.only(right: 5),
+                            child: Image.asset(
+                                'assets/images/verified_badge.png',
+                                width: 30,
+                                height: 30))
+                            : const SizedBox(width: 0, height: 0),
+                      ],
                     ),
+
 
                     /// Profile details
                     Padding(
@@ -100,62 +142,52 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              /// Full Name
-                              Expanded(
-                                child: Text(
-                                  widget.user.userFullname,
-                                  style: const TextStyle(
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ),
-
-                              /// Show verified badge
-                              widget.user.userIsVerified
-                                  ? Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      child: Image.asset(
-                                          'assets/images/verified_badge.png',
-                                          width: 30,
-                                          height: 30))
-                                  : const SizedBox(width: 0, height: 0),
 
                               /// Show VIP badge for current user
-                              UserModel().user.userId == widget.user.userId &&
-                                      UserModel().userIsVip
-                                  ? Container(
-                                      margin: const EdgeInsets.only(right: 5),
-                                      child: Image.asset(
-                                          'assets/images/crow_badge.png',
-                                          width: 25,
-                                          height: 25))
-                                  : const SizedBox(width: 0, height: 0),
+                              // UserModel().user.userId == widget.user.userId &&
+                              //         UserModel().userIsVip
+                              //     ? Container(
+                              //         margin: const EdgeInsets.only(right: 5),
+                              //         child: Image.asset(
+                              //             'assets/images/crow_badge.png',
+                              //             width: 25,
+                              //             height: 25))
+                              //     : const SizedBox(width: 0, height: 0),
 
+                              ElevatedButton(
+                                  onPressed: (){},
+                                  child: Text("Follow")
+                              ),
+                              ElevatedButton(
+                                onPressed: () {  },
+                                child: const FittedBox(
+                                    fit: BoxFit.fitWidth,
+                                    child: Icon(Iconsax.message)),
+                              ),
                               /// Location distance
-                              CustomBadge(
-                                  icon: const Icon(Iconsax.location,
-                                      color: Colors.white),
-                                  text:
-                                      '${_appHelper.getDistanceBetweenUsers(userLat: widget.user.userGeoPoint.latitude, userLong: widget.user.userGeoPoint.longitude)}km')
+                              // CustomBadge(
+                              //     icon: const Icon(Iconsax.location,
+                              //         color: Colors.white),
+                              //     text:
+                              //         '${_appHelper.getDistanceBetweenUsers(userLat: widget.user.userGeoPoint.latitude, userLong: widget.user.userGeoPoint.longitude)}km')
                             ],
                           ),
 
                           const SizedBox(height: 5),
 
                           /// Home location
-                          if(widget.user.userLocality != '' ) _rowProfileInfo(
-                            context,
-                            icon: const Icon(Iconsax.location1),
-                            title:
-                                "${widget.user.userLocality}, ${widget.user.userCountry}",
+                          _rowProfileInfo( context,
+                            icon: Icon(Iconsax.location, size: _iconSize),
+                            title: widget.user.userLocality != '' ?
+                                "${widget.user.userLocality}, ${widget.user.userCountry}" : "Location not set",
                           ),
 
                           const SizedBox(height: 5),
 
-                          /// Job title
+                          /// indsutry
                           _rowProfileInfo(context,
-                              icon: const Icon(Iconsax.briefcase),
-                              title: widget.user.userJob),
+                              icon: Icon(Iconsax.briefcase, size: _iconSize),
+                              title: widget.user.userIndustry),
 
                           const SizedBox(height: 5),
 
@@ -165,40 +197,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(_i18n.translate("bio"),
-                                style: TextStyle(
-                                    fontSize: 22,
-                                    color: Theme.of(context).primaryColor)),
+                                style: Theme.of(context).textTheme.labelLarge),
                           ),
-                          Text(widget.user?.userBio ?? "",
-                              style: const TextStyle(
-                                  fontSize: 18, color: Colors.grey)),
+                          Text(widget.user.userBio ?? "", style:  Theme.of(context).textTheme.bodyMedium),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-
-              /// AppBar to return back
-              Positioned(
-                top: 0.0,
-                left: 0.0,
-                right: 0.0,
-                child: AppBar(
-                  backgroundColor: Colors.transparent,
-                  elevation: 0,
-                  iconTheme:
-                      IconThemeData(color: Theme.of(context).primaryColor),
-                  actions: <Widget>[
-                    // Check the current User ID
-                    if (UserModel().user.userId != widget.user.userId)
-                      IconButton(
-                        icon: Icon(Icons.flag,
-                            color: Theme.of(context).primaryColor, size: 32),
-                        // Report/Block profile dialog
-                        onPressed: () =>
-                            ReportDialog(userId: widget.user.userId).show(),
-                      )
                   ],
                 ),
               ),
@@ -217,7 +221,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         const SizedBox(width: 10),
         Padding(
           padding: const EdgeInsets.all(8.0),
-          child: Text(title, style: const TextStyle(fontSize: 19)),
+          child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
         ),
       ],
     );

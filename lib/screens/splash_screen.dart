@@ -68,7 +68,7 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         /// Authenticate User Account
         UserModel().authUserAccount(
-            // updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
+            updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
             onboardScreen: () => _nextScreen(const OnboardingScreen()),

@@ -171,14 +171,13 @@ class UserModel extends Model {
     // Callback functions for route
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
-    // required VoidCallback updateLocationScreen,
+    required VoidCallback updateLocationScreen,
     // Optional functions called on app start
     VoidCallback? onboardScreen,
     VoidCallback? signInScreen,
     VoidCallback? blockedScreen,
     Function? botChatScreen,
   }) async {
-    UserController userController = Get.find();
 
     /// Check user auth
     if (getFirebaseUser != null) {
@@ -191,6 +190,10 @@ class UserModel extends Model {
 
         /// if exists check status and take action
         if (userDoc.exists) {
+          // Get User's latitude & longitude
+          // final GeoPoint userGeoPoint = userDoc[USER_GEO_POINT]['geopoint'];
+          // final double latitude = userGeoPoint.latitude;
+          // final double longitude = userGeoPoint.longitude;
 
           /// Check User Account Status
           if (userDoc[USER_STATUS] == 'blocked') {
@@ -203,6 +206,13 @@ class UserModel extends Model {
 
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();
+
+            // Check location data
+            // if (latitude == 0.0 && longitude == 0.0) {
+            //   // Show Update your current location message
+            //   updateLocationScreen();
+            //   return;
+            // }
 
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
@@ -372,9 +382,11 @@ class UserModel extends Model {
     notifyListeners();
     DateTime time = DateTime.now();
 
+
     /// @TODO need to get error callback
     final mApi = UserApi();
     await mApi.saveUser({
+      USER_PROFILE_FILLED: true,
       USER_ID: getFirebaseUser!.uid,
       USER_FULLNAME: userFullName,
       USER_BIRTH_YEAR: userBirthYear,
@@ -389,11 +401,16 @@ class UserModel extends Model {
     /// Save user information in database
     /// Get user device token for push notifications
     final userDeviceToken = await _fcm.getToken();
+
+    /// Set Geolocation point
+    final GeoFirePoint geoPoint = _geo.point(latitude: 0.0, longitude: 0.0);
+
     await _firestore
         .collection(C_USERS)
         .doc(getFirebaseUser!.uid)
         .set(<String, dynamic>{
           USER_ID: getFirebaseUser!.uid,
+          USER_PROFILE_FILLED: true,
           USER_FULLNAME: userFullName,
           USER_BIRTH_DAY: userBirthDay,
           USER_BIRTH_MONTH: userBirthMonth,
@@ -406,8 +423,11 @@ class UserModel extends Model {
           CREATED_AT: FieldValue.serverTimestamp(),
           UPDATED_AT: FieldValue.serverTimestamp(),
           USER_DEVICE_TOKEN: userDeviceToken,
+          // User location info
+          USER_GEO_POINT: geoPoint.data,
+          USER_COUNTRY: '',
+          USER_LOCALITY: '',
     }).then((_) async {
-      /// save a copy in machi api
 
       /// Get current user in database
       final DocumentSnapshot<Map<String, dynamic>> userDoc =
@@ -435,8 +455,7 @@ class UserModel extends Model {
   /// Update current user profile
   Future<void> updateProfile({
     required String userIndustry,
-    required String job,
-    required String interests,
+    required List<String> interests,
     required String userBio,
     // Callback functions
     required VoidCallback onSuccess,
@@ -445,7 +464,6 @@ class UserModel extends Model {
     /// Update user profile
     updateUserData(userId: user.userId, data: {
       USER_INDUSTRY: userIndustry,
-      USER_JOB: job,
       USER_INTERESTS: interests,
       USER_BIO: userBio
     }).then((_) {

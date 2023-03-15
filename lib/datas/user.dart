@@ -75,19 +75,21 @@ class User {
 
   /// factory user object
   factory User.fromDocument(Map<String, dynamic> doc) {
+    final _interest = doc[USER_INTERESTS] .cast<String>();
+
     return User(
       userId: doc[USER_ID],
       isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
       isProfileFilled: doc[USER_PROFILE_FILLED] ?? false,
-      userProfilePhoto: doc[USER_PROFILE_PHOTO],
-      userFullname: doc[USER_FULLNAME],
+      userProfilePhoto: doc[USER_PROFILE_PHOTO] ?? '',
+      userFullname: doc[USER_FULLNAME].capitalize,
       userGender: doc[USER_GENDER] ?? '',
       userBirthDay: doc[USER_BIRTH_DAY] ?? 1,
       userBirthMonth: doc[USER_BIRTH_MONTH] ?? 1,
       userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
       userSchool: doc[USER_SCHOOL] ?? '',
       userJob: doc[USER_JOB] ?? '',
-      userInterest: doc[USER_INTERESTS] ?? [],
+      userInterest: _interest ?? [],
       userIndustry: doc[USER_INDUSTRY] ?? '',
       userBio: doc[USER_BIO] ?? '',
       userEnableMode: doc[USER_ENABLE_MODE],

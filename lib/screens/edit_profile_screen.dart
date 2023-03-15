@@ -1,12 +1,18 @@
+import 'dart:convert';
+
+import 'package:chips_choice/chips_choice.dart';
+import 'package:flutter/services.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_screen.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
+import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:fren_app/widgets/user_gallery.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class EditProfileScreen extends StatefulWidget {
@@ -20,13 +26,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   // Variables
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final _induController =
-      TextEditingController(text: UserModel().user.userIndustry);
-  final _jobController =
-      TextEditingController(text: UserModel().user.userJob);
   final _bioController = TextEditingController(text: UserModel().user.userBio);
+
+  String _selectedIndustry = UserModel().user.userIndustry;
+  List<String> _selectedInterest = ['Animals and Pets'];
+  late List<String> _industryList = [];
+  late List<String> _interestList = [];
+
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
+
+  @override
+  void initState() {
+    super.initState();
+    getJson();
+  }
+
+  Future<void> getJson() async {
+    String _indu = await rootBundle.loadString('assets/json/industry.json');
+    List<String> industryList = List.from(jsonDecode(_indu) as List<dynamic>);
+
+    String _inter = await rootBundle.loadString('assets/json/interest.json');
+    List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
+
+    setState(() {
+      _industryList = industryList;
+      _interestList = interestList;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,11 +93,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Center(
                     child: Stack(
                       children: <Widget>[
+                        
                         CircleAvatar(
-                          backgroundImage:
-                              NetworkImage(userModel.user.userProfilePhoto),
-                          radius: 80,
-                          backgroundColor: Theme.of(context).primaryColor,
+                          child: (userModel.user.userProfilePhoto != '')
+                              ? Center(
+                            child: Text(userModel.user.userFullname.substring(0,1),
+                                style: TextStyle(
+                                  color: Theme.of(context).primaryColor,
+                                )),
+                          )
+                              : null,
+                          foregroundImage: userModel.user.userProfilePhoto != '' ? null : NetworkImage(userModel.user.userProfilePhoto),
+                          backgroundColor: Theme.of(context).colorScheme.background,
                         ),
 
                         /// Edit icon
@@ -97,38 +131,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                 const SizedBox(height: 20),
 
-                /// School field
-                TextFormField(
-                  controller: _induController,
-                  decoration: InputDecoration(
-                      labelText: "Industry",
-                      hintText: _i18n.translate("enter_your_school_name"),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,),
-                  validator: (school) {
-                    if (school == null) {
-                      return _i18n.translate("please_enter_your_school_name");
+                /// industry field
+                DropdownButtonFormField<String>(
+                  decoration: const InputDecoration(
+                    prefixIcon: Icon(Iconsax.briefcase1),
+                  ),
+                  items: _industryList.map((industry) {
+                    return DropdownMenuItem(
+                      value: industry,
+                      child: Text(industry),
+                    );
+                  }).toList(),
+                  hint: Text(_i18n.translate("select_industry")),
+                  onChanged: (industry) {
+                    setState(() {
+                      _selectedIndustry = industry!;
+                    });
+                  },
+                  validator: (String? value) {
+                    if (value == null) {
+                      return _i18n.translate("select_industry");
                     }
                     return null;
                   },
                 ),
                 const SizedBox(height: 20),
 
-                /// Job title field
-                TextFormField(
-                  controller: _jobController,
-                  decoration: InputDecoration(
-                      labelText: _i18n.translate("job_title"),
-                      hintText: _i18n.translate("enter_your_job_title"),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                /// interest
+                if (_interestList.isNotEmpty)  SizedBox(
+                    height: 200,
+                    child: SingleChildScrollView(
+                      child: ChipsChoice<String>.multiple(
+                        value: _selectedInterest,
+                        onChanged: (val) => {
+                          setState((){
+                            _selectedInterest = val;
+                          })
+                        },
+                        choiceItems: C2Choice.listFrom<String, String>(
+                          source: _interestList,
+                          value: (i, v) => v,
+                          label: (i, v) => v,
+                          tooltip: (i, v) => v,
+                        ),
+                        choiceCheckmark: true,
+                        choiceStyle: C2ChipStyle.outlined(),
+                        wrapped: true,
                       ),
-                  validator: (job) {
-                    if (job == null) {
-                      return _i18n.translate("please_enter_your_job_title");
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
+                    )),
 
                 /// Bio field
                 TextFormField(
@@ -179,11 +229,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   /// Update profile changes for TextFormField only
   void _saveChanges() {
+    if (_selectedInterest.length < 3) {
+      showScaffoldMessage(
+          context: context,
+          message: _i18n.translate("select_three_interest"),
+          bgcolor: Colors.pinkAccent);
+    }
+
     /// Update uer profile
     UserModel().updateProfile(
-        userIndustry: _induController.text.trim(),
-        job: _jobController.text.trim(),
-        interests: _jobController.text.trim(),
+        userIndustry: _selectedIndustry,
+        interests: _selectedInterest,
         userBio: _bioController.text.trim(),
         onSuccess: () {
           /// Show success message

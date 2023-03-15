@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:chips_choice/chips_choice.dart';
 import 'package:fren_app/api/machi/error_api.dart';
@@ -7,8 +6,6 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/widgets/image_source_sheet.dart';
-import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +37,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _birthday;
   bool _agreeTerms = true;
   String? _selectedIndustry;
-  List<String> _tags = ['Animals and Pets'];
+  List<String> _selectedInterest = ['Animals and Pets'];
   late List<String> _industryList = [];
   late List<String> _interestList = [];
   late AppLocalizations _i18n;
@@ -124,7 +121,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         confirm: Text(_i18n.translate('DONE'),
             style: TextStyle(
                 fontWeight: FontWeight.bold,
-                fontSize: 18.0,
+                fontSize: 16.0,
                 color: Theme.of(context).primaryColor)),
       ),
       minDateTime: DateTime(1920, 1, 1),
@@ -239,13 +236,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28),
-                              side: BorderSide(color: Colors.grey[350] as Color)),
+                              side: BorderSide(color: Colors.grey as Color)),
                           child: ListTile(
                             leading: const Icon(Iconsax.cake),
                             title: Text(_birthday!,
-                                style: const TextStyle(color: Colors.grey)),
+                                style: const TextStyle(color: Colors.black)),
                             trailing: const Icon(Icons.arrow_drop_down),
                             onTap: () {
+                              FocusScope.of(context).unfocus();
                               /// Select birthday
                               _showDatePicker();
                             },
@@ -287,10 +285,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     height: 200,
                     child: SingleChildScrollView(
                         child: ChipsChoice<String>.multiple(
-                          value: _tags,
+                          value: _selectedInterest,
                           onChanged: (val) => {
                             setState((){
-                              _tags = val;
+                              _selectedInterest = val;
                             })
                           },
                           choiceItems: C2Choice.listFrom<String, String>(
@@ -339,7 +337,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// Handle Create account
   void _createAccount() async {
 
-    if (_tags.length < 3) {
+    if (_selectedInterest.length < 3) {
       showScaffoldMessage(
           context: context,
           message: _i18n.translate("select_three_interest"),
@@ -370,7 +368,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         isProfileFilled: true,
         userFullName: _nameController.text.trim(),
         userIndustry: _selectedIndustry!,
-        userInterest: _tags,
+        userInterest: _selectedInterest,
         userBirthDay: _userBirthDay,
         userBirthMonth: _userBirthMonth,
         userBirthYear: _userBirthYear,
