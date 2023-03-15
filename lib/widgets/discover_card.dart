@@ -26,15 +26,15 @@ class DiscoverCard extends StatelessWidget {
     /// Initialization
     final _i18n = AppLocalizations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenheight = MediaQuery.of(context).size.height;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     return Card(
       child: SizedBox(
-        height: screenheight-250,
+        height: screenHeight-250,
         width: screenWidth,
         child: Container(
           padding: const EdgeInsets.all(40),
-          height: screenheight*0.85,
+          height: screenHeight*0.85,
           child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[

@@ -9,6 +9,7 @@ import 'package:fren_app/widgets/activity.dart';
 import 'package:fren_app/widgets/bot/quick_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/discover_card.dart';
+import 'package:fren_app/widgets/import_google.dart';
 import 'package:fren_app/widgets/loader.dart';
 
 class ActivityTab extends StatefulWidget {
@@ -28,7 +29,6 @@ class _ActivityTabState extends State<ActivityTab> {
   int _currentStep = 0;
   bool _visible = true;
   bool _isInitiatedFrank = false;
-  bool _frankieFinish = false;
 
   Future<void> _fetchInitialFrankie() async {
     List steps = await _botApi.getInitialFrankie();
@@ -58,9 +58,7 @@ class _ActivityTabState extends State<ActivityTab> {
       return Scaffold(
         body: Stack(
             children:  [
-              SingleChildScrollView(
-                child: ActivityWidget()
-              ),
+              ActivityWidget(),
               Positioned(
                   bottom: 0.0,
                   child: SizedBox(

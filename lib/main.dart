@@ -139,7 +139,7 @@ class MyApp extends StatelessWidget {
       cardTheme: CardTheme(
         clipBehavior: Clip.antiAlias,
         elevation: 4.0,
-        shape: defaultCardBorder(),
+        shape: defaultCardBorder()
       ),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(

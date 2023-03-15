@@ -10,17 +10,18 @@ class ActivityWidget extends StatefulWidget {
 class _ActivityWidgetState extends State<ActivityWidget> {
   static const _pageSize = 20;
 
-
   @override
   Widget build(BuildContext context) {
-    return Container(
+    double screenHeight = MediaQuery.of(context).size.height;
+
+    return SizedBox(
       //Added the color here
-        margin: const EdgeInsets.only(top: 10),
+        height: screenHeight,
         child: ListView.builder(
         physics: const ClampingScrollPhysics(),
           shrinkWrap: true,
           scrollDirection: Axis.vertical,
-          itemCount: 10,
+          itemCount: 20,
           itemBuilder: (context, int index) {
           return Container(
             height: 100,
@@ -36,8 +37,8 @@ class _ActivityWidgetState extends State<ActivityWidget> {
               offset: const Offset(
               3, 3), // changes position of shadow
             ),
-        ],
-        ),
+          ],
+          ),
         );
     }));
   }

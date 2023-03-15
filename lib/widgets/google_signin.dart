@@ -17,6 +17,8 @@ GoogleSignIn _googleSignIn = GoogleSignIn(
   scopes: <String>[
     'email',
     'https://www.googleapis.com/auth/contacts.readonly',
+    'https://www.googleapis.com/auth/documents.readonly',
+    'https://www.googleapis.com/auth/spreadsheets.readonly'
   ],
 );
 
