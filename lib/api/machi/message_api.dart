@@ -65,17 +65,19 @@ class MessageApi {
       messageMap['createdAt'] = dateTime;
       messageMap['name'] = user.firstName;
 
-      print ({...messageMap, "botId": botId });
+
       // save to local db
       final DatabaseService _databaseService = DatabaseService();
       await _databaseService.insertChat({...messageMap, "botId": botId });
 
+      print ({ ...messageMap, "botId": botId, "createdAt": dateTime.millisecondsSinceEpoch });
       // save to machi api
       String url = '${baseUri}machi_bot';
       try {
         final dio = await auth.getDio();
+        // limit 3 means look at the last 3 messages
         final response = await dio.post(
-            url, data: { ...messageMap, "botId": botId, "createdAt": dateTime.millisecondsSinceEpoch });
+            url, data: { ...messageMap, "botId": botId, "createdAt": dateTime.millisecondsSinceEpoch, "limit": 3 });
         return response.data;
       } catch (error) {
         debugPrint(error.toString());
@@ -88,13 +90,14 @@ class MessageApi {
   Future<List<types.Message>> getMessages(int start, int limit) async{
     Bot bot = botControl.bot;
 
-    String url = '${baseUri}get_prompts'; // get last n messages
+    String url = '${baseUri}get_last'; // get last n messages
     debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": bot.botId, "start": start, "limit": limit });
-    final oldMessages = response.data;
+    print (response);
+    List<dynamic> oldMessages = response.data;
 
-    if ((oldMessages as List).isEmpty) {
+    if (oldMessages.isEmpty) {
       // create bot first message
       DateTime dateTime = DateTime.now();
 
@@ -113,11 +116,15 @@ class MessageApi {
       return finalMessage;
     }
 
-
-    List<types.Message> listMessage =  response.data.map((message){
-      return _createTypesMessages(message);
-    });
-    return listMessage;
+    final List<types.Message> finalMessages = [];
+    for (var element in oldMessages) {
+      Map<String, dynamic> newMessage = Map.from(element);
+      newMessage['text'] = newMessage['text'];
+      newMessage['type'] = newMessage['type'];
+      types.Message msg = _createTypesMessages(newMessage);
+      finalMessages.add(msg);
+    }
+    return finalMessages;
   }
 
   Future<List<types.Message>> getLocalDbMessages() async {
@@ -143,11 +150,7 @@ class MessageApi {
     final author = types.User(id: message['authorId'] as String, firstName: message['name']);
     message['author'] = author.toJson();
     message['id'] = message['id'].toString();
-
-    if (message['createdAt'].runtimeType == DateTime) {
-      message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
-      message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
-    }
+    message['createdAt'] = message['createdAt']?.toInt();
 
     if (message['type'] == 'image') {
       return types.ImageMessage.fromJson(message);
@@ -155,6 +158,15 @@ class MessageApi {
     return types.Message.fromJson(message);
   }
 
+  Future<void> syncMessages(List<types.Message> messages) async {
+
+    final DatabaseService _databaseService = DatabaseService();
 
 
+    await Future.forEach(messages, (item) async {
+      Map<String, dynamic> map = item as Map<String, dynamic>;
+      await _databaseService.insertChat(map);
+    });
+  }
 }
+

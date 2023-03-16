@@ -44,8 +44,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   // no streams, just get list and push to state
   List<types.Message> _messages = [];
   final _messagesApi = MessageApi();
-  // final _botApi = BotApi();
-  bool _isLoading = false;
   bool _isAttachmentUploading = false;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
@@ -57,27 +55,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _isLoading = true;
-    });
     chatController.onChatLoad();
-    setState(() {
-      _isLoading = false;
-    });
     _fetchLocalMessages();
   }
 
   Future<void> _fetchLocalMessages() async {
     List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
-    List<types.Message> lastMessage = await _messagesApi.getMessages(0, 1);
+    List<types.Message> lastRemoteMessage = await _messagesApi.getMessages(0, 1);
 
-    if (lastMessage[0].createdAt == localMessage[0].createdAt) {
-      setState(() {
-        _messages = localMessage;
-      });
-    } else {
-      _fetchUserMessages();
+    if (localMessage.isNotEmpty) {
+      int localTimestamp = localMessage[0].createdAt?.toInt() ?? 0;
+
+      if (lastRemoteMessage[0].createdAt! <= localTimestamp ) {
+        setState(() {
+          _messages = localMessage;
+        });
+        return;
+      }
     }
+    _fetchUserMessages();
 
   }
 
@@ -86,6 +82,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _messages = message;
     });
+    await _messagesApi.syncMessages(message);
   }
 
   @override
@@ -93,92 +90,73 @@ class _BotChatScreenState extends State<BotChatScreen> {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
 
-    if (_isLoading ) {
-      debugPrint("loading chat bot");
-      return Scaffold(
-        body: SafeArea(
-          child: Container(
-            color: Colors.white,
-            child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [Frankloader()],
-                ),
-              ),
-            ),
-          ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: BackButton(
+          color: Theme.of(context).primaryColor,
+          onPressed: () {
+            if (chatController.isTest == false) {
+              botController.fetchCurrentBot(DEFAULT_BOT_ID);
+              Navigator.of(context).pop();
+            } else {
+              Navigator.of(context).pop();
+            }
+            // Navigator.of(context).pop();
+          },
         ),
-      );
-    } else {
-      return Scaffold(
-        appBar: AppBar(
-          leading: BackButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () {
-              if (chatController.isTest == false) {
-                botController.fetchCurrentBot(DEFAULT_BOT_ID);
-                Navigator.of(context).pop();
-              } else {
-                Navigator.of(context).pop();
-              }
-              // Navigator.of(context).pop();
-            },
+        // Show User profile info
+        title: GestureDetector(
+          child: ListTile(
+            contentPadding: const EdgeInsets.only(left: 0),
+            title: Text(botController.bot.name,
+                style: const TextStyle(fontSize: 24)),
           ),
-          // Show User profile info
-          title: GestureDetector(
-            child: ListTile(
-              contentPadding: const EdgeInsets.only(left: 0),
-              title: Text(botController.bot.name,
-                  style: const TextStyle(fontSize: 24)),
-            ),
-            onTap: () {
-              /// Show bot info
-              confirmDialog(context,
-                  title:
-                      "${_i18n.translate("about")} ${botController.bot.name}",
-                  message:
-                      "${botController.bot.name} is using ${botController.bot.model}. \n${botController.bot.about} ",
-                  positiveText: _i18n.translate("OK"),
-                  positiveAction: () async {
-                // Close the confirm dialog
-                Navigator.of(context).pop();
-              });
-            },
-          ),
+          onTap: () {
+            /// Show bot info
+            confirmDialog(context,
+                title:
+                "${_i18n.translate("about")} ${botController.bot.name}",
+                message:
+                "${botController.bot.name} is using ${botController.bot.model}. \n${botController.bot.about} ",
+                positiveText: _i18n.translate("OK"),
+                positiveAction: () async {
+                  // Close the confirm dialog
+                  Navigator.of(context).pop();
+                });
+          },
         ),
-        body: Chat(
-            showUserNames: true,
-            onMessageLongPress: _handleLongPress,
-            isAttachmentUploading: _isAttachmentUploading,
-            messages: _messages,
-            onAttachmentPressed: _handleAtachmentPressed,
-            onMessageTap: _handleMessageTap,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
-            user: chatController.chatUser),
+      ),
+      body: Chat(
+          isAttachmentUploading: _isAttachmentUploading,
+          messages: _messages,
+          onAttachmentPressed: _handleAttachmentPressed,
+          onMessageTap: _handleMessageTap,
+          onPreviewDataFetched: _handlePreviewDataFetched,
+          onSendPressed: _handleSendPressed,
+          showUserAvatars: true,
+          showUserNames: true,
+          user: chatController.chatUser),
 
-        // StreamBuilder<List<types.Message>>(
-        //     initialData: const [],
-        //     stream: _messages,
-        //     builder: (context, snapshot) {
-        //       if (!snapshot.hasData) {
-        //         return const Frankloader();
-        //       } else {
-        //         return Chat(
-        //             showUserNames: true,
-        //             onMessageLongPress: _handleLongPress,
-        //             isAttachmentUploading: _isAttachmentUploading,
-        //             messages: snapshot.data!,
-        //             onAttachmentPressed: _handleAtachmentPressed,
-        //             onMessageTap: _handleMessageTap,
-        //             onPreviewDataFetched: _handlePreviewDataFetched,
-        //             onSendPressed: _handleSendPressed,
-        //             user: chatController.chatUser);
-        //       }
-        //     }),
-      );
-    }
+      // StreamBuilder<List<types.Message>>(
+      //     initialData: const [],
+      //     stream: _messages,
+      //     builder: (context, snapshot) {
+      //       if (!snapshot.hasData) {
+      //         return const Frankloader();
+      //       } else {
+      //         return Chat(
+      //             showUserNames: true,
+      //             onMessageLongPress: _handleLongPress,
+      //             isAttachmentUploading: _isAttachmentUploading,
+      //             messages: snapshot.data!,
+      //             onAttachmentPressed: _handleAtachmentPressed,
+      //             onMessageTap: _handleMessageTap,
+      //             onPreviewDataFetched: _handlePreviewDataFetched,
+      //             onSendPressed: _handleSendPressed,
+      //             user: chatController.chatUser);
+      //       }
+      //     }),
+    );
   }
 
   void _addMessage(types.Message message) {
@@ -193,55 +171,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     showModalBottomSheet(context: context,
         builder: (context)=> ShareMessage( message: message ));
 
-  }
-
-  void _handleAtachmentPressed() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: 144,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Photo',
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-              // TextButton(
-              //   onPressed: () {
-              //     Navigator.pop(context);
-              //     _handleFileSelection();
-              //   },
-              //   child: const Align(
-              //     alignment: Alignment.centerLeft,
-              //     child: Text('File', style: TextStyle(color: Colors.white),),
-              //   ),
-              // ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Cancel',
-                    style: TextStyle(color: Colors.grey),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
   }
 
   void _handleFileSelection() async {
@@ -358,7 +287,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
 
     _addMessage(textMessage);
-
     _callAPI(message);
   }
 
@@ -366,6 +294,48 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isAttachmentUploading = uploading;
     });
+  }
+  void _handleAttachmentPressed() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: 144,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleImageSelection();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Photo'),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleFileSelection();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('File'),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Cancel'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 
   /// call bot model api
@@ -381,15 +351,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
         return res;
     }).catchError((error) {
       // FocusScope.of(context).unfocus();
-      // showScaffoldMessage(
-      //     context: context,
-      //     message: _i18n.translate("an_error_has_occurred"),
-      //     bgcolor: Colors.pinkAccent);
+      showScaffoldMessage(
+          context: context,
+          message: _i18n.translate("an_error_has_occurred"),
+          bgcolor: Colors.pinkAccent);
     }).whenComplete(() {
       setState(() {
         _isAttachmentUploading = false;
       });
-    });;
+    });
   }
 
   types.PartialText createMessage(String text, types.User user) {
