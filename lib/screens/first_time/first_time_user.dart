@@ -61,7 +61,6 @@ class Step1Container extends StatelessWidget {
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
     final _formKey = GlobalKey<FormState>();
-    final _scaffoldKey = GlobalKey<ScaffoldState>();
     final _nameController = TextEditingController();
     final _schoolController = TextEditingController();
     final _jobController = TextEditingController();

@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
 
-class MessageApi {
+class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final BotController botControl = Get.find();
@@ -24,67 +24,69 @@ class MessageApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   /// saves user message to backend, backend will save bot response automatically
-  Future saveChatMessage(dynamic partialMessage) async {
+  Future<void> saveChatMessage(dynamic partialMessage) async {
     // save will always be user, because backend will already save bot;
     types.Message? message;
     types.User user = chatController.chatUser;
 
     if (partialMessage is types.PartialCustom) {
       message = types.CustomMessage.fromPartial(
-        author: types.User(id: user!.id),
+        author: types.User(id: user.id),
         id: '',
         partialCustom: partialMessage,
       );
     } else if (partialMessage is types.PartialFile) {
       message = types.FileMessage.fromPartial(
-        author: user,
+        author:types.User(id: user.id),
         id: '',
         partialFile: partialMessage,
       );
     } else if (partialMessage is types.PartialImage) {
       message = types.ImageMessage.fromPartial(
-        author: types.User(id: user!.id),
+        author: types.User(id: user.id),
         id: '',
         partialImage: partialMessage,
       );
     } else if (partialMessage is types.PartialText) {
       message = types.TextMessage.fromPartial(
-        author: types.User(id: user!.id),
+        author: types.User(id: user.id),
         id: '',
         partialText: partialMessage,
       );
     }
 
-    if (message != null) {
-      String botId = botControl.bot.botId;
-      DateTime dateTime = DateTime.now();
+    String botId = botControl.bot.botId;
+    DateTime dateTime = DateTime.now();
 
+    if (message != null ) {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
       messageMap['authorId'] = user.id;
-      messageMap['createdAt'] = dateTime;
+      messageMap['createdAt'] = dateTime.millisecondsSinceEpoch;
       messageMap['name'] = user.firstName;
-
 
       // save to local db
       final DatabaseService _databaseService = DatabaseService();
-      await _databaseService.insertChat({...messageMap, "botId": botId });
+      await _databaseService.insertChat({...messageMap, "botId": botId});
 
-      print ({ ...messageMap, "botId": botId, "createdAt": dateTime.millisecondsSinceEpoch });
       // save to machi api
       String url = '${baseUri}machi_bot';
       try {
         final dio = await auth.getDio();
         // limit 3 means look at the last 3 messages
-        final response = await dio.post(
-            url, data: { ...messageMap, "botId": botId, "createdAt": dateTime.millisecondsSinceEpoch, "limit": 3 });
-        return response.data;
+        print({ ...messageMap, "botId": botId, "limit": 3});
+        // final response = await dio.post(
+        //     url, data: { ...messageMap, "botId": botId, "limit": 3});
+        //
+
+        // types.Message msg = _formatAndSaveMessages([response.data])[0];
+        // chatController.addMessage(msg);
+
       } catch (error) {
         debugPrint(error.toString());
         rethrow;
       }
     }
-    return [];
   }
 
   Future<List<types.Message>> getMessages(int start, int limit) async{
@@ -94,7 +96,6 @@ class MessageApi {
     debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": bot.botId, "start": start, "limit": limit });
-    print (response);
     List<dynamic> oldMessages = response.data;
 
     if (oldMessages.isEmpty) {
@@ -123,16 +124,22 @@ class MessageApi {
       newMessage['type'] = newMessage['type'];
       types.Message msg = _createTypesMessages(newMessage);
       finalMessages.add(msg);
+      // finalMessage prob not needed, if do this
+      chatController.addMessage(msg);
+      // sync to local db
+      newMessage['botId'] = bot.botId;
+      syncMessages(newMessage);
     }
     return finalMessages;
   }
 
+
+
   Future<List<types.Message>> getLocalDbMessages() async {
+    /// get local messages
     Bot bot = botControl.bot;
     final DatabaseService _databaseService = DatabaseService();
     final List<Map<String, dynamic>> messages = await _databaseService.getLastMessages(bot.botId);
-    print ("lcal get");
-
     final List<types.Message> finalMessages = [];
 
     for (var element in messages) {
@@ -147,7 +154,8 @@ class MessageApi {
   }
 
   types.Message _createTypesMessages(Map<String, dynamic> message) {
-    final author = types.User(id: message['authorId'] as String, firstName: message['name']);
+    /// helper to create types.messsages from local db and remote db
+    final author = types.User(id: message['authorId'] as String, firstName: message['name'] ?? "Frankie");
     message['author'] = author.toJson();
     message['id'] = message['id'].toString();
     message['createdAt'] = message['createdAt']?.toInt();
@@ -158,15 +166,9 @@ class MessageApi {
     return types.Message.fromJson(message);
   }
 
-  Future<void> syncMessages(List<types.Message> messages) async {
-
+  Future<void> syncMessages(Map<String, dynamic> messages) async {
+    /// if timestamp don't match between local and remote, then sync to remote
     final DatabaseService _databaseService = DatabaseService();
-
-
-    await Future.forEach(messages, (item) async {
-      Map<String, dynamic> map = item as Map<String, dynamic>;
-      await _databaseService.insertChat(map);
-    });
+    await _databaseService.insertChat(messages);
   }
 }
-

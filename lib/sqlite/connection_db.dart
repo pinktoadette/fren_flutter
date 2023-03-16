@@ -157,8 +157,8 @@ class DatabaseService {
         'authorId, '
         'botId, '
         'message, '
-        'messageType) VALUES(?, ?, ?, ?, ?, ?, ?)', [message['createdAt'].millisecondsSinceEpoch,
-      message['createdAt'].millisecondsSinceEpoch,
+        'messageType) VALUES(?, ?, ?, ?, ?, ?, ?)', [message['createdAt'],
+      message['createdAt'],
       message['name'],
       message['authorId'],
       message['botId'],

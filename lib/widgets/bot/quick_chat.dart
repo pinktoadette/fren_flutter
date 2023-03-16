@@ -21,7 +21,7 @@ class _QuickChatState extends State<QuickChat> {
   ChatController chatController = Get.find();
   BotController botController = Get.find();
   final fieldText = TextEditingController();
-  final _messagesApi = MessageApi();
+  final _messagesApi = MessageMachiApi();
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _QuickChatState extends State<QuickChat> {
       FocusScope.of(context).requestFocus(FocusNode());
 
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const BotChatScreen()
+          builder: (context) => BotChatScreen()
       ));
     }
 

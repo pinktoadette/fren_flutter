@@ -96,7 +96,7 @@ class Step2CreateBot extends StatelessWidget {
                       chatController.isTest = true;
                       Future(() {
                         Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => const BotChatScreen() ));
+                            MaterialPageRoute(builder: (context) => BotChatScreen() ));
                       });
                     },
                   ),

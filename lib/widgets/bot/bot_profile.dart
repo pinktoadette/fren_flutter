@@ -108,7 +108,7 @@ class BotProfileCard extends StatelessWidget {
                               final BotController botController = Get.find();
                               botController.bot = bot;
                               Navigator.of(context).push(
-                                  MaterialPageRoute(builder: (context) => const BotChatScreen() ));
+                                  MaterialPageRoute(builder: (context) => BotChatScreen() ));
                             },
                           ),
                         ),

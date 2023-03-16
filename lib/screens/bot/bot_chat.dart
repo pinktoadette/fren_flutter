@@ -22,12 +22,13 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:uuid/uuid.dart';
 
-class BotChatScreen extends StatefulWidget {
-  const BotChatScreen({Key? key}) : super(key: key);
-
-  @override
-  _BotChatScreenState createState() => _BotChatScreenState();
-}
+// class BotChatScreen extends StatefulWidget {
+//   const BotChatScreen({Key? key}) : super(key: key);
+//
+//   @override
+//   _BotChatScreenState createState() => _BotChatScreenState();
+// }
+// class _BotChatScreenState extends State<BotChatScreen> {
 /// _messages are state;
 /// instead of continuously retrieving -
 /// 1. Get last message on server
@@ -35,29 +36,22 @@ class BotChatScreen extends StatefulWidget {
 /// 3. if not match, fetch all messages
 /// 4. set state to messages
 /// 5. chatController will save of all messages
-class _BotChatScreenState extends State<BotChatScreen> {
+class BotChatScreen extends StatelessWidget {
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
-
+  late types.User _user;
   late AppLocalizations _i18n;
 
-  // no streams, just get list and push to state
   List<types.Message> _messages = [];
-  final _messagesApi = MessageApi();
-  bool _isAttachmentUploading = false;
+  // late Stream<List<types.Message>> _streamMessages;
+  final _messagesApi = MessageMachiApi();
+  bool isLoading = false;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
   );
 
-  var counter = 0;
-
-  @override
-  void initState() {
-    super.initState();
-    chatController.onChatLoad();
-    _fetchLocalMessages();
-  }
+  BotChatScreen({Key? key}) : super(key: key);
 
   Future<void> _fetchLocalMessages() async {
     List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
@@ -65,112 +59,92 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     if (localMessage.isNotEmpty) {
       int localTimestamp = localMessage[0].createdAt?.toInt() ?? 0;
-
       if (lastRemoteMessage[0].createdAt! <= localTimestamp ) {
-        setState(() {
-          _messages = localMessage;
-        });
+        debugPrint("Using db -> local. Message length ${localMessage.length}");
+        chatController.addMultipleMessages(localMessage);
         return;
       }
     }
-    _fetchUserMessages();
-
+    _fetchRemoteUserMessages();
   }
 
-  Future<void> _fetchUserMessages() async {
-    List<types.Message> message = await _messagesApi.getMessages(0, 50);
-    setState(() {
-      _messages = message;
-    });
-    await _messagesApi.syncMessages(message);
+  Future<void> _fetchRemoteUserMessages() async {
+    List<types.Message> messages = await _messagesApi.getMessages(0, 50);
+    debugPrint("Using db -> remote. Message length ${messages.length}");
+    chatController.addMultipleMessages(messages);
   }
 
   @override
   Widget build(BuildContext context) {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
+    double screenHeight = MediaQuery.of(context).size.height;
+    chatController.onChatLoad();
+    _user = chatController.chatUser;
+    // fetch local messages
+    // then match latest timestamp with last remote message
+    _fetchLocalMessages();
 
-    return Scaffold(
-      appBar: AppBar(
-        leading: BackButton(
-          color: Theme.of(context).primaryColor,
-          onPressed: () {
-            if (chatController.isTest == false) {
-              botController.fetchCurrentBot(DEFAULT_BOT_ID);
-              Navigator.of(context).pop();
-            } else {
-              Navigator.of(context).pop();
-            }
-            // Navigator.of(context).pop();
-          },
-        ),
-        // Show User profile info
-        title: GestureDetector(
-          child: ListTile(
-            contentPadding: const EdgeInsets.only(left: 0),
-            title: Text(botController.bot.name,
-                style: const TextStyle(fontSize: 24)),
-          ),
-          onTap: () {
-            /// Show bot info
-            confirmDialog(context,
-                title:
-                "${_i18n.translate("about")} ${botController.bot.name}",
-                message:
-                "${botController.bot.name} is using ${botController.bot.model}. \n${botController.bot.about} ",
-                positiveText: _i18n.translate("OK"),
-                positiveAction: () async {
-                  // Close the confirm dialog
+
+    if (isLoading) {
+      return const Frankloader();
+    } else {
+      return Scaffold(
+          appBar: AppBar(
+            leading: BackButton(
+              color: Theme
+                  .of(context)
+                  .primaryColor,
+              onPressed: () {
+                if (chatController.isTest == false) {
+                  botController.fetchCurrentBot(DEFAULT_BOT_ID);
                   Navigator.of(context).pop();
-                });
-          },
-        ),
-      ),
-      body: Chat(
-          isAttachmentUploading: _isAttachmentUploading,
-          messages: _messages,
-          onAttachmentPressed: _handleAttachmentPressed,
-          onMessageTap: _handleMessageTap,
-          onPreviewDataFetched: _handlePreviewDataFetched,
-          onSendPressed: _handleSendPressed,
-          showUserAvatars: true,
-          showUserNames: true,
-          user: chatController.chatUser),
-
-      // StreamBuilder<List<types.Message>>(
-      //     initialData: const [],
-      //     stream: _messages,
-      //     builder: (context, snapshot) {
-      //       if (!snapshot.hasData) {
-      //         return const Frankloader();
-      //       } else {
-      //         return Chat(
-      //             showUserNames: true,
-      //             onMessageLongPress: _handleLongPress,
-      //             isAttachmentUploading: _isAttachmentUploading,
-      //             messages: snapshot.data!,
-      //             onAttachmentPressed: _handleAtachmentPressed,
-      //             onMessageTap: _handleMessageTap,
-      //             onPreviewDataFetched: _handlePreviewDataFetched,
-      //             onSendPressed: _handleSendPressed,
-      //             user: chatController.chatUser);
-      //       }
-      //     }),
-    );
-  }
-
-  void _addMessage(types.Message message) {
-    setState(() {
-      _messages.insert(0, message);
-    });
-  }
-
-
-  void _handleLongPress(BuildContext _, types.Message message) {
-    print (message);
-    showModalBottomSheet(context: context,
-        builder: (context)=> ShareMessage( message: message ));
-
+                } else {
+                  Navigator.of(context).pop();
+                }
+                // Navigator.of(context).pop();
+              },
+            ),
+            // Show User profile info
+            title: GestureDetector(
+              child: ListTile(
+                contentPadding: const EdgeInsets.only(left: 0),
+                title: Text(botController.bot.name,
+                    style: const TextStyle(fontSize: 24)),
+              ),
+              onTap: () {
+                /// Show bot info
+                confirmDialog(context,
+                    title:
+                    "${_i18n.translate("about")} ${botController.bot.name}",
+                    message:
+                    "${botController.bot.name} is using ${botController.bot
+                        .model}. \n${botController.bot.about} ",
+                    positiveText: _i18n.translate("OK"),
+                    positiveAction: () async {
+                      // Close the confirm dialog
+                      Navigator.of(context).pop();
+                    });
+              },
+            ),
+          ),
+          body: StreamBuilder<List<types.Message>>(
+              stream: chatController.streamList,
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return const Frankloader();
+                }
+                return Chat(
+                    showUserNames: true,
+                    showUserAvatars: true,
+                    // isAttachmentUploading: _isAttachmentUploading,
+                    messages: snapshot.data!,
+                    onSendPressed: _handleSendPressed,
+                    user:_user);
+              }
+          )
+      );
+    }
   }
 
   void _handleFileSelection() async {
@@ -189,7 +163,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         uri: result.files.single.path!,
       );
 
-      _addMessage(message);
+      // _addMessage(message);
     }
   }
 
@@ -215,68 +189,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
         width: image.width.toDouble(),
       );
 
-      _addMessage(message);
+      // _addMessage(message);
     }
   }
 
-  void _handleMessageTap(BuildContext _, types.Message message) async {
-    if (message is types.FileMessage) {
-      var localPath = message.uri;
-
-      if (message.uri.startsWith('http')) {
-        try {
-          final index =
-          _messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-          (_messages[index] as types.FileMessage).copyWith(
-            isLoading: true,
-          );
-
-          setState(() {
-            _messages[index] = updatedMessage;
-          });
-
-          final client = http.Client();
-          final request = await client.get(Uri.parse(message.uri));
-          final bytes = request.bodyBytes;
-          final documentsDir = (await getApplicationDocumentsDirectory()).path;
-          localPath = '$documentsDir/${message.name}';
-
-          if (!File(localPath).existsSync()) {
-            final file = File(localPath);
-            await file.writeAsBytes(bytes);
-          }
-        } finally {
-          final index =
-          _messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-          (_messages[index] as types.FileMessage).copyWith(
-            isLoading: null,
-          );
-
-          setState(() {
-            _messages[index] = updatedMessage;
-          });
-        }
-      }
-
-      await OpenFilex.open(localPath);
-    }
-  }
-
-  void _handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
-    final index = _messages.indexWhere((element) => element.id == message.id);
-    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
-      previewData: previewData,
-    );
-
-    setState(() {
-      _messages[index] = updatedMessage;
-    });
-  }
 
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
@@ -285,91 +201,24 @@ class _BotChatScreenState extends State<BotChatScreen> {
       id: const Uuid().v4(),
       text: message.text,
     );
-
-    _addMessage(textMessage);
+    // _addMessage(textMessage);
     _callAPI(message);
+
+
+    // await _messagesApi.saveChatMessage(message);
+
   }
 
-  void _setAttachmentUploading(bool uploading) {
-    setState(() {
-      _isAttachmentUploading = uploading;
-    });
-  }
-  void _handleAttachmentPressed() {
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: 144,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('Photo'),
-                ),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleFileSelection();
-                },
-                child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('File'),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('Cancel'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
 
   /// call bot model api
   Future<void> _callAPI(dynamic message) async {
-    // hacky way - chat_ui package is not updated from repo for typing indicator
-    setState(() {
-      _isAttachmentUploading = true;
-    });
-    _messagesApi
-        .saveChatMessage(message)
-        .then((res) {
-          // returns bot response
-        return res;
-    }).catchError((error) {
-      // FocusScope.of(context).unfocus();
-      showScaffoldMessage(
-          context: context,
-          message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: Colors.pinkAccent);
-    }).whenComplete(() {
-      setState(() {
-        _isAttachmentUploading = false;
-      });
-    });
+
+    await _messagesApi.saveChatMessage(message);
+    // _streamMessages
   }
 
-  types.PartialText createMessage(String text, types.User user) {
-    final textMessage = types.PartialText(
-      text: text,
-    );
-    return textMessage;
-  }
 
-  void waitTask(int seconds) async {
-    Timer(Duration(seconds: seconds), () => debugPrint('done waiting'));
-  }
+
+
+
 }
