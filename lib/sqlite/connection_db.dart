@@ -165,8 +165,6 @@ class DatabaseService {
       message['text'],
       message['type']
     ]);
-    print (result);
-    print (">>>>>>>>>>>>>>>>>>>>>>>>>");
     return result;
   }
 

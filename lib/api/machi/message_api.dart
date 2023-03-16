@@ -26,8 +26,6 @@ class MessageApi {
   /// saves user message to backend, backend will save bot response automatically
   Future saveChatMessage(dynamic partialMessage) async {
     // save will always be user, because backend will already save bot;
-    String url = '${baseUri}machi_bot';
-
     types.Message? message;
     types.User user = chatController.chatUser;
 
@@ -72,24 +70,28 @@ class MessageApi {
       final DatabaseService _databaseService = DatabaseService();
       await _databaseService.insertChat({...messageMap, "botId": botId });
 
-
-      return [];
-      // need to do if saveChat is user or bot. authorId can't be assigned to user.id
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: { ...messageMap, "respondToId": botId });
-
-      return response.data;
+      // save to machi api
+      String url = '${baseUri}machi_bot';
+      try {
+        final dio = await auth.getDio();
+        final response = await dio.post(
+            url, data: { ...messageMap, "botId": botId, "createdAt": dateTime.millisecondsSinceEpoch });
+        return response.data;
+      } catch (error) {
+        debugPrint(error.toString());
+        rethrow;
+      }
     }
     return [];
   }
 
-  Future<List<types.Message>> getMessages() async{
+  Future<List<types.Message>> getMessages(int start, int limit) async{
     Bot bot = botControl.bot;
 
     String url = '${baseUri}get_prompts'; // get last n messages
     debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest.post(url, data: { "botId": bot.botId });
+    final response = await dioRequest.post(url, data: { "botId": bot.botId, "start": start, "limit": limit });
     final oldMessages = response.data;
 
     if ((oldMessages as List).isEmpty) {
@@ -100,7 +102,7 @@ class MessageApi {
       message['authorId'] = bot.botId;
       message['name'] = bot.name;
       message['createdAt'] = dateTime;
-      message['id'] = const Uuid().v1();
+      message['id'] = const Uuid().v4();
       message['updatedAt'] = dateTime;
       message['text'] = bot.about;
       message['type'] = "text";
@@ -110,6 +112,7 @@ class MessageApi {
       finalMessage.add(fin);
       return finalMessage;
     }
+
 
     List<types.Message> listMessage =  response.data.map((message){
       return _createTypesMessages(message);
@@ -127,26 +130,21 @@ class MessageApi {
 
     for (var element in messages) {
       Map<String, dynamic> newMessage = Map.from(element);
+      newMessage['text'] = newMessage['message'];
+      newMessage['type'] = newMessage['messageType'];
       types.Message msg = _createTypesMessages(newMessage);
       finalMessages.add(msg);
     }
-
     return finalMessages;
 
-    Iterable<types.Message> listMessage =  messages.map((message){
-      return _createTypesMessages(message);
-    });
-    print (listMessage);
-    return [];
-    // return listMessage;
   }
 
   types.Message _createTypesMessages(Map<String, dynamic> message) {
     final author = types.User(id: message['authorId'] as String, firstName: message['name']);
     message['author'] = author.toJson();
-    message['id'] = message['id'];
+    message['id'] = message['id'].toString();
 
-    if (int.tryParse(message['createdAt']) != null) {
+    if (message['createdAt'].runtimeType == DateTime) {
       message['createdAt'] = message['createdAt']?.millisecondsSinceEpoch;
       message['updatedAt'] = message['updatedAt']?.millisecondsSinceEpoch;
     }
@@ -154,7 +152,6 @@ class MessageApi {
     if (message['type'] == 'image') {
       return types.ImageMessage.fromJson(message);
     }
-
     return types.Message.fromJson(message);
   }
 

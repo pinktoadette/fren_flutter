@@ -68,14 +68,21 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   Future<void> _fetchLocalMessages() async {
-    List<types.Message> message = await _messagesApi.getLocalDbMessages();
-    setState(() {
-      _messages = message;
-    });
+    List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
+    List<types.Message> lastMessage = await _messagesApi.getMessages(0, 1);
+
+    if (lastMessage[0].createdAt == localMessage[0].createdAt) {
+      setState(() {
+        _messages = localMessage;
+      });
+    } else {
+      _fetchUserMessages();
+    }
+
   }
 
   Future<void> _fetchUserMessages() async {
-    List<types.Message> message = await _messagesApi.getMessages();
+    List<types.Message> message = await _messagesApi.getMessages(0, 50);
     setState(() {
       _messages = message;
     });
@@ -373,11 +380,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
           // returns bot response
         return res;
     }).catchError((error) {
-      FocusScope.of(context).unfocus();
-      showScaffoldMessage(
-          context: context,
-          message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: Colors.pinkAccent);
+      // FocusScope.of(context).unfocus();
+      // showScaffoldMessage(
+      //     context: context,
+      //     message: _i18n.translate("an_error_has_occurred"),
+      //     bgcolor: Colors.pinkAccent);
     }).whenComplete(() {
       setState(() {
         _isAttachmentUploading = false;
