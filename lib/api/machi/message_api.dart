@@ -9,7 +9,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/sqlite/connection_db.dart';
+import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
@@ -18,13 +18,14 @@ class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final BotController botControl = Get.find();
-  final ChatController chatController = Get.find();
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   /// saves user message to backend, backend will save bot response automatically
+  /// will automatically create a new room if not provided
   Future<void> saveChatMessage(dynamic partialMessage) async {
+    final ChatController chatController = Get.find();
     // save will always be user, because backend will already save bot;
     types.Message? message;
     types.User user = chatController.chatUser;
@@ -55,7 +56,6 @@ class MessageMachiApi {
       );
     }
 
-    String botId = botControl.bot.botId;
     DateTime dateTime = DateTime.now();
 
     if (message != null ) {
@@ -64,32 +64,47 @@ class MessageMachiApi {
       messageMap['authorId'] = user.id;
       messageMap['createdAt'] = dateTime.millisecondsSinceEpoch;
       messageMap['name'] = user.firstName;
+      messageMap['roomId'] = chatController.room.id;
+
+      await getBotResponse(messageMap);
+    }
+  }
+
+  Future getBotResponse(messageMap) async {
+    String botId = botControl.bot.botId;
+    ChatController chatController = Get.find();
+
+    // save to machi api
+    String url = '${baseUri}machi_bot';
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(
+          url, data: { ...messageMap, "botId": botId, "limit": 3, "roomId": chatController.room.id});
+
+      print (response.data);
+      // will contain a roomId
+      Map<String, dynamic> newMessage = Map.from(response.data);
+      newMessage['text'] = newMessage['text'];
+      newMessage['type'] = newMessage['type'];
+      types.Message msg = _createTypesMessages(newMessage);
+      chatController.addMessage(msg);
+
+      // sync to local db
+      newMessage['botId'] = botId;
+      syncMessages(newMessage);
 
       // save to local db
       final DatabaseService _databaseService = DatabaseService();
       await _databaseService.insertChat({...messageMap, "botId": botId});
 
-      // save to machi api
-      String url = '${baseUri}machi_bot';
-      try {
-        final dio = await auth.getDio();
-        // limit 3 means look at the last 3 messages
-        print({ ...messageMap, "botId": botId, "limit": 3});
-        // final response = await dio.post(
-        //     url, data: { ...messageMap, "botId": botId, "limit": 3});
-        //
-
-        // types.Message msg = _formatAndSaveMessages([response.data])[0];
-        // chatController.addMessage(msg);
-
-      } catch (error) {
-        debugPrint(error.toString());
-        rethrow;
-      }
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
     }
   }
 
   Future<List<types.Message>> getMessages(int start, int limit) async{
+    final ChatController chatController = Get.find();
     Bot bot = botControl.bot;
 
     String url = '${baseUri}get_last'; // get last n messages
@@ -124,8 +139,7 @@ class MessageMachiApi {
       newMessage['type'] = newMessage['type'];
       types.Message msg = _createTypesMessages(newMessage);
       finalMessages.add(msg);
-      // finalMessage prob not needed, if do this
-      chatController.addMessage(msg);
+
       // sync to local db
       newMessage['botId'] = bot.botId;
       syncMessages(newMessage);
@@ -171,4 +185,6 @@ class MessageMachiApi {
     final DatabaseService _databaseService = DatabaseService();
     await _databaseService.insertChat(messages);
   }
+
+
 }

@@ -68,6 +68,18 @@ class DatabaseService {
           'about TEXT)',
     );
 
+    // chatroom
+    await db.execute(
+      'CREATE TABLE IF NOT EXISTS chatroom(id INTEGER PRIMARY KEY,'
+          'roomId KEY UNIQUE, '
+          'createdAt INT,'
+          'updatedAt INT, '
+          'title TEXT, '
+          'personality TEXT, '
+          'creatorId TEXT NOT NULL, '
+          'botId TEXT NOT NULL, )',
+    );
+
     // msg table createdAt, updatedAt - millisecondsSinceEpoch
     // botId is to identify on select * from bot
     await db.execute(
@@ -144,6 +156,21 @@ class DatabaseService {
     final db = await _databaseService.database;
     List<Map<String, dynamic>> result = await db.rawQuery('Select * from message where botId=? limit 50', [botId]);
     print (result);
+    return result;
+  }
+
+  Future<List<Map>> insertRoom(DocumentSnapshot<Map<String, dynamic>> room) async {
+    // Get a reference to the database.
+    final db = await _databaseService.database;
+    List<Map> result = await db.rawQuery('Select * from user where roomId=?', [room.id]);
+    if (result.isEmpty) {
+      await db.rawInsert('INSERT INTO user('
+          'roomId, '
+          'createdAt,'
+          'updatedAt, '
+          'creatorId, '
+          'botId ) VALUES(?, ?, ?, ?, ?)', [room[ROOM_ID], room[CREATED_AT], room[UPDATED_AT], room[USER_ID], room[BOT_ID]]);
+    }
     return result;
   }
 

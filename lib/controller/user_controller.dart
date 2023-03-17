@@ -1,6 +1,6 @@
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/sqlite/connection_db.dart';
+import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 
 

@@ -41,7 +41,7 @@ class _QuickChatState extends State<QuickChat> {
     types.User user = chatController.chatUser;
 
     _handleSendPressed() async {
-      chatController.onChatLoad();
+
       final textMessage = types.PartialText(
         text: fieldText.text,
       );

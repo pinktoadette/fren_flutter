@@ -207,3 +207,6 @@ const String BLOCKED_BY_USER_ID = 'blockedByUserId';
 const String TIMESTAMP = "timestamp";
 const String UPDATED_AT = "updatedAt";
 const String CREATED_AT = "createdAt";
+
+/// chatroom
+const String ROOM_ID = "roomId";

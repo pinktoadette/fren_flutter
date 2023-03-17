@@ -1,5 +1,6 @@
 import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 
 class NoData extends StatelessWidget {
   // Variables
@@ -20,10 +21,9 @@ class NoData extends StatelessWidget {
     // Check svgName
     if (svgName != null) {
         // Get SVG icon
-        _icon = SvgIcon("assets/icons/$svgName.svg",
-            width: 100, height: 100, color: Theme.of(context).primaryColor);
+        _icon = const Icon(Iconsax.briefcase);
     } else {
-      _icon = icon!;
+      _icon = const Icon(Iconsax.message);
     }
 
     return Center(

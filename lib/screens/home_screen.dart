@@ -3,12 +3,14 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
+import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/tabs/notifications_screen.dart';
 import 'package:fren_app/controller/chat_controller.dart';
@@ -32,11 +34,11 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final ChatController chatController = Get.put(ChatController());
   /// Variables
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
+  final _chatroomApi = ChatroomMachiApi();
 
   int _selectedIndex = 0;
   late AppLocalizations _i18n;
@@ -52,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
+    _getOrCreateChatroom();
     // _handlePurchaseUpdates();
     _initFirebaseMessage();
 
@@ -69,23 +72,16 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
 
-  /// Tab navigation
-  Widget _showCurrentNavBar() {
-    List<Widget> options = <Widget>[
-      const ActivityTab(),
-      const ExploreBotTab(),
-      NotificationsScreen(),
-      const ProfileTab()
-    ];
-
-    return options.elementAt(_selectedIndex);
-  }
-
   /// Update selected tab
   void _onTappedNavBar(int index) {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  /// get or create chatroom
+  Future<void> _getOrCreateChatroom() async {
+      await _chatroomApi.createNewRoom();
   }
 
   /// Get current User Real Time updates
@@ -239,6 +235,21 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
+
+  /// Tab navigation
+  Widget _showCurrentNavBar() {
+    List<Widget> options = <Widget>[
+      const ActivityTab(),
+      const ConversationsTab(),
+      const ExploreBotTab(),
+      NotificationsScreen(),
+      const ProfileTab()
+    ];
+
+    return options.elementAt(_selectedIndex);
+  }
+
+
   @override
   Widget build(BuildContext context) {
     /// Initialization
@@ -269,6 +280,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           : null)),
 
 
+            /// Conversations Tab
+            BottomNavigationBarItem(
+              label: _i18n.translate("chat"),
+              icon: _getConversationCounter(),),
+
             /// Discover new machi
             BottomNavigationBarItem(
                 label: "Machi",
@@ -276,11 +292,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: _selectedIndex == 0
                         ? Theme.of(context).primaryColor
                         : null)),
-
-            /// Conversations Tab
-            // BottomNavigationBarItem(
-            //     label: _i18n.translate("chat"),
-            //     icon: _getConversationCounter(),),
 
             /// notification tab
             BottomNavigationBarItem(

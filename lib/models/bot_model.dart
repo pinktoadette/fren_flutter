@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/sqlite/connection_db.dart';
+import 'package:fren_app/sqlite/db.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fren_app/constants/constants.dart';
 

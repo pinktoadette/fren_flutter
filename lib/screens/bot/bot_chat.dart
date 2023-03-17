@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -9,82 +8,54 @@ import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
-import 'package:fren_app/widgets/bot/share_message.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
-import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
-import 'package:open_filex/open_filex.dart';
-import 'package:path_provider/path_provider.dart';
 
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:uuid/uuid.dart';
 
-// class BotChatScreen extends StatefulWidget {
-//   const BotChatScreen({Key? key}) : super(key: key);
-//
-//   @override
-//   _BotChatScreenState createState() => _BotChatScreenState();
-// }
-// class _BotChatScreenState extends State<BotChatScreen> {
-/// _messages are state;
+class BotChatScreen extends StatefulWidget {
+  const BotChatScreen({Key? key}) : super(key: key);
+
+  @override
+  _BotChatScreenState createState() => _BotChatScreenState();
+}
+class _BotChatScreenState extends State<BotChatScreen> {
+  // BotChatScreen({Key? key}) : super(key: key);
+  /// _messages are state;
 /// instead of continuously retrieving -
 /// 1. Get last message on server
 /// 2. Check local database an compare timestamp
 /// 3. if not match, fetch all messages
 /// 4. set state to messages
 /// 5. chatController will save of all messages
-class BotChatScreen extends StatelessWidget {
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
   late types.User _user;
   late AppLocalizations _i18n;
-
-  List<types.Message> _messages = [];
-  // late Stream<List<types.Message>> _streamMessages;
   final _messagesApi = MessageMachiApi();
+  late types.Room _room;
+
   bool isLoading = false;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
   );
 
-  BotChatScreen({Key? key}) : super(key: key);
-
-  Future<void> _fetchLocalMessages() async {
-    List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
-    List<types.Message> lastRemoteMessage = await _messagesApi.getMessages(0, 1);
-
-    if (localMessage.isNotEmpty) {
-      int localTimestamp = localMessage[0].createdAt?.toInt() ?? 0;
-      if (lastRemoteMessage[0].createdAt! <= localTimestamp ) {
-        debugPrint("Using db -> local. Message length ${localMessage.length}");
-        chatController.addMultipleMessages(localMessage);
-        return;
-      }
-    }
-    _fetchRemoteUserMessages();
-  }
-
-  Future<void> _fetchRemoteUserMessages() async {
-    List<types.Message> messages = await _messagesApi.getMessages(0, 50);
-    debugPrint("Using db -> remote. Message length ${messages.length}");
-    chatController.addMultipleMessages(messages);
-  }
 
   @override
   Widget build(BuildContext context) {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
     double screenHeight = MediaQuery.of(context).size.height;
-    chatController.onChatLoad();
     _user = chatController.chatUser;
-    // fetch local messages
-    // then match latest timestamp with last remote message
-    _fetchLocalMessages();
 
+    if (!chatController.isLoaded) {
+      chatController.onChatLoad();
+      _room = chatController.room;
+    }
 
     if (isLoading) {
       return const Frankloader();
@@ -96,6 +67,8 @@ class BotChatScreen extends StatelessWidget {
                   .of(context)
                   .primaryColor,
               onPressed: () {
+                // reset chatroom
+                chatController.room =  types.Room(id: "", type: types.RoomType.group, users: [_user]);
                 if (chatController.isTest == false) {
                   botController.fetchCurrentBot(DEFAULT_BOT_ID);
                   Navigator.of(context).pop();
@@ -128,21 +101,38 @@ class BotChatScreen extends StatelessWidget {
               },
             ),
           ),
-          body: StreamBuilder<List<types.Message>>(
+          body: StreamBuilder<types.Room>(
+            initialData: _room,
+            stream: chatController.streamRoom,
+            builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
+              initialData: const [],
               stream: chatController.streamList,
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return const Frankloader();
-                }
-                return Chat(
-                    showUserNames: true,
-                    showUserAvatars: true,
-                    // isAttachmentUploading: _isAttachmentUploading,
-                    messages: snapshot.data!,
-                    onSendPressed: _handleSendPressed,
-                    user:_user);
-              }
-          )
+              builder: (context, snapshot) => Chat(
+                  showUserNames: true,
+                  showUserAvatars: true,
+                  // isAttachmentUploading: _isAttachmentUploading,
+                  messages: snapshot.data!,
+                  onSendPressed: _handleSendPressed,
+                  user:_user
+              ),
+            ),
+          ),
+          // body: StreamBuilder<List<types.Message>>(
+          //     initialData: const [],
+          //     stream: chatController.streamList,
+          //     builder: (context, snapshot) {
+          //       if (!snapshot.hasData) {
+          //         return const Frankloader();
+          //       }
+          //       return Chat(
+          //           showUserNames: true,
+          //           showUserAvatars: true,
+          //           // isAttachmentUploading: _isAttachmentUploading,
+          //           messages: snapshot.data!,
+          //           onSendPressed: _handleSendPressed,
+          //           user:_user);
+          //     }
+          // )
       );
     }
   }

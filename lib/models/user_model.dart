@@ -14,7 +14,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/sqlite/connection_db.dart';
+import 'package:fren_app/sqlite/db.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
 import 'package:get/get.dart';
@@ -97,7 +97,8 @@ class UserModel extends Model {
 
     final UserController userController = Get.find();
     userController.setUser(user);
-    Get.put(ChatController());
+    final ChatController chatController = Get.put(ChatController(), permanent: true);
+    chatController.onChatLoad();
   }
 
   /// Update user data
