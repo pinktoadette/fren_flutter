@@ -38,8 +38,9 @@ class ChatroomMachiApi {
     print (roomData);
 
     chatController.onCreateRoom({
-      "id": roomData["roomId"],
-      "createdAt": roomData["createdAt"]
+      ROOM_ID: roomData[ROOM_ID],
+      CREATED_AT: roomData[CREATED_AT],
+      ROOM_HAS_MESSAGES: roomData[ROOM_HAS_MESSAGES]
     });
 
     /// save to local db

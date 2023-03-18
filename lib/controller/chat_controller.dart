@@ -4,15 +4,17 @@ import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
 
 class ChatController extends GetxController implements GetxService {
   final BotController botController = Get.find();// current bot
   final UserController userController = Get.find(); // current user
   late Rx<types.User> _chatUser;
   late Rx<types.User> _chatBot;
-  late Rx<types.Room> _room;
+  late Rx<types.Room> _room; // room contains types.Message
   RxList<types.Message> _messages = <types.Message>[].obs;
 
   String? error;
@@ -65,7 +67,8 @@ class ChatController extends GetxController implements GetxService {
       id: room[ROOM_ID],
       createdAt: room[CREATED_AT],
       users: [chatUser],
-      type: types.RoomType.group //@todo
+      type: types.RoomType.group, //@todo,
+      lastMessages: _messages
     ).obs;
   }
 
@@ -84,7 +87,8 @@ class ChatController extends GetxController implements GetxService {
 
   /// add messages
   void addMessage(types.Message message) {
-    _messages.insert(0, message);
+    // _messages.insert(0, message);
+    _room.value.lastMessages?.insert(0, message);
   }
 
   /// add a list of messages

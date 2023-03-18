@@ -77,7 +77,7 @@ class MessageMachiApi {
       final DatabaseService _databaseService = DatabaseService();
       await _databaseService.insertChat({...messageMap, "botId": botControl.bot.botId });
 
-      
+
     }
   }
 
@@ -101,8 +101,7 @@ class MessageMachiApi {
       chatController.addMessage(msg);
 
       // save to local db
-      final DatabaseService _databaseService = DatabaseService();
-      await _databaseService.insertChat({...messageMap, "botId": botId});
+      syncMessages(newMessage);
 
     } catch (error) {
       debugPrint(error.toString());

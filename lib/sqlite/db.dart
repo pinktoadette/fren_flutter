@@ -160,10 +160,10 @@ class DatabaseService {
     return result;
   }
 
-  Future<List<Map>> insertRoom(DocumentSnapshot<Map<String, dynamic>> room) async {
+  Future<List<Map>> insertRoom(Map<String, dynamic> room) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from chatroom where roomId=?', [room.id]);
+    List<Map> result = await db.rawQuery('Select * from chatroom where chatroomId=?', [room[ROOM_ID]]);
     if (result.isEmpty) {
       await db.rawInsert('INSERT INTO chatroom('
           'chatroomId,'
