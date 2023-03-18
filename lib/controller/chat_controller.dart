@@ -1,6 +1,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:fren_app/api/machi/message_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
@@ -61,10 +62,10 @@ class ChatController extends GetxController implements GetxService {
   /// can invite users. So type is a group
   void onCreateRoom(room) {
     _room = types.Room(
-      id: room["roomId"],
-      createdAt: room["createdAt"],
+      id: room[ROOM_ID],
+      createdAt: room[CREATED_AT],
       users: [chatUser],
-      type: types.RoomType.group
+      type: types.RoomType.group //@todo
     ).obs;
   }
 

@@ -71,13 +71,14 @@ class DatabaseService {
     // chatroom
     await db.execute(
       'CREATE TABLE IF NOT EXISTS chatroom(id INTEGER PRIMARY KEY,'
-          'roomId KEY UNIQUE, '
-          'createdAt INT,'
-          'updatedAt INT, '
+          'chatroomId KEY UNIQUE,'
+          'hasMessages INT, '
           'title TEXT, '
           'personality TEXT, '
           'creatorId TEXT NOT NULL, '
-          'botId TEXT NOT NULL, )',
+          'botId TEXT NOT NULL, '
+          'createdAt INT,'
+          'updatedAt INT )',
     );
 
     // msg table createdAt, updatedAt - millisecondsSinceEpoch
@@ -162,14 +163,21 @@ class DatabaseService {
   Future<List<Map>> insertRoom(DocumentSnapshot<Map<String, dynamic>> room) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from user where roomId=?', [room.id]);
+    List<Map> result = await db.rawQuery('Select * from chatroom where roomId=?', [room.id]);
     if (result.isEmpty) {
-      await db.rawInsert('INSERT INTO user('
-          'roomId, '
-          'createdAt,'
-          'updatedAt, '
+      await db.rawInsert('INSERT INTO chatroom('
+          'chatroomId,'
+          'hasMessages, '
+          'title, '
+          'personality, '
           'creatorId, '
-          'botId ) VALUES(?, ?, ?, ?, ?)', [room[ROOM_ID], room[CREATED_AT], room[UPDATED_AT], room[USER_ID], room[BOT_ID]]);
+          'botId, '
+          'createdAt,'
+          'updatedAt ) VALUES(?, ?, ?, ?, ?)', [
+            room[ROOM_ID], room[ROOM_HAS_MESSAGES],
+            room[ROOM_TITLE], room[ROOM_PERSONALITY],
+            room[USER_ID], room[BOT_ID],
+            room[CREATED_AT], room[UPDATED_AT], ]);
     }
     return result;
   }

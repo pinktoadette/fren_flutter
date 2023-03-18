@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
@@ -62,11 +58,26 @@ class MessageMachiApi {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
       messageMap['authorId'] = user.id;
-      messageMap['createdAt'] = dateTime.millisecondsSinceEpoch;
+      messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
       messageMap['name'] = user.firstName;
-      messageMap['roomId'] = chatController.room.id;
+      messageMap[ROOM_ID] = chatController.room.id;
+      messageMap[ROOM_HAS_MESSAGES] = true;
 
+      // sends to state
+      types.Message msg = _createTypesMessages(messageMap);
+      chatController.addMessage(msg);
+
+      // get and save bot side
       await getBotResponse(messageMap);
+
+      // saves user message to remote
+      // it is saved when ask for bot response
+
+      // save user message to local
+      final DatabaseService _databaseService = DatabaseService();
+      await _databaseService.insertChat({...messageMap, "botId": botControl.bot.botId });
+
+      
     }
   }
 
@@ -88,10 +99,6 @@ class MessageMachiApi {
       newMessage['type'] = newMessage['type'];
       types.Message msg = _createTypesMessages(newMessage);
       chatController.addMessage(msg);
-
-      // sync to local db
-      newMessage['botId'] = botId;
-      syncMessages(newMessage);
 
       // save to local db
       final DatabaseService _databaseService = DatabaseService();
@@ -146,8 +153,6 @@ class MessageMachiApi {
     }
     return finalMessages;
   }
-
-
 
   Future<List<types.Message>> getLocalDbMessages() async {
     /// get local messages

@@ -209,4 +209,10 @@ const String UPDATED_AT = "updatedAt";
 const String CREATED_AT = "createdAt";
 
 /// chatroom
-const String ROOM_ID = "roomId";
+const String ROOM_ID = "chatroomId";
+const String ROOM_HAS_MESSAGES = "hasMessages";
+const String ROOM_TITLE = "title";
+const String ROOM_PERSONALITY = "personality";
+
+/// chat
+const String CHAT_AUTHOR_ID = "authorId";
