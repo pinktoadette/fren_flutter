@@ -57,9 +57,9 @@ class MessageMachiApi {
     if (message != null ) {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
-      messageMap['authorId'] = user.id;
+      messageMap[CHAT_AUTHOR_ID] = user.id;
       messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
-      messageMap['name'] = user.firstName;
+      messageMap[CHAT_USER_NAME] = user.firstName;
       messageMap[ROOM_ID] = chatController.room.id;
       messageMap[ROOM_HAS_MESSAGES] = true;
 
@@ -86,17 +86,15 @@ class MessageMachiApi {
     ChatController chatController = Get.find();
 
     // save to machi api
-    String url = '${baseUri}machi_bot';
+    String url = '${baseUri}chat/machi_response';
     try {
       final dio = await auth.getDio();
       final response = await dio.post(
-          url, data: { ...messageMap, "botId": botId, "limit": 3, "roomId": chatController.room.id});
+          url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.room.id});
 
       print (response.data);
       // will contain a roomId
       Map<String, dynamic> newMessage = Map.from(response.data);
-      newMessage['text'] = newMessage['text'];
-      newMessage['type'] = newMessage['type'];
       types.Message msg = _createTypesMessages(newMessage);
       chatController.addMessage(msg);
 
@@ -113,7 +111,7 @@ class MessageMachiApi {
     final ChatController chatController = Get.find();
     Bot bot = botControl.bot;
 
-    String url = '${baseUri}get_last'; // get last n messages
+    String url = '${baseUri}chat/get_last_messages'; // get last n messages
     debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": bot.botId, "start": start, "limit": limit });
@@ -173,12 +171,12 @@ class MessageMachiApi {
 
   types.Message _createTypesMessages(Map<String, dynamic> message) {
     /// helper to create types.messsages from local db and remote db
-    final author = types.User(id: message['authorId'] as String, firstName: message['name'] ?? "Frankie");
-    message['author'] = author.toJson();
-    message['id'] = message['id'].toString();
-    message['createdAt'] = message['createdAt']?.toInt();
+    final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
+    message[CHAT_AUTHOR] = author.toJson();
+    message[FLUTTER_UI_ID] = message[ROOM_ID].toString();
+    message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
-    if (message['type'] == 'image') {
+    if (message[CHAT_TYPE] == CHAT_IMAGE) {
       return types.ImageMessage.fromJson(message);
     }
     return types.Message.fromJson(message);

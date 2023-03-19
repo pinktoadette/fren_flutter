@@ -30,8 +30,8 @@ class ChatroomMachiApi {
   // this way user doesn't need to wait on bot response
   Future<Map<String, dynamic>> createNewRoom() async {
     /// creates a new room
-    String url = '${baseUri}create_chatroom';
-    debugPrint ("Requesting URL $url");
+    String url = '${baseUri}chatroom/create_chatroom';
+    debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": botControl.bot.botId, "roomType": "groups" });
     final roomData = response.data;

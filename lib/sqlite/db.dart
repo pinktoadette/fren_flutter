@@ -173,10 +173,10 @@ class DatabaseService {
           'creatorId, '
           'botId, '
           'createdAt,'
-          'updatedAt ) VALUES(?, ?, ?, ?, ?)', [
+          'updatedAt ) VALUES(?, ?, ?, ?, ?, ?, ?, ?  )', [
             room[ROOM_ID], room[ROOM_HAS_MESSAGES],
             room[ROOM_TITLE], room[ROOM_PERSONALITY],
-            room[USER_ID], room[BOT_ID],
+            room[ROOM_CREATED_BY], room[BOT_ID],
             room[CREATED_AT], room[UPDATED_AT], ]);
     }
     return result;

@@ -30,7 +30,7 @@ class BotApi {
     required Function(String) onError,
   }) async {
 
-    String url = '${baseUri}create_bot';
+    String url = '${baseUri}bot/create_bot';
     String uid = const Uuid().v1().substring(0, 8);
 
     var data = {
@@ -67,7 +67,7 @@ class BotApi {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    String url = '${baseUri}get_bot';
+    String url = '${baseUri}bot/get_bot';
     final dio = await auth.getDio();
     final response = await dio.get(url, data: { botId: botId });
     final getData = response.data;
@@ -82,7 +82,7 @@ class BotApi {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    String url = '${baseUri}update_bot';
+    String url = '${baseUri}bot/update_bot';
     final dio = await auth.getDio();
     final response = await dio.put(url, data: { ...data, botId: botId });
     final getData = response.data;

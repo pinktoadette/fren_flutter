@@ -207,12 +207,20 @@ const String BLOCKED_BY_USER_ID = 'blockedByUserId';
 const String TIMESTAMP = "timestamp";
 const String UPDATED_AT = "updatedAt";
 const String CREATED_AT = "createdAt";
+const String LIMIT = "limit";
 
 /// chatroom
+const String FLUTTER_UI_ID = "id";
 const String ROOM_ID = "chatroomId";
 const String ROOM_HAS_MESSAGES = "hasMessages";
 const String ROOM_TITLE = "title";
 const String ROOM_PERSONALITY = "personality";
-
+const String ROOM_CREATED_BY = "createdBy";
 /// chat
 const String CHAT_AUTHOR_ID = "authorId";
+const String CHAT_AUTHOR = "author";
+const String CHAT_USER_NAME = "name";
+const String CHAT_TEXT = "text";
+const String CHAT_IMAGE = "image";
+const String CHAT_FILE = "file";
+const String CHAT_TYPE = "type";
