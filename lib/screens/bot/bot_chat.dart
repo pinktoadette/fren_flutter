@@ -193,16 +193,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
     // _addMessage(textMessage);
     _callAPI(message);
-
-
     // await _messagesApi.saveChatMessage(message);
-
   }
 
 
   /// call bot model api
   Future<void> _callAPI(dynamic message) async {
-
     await _messagesApi.saveChatMessage(message);
     // _streamMessages
   }

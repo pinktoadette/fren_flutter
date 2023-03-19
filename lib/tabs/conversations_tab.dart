@@ -2,6 +2,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/no_data.dart';
@@ -33,44 +34,46 @@ class ConversationsTab extends StatelessWidget {
                   return const NoData(text: "No messages");
                 } else {
                   return ListView.separated(
-                    shrinkWrap: true,
-                    separatorBuilder: (context, index) =>
-                    const Divider(height: 10),
-                    itemCount: snapshot.data!.length,
-                    itemBuilder: ((context, index) {
-                      /// Get conversation DocumentSnapshot<Map<String, dynamic>>
-                      final types.Room
-                          room = snapshot.data![index];
+                      shrinkWrap: true,
+                      separatorBuilder: (context, index) =>
+                      const Divider(height: 10),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: ((context, index) {
+                        /// Get conversation DocumentSnapshot<Map<String, dynamic>>
+                        final types.Room
+                        room = snapshot.data![index];
 
-                      return Text(room.id);
-                      /// Show conversation
-                      // return Container(
-                      //   color: !conversation[MESSAGE_READ]
-                      //       ? Theme.of(context).primaryColor.withAlpha(40)
-                      //       : null,
-                      //   child: ListTile(
-                      //     leading: CircleAvatar(
-                      //       backgroundColor: Theme.of(context).primaryColor,
-                      //       backgroundImage: NetworkImage(
-                      //         conversation[USER_PROFILE_PHOTO],
-                      //       ),
-                      //       onBackgroundImageError: (e, s) =>
-                      //           {debugPrint(e.toString())},
-                      //     ),
-                      //     title: Text(conversation[USER_FULLNAME].split(" ")[0],
-                      //         style: const TextStyle(fontSize: 18)),
-                      //     subtitle: snapshot.data![index].updatedAt),
-                      //     trailing: Icon(Iconsax.add),
-                      //     onTap: () async {
-                      //       Navigator.of(context).push(MaterialPageRoute(
-                      //           builder: (context) => BotChatScreen()));
-                      //     },
-                      //   ),
+                        return ListView.builder(
+                            itemCount: snapshot.data!.length,
+                            itemBuilder: (context, index) {
+                              final room = snapshot.data![index];
 
-                    }),
+                              return GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => BotChatScreen(),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 16,
+                                    vertical: 8,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Text(room.name ?? ''),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            });
+                      })
                   );
                 }
-              }),
+              }
+          )
         ),
       ],
     );

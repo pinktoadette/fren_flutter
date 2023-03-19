@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
@@ -25,7 +27,7 @@ class ChatroomMachiApi {
   // this way user doesn't need to wait on bot response
   Future<Map<String, dynamic>> createNewRoom() async {
     /// creates a new room
-    String url = '${baseUri}chatroom/create_chatrooms';
+    String url = '${baseUri}chatroom/create_chatroom';
     debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": botControl.bot.botId, "roomType": "groups" });
@@ -46,14 +48,17 @@ class ChatroomMachiApi {
   }
 
   Future<List<types.Room>> getAllMyRooms() async {
-    String url = '${baseUri}chatroom/users_chatroom';
-    debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
+    String url = '${baseUri}chatroom/users_chatrooms';
+    debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.get(url);
     final roomData = response.data;
 
     // map to types.Room
+    // then send to state controller
+    // will load in conversation tab
     List<types.Room> myRooms = roomData.map((room){
+      log (room);
       types.Room myRoom = types.Room.fromJson(room);
       chatController.onCreateRoom(myRoom);
        return myRoom;
