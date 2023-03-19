@@ -13,15 +13,12 @@ import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/tabs/notifications_screen.dart';
-import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import '../widgets/float_frank.dart';
@@ -54,7 +51,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
+    // create a new room for quick chat
     _getOrCreateChatroom();
+    // get all chatrooms for conversation tab
+    _getAllMyChats();
     // _handlePurchaseUpdates();
     _initFirebaseMessage();
 
@@ -84,6 +84,10 @@ class _HomeScreenState extends State<HomeScreen> {
       await _chatroomApi.createNewRoom();
   }
 
+  Future<void> _getAllMyChats() async {
+    await _chatroomApi.getAllMyRooms();
+  }
+
   /// Get current User Real Time updates
   void _getCurrentUserUpdates() {
     /// Get user stream
@@ -93,91 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
     _userStream.listen((userEvent) {
       // Update user
       UserModel().updateUserObject(userEvent.data()!);
-    });
-  }
-
-  ///
-  /// Handle in-app purchases updates
-  ///
-  void _handlePurchaseUpdates() {
-    // Listen purchase updates
-    _inAppPurchaseStream =
-        InAppPurchase.instance.purchaseStream.listen((purchases) async {
-      // Loop incoming purchases
-      for (var purchase in purchases) {
-        // Control purchase status
-        switch (purchase.status) {
-          case PurchaseStatus.pending:
-            // Handle this case.
-            break;
-          case PurchaseStatus.purchased:
-
-            /// **** Deliver product to user **** ///
-            ///
-            /// Update User VIP Status to true
-            UserModel().setUserVip();
-            // Set Vip Subscription Id
-            UserModel().setActiveVipId(purchase.productID);
-
-            /// Update user verified status
-            await UserModel().updateUserData(
-                userId: UserModel().user.userId,
-                data: {USER_IS_VERIFIED: true});
-
-            // User first name
-            final String userFirstname =
-                UserModel().user.userFullname.split(' ')[0];
-
-            /// Save notification in database for user
-            _notificationsApi.onPurchaseNotification(
-              nMessage: '${_i18n.translate("hello")} $userFirstname, '
-                  '${_i18n.translate("your_vip_account_is_active")}\n '
-                  '${_i18n.translate("thanks_for_buying")}',
-            );
-
-            if (purchase.pendingCompletePurchase) {
-              /// Complete pending purchase
-              InAppPurchase.instance.completePurchase(purchase);
-              debugPrint('Success pending purchase completed!');
-            }
-            break;
-          case PurchaseStatus.error:
-            // Handle this case.
-            debugPrint('purchase error-> ${purchase.error?.message}');
-            break;
-          case PurchaseStatus.restored:
-
-            ///
-            /// <--- Restore VIP Subscription --->
-            ///
-            UserModel().setUserVip();
-            // Set Vip Subscription Id
-            UserModel().setActiveVipId(purchase.productID);
-            // Debug
-            debugPrint('Active VIP SKU: ${purchase.productID}');
-            // Check
-            if (UserModel().showRestoreVipMsg) {
-              // Show toast message
-              Fluttertoast.showToast(
-                msg: _i18n.translate('VIP_subscription_successfully_restored'),
-                gravity: ToastGravity.BOTTOM,
-                backgroundColor: APP_PRIMARY_COLOR,
-                textColor: Colors.white,
-              );
-            }
-            break;
-          case PurchaseStatus.canceled:
-            // Show canceled feedback
-            Fluttertoast.showToast(
-              msg:
-                  _i18n.translate('you_canceled_the_purchase_please_try_again'),
-              gravity: ToastGravity.BOTTOM,
-              backgroundColor: APP_PRIMARY_COLOR,
-              textColor: Colors.white,
-            );
-            break;
-        }
-      }
     });
   }
 

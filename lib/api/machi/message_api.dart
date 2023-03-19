@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
@@ -67,17 +69,42 @@ class MessageMachiApi {
       types.Message msg = _createTypesMessages(messageMap);
       chatController.addMessage(msg);
 
-      // get and save bot side
-      await getBotResponse(messageMap);
-
       // saves user message to remote
-      // it is saved when ask for bot response
+      await saveUserResponse(messageMap);
+      // get and save bot response
+      await getBotResponse(messageMap);
 
       // save user message to local
       final DatabaseService _databaseService = DatabaseService();
       await _databaseService.insertChat({...messageMap, "botId": botControl.bot.botId });
+    }
+  }
 
+  // @todo Need a bot time out if it is a group message,
+  // await getBotResponse(messageMap) cannot be in save saveChatMessage
 
+  Future saveUserResponse(Map<String, dynamic> messageMap) async{
+    ChatController chatController = Get.find();
+    Bot bot =  botControl.bot;
+
+    String url = '${baseUri}chat/user_response';
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(
+          url, data: { ...messageMap, BOT_ID: bot.botId, LIMIT: 3, ROOM_ID: chatController.room.id});
+      log("Saved user message");
+      print (response.data);
+      // will contain a roomId
+      Map<String, dynamic> newMessage = Map.from(response.data);
+      types.Message msg = _createTypesMessages(newMessage);
+      chatController.addMessage(msg);
+
+      // save to local db
+      syncMessages(newMessage);
+
+    } catch (error) {
+      debugPrint(error.toString());
+      rethrow;
     }
   }
 
@@ -92,6 +119,7 @@ class MessageMachiApi {
       final response = await dio.post(
           url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.room.id});
 
+      log("Saved and got bot responses");
       print (response.data);
       // will contain a roomId
       Map<String, dynamic> newMessage = Map.from(response.data);

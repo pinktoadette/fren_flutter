@@ -1,22 +1,19 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/conversations_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/user.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/chat_screen.dart';
-import 'package:fren_app/widgets/custom_badge.dart';
-import 'package:fren_app/widgets/no_data.dart';
-import 'package:fren_app/widgets/processing.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:timeago/timeago.dart' as timeago;
+import 'package:fren_app/widgets/no_data.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class ConversationsTab extends StatelessWidget {
   const ConversationsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    ChatController chatController = Get.find();
     /// Initialization
     final i18n = AppLocalizations.of(context);
     final pr = ProgressDialog(context);
@@ -25,84 +22,51 @@ class ConversationsTab extends StatelessWidget {
       children: [
         /// Conversations stream
         Expanded(
-          child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-              stream: ConversationsApi().getConversations(),
+          child: StreamBuilder<List<types.Room>>(
+              stream: chatController.streamRoomlist,
               builder: (context, snapshot) {
                 /// Check data
                 if (!snapshot.hasData) {
-                  return Processing(text: i18n.translate("loading"));
-                } else if (snapshot.data!.docs.isEmpty) {
+                  return const Frankloader();
+                } else if (snapshot.data!.isEmpty) {
                   /// No conversation
-                  return NoData(
-                      svgName: 'message_icon',
-                      text: i18n.translate("no_conversation"));
+                  return const NoData(text: "No messages");
                 } else {
                   return ListView.separated(
                     shrinkWrap: true,
                     separatorBuilder: (context, index) =>
-                        const Divider(height: 10),
-                    itemCount: snapshot.data!.docs.length,
+                    const Divider(height: 10),
+                    itemCount: snapshot.data!.length,
                     itemBuilder: ((context, index) {
                       /// Get conversation DocumentSnapshot<Map<String, dynamic>>
-                      final DocumentSnapshot<Map<String, dynamic>>
-                          conversation = snapshot.data!.docs[index];
+                      final types.Room
+                          room = snapshot.data![index];
 
+                      return Text(room.id);
                       /// Show conversation
-                      return Container(
-                        color: !conversation[MESSAGE_READ]
-                            ? Theme.of(context).primaryColor.withAlpha(40)
-                            : null,
-                        child: ListTile(
-                          leading: CircleAvatar(
-                            backgroundColor: Theme.of(context).primaryColor,
-                            backgroundImage: NetworkImage(
-                              conversation[USER_PROFILE_PHOTO],
-                            ),
-                            onBackgroundImageError: (e, s) =>
-                                {debugPrint(e.toString())},
-                          ),
-                          title: Text(conversation[USER_FULLNAME].split(" ")[0],
-                              style: const TextStyle(fontSize: 18)),
-                          subtitle: conversation[MESSAGE_TYPE] == 'text'
-                              ? Text("${conversation[LAST_MESSAGE]}\n"
-                                  "${timeago.format(conversation[TIMESTAMP].toDate())}")
-                              : Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    Icon(Icons.photo_camera,
-                                        color: Theme.of(context).primaryColor),
-                                    const SizedBox(width: 5),
-                                    Text(i18n.translate("photo")),
-                                  ],
-                                ),
-                          trailing: !conversation[MESSAGE_READ]
-                              ? CustomBadge(text: i18n.translate("new"))
-                              : null,
-                          onTap: () async {
-                            /// Show progress dialog
-                            pr.show(i18n.translate("processing"));
+                      // return Container(
+                      //   color: !conversation[MESSAGE_READ]
+                      //       ? Theme.of(context).primaryColor.withAlpha(40)
+                      //       : null,
+                      //   child: ListTile(
+                      //     leading: CircleAvatar(
+                      //       backgroundColor: Theme.of(context).primaryColor,
+                      //       backgroundImage: NetworkImage(
+                      //         conversation[USER_PROFILE_PHOTO],
+                      //       ),
+                      //       onBackgroundImageError: (e, s) =>
+                      //           {debugPrint(e.toString())},
+                      //     ),
+                      //     title: Text(conversation[USER_FULLNAME].split(" ")[0],
+                      //         style: const TextStyle(fontSize: 18)),
+                      //     subtitle: snapshot.data![index].updatedAt),
+                      //     trailing: Icon(Iconsax.add),
+                      //     onTap: () async {
+                      //       Navigator.of(context).push(MaterialPageRoute(
+                      //           builder: (context) => BotChatScreen()));
+                      //     },
+                      //   ),
 
-                            /// 1.) Set conversation read = true
-                            await conversation.reference
-                                .update({MESSAGE_READ: true});
-
-                            /// 2.) Get updated user info
-                            final userDoc = await UserModel()
-                                .getUser(conversation[USER_ID]);
-
-                            /// 3.) Get user object
-                            final User user = User.fromDocument(
-                                userDoc.data()!); // userDoc.data()!
-
-                            /// Hide progrees
-                            pr.hide();
-
-                            /// Go to chat screen
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ChatScreen(user: user)));
-                          },
-                        ),
-                      );
                     }),
                   );
                 }

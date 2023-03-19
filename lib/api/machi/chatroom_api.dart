@@ -1,18 +1,13 @@
-import 'dart:convert';
-import 'dart:developer';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:uuid/uuid.dart';
 
 class ChatroomMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -30,7 +25,7 @@ class ChatroomMachiApi {
   // this way user doesn't need to wait on bot response
   Future<Map<String, dynamic>> createNewRoom() async {
     /// creates a new room
-    String url = '${baseUri}chatroom/create_chatroom';
+    String url = '${baseUri}chatroom/create_chatrooms';
     debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": botControl.bot.botId, "roomType": "groups" });
@@ -50,6 +45,20 @@ class ChatroomMachiApi {
     return roomData;
   }
 
+  Future<List<types.Room>> getAllMyRooms() async {
+    String url = '${baseUri}chatroom/users_chatroom';
+    debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
+    final dioRequest = await auth.getDio();
+    final response = await dioRequest.get(url);
+    final roomData = response.data;
 
+    // map to types.Room
+    List<types.Room> myRooms = roomData.map((room){
+      types.Room myRoom = types.Room.fromJson(room);
+      chatController.onCreateRoom(myRoom);
+       return myRoom;
+    });
+    return myRooms;
+  }
 
 }

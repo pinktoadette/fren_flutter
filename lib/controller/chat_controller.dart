@@ -16,6 +16,7 @@ class ChatController extends GetxController implements GetxService {
   late Rx<types.User> _chatBot;
   late Rx<types.Room> _room; // room contains types.Message
   RxList<types.Message> _messages = <types.Message>[].obs;
+  RxList<types.Room> _roomlist = <types.Room>[].obs;
 
   String? error;
   bool retrieveAPI = true;
@@ -42,6 +43,10 @@ class ChatController extends GetxController implements GetxService {
     yield room;
   }
 
+  Stream<List<types.Room>> get streamRoomlist async* {
+    yield _roomlist;
+  }
+
 
   @override
   void onInit() async {
@@ -60,8 +65,13 @@ class ChatController extends GetxController implements GetxService {
     super.onInit();
   }
 
+  void onCreateRoomList(types.Room myRooms) {
+    _roomlist.add(myRooms);
+  }
+
   /// create new chatroom with botId
   /// can invite users. So type is a group
+  /// creates a new room and push it to room list
   void onCreateRoom(room) {
     _room = types.Room(
       id: room[ROOM_ID],
@@ -70,6 +80,7 @@ class ChatController extends GetxController implements GetxService {
       type: types.RoomType.group, //@todo,
       lastMessages: _messages
     ).obs;
+    _roomlist.add(_room.value);
   }
 
   /// load the current bot
