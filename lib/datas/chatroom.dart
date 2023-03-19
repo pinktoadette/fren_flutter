@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+//@todo extend form types.Room
 class Chatroom {
   final String chatroomId;
   final String? title;
@@ -22,14 +23,18 @@ class Chatroom {
     this.personality,
   });
 
-  Map<String, dynamic> fromJson() => {
-    'botId': botId,
-    'title': title,
-    'personality': personality,
-    'botId': botId,
-    'user': creatorUserId,
-    'createdAt': createdAt,
-    'updatedAt': updatedAt
-  };
+  factory Chatroom.fromJson(Map<String, dynamic> doc) {
+    return Chatroom(
+        chatroomId: doc['chatroomId'],
+        botId: doc['botId'],
+        title: doc['title'],
+        personality: doc['personality'],
+        creatorUserId: doc['creatorUserId'] ,
+        createdAt: doc['createdAt'],
+        updatedAt: doc['updatedAt'],
+      hasMessages: doc['hasMessage'],
+    );
+  }
+
 
 }

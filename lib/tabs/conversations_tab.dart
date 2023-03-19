@@ -1,5 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
@@ -23,7 +24,7 @@ class ConversationsTab extends StatelessWidget {
       children: [
         /// Conversations stream
         Expanded(
-          child: StreamBuilder<List<types.Room>>(
+          child: StreamBuilder<List<Chatroom>>(
               stream: chatController.streamRoomlist,
               builder: (context, snapshot) {
                 /// Check data
@@ -40,35 +41,33 @@ class ConversationsTab extends StatelessWidget {
                       itemCount: snapshot.data!.length,
                       itemBuilder: ((context, index) {
                         /// Get conversation DocumentSnapshot<Map<String, dynamic>>
-                        final types.Room
+                        final Chatroom
                         room = snapshot.data![index];
 
-                        return ListView.builder(
-                            itemCount: snapshot.data!.length,
-                            itemBuilder: (context, index) {
-                              final room = snapshot.data![index];
-
-                              return GestureDetector(
-                                onTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => BotChatScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 16,
-                                    vertical: 8,
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Text(room.name ?? ''),
-                                    ],
-                                  ),
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (context) => BotChatScreen(),
+                              ),
+                            );
+                          },
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 8,
+                            ),
+                            child: Row(
+                              children: [
+                                Text(room.chatroomId),
+                                const SizedBox(
+                                  height: 50,
                                 ),
-                              );
-                            });
+                                Text(room.createdAt.toString())
+                              ],
+                            ),
+                          ),
+                        );
                       })
                   );
                 }

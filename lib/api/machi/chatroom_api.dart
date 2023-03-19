@@ -7,6 +7,7 @@ import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -47,7 +48,7 @@ class ChatroomMachiApi {
     return roomData;
   }
 
-  Future<List<types.Room>> getAllMyRooms() async {
+  Future<List<Chatroom>> getAllMyRooms() async {
     String url = '${baseUri}chatroom/users_chatrooms';
     debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
@@ -57,10 +58,10 @@ class ChatroomMachiApi {
     // map to types.Room
     // then send to state controller
     // will load in conversation tab
-    List<types.Room> myRooms = roomData.map((room){
+    List<Chatroom> myRooms = roomData.map((room){
       log (room);
-      types.Room myRoom = types.Room.fromJson(room);
-      chatController.onCreateRoom(myRoom);
+      Chatroom myRoom = Chatroom.fromJson(room);
+        chatController.onCreateRoom(myRoom);
        return myRoom;
     });
     return myRooms;
