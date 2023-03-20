@@ -8,6 +8,7 @@ import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -36,7 +37,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late types.User _user;
   late AppLocalizations _i18n;
   final _messagesApi = MessageMachiApi();
-  late types.Room _room;
+  late Chatroom _room;
 
   bool isLoading = false;
 
@@ -54,7 +55,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     if (!chatController.isLoaded) {
       chatController.onChatLoad();
-      _room = chatController.room;
+      _room = chatController.currentRoom;
     }
 
     if (isLoading) {
@@ -68,7 +69,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   .primaryColor,
               onPressed: () {
                 // reset chatroom
-                chatController.room =  types.Room(id: "", type: types.RoomType.group, users: [_user]);
+                chatController.newRoom();
                 if (chatController.isTest == false) {
                   botController.fetchCurrentBot(DEFAULT_BOT_ID);
                   Navigator.of(context).pop();
@@ -101,7 +102,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               },
             ),
           ),
-          body: StreamBuilder<types.Room>(
+          body: StreamBuilder<Chatroom>(
             initialData: _room,
             stream: chatController.streamRoom,
             builder: (context, snapshot) => StreamBuilder<List<types.Message>>(

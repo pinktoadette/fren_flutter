@@ -62,7 +62,7 @@ class MessageMachiApi {
       messageMap[CHAT_AUTHOR_ID] = user.id;
       messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
       messageMap[CHAT_USER_NAME] = user.firstName;
-      messageMap[ROOM_ID] = chatController.room.id;
+      messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
       messageMap[ROOM_HAS_MESSAGES] = true;
 
       // sends to state
@@ -91,7 +91,7 @@ class MessageMachiApi {
     try {
       final dio = await auth.getDio();
       final response = await dio.post(
-          url, data: { ...messageMap, BOT_ID: bot.botId, LIMIT: 3, ROOM_ID: chatController.room.id});
+          url, data: { ...messageMap, BOT_ID: bot.botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
       log("Saved user message");
       print (response.data);
       // will contain a roomId
@@ -117,7 +117,7 @@ class MessageMachiApi {
     try {
       final dio = await auth.getDio();
       final response = await dio.post(
-          url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.room.id});
+          url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
 
       log("Saved and got bot responses");
       print (response.data);

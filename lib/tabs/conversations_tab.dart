@@ -46,6 +46,7 @@ class ConversationsTab extends StatelessWidget {
 
                         return GestureDetector(
                           onTap: () {
+                            chatController.currentRoom = room;
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (context) => BotChatScreen(),

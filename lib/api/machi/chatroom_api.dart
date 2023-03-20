@@ -8,6 +8,8 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/datas/user.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -35,11 +37,8 @@ class ChatroomMachiApi {
     final roomData = response.data;
     print (roomData);
 
-    chatController.onCreateRoom({
-      ROOM_ID: roomData[ROOM_ID],
-      CREATED_AT: roomData[CREATED_AT],
-      ROOM_HAS_MESSAGES: roomData[ROOM_HAS_MESSAGES]
-    });
+    // create a new room
+    chatController.onCreateRoom(roomData);
 
     /// save to local db
     final DatabaseService _databaseService = DatabaseService();
@@ -58,12 +57,13 @@ class ChatroomMachiApi {
     // map to types.Room
     // then send to state controller
     // will load in conversation tab
-    List<Chatroom> myRooms = roomData.map((room){
-      log (room);
+    List<Chatroom> myRooms = [];
+    roomData.forEach((room){
       Chatroom myRoom = Chatroom.fromJson(room);
-        chatController.onCreateRoom(myRoom);
-       return myRoom;
+      chatController.onCreateRoom(myRoom);
+      myRooms.add(myRoom);
     });
+
     return myRooms;
   }
 
