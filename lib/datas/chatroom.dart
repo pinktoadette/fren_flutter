@@ -74,7 +74,7 @@ class Chatroom {
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT],
         hasMessages: doc['messages'].length == 0 ? false : true,
-        roomType: '',
+        roomType: doc["roomType"],
     );
   }
 
