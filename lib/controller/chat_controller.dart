@@ -85,12 +85,6 @@ class ChatController extends GetxController implements GetxService {
     ).obs;
   }
 
-  void onCreateRoom(room) {
-
-    Chatroom cRoom = Chatroom.fromJson(room);
-    _roomlist.add(cRoom);
-  }
-
   /// load the current bot
   void onChatLoad() {
     _chatBot = types.User(

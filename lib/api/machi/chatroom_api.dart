@@ -38,7 +38,8 @@ class ChatroomMachiApi {
     print (roomData);
 
     // create a new room
-    chatController.onCreateRoom(roomData[0]);
+    Chatroom room = Chatroom.fromJson(roomData);
+    chatController.onCreateRoomList(room);
 
     /// save to local db
     final DatabaseService _databaseService = DatabaseService();
@@ -60,7 +61,7 @@ class ChatroomMachiApi {
     List<Chatroom> myRooms = [];
     roomData.forEach((room){
       Chatroom myRoom = Chatroom.fromJson(room);
-      chatController.onCreateRoom(myRoom);
+      chatController.onCreateRoomList(myRoom);
       myRooms.add(myRoom);
     });
 
