@@ -38,7 +38,7 @@ class ChatroomMachiApi {
     print (roomData);
 
     // create a new room
-    chatController.onCreateRoom(roomData);
+    chatController.onCreateRoom(roomData[0]);
 
     /// save to local db
     final DatabaseService _databaseService = DatabaseService();

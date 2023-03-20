@@ -210,7 +210,7 @@ const String CREATED_AT = "createdAt";
 const String LIMIT = "limit";
 
 /// chatroom
-const String FLUTTER_UI_ID = "id";
+const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
 const String ROOM_ID = "chatroomId";
 const String ROOM_HAS_MESSAGES = "hasMessages";
 const String ROOM_TITLE = "title";

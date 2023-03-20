@@ -41,7 +41,7 @@ class Chatroom {
     /// convert users to types.Users
     List<types.User> users = [];
     doc['users'].forEach((user){
-      user['id'] = user['uid'];
+      user['id'] = user['userId'];
       user['firstName'] = user['fullname'];
       users.add(types.User.fromJson(user));
     });
@@ -64,16 +64,16 @@ class Chatroom {
 
 
     return Chatroom(
-        chatroomId: doc['chatroomId'],
-        botId: doc['botId'],
+        chatroomId: doc[ROOM_ID],
+        botId: doc[BOT_ID],
         title: doc['title'],
         personality: doc['personality'],
         creatorUser: doc['createdBy'],
         users: users,
         messages: messages,
-        createdAt: doc['createdAt'],
-        updatedAt: doc['updatedAt'],
-        hasMessages: doc['hasMessage'],
+        createdAt: doc[CREATED_AT],
+        updatedAt: doc[UPDATED_AT],
+        hasMessages: doc['messages'].length == 0 ? false : true,
         roomType: '',
     );
   }
