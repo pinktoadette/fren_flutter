@@ -1,17 +1,23 @@
 
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/socks/socket_manager.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:place_picker/uuid.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 
 
 class ChatController extends GetxController implements GetxService {
+  final _socketResponse= StreamController<String>();
   final BotController botController = Get.find();// current bot
   final UserController userController = Get.find(); // current user
   late Rx<types.User> _chatUser;
@@ -40,7 +46,7 @@ class ChatController extends GetxController implements GetxService {
   set currentRoom(Chatroom value) => _currentRoom.value = value;
 
   // messages in the chatroom
-  Stream<List<types.Message>> get streamList async* {
+  Stream<List<types.Message>> get streamMessages async* {
     yield _messages;
   }
 
@@ -61,11 +67,49 @@ class ChatController extends GetxController implements GetxService {
       id: userController.user.userId,
       firstName: userController.user.userFullname,
     ).obs;
+    // initialize currentRoom
+    newRoom();
+    _listenSocket();
     super.onInit();
+  }
+
+  @override
+  void dispose() {
+    _socketResponse!.sink.close();
+    super.dispose();
+  }
+
+  Future<void> _listenSocket() async {
+    print ("_listen to socket");
+
+    final _authApi = AuthApi();
+    StreamSocket streamSocket =StreamSocket();
+
+    Map<String, dynamic> headers = await _authApi.getHeaders();
+    Socket socket = io("${SOCKET_WS}chatroom/messages",
+        OptionBuilder()
+            .setTransports(['websocket'])
+            .setExtraHeaders(headers)
+            .build());
+
+    socket.onConnect((_) {
+      print('connect');
+      socket.emit('msg', 'test');
+    });
+
+    //When an event recieved from server, data is added to the stream
+    socket.on('event', (data) => {
+      print( "printing socket data received: ${data.toString()}")
+    });
+    socket.onDisconnect((_) => print('disconnect'));
   }
 
   void onCreateRoomList(Chatroom myRooms) {
     _roomlist.add(myRooms);
+  }
+
+  void onLoadRoomMessages() {
+    _messages = _currentRoom.value.messages.obs;
   }
 
   /// create new chatroom with botId
@@ -80,7 +124,6 @@ class ChatController extends GetxController implements GetxService {
         roomType: "group",
         messages: [],
         users: [_chatUser.value],
-        hasMessages: false,
         creatorUser: UserModel().user.userId
     ).obs;
   }
@@ -101,7 +144,7 @@ class ChatController extends GetxController implements GetxService {
   /// add messages
   void addMessage(types.Message message) {
     // _messages.insert(0, message);
-    _currentRoom.value.messages?.insert(0, message);
+    _currentRoom.value.messages.insert(0, message); // can't do like this
   }
 
   /// add a list of messages

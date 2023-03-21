@@ -1,7 +1,7 @@
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
-import 'package:fren_app/screens/chat_screen.dart';
+import 'package:fren_app/screens/chat_screen2.dart';
 import 'package:flutter/material.dart';
 
 class ItsMatchDialog extends StatelessWidget {

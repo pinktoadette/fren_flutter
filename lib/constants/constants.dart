@@ -30,6 +30,7 @@ const String ANDROID_INTERSTITIAL_ID = "YOUR ANDROID AD ID";
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
 const PY_API = "https://api.mymachi.app/api/";
+const SOCKET_WS = "wss://api.mymachi.app/api/";
 
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.

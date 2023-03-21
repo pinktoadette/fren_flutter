@@ -16,7 +16,6 @@ class Chatroom {
   final List<types.Message> messages;
   final List<types.User> users;
   final List<types.User>? blockedUsers;
-  final bool hasMessages; //@todo no need
   final int createdAt;
   final int updatedAt;
 
@@ -28,7 +27,6 @@ class Chatroom {
     required this.roomType,
     required this.messages,
     required this.users,
-    required this.hasMessages,
     required this.creatorUser,
     this.blockedUsers,
     this.title,
@@ -48,20 +46,21 @@ class Chatroom {
 
     /// convert messages to types.Message
     List<types.Message> messages = [];
-    doc['messages'].forEach((message) {
-      types.Message finalMessage;
-      final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
-      message[CHAT_AUTHOR] = author.toJson();
-      message[FLUTTER_UI_ID] = message[ROOM_ID].toString();
-      message[CREATED_AT] = message[CREATED_AT]?.toInt();
+    if (doc.containsKey('messages')) {
+      doc['messages'].forEach((message) {
+        types.Message finalMessage;
+        final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
+        message[CHAT_AUTHOR] = author.toJson();
+        message[FLUTTER_UI_ID] = message[CREATED_AT].toString();
+        message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
-      if (message[CHAT_TYPE] == CHAT_IMAGE) {
-         finalMessage = types.ImageMessage.fromJson(message);
-      }
-      finalMessage = types.Message.fromJson(message);
-      messages.add(finalMessage);
-    });
-
+        if (message[CHAT_TYPE] == CHAT_IMAGE) {
+          finalMessage = types.ImageMessage.fromJson(message);
+        }
+        finalMessage = types.Message.fromJson(message);
+        messages.add(finalMessage);
+      });
+    }
 
     return Chatroom(
         chatroomId: doc[ROOM_ID],
@@ -71,9 +70,8 @@ class Chatroom {
         creatorUser: doc['createdBy'],
         users: users,
         messages: messages,
-        createdAt: doc[CREATED_AT],
-        updatedAt: doc[UPDATED_AT],
-        hasMessages: doc['messages'].length == 0 ? false : true,
+        createdAt: doc[CREATED_AT].toInt(),
+        updatedAt: doc[UPDATED_AT].toInt(),
         roomType: doc["roomType"],
     );
   }

@@ -60,6 +60,8 @@ void main() async {
       sound: true,
     );
   }
+  WidgetsFlutterBinding.ensureInitialized();
+  
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
 }

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +16,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
+import 'package:open_filex/open_filex.dart';
 import 'package:uuid/uuid.dart';
 
 class BotChatScreen extends StatefulWidget {
@@ -39,6 +41,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final _messagesApi = MessageMachiApi();
   late Chatroom _room;
 
+  bool _isAttachmentUploading= false;
   bool isLoading = false;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
@@ -50,13 +53,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Widget build(BuildContext context) {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
-    double screenHeight = MediaQuery.of(context).size.height;
     _user = chatController.chatUser;
+    _room = chatController.currentRoom;
 
-    if (!chatController.isLoaded) {
-      chatController.onChatLoad();
-      _room = chatController.currentRoom;
-    }
 
     if (isLoading) {
       return const Frankloader();
@@ -107,35 +106,73 @@ class _BotChatScreenState extends State<BotChatScreen> {
             stream: chatController.streamRoom,
             builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
               initialData: const [],
-              stream: chatController.streamList,
-              builder: (context, snapshot) => Chat(
+              stream: chatController.streamMessages, // get on socket
+              builder: (context, snapshot) =>
+                  Chat(
                   showUserNames: true,
                   showUserAvatars: true,
-                  // isAttachmentUploading: _isAttachmentUploading,
+                  isAttachmentUploading: _isAttachmentUploading,
                   messages: snapshot.data!,
                   onSendPressed: _handleSendPressed,
+                  onAttachmentPressed: _handleAttachmentPressed,
+                  onMessageTap: _handleMessageTap,
+                  onPreviewDataFetched: _handlePreviewDataFetched,
                   user:_user
               ),
             ),
           ),
-          // body: StreamBuilder<List<types.Message>>(
-          //     initialData: const [],
-          //     stream: chatController.streamList,
-          //     builder: (context, snapshot) {
-          //       if (!snapshot.hasData) {
-          //         return const Frankloader();
-          //       }
-          //       return Chat(
-          //           showUserNames: true,
-          //           showUserAvatars: true,
-          //           // isAttachmentUploading: _isAttachmentUploading,
-          //           messages: snapshot.data!,
-          //           onSendPressed: _handleSendPressed,
-          //           user:_user);
-          //     }
-          // )
       );
     }
+  }
+
+  void _handleMessageTap(BuildContext _, types.Message message) async {
+    if (message is types.FileMessage) {
+      var localPath = message.uri;
+
+      if (message.uri.startsWith('http')) {
+        try {
+          // final index =
+          // _messages.indexWhere((element) => element.id == message.id);
+          // final updatedMessage =
+          // (_messages[index] as types.FileMessage).copyWith(
+          //   isLoading: true,
+          // );
+          //
+          //
+          // final client = http.Client();
+          // final request = await client.get(Uri.parse(message.uri));
+          // final bytes = request.bodyBytes;
+          // final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          // localPath = '$documentsDir/${message.name}';
+
+          if (!File(localPath).existsSync()) {
+            final file = File(localPath);
+            // await file.writeAsBytes(bytes);
+          }
+        } finally {
+          // final index =
+          // _messages.indexWhere((element) => element.id == message.id);
+          // final updatedMessage =
+          // (_messages[index] as types.FileMessage).copyWith(
+          //   isLoading: null,
+          // );
+
+        }
+      }
+
+      await OpenFilex.open(localPath);
+    }
+  }
+
+  void _handlePreviewDataFetched(
+      types.TextMessage message,
+      types.PreviewData previewData,
+      ) {
+//     final index = _messages.indexWhere((element) => element.id == message.id);
+//     final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+//       previewData: previewData,
+//     );
+// ]
   }
 
   void _handleFileSelection() async {
@@ -184,7 +221,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-
   void _handleSendPressed(types.PartialText message) {
     final textMessage = types.TextMessage(
       author: chatController.chatUser,
@@ -197,6 +233,48 @@ class _BotChatScreenState extends State<BotChatScreen> {
     // await _messagesApi.saveChatMessage(message);
   }
 
+  void _handleAttachmentPressed() {
+    showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: 144,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleImageSelection();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Photo'),
+                ),
+              ),
+              TextButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  _handleFileSelection();
+                },
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('File'),
+                ),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Text('Cancel'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
   /// call bot model api
   Future<void> _callAPI(dynamic message) async {

@@ -159,7 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _showCurrentNavBar() {
     List<Widget> options = <Widget>[
       const ActivityTab(),
-      const ConversationsTab(),
+      ConversationsTab(),
       const ExploreBotTab(),
       NotificationsScreen(),
       const ProfileTab()

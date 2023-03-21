@@ -12,6 +12,7 @@ class AuthApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final BotController botControl = Get.find();
+  final myKey = '3e27dcb9-5c20-4658-abd2-fe333ae7721a';
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
@@ -21,9 +22,14 @@ class AuthApi {
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';
     dio.options.headers['content-Type'] = 'application/json';
-    dio.options.headers["api-key"] = "3e27dcb9-5c20-4658-abd2-fe333ae7721a";
+    dio.options.headers["api-key"] = myKey;
     dio.options.headers["fb-authorization"] = token;
     dio.options.followRedirects = false;
     return dio;
+  }
+
+  Future<Map<String, dynamic>> getHeaders() async {
+    String token = await getFirebaseUser!.getIdToken();
+    return { "fb-authorization": token , "api-key": myKey };
   }
 }

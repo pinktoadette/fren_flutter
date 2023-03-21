@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 
 class ChatMessage extends StatelessWidget {
   // Variables
   final bool isUserSender;
-  final String userPhotoLink;
+  final String? userPhotoLink;
   final bool isImage;
   final String? imageLink;
   final String? textMessage;
@@ -11,8 +12,8 @@ class ChatMessage extends StatelessWidget {
 
   const ChatMessage(
       {Key? key, required this.isUserSender,
-      required this.userPhotoLink,
-      required this.timeAgo,
+        required this.timeAgo,
+        this.userPhotoLink,
       this.isImage = false,
       this.imageLink,
       this.textMessage}) : super(key: key);
@@ -20,18 +21,14 @@ class ChatMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     /// User profile photo
-    final _userProfilePhoto = CircleAvatar(
-      backgroundColor: Theme.of(context).primaryColor,
-      backgroundImage: NetworkImage(userPhotoLink),
-      onBackgroundImageError: (e, s) => { debugPrint(e.toString()) },
-    );
+    // final _userProfilePhoto = AvatarInitials(user: user);
 
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       child: Row(
         children: <Widget>[
           /// User receiver photo Left
-          !isUserSender ? _userProfilePhoto : const SizedBox(width: 0, height: 0),
+          // !isUserSender ? _userProfilePhoto : const SizedBox(width: 0, height: 0),
 
           const SizedBox(width: 10),
 
@@ -105,7 +102,7 @@ class ChatMessage extends StatelessWidget {
           const SizedBox(width: 10),
 
           /// Current User photo right
-          isUserSender ? _userProfilePhoto : const SizedBox(width: 0, height: 0),
+          // isUserSender ? _userProfilePhoto : const SizedBox(width: 0, height: 0),
         ],
       ),
     );

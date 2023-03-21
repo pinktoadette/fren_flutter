@@ -79,6 +79,7 @@ dependencies:
   chips_choice: ^3.0.0
   googleapis: ^10.1.0
   flutter_chat_ui: ^1.6.6
+  socket_io_client: ^2.0.1
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

@@ -34,18 +34,22 @@ class ChatroomMachiApi {
     debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url, data: { "botId": botControl.bot.botId, "roomType": "groups" });
-    final roomData = response.data;
-    print (roomData);
+    if (response.statusCode == 200 ) {
+      final roomData = response.data;
+      print (roomData);
 
-    // create a new room
-    Chatroom room = Chatroom.fromJson(roomData);
-    chatController.onCreateRoomList(room);
+      // create a new room
+      Chatroom room = Chatroom.fromJson(roomData);
+      chatController.onCreateRoomList(room);
 
-    /// save to local db
-    final DatabaseService _databaseService = DatabaseService();
-    await _databaseService.insertRoom(roomData);
+      /// save to local db
+      final DatabaseService _databaseService = DatabaseService();
+      await _databaseService.insertRoom(roomData);
 
-    return roomData;
+      return roomData;
+    }
+    print (response.toString());
+    return {};
   }
 
   Future<List<Chatroom>> getAllMyRooms() async {
