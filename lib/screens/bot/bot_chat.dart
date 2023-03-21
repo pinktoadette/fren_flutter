@@ -12,6 +12,7 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:fren_app/dialogs/common_dialogs.dart';
@@ -93,8 +94,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                     title:
                     "${_i18n.translate("about")} ${botController.bot.name}",
                     message:
-                    "${botController.bot.name} is using ${botController.bot
-                        .model}. \n${botController.bot.about} ",
+                    "${botController.bot.name}. \n${botController.bot.about} \nThis chatroom I have a ${_room.personality} manner.",
                     positiveText: _i18n.translate("OK"),
                     positiveAction: () async {
                       // Close the confirm dialog
@@ -102,6 +102,75 @@ class _BotChatScreenState extends State<BotChatScreen> {
                     });
               },
             ),
+            actions: <Widget>[
+              IconButton(
+                icon: Icon(
+                  Iconsax.more,
+                  color: Theme.of(context).primaryColor,
+                ),
+                onPressed: () {
+                  // do something
+                },
+              ),
+              PopupMenuButton<String>(
+                initialValue: "",
+                itemBuilder: (context) => <PopupMenuEntry<String>>[
+                  /// Delete Chat
+                  PopupMenuItem(
+                      value: "delete_chat",
+                      child: Row(
+                        children: <Widget>[
+                          const SizedBox(width: 5),
+                          Text(_i18n.translate("delete_conversation")),
+                        ],
+                      )),
+
+                  /// Delete Match
+                  PopupMenuItem(
+                      value: "delete_match",
+                      child: Row(
+                        children: <Widget>[
+                          Icon(Icons.highlight_off,
+                              color: Theme.of(context).primaryColor),
+                          const SizedBox(width: 5),
+                          Text(_i18n.translate("delete_match"))
+                        ],
+                      )),
+                ],
+                onSelected: (val) {
+                  /// Control selected value
+                  switch (val) {
+                    case "delete_chat":
+
+                    /// Delete chat
+                      confirmDialog(context,
+                          title: _i18n.translate("delete_conversation"),
+                          message: _i18n.translate("conversation_will_be_deleted"),
+                          negativeAction: () => Navigator.of(context).pop(),
+                          positiveText: _i18n.translate("DELETE"),
+                          positiveAction: () async {
+                            // Close the confirm dialog
+                            Navigator.of(context).pop();
+                          });
+                      break;
+
+
+                  // Handle Block/Unblock profile
+                    case "block":
+                    // Check remote user blocked status
+                    //   if (_isRemoteUserBlocked != null && _isRemoteUserBlocked!) {
+                    //     // Unblock profile
+                    //     _unblockProfile();
+                    //   } else {
+                    //     // Unblock profile
+                    //     _blockProfile();
+                    //   }
+                      break;
+                  }
+                  debugPrint("Selected action: $val");
+                },
+              ),
+            ],
           ),
           body: StreamBuilder<Chatroom>(
             initialData: _room,

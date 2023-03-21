@@ -35,7 +35,8 @@ class ChatroomMachiApi {
     String url = '${baseUri}chatroom/create_chatroom';
     debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest.post(url, data: { "botId": botControl.bot.botId, "roomType": "groups" });
+    final response = await dioRequest.post(url, data: { "botId":
+    botControl.bot.botId, "roomType": "groups" });
     if (response.statusCode == 200 ) {
       final roomData = response.data;
       print (roomData);

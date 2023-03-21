@@ -33,8 +33,6 @@ class ChatController extends GetxController implements GetxService {
   bool isLoaded = false;
   bool isInitial = false;
   bool isTest = false;
-  // late Stream<List<types.Message>> _streamMessages;
-  final _messagesApi = MessageMachiApi();
 
   types.User get chatUser => _chatUser.value;
   set chatUser(types.User value) => _chatUser.value = value;
@@ -77,42 +75,22 @@ class ChatController extends GetxController implements GetxService {
     super.dispose();
   }
 
-  Future<void> _listenSocket() async {
-    print ("_listen to socket");
-
-    final _authApi = AuthApi();
-    StreamSocket streamSocket =StreamSocket();
-
-    Map<String, dynamic> headers = await _authApi.getHeaders();
-    Socket socket = io("${SOCKET_WS}chatroom/messages",
-        OptionBuilder()
-            .setTransports(['websocket'])
-            .setExtraHeaders(headers)
-            .build());
-
-    socket.onConnect((_) {
-      print('connect');
-      socket.emit('msg', 'test');
-    });
-
-    //When an event recieved from server, data is added to the stream
-    socket.on('event', (data) => {
-      print( "printing socket data received: ${data.toString()}")
-    });
-    socket.onDisconnect((_) => print('disconnect'));
-  }
-
   /// when you create a new room, you're in, therefore you are also in the current room
+  /// For conversation tab
   void onCreateRoomList(Chatroom myRooms) {
-    _roomlist.add(myRooms);
-    _currentRoom = myRooms.obs;
+    if (myRooms.messages.isNotEmpty) {
+      _roomlist.add(myRooms);
+      _currentRoom = myRooms.obs;
+    }
   }
 
+  /// loaads the initial messages in a chatroom
   void onLoadRoomMessages() {
     _messages = _currentRoom.value.messages.obs;
   }
 
   /// load the current bot
+  /// gets called on start up
   void onChatLoad() {
     _chatBot = types.User(
       id: botController.bot.botId,
@@ -138,7 +116,33 @@ class ChatController extends GetxController implements GetxService {
     }
   }
 
-  // Future<void> _fetchLocalMessages() async {
+  Future<void> _listenSocket() async {
+    print ("_listen to socket");
+
+    final _authApi = AuthApi();
+    StreamSocket streamSocket =StreamSocket();
+
+    Map<String, dynamic> headers = await _authApi.getHeaders();
+    Socket socket = io("${SOCKET_WS}chatroom/messages",
+        OptionBuilder()
+            .setTransports(['websocket'])
+            .setExtraHeaders(headers)
+            .build());
+
+    socket.onConnect((_) {
+      print('connect');
+      socket.emit('msg', 'test');
+    });
+
+    //When an event recieved from server, data is added to the stream
+    socket.on('event', (data) => {
+      print( "printing socket data received: ${data.toString()}")
+    });
+    socket.onDisconnect((_) => print('disconnect'));
+  }
+
+
+// Future<void> _fetchLocalMessages() async {
   //   List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
   //   List<types.Message> lastRemoteMessage = await _messagesApi.getMessages(0, 1);
   //
