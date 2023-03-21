@@ -48,7 +48,11 @@ class ConversationsTab extends StatelessWidget {
                           /// Get conversation DocumentSnapshot<Map<String, dynamic>>
                           final Chatroom
                           room = snapshot.data![index];
-                          final lastMsg = room.messages.isNotEmpty ? room.messages[0].toJson() : { 'text': '', 'createdAt': '' };
+                          final lastMsg = room.messages.isNotEmpty ? room.messages[0].toJson() : { 'text': '', 'createdAt': DateTime.now().millisecondsSinceEpoch };
+                          String allUsers = '';
+                          for (var user in room.users) {
+                            allUsers += "${user.firstName!} ";
+                          }
 
                           return GestureDetector(
                             onTap: () {
@@ -71,16 +75,12 @@ class ConversationsTab extends StatelessWidget {
                                   Row(
                                     children: [
                                       SizedBox(
-                                          width: width *0.75,
-                                          child: Row(
-                                              children: [
-                                                const Text('Frankie'),const Text('Frankie'),const Text('Frankie'),const Text('Frankie'),const Text('Frankie'),const Text('Frankie'),
-                                                ...room.users.map((user) => Text(", ${user.firstName}" ?? "")).toList()]
-                                          )
+                                          width: width *0.75-20,
+                                          child:  Text(allUsers)
                                       ),
                                       SizedBox(
-                                        width: width*0.25,
-                                        child: Text(lastMsg['createdAt'].toString()),
+                                        width: width*0.25-20,
+                                        child: Text(lastMsg['createdAt'].toString(), style: Theme.of(context).textTheme.labelSmall),
                                       )
                                     ],
                                   ),
