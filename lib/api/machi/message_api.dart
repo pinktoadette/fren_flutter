@@ -75,8 +75,8 @@ class MessageMachiApi {
       await getBotResponse(messageMap);
 
       // save user message to local
-      final DatabaseService _databaseService = DatabaseService();
-      await _databaseService.insertChat({...messageMap, "botId": botControl.bot.botId });
+      // final DatabaseService _databaseService = DatabaseService();
+      // await _databaseService.insertChat({...messageMap, "botId": botControl.bot.botId });
     }
   }
 
@@ -95,12 +95,13 @@ class MessageMachiApi {
       log("Saved user message");
       print (response.data);
       // will contain a roomId
+      // returns list of last n responses for bot to read
       Map<String, dynamic> newMessage = Map.from(response.data);
       types.Message msg = _createTypesMessages(newMessage);
       chatController.addMessage(msg);
 
       // save to local db
-      syncMessages(newMessage);
+      // syncMessages(newMessage);
 
     } catch (error) {
       debugPrint(error.toString());

@@ -24,10 +24,12 @@ class ChatroomMachiApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   ///////////// ROOM ///////////////
-  // a room is created when user loads app and compares to remote and local
+  // a room is created when user loads app.
   // if none exists, create one.
   // creates a new room with empty messages in quick chat
   // this way user doesn't need to wait on bot response
+  // chatcontroller will keep this empty room state as current
+  // until user use the chatroom
   Future<Map<String, dynamic>> createNewRoom() async {
     /// creates a new room
     String url = '${baseUri}chatroom/create_chatroom';
@@ -42,13 +44,9 @@ class ChatroomMachiApi {
       Chatroom room = Chatroom.fromJson(roomData);
       chatController.onCreateRoomList(room);
 
-      /// save to local db
-      final DatabaseService _databaseService = DatabaseService();
-      await _databaseService.insertRoom(roomData);
-
       return roomData;
     }
-    print (response.toString());
+    debugPrint(response.toString());
     return {};
   }
 

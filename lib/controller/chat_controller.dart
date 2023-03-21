@@ -67,8 +67,6 @@ class ChatController extends GetxController implements GetxService {
       id: userController.user.userId,
       firstName: userController.user.userFullname,
     ).obs;
-    // initialize currentRoom
-    newRoom();
     _listenSocket();
     super.onInit();
   }
@@ -104,28 +102,14 @@ class ChatController extends GetxController implements GetxService {
     socket.onDisconnect((_) => print('disconnect'));
   }
 
+  /// when you create a new room, you're in, therefore you are also in the current room
   void onCreateRoomList(Chatroom myRooms) {
     _roomlist.add(myRooms);
+    _currentRoom = myRooms.obs;
   }
 
   void onLoadRoomMessages() {
     _messages = _currentRoom.value.messages.obs;
-  }
-
-  /// create new chatroom with botId
-  /// can invite users. So type is a group
-  /// creates a new room and push it to room list
-  void newRoom() {
-    _currentRoom = Chatroom(
-        chatroomId: Uuid().generateV4(),
-        botId: botController.bot.botId,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        updatedAt: DateTime.now().millisecondsSinceEpoch,
-        roomType: "group",
-        messages: [],
-        users: [_chatUser.value],
-        creatorUser: UserModel().user.userId
-    ).obs;
   }
 
   /// load the current bot
@@ -154,26 +138,26 @@ class ChatController extends GetxController implements GetxService {
     }
   }
 
-  Future<void> _fetchLocalMessages() async {
-    List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
-    List<types.Message> lastRemoteMessage = await _messagesApi.getMessages(0, 1);
-
-    if (localMessage.isNotEmpty) {
-      int localTimestamp = localMessage[0].createdAt?.toInt() ?? 0;
-      if (lastRemoteMessage[0].createdAt! <= localTimestamp ) {
-        debugPrint("Using db -> local. Message length ${localMessage.length}");
-        addMultipleMessages(localMessage);
-        return;
-      }
-    }
-    _fetchRemoteUserMessages();
-  }
-
-  Future<void> _fetchRemoteUserMessages() async {
-    List<types.Message> messages = await _messagesApi.getMessages(0, 50);
-    debugPrint("Using db -> remote. Message length ${messages.length}");
-    addMultipleMessages(messages);
-  }
+  // Future<void> _fetchLocalMessages() async {
+  //   List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
+  //   List<types.Message> lastRemoteMessage = await _messagesApi.getMessages(0, 1);
+  //
+  //   if (localMessage.isNotEmpty) {
+  //     int localTimestamp = localMessage[0].createdAt?.toInt() ?? 0;
+  //     if (lastRemoteMessage[0].createdAt! <= localTimestamp ) {
+  //       debugPrint("Using db -> local. Message length ${localMessage.length}");
+  //       addMultipleMessages(localMessage);
+  //       return;
+  //     }
+  //   }
+  //   _fetchRemoteUserMessages();
+  // }
+  //
+  // Future<void> _fetchRemoteUserMessages() async {
+  //   List<types.Message> messages = await _messagesApi.getMessages(0, 50);
+  //   debugPrint("Using db -> remote. Message length ${messages.length}");
+  //   addMultipleMessages(messages);
+  // }
 
 
 

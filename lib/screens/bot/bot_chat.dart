@@ -5,6 +5,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
@@ -39,6 +40,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late types.User _user;
   late AppLocalizations _i18n;
   final _messagesApi = MessageMachiApi();
+  final _chatroomApi = ChatroomMachiApi();
+
   late Chatroom _room;
 
   bool _isAttachmentUploading= false;
@@ -56,7 +59,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _user = chatController.chatUser;
     _room = chatController.currentRoom;
 
-
     if (isLoading) {
       return const Frankloader();
     } else {
@@ -66,9 +68,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
               color: Theme
                   .of(context)
                   .primaryColor,
-              onPressed: () {
-                // reset chatroom
-                chatController.newRoom();
+              onPressed: () async {
+                // reset chatroom. Create or get a new room
+                await _chatroomApi.createNewRoom();
                 if (chatController.isTest == false) {
                   botController.fetchCurrentBot(DEFAULT_BOT_ID);
                   Navigator.of(context).pop();
