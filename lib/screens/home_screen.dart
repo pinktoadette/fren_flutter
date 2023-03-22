@@ -41,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late AppLocalizations _i18n;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
   // in_app_purchase stream
-  late StreamSubscription<List<PurchaseDetails>> _inAppPurchaseStream;
+  // late StreamSubscription<List<PurchaseDetails>> _inAppPurchaseStream;
 
   @override
   void initState() {
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
     // Close streams
     _userStream.drain();
-    _inAppPurchaseStream.cancel();
+    // _inAppPurchaseStream.cancel();
   }
 
 

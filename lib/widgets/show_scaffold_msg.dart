@@ -12,7 +12,7 @@ void showScaffoldMessage({
     content: Text(message, style: const TextStyle(fontSize: 16)),
     duration: duration ?? const Duration(seconds: 5),
     backgroundColor: bgcolor ?? APP_PRIMARY_COLOR,
-    margin: const EdgeInsets.all(20),
+    margin: const EdgeInsets.only(left: 20, right: 20, bottom: 50),
     behavior: SnackBarBehavior.floating,
   ));
 }

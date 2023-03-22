@@ -65,7 +65,7 @@ class ChatController extends GetxController implements GetxService {
       id: userController.user.userId,
       firstName: userController.user.userFullname,
     ).obs;
-    _listenSocket();
+    // _listenSocket();
     super.onInit();
   }
 
@@ -109,11 +109,8 @@ class ChatController extends GetxController implements GetxService {
     _currentRoom.value.messages.insert(0, message); // can't do like this
   }
 
-  /// add a list of messages
-  void addMultipleMessages(List<types.Message> messages) {
-    for (var message in messages) {
-      addMessage(message);
-    }
+  void addMessagesToCurrent(types.Message message) {
+    _messages.insert(0, message);
   }
 
   Future<void> _listenSocket() async {

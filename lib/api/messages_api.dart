@@ -124,8 +124,6 @@ class MessagesApi {
     }
   }
 
-
-
   /// Get or create chat messages
   /// User -> Bots -> messages
   Future getOrCreateChatMessages() async {
@@ -154,7 +152,7 @@ class MessagesApi {
 
     if (partialMessage is types.PartialCustom) {
       message = types.CustomMessage.fromPartial(
-        author: types.User(id: user!.id),
+        author: types.User(id: user.id),
         id: '',
         partialCustom: partialMessage,
       );
@@ -166,13 +164,13 @@ class MessagesApi {
       );
     } else if (partialMessage is types.PartialImage) {
       message = types.ImageMessage.fromPartial(
-        author: types.User(id: user!.id),
+        author: types.User(id: user.id),
         id: '',
         partialImage: partialMessage,
       );
     } else if (partialMessage is types.PartialText) {
       message = types.TextMessage.fromPartial(
-        author: types.User(id: user!.id),
+        author: types.User(id: user.id),
         id: '',
         partialText: partialMessage,
       );
@@ -181,7 +179,7 @@ class MessagesApi {
     if (message != null) {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
-      messageMap['authorId'] = user!.id;
+      messageMap['authorId'] = user.id;
       messageMap['createdAt'] = FieldValue.serverTimestamp();
       messageMap['updatedAt'] = FieldValue.serverTimestamp();
 

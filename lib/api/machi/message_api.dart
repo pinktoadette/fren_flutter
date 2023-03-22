@@ -67,40 +67,24 @@ class MessageMachiApi {
 
       // sends to state
       types.Message msg = _createTypesMessages(messageMap);
-      chatController.addMessage(msg);
-
-        // saves user message to remote
-      //   saveUserResponse(messageMap);
-      // // get and save bot response
-      //   getBotResponse(messageMap);
-
-
-        return messageMap;
-      // save user message to local
-      // final DatabaseService _databaseService = DatabaseService();
-      // await _databaseService.insertChat({...messageMap, "botId": botControl.bot.botId });
+      chatController.addMessagesToCurrent(msg);
+      return messageMap;
     }
     return {};
   }
 
+  /// saves the user response
   Future saveUserResponse(Map<String, dynamic> messageMap) async{
     ChatController chatController = Get.find();
     Bot bot =  botControl.bot;
 
     String url = '${baseUri}chat/user_response';
-
     final dio = await auth.getDio();
-    final response = await dio.post(
+    await dio.post(
         url, data: { ...messageMap, BOT_ID: bot.botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
-    log("Saving user message");
-    log (response.data);
-    // will contain a roomId
-    // returns list of last n responses for bot to read
-    Map<String, dynamic> newMessage = Map.from(response.data);
-    types.Message msg = _createTypesMessages(newMessage);
-    chatController.addMessage(msg);
   }
 
+  /// gets the bot response
   Future getBotResponse(messageMap) async {
     String botId = botControl.bot.botId;
     ChatController chatController = Get.find();
@@ -108,7 +92,7 @@ class MessageMachiApi {
     // save to machi api
     String url = '${baseUri}chat/machi_response';
     final dio = await auth.getDio();
-    final response = await dio.post(
+    final response = await dio.get(
         url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
 
     log("Saved and got bot responses");
@@ -116,18 +100,18 @@ class MessageMachiApi {
     // will contain a roomId
     Map<String, dynamic> newMessage = Map.from(response.data);
     types.Message msg = _createTypesMessages(newMessage);
-    chatController.addMessage(msg);
+    chatController.addMessagesToCurrent(msg);
 
   }
 
+  /// for streaming in chatcontroller. There's only one currentRoom instance for each room
   Future<List<types.Message>> getMessages(int start, int limit) async{
-    final ChatController chatController = Get.find();
     Bot bot = botControl.bot;
 
     String url = '${baseUri}chat/get_last_messages'; // get last n messages
     debugPrint ("Requesting URL $url");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest.post(url, data: { "botId": bot.botId, "start": start, "limit": limit });
+    final response = await dioRequest.get(url, data: { "botId": bot.botId, "start": start, "limit": limit });
     List<dynamic> oldMessages = response.data;
 
     if (oldMessages.isEmpty) {

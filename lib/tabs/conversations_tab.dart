@@ -44,7 +44,8 @@ class ConversationsTab extends StatelessWidget {
                         separatorBuilder: (context, index) =>
                         const Divider(height: 10),
                         itemCount: snapshot.data!.length,
-                        itemBuilder: ((context, index) {
+                        itemBuilder:
+                        ((context, index) {
                           /// Get conversation DocumentSnapshot<Map<String, dynamic>>
                           final Chatroom
                           room = snapshot.data![index];
@@ -53,19 +54,19 @@ class ConversationsTab extends StatelessWidget {
                           for (var user in room.users) {
                             allUsers += "${user.firstName!} ";
                           }
-
-                          return GestureDetector(
+                          return InkWell(
                             onTap: () {
                               chatController.currentRoom = room;
                               chatController.onLoadRoomMessages();
 
                               Navigator.of(context).push(
                                 MaterialPageRoute(
-                                  builder: (context) => BotChatScreen(),
+                                  builder: (context) => const BotChatScreen(),
                                 ),
                               );
                             },
                             child: Container(
+                              width: width,
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                                 vertical: 8,
@@ -91,7 +92,7 @@ class ConversationsTab extends StatelessWidget {
                                     children: [
                                       (room.messages.isNotEmpty) ?
                                       Flexible(
-                                        child: Text( lastMsg["text"].length > 100 ? lastMsg["text"].substring(0, 90) : lastMsg["text"])
+                                          child: Text( lastMsg["text"].length > 100 ? lastMsg["text"].substring(0, 90) : lastMsg["text"])
                                       ) : const Text("")
                                     ],
                                   ),

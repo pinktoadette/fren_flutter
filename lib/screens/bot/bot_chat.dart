@@ -11,6 +11,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -105,16 +106,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
             ),
             actions: <Widget>[
               IconButton(
-                icon: Icon(
-                  Iconsax.more_circle,
-                  color: Theme.of(context).primaryColor,
-                ),
+                icon:  const TinyBotIcon(image:'assets/images/faces/1.png'),
                 onPressed: () {
                   infoDialog(context,
                       title:
                       "I'm napping now.",
                   message:
-                  "Time until i wake up.",
+                  "I get overwhelmed with people in group chats. Need to rest.",
                   positiveText: _i18n.translate("OK"),
                   positiveAction: () async {
                   // Close the confirm dialog
@@ -125,25 +123,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
               PopupMenuButton<String>(
                 initialValue: "",
                 itemBuilder: (context) => <PopupMenuEntry<String>>[
-                  /// Delete Chat
+                  /// invite_user
                   PopupMenuItem(
-                      value: "delete_chat",
+                      value: "invite_user",
                       child: Row(
                         children: <Widget>[
+                          const TinyBotIcon(image:'assets/images/pink_bot.png'),
                           const SizedBox(width: 5),
-                          Text(_i18n.translate("delete_conversation")),
+                          Text(_i18n.translate("invite_user")),
                         ],
                       )),
 
-                  /// Delete Match
+                  /// change_bot_personality
                   PopupMenuItem(
-                      value: "delete_match",
+                      value: "change_bot_personality",
                       child: Row(
                         children: <Widget>[
-                          Icon(Icons.highlight_off,
-                              color: Theme.of(context).primaryColor),
+                          const TinyBotIcon(image:'assets/images/frank1.png'),
                           const SizedBox(width: 5),
-                          Text(_i18n.translate("delete_match"))
+                          Text(_i18n.translate("change_bot_personality"))
                         ],
                       )),
                 ],
@@ -363,7 +361,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   /// call bot model api
   Future<void> _callAPI(dynamic message) async {
-
+    setState(() {
+      _isAttachmentUploading = true;
+    });
     try {
       Map<String, dynamic> messageMap = await _messagesApi.formatChatMessage(message);
       await _messagesApi.saveUserResponse(messageMap);
@@ -372,6 +372,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
       showScaffoldMessage(message: _i18n.translate("an_error_has_occurred"),
           bgcolor: Colors.red);
     }
+
+    setState(() {
+      _isAttachmentUploading = false;
+    });
+
   }
 
 
