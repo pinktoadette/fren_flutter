@@ -46,7 +46,8 @@ class _QuickChatState extends State<QuickChat> {
         text: fieldText.text,
       );
       //save user's comments
-      await _messagesApi.saveChatMessage(textMessage);
+      Map<String, dynamic> messageMap = await _messagesApi.formatChatMessage(textMessage);
+      await _messagesApi.saveUserResponse(messageMap);
 
       // clear text and dismiss keyboard
       fieldText.clear();

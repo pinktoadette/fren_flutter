@@ -48,7 +48,7 @@ class ConversationsTab extends StatelessWidget {
                           /// Get conversation DocumentSnapshot<Map<String, dynamic>>
                           final Chatroom
                           room = snapshot.data![index];
-                          final lastMsg = room.messages.isNotEmpty ? room.messages[0].toJson() : { 'text': 'Empty message', 'createdAt': DateTime.now().millisecondsSinceEpoch };
+                          final lastMsg = room.messages.isNotEmpty ? room.messages[0].toJson() : { 'text': 'This is an error. Something went wrong', 'createdAt': DateTime.now().millisecondsSinceEpoch };
                           String allUsers = '';
                           for (var user in room.users) {
                             allUsers += "${user.firstName!} ";
@@ -89,7 +89,7 @@ class ConversationsTab extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      (room.messages.isNotEmpty) & (lastMsg["text"] != null) ?
+                                      (room.messages.isNotEmpty) ?
                                       Flexible(
                                         child: Text( lastMsg["text"].length > 100 ? lastMsg["text"].substring(0, 90) : lastMsg["text"])
                                       ) : const Text("")

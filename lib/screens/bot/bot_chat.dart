@@ -11,6 +11,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
@@ -105,11 +106,20 @@ class _BotChatScreenState extends State<BotChatScreen> {
             actions: <Widget>[
               IconButton(
                 icon: Icon(
-                  Iconsax.more,
+                  Iconsax.more_circle,
                   color: Theme.of(context).primaryColor,
                 ),
                 onPressed: () {
-                  // do something
+                  infoDialog(context,
+                      title:
+                      "I'm napping now.",
+                  message:
+                  "Time until i wake up.",
+                  positiveText: _i18n.translate("OK"),
+                  positiveAction: () async {
+                  // Close the confirm dialog
+                  Navigator.of(context).pop();
+                  });
                 },
               ),
               PopupMenuButton<String>(
@@ -180,6 +190,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
               stream: chatController.streamMessages, // get on socket
               builder: (context, snapshot) =>
                   Chat(
+                  theme: DefaultChatTheme(
+                      primaryColor: Theme.of(context).colorScheme.secondary,
+                      sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white)
+                  ),
                   showUserNames: true,
                   showUserAvatars: true,
                   isAttachmentUploading: _isAttachmentUploading,
@@ -349,8 +363,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   /// call bot model api
   Future<void> _callAPI(dynamic message) async {
-    await _messagesApi.saveChatMessage(message);
-    // _streamMessages
+
+    try {
+      Map<String, dynamic> messageMap = await _messagesApi.formatChatMessage(message);
+      await _messagesApi.saveUserResponse(messageMap);
+      await _messagesApi.getBotResponse(messageMap);
+    } catch (err) {
+      showScaffoldMessage(message: _i18n.translate("an_error_has_occurred"),
+          bgcolor: Colors.red);
+    }
   }
 
 
