@@ -90,10 +90,10 @@ class ConversationsTab extends StatelessWidget {
                                   ),
                                   Row(
                                     children: [
-                                      (room.messages.isNotEmpty) ?
+                                      lastMsg["type"]== "text" ?
                                       Flexible(
                                           child: Text( lastMsg["text"].length > 100 ? lastMsg["text"].substring(0, 90) : lastMsg["text"])
-                                      ) : const Text("")
+                                      ) : const Text("+ Media attached")
                                     ],
                                   ),
                                 ],

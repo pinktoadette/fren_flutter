@@ -174,6 +174,7 @@ class MessageMachiApi {
     message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
     if (message[CHAT_TYPE] == CHAT_IMAGE) {
+      message['size'] = 256;
       return types.ImageMessage.fromJson(message);
     }
     return types.Message.fromJson(message);

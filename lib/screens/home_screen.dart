@@ -227,18 +227,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         : null),),
           ]),
       body: _showCurrentNavBar(),
-          floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) =>
-                     BotChatScreen()
-                ));
-          },
-          backgroundColor: Colors.white,
-          child: const FrankImage(),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endTop,
     );
   }
 

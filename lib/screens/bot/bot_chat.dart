@@ -110,7 +110,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 onPressed: () {
                   infoDialog(context,
                       title:
-                      "I'm napping now.",
+                      "Napping",
                   message:
                   "I get overwhelmed with people in group chats. Need to rest.",
                   positiveText: _i18n.translate("OK"),
