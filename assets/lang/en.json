@@ -318,6 +318,8 @@
   "activity": "Activity",
   "ask_something": "Ask something...",
   "bot": "Bot",
+  "bot_naps": "Napping",
+  "bot_nap_message": "I get overwhelmed with people in group chats. Need to rest.",
   "create_bot": "Create Domain Bot",
   "create_bot_success": "Your bot is now published!",
   "change_bot_personality": "Change the mood",

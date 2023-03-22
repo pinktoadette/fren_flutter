@@ -83,9 +83,9 @@ class _SignInScreenState extends State<SignInScreen> {
                               borderRadius: BorderRadius.circular(20.0),
                             ),
                             onPressed:  () {
-                                isLoading = true;
                                 UserModel().signInWithGoogle(
                                   checkUserAccount: () {
+
                                     /// Authenticate User Account
                                     UserModel().authUserAccount(
                                         updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
@@ -119,35 +119,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              /// Sign in with Phone
-              // Padding(
-              //   padding: const EdgeInsets.all(20),
-              //   child: SizedBox(
-              //     child: DefaultButton(
-              //       child: const Text("Login with Phone Number", style: TextStyle(fontSize: 18)),
-              //       onPressed: () {
-              //         /// Go to google
-              //         Navigator.of(context).push(MaterialPageRoute(
-              //             builder: (context) => const PhoneNumberScreen()));
-              //       },
-              //     ),
-              //   ),
-              // ),
-
-              // // Terms of Service section
-              // TextButton(
-              //   onPressed: () {
-              //     //slide up panel
-              //   },
-              //   child: Text(
-              //     _i18n.translate("by_tapping_log_in_you_agree_with_our"),
-              //     style: const TextStyle(
-              //         color: Colors.white, fontWeight: FontWeight.bold),
-              //     textAlign: TextAlign.center,
-              //   ),
-              // ),
-              //
-              // TermsOfServiceRow(),
               const SizedBox(height: 15),
             ],
           ),

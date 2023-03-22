@@ -161,7 +161,6 @@ class _HomeScreenState extends State<HomeScreen> {
       const ActivityTab(),
       ConversationsTab(),
       const ExploreBotTab(),
-      NotificationsScreen(),
       const ProfileTab()
     ];
 
@@ -183,6 +182,15 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(width: 10),
           ],
         ),
+        actions: [
+          IconButton(
+              icon: _getNotificationCounter(),
+              onPressed: () async {
+                // Go to Notifications Screen
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => NotificationsScreen()));
+              })
+        ],
       ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
@@ -211,12 +219,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: _selectedIndex == 0
                         ? Theme.of(context).primaryColor
                         : null)),
-
-            /// notification tab
-            BottomNavigationBarItem(
-                icon:  _getNotificationCounter(),
-                label: _i18n.translate("notif")
-            ),
 
             /// Profile Tab
             BottomNavigationBarItem(

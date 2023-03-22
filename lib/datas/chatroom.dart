@@ -34,7 +34,7 @@ class Chatroom {
   });
 
   factory Chatroom.fromJson(Map<String, dynamic> doc) {
-    /// convert creator to types.Users
+    /// get Bot
 
     /// convert users to types.Users
     List<types.User> users = [];

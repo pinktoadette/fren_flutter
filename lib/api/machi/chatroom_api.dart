@@ -39,7 +39,6 @@ class ChatroomMachiApi {
     botControl.bot.botId, "roomType": "groups" });
     if (response.statusCode == 200 ) {
       final roomData = response.data;
-      print (roomData);
 
       // create a new room
       Chatroom room = Chatroom.fromJson(roomData);

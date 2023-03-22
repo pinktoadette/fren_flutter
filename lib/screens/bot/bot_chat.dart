@@ -110,9 +110,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 onPressed: () {
                   infoDialog(context,
                       title:
-                      "Napping",
-                  message:
-                  "I get overwhelmed with people in group chats. Need to rest.",
+                      _i18n.translate("bot_naps"),
+                  message:_i18n.translate("bot_nap_message"),
                   positiveText: _i18n.translate("OK"),
                   positiveAction: () async {
                   // Close the confirm dialog
