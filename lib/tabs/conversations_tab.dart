@@ -20,7 +20,7 @@ class ConversationsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatController chatController = Get.find();
     /// Initialization
-    final i18n = AppLocalizations.of(context);
+    final _i18n = AppLocalizations.of(context);
     final pr = ProgressDialog(context);
     final width = MediaQuery.of(context).size.width;
 
@@ -77,7 +77,7 @@ class ConversationsTab extends StatelessWidget {
                                     children: [
                                       SizedBox(
                                           width: width *0.75-20,
-                                          child:  Text(allUsers)
+                                          child:  Text(allUsers, style: Theme.of(context).textTheme.titleMedium)
                                       ),
                                       SizedBox(
                                         width: width*0.25-20,
@@ -93,7 +93,14 @@ class ConversationsTab extends StatelessWidget {
                                       lastMsg["type"]== "text" ?
                                       Flexible(
                                           child: Text( lastMsg["text"].length > 100 ? lastMsg["text"].substring(0, 90) : lastMsg["text"])
-                                      ) : const Text("+ Media attached")
+                                      ) : SizedBox(
+                                        child: Row(
+                                          children:[
+                                            const Icon(Iconsax.attach_circle),
+                                            Text(_i18n.translate("media_attached"))
+                                          ]
+                                        ),
+                                      )
                                     ],
                                   ),
                                 ],
@@ -106,63 +113,6 @@ class ConversationsTab extends StatelessWidget {
                 }
             )
 
-    );
-    return Column(
-      children: [
-        /// Conversations stream
-        Expanded(
-          child: StreamBuilder<List<Chatroom>>(
-              stream: chatController.streamRoomlist,
-              builder: (context, snapshot) {
-                /// Check data
-                if (!snapshot.hasData) {
-                  return const Frankloader();
-                } else if (snapshot.data!.isEmpty) {
-                  /// No conversation
-                  return const NoData(text: "No messages");
-                } else {
-                  return ListView.separated(
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) =>
-                      const Divider(height: 10),
-                      itemCount: snapshot.data!.length,
-                      itemBuilder: ((context, index) {
-                        /// Get conversation DocumentSnapshot<Map<String, dynamic>>
-                        final Chatroom
-                        room = snapshot.data![index];
-
-                        return GestureDetector(
-                          onTap: () {
-                            chatController.currentRoom = room;
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (context) => BotChatScreen(),
-                              ),
-                            );
-                          },
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Column(
-                              children: [
-                                Text(room.chatroomId),
-                                const SizedBox(
-                                  height: 50,
-                                ),
-                                Text(room.createdAt.toString())
-                              ],
-                            ),
-                          ),
-                        );
-                      })
-                  );
-                }
-              }
-          )
-        ),
-      ],
     );
   }
 }
