@@ -259,7 +259,7 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Count unread conversations
   Widget _getConversationCounter() {
     // Set icon
-    final icon = Icon(Iconsax.message, color: _selectedIndex == 2 ? Theme.of(context).primaryColor : null);
+    final icon = Icon(Iconsax.message, color: _selectedIndex == 1 ? Theme.of(context).primaryColor : null);
 
     /// Handle stream
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

@@ -63,7 +63,7 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28)),
                           child: SizedBox(
-                            height: 135,
+                            height: 150,
                             child: Column(
                                 mainAxisSize: MainAxisSize.min,
                                 children: <Widget>[
