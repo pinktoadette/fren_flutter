@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/screens/blocked_account_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';

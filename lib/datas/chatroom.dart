@@ -45,17 +45,18 @@ class Chatroom {
     });
 
     /// convert messages to types.Message
+    /// note: can't call function, but it is same as message_api _createTypeMessages
     List<types.Message> messages = [];
     if (doc.containsKey('messages')) {
       doc['messages'].forEach((message) {
         types.Message finalMessage;
         final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
         message[CHAT_AUTHOR] = author.toJson();
-        message[FLUTTER_UI_ID] = message[CREATED_AT].toString();
+        message[FLUTTER_UI_ID] = message[CHAT_MESSAGE_ID];
         message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
         if (message[CHAT_TYPE] == CHAT_IMAGE) {
-          message['uri'] = message['photo_url'];
+          message['uri'] = message['photoUrl'];
           message['size'] = 256;
           finalMessage = types.ImageMessage.fromJson(message);
         }

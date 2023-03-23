@@ -1,0 +1,50 @@
+
+import 'dart:async';
+import 'dart:developer';
+
+import 'package:fren_app/datas/chatroom.dart';
+import 'package:get/get.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+
+
+class MessageController extends GetxController implements GetxService {
+
+  RxList<types.Message> _messages = <types.Message>[].obs;
+  late Rx<Chatroom> _currentRoom;
+
+  // get every 30, starting at 10
+  int offset = 0;
+  int limitPage = 10;
+
+  Chatroom get currentRoom => _currentRoom.value;
+  set currentRoom(Chatroom value) => _currentRoom.value = value;
+
+  // messages in the chatroom
+  Stream<List<types.Message>> get streamMessages async* {
+    yield _messages;
+  }
+
+  // current chatroom
+  Stream<Chatroom> get streamRoom async* {
+    yield currentRoom;
+  }
+
+  @override
+  void onInit() async {
+    log("Messages initialized");
+    super.onInit();
+  }
+
+  void addOldMessages(types.Message message) {
+    _messages.insert(_messages.length-1, message);
+  }
+
+  void addMessagesToCurrent(types.Message message) {
+    _messages.insert(0, message);
+  }
+
+  void onCurrentRoom(List<types.Message> messages) {
+    _messages = messages.obs;
+  }
+
+}

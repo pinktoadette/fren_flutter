@@ -5,7 +5,6 @@ import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/api/machi/user_api.dart';
-import 'package:fren_app/controller/chat_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/app_model.dart';
@@ -26,6 +25,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 import '../datas/bot.dart';
+import 'package:fren_app/controller/message_controller.dart';
 
 class UserModel extends Model {
   /// Final Variables
@@ -97,8 +97,7 @@ class UserModel extends Model {
 
     final UserController userController = Get.find();
     userController.setUser(user);
-    final ChatController chatController = Get.put(ChatController(), permanent: true);
-    chatController.onChatLoad();
+
   }
 
   /// Update user data

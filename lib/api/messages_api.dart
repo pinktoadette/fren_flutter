@@ -3,7 +3,7 @@ import 'package:fren_app/api/conversations_api.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;

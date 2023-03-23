@@ -1,16 +1,20 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/socks/socket_manager.dart';
 import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
@@ -21,6 +25,7 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:open_filex/open_filex.dart';
+import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
 
 class BotChatScreen extends StatefulWidget {
@@ -40,6 +45,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
 /// 5. chatController will save of all messages
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
+  final MessageController messageController = Get.find();
+
   late types.User _user;
   late AppLocalizations _i18n;
   final _messagesApi = MessageMachiApi();
@@ -54,13 +61,48 @@ class _BotChatScreenState extends State<BotChatScreen> {
     isTextSelectable: true,
   );
 
+  Future<void> _listenSocket() async {
+    print ("_listen to socket");
+
+    final _authApi = AuthApi();
+    StreamSocket streamSocket =StreamSocket();
+
+    Map<String, dynamic> headers = await _authApi.getHeaders();
+    Socket socket = io("${SOCKET_WS}ws/test",
+        OptionBuilder()
+            .setTransports(['websocket'])
+            .setExtraHeaders(headers)
+            .build());
+
+    socket.onConnect((_) {
+      print('connect');
+      socket.emit('msg', 'test');
+    });
+
+    //When an event recieved from server, data is added to the stream
+    socket.on('event', (data) => {
+      print( "printing socket data received: ${data.toString()}")
+    });
+    socket.onDisconnect((_) => print('disconnect'));
+  }
+
+  @override
+  void initState() {
+    _user = chatController.chatUser;
+    _room = chatController.currentRoom;
+
+    print ("chat init state");
+
+    super.initState();
+    _listenSocket();
+  }
+
 
   @override
   Widget build(BuildContext context) {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
-    _user = chatController.chatUser;
-    _room = chatController.currentRoom;
+
 
     if (isLoading) {
       return const Frankloader();
@@ -72,15 +114,18 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   .of(context)
                   .primaryColor,
               onPressed: () async {
-                // reset chatroom. Create or get a new room
-                await _chatroomApi.createNewRoom();
                 if (chatController.isTest == false) {
                   botController.fetchCurrentBot(DEFAULT_BOT_ID);
-                  Navigator.of(context).pop();
-                } else {
-                  Navigator.of(context).pop();
                 }
-                // Navigator.of(context).pop();
+
+                Navigator.of(context).pop();
+
+                Get.delete<MessageController>()
+                    .then((_){
+                      Get.put( MessageController());
+                      messageController.offset = 0;
+                });
+
               },
             ),
             // Show User profile info
@@ -184,13 +229,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
             stream: chatController.streamRoom,
             builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
               initialData: const [],
-              stream: chatController.streamMessages, // get on socket
+              stream: messageController.streamMessages, // get on socket
               builder: (context, snapshot) =>
+
                   Chat(
                   theme: DefaultChatTheme(
                       primaryColor: Theme.of(context).colorScheme.secondary,
                       sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white)
                   ),
+                  onEndReached: _loadMoreMessage, // get more messages on top
                   showUserNames: true,
                   showUserAvatars: true,
                   isAttachmentUploading: _isAttachmentUploading,
@@ -376,6 +423,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _isAttachmentUploading = false;
     });
 
+  }
+
+  Future<void> _loadMoreMessage() async {
+    try {
+      await _messagesApi.getMessages();
+    } catch (err) {
+      log(err.toString());
+      showScaffoldMessage(message: _i18n.translate("an_error_has_occurred"),
+          bgcolor: Colors.red);
+    }
   }
 
 

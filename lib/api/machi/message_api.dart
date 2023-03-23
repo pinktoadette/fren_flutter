@@ -5,7 +5,8 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
@@ -17,13 +18,16 @@ class MessageMachiApi {
   final baseUri = PY_API;
   final BotController botControl = Get.find();
   final auth = AuthApi();
+  ChatController chatController = Get.find();
+  MessageController messageController = Get.find();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  /// saves user message to backend, backend will save bot response automatically
+  /// saves user message to backend
   /// will automatically create a new room if not provided
   Future<Map<String, dynamic>> formatChatMessage(dynamic partialMessage) async {
     final ChatController chatController = Get.find();
+    final MessageController messageController = Get.find();
     // save will always be user, because backend will already save bot;
     types.Message? message;
     types.User user = chatController.chatUser;
@@ -67,7 +71,7 @@ class MessageMachiApi {
 
       // sends to state
       types.Message msg = _createTypesMessages(messageMap);
-      chatController.addMessagesToCurrent(msg);
+      messageController.addMessagesToCurrent(msg);
       return messageMap;
     }
     return {};
@@ -79,73 +83,77 @@ class MessageMachiApi {
     Bot bot =  botControl.bot;
 
     String url = '${baseUri}chat/user_response';
+    debugPrint ("Requesting URL $url");
     final dio = await auth.getDio();
     await dio.post(
         url, data: { ...messageMap, BOT_ID: bot.botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
   }
 
-  /// gets the bot response
+  /// Gets the bot response. It looks up the last message and responds to that.
   Future getBotResponse(messageMap) async {
     String botId = botControl.bot.botId;
-    ChatController chatController = Get.find();
-
     // save to machi api
     String url = '${baseUri}chat/machi_response';
+    debugPrint ("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(
         url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
-
     log("Saved and got bot responses");
-    print (response.data);
-    // will contain a roomId
+
     Map<String, dynamic> newMessage = Map.from(response.data);
     types.Message msg = _createTypesMessages(newMessage);
-    chatController.addMessagesToCurrent(msg);
+    messageController.addMessagesToCurrent(msg);
 
   }
 
-  /// for streaming in chatcontroller. There's only one currentRoom instance for each room
-  Future<List<types.Message>> getMessages(int start, int limit) async{
+  /// Get paginations for old messages
+  Future<void> getMessages() async{
     Bot bot = botControl.bot;
+    ChatController chatController = Get.find();
+    int offset = 0; //messageController.offset;
+    int limit = 10; //messageController.limitPage;
 
-    String url = '${baseUri}chat/get_last_messages'; // get last n messages
-    debugPrint ("Requesting URL $url");
+    String url = '${baseUri}chat/messages'; // get last n messages
+    debugPrint ("Requesting URL $url  Query params: chatroomId: ${chatController.currentRoom.chatroomId}, offset: $offset, limit: $limit");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest.get(url, data: { "botId": bot.botId, "start": start, "limit": limit });
+    final response = await dioRequest.get(url, queryParameters: { "chatroomId": chatController.currentRoom.chatroomId, "offset": offset, "limit": limit });
     List<dynamic> oldMessages = response.data;
 
-    if (oldMessages.isEmpty) {
-      // create bot first message
-      DateTime dateTime = DateTime.now();
+    if (oldMessages.isNotEmpty) {
+      var theseMessage = oldMessages[0]['messages'];
+      for (var element in theseMessage) {
+        Map<String, dynamic> newMessage = Map.from(element);
+        newMessage['text'] = newMessage['text'];
+        newMessage['type'] = newMessage['type'];
+        types.Message msg = _createTypesMessages(newMessage);
+        messageController.addOldMessages(msg);
+      }
 
-      Map<String, dynamic> message = {'author': ''};
-      message['authorId'] = bot.botId;
-      message['name'] = bot.name;
-      message['createdAt'] = dateTime;
-      message['id'] = const Uuid().v4();
-      message['updatedAt'] = dateTime;
-      message['text'] = bot.about;
-      message['type'] = "text";
-
-      types.Message fin = _createTypesMessages(message);
-      List<types.Message> finalMessage = [];
-      finalMessage.add(fin);
-      return finalMessage;
     }
 
-    final List<types.Message> finalMessages = [];
-    for (var element in oldMessages) {
-      Map<String, dynamic> newMessage = Map.from(element);
-      newMessage['text'] = newMessage['text'];
-      newMessage['type'] = newMessage['type'];
-      types.Message msg = _createTypesMessages(newMessage);
-      finalMessages.add(msg);
+    //set the next start page
+    messageController.offset += messageController.limitPage;
 
-      // sync to local db
-      newMessage['botId'] = bot.botId;
-      syncMessages(newMessage);
+  }
+
+  /// Helper function to define messages type
+  types.Message _createTypesMessages(Map<String, dynamic> message) {
+    final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
+    message[CHAT_AUTHOR] = author.toJson();
+    message[FLUTTER_UI_ID] = message[CHAT_MESSAGE_ID];
+    message[CREATED_AT] = message[CREATED_AT]?.toInt();
+
+    if (message[CHAT_TYPE] == CHAT_IMAGE) {
+      message['size'] = 256;
+      return types.ImageMessage.fromJson(message);
     }
-    return finalMessages;
+    return types.Message.fromJson(message);
+  }
+
+  Future<void> syncMessages(Map<String, dynamic> messages) async {
+    /// if timestamp don't match between local and remote, then sync to remote
+    final DatabaseService _databaseService = DatabaseService();
+    await _databaseService.insertChat(messages);
   }
 
   Future<List<types.Message>> getLocalDbMessages() async {
@@ -163,27 +171,6 @@ class MessageMachiApi {
       finalMessages.add(msg);
     }
     return finalMessages;
-
-  }
-
-  types.Message _createTypesMessages(Map<String, dynamic> message) {
-    /// helper to create types.messsages from local db and remote db
-    final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
-    message[CHAT_AUTHOR] = author.toJson();
-    message[FLUTTER_UI_ID] = message[ROOM_ID].toString();
-    message[CREATED_AT] = message[CREATED_AT]?.toInt();
-
-    if (message[CHAT_TYPE] == CHAT_IMAGE) {
-      message['size'] = 256;
-      return types.ImageMessage.fromJson(message);
-    }
-    return types.Message.fromJson(message);
-  }
-
-  Future<void> syncMessages(Map<String, dynamic> messages) async {
-    /// if timestamp don't match between local and remote, then sync to remote
-    final DatabaseService _databaseService = DatabaseService();
-    await _databaseService.insertChat(messages);
   }
 
 

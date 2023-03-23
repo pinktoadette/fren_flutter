@@ -5,10 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
+import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
@@ -20,8 +22,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
-import '../widgets/float_frank.dart';
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -31,6 +32,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+
+
   /// Variables
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
@@ -51,6 +54,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
+    // load controllers
+    _loadChatControllers();
     // create a new room for quick chat
     _getOrCreateChatroom();
     // get all chatrooms for conversation tab
@@ -69,6 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
     // Close streams
     _userStream.drain();
     // _inAppPurchaseStream.cancel();
+  }
+
+  void _loadChatControllers () {
+    Get.lazyPut(() => MessageController()); // injects when needed
+    final ChatController chatController = Get.put(ChatController(), permanent: true);
+    chatController.onChatLoad();
   }
 
 

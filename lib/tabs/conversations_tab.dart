@@ -1,6 +1,7 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/chatroom_api.dart';
-import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -56,8 +57,7 @@ class ConversationsTab extends StatelessWidget {
                           }
                           return InkWell(
                             onTap: () {
-                              chatController.currentRoom = room;
-                              chatController.onLoadRoomMessages();
+                              chatController.onLoadCurrentRoom(room);
 
                               Navigator.of(context).push(
                                 MaterialPageRoute(

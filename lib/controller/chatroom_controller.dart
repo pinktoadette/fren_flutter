@@ -1,29 +1,21 @@
 
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
-import 'package:fren_app/api/machi/auth_api.dart';
-import 'package:fren_app/api/machi/message_api.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/socks/socket_manager.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:place_picker/uuid.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 
 
 class ChatController extends GetxController implements GetxService {
-  final _socketResponse= StreamController<String>();
+  final MessageController messageController = Get.find(); // current messages in this room
   final BotController botController = Get.find();// current bot
   final UserController userController = Get.find(); // current user
   late Rx<types.User> _chatUser;
   late Rx<types.User> _chatBot;
 
-  RxList<types.Message> _messages = <types.Message>[].obs;
   RxList<Chatroom> _roomlist = <Chatroom>[].obs;
   late Rx<Chatroom> _currentRoom;
 
@@ -43,10 +35,6 @@ class ChatController extends GetxController implements GetxService {
   Chatroom get currentRoom => _currentRoom.value;
   set currentRoom(Chatroom value) => _currentRoom.value = value;
 
-  // messages in the chatroom
-  Stream<List<types.Message>> get streamMessages async* {
-    yield _messages;
-  }
 
   // current chatroom
   Stream<Chatroom> get streamRoom async* {
@@ -65,14 +53,21 @@ class ChatController extends GetxController implements GetxService {
       id: userController.user.userId,
       firstName: userController.user.userFullname,
     ).obs;
-    // _listenSocket();
+    initCurrentRoom();
     super.onInit();
   }
 
-  @override
-  void dispose() {
-    _socketResponse!.sink.close();
-    super.dispose();
+  void initCurrentRoom() {
+    _currentRoom = Chatroom(
+        chatroomId: '',
+        botId: '',
+        users: [],
+        createdAt: DateTime.now().millisecondsSinceEpoch,
+        updatedAt: DateTime.now().millisecondsSinceEpoch,
+        roomType: '',
+        messages: [],
+        creatorUser: ''
+    ).obs;
   }
 
   /// when you create a new room, you're in, therefore you are also in the current room
@@ -84,10 +79,6 @@ class ChatController extends GetxController implements GetxService {
     }
   }
 
-  /// loaads the initial messages in a chatroom
-  void onLoadRoomMessages() {
-    _messages = _currentRoom.value.messages.obs;
-  }
 
   /// load the current bot
   /// gets called on start up
@@ -96,46 +87,19 @@ class ChatController extends GetxController implements GetxService {
       id: botController.bot.botId,
       firstName: botController.bot.name,
     ).obs;
-    // fetch local messages
-    // then match latest timestamp with last remote message
-    // _fetchLocalMessages();
     print("onChatload");
     isLoaded = true;
   }
 
-  /// add messages
+  /// add messages to this room as preview / preload
   void addMessage(types.Message message) {
     // _messages.insert(0, message);
-    _currentRoom.value.messages.insert(0, message); // can't do like this
+    _currentRoom.value.messages.insert(0, message);
   }
 
-  void addMessagesToCurrent(types.Message message) {
-    _messages.insert(0, message);
-  }
-
-  Future<void> _listenSocket() async {
-    print ("_listen to socket");
-
-    final _authApi = AuthApi();
-    StreamSocket streamSocket =StreamSocket();
-
-    Map<String, dynamic> headers = await _authApi.getHeaders();
-    Socket socket = io("${SOCKET_WS}chatroom/messages",
-        OptionBuilder()
-            .setTransports(['websocket'])
-            .setExtraHeaders(headers)
-            .build());
-
-    socket.onConnect((_) {
-      print('connect');
-      socket.emit('msg', 'test');
-    });
-
-    //When an event recieved from server, data is added to the stream
-    socket.on('event', (data) => {
-      print( "printing socket data received: ${data.toString()}")
-    });
-    socket.onDisconnect((_) => print('disconnect'));
+  void onLoadCurrentRoom (Chatroom room) {
+    currentRoom = room;
+    messageController.onCurrentRoom(room.messages);
   }
 
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chat_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:get/get.dart';
