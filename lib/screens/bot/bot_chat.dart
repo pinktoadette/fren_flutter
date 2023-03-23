@@ -123,8 +123,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 Get.delete<MessageController>()
                     .then((_){
                       Get.put( MessageController());
-                      messageController.offset = 0;
-                });
+                }).then((_) => messageController.offset = 10 );
 
               },
             ),
@@ -237,7 +236,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                       primaryColor: Theme.of(context).colorScheme.secondary,
                       sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white)
                   ),
-                  onEndReached: _loadMoreMessage, // get more messages on top
+                  onEndReached: _loadMoreMessage, //get more messages on top
                   showUserNames: true,
                   showUserAvatars: true,
                   isAttachmentUploading: _isAttachmentUploading,

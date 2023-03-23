@@ -12,8 +12,8 @@ class MessageController extends GetxController implements GetxService {
   RxList<types.Message> _messages = <types.Message>[].obs;
   late Rx<Chatroom> _currentRoom;
 
-  // get every 30, starting at 10
-  int offset = 0;
+  // get every 10, starting at 10, since 10 is default
+  int offset = 10;
   int limitPage = 10;
 
   Chatroom get currentRoom => _currentRoom.value;
@@ -35,8 +35,9 @@ class MessageController extends GetxController implements GetxService {
     super.onInit();
   }
 
-  void addOldMessages(types.Message message) {
-    _messages.insert(_messages.length-1, message);
+  void addOldMessages(List<types.Message> messages) {
+    RxList<types.Message> rxMessages = messages.obs;
+    _messages.addAll(rxMessages);
   }
 
   void addMessagesToCurrent(types.Message message) {

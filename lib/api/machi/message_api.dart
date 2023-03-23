@@ -108,10 +108,9 @@ class MessageMachiApi {
 
   /// Get paginations for old messages
   Future<void> getMessages() async{
-    Bot bot = botControl.bot;
     ChatController chatController = Get.find();
-    int offset = 0; //messageController.offset;
-    int limit = 10; //messageController.limitPage;
+    int offset = messageController.offset;
+    int limit = messageController.limitPage;
 
     String url = '${baseUri}chat/messages'; // get last n messages
     debugPrint ("Requesting URL $url  Query params: chatroomId: ${chatController.currentRoom.chatroomId}, offset: $offset, limit: $limit");
@@ -121,19 +120,23 @@ class MessageMachiApi {
 
     if (oldMessages.isNotEmpty) {
       var theseMessage = oldMessages[0]['messages'];
-      for (var element in theseMessage) {
-        Map<String, dynamic> newMessage = Map.from(element);
-        newMessage['text'] = newMessage['text'];
-        newMessage['type'] = newMessage['type'];
-        types.Message msg = _createTypesMessages(newMessage);
-        messageController.addOldMessages(msg);
+      if (theseMessage.isNotEmpty) {
+        List<types.Message> oldList = [];
+        for (var element in theseMessage) {
+          Map<String, dynamic> newMessage = Map.from(element);
+          newMessage['text'] = newMessage['text'];
+          newMessage['type'] = newMessage['type'];
+          types.Message msg = _createTypesMessages(newMessage);
+          oldList.add(msg);
+
+        }
+        messageController.addOldMessages(oldList);
+
+        //set the next start page
+        messageController.offset = messageController.limitPage + messageController.offset;
+        print (messageController.offset);
       }
-
     }
-
-    //set the next start page
-    messageController.offset += messageController.limitPage;
-
   }
 
   /// Helper function to define messages type
