@@ -17,11 +17,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-
 import 'firebase_options.dart';
 
 void main() async {
-
   // final result = await InternetAddress.lookup('google.com');
   // if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
   //   print('Has Internet');
@@ -31,7 +29,6 @@ void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
-
   /// ***  Initialize Firebase App *** ///
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
@@ -40,8 +37,9 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (Platform.isAndroid | Platform.isIOS) {
-    FirebaseFirestore.instance.settings = const Settings(persistenceEnabled: true);
-  } else if(Platform.isWindows | Platform.isMacOS ) {
+    FirebaseFirestore.instance.settings =
+        const Settings(persistenceEnabled: true);
+  } else if (Platform.isWindows | Platform.isMacOS) {
     await FirebaseFirestore.instance
         .enablePersistence(const PersistenceSettings(synchronizeTabs: true));
   }
@@ -60,7 +58,7 @@ void main() async {
     );
   }
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
 }
@@ -74,12 +72,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ScopedModel<AppModel>(
       model: AppModel(),
       child: ScopedModel<UserModel>(
         model: UserModel(),
-        child: MaterialApp(
+        child: GetMaterialApp(
           navigatorKey: navigatorKey,
           scaffoldMessengerKey: scaffoldMessengerKey,
           title: APP_NAME,
@@ -112,7 +109,6 @@ class MyApp extends StatelessWidget {
           darkTheme: _darkTheme(),
           theme: _lightTheme(),
           themeMode: ThemeMode.system,
-
         ),
       ),
     );
@@ -128,55 +124,58 @@ class MyApp extends StatelessWidget {
           primary: APP_PRIMARY_COLOR,
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_BACKGROUND),
-          scaffoldBackgroundColor: Colors.white,
-          inputDecorationTheme: InputDecorationTheme(
-            errorStyle: const TextStyle(fontSize: 16),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(28),
+      scaffoldBackgroundColor: Colors.white,
+      inputDecorationTheme: InputDecorationTheme(
+          errorStyle: const TextStyle(fontSize: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(28),
           )),
-        progressIndicatorTheme: const ProgressIndicatorThemeData(
-          color: APP_PRIMARY_COLOR,
-        ),
-      cardTheme: CardTheme(
-        clipBehavior: Clip.antiAlias,
-        elevation: 4.0,
-        shape: defaultCardBorder()
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: APP_PRIMARY_COLOR,
       ),
+      cardTheme: CardTheme(
+          clipBehavior: Clip.antiAlias,
+          elevation: 4.0,
+          shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50))),
-        ),
-        bottomSheetTheme: const BottomSheetThemeData(
-            backgroundColor: Colors.black54,
-            clipBehavior: Clip.antiAlias,
-            // set shape to make top corners rounded
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(16),
-                topRight: Radius.circular(16),
-              ),
-            ),
+                borderRadius: BorderRadius.circular(50))),
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Colors.black54,
+        clipBehavior: Clip.antiAlias,
+        // set shape to make top corners rounded
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(16),
+            topRight: Radius.circular(16),
+          ),
         ),
-        textTheme: TextTheme(
+      ),
+      textTheme: TextTheme(
         labelMedium: const TextStyle(
           fontSize: 35,
           decorationColor: Colors.red,
-          ),
+        ),
         headline1: GoogleFonts.poppins(
             color: APP_PRIMARY_COLOR,
-            fontSize: 97, fontWeight: FontWeight.w300, letterSpacing: -1.5),
+            fontSize: 97,
+            fontWeight: FontWeight.w300,
+            letterSpacing: -1.5),
         headline2: GoogleFonts.poppins(
             fontSize: 61, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-        headline3: GoogleFonts.poppins(fontSize: 48, fontWeight: FontWeight.w400),
+        headline3:
+            GoogleFonts.poppins(fontSize: 48, fontWeight: FontWeight.w400),
         headline4: GoogleFonts.poppins(
             fontSize: 34, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-        headline5: GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w400),
+        headline5:
+            GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w400),
         headline6: GoogleFonts.poppins(
             fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
         subtitle1: GoogleFonts.poppins(
@@ -202,19 +201,17 @@ class MyApp extends StatelessWidget {
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.white,               // Only honored in Android M and above
-          statusBarIconBrightness: Brightness.dark,  // Only honored in Android M and above
-          statusBarBrightness: Brightness.light),
+            statusBarColor: Colors.white, // Only honored in Android M and above
+            statusBarIconBrightness:
+                Brightness.dark, // Only honored in Android M and above
+            statusBarBrightness: Brightness.light),
         titleTextStyle: TextStyle(color: APP_PRIMARY_COLOR, fontSize: 18),
       ),
     );
-
   }
-
 
   // dark
   ThemeData _darkTheme() {
-
     final ThemeData darkTheme = ThemeData.dark();
     const APP_PRIMARY_DARK_COLOR = Colors.white;
     const APP_PRIMARY_DARK_BACKGROUND = Colors.black;
@@ -252,14 +249,42 @@ class MyApp extends StatelessWidget {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(28),
           )),
-      textTheme: TextTheme(  headline1: GoogleFonts.roboto(    fontSize: 96,    fontWeight: FontWeight.w300,    letterSpacing: -1.5  ),  headline2: GoogleFonts.roboto(    fontSize: 60,    fontWeight: FontWeight.w300,    letterSpacing: -0.5  ),  headline3: GoogleFonts.roboto(    fontSize: 48,    fontWeight: FontWeight.w400  ),  headline4: GoogleFonts.roboto(    fontSize: 34,    fontWeight: FontWeight.w400,    letterSpacing: 0.25  ),  headline5: GoogleFonts.roboto(    fontSize: 24,    fontWeight: FontWeight.w400  ),  headline6: GoogleFonts.roboto(    fontSize: 20,    fontWeight: FontWeight.w500,    letterSpacing: 0.15  ),  subtitle1: GoogleFonts.roboto(    fontSize: 16,    fontWeight: FontWeight.w400,    letterSpacing: 0.15  ),  subtitle2: GoogleFonts.roboto(    fontSize: 14,    fontWeight: FontWeight.w500,    letterSpacing: 0.1  ),  bodyText1: GoogleFonts.poppins(    fontSize: 16,    fontWeight: FontWeight.w400,    letterSpacing: 0.5  ),  bodyText2: GoogleFonts.poppins(    fontSize: 14,    fontWeight: FontWeight.w400,    letterSpacing: 0.25  ),  button: GoogleFonts.poppins(    fontSize: 14,    fontWeight: FontWeight.w500,    letterSpacing: 1.25  ),  caption: GoogleFonts.poppins(    fontSize: 12,    fontWeight: FontWeight.w400,    letterSpacing: 0.4  ),  overline: GoogleFonts.poppins(    fontSize: 10,    fontWeight: FontWeight.w400,    letterSpacing: 1.5  ),),
+      textTheme: TextTheme(
+        headline1: GoogleFonts.roboto(
+            fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
+        headline2: GoogleFonts.roboto(
+            fontSize: 60, fontWeight: FontWeight.w300, letterSpacing: -0.5),
+        headline3:
+            GoogleFonts.roboto(fontSize: 48, fontWeight: FontWeight.w400),
+        headline4: GoogleFonts.roboto(
+            fontSize: 34, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+        headline5:
+            GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.w400),
+        headline6: GoogleFonts.roboto(
+            fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
+        subtitle1: GoogleFonts.roboto(
+            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15),
+        subtitle2: GoogleFonts.roboto(
+            fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+        bodyText1: GoogleFonts.poppins(
+            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
+        bodyText2: GoogleFonts.poppins(
+            fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
+        button: GoogleFonts.poppins(
+            fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
+        caption: GoogleFonts.poppins(
+            fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
+        overline: GoogleFonts.poppins(
+            fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+      ),
       appBarTheme: const AppBarTheme(
         color: APP_PRIMARY_DARK_COLOR,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.black,               // Only honored in Android M and above
-            statusBarIconBrightness: Brightness.light,  // Only honored in Android M and above
+            statusBarColor: Colors.black, // Only honored in Android M and above
+            statusBarIconBrightness:
+                Brightness.light, // Only honored in Android M and above
             statusBarBrightness: Brightness.dark),
         titleTextStyle: TextStyle(color: APP_PRIMARY_DARK_COLOR, fontSize: 18),
       ),

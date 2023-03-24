@@ -18,7 +18,6 @@ class BotProfileCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
     return Center(
       child: Card(
         clipBehavior: Clip.antiAlias,

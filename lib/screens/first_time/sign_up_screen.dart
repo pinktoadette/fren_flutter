@@ -67,23 +67,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     });
   }
 
-  /// Get image from camera / gallery
-  // void _getImage(BuildContext context) async {
-  //   await showModalBottomSheet(
-  //       context: context,
-  //       builder: (context) => ImageSourceSheet(
-  //             onImageSelected: (image) {
-  //               if (image != null) {
-  //                 setState(() {
-  //                   _imageFile = image;
-  //                 });
-  //                 // close modal
-  //                 Navigator.of(context).pop();
-  //               }
-  //             },
-  //           ));
-  // }
-
   void _updateUserBithdayInfo(DateTime date) {
     setState(() {
       // Update the inicial date
@@ -165,42 +148,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text(_i18n.translate('sign_up'),
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.left),
-
-              /// Profile photo
-              // GestureDetector(
-              //   child: Container(
-              //       decoration: BoxDecoration(
-              //         shape: BoxShape.circle,
-              //         border: Border.all(color: Colors.black, width: 3),
-              //       ),
-              //       child: _imageFile == null
-              //           ? CircleAvatar(
-              //               radius: 50,
-              //               backgroundColor: Colors.white,
-              //               backgroundImage: const AssetImage("assets/images/face.jpg"),
-              //               child: Stack(
-              //                   children: const [
-              //                     Align(
-              //                       alignment: Alignment.bottomRight,
-              //                       child: CircleAvatar(
-              //                         radius: 18,
-              //                         backgroundColor: Colors.white,
-              //                         child: Icon(Iconsax.camera),
-              //                       ),
-              //                     ),
-              //                   ]
-              //               ),
-              //             )
-              //           : CircleAvatar(
-              //               radius: 60,
-              //               backgroundImage: FileImage(_imageFile!),
-              //             )),
-              //   onTap: () {
-              //     /// Get profile image
-              //     _getImage(context);
-              //   },
-              // ),
-
               Padding(
                 padding: const EdgeInsets.all(25),
 

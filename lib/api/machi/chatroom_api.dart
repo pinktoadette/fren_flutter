@@ -20,8 +20,6 @@ class ChatroomMachiApi {
   // if none exists, create one.
   // creates a new room with empty messages in quick chat
   // this way user doesn't need to wait on bot response
-  // chatcontroller will keep this empty room state as current
-  // until user use the chatroom
   Future<Map<String, dynamic>> createNewRoom() async {
     final ChatController chatController = Get.find();
 

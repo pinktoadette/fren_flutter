@@ -13,6 +13,7 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/socks/socket_manager.dart';
 import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
@@ -35,14 +36,8 @@ class BotChatScreen extends StatefulWidget {
 }
 
 class _BotChatScreenState extends State<BotChatScreen> {
-  // BotChatScreen({Key? key}) : super(key: key);
-  /// _messages are state;
-  /// instead of continuously retrieving -
-  /// 1. Get last message on server
-  /// 2. Check local database an compare timestamp
-  /// 3. if not match, fetch all messages
-  /// 4. set state to messages
-  /// 5. chatController will save of all messages
+  final AppHelper _appHelper = AppHelper();
+
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
   final MessageController messageController = Get.find();
@@ -88,9 +83,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   @override
   void initState() {
     _user = chatController.chatUser;
-    _room = chatController.currentRoom;
-
-    print("chat init state");
+    final args = Get.arguments;
+    _room = args["room"];
 
     super.initState();
     _listenSocket();
@@ -160,12 +154,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
               itemBuilder: (context) => <PopupMenuEntry<String>>[
                 /// invite_user
                 PopupMenuItem(
-                    value: "invite_user",
+                    value: "add_to_chat",
                     child: Row(
                       children: <Widget>[
-                        const TinyBotIcon(image: 'assets/images/pink_bot.png'),
+                        const Icon(Iconsax.add),
                         const SizedBox(width: 5),
-                        Text(_i18n.translate("invite_user")),
+                        Text(_i18n.translate("add_to_chat")),
                       ],
                     )),
 
@@ -183,23 +177,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
               onSelected: (val) {
                 /// Control selected value
                 switch (val) {
-                  case "delete_chat":
-
-                    /// Delete chat
-                    confirmDialog(context,
-                        title: _i18n.translate("delete_conversation"),
-                        message:
-                            _i18n.translate("conversation_will_be_deleted"),
-                        negativeAction: () => Navigator.of(context).pop(),
-                        positiveText: _i18n.translate("DELETE"),
-                        positiveAction: () async {
-                          // Close the confirm dialog
-                          Navigator.of(context).pop();
-                        });
+                  case "add_to_chat":
+                    _appHelper.shareApp();
                     break;
 
                   // Handle Block/Unblock profile
-                  case "block":
+                  case "change_bot_personality":
                     // Check remote user blocked status
                     //   if (_isRemoteUserBlocked != null && _isRemoteUserBlocked!) {
                     //     // Unblock profile
@@ -216,29 +199,33 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ],
         ),
         body: StreamBuilder<Chatroom>(
-          initialData: _room,
-          stream: chatController.streamRoom,
-          builder: (context, snapshot) => StreamBuilder<List<types.Message>>(
-            initialData: const [],
-            stream:
-                Get.put(MessageController()).streamMessages, // get on socket
-            builder: (context, snapshot) => Chat(
-                theme: DefaultChatTheme(
-                    primaryColor: Theme.of(context).colorScheme.secondary,
-                    sendButtonIcon:
-                        const Icon(Iconsax.send_2, color: Colors.white)),
-                onEndReached: _loadMoreMessage, //get more messages on top
-                showUserNames: true,
-                showUserAvatars: true,
-                isAttachmentUploading: _isAttachmentUploading,
-                messages: snapshot.data!,
-                onSendPressed: _handleSendPressed,
-                onAttachmentPressed: _handleAttachmentPressed,
-                onMessageTap: _handleMessageTap,
-                onPreviewDataFetched: _handlePreviewDataFetched,
-                user: _user),
-          ),
-        ),
+            initialData: _room,
+            stream: chatController.streamRoom,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                return StreamBuilder<List<types.Message>>(
+                  initialData: snapshot.data?.messages,
+                  stream: messageController.streamMessages, // get on socket
+                  builder: (context, snapshot) => Chat(
+                      theme: DefaultChatTheme(
+                          primaryColor: Theme.of(context).colorScheme.secondary,
+                          sendButtonIcon:
+                              const Icon(Iconsax.send_2, color: Colors.white)),
+                      onEndReached: _loadMoreMessage, //get more messages on top
+                      showUserNames: true,
+                      showUserAvatars: true,
+                      isAttachmentUploading: _isAttachmentUploading,
+                      messages: snapshot.data!,
+                      onSendPressed: _handleSendPressed,
+                      onAttachmentPressed: _handleAttachmentPressed,
+                      onMessageTap: _handleMessageTap,
+                      onPreviewDataFetched: _handlePreviewDataFetched,
+                      user: _user),
+                );
+              } else {
+                return const Frankloader();
+              }
+            }),
       );
     }
   }

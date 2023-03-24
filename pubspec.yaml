@@ -37,12 +37,12 @@ dependencies:
   cupertino_icons:
 
   # FIREBASE Packages Section
-  firebase_core: 2.5.0 # Firebase Core package required to use other firebase services
-  firebase_auth: 4.2.6  # Used to Authenticate User Account (e.g. Sign in with Phone number, etc..)
-  cloud_firestore: 4.3.2 # Used to Save User Data in Database
-  firebase_messaging: 14.2.2 # Used to Send Push Notifications (e.g. New like, Visit and Message)
-  firebase_storage: 11.0.11 # Used to Save User Profile Images on Cloud Storage    
-  google_mobile_ads: 2.3.0 # Used to Show Admob Ads in App (e.g. Banner Ads, Interstitial Ads (full screen), Native Ads and Rewarded Video Ads)
+  firebase_core: ^2.8.0
+  firebase_auth: ^4.3.0
+  cloud_firestore: ^4.4.5
+  firebase_messaging: ^14.3.0
+  firebase_storage: ^11.0.16  
+  google_mobile_ads: 2.3.0 
   # END 
 
   in_app_purchase: 3.1.1 # This plugin help us to Sell VIP Subscription Plans in app
@@ -62,7 +62,6 @@ dependencies:
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
   place_picker: 0.10.0 # This plugin help us to create Passport feature
-  fluttertoast: 8.1.3 # For toast messages
   google_fonts: ^4.0.3
   google_sign_in: ^6.0.1
   iconsax: ^0.0.8
@@ -71,7 +70,6 @@ dependencies:
   lottie: ^2.2.0
   uuid: ^3.0.7
   dio: ^5.0.1
-  infinite_scroll_pagination: ^3.2.0
   file_picker: ^5.2.5
   open_filex: ^4.3.2
   get: ^4.6.5
@@ -80,6 +78,10 @@ dependencies:
   googleapis: ^10.1.0
   flutter_chat_ui: ^1.6.6
   socket_io_client: ^2.0.1
+  firebase_dynamic_links: ^5.0.17
+  permission_handler: ^10.2.0
+  contacts_service: ^0.6.3
+
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

@@ -6,6 +6,7 @@ import 'package:fren_app/widgets/activity.dart';
 import 'package:fren_app/widgets/bot/quick_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/discover_card.dart';
+import 'package:fren_app/widgets/invite_card.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
@@ -42,11 +43,21 @@ class _ActivityTabState extends State<ActivityTab> {
   Widget build(BuildContext context) {
     /// Initialization
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     if (_isInitiatedFrank == true) {
       return Scaffold(
           body: Stack(children: [
-        ActivityWidget(),
+        SizedBox(
+            height: screenHeight,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: const [
+                  InviteCard(),
+                ])),
+        // ActivityWidget(),
         Positioned(
             bottom: 0.0,
             child: SizedBox(

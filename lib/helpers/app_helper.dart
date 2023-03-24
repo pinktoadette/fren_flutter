@@ -161,7 +161,6 @@ class AppHelper {
   /// Get app current version from Cloud Firestore Database,
   /// that is the same with Google Play Store / Apple Store app version
   Future<int> getAppStoreVersion() async {
-
     final DocumentSnapshot<Map<String, dynamic>> appInfo =
         await _firestore.collection(C_APP_INFO).doc('settings').get();
 

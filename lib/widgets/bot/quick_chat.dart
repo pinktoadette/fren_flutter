@@ -50,8 +50,10 @@ class _QuickChatState extends State<QuickChat> {
       fieldText.clear();
       FocusScope.of(context).requestFocus(FocusNode());
 
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => const BotChatScreen()));
+      Get.to(() => const BotChatScreen(),
+          arguments: {"room": chatController.currentRoom});
+      // Navigator.of(context)
+      //     .push(MaterialPageRoute(builder: (context) => const BotChatScreen()));
     }
 
     return TextField(

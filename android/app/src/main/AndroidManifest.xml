@@ -83,4 +83,8 @@
                android:value="YOUR ANDROID API KEY"/>             
 
     </application>
+    
+    <!-- Contact persmission -->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />  
+
 </manifest>

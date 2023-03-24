@@ -1,4 +1,3 @@
-
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -21,27 +20,19 @@ class _ExploreBotState extends State<ExploreBotTab> {
   final BotController botController = Get.put(BotController());
   final UserController userController = Get.put(UserController());
 
-
-  late AppLocalizations _i18n;
-
-
   @override
   void initState() {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
     return Scaffold(
-      body: Column(
-        children: const <Widget>[
-          SearchBar(),
-          ListAllBotsVertically(),
-        ],
-      )
-    );
+        body: Column(
+      children: const <Widget>[
+        SearchBar(),
+        ListAllBotsVertically(),
+      ],
+    ));
   }
 }

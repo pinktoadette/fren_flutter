@@ -43,7 +43,6 @@ class ConversationsTab extends StatelessWidget {
                         const Divider(height: 10),
                     itemCount: snapshot.data!.length,
                     itemBuilder: ((context, index) {
-                      /// Get conversation DocumentSnapshot<Map<String, dynamic>>
                       final Chatroom room = snapshot.data![index];
                       final lastMsg = room.messages.isNotEmpty
                           ? room.messages[0].toJson()
@@ -57,13 +56,10 @@ class ConversationsTab extends StatelessWidget {
                       }
                       return InkWell(
                         onTap: () {
-                          chatController.onLoadCurrentRoom(room);
-
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (context) => const BotChatScreen(),
-                            ),
-                          );
+                          Get.to(() => (const BotChatScreen()), arguments: {
+                            "room": room
+                          })?.then(
+                              (_) => {chatController.onLoadCurrentRoom(room)});
                         },
                         child: Container(
                           width: width,

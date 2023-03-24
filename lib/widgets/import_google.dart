@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:lottie/lottie.dart';
-import 'package:googleapis/docs/v1.dart';
 
 ///
 /// need google verification, todo some future date
