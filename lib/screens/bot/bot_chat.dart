@@ -14,7 +14,6 @@ import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_helper.dart';
-import 'package:fren_app/socks/socket_manager.dart';
 import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
@@ -27,6 +26,7 @@ import 'package:fren_app/widgets/loader.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
+import 'package:fren_app/socks/socket_manager.dart';
 
 class BotChatScreen extends StatefulWidget {
   const BotChatScreen({Key? key}) : super(key: key);
@@ -45,7 +45,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late types.User _user;
   late AppLocalizations _i18n;
   final _messagesApi = MessageMachiApi();
-
+  StreamSocket streamSocket = StreamSocket();
   late Chatroom _room;
 
   bool _isAttachmentUploading = false;
@@ -59,24 +59,20 @@ class _BotChatScreenState extends State<BotChatScreen> {
     print("_listen to socket");
 
     final _authApi = AuthApi();
-    StreamSocket streamSocket = StreamSocket();
-
-    Map<String, dynamic> headers = await _authApi.getHeaders();
+    // Map<String, dynamic> headers = await _authApi.getHeaders();
     Socket socket = io(
-        "${SOCKET_WS}ws/test",
-        OptionBuilder()
-            .setTransports(['websocket'])
-            .setExtraHeaders(headers)
+        "${SOCKET_WS}messsages/${_room.chatroomId}",
+        OptionBuilder().setTransports(['websocket'])
+            // .setExtraHeaders(headers)
             .build());
 
     socket.onConnect((_) {
-      print('connect');
-      socket.emit('msg', 'test');
+      print('connect socket.io');
+      print(socket.id);
     });
 
     //When an event recieved from server, data is added to the stream
-    socket.on('event',
-        (data) => {print("printing socket data received: ${data.toString()}")});
+    socket.on('message', (data) => streamSocket.addResponse);
     socket.onDisconnect((_) => print('disconnect'));
   }
 
