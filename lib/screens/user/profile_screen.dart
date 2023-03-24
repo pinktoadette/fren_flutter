@@ -4,20 +4,14 @@ import 'package:fren_app/api/matches_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/its_match_dialog.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
-import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/plugins/carousel_pro/carousel_pro.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/custom_badge.dart';
 import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:timeago/timeago.dart' as timeago;
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatefulWidget {
@@ -43,7 +37,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   /// Local variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final AppHelper _appHelper = AppHelper();
   final LikesApi _likesApi = LikesApi();
   final DislikesApi _dislikesApi = DislikesApi();
   final MatchesApi _matchesApi = MatchesApi();
@@ -75,8 +68,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         appBar: AppBar(
           backgroundColor: Colors.transparent,
           elevation: 0,
-          iconTheme:
-          IconThemeData(color: Theme.of(context).primaryColor),
+          iconTheme: IconThemeData(color: Theme.of(context).primaryColor),
           actions: <Widget>[
             // Check the current User ID
             if (UserModel().user.userId != widget.user.userId)
@@ -103,21 +95,22 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         AvatarInitials(user: widget.user),
                         const SizedBox(width: 20),
-                        Text( widget.user.userFullname,
+                        Text(
+                          widget.user.userFullname,
                           style: Theme.of(context).textTheme.headlineSmall,
                         ),
+
                         /// Show verified badge
                         widget.user.userIsVerified
                             ? Container(
-                            margin: const EdgeInsets.only(right: 5),
-                            child: Image.asset(
-                                'assets/images/verified_badge.png',
-                                width: 30,
-                                height: 30))
+                                margin: const EdgeInsets.only(right: 5),
+                                child: Image.asset(
+                                    'assets/images/verified_badge.png',
+                                    width: 30,
+                                    height: 30))
                             : const SizedBox(width: 0, height: 0),
                       ],
                     ),
-
 
                     /// Profile details
                     Padding(
@@ -128,7 +121,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-
                               /// Show VIP badge for current user
                               // UserModel().user.userId == widget.user.userId &&
                               //         UserModel().userIsVip
@@ -141,15 +133,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               //     : const SizedBox(width: 0, height: 0),
 
                               ElevatedButton(
-                                  onPressed: (){},
-                                  child: Text("Follow")
-                              ),
-                              ElevatedButton(
-                                onPressed: () {  },
+                                onPressed: () {},
                                 child: const FittedBox(
                                     fit: BoxFit.fitWidth,
                                     child: Icon(Iconsax.message)),
                               ),
+
                               /// Location distance
                               // CustomBadge(
                               //     icon: const Icon(Iconsax.location,
@@ -162,10 +151,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           const SizedBox(height: 5),
 
                           /// Home location
-                          _rowProfileInfo( context,
+                          _rowProfileInfo(
+                            context,
                             icon: Icon(Iconsax.location, size: _iconSize),
-                            title: widget.user.userLocality != '' ?
-                                "${widget.user.userLocality}, ${widget.user.userCountry}" : "Location not set",
+                            title: widget.user.userLocality != ''
+                                ? "${widget.user.userLocality}, ${widget.user.userCountry}"
+                                : "Location not set",
                           ),
 
                           const SizedBox(height: 5),
@@ -185,7 +176,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: Text(_i18n.translate("bio"),
                                 style: Theme.of(context).textTheme.labelLarge),
                           ),
-                          Text(widget.user.userBio ?? "", style:  Theme.of(context).textTheme.bodyMedium),
+                          Text(widget.user.userBio ?? "",
+                              style: Theme.of(context).textTheme.bodyMedium),
                         ],
                       ),
                     ),

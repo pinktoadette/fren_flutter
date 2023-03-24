@@ -1,7 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:fren_app/widgets/loader.dart';
@@ -33,8 +31,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       child: InkWell(
         borderRadius: defaultSkipButtonBorderRadius,
         onTap: () {
-            index += 1;
-            setIndex!(index);
+          index += 1;
+          setIndex!(index);
         },
         child: const Padding(
           padding: defaultSkipButtonPadding,
@@ -65,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       height: 1.5,
     );
 
-    final onboardingPagesList = [1,2,3].map((num){
+    final onboardingPagesList = [1, 2, 3].map((int num) {
       return PageModel(
         widget: DecoratedBox(
           decoration: BoxDecoration(
@@ -90,15 +88,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 45.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
-                    child: Text(
-                        _i18n.translate('onboard_page${num}_title'),
-                        style: _pageTitleStyle,
-                        textAlign: TextAlign.left
-                    ),
+                    child: Text(_i18n.translate('onboard_page${num}_title'),
+                        style: _pageTitleStyle, textAlign: TextAlign.left),
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 45.0, vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 45.0, vertical: 10.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -130,8 +126,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
-        body:
-        Onboarding(
+        body: Onboarding(
           pages: onboardingPagesList,
           onPageChange: (int pageIndex) {
             index = pageIndex;
@@ -147,7 +142,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ),
               ),
               child: ColoredBox(
-                color:  Theme.of(context).colorScheme.background,
+                color: Theme.of(context).colorScheme.background,
                 child: Padding(
                   padding: const EdgeInsets.all(45.0),
                   child: Row(
@@ -161,24 +156,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             lineDesign: LineDesign(
                               lineType: DesignType.line_uniform,
                             ),
-
                           ),
                         ),
                       ),
                       index == pagesLength - 1
                           ? ElevatedButton(
-                        child: Container(
-                            color: Theme.of(context).colorScheme.primary,
-                            child: Text(_i18n.translate("continue"),
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Theme.of(context).colorScheme.background))
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(MaterialPageRoute(
-                              builder: (context) => const SignUpScreen()));
-                        },
-                      )
+                              child: Container(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  child: Text(_i18n.translate("continue"),
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Theme.of(context)
+                                              .colorScheme
+                                              .background))),
+                              onPressed: () {
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const SignUpScreen()));
+                              },
+                            )
                           : _nextButton(setIndex: setIndex)
                     ],
                   ),
@@ -186,7 +183,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
             );
           },
-        )
-    );
+        ));
   }
 }

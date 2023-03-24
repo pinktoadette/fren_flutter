@@ -1,12 +1,8 @@
-
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-
-
-import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/widgets/rounded_top.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -20,12 +16,11 @@ class EnableMode extends StatefulWidget {
 class _EnableModeState extends State<EnableMode> {
   // Variables
   late AppLocalizations _i18n;
-  late ProgressDialog _pr;
   List<ModeList> listRec = [];
   int selectedIndex = 0;
   Map<String, bool> values = {
-      USER_ENABLE_DATE: true,
-      USER_ENABLE_SERV: true,
+    USER_ENABLE_DATE: true,
+    USER_ENABLE_SERV: true,
   };
 
   /// Navigate to next page
@@ -51,13 +46,11 @@ class _EnableModeState extends State<EnableMode> {
 
   _updateEnable() async {
     String userId = UserModel().user.userId;
-    Map<String, Map<String, bool>> data = { USER_ENABLE_MODE: values };
-    await UserModel()
-        .updateUserData(userId: userId, data: data);
+    Map<String, Map<String, bool>> data = {USER_ENABLE_MODE: values};
+    await UserModel().updateUserData(userId: userId, data: data);
     Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(
-            builder: (context) => const UpdateLocationScreen()),
-            (route) => false);
+        MaterialPageRoute(builder: (context) => const UpdateLocationScreen()),
+        (route) => false);
   }
 
   @override

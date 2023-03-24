@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:chips_choice/chips_choice.dart';
-import 'package:fren_app/api/machi/error_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -23,7 +22,6 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
-  final _errorLogged = ErrorLoggedApi();
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
@@ -33,7 +31,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   int _userBirthMonth = 0;
   int _userBirthYear = DateTime.now().subtract(const Duration(days: 7300)).year;
   // End
-  DateTime _initialDateTime = DateTime.now().subtract(const Duration(days: 7300));
+  DateTime _initialDateTime =
+      DateTime.now().subtract(const Duration(days: 7300));
   String? _birthday;
   bool _agreeTerms = true;
   String? _selectedIndustry;
@@ -153,7 +152,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       key: _scaffoldKey,
       body: ScopedModelDescendant<UserModel>(
@@ -165,8 +163,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
             children: <Widget>[
               const SizedBox(height: 50),
               Text(_i18n.translate('sign_up'),
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.left),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.left),
+
               /// Profile photo
               // GestureDetector(
               //   child: Container(
@@ -204,6 +203,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               Padding(
                 padding: const EdgeInsets.all(25),
+
                 /// Form
                 child: Form(
                   key: _formKey,
@@ -220,12 +220,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             prefixIcon: const Padding(
                               padding: EdgeInsets.all(12.0),
                               child: Icon(Iconsax.user),
-                            )
-                        ),
+                            )),
                         validator: (name) {
                           // Basic validation
                           if (name?.isEmpty ?? false) {
-                            return _i18n.translate("please_enter_your_fullname");
+                            return _i18n
+                                .translate("please_enter_your_fullname");
                           }
                           return null;
                         },
@@ -237,7 +237,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(28),
-                              side: BorderSide(color: Colors.grey as Color)),
+                              side: const BorderSide(color: Colors.grey)),
                           child: ListTile(
                             leading: const Icon(Iconsax.cake),
                             title: Text(_birthday!,
@@ -245,6 +245,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             trailing: const Icon(Icons.arrow_drop_down),
                             onTap: () {
                               FocusScope.of(context).unfocus();
+
                               /// Select birthday
                               _showDatePicker();
                             },
@@ -277,51 +278,51 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ),
                       const SizedBox(height: 20),
 
-
                       /// User interest
                       const Text("What are your interest? Select 3.",
                           style: TextStyle(color: Colors.grey)),
 
-                    if (_interestList.isNotEmpty) SizedBox(
-                    height: 200,
-                    child: SingleChildScrollView(
-                        child: ChipsChoice<String>.multiple(
-                          value: _selectedInterest,
-                          onChanged: (val) => {
-                            setState((){
-                              _selectedInterest = val;
-                            })
-                          },
-                          choiceItems: C2Choice.listFrom<String, String>(
-                            source: _interestList,
-                            value: (i, v) => v,
-                            label: (i, v) => v,
-                            tooltip: (i, v) => v,
-                          ),
-                          choiceCheckmark: true,
-                          choiceStyle: C2ChipStyle.outlined(),
-                          wrapped: true,
-                      ),
-                    )),
-
+                      if (_interestList.isNotEmpty)
+                        SizedBox(
+                            height: 200,
+                            child: SingleChildScrollView(
+                              child: ChipsChoice<String>.multiple(
+                                value: _selectedInterest,
+                                onChanged: (val) => {
+                                  setState(() {
+                                    _selectedInterest = val;
+                                  })
+                                },
+                                choiceItems: C2Choice.listFrom<String, String>(
+                                  source: _interestList,
+                                  value: (i, v) => v,
+                                  label: (i, v) => v,
+                                  tooltip: (i, v) => v,
+                                ),
+                                choiceCheckmark: true,
+                                choiceStyle: C2ChipStyle.outlined(),
+                                wrapped: true,
+                              ),
+                            )),
 
                       const SizedBox(height: 50),
-                      if (userModel.isLoading) const CircularProgressIndicator(),
+                      if (userModel.isLoading)
+                        const CircularProgressIndicator(),
                       SizedBox(
-                        width: double.maxFinite,
-                        child: ElevatedButton(
-                          child: Container(
-                              color: Theme.of(context).colorScheme.primary,
-                              child: Text(_i18n.translate("register"),
-                                  style: TextStyle(
-                                      fontSize: 16,
-                                      color: Theme.of(context).colorScheme.background))
-                          ),
-                          onPressed: () {
-                            _createAccount();
-                          },
-                        )
-                      ),
+                          width: double.maxFinite,
+                          child: ElevatedButton(
+                            child: Container(
+                                color: Theme.of(context).colorScheme.primary,
+                                child: Text(_i18n.translate("register"),
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .background))),
+                            onPressed: () {
+                              _createAccount();
+                            },
+                          )),
                       const SizedBox(height: 20),
                       _agreePrivacy(),
                     ],
@@ -337,7 +338,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   /// Handle Create account
   void _createAccount() async {
-
     if (_selectedInterest.length < 3) {
       showScaffoldMessage(
           context: context,
@@ -374,24 +374,24 @@ class _SignUpScreenState extends State<SignUpScreen> {
         userBirthMonth: _userBirthMonth,
         userBirthYear: _userBirthYear,
         onSuccess: () async {
-            Future(() {
-              Navigator.of(context).pushAndRemoveUntil(
-                  MaterialPageRoute(
-                      builder: (context) => const HomeScreen()),
-                  (route) => false);
-            });
+          Future(() {
+            Navigator.of(context).pushAndRemoveUntil(
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                (route) => false);
+          });
         },
         onFail: (error) async {
           // Debug error
           debugPrint(error);
 
-          showScaffoldMessage(message: _i18n
-              .translate("an_error_occurred_while_creating_your_account"), bgcolor: APP_ACCENT_COLOR);
+          showScaffoldMessage(
+              message: _i18n
+                  .translate("an_error_occurred_while_creating_your_account"),
+              bgcolor: APP_ACCENT_COLOR);
 
           // await _errorLogged.postError(
           //     errorMessage: error,
           //     errorLocation: "sign up screen - creating account");
-
         },
       );
     }

@@ -1,4 +1,3 @@
-
 import 'dart:async';
 
 import 'package:fren_app/controller/message_controller.dart';
@@ -8,14 +7,15 @@ import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-
 class ChatController extends GetxController implements GetxService {
-  final MessageController messageController = Get.find(); // current messages in this room
-  final BotController botController = Get.find();// current bot
+  final MessageController messageController =
+      Get.find(); // current messages in this room
+  final BotController botController = Get.find(); // current bot
   final UserController userController = Get.find(); // current user
   late Rx<types.User> _chatUser;
   late Rx<types.User> _chatBot;
 
+  // ignore: prefer_final_fields
   RxList<Chatroom> _roomlist = <Chatroom>[].obs;
   late Rx<Chatroom> _currentRoom;
 
@@ -35,7 +35,6 @@ class ChatController extends GetxController implements GetxService {
   Chatroom get currentRoom => _currentRoom.value;
   set currentRoom(Chatroom value) => _currentRoom.value = value;
 
-
   // current chatroom
   Stream<Chatroom> get streamRoom async* {
     yield currentRoom;
@@ -45,7 +44,6 @@ class ChatController extends GetxController implements GetxService {
   Stream<List<Chatroom>> get streamRoomlist async* {
     yield _roomlist;
   }
-
 
   @override
   void onInit() async {
@@ -59,15 +57,15 @@ class ChatController extends GetxController implements GetxService {
 
   void initCurrentRoom() {
     _currentRoom = Chatroom(
-        chatroomId: '',
-        botId: '',
-        users: [],
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        updatedAt: DateTime.now().millisecondsSinceEpoch,
-        roomType: '',
-        messages: [],
-        creatorUser: ''
-    ).obs;
+            chatroomId: '',
+            botId: '',
+            users: [],
+            createdAt: DateTime.now().millisecondsSinceEpoch,
+            updatedAt: DateTime.now().millisecondsSinceEpoch,
+            roomType: '',
+            messages: [],
+            creatorUser: '')
+        .obs;
   }
 
   /// when you create a new room, you're in, therefore you are also in the current room
@@ -79,7 +77,6 @@ class ChatController extends GetxController implements GetxService {
     }
   }
 
-
   /// load the current bot
   /// gets called on start up
   void onChatLoad() {
@@ -87,7 +84,6 @@ class ChatController extends GetxController implements GetxService {
       id: botController.bot.botId,
       firstName: botController.bot.name,
     ).obs;
-    print("onChatload");
     isLoaded = true;
   }
 
@@ -97,11 +93,10 @@ class ChatController extends GetxController implements GetxService {
     _currentRoom.value.messages.insert(0, message);
   }
 
-  void onLoadCurrentRoom (Chatroom room) {
+  void onLoadCurrentRoom(Chatroom room) {
     currentRoom = room;
     messageController.onCurrentRoom(room.messages);
   }
-
 
 // Future<void> _fetchLocalMessages() async {
   //   List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
@@ -123,7 +118,4 @@ class ChatController extends GetxController implements GetxService {
   //   debugPrint("Using db -> remote. Message length ${messages.length}");
   //   addMultipleMessages(messages);
   // }
-
-
-
 }

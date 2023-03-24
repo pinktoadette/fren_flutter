@@ -9,11 +9,8 @@ import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:fren_app/screens/verification_code_screen.dart';
 import 'package:fren_app/widgets/button/default_button.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import '../constants/constants.dart';
 
 class PhoneNumberScreen extends StatefulWidget {
   const PhoneNumberScreen({Key? key}) : super(key: key);
@@ -53,12 +50,11 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
           child: Column(
             children: <Widget>[
               CircleAvatar(
-                radius: 50,
-                backgroundColor: Theme.of(context).primaryColor
-              ),
+                  radius: 50, backgroundColor: Theme.of(context).primaryColor),
               const SizedBox(height: 10),
               Text(_i18n.translate("sign_in_with_phone_number"),
-                  textAlign: TextAlign.center, style: const TextStyle(fontSize: 20)),
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(fontSize: 20)),
               const SizedBox(height: 25),
               Text(
                   _i18n.translate(
@@ -144,11 +140,12 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
         checkUserAccount: () {
           /// Authenticate User Account
           UserModel().authUserAccount(
-            updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
-            signUpScreen: () => _nextScreen(const SignUpScreen()),
-            homeScreen: () => _nextScreen(const HomeScreen()),
-            blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
-          // END   
+              updateLocationScreen: () =>
+                  _nextScreen(const UpdateLocationScreen()),
+              signUpScreen: () => _nextScreen(const SignUpScreen()),
+              homeScreen: () => _nextScreen(const HomeScreen()),
+              blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
+          // END
         },
         codeSent: (code) async {
           // Hide progreess dialog
@@ -165,15 +162,15 @@ class _PhoneNumberScreenState extends State<PhoneNumberScreen> {
 
           // Check Erro type
           if (errorType == 'invalid_number') {
-              // Check error type
-              final String message =
-                  _i18n.translate("we_were_unable_to_verify_your_number");
-              // Show error message
-              // Validate context
-              if (mounted) {
-                showScaffoldMessage(
-                    context: context, message: message, bgcolor: Colors.red);
-              }
+            // Check error type
+            final String message =
+                _i18n.translate("we_were_unable_to_verify_your_number");
+            // Show error message
+            // Validate context
+            if (mounted) {
+              showScaffoldMessage(
+                  context: context, message: message, bgcolor: Colors.red);
+            }
           }
         });
   }

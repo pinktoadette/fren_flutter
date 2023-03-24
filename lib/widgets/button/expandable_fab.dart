@@ -101,8 +101,8 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
     final count = widget.subChildren.length;
     final step = 90.0 / (count - 1);
     for (var i = 0, angleInDegrees = 0.0;
-    i < count;
-    i++, angleInDegrees += step) {
+        i < count;
+        i++, angleInDegrees += step) {
       children.add(
         _ExpandingActionButton(
           directionInDegrees: angleInDegrees,
@@ -143,7 +143,7 @@ class _ExpandableFabClassState extends State<ExpandableFabClass>
 
 @immutable
 class _ExpandingActionButton extends StatelessWidget {
-  _ExpandingActionButton({
+  const _ExpandingActionButton({
     Key? key,
     required this.directionInDegrees,
     required this.maxDistance,

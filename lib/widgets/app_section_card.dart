@@ -4,7 +4,6 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/Miscellaneous/about_us_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -42,8 +41,8 @@ class AppSectionCard extends StatelessWidget {
             title: Text(i18n.translate("about_us"), style: _textStyle),
             onTap: () {
               /// Go to About us screen
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => const AboutScreen()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const AboutScreen()));
             },
           ),
           const Divider(height: 0),

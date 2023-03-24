@@ -18,7 +18,6 @@ import 'package:fren_app/widgets/chat_message.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
 

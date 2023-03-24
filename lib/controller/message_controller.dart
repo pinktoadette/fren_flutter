@@ -36,8 +36,9 @@ class MessageController extends GetxController implements GetxService {
   }
 
   void addOldMessages(List<types.Message> messages) {
-    RxList<types.Message> rxMessages = messages.obs;
+    final RxList<types.Message> rxMessages = messages.obs;
     _messages.addAll(rxMessages);
+    _messages.refresh();
   }
 
   void addMessagesToCurrent(types.Message message) {

@@ -1,7 +1,4 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -41,7 +38,6 @@ class DatabaseService {
     );
   }
 
-
   Future<void> _onCreate(Database db, int version) async {
     //fbId = Firebase DocId
     // await db.execute("DROP TABLE IF EXISTS message");
@@ -49,72 +45,84 @@ class DatabaseService {
     // Run the CREATE {USER} TABLE statement on the database.
     await db.execute(
       'CREATE TABLE IF NOT EXISTS user(id INTEGER PRIMARY KEY, '
-          'fbId TEXT KEY UNIQUE, '
-          'name TEXT, '
-          'status TEXT, '
-          'updatedAt INT)',
+      'fbId TEXT KEY UNIQUE, '
+      'name TEXT, '
+      'status TEXT, '
+      'updatedAt INT)',
     );
     // bot table
     await db.execute(
       'CREATE TABLE IF NOT EXISTS bot(id INTEGER PRIMARY KEY, '
-          'createdAt INT, '
-          'updatedAt INT, '
-          'fbId TEXT KEY UNIQUE, '
-          'price REAL, '
-          'name TEXT, '
-          'domain TEXT, '
-          'subdomain TEXT, '
-          'repoId TEXT, '
-          'about TEXT)',
+      'createdAt INT, '
+      'updatedAt INT, '
+      'fbId TEXT KEY UNIQUE, '
+      'price REAL, '
+      'name TEXT, '
+      'domain TEXT, '
+      'subdomain TEXT, '
+      'repoId TEXT, '
+      'about TEXT)',
     );
 
     // chatroom
     await db.execute(
       'CREATE TABLE IF NOT EXISTS chatroom(id INTEGER PRIMARY KEY,'
-          'chatroomId KEY UNIQUE,'
-          'hasMessages INT, '
-          'title TEXT, '
-          'personality TEXT, '
-          'creatorId TEXT NOT NULL, '
-          'botId TEXT NOT NULL, '
-          'createdAt INT,'
-          'updatedAt INT )',
+      'chatroomId KEY UNIQUE,'
+      'hasMessages INT, '
+      'title TEXT, '
+      'personality TEXT, '
+      'creatorId TEXT NOT NULL, '
+      'botId TEXT NOT NULL, '
+      'createdAt INT,'
+      'updatedAt INT )',
     );
 
     // msg table createdAt, updatedAt - millisecondsSinceEpoch
     // botId is to identify on select * from bot
     await db.execute(
       'CREATE TABLE IF NOT EXISTS message(id INTEGER PRIMARY KEY, '
-          'createdAt INT,'
-          'updatedAt INT, '
-          'name TEXT, '
-          'authorId TEXT NOT NULL, '
-          'botId TEXT NOT NULL, '
-          'uri TEXT, '
-          'fileSize TEXT, '
-          'message TEXT NOT NULL, '
-          'messageType TEXT NOT NULL)',
+      'createdAt INT,'
+      'updatedAt INT, '
+      'name TEXT, '
+      'authorId TEXT NOT NULL, '
+      'botId TEXT NOT NULL, '
+      'uri TEXT, '
+      'fileSize TEXT, '
+      'message TEXT NOT NULL, '
+      'messageType TEXT NOT NULL)',
     );
   }
 
   // Get user
-  Future<List<Map>> getOrAddUser(DocumentSnapshot<Map<String, dynamic>> user) async {
+  Future<List<Map>> getOrAddUser(
+      DocumentSnapshot<Map<String, dynamic>> user) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from user where fbId=?', [user.id]);
+    List<Map> result =
+        await db.rawQuery('Select * from user where fbId=?', [user.id]);
     if (result.isEmpty) {
-      await db.rawInsert('INSERT INTO user(fbId, name, status, updatedAt) VALUES(?, ?, ?, ?)', [user.id, user[USER_FULLNAME], user[USER_STATUS], user[UPDATED_AT].millisecondsSinceEpoch]);
+      await db.rawInsert(
+          'INSERT INTO user(fbId, name, status, updatedAt) VALUES(?, ?, ?, ?)',
+          [
+            user.id,
+            user[USER_FULLNAME],
+            user[USER_STATUS],
+            user[UPDATED_AT].millisecondsSinceEpoch
+          ]);
     }
     return result;
   }
 
   /// get or save bot info
   /// mainly concerned with about, price, domain on update
-  Future<List<Map>> getOrAddBot(DocumentSnapshot<Map<String, dynamic>> bot) async {
+  Future<List<Map>> getOrAddBot(
+      DocumentSnapshot<Map<String, dynamic>> bot) async {
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from bot where fbId=?', [bot.id]);
+    List<Map> result =
+        await db.rawQuery('Select * from bot where fbId=?', [bot.id]);
     if (result.isEmpty) {
-      await db.rawInsert('INSERT INTO bot(createdAt, '
+      await db.rawInsert(
+          'INSERT INTO bot(createdAt, '
           'updatedAt, '
           'fbId, '
           'price, '
@@ -122,13 +130,18 @@ class DatabaseService {
           'domain, '
           'subdomain, '
           'repoId, '
-          'about) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+          'about) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
+          [
             bot[CREATED_AT].millisecondsSinceEpoch,
-        bot[UPDATED_AT].millisecondsSinceEpoch,
-        bot[BOT_ID],
-        bot[BOT_PRICE],
-        bot[BOT_NAME],
-        bot[BOT_DOMAIN], bot[BOT_SUBDOMAIN], bot[BOT_REPO_ID], bot[BOT_ABOUT]]);
+            bot[UPDATED_AT].millisecondsSinceEpoch,
+            bot[BOT_ID],
+            bot[BOT_PRICE],
+            bot[BOT_NAME],
+            bot[BOT_DOMAIN],
+            bot[BOT_SUBDOMAIN],
+            bot[BOT_REPO_ID],
+            bot[BOT_ABOUT]
+          ]);
     }
     return result;
   }
@@ -141,31 +154,37 @@ class DatabaseService {
     UPDATE user 
     SET name = ?, status = ?, updatedAt = ? 
     WHERE fbId = ?
-    ''',
-        [user[USER_FULLNAME], user[USER_STATUS], dt.millisecondsSinceEpoch, UserModel().user.userId ]);
+    ''', [
+      user[USER_FULLNAME],
+      user[USER_STATUS],
+      dt.millisecondsSinceEpoch,
+      UserModel().user.userId
+    ]);
   }
-
 
   Future<Map> getUser(User user) async {
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from user where fbId=?', [user.userId]);
+    List<Map> result =
+        await db.rawQuery('Select * from user where fbId=?', [user.userId]);
     return result[0];
   }
 
   Future<List<Map<String, dynamic>>> getLastMessages(String botId) async {
     /// This is all the user info, so just need to select where botId=botId;
     final db = await _databaseService.database;
-    List<Map<String, dynamic>> result = await db.rawQuery('Select * from message where botId=? limit 50', [botId]);
-    print (result);
+    List<Map<String, dynamic>> result = await db
+        .rawQuery('Select * from message where botId=? limit 50', [botId]);
     return result;
   }
 
   Future<List<Map>> insertRoom(Map<String, dynamic> room) async {
     // Get a reference to the database.
     final db = await _databaseService.database;
-    List<Map> result = await db.rawQuery('Select * from chatroom where chatroomId=?', [room[ROOM_ID]]);
+    List<Map> result = await db
+        .rawQuery('Select * from chatroom where chatroomId=?', [room[ROOM_ID]]);
     if (result.isEmpty) {
-      await db.rawInsert('INSERT INTO chatroom('
+      await db.rawInsert(
+          'INSERT INTO chatroom('
           'chatroomId,'
           'hasMessages, '
           'title, '
@@ -173,11 +192,17 @@ class DatabaseService {
           'creatorId, '
           'botId, '
           'createdAt,'
-          'updatedAt ) VALUES(?, ?, ?, ?, ?, ?, ?, ?  )', [
-            room[ROOM_ID], room[ROOM_HAS_MESSAGES],
-            room[ROOM_TITLE], room[ROOM_PERSONALITY],
-            room[ROOM_CREATED_BY], room[BOT_ID],
-            room[CREATED_AT], room[UPDATED_AT], ]);
+          'updatedAt ) VALUES(?, ?, ?, ?, ?, ?, ?, ?  )',
+          [
+            room[ROOM_ID],
+            room[ROOM_HAS_MESSAGES],
+            room[ROOM_TITLE],
+            room[ROOM_PERSONALITY],
+            room[ROOM_CREATED_BY],
+            room[BOT_ID],
+            room[CREATED_AT],
+            room[UPDATED_AT],
+          ]);
     }
     return result;
   }
@@ -185,21 +210,24 @@ class DatabaseService {
   Future<int> insertChat(Map<String, dynamic> message) async {
     final db = await _databaseService.database;
 
-    final result  = await db.rawInsert('INSERT INTO message ('
+    final result = await db.rawInsert(
+        'INSERT INTO message ('
         'createdAt, '
         'updatedAt, '
         'name, '
         'authorId, '
         'botId, '
         'message, '
-        'messageType) VALUES(?, ?, ?, ?, ?, ?, ?)', [message['createdAt'],
-      message['createdAt'],
-      message['name'],
-      message['authorId'],
-      message['botId'],
-      message['text'],
-      message['type']
-    ]);
+        'messageType) VALUES(?, ?, ?, ?, ?, ?, ?)',
+        [
+          message['createdAt'],
+          message['createdAt'],
+          message['name'],
+          message['authorId'],
+          message['botId'],
+          message['text'],
+          message['type']
+        ]);
     return result;
   }
 
@@ -214,7 +242,6 @@ class DatabaseService {
   //   // Convert the List<Map<String, dynamic> into a List<Breed>.
   //   return List.generate(maps.length, (index) => Breed.fromMap(maps[index]));
   // }
-
 
   // A method that deletes a breed data from the breeds table.
   Future<void> deleteBreed(int id) async {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
 
 class ChatMessage extends StatelessWidget {
   // Variables
@@ -11,12 +10,14 @@ class ChatMessage extends StatelessWidget {
   final String timeAgo;
 
   const ChatMessage(
-      {Key? key, required this.isUserSender,
-        required this.timeAgo,
-        this.userPhotoLink,
+      {Key? key,
+      required this.isUserSender,
+      required this.timeAgo,
+      this.userPhotoLink,
       this.isImage = false,
       this.imageLink,
-      this.textMessage}) : super(key: key);
+      this.textMessage})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,8 +57,7 @@ class ChatMessage extends StatelessWidget {
                       ? GestureDetector(
                           onTap: () {
                             // Show full image
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
+                            Navigator.of(context).push(MaterialPageRoute(
                                 builder: (context) =>
                                     _ShowFullImage(imageLink!)));
                           },

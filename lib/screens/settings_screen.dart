@@ -1,11 +1,7 @@
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/dialogs/show_me_dialog.dart';
-import 'package:fren_app/dialogs/vip_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:place_picker/place_picker.dart';
@@ -22,9 +18,6 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late RangeValues _selectedAgeRange;
-  late RangeLabels _selectedAgeRangeLabels;
-  late double _selectedMaxDistance;
   bool _hideProfile = false;
   bool _isDarkMode = false;
   late AppLocalizations _i18n;
@@ -32,7 +25,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   /// Initialize user settings
   void initUserSettings() {
     // Get user settings
-    final Map<String, dynamic> _userSettings = UserModel().user.userSettings!;
     // Update variables state
     setState(() {
       // Check profile status
@@ -40,17 +32,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
         _hideProfile = true;
       }
     });
-  }
-
-  String _showMeOption(AppLocalizations i18n) {
-    // Variables
-    final Map<String, dynamic> settings = UserModel().user.userSettings!;
-    final String? showMe = settings[USER_SHOW_ME];
-    // Check option
-    if (showMe != null) {
-      return i18n.translate(showMe);
-    }
-    return i18n.translate('opposite_gender');
   }
 
   @override
@@ -99,7 +80,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
               builder: (context, child, userModel) {
             return Column(
               children: [
-
                 /// User current location
                 Card(
                     margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -132,6 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ],
                     )),
                 const SizedBox(height: 15),
+
                 /// Hide user profile setting
                 Card(
                   child: ListTile(
@@ -184,12 +165,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   child: ListTile(
                     leading: _isDarkMode
                         ? Icon(Iconsax.sun,
-                        color: Theme.of(context).primaryColor, size: 30)
+                            color: Theme.of(context).primaryColor, size: 30)
                         : Icon(Iconsax.moon,
-                        color: Theme.of(context).primaryColor, size: 30),
+                            color: Theme.of(context).primaryColor, size: 30),
                     title: Text(_i18n.translate('dark_mode'),
                         style: const TextStyle(fontSize: 18)),
-                    subtitle:  Text(_i18n.translate('enable_mode')),
+                    subtitle: Text(_i18n.translate('enable_mode')),
                     trailing: Switch(
                       activeColor: Theme.of(context).primaryColor,
                       value: _isDarkMode,
@@ -217,20 +198,24 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
 
                 const SizedBox(height: 15),
+
                 /// sign out
                 Card(
                   child: ListTile(
                     leading: const Icon(Icons.exit_to_app),
-                    title: Text(_i18n.translate("sign_out"), style: const TextStyle(fontSize: 18)),
+                    title: Text(_i18n.translate("sign_out"),
+                        style: const TextStyle(fontSize: 18)),
                     trailing: const Icon(Icons.arrow_forward),
                     onTap: () {
                       // Log out button
                       UserModel().signOut().then((_) {
                         /// Go to login screen
                         Future(() {
-                          Navigator.of(context).popUntil((route) => route.isFirst);
+                          Navigator.of(context)
+                              .popUntil((route) => route.isFirst);
                           Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(builder: (context) => const SignInScreen()));
+                              MaterialPageRoute(
+                                  builder: (context) => const SignInScreen()));
                         });
                       });
                     },

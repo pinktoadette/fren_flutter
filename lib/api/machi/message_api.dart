@@ -11,7 +11,6 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:uuid/uuid.dart';
 
 class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -40,7 +39,7 @@ class MessageMachiApi {
       );
     } else if (partialMessage is types.PartialFile) {
       message = types.FileMessage.fromPartial(
-        author:types.User(id: user.id),
+        author: types.User(id: user.id),
         id: '',
         partialFile: partialMessage,
       );
@@ -60,7 +59,7 @@ class MessageMachiApi {
 
     DateTime dateTime = DateTime.now();
 
-    if (message != null ) {
+    if (message != null) {
       final messageMap = message.toJson();
       messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
       messageMap[CHAT_AUTHOR_ID] = user.id;
@@ -78,15 +77,19 @@ class MessageMachiApi {
   }
 
   /// saves the user response
-  Future saveUserResponse(Map<String, dynamic> messageMap) async{
+  Future saveUserResponse(Map<String, dynamic> messageMap) async {
     ChatController chatController = Get.find();
-    Bot bot =  botControl.bot;
+    Bot bot = botControl.bot;
 
     String url = '${baseUri}chat/user_response';
-    debugPrint ("Requesting URL $url");
+    debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    await dio.post(
-        url, data: { ...messageMap, BOT_ID: bot.botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
+    await dio.post(url, data: {
+      ...messageMap,
+      BOT_ID: bot.botId,
+      LIMIT: 3,
+      ROOM_ID: chatController.currentRoom.chatroomId
+    });
   }
 
   /// Gets the bot response. It looks up the last message and responds to that.
@@ -94,28 +97,36 @@ class MessageMachiApi {
     String botId = botControl.bot.botId;
     // save to machi api
     String url = '${baseUri}chat/machi_response';
-    debugPrint ("Requesting URL $url");
+    debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response = await dio.get(
-        url, data: { ...messageMap, BOT_ID: botId, LIMIT: 3, ROOM_ID: chatController.currentRoom.chatroomId});
+    final response = await dio.get(url, data: {
+      ...messageMap,
+      BOT_ID: botId,
+      LIMIT: 3,
+      ROOM_ID: chatController.currentRoom.chatroomId
+    });
     log("Saved and got bot responses");
 
     Map<String, dynamic> newMessage = Map.from(response.data);
     types.Message msg = _createTypesMessages(newMessage);
     messageController.addMessagesToCurrent(msg);
-
   }
 
   /// Get paginations for old messages
-  Future<void> getMessages() async{
+  Future<void> getMessages() async {
     ChatController chatController = Get.find();
     int offset = messageController.offset;
     int limit = messageController.limitPage;
 
     String url = '${baseUri}chat/messages'; // get last n messages
-    debugPrint ("Requesting URL $url  Query params: chatroomId: ${chatController.currentRoom.chatroomId}, offset: $offset, limit: $limit");
+    debugPrint(
+        "Requesting URL $url  Query params: chatroomId: ${chatController.currentRoom.chatroomId}, offset: $offset, limit: $limit");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest.get(url, queryParameters: { "chatroomId": chatController.currentRoom.chatroomId, "offset": offset, "limit": limit });
+    final response = await dioRequest.get(url, queryParameters: {
+      "chatroomId": chatController.currentRoom.chatroomId,
+      "offset": offset,
+      "limit": limit
+    });
     List<dynamic> oldMessages = response.data;
 
     if (oldMessages.isNotEmpty) {
@@ -128,20 +139,21 @@ class MessageMachiApi {
           newMessage['type'] = newMessage['type'];
           types.Message msg = _createTypesMessages(newMessage);
           oldList.add(msg);
-
         }
         messageController.addOldMessages(oldList);
 
         //set the next start page
-        messageController.offset = messageController.limitPage + messageController.offset;
-        print (messageController.offset);
+        messageController.offset =
+            messageController.limitPage + messageController.offset;
       }
     }
   }
 
   /// Helper function to define messages type
   types.Message _createTypesMessages(Map<String, dynamic> message) {
-    final author = types.User(id: message[CHAT_AUTHOR_ID] as String, firstName: message[CHAT_USER_NAME] ?? "Frankie");
+    final author = types.User(
+        id: message[CHAT_AUTHOR_ID] as String,
+        firstName: message[CHAT_USER_NAME] ?? "Frankie");
     message[CHAT_AUTHOR] = author.toJson();
     message[FLUTTER_UI_ID] = message[CHAT_MESSAGE_ID];
     message[CREATED_AT] = message[CREATED_AT]?.toInt();
@@ -163,7 +175,8 @@ class MessageMachiApi {
     /// get local messages
     Bot bot = botControl.bot;
     final DatabaseService _databaseService = DatabaseService();
-    final List<Map<String, dynamic>> messages = await _databaseService.getLastMessages(bot.botId);
+    final List<Map<String, dynamic>> messages =
+        await _databaseService.getLastMessages(bot.botId);
     final List<types.Message> finalMessages = [];
 
     for (var element in messages) {
@@ -175,6 +188,4 @@ class MessageMachiApi {
     }
     return finalMessages;
   }
-
-
 }

@@ -2,7 +2,6 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/processing.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/button/default_button.dart';
 import 'package:iconsax/iconsax.dart';
@@ -23,19 +22,19 @@ class _RegisterFormState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     _forms = [
       WillPopScope(
-        onWillPop: () => Future.sync(this.onWillPop),
-        child: Step1Container(),
+        onWillPop: () => Future.sync(onWillPop),
+        child: const Step1Container(),
       ),
       WillPopScope(
-        onWillPop: () => Future.sync(this.onWillPop),
-        child: Step2Container(),
+        onWillPop: () => Future.sync(onWillPop),
+        child: const Step2Container(),
       ),
     ];
 
     return Expanded(
       child: PageView.builder(
         controller: _formsPageViewController,
-        physics: NeverScrollableScrollPhysics(),
+        physics: const NeverScrollableScrollPhysics(),
         itemBuilder: (BuildContext context, int index) {
           return _forms[index];
         },
@@ -48,7 +47,7 @@ class _RegisterFormState extends State<RegisterScreen> {
         _formsPageViewController.initialPage) return true;
 
     _formsPageViewController.previousPage(
-      duration: Duration(milliseconds: 300),
+      duration: const Duration(milliseconds: 300),
       curve: Curves.ease,
     );
 
@@ -57,15 +56,14 @@ class _RegisterFormState extends State<RegisterScreen> {
 }
 
 class Step1Container extends StatelessWidget {
+  const Step1Container({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
     final _formKey = GlobalKey<FormState>();
     final _nameController = TextEditingController();
-    final _schoolController = TextEditingController();
-    final _jobController = TextEditingController();
     final _bioController = TextEditingController();
-    final List<String> _genders = ['Male', 'Female', 'LGTQ'];
 
     return Scaffold(
       body: ScopedModelDescendant<UserModel>(
@@ -77,8 +75,9 @@ class Step1Container extends StatelessWidget {
           child: Column(
             children: <Widget>[
               const Frankloader(),
-              Text(_i18n.translate('intro_1'), style: const TextStyle(
-                  fontSize: 20, fontWeight: FontWeight.bold)),
+              Text(_i18n.translate('intro_1'),
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold)),
               Text(_i18n.translate('intro_2')),
               const SizedBox(height: 50),
               Text(_i18n.translate('intro_quick_start')),
@@ -100,8 +99,7 @@ class Step1Container extends StatelessWidget {
                           prefixIcon: const Padding(
                             padding: EdgeInsets.all(12.0),
                             child: Icon(Iconsax.user),
-                          )
-                      ),
+                          )),
                       validator: (name) {
                         // Basic validation
                         if (name?.isEmpty ?? false) {
@@ -143,10 +141,10 @@ class Step1Container extends StatelessWidget {
                             style: const TextStyle(fontSize: 18)),
                         onPressed: () {
                           /// Sign up
-                            Navigator.of(context).pushAndRemoveUntil(
-                                MaterialPageRoute(
-                                    builder: (context) => Step2Container()),
-                                    (route) => false);
+                          Navigator.of(context).pushAndRemoveUntil(
+                              MaterialPageRoute(
+                                  builder: (context) => const Step2Container()),
+                              (route) => false);
                         },
                       ),
                     ),
@@ -162,6 +160,8 @@ class Step1Container extends StatelessWidget {
 }
 
 class Step2Container extends StatelessWidget {
+  const Step2Container({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final i18n = AppLocalizations.of(context);

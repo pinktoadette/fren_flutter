@@ -3,7 +3,6 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/profile_likes_screen.dart';
 import 'package:fren_app/screens/user/profile_visits_screen.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -21,7 +20,7 @@ class ProfileStatisticsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Initialization
     final i18n = AppLocalizations.of(context);
-    
+
     return Card(
       elevation: 4.0,
       color: Colors.grey[100],
@@ -29,14 +28,14 @@ class ProfileStatisticsCard extends StatelessWidget {
       child: Column(
         children: [
           ListTile(
-            leading: Icon(Iconsax.message, color: Theme.of(context).primaryColor),
+            leading:
+                Icon(Iconsax.message, color: Theme.of(context).primaryColor),
             title: Text(i18n.translate("LIKES"), style: _textStyle),
             trailing: _counter(context, UserModel().user.userTotalLikes),
             onTap: () {
               /// Go to profile likes screen
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileLikesScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ProfileLikesScreen()));
             },
           ),
           const Divider(height: 0),
@@ -46,19 +45,17 @@ class ProfileStatisticsCard extends StatelessWidget {
             trailing: _counter(context, UserModel().user.userTotalVisits),
             onTap: () {
               /// Go to profile visits screen
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const ProfileVisitsScreen()));
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const ProfileVisitsScreen()));
             },
           ),
           const Divider(height: 0),
           ListTile(
-            leading: Icon(Iconsax.close_circle, color: Theme.of(context).primaryColor),
+            leading: Icon(Iconsax.close_circle,
+                color: Theme.of(context).primaryColor),
             title: Text(i18n.translate("DISLIKED_PROFILES"), style: _textStyle),
             trailing: _counter(context, UserModel().user.userTotalDisliked),
-            onTap: () {
-
-            },
+            onTap: () {},
           ),
         ],
       ),
@@ -67,10 +64,11 @@ class ProfileStatisticsCard extends StatelessWidget {
 
   Widget _counter(BuildContext context, int value) {
     return Container(
-      decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor, //.withAlpha(85),
-          shape: BoxShape.circle),
-      padding: const EdgeInsets.all(6.0),
-      child: Text(value.toString(), style: const TextStyle(color: Colors.white)));
+        decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor, //.withAlpha(85),
+            shape: BoxShape.circle),
+        padding: const EdgeInsets.all(6.0),
+        child: Text(value.toString(),
+            style: const TextStyle(color: Colors.white)));
   }
 }

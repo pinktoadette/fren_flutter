@@ -1,15 +1,10 @@
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/user/edit_profile_screen.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
-import 'package:fren_app/screens/settings_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/button/circle_button.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 
 class ProfileBasicInfoCard extends StatelessWidget {
   const ProfileBasicInfoCard({Key? key}) : super(key: key);
@@ -18,12 +13,6 @@ class ProfileBasicInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Initialization
     final i18n = AppLocalizations.of(context);
-    //
-    // Get User Birthday
-    final DateTime userBirthday = DateTime(UserModel().user.userBirthYear,
-        UserModel().user.userBirthMonth, UserModel().user.userBirthDay);
-    // Get User Current Age
-    final int userAge = UserModel().calculateUserAge(userBirthday);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -57,7 +46,6 @@ class ProfileBasicInfoCard extends StatelessWidget {
                             color: Colors.white),
                       ),
                       const SizedBox(height: 5),
-
                     ],
                   ),
                 ],
@@ -71,7 +59,8 @@ class ProfileBasicInfoCard extends StatelessWidget {
                   SizedBox(
                     height: 30,
                     child: OutlinedButton.icon(
-                        icon: const Icon(Icons.remove_red_eye, color: Colors.white),
+                        icon: const Icon(Icons.remove_red_eye,
+                            color: Colors.white),
                         label: Text(i18n.translate("view"),
                             style: const TextStyle(color: Colors.white)),
                         style: ButtonStyle(
@@ -88,7 +77,6 @@ class ProfileBasicInfoCard extends StatelessWidget {
                                   user: UserModel().user, showButtons: false)));
                         }),
                   ),
-
                   SizedBox(
                     height: 35,
                     child: TextButton.icon(

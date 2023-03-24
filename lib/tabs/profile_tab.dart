@@ -1,4 +1,3 @@
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -14,7 +13,6 @@ import 'package:scoped_model/scoped_model.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
-
 
   @override
   Widget build(BuildContext context) {
@@ -63,15 +61,14 @@ class ProfileTab extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading:  const Icon(Icons.share),
+                      leading: const Icon(Icons.share),
                       title: Text(_i18n.translate("share_with_friends")),
-                      onTap: () async{
+                      onTap: () async {
                         _appHelper.shareApp();
                       },
                     ),
                   ],
-                )
-            ),
+                )),
 
             /// App Section Card
             // AppSectionCard(),
@@ -83,7 +80,6 @@ class ProfileTab extends StatelessWidget {
 
             /// Delete Account Button
             // const DeleteAccountButton(),
-
           ],
         );
       }),

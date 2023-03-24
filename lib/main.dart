@@ -18,7 +18,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 
-// TODO: Please "scroll down" to see the instructions to fix it.
 import 'firebase_options.dart';
 
 void main() async {

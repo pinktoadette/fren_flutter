@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:lottie/lottie.dart';
 
 class SearchBar extends StatefulWidget {
   const SearchBar({Key? key}) : super(key: key);
@@ -32,11 +31,12 @@ class _SearchBarState extends State<SearchBar> {
         controller: _searchQueryController,
         autofocus: false,
         decoration: InputDecoration(
-          hintText: _i18n.translate("search"),
-          border: InputBorder.none,
-          hintStyle: TextStyle(color: Theme.of(context).primaryColor),
-          prefixIcon: const Icon(Icons.search,)
-        ),
+            hintText: _i18n.translate("search"),
+            border: InputBorder.none,
+            hintStyle: TextStyle(color: Theme.of(context).primaryColor),
+            prefixIcon: const Icon(
+              Icons.search,
+            )),
         style: TextStyle(color: Theme.of(context).primaryColor, fontSize: 16.0),
         onChanged: (query) => updateSearchQuery(query),
       ),

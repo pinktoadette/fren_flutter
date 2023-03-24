@@ -1,16 +1,9 @@
-
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
@@ -31,13 +24,14 @@ class ChatroomMachiApi {
   // until user use the chatroom
   Future<Map<String, dynamic>> createNewRoom() async {
     final ChatController chatController = Get.find();
+
     /// creates a new room
     String url = '${baseUri}chatroom/create_chatroom';
-    debugPrint ("Requesting URL $url {botId: ${botControl.bot.botId} }");
+    debugPrint("Requesting URL $url {botId: ${botControl.bot.botId} }");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest.post(url, data: { "botId":
-    botControl.bot.botId, "roomType": "groups" });
-    if (response.statusCode == 200 ) {
+    final response = await dioRequest
+        .post(url, data: {"botId": botControl.bot.botId, "roomType": "groups"});
+    if (response.statusCode == 200) {
       final roomData = response.data;
 
       // create a new room
@@ -53,23 +47,19 @@ class ChatroomMachiApi {
   Future<List<Chatroom>> getAllMyRooms() async {
     final ChatController chatController = Get.find();
     String url = '${baseUri}chatroom/users_chatrooms';
-    debugPrint ("Requesting URL $url");
+    debugPrint("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.get(url);
     final roomData = response.data;
     List<Chatroom> myRooms = [];
 
     if (response.statusCode == 200) {
-
-      roomData.forEach((room){
+      roomData.forEach((room) {
         Chatroom myRoom = Chatroom.fromJson(room);
         chatController.onCreateRoomList(myRoom);
         myRooms.add(myRoom);
       });
-
-
     }
     return myRooms;
   }
-
 }

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
@@ -27,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   late AppLocalizations _i18n;
   User? user = FirebaseAuth.instance.currentUser;
   bool isLoading = false;
-  bool google =false;
+  bool google = false;
 
   /// Navigate to next page
   void _nextScreen(screen) {
@@ -37,6 +36,7 @@ class _SignInScreenState extends State<SignInScreen> {
           MaterialPageRoute(builder: (context) => screen), (route) => false);
     });
   }
+
   @override
   Widget build(BuildContext context) {
     /// Initialization
@@ -54,7 +54,8 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: screenHeight*0.2),
+              SizedBox(height: screenHeight * 0.2),
+
               /// App logo
               const AppLogo(),
 
@@ -62,7 +63,7 @@ class _SignInScreenState extends State<SignInScreen> {
 
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 18, color: Colors.black )),
+                  style: const TextStyle(fontSize: 18, color: Colors.black)),
 
               if (isLoading == true) const CircularProgressIndicator(),
               const Spacer(),
@@ -71,45 +72,45 @@ class _SignInScreenState extends State<SignInScreen> {
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child:
-                  /// Sign in
-                  Padding(
+
+                      /// Sign in
+                      Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        SignInButton(
-                            Buttons.Google,
+                        SignInButton(Buttons.Google,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
-                            ),
-                            onPressed:  () {
-                                UserModel().signInWithGoogle(
-                                  checkUserAccount: () {
-
-                                    /// Authenticate User Account
-                                    UserModel().authUserAccount(
-                                        updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
-                                        signInScreen: () => _nextScreen(const SignInScreen()),
-                                        signUpScreen: () => _nextScreen(const SignUpScreen()),
-                                        // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
-                                        onboardScreen: () => _nextScreen(const OnboardingScreen()),
-                                        homeScreen: () => _nextScreen(const HomeScreen()),
-                                        blockedScreen: () => _nextScreen(const BlockedAccountScreen())
-                                    );
-                                  },
-                                    onError: () async {
-                                      // Hide dialog
-                                      // await _pr.hide();
-                                      // Show error message to user
-                                      errorDialog(context,
-                                          message: _i18n.translate("an_error_has_occurred"));
-                                    }).whenComplete(() => isLoading = false );
-                            }
-                        ),
+                            ), onPressed: () {
+                          UserModel().signInWithGoogle(checkUserAccount: () {
+                            /// Authenticate User Account
+                            UserModel().authUserAccount(
+                                updateLocationScreen: () =>
+                                    _nextScreen(const UpdateLocationScreen()),
+                                signInScreen: () =>
+                                    _nextScreen(const SignInScreen()),
+                                signUpScreen: () =>
+                                    _nextScreen(const SignUpScreen()),
+                                // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
+                                onboardScreen: () =>
+                                    _nextScreen(const OnboardingScreen()),
+                                homeScreen: () =>
+                                    _nextScreen(const HomeScreen()),
+                                blockedScreen: () =>
+                                    _nextScreen(const BlockedAccountScreen()));
+                          }, onError: () async {
+                            // Hide dialog
+                            // await _pr.hide();
+                            // Show error message to user
+                            errorDialog(context,
+                                message:
+                                    _i18n.translate("an_error_has_occurred"));
+                          }).whenComplete(() => isLoading = false);
+                        }),
                         SignInButton(
                           Buttons.Apple,
-                          onPressed: () {
-                          },
+                          onPressed: () {},
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0),
                           ),

@@ -1,7 +1,6 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/store_products.dart';
 import 'package:flutter/material.dart';

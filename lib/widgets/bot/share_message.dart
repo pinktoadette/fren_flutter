@@ -1,5 +1,3 @@
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -29,13 +27,11 @@ class _ShareMessageState extends State<ShareMessage> {
     _i18n = AppLocalizations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
     double screenHeight = MediaQuery.of(context).size.height;
-    print(widget.message);
 
     return Center(
       child: Card(
         clipBehavior: Clip.antiAlias,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(28)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         child: SizedBox(
           width: screenWidth,
           height: screenHeight / 2,
@@ -47,16 +43,13 @@ class _ShareMessageState extends State<ShareMessage> {
                 title: const Text("Share Message"),
                 subtitle: Text(widget.message.id),
               ),
-              Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: Padding(
-                          padding: const EdgeInsets.all(30),
-                          child: Text(widget.message.id),
-                        )
-                    ),
-                  ]
-              ),
+              Row(children: <Widget>[
+                Expanded(
+                    child: Padding(
+                  padding: const EdgeInsets.all(30),
+                  child: Text(widget.message.id),
+                )),
+              ]),
               Padding(
                 padding: const EdgeInsets.all(5),
                 child: Row(
@@ -69,7 +62,7 @@ class _ShareMessageState extends State<ShareMessage> {
                       },
                     ),
                     TextButton(
-                      onPressed: () {  },
+                      onPressed: () {},
                       child: const Text("Contribute"),
                     ),
                   ],
@@ -81,6 +74,4 @@ class _ShareMessageState extends State<ShareMessage> {
       ),
     );
   }
-
-
 }

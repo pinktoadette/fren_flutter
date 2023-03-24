@@ -53,7 +53,7 @@ class UserModel extends Model {
     notifyListeners();
     debugPrint('updateRestoreVipMsg() -> $value');
   }
-  
+
   /// Create Singleton factory for [UserModel]
   ///
   static final UserModel _userModel = UserModel._internal();
@@ -97,7 +97,6 @@ class UserModel extends Model {
 
     final UserController userController = Get.find();
     userController.setUser(user);
-
   }
 
   /// Update user data
@@ -186,7 +185,6 @@ class UserModel extends Model {
     VoidCallback? blockedScreen,
     Function? botChatScreen,
   }) async {
-
     /// Check user auth
     if (getFirebaseUser != null) {
       /// Get current user in database
@@ -208,7 +206,6 @@ class UserModel extends Model {
             // Go to blocked user account screen
             blockedScreen!();
           } else {
-
             // Update UserModel for current user
             updateUserObject(userDoc.data()!);
 
@@ -225,7 +222,7 @@ class UserModel extends Model {
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               debugPrint("profile incomplete");
-              signUpScreen!();
+              signUpScreen();
               return;
             }
 
@@ -334,29 +331,31 @@ class UserModel extends Model {
   }
 
   /// Sign in with Google
-  Future<void> signInWithGoogle({
-    required Function() checkUserAccount,
-    required VoidCallback onError
-  }) async {
+  Future<void> signInWithGoogle(
+      {required Function() checkUserAccount,
+      required VoidCallback onError}) async {
     final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: [
         'email',
         'https://www.googleapis.com/auth/userinfo.email',
-        'https://www.googleapis.com/auth/userinfo.profile'],
+        'https://www.googleapis.com/auth/userinfo.profile'
+      ],
     );
 
     final GoogleSignInAccount? googleSignInAccount =
-    await _googleSignIn.signIn();
+        await _googleSignIn.signIn();
 
     /// if not null continue, otherwise do nothing
     if (googleSignInAccount != null) {
       final GoogleSignInAuthentication googleSignInAuthentication =
-      await googleSignInAccount.authentication;
+          await googleSignInAccount.authentication;
 
-      final fire_auth.AuthCredential credential = fire_auth.GoogleAuthProvider.credential(
+      final fire_auth.AuthCredential credential =
+          fire_auth.GoogleAuthProvider.credential(
         accessToken: googleSignInAuthentication.accessToken,
         idToken: googleSignInAuthentication.idToken,
       );
+
       /// Try to sign in with provided credential
       await _firebaseAuth
           .signInWithCredential(credential)
@@ -390,7 +389,6 @@ class UserModel extends Model {
     notifyListeners();
     DateTime time = DateTime.now();
 
-
     /// @TODO need to get error callback
     final mApi = UserApi();
     await mApi.saveUser({
@@ -417,26 +415,25 @@ class UserModel extends Model {
         .collection(C_USERS)
         .doc(getFirebaseUser!.uid)
         .set(<String, dynamic>{
-          USER_ID: getFirebaseUser!.uid,
-          USER_PROFILE_FILLED: true,
-          USER_FULLNAME: userFullName,
-          USER_BIRTH_DAY: userBirthDay,
-          USER_BIRTH_MONTH: userBirthMonth,
-          USER_BIRTH_YEAR: userBirthYear,
-          USER_INDUSTRY: userIndustry,
-          USER_INTERESTS: userInterest,
-          USER_STATUS: 'active',
-          USER_EMAIL: getFirebaseUser!.email ?? '',
-          USER_LAST_LOGIN: FieldValue.serverTimestamp(),
-          CREATED_AT: FieldValue.serverTimestamp(),
-          UPDATED_AT: FieldValue.serverTimestamp(),
-          USER_DEVICE_TOKEN: userDeviceToken,
-          // User location info
-          USER_GEO_POINT: geoPoint.data,
-          USER_COUNTRY: '',
-          USER_LOCALITY: '',
+      USER_ID: getFirebaseUser!.uid,
+      USER_PROFILE_FILLED: true,
+      USER_FULLNAME: userFullName,
+      USER_BIRTH_DAY: userBirthDay,
+      USER_BIRTH_MONTH: userBirthMonth,
+      USER_BIRTH_YEAR: userBirthYear,
+      USER_INDUSTRY: userIndustry,
+      USER_INTERESTS: userInterest,
+      USER_STATUS: 'active',
+      USER_EMAIL: getFirebaseUser!.email ?? '',
+      USER_LAST_LOGIN: FieldValue.serverTimestamp(),
+      CREATED_AT: FieldValue.serverTimestamp(),
+      UPDATED_AT: FieldValue.serverTimestamp(),
+      USER_DEVICE_TOKEN: userDeviceToken,
+      // User location info
+      USER_GEO_POINT: geoPoint.data,
+      USER_COUNTRY: '',
+      USER_LOCALITY: '',
     }).then((_) async {
-
       /// Get current user in database
       final DocumentSnapshot<Map<String, dynamic>> userDoc =
           await getUser(getFirebaseUser!.uid);
@@ -625,9 +622,9 @@ class UserModel extends Model {
     required String path,
     required String userId,
   }) async {
-    print ("uploadfile");
-    print (file);
-    print ("path");
+    print("uploadfile");
+    print(file);
+    print("path");
     print(path + '/' + userId + '/');
     // Image name
     String imageName =
@@ -708,36 +705,31 @@ class UserModel extends Model {
   /// Get or create temp user by email
   Future<User> getCreateUser(fire_auth.User user) async {
     DocumentSnapshot<Map<String, dynamic>> usr;
-    final String userId = user!.uid;
+    final String userId = user.uid;
     usr = await _firestore.collection(C_USERS).doc(userId).get();
 
     if (!usr.exists) {
       // add some default values
-      final GeoFirePoint geoPoint = _geo.point(latitude: 40.7128, longitude: 74.0060);
-        await _firestore
-          .collection(C_USERS)
-          .doc(user.uid)
-          .set(<String, dynamic>{
-            USER_ID: user!.uid,
-            USER_PROFILE_FILLED: false,
-            USER_PROFILE_PHOTO: user.photoURL,
-            USER_FULLNAME: user.displayName,
-            USER_GEO_POINT: geoPoint.data,
-            USER_LAST_LOGIN: FieldValue.serverTimestamp(),
-            CREATED_AT: FieldValue.serverTimestamp(),
-            UPDATED_AT: FieldValue.serverTimestamp(),
-            USER_ENABLE_MODE: {
-              USER_ENABLE_DATE: true,
-              USER_ENABLE_SERV: true
-            },
-            USER_SETTINGS: {
-              USER_MIN_AGE: 18, // int
-              USER_MAX_AGE: 100, // int
-              //USER_SHOW_ME: 'everyone',
-              USER_MAX_DISTANCE: AppModel().appInfo.freeAccountMaxDistance,
-            }
-          });
-        usr = await _firestore.collection(C_USERS).doc(userId).get();
+      final GeoFirePoint geoPoint =
+          _geo.point(latitude: 40.7128, longitude: 74.0060);
+      await _firestore.collection(C_USERS).doc(user.uid).set(<String, dynamic>{
+        USER_ID: user.uid,
+        USER_PROFILE_FILLED: false,
+        USER_PROFILE_PHOTO: user.photoURL,
+        USER_FULLNAME: user.displayName,
+        USER_GEO_POINT: geoPoint.data,
+        USER_LAST_LOGIN: FieldValue.serverTimestamp(),
+        CREATED_AT: FieldValue.serverTimestamp(),
+        UPDATED_AT: FieldValue.serverTimestamp(),
+        USER_ENABLE_MODE: {USER_ENABLE_DATE: true, USER_ENABLE_SERV: true},
+        USER_SETTINGS: {
+          USER_MIN_AGE: 18, // int
+          USER_MAX_AGE: 100, // int
+          //USER_SHOW_ME: 'everyone',
+          USER_MAX_DISTANCE: AppModel().appInfo.freeAccountMaxDistance,
+        }
+      });
+      usr = await _firestore.collection(C_USERS).doc(userId).get();
     }
     final User u = User.fromDocument(usr.data()!);
 

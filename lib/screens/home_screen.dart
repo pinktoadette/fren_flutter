@@ -11,7 +11,6 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/tabs/notifications_screen.dart';
@@ -32,8 +31,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
-
   /// Variables
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
@@ -49,6 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
+
     /// Restore VIP Subscription
     AppHelper().restoreVipAccount();
 
@@ -76,12 +74,12 @@ class _HomeScreenState extends State<HomeScreen> {
     // _inAppPurchaseStream.cancel();
   }
 
-  void _loadChatControllers () {
+  void _loadChatControllers() {
     Get.lazyPut(() => MessageController()); // injects when needed
-    final ChatController chatController = Get.put(ChatController(), permanent: true);
+    final ChatController chatController =
+        Get.put(ChatController(), permanent: true);
     chatController.onChatLoad();
   }
-
 
   /// Update selected tab
   void _onTappedNavBar(int index) {
@@ -92,7 +90,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// get or create chatroom
   Future<void> _getOrCreateChatroom() async {
-      await _chatroomApi.createNewRoom();
+    await _chatroomApi.createNewRoom();
   }
 
   Future<void> _getAllMyChats() async {
@@ -165,7 +163,6 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-
   /// Tab navigation
   Widget _showCurrentNavBar() {
     List<Widget> options = <Widget>[
@@ -178,12 +175,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return options.elementAt(_selectedIndex);
   }
 
-
   @override
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-
 
     return Scaffold(
       appBar: AppBar(
@@ -213,15 +208,15 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
                 label: _i18n.translate("activity"),
                 icon: Icon(Iconsax.activity,
-                      color: _selectedIndex == 0
-                          ? Theme.of(context).primaryColor
-                          : null)),
-
+                    color: _selectedIndex == 0
+                        ? Theme.of(context).primaryColor
+                        : null)),
 
             /// Conversations Tab
             BottomNavigationBarItem(
               label: _i18n.translate("chat"),
-              icon: _getConversationCounter(),),
+              icon: _getConversationCounter(),
+            ),
 
             /// Discover new machi
             BottomNavigationBarItem(
@@ -235,9 +230,10 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               label: _i18n.translate("profile"),
               icon: Icon(Iconsax.user,
-                    color: _selectedIndex == 3
-                        ? Theme.of(context).primaryColor
-                        : null),),
+                  color: _selectedIndex == 3
+                      ? Theme.of(context).primaryColor
+                      : null),
+            ),
           ]),
       body: _showCurrentNavBar(),
     );
@@ -270,7 +266,8 @@ class _HomeScreenState extends State<HomeScreen> {
   /// Count unread conversations
   Widget _getConversationCounter() {
     // Set icon
-    final icon = Icon(Iconsax.message, color: _selectedIndex == 1 ? Theme.of(context).primaryColor : null);
+    final icon = Icon(Iconsax.message,
+        color: _selectedIndex == 1 ? Theme.of(context).primaryColor : null);
 
     /// Handle stream
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(

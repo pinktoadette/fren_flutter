@@ -10,7 +10,6 @@ import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:lottie/lottie.dart';
 
 class ListAllBotsVertically extends StatefulWidget {
   const ListAllBotsVertically({Key? key}) : super(key: key);
@@ -24,10 +23,11 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
   List<Bot>? _listBot;
 
   Future<void> _fetchAllBots() async {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> bots = await _botApi.getAllBotsTrend();
+    List<QueryDocumentSnapshot<Map<String, dynamic>>> bots =
+        await _botApi.getAllBotsTrend();
     List<Bot> result = [];
     for (var doc in bots) {
-      result.add(Bot.fromDocument({...doc.data()!, BOT_ID: doc.id}));
+      result.add(Bot.fromDocument({...doc.data(), BOT_ID: doc.id}));
     }
     setState(() => _listBot = result);
   }
@@ -46,76 +46,97 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
       return const Frankloader();
     } else if (_listBot!.isEmpty) {
       /// No match
-      return NoData( text: _i18n.translate("no_match"));
+      return NoData(text: _i18n.translate("no_match"));
     } else {
       return Container(
           margin: const EdgeInsets.symmetric(vertical: 5.0),
           child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: _listBot!.length,
-                itemBuilder: (context, index) => InkWell(
-                  child: Column(
-                    children: [
-                      Card(
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(28)),
-                          child: SizedBox(
-                            height: 150,
-                            child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: <Widget>[
-                                  ListTile(
-                                    onTap: () {
-                                      _showBotInfo(_listBot![index]);
-                                    },
-                                    // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                    minLeadingWidth: 15,
-                                    leading: _listBot![index]?.profilePhoto != "" ? CircleAvatar(
-                                      backgroundColor: Theme.of(context).primaryColor,
-                                      backgroundImage: NetworkImage(
-                                        _listBot![index]?.profilePhoto ?? "",
-                                      )) : const Icon(Iconsax.box_tick),
-                                    dense: true,
-                                    focusColor: Theme.of(context).secondaryHeaderColor,
-                                    title: Text("${_listBot![index].name} - ${_listBot![index].domain}"),
-                                    subtitle: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          children: [
-                                            Text(_listBot![index].subdomain),
-                                            Column(
-                                              children:[
-                                                Row(
+              physics: const ClampingScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: _listBot!.length,
+              itemBuilder: (context, index) => InkWell(
+                    child: Column(
+                      children: [
+                        Card(
+                            clipBehavior: Clip.antiAlias,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(28)),
+                            child: SizedBox(
+                              height: 150,
+                              child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: <Widget>[
+                                    ListTile(
+                                        onTap: () {
+                                          _showBotInfo(_listBot![index]);
+                                        },
+                                        // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                        minLeadingWidth: 15,
+                                        leading:
+                                            _listBot![index].profilePhoto != ""
+                                                ? CircleAvatar(
+                                                    backgroundColor:
+                                                        Theme.of(context)
+                                                            .primaryColor,
+                                                    backgroundImage:
+                                                        NetworkImage(
+                                                      _listBot![index]
+                                                              .profilePhoto ??
+                                                          "",
+                                                    ))
+                                                : const Icon(Iconsax.box_tick),
+                                        dense: true,
+                                        focusColor: Theme.of(context)
+                                            .secondaryHeaderColor,
+                                        title: Text(
+                                            "${_listBot![index].name} - ${_listBot![index].domain}"),
+                                        subtitle: Align(
+                                            alignment: Alignment.topLeft,
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                    _listBot![index].subdomain),
+                                                Column(
                                                   children: [
-                                                    Flexible(
-                                                        child: Text( _listBot![index].about.length > 80 ? _listBot![index].about.substring(0, 80)+'...' : _listBot![index].about)
-                                                    )],
+                                                    Row(
+                                                      children: [
+                                                        Flexible(
+                                                            child: Text(_listBot![
+                                                                            index]
+                                                                        .about
+                                                                        .length >
+                                                                    80
+                                                                ? _listBot![index]
+                                                                        .about
+                                                                        .substring(
+                                                                            0,
+                                                                            80) +
+                                                                    '...'
+                                                                : _listBot![
+                                                                        index]
+                                                                    .about))
+                                                      ],
+                                                    ),
+                                                    Row(
+                                                      children: const [
+                                                        SizedBox(height: 50),
+                                                        Text("Downloads"),
+                                                        Spacer(),
+                                                        Text("Contributors")
+                                                      ],
+                                                    )
+                                                  ],
                                                 ),
-                                              Row(
-                                               children: const [
-                                                   SizedBox(height: 50),
-                                                   Text("Downloads"),
-                                                   Spacer(),
-                                                   Text("Contributors")
-                                               ],
-                                              )
                                               ],
-                                            ),
-                                          ],
-                                        )
-                                    )
-                                ),
-                            ]),
-                          )
-                      )
-                    ],
-                  ),
-                )
-      ));
+                                            ))),
+                                  ]),
+                            ))
+                      ],
+                    ),
+                  )));
     }
   }
 
@@ -133,7 +154,10 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
               const SizedBox(
                 height: 30,
               ),
-              BotProfileCard(bot: bot, showPurchase: true,)
+              BotProfileCard(
+                bot: bot,
+                showPurchase: true,
+              )
             ],
           ),
         ),

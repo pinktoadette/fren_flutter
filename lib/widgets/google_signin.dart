@@ -67,7 +67,7 @@ class GoogleWidgetState extends State<GoogleWidget> {
       return;
     }
     final Map<String, dynamic> data =
-    json.decode(response.body) as Map<String, dynamic>;
+        json.decode(response.body) as Map<String, dynamic>;
     final String? namedContact = _pickFirstNamedContact(data);
     setState(() {
       if (namedContact != null) {
@@ -81,14 +81,14 @@ class GoogleWidgetState extends State<GoogleWidget> {
   String? _pickFirstNamedContact(Map<String, dynamic> data) {
     final List<dynamic>? connections = data['connections'] as List<dynamic>?;
     final Map<String, dynamic>? contact = connections?.firstWhere(
-          (dynamic contact) => (contact as Map<Object?, dynamic>)['names'] != null,
+      (dynamic contact) => (contact as Map<Object?, dynamic>)['names'] != null,
       orElse: () => null,
     ) as Map<String, dynamic>?;
     if (contact != null) {
       final List<dynamic> names = contact['names'] as List<dynamic>;
       final Map<String, dynamic>? name = names.firstWhere(
-            (dynamic name) =>
-        (name as Map<Object?, dynamic>)['displayName'] != null,
+        (dynamic name) =>
+            (name as Map<Object?, dynamic>)['displayName'] != null,
         orElse: () => null,
       ) as Map<String, dynamic>?;
       if (name != null) {
@@ -107,14 +107,6 @@ class GoogleWidgetState extends State<GoogleWidget> {
   }
 
   Future<void> _handleSignOut() => _googleSignIn.disconnect();
-
-  /// Navigate to next page
-  void _nextScreen(screen) {
-    Future(() {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => screen), (route) => false);
-    });
-  }
 
   Widget _buildBody() {
     final GoogleSignInAccount? user = _currentUser;

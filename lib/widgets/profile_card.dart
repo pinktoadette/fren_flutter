@@ -5,7 +5,6 @@ import 'package:fren_app/plugins/swipe_stack/swipe_stack.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/show_like_or_dislike.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:iconsax/iconsax.dart';
@@ -109,8 +108,8 @@ class ProfileCard extends StatelessWidget {
                       Row(
                         children: [
                           // Icon
-                          const Icon(Iconsax.location1, color: Color(0xffFFFFFF)),
-
+                          const Icon(Iconsax.location1,
+                              color: Color(0xffFFFFFF)),
 
                           const SizedBox(width: 5),
 
@@ -192,8 +191,7 @@ class ProfileCard extends StatelessWidget {
             left: page == 'discover' ? 8 : 5,
             child: CustomBadge(
                 icon: page == 'discover'
-                    ? const Icon(Iconsax.location1,
-                        color: Colors.white)
+                    ? const Icon(Iconsax.location1, color: Colors.white)
                     : null,
                 text:
                     '${_appHelper.getDistanceBetweenUsers(userLat: user.userGeoPoint.latitude, userLong: user.userGeoPoint.longitude)}km'),
@@ -215,8 +213,7 @@ class ProfileCard extends StatelessWidget {
                         color: Theme.of(context).primaryColor,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Iconsax.message,
-                          color: Colors.white)),
+                      child: const Icon(Iconsax.message, color: Colors.white)),
                 )
               : const SizedBox(width: 0, height: 0),
 

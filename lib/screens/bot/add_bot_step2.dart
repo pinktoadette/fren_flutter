@@ -12,6 +12,8 @@ import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 
 class Step2CreateBot extends StatelessWidget {
+  Step2CreateBot({Key? key}) : super(key: key);
+
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
 
@@ -20,35 +22,31 @@ class Step2CreateBot extends StatelessWidget {
     final _i18n = AppLocalizations.of(context);
 
     Future<void> _publishBot() async {
-        BotModel().updateBotData(
-            botId: botController.bot.botId,
-            data: { BOT_ACTIVE: true},
-            onSuccess: () async {
-              // Show success message
-              successDialog(context,
-                  message:
-                  _i18n.translate("Success"),
-                  positiveAction: () {
-
-                    Future(() {
-                      Navigator.of(context).pushAndRemoveUntil(
-                          MaterialPageRoute(
-                              builder: (context) => const ManageBotScreen()),
-                              (route) => false);
-                    });
-                    // End
-                  });
-            },
-            onError: (error) {
-              // Debug error
-              debugPrint(error);
-              // Show error message
-              showScaffoldMessage(
-                  context: context,
-                  message: _i18n.translate("an_error_has_occurred"),
-                  bgcolor: Colors.pinkAccent);
-        }
-      );
+      BotModel().updateBotData(
+          botId: botController.bot.botId,
+          data: {BOT_ACTIVE: true},
+          onSuccess: () async {
+            // Show success message
+            successDialog(context, message: _i18n.translate("Success"),
+                positiveAction: () {
+              Future(() {
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                        builder: (context) => const ManageBotScreen()),
+                    (route) => false);
+              });
+              // End
+            });
+          },
+          onError: (error) {
+            // Debug error
+            debugPrint(error);
+            // Show error message
+            showScaffoldMessage(
+                context: context,
+                message: _i18n.translate("an_error_has_occurred"),
+                bgcolor: Colors.pinkAccent);
+          });
     }
 
     return Scaffold(
@@ -64,55 +62,48 @@ class Step2CreateBot extends StatelessWidget {
       body: SafeArea(
         child: Padding(
             padding: const EdgeInsets.all(20),
-            child: Column(
-                children: [
-                  Padding(
+            child: Column(children: [
+              Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 50),
-                child: Text("${botController.bot.name} ${_i18n.translate('bot_prepub_headline')}",
-                    style: Theme
-                        .of(context)
-                        .textTheme
-                        .headlineSmall,
+                child: Text(
+                    "${botController.bot.name} ${_i18n.translate('bot_prepub_headline')}",
+                    style: Theme.of(context).textTheme.headlineSmall,
                     textAlign: TextAlign.left),
               ),
-                  BotProfileCard(bot: botController.bot),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 20),
-                    child: Text("${botController.bot.name} ${_i18n.translate('bot_prepublish')}",
-                        style: Theme
-                            .of(context)
-                            .textTheme
-                            .bodyMedium,
-                        textAlign: TextAlign.left),
-                  ),
+              BotProfileCard(bot: botController.bot),
+              Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: Text(
+                    "${botController.bot.name} ${_i18n.translate('bot_prepublish')}",
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    textAlign: TextAlign.left),
+              ),
               const SizedBox(height: 20),
-                  ElevatedButton(
-                    child: Text(_i18n.translate('bot_test')),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Theme.of(context).colorScheme.secondary,
-                      elevation: 2,
-                    ),
-                    onPressed: () {
-                      chatController.isTest = true;
-                      Future(() {
-                        Navigator.of(context).push(
-                            MaterialPageRoute(builder: (context) => BotChatScreen() ));
-                      });
-                    },
-                  ),
+              ElevatedButton(
+                child: Text(_i18n.translate('bot_test')),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Theme.of(context).colorScheme.secondary,
+                  elevation: 2,
+                ),
+                onPressed: () {
+                  chatController.isTest = true;
+                  Future(() {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const BotChatScreen()));
+                  });
+                },
+              ),
               const Spacer(),
               SizedBox(
-              width: 250.0,
-              child: ElevatedButton(
+                  width: 250.0,
+                  child: ElevatedButton(
                     child: Text(_i18n.translate('publish')),
                     onPressed: () {
                       _publishBot();
                     },
                   )),
-            ])
-        ),
+            ])),
       ),
     );
-    }
+  }
 }
-

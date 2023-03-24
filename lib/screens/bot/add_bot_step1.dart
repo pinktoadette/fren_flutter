@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -22,7 +21,6 @@ class Step1CreateBot extends StatefulWidget {
 class _Step1ContainerState extends State<Step1CreateBot> {
   final BotController botController = Get.find();
   final _formKey = GlobalKey<FormState>();
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
   final _about = TextEditingController();
   String? _selectedDomain;

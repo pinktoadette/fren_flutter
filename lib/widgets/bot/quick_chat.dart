@@ -36,27 +36,25 @@ class _QuickChatState extends State<QuickChat> {
   Widget build(BuildContext context) {
     /// Initialization
     final _i18n = AppLocalizations.of(context);
-    types.User user = chatController.chatUser;
 
     _handleSendPressed() async {
-
       final textMessage = types.PartialText(
         text: fieldText.text,
       );
       //save user's comments
-      Map<String, dynamic> messageMap = await _messagesApi.formatChatMessage(textMessage);
+      Map<String, dynamic> messageMap =
+          await _messagesApi.formatChatMessage(textMessage);
       await _messagesApi.saveUserResponse(messageMap);
 
       // clear text and dismiss keyboard
       fieldText.clear();
       FocusScope.of(context).requestFocus(FocusNode());
 
-      Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => BotChatScreen()
-      ));
+      Navigator.of(context)
+          .push(MaterialPageRoute(builder: (context) => const BotChatScreen()));
     }
 
-    return  TextField(
+    return TextField(
       autofocus: false,
       style: const TextStyle(color: Colors.white),
       controller: fieldText,
@@ -67,10 +65,13 @@ class _QuickChatState extends State<QuickChat> {
         hintText: _i18n.translate("ask_something"),
         hintStyle: const TextStyle(color: Colors.grey),
         border: const OutlineInputBorder(
-            borderRadius: BorderRadius.only(topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
         ),
-        suffixIcon:  GestureDetector(
-          onTap: () {_handleSendPressed();},
+        suffixIcon: GestureDetector(
+          onTap: () {
+            _handleSendPressed();
+          },
           child: const Padding(
             padding: EdgeInsets.only(left: 20, right: 20),
             child: Icon(Iconsax.send_2, color: Colors.white),
@@ -79,5 +80,4 @@ class _QuickChatState extends State<QuickChat> {
       ),
     );
   }
-
 }

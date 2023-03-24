@@ -1,8 +1,5 @@
 import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
-
 
 //@todo remove scope model to getX
 class UserController extends GetxController {
@@ -29,5 +26,4 @@ class UserController extends GetxController {
   void updateLocalDB() {
     // final DatabaseService db = DatabaseService();
   }
-
 }

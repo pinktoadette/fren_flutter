@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/screens/blocked_account_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
@@ -44,7 +43,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   void initState() {
-
     super.initState();
     _appHelper.getAppStoreVersion().then((storeVersion) async {
       debugPrint('storeVersion: $storeVersion');
@@ -68,7 +66,8 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         /// Authenticate User Account
         UserModel().authUserAccount(
-            updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
+            updateLocationScreen: () =>
+                _nextScreen(const UpdateLocationScreen()),
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
             onboardScreen: () => _nextScreen(const OnboardingScreen()),

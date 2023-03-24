@@ -1,7 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
@@ -12,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class UserApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri =PY_API;
+  final baseUri = PY_API;
   final BotController botControl = Get.find();
   final auth = AuthApi();
 
@@ -31,10 +27,9 @@ class UserApi {
       String url = '${baseUri}user/create_user';
       final dio = await auth.getDio();
       await dio.post(url, data: data);
-    } catch(error) {
+    } catch (error) {
       debugPrint(error.toString());
     }
-
   }
 
   Future<void> updateUser(Map<String, dynamic> data) async {
@@ -46,5 +41,4 @@ class UserApi {
       debugPrint(error.toString());
     }
   }
-
 }

@@ -5,18 +5,17 @@ import 'package:fren_app/plugins/otp_screen/otp_screen.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
-import 'package:fren_app/widgets/svg_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
-
 
 class VerificationCodeScreen extends StatefulWidget {
   // Variables
   final String verificationId;
 
   // Constructor
-  const VerificationCodeScreen({Key? key, 
+  const VerificationCodeScreen({
+    Key? key,
     required this.verificationId,
   }) : super(key: key);
 
@@ -51,8 +50,9 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
         checkUserAccount: () {
           /// Auth user account
           UserModel().authUserAccount(
-            updateLocationScreen: () => _nextScreen(const UpdateLocationScreen()),
-            homeScreen: () => _nextScreen(const HomeScreen()),
+              updateLocationScreen: () =>
+                  _nextScreen(const UpdateLocationScreen()),
+              homeScreen: () => _nextScreen(const HomeScreen()),
               signUpScreen: () => _nextScreen(const SignUpScreen()));
         },
         onError: () async {

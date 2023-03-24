@@ -17,14 +17,14 @@ import 'package:fren_app/widgets/rounded_top.dart';
 
 class UpdateLocationScreen extends StatefulWidget {
   final bool isSignUpProcess;
-  const UpdateLocationScreen({Key? key, this.isSignUpProcess = true}) : super(key: key);
+  const UpdateLocationScreen({Key? key, this.isSignUpProcess = true})
+      : super(key: key);
 
   @override
   _UpdateLocationScreenState createState() => _UpdateLocationScreenState();
 }
 
 class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
-
   // Variables
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
@@ -129,8 +129,7 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
           // Check
           if (user.isFrankInitiated == false) {
             _getFrankie();
-          }
-          else if (widget.isSignUpProcess) {
+          } else if (widget.isSignUpProcess) {
             // Go to home screen
             _nextScreen(const HomeScreen());
           } else {
@@ -152,7 +151,7 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
   }
 
   void _getFrankie() async {
-    _nextScreen(BotChatScreen());
+    _nextScreen(const BotChatScreen());
   }
 
   @override
@@ -164,50 +163,50 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      body:SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            const RoundedTop(),
-            Center(
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                    child: Text(
-                        _i18n.translate(
-                            'enable_location'),
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        textAlign: TextAlign.left),
-                  ),
-                  // Title description
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-                    child: Text(
-                        _i18n.translate(
-                            'the_app_needs_your_permission_to_access_your_device_current_location'),
-                        textAlign: TextAlign.left),
-                  ),
-                  // Location icon
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 30, vertical: screenHeight*0.05),
-                    child: Icon(Iconsax.location,
-                        size: 100, color: Theme.of(context).primaryColor),
-                  ),
-                  SizedBox(height: screenHeight*0.2),
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const RoundedTop(),
+              Center(
+                child: Column(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      child: Text(_i18n.translate('enable_location'),
+                          style: Theme.of(context).textTheme.headlineMedium,
+                          textAlign: TextAlign.left),
+                    ),
+                    // Title description
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 30, vertical: 20),
+                      child: Text(
+                          _i18n.translate(
+                              'the_app_needs_your_permission_to_access_your_device_current_location'),
+                          textAlign: TextAlign.left),
+                    ),
+                    // Location icon
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 30, vertical: screenHeight * 0.05),
+                      child: Icon(Iconsax.location,
+                          size: 100, color: Theme.of(context).primaryColor),
+                    ),
+                    SizedBox(height: screenHeight * 0.2),
 
-                  // Get current location button
-                  ElevatedButton(
-                      child: Text(_i18n.translate('GET_LOCATION')),
-                      onPressed: () async {
-                        // Get location permission
-                        _getLocationPermission(context);
-                      })
-                ],
+                    // Get current location button
+                    ElevatedButton(
+                        child: Text(_i18n.translate('GET_LOCATION')),
+                        onPressed: () async {
+                          // Get location permission
+                          _getLocationPermission(context);
+                        })
+                  ],
+                ),
               ),
-            ),
-          ]
-        ),
+            ]),
       ),
     );
   }
