@@ -10,9 +10,9 @@ const Color APP_MUTED_COLOR = Colors.black12;
 const Color APP_ACCENT_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
 const Color APP_SUCCESS = Color.fromARGB(255, 96, 185, 34);
-const Color APP_WARNING = Color.fromARGB(255, 236,185,85);
-const Color APP_INFO = Color.fromARGB(255, 85,212,236);
-const Color APP_ERROR = Color.fromARGB(255, 236,110,85);
+const Color APP_WARNING = Color.fromARGB(255, 236, 185, 85);
+const Color APP_INFO = Color.fromARGB(255, 85, 212, 236);
+const Color APP_ERROR = Color.fromARGB(255, 236, 110, 85);
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
@@ -30,7 +30,7 @@ const String ANDROID_INTERSTITIAL_ID = "YOUR ANDROID AD ID";
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
 const PY_API = "https://api.mymachi.app/api/";
-const SOCKET_WS = "wss://api.mymachi.app/api/";
+const SOCKET_WS = "wss://api.mymachi.app/";
 
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.
@@ -74,7 +74,8 @@ const BOT_ADMIN_NOTE = "adminNote";
 /// trials
 const BOT_TRIAL_BOT_ID = BOT_ID;
 const BOT_TRIAL_OWNER_ID = "bot_trial_user_id";
-const BOT_TRIAL_TIMES = "bot_trial_times"; // counter for how many times user tried
+const BOT_TRIAL_TIMES =
+    "bot_trial_times"; // counter for how many times user tried
 
 /// upload pathings
 const C_AI_IMAGE_PATH = "AiImage";
@@ -87,7 +88,7 @@ const String C_BOT = "Bots";
 const String C_BOT_WALKTHRU = "DiscoverCards";
 const String C_BOT_USER_MATCH = "BotUserMatch";
 const String C_CHATROOM = "Chatroom";
-const String C_BOT_TRIALS  = "BotTrials";
+const String C_BOT_TRIALS = "BotTrials";
 const String C_FLAGGED_USERS = "FlaggedUsers";
 const String C_CONNECTIONS = "Connections";
 const String C_MATCHES = "Matches";
@@ -217,6 +218,7 @@ const String ROOM_HAS_MESSAGES = "hasMessages";
 const String ROOM_TITLE = "title";
 const String ROOM_PERSONALITY = "personality";
 const String ROOM_CREATED_BY = "createdBy";
+
 /// chat
 const String CHAT_AUTHOR_ID = "authorId";
 const String CHAT_AUTHOR = "author";

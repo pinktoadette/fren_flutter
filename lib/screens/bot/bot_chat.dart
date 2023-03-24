@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
@@ -24,9 +25,9 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:socket_io_client/socket_io_client.dart';
 import 'package:uuid/uuid.dart';
-import 'package:fren_app/socks/socket_manager.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
+import 'package:web_socket_channel/status.dart' as status;
 
 class BotChatScreen extends StatefulWidget {
   const BotChatScreen({Key? key}) : super(key: key);
@@ -45,8 +46,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late types.User _user;
   late AppLocalizations _i18n;
   final _messagesApi = MessageMachiApi();
-  StreamSocket streamSocket = StreamSocket();
+  late WebSocketChannel channel;
   late Chatroom _room;
+  late List<types.Message> _messages = [];
 
   bool _isAttachmentUploading = false;
   bool isLoading = false;
@@ -56,24 +58,32 @@ class _BotChatScreenState extends State<BotChatScreen> {
   );
 
   Future<void> _listenSocket() async {
-    print("_listen to socket");
+    debugPrint("Initiating to socket");
 
     final _authApi = AuthApi();
-    // Map<String, dynamic> headers = await _authApi.getHeaders();
-    Socket socket = io(
-        "${SOCKET_WS}messsages/${_room.chatroomId}",
-        OptionBuilder().setTransports(['websocket'])
-            // .setExtraHeaders(headers)
-            .build());
-
-    socket.onConnect((_) {
-      print('connect socket.io');
-      print(socket.id);
+    Map<String, dynamic> headers = await _authApi.getHeaders();
+    final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${_room.chatroomId}');
+    channel = WebSocketChannel.connect(wsUrl);
+    channel.stream
+        .listen(
+      (_) {},
+      onError: (error) => showScaffoldMessage(
+          message: _i18n.translate("an_error_has_occurred"),
+          bgcolor: Colors.red),
+    )
+        .onData((data) {
+      _parse(data);
     });
+  }
 
-    //When an event recieved from server, data is added to the stream
-    socket.on('message', (data) => streamSocket.addResponse);
-    socket.onDisconnect((_) => print('disconnect'));
+  void _parse(String message) {
+    Map<String, dynamic> decodeData = json.decode(message);
+    // create a temporary uuid @todo should get user message id
+    types.Message newMessage = _messagesApi.createTypesMessages(
+        {...decodeData, CHAT_MESSAGE_ID: const Uuid().v4()});
+    setState(() {
+      _messages.insert(0, newMessage);
+    });
   }
 
   @override
@@ -81,9 +91,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _user = chatController.chatUser;
     final args = Get.arguments;
     _room = args["room"];
-
-    super.initState();
+    _messages.addAll(_room.messages);
     _listenSocket();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    channel.sink.close(status.goingAway);
+    super.dispose();
   }
 
   @override
@@ -194,34 +210,21 @@ class _BotChatScreenState extends State<BotChatScreen> {
             ),
           ],
         ),
-        body: StreamBuilder<Chatroom>(
-            initialData: _room,
-            stream: chatController.streamRoom,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return StreamBuilder<List<types.Message>>(
-                  initialData: snapshot.data?.messages,
-                  stream: messageController.streamMessages, // get on socket
-                  builder: (context, snapshot) => Chat(
-                      theme: DefaultChatTheme(
-                          primaryColor: Theme.of(context).colorScheme.secondary,
-                          sendButtonIcon:
-                              const Icon(Iconsax.send_2, color: Colors.white)),
-                      onEndReached: _loadMoreMessage, //get more messages on top
-                      showUserNames: true,
-                      showUserAvatars: true,
-                      isAttachmentUploading: _isAttachmentUploading,
-                      messages: snapshot.data!,
-                      onSendPressed: _handleSendPressed,
-                      onAttachmentPressed: _handleAttachmentPressed,
-                      onMessageTap: _handleMessageTap,
-                      onPreviewDataFetched: _handlePreviewDataFetched,
-                      user: _user),
-                );
-              } else {
-                return const Frankloader();
-              }
-            }),
+        body: Chat(
+            theme: DefaultChatTheme(
+                primaryColor: Theme.of(context).colorScheme.secondary,
+                sendButtonIcon:
+                    const Icon(Iconsax.send_2, color: Colors.white)),
+            onEndReached: _loadMoreMessage, //get more messages on top
+            showUserNames: true,
+            showUserAvatars: true,
+            isAttachmentUploading: _isAttachmentUploading,
+            messages: _messages,
+            onSendPressed: _handleSendPressed,
+            onAttachmentPressed: _handleAttachmentPressed,
+            onMessageTap: _handleMessageTap,
+            onPreviewDataFetched: _handlePreviewDataFetched,
+            user: _user),
       );
     }
   }
@@ -382,10 +385,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _isAttachmentUploading = true;
     });
     try {
-      Map<String, dynamic> messageMap =
-          await _messagesApi.formatChatMessage(message);
+      Map<String, dynamic> messageMap = _messagesApi.formatChatMessage(message);
+
+      channel.sink.add(json.encode(messageMap));
       await _messagesApi.saveUserResponse(messageMap);
-      await _messagesApi.getBotResponse(messageMap);
+      // await _messagesApi.getBotResponse(messageMap);
     } catch (err) {
       showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),
@@ -399,7 +403,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   Future<void> _loadMoreMessage() async {
     try {
-      await _messagesApi.getMessages();
+      List<types.Message> oldMessages = await _messagesApi.getMessages();
+      setState(() {
+        _messages.addAll(oldMessages);
+      });
     } catch (err) {
       log(err.toString());
       showScaffoldMessage(

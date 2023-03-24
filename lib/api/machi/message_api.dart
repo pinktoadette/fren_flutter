@@ -22,13 +22,11 @@ class MessageMachiApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  /// saves user message to backend
-  /// will automatically create a new room if not provided
-  Future<Map<String, dynamic>> formatChatMessage(dynamic partialMessage) async {
+  /// formats partial messages, should be in utility
+  Map<String, dynamic> formatChatMessage(dynamic partialMessage) {
     final ChatController chatController = Get.find();
-    final MessageController messageController = Get.find();
     // save will always be user, because backend will already save bot;
-    types.Message? message;
+    late types.Message message;
     types.User user = chatController.chatUser;
 
     if (partialMessage is types.PartialCustom) {
@@ -59,21 +57,15 @@ class MessageMachiApi {
 
     DateTime dateTime = DateTime.now();
 
-    if (message != null) {
-      final messageMap = message.toJson();
-      messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
-      messageMap[CHAT_AUTHOR_ID] = user.id;
-      messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
-      messageMap[CHAT_USER_NAME] = user.firstName;
-      messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
-      messageMap[ROOM_HAS_MESSAGES] = true;
+    final messageMap = message.toJson();
+    messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
+    messageMap[CHAT_AUTHOR_ID] = user.id;
+    messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
+    messageMap[CHAT_USER_NAME] = user.firstName;
+    messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
+    messageMap[ROOM_HAS_MESSAGES] = true;
 
-      // sends to state
-      types.Message msg = _createTypesMessages(messageMap);
-      messageController.addMessagesToCurrent(msg);
-      return messageMap;
-    }
-    return {};
+    return messageMap;
   }
 
   /// saves the user response
@@ -84,7 +76,7 @@ class MessageMachiApi {
     String url = '${baseUri}chat/user_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    await dio.post(url, data: {
+    return await dio.post(url, data: {
       ...messageMap,
       BOT_ID: bot.botId,
       LIMIT: 3,
@@ -93,7 +85,7 @@ class MessageMachiApi {
   }
 
   /// Gets the bot response. It looks up the last message and responds to that.
-  Future getBotResponse(messageMap) async {
+  Future<Map<String, dynamic>> getBotResponse(messageMap) async {
     String botId = botControl.bot.botId;
     // save to machi api
     String url = '${baseUri}chat/machi_response';
@@ -108,12 +100,11 @@ class MessageMachiApi {
     log("Saved and got bot responses");
 
     Map<String, dynamic> newMessage = Map.from(response.data);
-    types.Message msg = _createTypesMessages(newMessage);
-    messageController.addMessagesToCurrent(msg);
+    return newMessage;
   }
 
   /// Get paginations for old messages
-  Future<void> getMessages() async {
+  Future<List<types.Message>> getMessages() async {
     ChatController chatController = Get.find();
     int offset = messageController.offset;
     int limit = messageController.limitPage;
@@ -128,29 +119,27 @@ class MessageMachiApi {
       "limit": limit
     });
     List<dynamic> oldMessages = response.data;
-
+    List<types.Message> oldList = [];
     if (oldMessages.isNotEmpty) {
       var theseMessage = oldMessages[0]['messages'];
       if (theseMessage.isNotEmpty) {
-        List<types.Message> oldList = [];
         for (var element in theseMessage) {
           Map<String, dynamic> newMessage = Map.from(element);
           newMessage['text'] = newMessage['text'];
           newMessage['type'] = newMessage['type'];
-          types.Message msg = _createTypesMessages(newMessage);
+          types.Message msg = createTypesMessages(newMessage);
           oldList.add(msg);
         }
-        messageController.addOldMessages(oldList);
-
         //set the next start page
         messageController.offset =
             messageController.limitPage + messageController.offset;
       }
     }
+    return oldList;
   }
 
   /// Helper function to define messages type
-  types.Message _createTypesMessages(Map<String, dynamic> message) {
+  types.Message createTypesMessages(Map<String, dynamic> message) {
     final author = types.User(
         id: message[CHAT_AUTHOR_ID] as String,
         firstName: message[CHAT_USER_NAME] ?? "Frankie");
@@ -183,7 +172,7 @@ class MessageMachiApi {
       Map<String, dynamic> newMessage = Map.from(element);
       newMessage['text'] = newMessage['message'];
       newMessage['type'] = newMessage['messageType'];
-      types.Message msg = _createTypesMessages(newMessage);
+      types.Message msg = createTypesMessages(newMessage);
       finalMessages.add(msg);
     }
     return finalMessages;
