@@ -228,3 +228,4 @@ const String CHAT_IMAGE = "image";
 const String CHAT_FILE = "file";
 const String CHAT_TYPE = "type";
 const String CHAT_MESSAGE_ID = "messageId";
+const String CHAT_PHOTO_URL = "photoUrl";

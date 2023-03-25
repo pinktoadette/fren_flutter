@@ -33,6 +33,8 @@ class ChatroomMachiApi {
       final roomData = response.data;
 
       // create a new room
+      // create a variable for empty room.
+      // if not empty move to roomlist
       Chatroom room = Chatroom.fromJson(roomData);
       chatController.onCreateRoomList(room);
 

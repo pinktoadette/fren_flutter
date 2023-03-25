@@ -3,6 +3,9 @@ import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:open_filex/open_filex.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -20,6 +23,7 @@ import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -38,20 +42,20 @@ class BotChatScreen extends StatefulWidget {
 
 class _BotChatScreenState extends State<BotChatScreen> {
   final AppHelper _appHelper = AppHelper();
-
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
   final MessageController messageController = Get.find();
 
-  late types.User _user;
-  late AppLocalizations _i18n;
-  final _messagesApi = MessageMachiApi();
-  late WebSocketChannel channel;
-  late Chatroom _room;
   late List<types.Message> _messages = [];
 
+  late types.User _user;
+  late AppLocalizations _i18n;
+  late WebSocketChannel _channel;
+  late Chatroom _room;
+  final _messagesApi = MessageMachiApi();
   bool _isAttachmentUploading = false;
   bool isLoading = false;
+  bool isBotSleeping = false;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
@@ -63,13 +67,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     final _authApi = AuthApi();
     Map<String, dynamic> headers = await _authApi.getHeaders();
     final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${_room.chatroomId}');
-    channel = WebSocketChannel.connect(wsUrl);
-    channel.stream
+    _channel = WebSocketChannel.connect(wsUrl);
+    _channel.sink.add(json.encode({"token": headers}));
+    _channel.stream
         .listen(
       (_) {},
       onError: (error) => showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: Colors.red),
+          bgcolor: APP_ERROR),
     )
         .onData((data) {
       _parse(data);
@@ -78,9 +83,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   void _parse(String message) {
     Map<String, dynamic> decodeData = json.decode(message);
-    // create a temporary uuid @todo should get user message id
-    types.Message newMessage = _messagesApi.createTypesMessages(
-        {...decodeData, CHAT_MESSAGE_ID: const Uuid().v4()});
+    types.Message newMessage = _messagesApi.createTypesMessages(decodeData);
     setState(() {
       _messages.insert(0, newMessage);
     });
@@ -88,17 +91,21 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   @override
   void initState() {
-    _user = chatController.chatUser;
+    // get the room
     final args = Get.arguments;
     _room = args["room"];
+    _user = chatController.chatUser;
+    // get the messages loaded from the room
     _messages.addAll(_room.messages);
+
+    //initialize socket
     _listenSocket();
     super.initState();
   }
 
   @override
   void dispose() {
-    channel.sink.close(status.goingAway);
+    _channel.sink.close(status.normalClosure);
     super.dispose();
   }
 
@@ -212,9 +219,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
         body: Chat(
             theme: DefaultChatTheme(
-                primaryColor: Theme.of(context).colorScheme.secondary,
-                sendButtonIcon:
-                    const Icon(Iconsax.send_2, color: Colors.white)),
+              primaryColor: Theme.of(context).colorScheme.secondary,
+              sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
+            ),
             onEndReached: _loadMoreMessage, //get more messages on top
             showUserNames: true,
             showUserAvatars: true,
@@ -235,31 +242,38 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       if (message.uri.startsWith('http')) {
         try {
-          // final index =
-          // _messages.indexWhere((element) => element.id == message.id);
-          // final updatedMessage =
-          // (_messages[index] as types.FileMessage).copyWith(
-          //   isLoading: true,
-          // );
-          //
-          //
-          // final client = http.Client();
-          // final request = await client.get(Uri.parse(message.uri));
-          // final bytes = request.bodyBytes;
-          // final documentsDir = (await getApplicationDocumentsDirectory()).path;
-          // localPath = '$documentsDir/${message.name}';
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: true,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
+
+          final client = http.Client();
+          final request = await client.get(Uri.parse(message.uri));
+          final bytes = request.bodyBytes;
+          final documentsDir = (await getApplicationDocumentsDirectory()).path;
+          localPath = '$documentsDir/${message.name}';
 
           if (!File(localPath).existsSync()) {
             final file = File(localPath);
-            // await file.writeAsBytes(bytes);
+            await file.writeAsBytes(bytes);
           }
         } finally {
-          // final index =
-          // _messages.indexWhere((element) => element.id == message.id);
-          // final updatedMessage =
-          // (_messages[index] as types.FileMessage).copyWith(
-          //   isLoading: null,
-          // );
+          final index =
+              _messages.indexWhere((element) => element.id == message.id);
+          final updatedMessage =
+              (_messages[index] as types.FileMessage).copyWith(
+            isLoading: null,
+          );
+
+          setState(() {
+            _messages[index] = updatedMessage;
+          });
         }
       }
 
@@ -268,14 +282,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _handlePreviewDataFetched(
-    types.TextMessage message,
-    types.PreviewData previewData,
-  ) {
-//     final index = _messages.indexWhere((element) => element.id == message.id);
-//     final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
-//       previewData: previewData,
-//     );
-// ]
+      types.TextMessage message, types.PreviewData previewData) {
+    final index = _messages.indexWhere((element) => element.id == message.id);
+    final updatedMessage = (_messages[index] as types.TextMessage).copyWith(
+      previewData: previewData,
+    );
+
+    setState(() {
+      _messages[index] = updatedMessage;
+    });
   }
 
   void _handleFileSelection() async {
@@ -301,7 +316,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   void _handleImageSelection() async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
-      maxWidth: 1440,
+      maxWidth: 256,
       source: ImageSource.gallery,
     );
 
@@ -320,20 +335,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
         width: image.width.toDouble(),
       );
 
-      // _addMessage(message);
+      // _callAPI(message);
     }
   }
 
+  // when pressed, it formats the message, sends to socket and calls the api
   void _handleSendPressed(types.PartialText message) {
-    final textMessage = types.TextMessage(
-      author: chatController.chatUser,
-      createdAt: DateTime.now().millisecondsSinceEpoch,
-      id: const Uuid().v4(),
-      text: message.text,
-    );
-    // _addMessage(textMessage);
-    _callAPI(message);
-    // await _messagesApi.saveChatMessage(message);
+    Map<String, dynamic> formatMessage =
+        _messagesApi.formatChatMessage(message);
+
+    _channel.sink.add(json.encode({"message": formatMessage}));
+    _callAPI(formatMessage);
   }
 
   void _handleAttachmentPressed() {
@@ -379,21 +391,24 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
   }
 
-  /// call bot model api
-  Future<void> _callAPI(dynamic message) async {
+  /// calls user's api and triggers bot to reply
+  Future<void> _callAPI(Map<String, dynamic> messageMap) async {
     setState(() {
       _isAttachmentUploading = true;
     });
     try {
-      Map<String, dynamic> messageMap = _messagesApi.formatChatMessage(message);
-
-      channel.sink.add(json.encode(messageMap));
       await _messagesApi.saveUserResponse(messageMap);
-      // await _messagesApi.getBotResponse(messageMap);
+      // get bot response
+      // @todo send to rabbitmq instead
+      // if (!isBotSleeping) {
+      //   Map<String, dynamic> botResponse =
+      //       await _messagesApi.getBotResponse(messageMap);
+      //   _channel.sink.add(json.encode(botResponse));
+      // }
     } catch (err) {
       showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: Colors.red);
+          bgcolor: APP_ERROR);
     }
 
     setState(() {
@@ -408,10 +423,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
         _messages.addAll(oldMessages);
       });
     } catch (err) {
-      log(err.toString());
       showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: Colors.red);
+          bgcolor: APP_ERROR);
     }
   }
 }

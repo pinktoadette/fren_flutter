@@ -20,12 +20,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  // final result = await InternetAddress.lookup('google.com');
-  // if (result.isNotEmpty && result[0].rawAddress.isNotEmpty) {
-  //   print('Has Internet');
-  // } else {
-  //   print("no internet");
-  // }
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -33,7 +27,6 @@ void main() async {
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
-  /// TODO:
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (Platform.isAndroid | Platform.isIOS) {
@@ -57,7 +50,6 @@ void main() async {
       sound: true,
     );
   }
-  WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));

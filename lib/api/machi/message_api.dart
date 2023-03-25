@@ -11,6 +11,7 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:uuid/uuid.dart';
 
 class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -64,6 +65,7 @@ class MessageMachiApi {
     messageMap[CHAT_USER_NAME] = user.firstName;
     messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
     messageMap[ROOM_HAS_MESSAGES] = true;
+    messageMap[CHAT_MESSAGE_ID] = const Uuid().v4();
 
     return messageMap;
   }
@@ -79,7 +81,6 @@ class MessageMachiApi {
     return await dio.post(url, data: {
       ...messageMap,
       BOT_ID: bot.botId,
-      LIMIT: 3,
       ROOM_ID: chatController.currentRoom.chatroomId
     });
   }
@@ -91,12 +92,7 @@ class MessageMachiApi {
     String url = '${baseUri}chat/machi_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response = await dio.get(url, data: {
-      ...messageMap,
-      BOT_ID: botId,
-      LIMIT: 3,
-      ROOM_ID: chatController.currentRoom.chatroomId
-    });
+    final response = await dio.post(url, data: {...messageMap, BOT_ID: botId});
     log("Saved and got bot responses");
 
     Map<String, dynamic> newMessage = Map.from(response.data);

@@ -54,7 +54,7 @@ class Chatroom {
         message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
         if (message[CHAT_TYPE] == CHAT_IMAGE) {
-          message['uri'] = message['photoUrl'];
+          message['uri'] = message[CHAT_PHOTO_URL];
           message['size'] = 256;
           finalMessage = types.ImageMessage.fromJson(message);
         }
