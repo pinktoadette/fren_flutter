@@ -23,7 +23,8 @@ class MessageMachiApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  /// formats partial messages, should be in utility
+  /// formats partial messages to map string dynamic to pass to api
+  /// This should be in utility
   Map<String, dynamic> formatChatMessage(dynamic partialMessage) {
     final ChatController chatController = Get.find();
     // save will always be user, because backend will already save bot;
@@ -121,8 +122,6 @@ class MessageMachiApi {
       if (theseMessage.isNotEmpty) {
         for (var element in theseMessage) {
           Map<String, dynamic> newMessage = Map.from(element);
-          newMessage['text'] = newMessage['text'];
-          newMessage['type'] = newMessage['type'];
           types.Message msg = createTypesMessages(newMessage);
           oldList.add(msg);
         }

@@ -7,6 +7,8 @@ import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+// Chatcontroller controls the roomlist and the room
+// the user is currently in. Messages will be in message controller
 class ChatController extends GetxController implements GetxService {
   final MessageController messageController =
       Get.find(); // current messages in this room
@@ -16,7 +18,7 @@ class ChatController extends GetxController implements GetxService {
   late Rx<types.User> _chatBot;
 
   // ignore: prefer_final_fields
-  RxList<Chatroom> _roomlist = <Chatroom>[].obs;
+  RxList<Chatroom> roomlist = <Chatroom>[].obs;
   late Rx<Chatroom> _currentRoom;
 
   String? error;
@@ -42,7 +44,7 @@ class ChatController extends GetxController implements GetxService {
 
   // shows a list of chatrooms in convo tab
   Stream<List<Chatroom>> get streamRoomlist async* {
-    yield _roomlist;
+    yield roomlist;
   }
 
   @override
@@ -68,11 +70,11 @@ class ChatController extends GetxController implements GetxService {
         .obs;
   }
 
-  /// when you create a new room, you're in, therefore you are also in the current room
-  /// For conversation tab
+  /// when you create a new room, user is already in,
+  /// therefore you are also in the current room
   void onCreateRoomList(Chatroom myRooms) {
     if (myRooms.messages.isNotEmpty) {
-      _roomlist.add(myRooms);
+      roomlist.add(myRooms);
       _currentRoom = myRooms.obs;
     }
   }
@@ -93,29 +95,15 @@ class ChatController extends GetxController implements GetxService {
     _currentRoom.value.messages.insert(0, message);
   }
 
+  // loads current room's message to message controller
   void onLoadCurrentRoom(Chatroom room) {
     currentRoom = room;
     messageController.onCurrentRoom(room.messages);
   }
 
-// Future<void> _fetchLocalMessages() async {
-  //   List<types.Message> localMessage = await _messagesApi.getLocalDbMessages();
-  //   List<types.Message> lastRemoteMessage = await _messagesApi.getMessages(0, 1);
-  //
-  //   if (localMessage.isNotEmpty) {
-  //     int localTimestamp = localMessage[0].createdAt?.toInt() ?? 0;
-  //     if (lastRemoteMessage[0].createdAt! <= localTimestamp ) {
-  //       debugPrint("Using db -> local. Message length ${localMessage.length}");
-  //       addMultipleMessages(localMessage);
-  //       return;
-  //     }
-  //   }
-  //   _fetchRemoteUserMessages();
-  // }
-  //
-  // Future<void> _fetchRemoteUserMessages() async {
-  //   List<types.Message> messages = await _messagesApi.getMessages(0, 50);
-  //   debugPrint("Using db -> remote. Message length ${messages.length}");
-  //   addMultipleMessages(messages);
-  // }
+  // update messages from the chatroom, to view once when on convo tab
+  void updateMessagesPreview(int index, types.Message message) {
+    roomlist[index].messages.insert(0, message);
+    roomlist.refresh();
+  }
 }

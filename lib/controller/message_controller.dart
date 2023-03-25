@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:developer';
 
@@ -6,9 +5,11 @@ import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-
+// Message controller controls the message in the current active room
+// Message controller receives initial message from chatroom controller
+// New messages are then add to here and updates in chat controller
+// @todo maybe don't need two places to update
 class MessageController extends GetxController implements GetxService {
-
   RxList<types.Message> _messages = <types.Message>[].obs;
   late Rx<Chatroom> _currentRoom;
 
@@ -48,5 +49,4 @@ class MessageController extends GetxController implements GetxService {
   void onCurrentRoom(List<types.Message> messages) {
     _messages = messages.obs;
   }
-
 }

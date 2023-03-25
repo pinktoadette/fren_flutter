@@ -52,6 +52,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
   late WebSocketChannel _channel;
   late Chatroom _room;
+  late int _roomIdx;
   final _messagesApi = MessageMachiApi();
   bool _isAttachmentUploading = false;
   bool isLoading = false;
@@ -83,10 +84,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   void _parse(String message) {
     Map<String, dynamic> decodeData = json.decode(message);
-    types.Message newMessage = _messagesApi.createTypesMessages(decodeData);
+    types.Message newMessage =
+        _messagesApi.createTypesMessages(decodeData["message"]);
     setState(() {
       _messages.insert(0, newMessage);
     });
+    chatController.updateMessagesPreview(_roomIdx, newMessage);
   }
 
   @override
@@ -95,6 +98,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     final args = Get.arguments;
     _room = args["room"];
     _user = chatController.chatUser;
+    _roomIdx = args["index"];
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
 
@@ -400,11 +404,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
       await _messagesApi.saveUserResponse(messageMap);
       // get bot response
       // @todo send to rabbitmq instead
-      // if (!isBotSleeping) {
-      //   Map<String, dynamic> botResponse =
-      //       await _messagesApi.getBotResponse(messageMap);
-      //   _channel.sink.add(json.encode(botResponse));
-      // }
+      if (!isBotSleeping) {
+        Map<String, dynamic> botResponse =
+            await _messagesApi.getBotResponse(messageMap);
+        _channel.sink.add(json.encode(botResponse));
+      }
     } catch (err) {
       showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),

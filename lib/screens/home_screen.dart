@@ -77,7 +77,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _loadChatControllers() {
     Get.lazyPut(() => MessageController()); // injects when needed
     final ChatController chatController =
-        Get.put(ChatController(), permanent: true);
+        Get.put(ChatController());
     chatController.onChatLoad();
   }
 
