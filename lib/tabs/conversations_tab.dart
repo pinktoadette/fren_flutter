@@ -27,6 +27,7 @@ class ConversationsTab extends StatelessWidget {
           return _chatroomApi.getAllMyRooms();
         },
         child: Obx(() => ListView.separated(
+            reverse: true,
             shrinkWrap: true,
             separatorBuilder: (context, index) => const Divider(height: 10),
             itemCount: chatController.roomlist.length,
@@ -38,9 +39,9 @@ class ConversationsTab extends StatelessWidget {
                       'text': 'This is an error. Something went wrong',
                       'createdAt': DateTime.now().millisecondsSinceEpoch
                     };
-              String allUsers = '';
+              String allUsers = "${room.personality} ${room.bot.name} ";
               for (var user in room.users) {
-                allUsers += "${user.firstName!} ";
+                allUsers += "& ${user.firstName!} ";
               }
 
               return InkWell(
@@ -57,6 +58,12 @@ class ConversationsTab extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
+                      Row(children: [
+                        Text(
+                          room.bot.domain,
+                          style: Theme.of(context).textTheme.labelSmall,
+                        )
+                      ]),
                       Row(
                         children: [
                           SizedBox(
