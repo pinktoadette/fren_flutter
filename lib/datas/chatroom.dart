@@ -64,9 +64,11 @@ class Chatroom {
       });
     }
 
+    Bot bot = Bot.fromDocument(doc[BOT_INFO]);
+
     return Chatroom(
       chatroomId: doc[ROOM_ID],
-      bot: doc[BOT_INFO],
+      bot: bot,
       title: doc['title'],
       personality: doc['personality'],
       creatorUser: doc['createdBy'],

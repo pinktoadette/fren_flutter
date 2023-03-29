@@ -6,19 +6,19 @@ import 'package:fren_app/models/bot_model.dart';
 
 class BotController extends GetxController {
   Rx<Bot> _currentBot = Bot(
-      botId: DEFAULT_BOT_ID,
-      profilePhoto: '',
-      about: '',
-      name: '',
-      model: '',
-      domain: '',
-      repoId: '',
-      subdomain: '',
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      adminStatus: '',
-      isActive: false
-  ).obs;
+          botId: DEFAULT_BOT_ID,
+          profilePhoto: '',
+          about: '',
+          name: '',
+          model: '',
+          domain: '',
+          repoId: '',
+          subdomain: '',
+          createdAt: DateTime.now().microsecondsSinceEpoch,
+          updatedAt: DateTime.now().microsecondsSinceEpoch,
+          adminStatus: '',
+          isActive: false)
+      .obs;
 
   Bot get bot => _currentBot.value;
   set bot(Bot value) => _currentBot.value = value;
@@ -34,8 +34,4 @@ class BotController extends GetxController {
     final Bot botNow = Bot.fromDocument(bot.data()!);
     _currentBot = botNow.obs;
   }
-
-
-
-
 }

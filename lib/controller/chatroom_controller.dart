@@ -59,7 +59,7 @@ class ChatController extends GetxController implements GetxService {
   }
 
   void initCurrentRoom() {
-    var date = DateTime.now();
+    var date = DateTime.now().millisecondsSinceEpoch;
     _currentRoom = Chatroom(
             chatroomId: '',
             bot: Bot(
@@ -72,8 +72,8 @@ class ChatController extends GetxController implements GetxService {
                 about: "",
                 updatedAt: date),
             users: [],
-            createdAt: date.millisecondsSinceEpoch,
-            updatedAt: date.millisecondsSinceEpoch,
+            createdAt: date,
+            updatedAt: date,
             roomType: '',
             messages: [],
             creatorUser: '')

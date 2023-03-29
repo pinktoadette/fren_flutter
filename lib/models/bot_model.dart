@@ -22,8 +22,7 @@ class BotModel extends Model {
   }
   BotModel._internal();
 
-  /// Get bot info from database => [DocumentSnapshot<Map<String, dynamic>>]
-  /// Original from fb, now get from localdb
+  /// Get bot info from fb => [DocumentSnapshot<Map<String, dynamic>>]
   Future<DocumentSnapshot<Map<String, dynamic>>> getBot(String botId) async {
     return await _firestore.collection(C_BOT).doc(botId).get();
   }

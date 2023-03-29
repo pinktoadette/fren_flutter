@@ -21,7 +21,8 @@ class BotApi {
 
   /// get inital frankie
   Future getInitialFrankie() async {
-    QuerySnapshot<Map<String, dynamic>> data = await _firestore.collection(C_BOT_WALKTHRU).orderBy('sequence').get();
+    QuerySnapshot<Map<String, dynamic>> data =
+        await _firestore.collection(C_BOT_WALKTHRU).orderBy('sequence').get();
     List steps = [];
     for (var element in data.docs) {
       final ele = element.data();
@@ -57,7 +58,8 @@ class BotApi {
         .collection(C_BOT_TRIALS)
         .doc(UserModel().user.userId)
         .collection(bot.botId)
-        .limit(1).get();
+        .limit(1)
+        .get();
 
     if (query.docs.isEmpty) {
       await _firestore
@@ -65,16 +67,10 @@ class BotApi {
           .doc(UserModel().user.userId)
           .collection(bot.botId)
           .add({
-            BOT_TRIAL_BOT_ID: bot.botId,
-            BOT_TRIAL_OWNER_ID: UserModel().user.userId,
-            BOT_TRIAL_TIMES: 0
-          });
-    } else {
-
-
-    }
-
-
+        BOT_TRIAL_BOT_ID: bot.botId,
+        BOT_TRIAL_OWNER_ID: UserModel().user.userId,
+        BOT_TRIAL_TIMES: 0
+      });
+    } else {}
   }
-
 }

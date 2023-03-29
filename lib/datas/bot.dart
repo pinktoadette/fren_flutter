@@ -29,8 +29,8 @@ class Bot {
   final String name;
   final String domain;
   final String subdomain;
-  final DateTime createdAt;
-  final DateTime updatedAt;
+  final int createdAt;
+  final int updatedAt;
   final bool? isActive;
   final String? adminStatus;
   final String? model;
@@ -87,14 +87,13 @@ class Bot {
       name: doc[BOT_NAME],
       model: doc[BOT_MODEL] ?? '',
       repoId: doc[BOT_REPO_ID] ?? '',
-      price: doc[BOT_PRICE] * 1.0 ?? 0.0,
       subdomain: doc[BOT_SUBDOMAIN] ?? '',
       botOwnerId: doc[BOT_OWNER_ID],
       about: doc[BOT_ABOUT],
       domain: doc[BOT_DOMAIN],
       isActive: doc[BOT_ACTIVE] ?? false,
-      createdAt: doc[CREATED_AT].toDate(),
-      updatedAt: doc[UPDATED_AT].toDate(),
+      createdAt: doc[CREATED_AT],
+      updatedAt: doc[UPDATED_AT],
       adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
       adminNote: doc[BOT_ADMIN_NOTE] ?? "",
     );

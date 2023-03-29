@@ -2,6 +2,7 @@ import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -65,7 +66,8 @@ class ConversationsTab extends StatelessWidget {
                                       Theme.of(context).textTheme.titleMedium)),
                           SizedBox(
                             width: width * 0.25 - 20,
-                            child: Text(lastMsg['createdAt'].toString(),
+                            child: Text(formatDate(lastMsg['createdAt']),
+                                textAlign: TextAlign.right,
                                 style: Theme.of(context).textTheme.labelSmall),
                           )
                         ],
