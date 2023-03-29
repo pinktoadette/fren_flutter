@@ -78,11 +78,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
           bgcolor: APP_ERROR),
     )
         .onData((data) {
-      _parse(data);
+      _onSocketParse(data);
     });
   }
 
-  void _parse(String message) {
+  void _onSocketParse(String message) {
     Map<String, dynamic> decodeData = json.decode(message);
     types.Message newMessage =
         _messagesApi.createTypesMessages(decodeData["message"]);
@@ -395,20 +395,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
   }
 
-  /// calls user's api and triggers bot to reply
+  /// saves user reponse. Backend handles all bot response / timing.
   Future<void> _callAPI(Map<String, dynamic> messageMap) async {
     setState(() {
       _isAttachmentUploading = true;
     });
     try {
-      await _messagesApi.saveUserResponse(messageMap);
-      // get bot response
-      // @todo send to rabbitmq instead
-      if (!isBotSleeping) {
-        Map<String, dynamic> botResponse =
-            await _messagesApi.getBotResponse(messageMap);
-        _channel.sink.add(json.encode(botResponse));
-      }
+      final task = await _messagesApi.saveUserResponse(messageMap);
+      _streamBotResponse(task);
     } catch (err) {
       showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),
@@ -418,6 +412,27 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isAttachmentUploading = false;
     });
+  }
+
+  Future<void> _streamBotResponse(String taskId) async {
+    final stream = Stream.periodic(const Duration(seconds: 1), (_) {
+      _messagesApi.getTaskResponse(taskId);
+    });
+
+    final subscription = stream.listen((val) {
+      print(val);
+      // if (val["status"] == "Success") {
+      //   types.Message newMessage =
+      //       _messagesApi.createTypesMessages(val["result"]);
+      //   setState(() {
+      //     _messages.insert(0, val["result"]);
+      //   });
+      //   chatController.updateMessagesPreview(_roomIdx, val["result"]);
+      // }
+    });
+
+    // when done
+    subscription.cancel();
   }
 
   Future<void> _loadMoreMessage() async {

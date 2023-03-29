@@ -55,6 +55,7 @@ const DEFAULT_BOT_ID = 'Bot_GgQ0c3cqypSmKcpfUA9M';
 const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
 
 /// Bot Database Collection
+const BOT_INFO = 'machi';
 const BOT_ID = 'botId';
 const BOT_ABOUT = "about";
 const BOT_NAME = 'name';

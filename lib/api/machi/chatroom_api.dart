@@ -52,6 +52,7 @@ class ChatroomMachiApi {
     final response = await dioRequest.get(url);
     final roomData = response.data;
     List<Chatroom> myRooms = [];
+    chatController.roomlist.clear();
 
     if (response.statusCode == 200) {
       roomData.forEach((room) {

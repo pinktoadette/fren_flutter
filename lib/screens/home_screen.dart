@@ -55,9 +55,8 @@ class _HomeScreenState extends State<HomeScreen> {
     // load controllers
     _loadChatControllers();
     // create a new room for quick chat
-    _getOrCreateChatroom();
-    // get all chatrooms for conversation tab
-    _getAllMyChats();
+    _getChatrooms();
+
     // _handlePurchaseUpdates();
     _initFirebaseMessage();
 
@@ -76,8 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void _loadChatControllers() {
     Get.lazyPut(() => MessageController()); // injects when needed
-    final ChatController chatController =
-        Get.put(ChatController());
+    final ChatController chatController = Get.put(ChatController());
     chatController.onChatLoad();
   }
 
@@ -89,12 +87,15 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   /// get or create chatroom
-  Future<void> _getOrCreateChatroom() async {
-    await _chatroomApi.createNewRoom();
-  }
-
-  Future<void> _getAllMyChats() async {
-    await _chatroomApi.getAllMyRooms();
+  Future<void> _getChatrooms() async {
+    await Future.wait(
+            [_chatroomApi.createNewRoom(), _chatroomApi.getAllMyRooms()])
+        .then((_) {})
+        .whenComplete(() {
+      debugPrint("Loaded new and all chatrooms");
+    }).catchError((onError) {
+      debugPrint(onError);
+    });
   }
 
   /// Get current User Real Time updates

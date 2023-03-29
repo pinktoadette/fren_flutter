@@ -1,4 +1,3 @@
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';

@@ -8,7 +8,6 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/sqlite/db.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
@@ -73,17 +72,30 @@ class MessageMachiApi {
 
   /// saves the user response
   Future saveUserResponse(Map<String, dynamic> messageMap) async {
-    ChatController chatController = Get.find();
     Bot bot = botControl.bot;
 
     String url = '${baseUri}chat/user_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    return await dio.post(url, data: {
-      ...messageMap,
-      BOT_ID: bot.botId,
-      ROOM_ID: chatController.currentRoom.chatroomId
-    });
+    final response =
+        await dio.post(url, data: {...messageMap, BOT_ID: bot.botId});
+    if (response.statusCode == 200) {
+      // gets a task id
+      return response.data();
+    }
+  }
+
+  /// Get task from taskId for background jobs
+  Future<Map<String, dynamic>> getTaskResponse(String taskId) async {
+    // save to machi api
+    String url = '${baseUri}tasks/task/$taskId';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    log("Get task");
+
+    Map<String, dynamic> data = Map.from(response.data);
+    return data;
   }
 
   /// Gets the bot response. It looks up the last message and responds to that.
@@ -149,27 +161,27 @@ class MessageMachiApi {
     return types.Message.fromJson(message);
   }
 
-  Future<void> syncMessages(Map<String, dynamic> messages) async {
-    /// if timestamp don't match between local and remote, then sync to remote
-    final DatabaseService _databaseService = DatabaseService();
-    await _databaseService.insertChat(messages);
-  }
+  // Future<void> syncMessages(Map<String, dynamic> messages) async {
+  //   /// if timestamp don't match between local and remote, then sync to remote
+  //   final DatabaseService _databaseService = DatabaseService();
+  //   await _databaseService.insertChat(messages);
+  // }
 
-  Future<List<types.Message>> getLocalDbMessages() async {
-    /// get local messages
-    Bot bot = botControl.bot;
-    final DatabaseService _databaseService = DatabaseService();
-    final List<Map<String, dynamic>> messages =
-        await _databaseService.getLastMessages(bot.botId);
-    final List<types.Message> finalMessages = [];
+  // Future<List<types.Message>> getLocalDbMessages() async {
+  //   /// get local messages
+  //   Bot bot = botControl.bot;
+  //   final DatabaseService _databaseService = DatabaseService();
+  //   final List<Map<String, dynamic>> messages =
+  //       await _databaseService.getLastMessages(bot.botId);
+  //   final List<types.Message> finalMessages = [];
 
-    for (var element in messages) {
-      Map<String, dynamic> newMessage = Map.from(element);
-      newMessage['text'] = newMessage['message'];
-      newMessage['type'] = newMessage['messageType'];
-      types.Message msg = createTypesMessages(newMessage);
-      finalMessages.add(msg);
-    }
-    return finalMessages;
-  }
+  //   for (var element in messages) {
+  //     Map<String, dynamic> newMessage = Map.from(element);
+  //     newMessage['text'] = newMessage['message'];
+  //     newMessage['type'] = newMessage['messageType'];
+  //     types.Message msg = createTypesMessages(newMessage);
+  //     finalMessages.add(msg);
+  //   }
+  //   return finalMessages;
+  // }
 }

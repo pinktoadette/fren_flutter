@@ -7,7 +7,7 @@ import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
-// Chatcontroller controls the roomlist and the room
+// Chat controller controls the roomlist and the room
 // the user is currently in. Messages will be in message controller
 class ChatController extends GetxController implements GetxService {
   final MessageController messageController =

@@ -3,9 +3,7 @@ import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
-import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/no_data.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -43,6 +41,7 @@ class ConversationsTab extends StatelessWidget {
               for (var user in room.users) {
                 allUsers += "${user.firstName!} ";
               }
+
               return InkWell(
                 onTap: () {
                   Get.to(() => (const BotChatScreen()),
@@ -79,7 +78,7 @@ class ConversationsTab extends StatelessWidget {
                           lastMsg["type"] == "text"
                               ? Flexible(
                                   child: Text(lastMsg["text"].length > 100
-                                      ? lastMsg["text"].substring(0, 90)
+                                      ? "${lastMsg["text"].substring(0, 90)}..."
                                       : lastMsg["text"]))
                               : SizedBox(
                                   child: Row(children: [
@@ -93,19 +92,6 @@ class ConversationsTab extends StatelessWidget {
                   ),
                 ),
               );
-            })))
-        // child: StreamBuilder<List<Chatroom>>(
-        //     stream: chatController.streamRoomlist,
-        //     builder: (context, snapshot) {
-        //       /// Check data
-        //       if (!snapshot.hasData) {
-        //         return const Frankloader();
-        //       } else if (snapshot.data!.isEmpty) {
-        //         /// No conversation
-        //         return const NoData(text: "No messages");
-        //       } else {
-        //         }
-        //     })
-        );
+            }))));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/datas/bot.dart';
 
 class Chatroom {
   /// Using types and Chatroom together
@@ -7,7 +8,7 @@ class Chatroom {
   final String? title;
   final String? personality;
   final String creatorUser;
-  final String botId;
+  final Bot bot;
   final String roomType;
   final List<types.Message> messages;
   final List<types.User> users;
@@ -17,7 +18,7 @@ class Chatroom {
 
   Chatroom({
     required this.chatroomId,
-    required this.botId,
+    required this.bot,
     required this.createdAt,
     required this.updatedAt,
     required this.roomType,
@@ -65,7 +66,7 @@ class Chatroom {
 
     return Chatroom(
       chatroomId: doc[ROOM_ID],
-      botId: doc[BOT_ID],
+      bot: doc[BOT_INFO],
       title: doc['title'],
       personality: doc['personality'],
       creatorUser: doc['createdBy'],

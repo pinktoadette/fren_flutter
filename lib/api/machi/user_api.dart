@@ -16,6 +16,7 @@ class UserApi {
 
   Future<User> getUser() async {
     String url = '${baseUri}user_info';
+    debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
@@ -25,6 +26,7 @@ class UserApi {
   Future<void> saveUser(Map<String, dynamic> data) async {
     try {
       String url = '${baseUri}user/create_user';
+      debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       await dio.post(url, data: data);
     } catch (error) {
@@ -35,6 +37,7 @@ class UserApi {
   Future<void> updateUser(Map<String, dynamic> data) async {
     try {
       String url = '${baseUri}user/update_user';
+      debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       await dio.put(url, data: data);
     } catch (error) {
