@@ -223,7 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
                 label: "Machi",
                 icon: Icon(Iconsax.search_favorite,
-                    color: _selectedIndex == 0
+                    color: _selectedIndex == 2
                         ? Theme.of(context).primaryColor
                         : null)),
 

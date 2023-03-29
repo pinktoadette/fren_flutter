@@ -81,7 +81,7 @@ class MessageMachiApi {
         await dio.post(url, data: {...messageMap, BOT_ID: bot.botId});
     if (response.statusCode == 200) {
       // gets a task id
-      return response.data();
+      return response.data;
     }
   }
 

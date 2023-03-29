@@ -39,7 +39,7 @@ class ConversationsTab extends StatelessWidget {
                       'text': 'This is an error. Something went wrong',
                       'createdAt': DateTime.now().millisecondsSinceEpoch
                     };
-              String allUsers = "${room.personality} ${room.bot.name} ";
+              String allUsers = "${room.bot.name} ";
               for (var user in room.users) {
                 allUsers += "& ${user.firstName!} ";
               }
@@ -58,12 +58,18 @@ class ConversationsTab extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
-                      Row(children: [
-                        Text(
-                          room.bot.domain,
-                          style: Theme.of(context).textTheme.labelSmall,
-                        )
-                      ]),
+                      Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              room.bot.domain,
+                              style: Theme.of(context).textTheme.labelSmall,
+                            ),
+                            Text(
+                              "mood: ${room.personality}",
+                              style: Theme.of(context).textTheme.labelSmall,
+                            )
+                          ]),
                       Row(
                         children: [
                           SizedBox(

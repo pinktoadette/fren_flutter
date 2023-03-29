@@ -54,6 +54,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late Chatroom _room;
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
+  Timer? _timer;
   bool _isAttachmentUploading = false;
   bool isLoading = false;
   bool isBotSleeping = false;
@@ -109,6 +110,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     _channel.sink.close(status.normalClosure);
     super.dispose();
   }
@@ -414,25 +416,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
-  Future<void> _streamBotResponse(String taskId) async {
-    final stream = Stream.periodic(const Duration(seconds: 1), (_) {
-      _messagesApi.getTaskResponse(taskId);
+  // Call task id every 1 second to get bot response
+  Future<void> _streamBotResponse(Map<String, dynamic> task) async {
+    Timer.periodic(const Duration(seconds: 1), (Timer t) async {
+      var response = await _messagesApi.getTaskResponse(task["task_id"]);
+      if (response["status"] == "Success") {
+        String strResponse = json.encode(response["result"]);
+        _onSocketParse(strResponse);
+        _timer?.cancel();
+      }
     });
-
-    final subscription = stream.listen((val) {
-      print(val);
-      // if (val["status"] == "Success") {
-      //   types.Message newMessage =
-      //       _messagesApi.createTypesMessages(val["result"]);
-      //   setState(() {
-      //     _messages.insert(0, val["result"]);
-      //   });
-      //   chatController.updateMessagesPreview(_roomIdx, val["result"]);
-      // }
-    });
-
-    // when done
-    subscription.cancel();
   }
 
   Future<void> _loadMoreMessage() async {
