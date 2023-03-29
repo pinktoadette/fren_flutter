@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -58,12 +59,21 @@ class ChatController extends GetxController implements GetxService {
   }
 
   void initCurrentRoom() {
+    var date = DateTime.now();
     _currentRoom = Chatroom(
             chatroomId: '',
-            botId: '',
+            bot: Bot(
+                botId: "",
+                profilePhoto: "",
+                name: "",
+                domain: "",
+                subdomain: "",
+                createdAt: date,
+                about: "",
+                updatedAt: date),
             users: [],
-            createdAt: DateTime.now().millisecondsSinceEpoch,
-            updatedAt: DateTime.now().millisecondsSinceEpoch,
+            createdAt: date.millisecondsSinceEpoch,
+            updatedAt: date.millisecondsSinceEpoch,
             roomType: '',
             messages: [],
             creatorUser: '')
