@@ -35,7 +35,7 @@
   "enter_your_number": "Enter your number",
   "please_enter_your_phone_number": "Please enter your phone number",
   "we_were_unable_to_verify_your_number": "We were unable to verify your phone number.\nPlease try again!",
-  "an_error_has_occurred": "An error has occurred.\nPlease try again!",
+  "an_error_has_occurred": "An error has occurred.",
 
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",
@@ -348,8 +348,10 @@
   "onboard_page3_subtitle": "Find or offer consultation services or request chat with other humans based on Frankie's recommendation",
 
   "publish": "Publish",
+  "saved_success": "Saved",
   "search": "Search",
   "select_industry": "Select your major or industry",
   "select_interest": "Select your interest",
+  "resricted_to_creator": "Only creator/admin can edit",
   "required_field": "Please input required field"
 }

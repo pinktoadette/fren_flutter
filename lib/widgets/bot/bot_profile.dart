@@ -6,10 +6,12 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -37,6 +39,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
   List<String> _moodList = [];
   String? _selectedMood;
   bool disableSelect = true;
+  late AppLocalizations _i18n;
   final TextEditingController personalityController = TextEditingController();
 
   Future<void> _loadMood() async {
@@ -71,6 +74,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
 
   @override
   Widget build(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width - 10;
 
     return Center(
@@ -189,18 +193,11 @@ class _BotProfileCardState extends State<BotProfileCard> {
                                   },
                             disabledHint: disableSelect
                                 ? null
-                                : const Text(
-                                    "Only creator of chatroom can change."),
+                                : Text(_i18n.translate("resricted_to_creator")),
                           ),
                           const SizedBox(width: 20),
                         ]),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      ElevatedButton(onPressed: () {}, child: const Text('OK')),
-                    ],
-                  )
                 ],
               )
           ],
@@ -210,11 +207,20 @@ class _BotProfileCardState extends State<BotProfileCard> {
   }
 
   void _updateRoom(String value) async {
+    _i18n = AppLocalizations.of(context);
     setState(() {
       _selectedMood = value;
     });
-    Chatroom update = widget.room!.copyWith(personality: value);
-    await _chatroomApi.updateRoom(widget.roomIdx!, update);
+    try {
+      Chatroom update = widget.room!.copyWith(personality: value);
+      await _chatroomApi.updateRoom(widget.roomIdx!, update);
+      showScaffoldMessage(
+          message: _i18n.translate("saved_success"), bgcolor: APP_SUCCESS);
+    } catch (error) {
+      showScaffoldMessage(
+          message: _i18n.translate("an_error_has_occurred"),
+          bgcolor: APP_ERROR);
+    }
   }
 
   void _tryBot() {
