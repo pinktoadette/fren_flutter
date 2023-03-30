@@ -2,7 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'dart:math';
 
+import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/helpers/message_format.dart';
+import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:open_filex/open_filex.dart';
@@ -85,8 +89,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   void _onSocketParse(String message) {
     Map<String, dynamic> decodeData = json.decode(message);
-    types.Message newMessage =
-        _messagesApi.createTypesMessages(decodeData["message"]);
+    types.Message newMessage = oldMessageTypes(decodeData["message"]);
     setState(() {
       _messages.insert(0, newMessage);
     });
@@ -128,6 +131,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
+              // if there are no messages, remove from roomList
+              if (_messages.isEmpty) {
+                chatController.removeEmptyRoomfromList();
+              }
               if (chatController.isTest == false) {
                 botController.fetchCurrentBot(DEFAULT_BOT_ID);
               }
@@ -148,16 +155,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             ),
             onTap: () {
               /// Show bot info
-              confirmDialog(context,
-                  title:
-                      "${_i18n.translate("about")} ${botController.bot.name}",
-                  message:
-                      "${botController.bot.name}. \n${botController.bot.about} \nThis chatroom I have a ${_room.personality} manner.",
-                  positiveText: _i18n.translate("OK"),
-                  positiveAction: () async {
-                // Close the confirm dialog
-                Navigator.of(context).pop();
-              });
+              _showBotInfo();
             },
           ),
           actions: <Widget>[
@@ -347,9 +345,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   // when pressed, it formats the message, sends to socket and calls the api
   void _handleSendPressed(types.PartialText message) {
-    Map<String, dynamic> formatMessage =
-        _messagesApi.formatChatMessage(message);
-
+    Map<String, dynamic> formatMessage = formatChatMessage(message);
     _channel.sink.add(json.encode({"message": formatMessage}));
     _callAPI(formatMessage);
   }
@@ -421,8 +417,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
     Timer.periodic(const Duration(seconds: 1), (Timer t) async {
       var response = await _messagesApi.getTaskResponse(task["task_id"]);
       if (response["status"] == "Success") {
-        String strResponse = json.encode(response["result"]);
-        _onSocketParse(strResponse);
+        if (response["result"].containsKey("text")) {
+          String strResponse = json.encode(response["result"]);
+          _onSocketParse(strResponse);
+        }
         _timer?.cancel();
       }
     });
@@ -439,5 +437,31 @@ class _BotChatScreenState extends State<BotChatScreen> {
           message: _i18n.translate("an_error_has_occurred"),
           bgcolor: APP_ERROR);
     }
+  }
+
+  void _showBotInfo() {
+    double height = MediaQuery.of(context).size.height;
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      builder: (BuildContext context) => SafeArea(
+        child: SizedBox(
+          height: max(height, 400),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              const SizedBox(
+                height: 30,
+              ),
+              BotProfileCard(
+                bot: chatController.botController.bot,
+                room: _room,
+              )
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -8,9 +8,9 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/helpers/message_format.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:uuid/uuid.dart';
 
 class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -21,54 +21,6 @@ class MessageMachiApi {
   MessageController messageController = Get.find();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
-
-  /// formats partial messages to map string dynamic to pass to api
-  /// This should be in utility
-  Map<String, dynamic> formatChatMessage(dynamic partialMessage) {
-    final ChatController chatController = Get.find();
-    // save will always be user, because backend will already save bot;
-    late types.Message message;
-    types.User user = chatController.chatUser;
-
-    if (partialMessage is types.PartialCustom) {
-      message = types.CustomMessage.fromPartial(
-        author: types.User(id: user.id),
-        id: '',
-        partialCustom: partialMessage,
-      );
-    } else if (partialMessage is types.PartialFile) {
-      message = types.FileMessage.fromPartial(
-        author: types.User(id: user.id),
-        id: '',
-        partialFile: partialMessage,
-      );
-    } else if (partialMessage is types.PartialImage) {
-      message = types.ImageMessage.fromPartial(
-        author: types.User(id: user.id),
-        id: '',
-        partialImage: partialMessage,
-      );
-    } else if (partialMessage is types.PartialText) {
-      message = types.TextMessage.fromPartial(
-        author: types.User(id: user.id),
-        id: '',
-        partialText: partialMessage,
-      );
-    }
-
-    DateTime dateTime = DateTime.now();
-
-    final messageMap = message.toJson();
-    messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
-    messageMap[CHAT_AUTHOR_ID] = user.id;
-    messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
-    messageMap[CHAT_USER_NAME] = user.firstName;
-    messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
-    messageMap[ROOM_HAS_MESSAGES] = true;
-    messageMap[CHAT_MESSAGE_ID] = const Uuid().v4();
-
-    return messageMap;
-  }
 
   /// saves the user response
   Future saveUserResponse(Map<String, dynamic> messageMap) async {
@@ -134,7 +86,7 @@ class MessageMachiApi {
       if (theseMessage.isNotEmpty) {
         for (var element in theseMessage) {
           Map<String, dynamic> newMessage = Map.from(element);
-          types.Message msg = createTypesMessages(newMessage);
+          types.Message msg = oldMessageTypes(newMessage);
           oldList.add(msg);
         }
         //set the next start page
@@ -143,22 +95,6 @@ class MessageMachiApi {
       }
     }
     return oldList;
-  }
-
-  /// Helper function to define messages type
-  types.Message createTypesMessages(Map<String, dynamic> message) {
-    final author = types.User(
-        id: message[CHAT_AUTHOR_ID] as String,
-        firstName: message[CHAT_USER_NAME] ?? "Frankie");
-    message[CHAT_AUTHOR] = author.toJson();
-    message[FLUTTER_UI_ID] = message[CHAT_MESSAGE_ID];
-    message[CREATED_AT] = message[CREATED_AT]?.toInt();
-
-    if (message[CHAT_TYPE] == CHAT_IMAGE) {
-      message['size'] = 256;
-      return types.ImageMessage.fromJson(message);
-    }
-    return types.Message.fromJson(message);
   }
 
   // Future<void> syncMessages(Map<String, dynamic> messages) async {

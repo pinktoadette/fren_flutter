@@ -1,6 +1,5 @@
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/widgets/bot/all_bots_vertical.dart';
 import 'package:fren_app/widgets/search.dart';

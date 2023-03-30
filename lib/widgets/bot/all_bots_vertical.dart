@@ -145,6 +145,7 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
 
     showModalBottomSheet<void>(
       context: context,
+      backgroundColor: Theme.of(context).colorScheme.background,
       builder: (BuildContext context) => SafeArea(
         child: SizedBox(
           height: max(height, 400),

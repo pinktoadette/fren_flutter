@@ -37,7 +37,7 @@ class _Step1ContainerState extends State<Step1CreateBot> {
     List<String> list = List.from(jsonDecode(data) as List<dynamic>);
 
     setState(() {
-      _domainList = list; //List.from(list);
+      _domainList = list;
     });
   }
 

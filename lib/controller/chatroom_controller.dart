@@ -21,6 +21,7 @@ class ChatController extends GetxController implements GetxService {
   // ignore: prefer_final_fields
   RxList<Chatroom> roomlist = <Chatroom>[].obs;
   late Rx<Chatroom> _currentRoom;
+  late Rx<Chatroom> _emptyRoom;
 
   String? error;
   bool retrieveAPI = true;
@@ -37,6 +38,9 @@ class ChatController extends GetxController implements GetxService {
 
   Chatroom get currentRoom => _currentRoom.value;
   set currentRoom(Chatroom value) => _currentRoom.value = value;
+
+  Chatroom get emptyRoom => _emptyRoom.value;
+  set emptyRoom(Chatroom value) => _emptyRoom.value = value;
 
   // current chatroom
   Stream<Chatroom> get streamRoom async* {
@@ -86,7 +90,19 @@ class ChatController extends GetxController implements GetxService {
     if (myRooms.messages.isNotEmpty) {
       roomlist.add(myRooms);
       _currentRoom = myRooms.obs;
+    } else {
+      _emptyRoom = myRooms.obs;
     }
+  }
+
+  /// when user creates a new empty room
+  /// and enters the room, then that room gets added to roomlist
+  void addEmptyRoomToList() {
+    roomlist.add(emptyRoom);
+  }
+
+  void removeEmptyRoomfromList() {
+    roomlist.remove(emptyRoom);
   }
 
   /// load the current bot

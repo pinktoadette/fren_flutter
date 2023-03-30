@@ -3,6 +3,7 @@ import 'package:fren_app/api/machi/message_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -42,8 +43,7 @@ class _QuickChatState extends State<QuickChat> {
         text: fieldText.text,
       );
       //save user's comments
-      Map<String, dynamic> messageMap =
-          _messagesApi.formatChatMessage(textMessage);
+      Map<String, dynamic> messageMap = formatChatMessage(textMessage);
       await _messagesApi.saveUserResponse(messageMap);
 
       // clear text and dismiss keyboard
