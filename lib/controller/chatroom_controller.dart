@@ -132,4 +132,10 @@ class ChatController extends GetxController implements GetxService {
     roomlist[index].messages.insert(0, message);
     roomlist.refresh();
   }
+
+  // update messages from the chatroom, to view once when on convo tab
+  void updateRoom(int index, Chatroom data) {
+    roomlist[index] = data;
+    roomlist.refresh();
+  }
 }

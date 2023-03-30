@@ -457,6 +457,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               BotProfileCard(
                 bot: chatController.botController.bot,
                 room: _room,
+                roomIdx: _roomIdx,
               )
             ],
           ),

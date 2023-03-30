@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
@@ -17,19 +18,22 @@ class BotProfileCard extends StatefulWidget {
   final bool? showStatus;
   final bool? showPurchase;
   final Chatroom? room;
+  final int? roomIdx;
 
   const BotProfileCard(
       {Key? key,
       required this.bot,
       this.showStatus,
       this.showPurchase,
-      this.room})
+      this.room,
+      this.roomIdx})
       : super(key: key);
   @override
   _BotProfileCardState createState() => _BotProfileCardState();
 }
 
 class _BotProfileCardState extends State<BotProfileCard> {
+  final _chatroomApi = ChatroomMachiApi();
   List<String> _moodList = [];
   String? _selectedMood;
   bool disableSelect = true;
@@ -180,10 +184,8 @@ class _BotProfileCardState extends State<BotProfileCard> {
                             value: _selectedMood,
                             onChanged: disableSelect
                                 ? null
-                                : (value) {
-                                    setState(() {
-                                      _selectedMood = value as String?;
-                                    });
+                                : (value) async {
+                                    _updateRoom(value as String);
                                   },
                             disabledHint: disableSelect
                                 ? null
@@ -205,6 +207,14 @@ class _BotProfileCardState extends State<BotProfileCard> {
         ),
       ),
     );
+  }
+
+  void _updateRoom(String value) async {
+    setState(() {
+      _selectedMood = value;
+    });
+    Chatroom update = widget.room!.copyWith(personality: value);
+    await _chatroomApi.updateRoom(widget.roomIdx!, update);
   }
 
   void _tryBot() {

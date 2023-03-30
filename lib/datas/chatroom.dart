@@ -30,6 +30,39 @@ class Chatroom {
     this.personality,
   });
 
+  Chatroom copyWith(
+      {String? chatroomId,
+      Bot? bot,
+      int? createdAt,
+      int? updatedAt,
+      String? personality,
+      String? title,
+      List<types.Message>? messages,
+      String? roomType,
+      List<types.User>? users}) {
+    return Chatroom(
+        chatroomId: chatroomId ?? this.chatroomId,
+        bot: bot ?? this.bot,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        roomType: roomType ?? this.roomType,
+        messages: messages ?? this.messages,
+        users: users ?? this.users,
+        personality: personality ?? this.personality,
+        creatorUser: creatorUser);
+  }
+
+  Map<String, dynamic> toJSON() {
+    return <String, dynamic>{
+      'chatroomId': chatroomId,
+      'createdAt': createdAt,
+      'updatedAt': updatedAt,
+      'roomType': roomType,
+      'personality': personality,
+      'creatorUser': creatorUser
+    };
+  }
+
   factory Chatroom.fromJson(Map<String, dynamic> doc) {
     /// get Bot
 

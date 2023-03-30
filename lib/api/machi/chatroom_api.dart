@@ -63,4 +63,18 @@ class ChatroomMachiApi {
     }
     return myRooms;
   }
+
+  Future<void> updateRoom(int index, Chatroom room) async {
+    final ChatController chatController = Get.find();
+    String url = '${baseUri}chatroom/update_room';
+    debugPrint("Requesting URL $url");
+    final updateRoom = room.toJSON();
+    final dioRequest = await auth.getDio();
+    final response = await dioRequest.put(url, data: updateRoom);
+
+    if (response.statusCode == 200) {
+      Chatroom updatedRoom = Chatroom.fromJson(updateRoom);
+      chatController.updateRoom(index, updatedRoom);
+    }
+  }
 }
