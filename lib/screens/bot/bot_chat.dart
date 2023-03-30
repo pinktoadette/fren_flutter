@@ -58,7 +58,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late Chatroom _room;
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
-  Timer? _timer;
   bool _isAttachmentUploading = false;
   bool isLoading = false;
   bool isBotSleeping = false;
@@ -113,7 +112,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   @override
   void dispose() {
-    _timer?.cancel();
     _channel.sink.close(status.normalClosure);
     super.dispose();
   }
@@ -203,20 +201,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   case "add_to_chat":
                     _appHelper.shareApp();
                     break;
-
-                  // Handle Block/Unblock profile
-                  case "change_bot_personality":
-                    // Check remote user blocked status
-                    //   if (_isRemoteUserBlocked != null && _isRemoteUserBlocked!) {
-                    //     // Unblock profile
-                    //     _unblockProfile();
-                    //   } else {
-                    //     // Unblock profile
-                    //     _blockProfile();
-                    //   }
-                    break;
                 }
-                debugPrint("Selected action: $val");
               },
             ),
           ],
@@ -417,11 +402,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
     Timer.periodic(const Duration(seconds: 1), (Timer t) async {
       var response = await _messagesApi.getTaskResponse(task["task_id"]);
       if (response["status"] == "Success") {
+        t.cancel();
         if (response["result"].containsKey("text")) {
-          String strResponse = json.encode(response["result"]);
+          String strResponse = json.encode({"message": response["result"]});
           _onSocketParse(strResponse);
         }
-        _timer?.cancel();
+      }
+      // try 5 times
+      if (t.tick == 5) {
+        t.cancel();
       }
     });
   }

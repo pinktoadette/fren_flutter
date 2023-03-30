@@ -1,11 +1,9 @@
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/screens/user/invite_contact_screen.dart';
-import 'package:fren_app/widgets/bot/tiny_bot.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:get/get.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class InviteCard extends StatefulWidget {
   const InviteCard({Key? key}) : super(key: key);
@@ -20,38 +18,6 @@ class InviteCardState extends State<InviteCard> {
     super.initState();
   }
 
-  Future<void> _askPermissions() async {
-    PermissionStatus permissionStatus = await _getContactPermission();
-    if (permissionStatus == PermissionStatus.granted) {
-      // Navigator.of(context).push(
-      //     MaterialPageRoute(builder: (context) => const InviteContactScreen()));
-      Get.to(() => const InviteContactScreen());
-    } else {
-      _handleInvalidPermissions(permissionStatus);
-    }
-  }
-
-  Future<PermissionStatus> _getContactPermission() async {
-    PermissionStatus permission = await Permission.contacts.status;
-    if (permission != PermissionStatus.granted &&
-        permission != PermissionStatus.permanentlyDenied) {
-      PermissionStatus permissionStatus = await Permission.contacts.request();
-      return permissionStatus;
-    } else {
-      return permission;
-    }
-  }
-
-  void _handleInvalidPermissions(PermissionStatus permissionStatus) {
-    if (permissionStatus == PermissionStatus.denied) {
-      showScaffoldMessage(
-          message: 'Access to contact data denied', bgcolor: APP_ERROR);
-    } else if (permissionStatus == PermissionStatus.permanentlyDenied) {
-      showScaffoldMessage(
-          message: 'Contact data not available on device', bgcolor: APP_ERROR);
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     /// Initialization
@@ -63,14 +29,83 @@ class InviteCardState extends State<InviteCard> {
       width: screenWidth,
       child: InkWell(
         onTap: () {
-          _askPermissions();
+          _showQRSheet();
         },
         child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          const TinyBotIcon(image: "assets/images/pink_bot.png"),
           Text(_i18n.translate("invite_user"),
-              style: Theme.of(context).textTheme.titleMedium)
+              style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(width: 10),
+          const Icon(Iconsax.scan_barcode),
         ]),
       ),
+    );
+  }
+
+  void _showQRSheet() {
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    String myUrl =
+        "https://mymachi.app/u/dfsfsdsdfsdfsdfdsfsdfsdfsdfsdfsdfsdfsd${UserModel().user.userFullname}";
+
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      builder: (BuildContext context) {
+        return Scaffold(
+          body: SizedBox(
+            height: MediaQuery.of(context).copyWith().size.height,
+            child: Column(children: [
+              Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    children: [
+                      Card(
+                        child: Container(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            children: [
+                              Text(UserModel().user.userFullname,
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                              Text("@${UserModel().user.userFullname}",
+                                  style:
+                                      Theme.of(context).textTheme.labelSmall),
+                              const SizedBox(height: 10),
+                              QrImage(
+                                data: myUrl,
+                                version: QrVersions.auto,
+                                size: 200.0,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(Iconsax.copy),
+                          SelectableText("@${UserModel().user.userFullname}",
+                              showCursor: false, onTap: () {
+                            showScaffoldMessage(
+                                message: "Copied",
+                                bgcolor: Theme.of(context).primaryColor);
+                          },
+                              toolbarOptions: const ToolbarOptions(
+                                  copy: true,
+                                  selectAll: true,
+                                  cut: false,
+                                  paste: false),
+                              style: Theme.of(context).textTheme.labelSmall)
+                        ],
+                      )
+                    ],
+                  )),
+            ]),
+          ),
+        );
+      },
     );
   }
 }

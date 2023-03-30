@@ -2,8 +2,6 @@ import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/activity.dart';
-import 'package:fren_app/widgets/bot/quick_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/invite_card.dart';
@@ -58,12 +56,12 @@ class _ActivityTabState extends State<ActivityTab> {
                   InviteCard(),
                 ])),
         // ActivityWidget(),
-        Positioned(
-            bottom: 0.0,
-            child: SizedBox(
-              width: screenWidth,
-              child: const QuickChat(),
-            )),
+        // Positioned(
+        //     bottom: 0.0,
+        //     child: SizedBox(
+        //       width: screenWidth,
+        //       child: const QuickChat(),
+        //     )),
       ]));
     }
     return Scaffold(

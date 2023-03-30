@@ -211,16 +211,10 @@ class _BotProfileCardState extends State<BotProfileCard> {
     setState(() {
       _selectedMood = value;
     });
-    try {
-      Chatroom update = widget.room!.copyWith(personality: value);
-      await _chatroomApi.updateRoom(widget.roomIdx!, update);
-      showScaffoldMessage(
-          message: _i18n.translate("saved_success"), bgcolor: APP_SUCCESS);
-    } catch (error) {
-      showScaffoldMessage(
-          message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: APP_ERROR);
-    }
+    Chatroom update = widget.room!.copyWith(personality: value);
+    await _chatroomApi.updateRoom(widget.roomIdx!, update);
+    showScaffoldMessage(
+        message: _i18n.translate("saved_success"), bgcolor: APP_SUCCESS);
   }
 
   void _tryBot() {

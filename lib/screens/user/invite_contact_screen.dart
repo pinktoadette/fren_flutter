@@ -55,9 +55,9 @@ class InviteContactScreenState extends State<InviteContactScreen> {
                         leading: Text(
                             "${snapshot.data[index].givenName} ${snapshot.data[index].familyName}",
                             style: Theme.of(context).textTheme.bodyMedium),
-                        trailing: const Text(
-                          "Invite",
-                          style: TextStyle(color: Colors.green, fontSize: 15),
+                        trailing: Text(
+                          _i18n.translate("invite"),
+                          style: Theme.of(context).textTheme.displaySmall,
                         ));
                   },
                 );
