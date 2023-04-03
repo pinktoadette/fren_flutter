@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.16.0 <3.0.0"
+  sdk: ">=2.19.2 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -58,7 +58,6 @@ dependencies:
   geocoding: 2.0.5 # Used to translate User latitude and longitude coordinates into a readable address
   rxdart: 0.27.3 # required by geoflutterfire plugin that helps us to query users by geolocation center
   shimmer: 2.0.0 # Used to create placeholder widget while app is loading the image
-  timeago: 3.3.0 # Used to create fuzzy timestamps: (e.g. "3 minutes ago")
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
   place_picker: 0.10.0 # This plugin help us to create Passport feature
@@ -80,10 +79,12 @@ dependencies:
   firebase_dynamic_links: ^5.0.17
   web_socket_channel: ^2.3.0
   qr_flutter: ^4.0.0
+  flutter_typeahead: ^4.3.7
 
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre
+  intl: ^0.18.0
 
 dev_dependencies:
   flutter_test:

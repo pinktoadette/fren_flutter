@@ -24,14 +24,11 @@ class InviteCardState extends State<InviteCard> {
     double screenWidth = MediaQuery.of(context).size.width;
     final _i18n = AppLocalizations.of(context);
 
-    return SizedBox(
-      width: screenWidth * 0.25,
-      child: InkWell(
-        onTap: () {
-          _showQRSheet();
-        },
-        child: const Icon(Iconsax.scan_barcode),
-      ),
+    return InkWell(
+      onTap: () {
+        _showQRSheet();
+      },
+      child: const Icon(Iconsax.scan_barcode),
     );
   }
 

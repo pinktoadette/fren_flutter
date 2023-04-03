@@ -2,7 +2,6 @@ import 'package:fren_app/api/dislikes_api.dart';
 import 'package:fren_app/api/likes_api.dart';
 import 'package:fren_app/api/matches_api.dart';
 import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/dialogs/its_match_dialog.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -251,51 +250,5 @@ class _ProfileScreenState extends State<ProfileScreen> {
   /// Like user function
   Future<void> _likeUser(BuildContext context) async {
     /// Check match first
-    _matchesApi
-        .checkMatch(
-            userId: widget.user.userId,
-            onMatchResult: (result) {
-              if (result) {
-                /// Show It`s match dialog
-                showDialog(
-                    context: context,
-                    barrierDismissible: false,
-                    builder: (context) {
-                      return ItsMatchDialog(
-                        matchedUser: widget.user,
-                        showSwipeButton: false,
-                        swipeKey: null,
-                      );
-                    });
-              }
-            })
-        .then((_) {
-      /// Like user
-      _likesApi.likeUser(
-          likedUserId: widget.user.userId,
-          userDeviceToken: widget.user.userDeviceToken,
-          nMessage: "${UserModel().user.userFullname.split(' ')[0]}, "
-              "${_i18n.translate("liked_your_profile_click_and_see")}",
-          onLikeResult: (result) async {
-            if (result) {
-              // Show success message
-              showScaffoldMessage(
-                  context: context,
-                  message:
-                      '${_i18n.translate("like_sent_to")} ${widget.user.userFullname}');
-            } else if (!result) {
-              // Show error message
-              showScaffoldMessage(
-                  context: context,
-                  message: _i18n.translate("you_already_liked_this_profile"));
-            }
-
-            /// Validate to delete disliked user from disliked list
-            else if (result && widget.fromDislikesScreen) {
-              // Delete in database
-              await _dislikesApi.deleteDislikedUser(widget.user.userId);
-            }
-          });
-    });
   }
 }

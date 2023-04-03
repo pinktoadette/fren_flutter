@@ -29,7 +29,6 @@ class _ExploreBotState extends State<ExploreBotTab> {
     return Scaffold(
         body: Column(
       children: const <Widget>[
-        SearchBar(),
         ListAllBotsVertically(),
       ],
     ));

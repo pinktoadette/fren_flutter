@@ -1,8 +1,8 @@
+import 'package:flutter/material.dart';
 import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/invite_card.dart';
 import 'package:fren_app/widgets/search.dart';
@@ -49,9 +49,15 @@ class _ActivityTabState extends State<ActivityTab> {
           body: Column(
         children: [
           Row(
-            children: const [
-              SearchBar(),
-              InviteCard(),
+            children: [
+              SizedBox(
+                width: screenWidth * 0.75,
+                child: const SearchBarWidget(),
+              ),
+              SizedBox(
+                width: screenWidth * 0.25,
+                child: const InviteCard(),
+              ),
             ],
           )
         ],

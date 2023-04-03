@@ -149,7 +149,7 @@ class _Step1ContainerState extends State<Step1CreateBot> {
                   ),
                   const SizedBox(height: 20),
 
-                  /// bot repo
+                  /// bot initial prompt
                   TextFormField(
                     controller: _prompt,
                     decoration: InputDecoration(

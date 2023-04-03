@@ -9,7 +9,7 @@ import 'package:fren_app/widgets/custom_badge.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:timeago/timeago.dart' as timeago;
+// import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsScreen extends StatelessWidget {
   // Variables
@@ -98,8 +98,8 @@ class NotificationsScreen extends StatelessWidget {
                               ? notification[N_SENDER_FULLNAME]
                               : notification[N_SENDER_FULLNAME].split(" ")[0],
                           style: const TextStyle(fontSize: 18)),
-                      subtitle: Text("${notification[N_MESSAGE]}\n"
-                          "${timeago.format(notification[TIMESTAMP].toDate())}"),
+                      // subtitle: Text("${notification[N_MESSAGE]}\n"
+                      //     "${timeago.format(notification[TIMESTAMP].toDate())}"),
                       trailing: !notification[N_READ]
                           ? CustomBadge(text: i18n.translate("new"))
                           : null,
