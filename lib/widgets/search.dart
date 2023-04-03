@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
+import 'package:fren_app/api/machi/search.dart';
+import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -10,9 +13,7 @@ class SearchBarWidget extends StatefulWidget {
 }
 
 class _SearchBarState extends State<SearchBarWidget> {
-  final TextEditingController _searchQueryController = TextEditingController();
-  bool _isSearching = false;
-  String searchQuery = "Search query";
+  final _searchApi = SearchApi();
   static const List<User> _userOptions = <User>[];
 
   static String _displayStringForOption(User option) =>
@@ -25,21 +26,39 @@ class _SearchBarState extends State<SearchBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Autocomplete<User>(
-      displayStringForOption: _displayStringForOption,
-      optionsBuilder: (TextEditingValue textEditingValue) {
-        if (textEditingValue.text == '') {
-          return const Iterable<User>.empty();
-        }
-        return _userOptions.where((User option) {
-          return option
-              .toString()
-              .contains(textEditingValue.text.toLowerCase());
-        });
-      },
-      onSelected: (User selection) {
-        debugPrint('You just selected ${_displayStringForOption(selection)}');
-      },
-    );
+    return Padding(
+        padding: const EdgeInsets.only(left: 20),
+        child: TypeAheadField(
+          minCharsForSuggestions: 3,
+          textFieldConfiguration: TextFieldConfiguration(
+            autofocus: false,
+            style: DefaultTextStyle.of(context)
+                .style
+                .copyWith(fontStyle: FontStyle.italic),
+            decoration: const InputDecoration(
+                icon: Icon(Iconsax.search_normal),
+                border: InputBorder.none,
+                hintText: 'Search user or machi'),
+          ),
+          suggestionsCallback: (pattern) async {
+            return await _searchApi.searchUserAndBots(pattern);
+          },
+          itemBuilder: (context, Map<String, dynamic> suggestion) {
+            return ListTile(
+              leading: const Icon(Iconsax.user_add),
+              title: Text(suggestion['name']!),
+              subtitle: Text('\$${suggestion['price']}'),
+            );
+          },
+          onSuggestionSelected: (Map<String, dynamic> suggestion) {
+            // Navigator.of(context)
+            //     .push<void>(MaterialPageRoute(builder: (context) => ProductPage(product: suggestion)));
+          },
+          suggestionsBoxDecoration: SuggestionsBoxDecoration(
+            borderRadius: BorderRadius.circular(10.0),
+            elevation: 8.0,
+            color: Theme.of(context).cardColor,
+          ),
+        ));
   }
 }
