@@ -6,7 +6,6 @@ class Chatroom {
   /// Using types and Chatroom together
   final String chatroomId;
   final String? title;
-  final String? personality;
   final String creatorUser;
   final Bot bot;
   final String roomType;
@@ -16,26 +15,23 @@ class Chatroom {
   final int createdAt;
   final int updatedAt;
 
-  Chatroom({
-    required this.chatroomId,
-    required this.bot,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.roomType,
-    required this.messages,
-    required this.users,
-    required this.creatorUser,
-    this.blockedUsers,
-    this.title,
-    this.personality,
-  });
+  Chatroom(
+      {required this.chatroomId,
+      required this.bot,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.roomType,
+      required this.messages,
+      required this.users,
+      required this.creatorUser,
+      this.blockedUsers,
+      this.title});
 
   Chatroom copyWith(
       {String? chatroomId,
       Bot? bot,
       int? createdAt,
       int? updatedAt,
-      String? personality,
       String? title,
       List<types.Message>? messages,
       String? roomType,
@@ -48,7 +44,6 @@ class Chatroom {
         roomType: roomType ?? this.roomType,
         messages: messages ?? this.messages,
         users: users ?? this.users,
-        personality: personality ?? this.personality,
         creatorUser: creatorUser);
   }
 
@@ -58,7 +53,6 @@ class Chatroom {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'roomType': roomType,
-      'personality': personality,
       'creatorUser': creatorUser
     };
   }
@@ -103,7 +97,6 @@ class Chatroom {
       chatroomId: doc[ROOM_ID],
       bot: bot,
       title: doc['title'],
-      personality: doc['personality'],
       creatorUser: doc['createdBy'],
       users: users,
       messages: messages,

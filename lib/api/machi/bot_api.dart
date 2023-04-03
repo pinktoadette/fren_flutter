@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
@@ -22,14 +21,14 @@ class BotApi {
     required name,
     required domain,
     required subdomain,
-    required repoId,
+    required prompt,
+    required temperature,
     required price,
     required priceUnit,
     required about,
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-
     String url = '${baseUri}bot/create_bot';
     String uid = const Uuid().v1().substring(0, 8);
 
@@ -40,7 +39,8 @@ class BotApi {
       BOT_OWNER_ID: ownerId,
       BOT_DOMAIN: domain,
       BOT_SUBDOMAIN: subdomain,
-      BOT_REPO_ID: repoId,
+      BOT_PROMPT: prompt,
+      BOT_TEMPERATURE: temperature,
       BOT_PRICE: double.parse(price),
       BOT_PRICE_UNIT: priceUnit,
       BOT_ACTIVE: false,
@@ -50,7 +50,7 @@ class BotApi {
     };
 
     final dio = await auth.getDio();
-    dio.post(url, data: { ...data }).then((response) async{
+    dio.post(url, data: {...data}).then((response) async {
       final created = response.data;
       final Bot bot = created.toJson();
       onSuccess(bot.botId);
@@ -59,7 +59,6 @@ class BotApi {
       // Callback function
       onError(onError);
     });
-
   }
 
   Future<Bot> getBot({
@@ -69,11 +68,10 @@ class BotApi {
   }) async {
     String url = '${baseUri}bot/get_bot';
     final dio = await auth.getDio();
-    final response = await dio.get(url, data: { botId: botId });
+    final response = await dio.get(url, data: {botId: botId});
     final getData = response.data;
 
     return getData.toJson();
-
   }
 
   Future<Bot> updateBot({
@@ -84,7 +82,7 @@ class BotApi {
   }) async {
     String url = '${baseUri}bot/update_bot';
     final dio = await auth.getDio();
-    final response = await dio.put(url, data: { ...data, botId: botId });
+    final response = await dio.put(url, data: {...data, botId: botId});
     final getData = response.data;
     return getData.toJson();
   }
@@ -106,5 +104,4 @@ class BotApi {
 
     return getData.toJson();
   }
-
 }

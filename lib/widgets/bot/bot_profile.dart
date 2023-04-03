@@ -51,7 +51,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
     });
 
     if (widget.room != null) {
-      _selectedMood = widget.room!.personality;
+      _selectedMood = widget.room!.bot.prompt;
 
       // only creator of the room can change the mmod
       if (UserModel().user.userId == widget.room!.creatorUser) {
@@ -211,10 +211,10 @@ class _BotProfileCardState extends State<BotProfileCard> {
     setState(() {
       _selectedMood = value;
     });
-    Chatroom update = widget.room!.copyWith(personality: value);
-    await _chatroomApi.updateRoom(widget.roomIdx!, update);
-    showScaffoldMessage(
-        message: _i18n.translate("saved_success"), bgcolor: APP_SUCCESS);
+    // Chatroom update = widget.room!.copyWith(personality: value);
+    // await _chatroomApi.updateRoom(widget.roomIdx!, update);
+    // showScaffoldMessage(
+    //     message: _i18n.translate("saved_success"), bgcolor: APP_SUCCESS);
   }
 
   void _tryBot() {

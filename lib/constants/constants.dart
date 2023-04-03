@@ -60,7 +60,6 @@ const BOT_ID = 'botId';
 const BOT_ABOUT = "about";
 const BOT_NAME = 'name';
 const BOT_PROFILE_PHOTO = 'photoUrl';
-const BOT_REPO_ID = 'repoId';
 const BOT_MODEL = 'model';
 const BOT_DOMAIN = "domain";
 const BOT_SUBDOMAIN = 'subdomain';
@@ -71,6 +70,8 @@ const BOT_ACTIVE = "isActive";
 const BOT_ACTIVE_STATUS = "activeStatus"; //pause ?
 const BOT_ADMIN_STATUS = "adminStatus";
 const BOT_ADMIN_NOTE = "adminNote";
+const BOT_PROMPT = "prompt";
+const BOT_TEMPERATURE = "temperature";
 
 /// trials
 const BOT_TRIAL_BOT_ID = BOT_ID;
@@ -218,7 +219,6 @@ const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
 const String ROOM_ID = "chatroomId";
 const String ROOM_HAS_MESSAGES = "hasMessages";
 const String ROOM_TITLE = "title";
-const String ROOM_PERSONALITY = "personality";
 const String ROOM_CREATED_BY = "createdBy";
 
 /// chat

@@ -25,7 +25,7 @@ class _Step1ContainerState extends State<Step1CreateBot> {
   final _about = TextEditingController();
   String? _selectedDomain;
   final _subdomain = TextEditingController();
-  final _repoId = TextEditingController();
+  final _prompt = TextEditingController();
   final _price = TextEditingController();
   late List<String> _domainList = ["1"];
   late AppLocalizations _i18n;
@@ -151,9 +151,9 @@ class _Step1ContainerState extends State<Step1CreateBot> {
 
                   /// bot repo
                   TextFormField(
-                    controller: _repoId,
+                    controller: _prompt,
                     decoration: InputDecoration(
-                      labelText: _i18n.translate("bot_repo"),
+                      labelText: _i18n.translate("bot_prompt"),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     validator: (name) {
@@ -258,7 +258,8 @@ class _Step1ContainerState extends State<Step1CreateBot> {
         name: _nameController.value.text.trim(),
         domain: _selectedDomain,
         subdomain: _subdomain.value.text.trim(),
-        repoId: _repoId.value.text.trim(),
+        prompt: _prompt.value.text.trim(),
+        temperature: 0.5,
         price: _price.value.text.trim(),
         about: _about.value.text.trim(),
         onSuccess: (botId) async {

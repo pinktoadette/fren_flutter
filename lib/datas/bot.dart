@@ -31,10 +31,11 @@ class Bot {
   final String subdomain;
   final int createdAt;
   final int updatedAt;
+  final String prompt;
+  final double temperature;
   final bool? isActive;
   final String? adminStatus;
   final String? model;
-  final String? repoId;
   final String? profilePhoto;
   final String? adminNote;
   final double? price;
@@ -51,10 +52,11 @@ class Bot {
       required this.createdAt,
       required this.about,
       required this.updatedAt,
+      required this.prompt,
+      required this.temperature,
       this.isActive,
       this.adminStatus,
       this.model,
-      this.repoId,
       this.adminNote,
       this.price,
       this.priceUnit,
@@ -68,7 +70,6 @@ class Bot {
         'model': model,
         'domain': domain,
         'subdomain': subdomain,
-        'repoId': repoId,
         'price': price,
         'priceUnit': priceUnit,
         'botOwnerId': botOwnerId,
@@ -86,12 +87,13 @@ class Bot {
       profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
       name: doc[BOT_NAME],
       model: doc[BOT_MODEL] ?? '',
-      repoId: doc[BOT_REPO_ID] ?? '',
       subdomain: doc[BOT_SUBDOMAIN] ?? '',
       botOwnerId: doc[BOT_OWNER_ID],
       about: doc[BOT_ABOUT],
       domain: doc[BOT_DOMAIN],
       isActive: doc[BOT_ACTIVE] ?? false,
+      prompt: doc[BOT_PROMPT],
+      temperature: doc[BOT_TEMPERATURE] ?? 0.5,
       createdAt: doc[CREATED_AT],
       updatedAt: doc[UPDATED_AT],
       adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',

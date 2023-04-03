@@ -60,7 +60,6 @@ class DatabaseService {
       'name TEXT, '
       'domain TEXT, '
       'subdomain TEXT, '
-      'repoId TEXT, '
       'about TEXT)',
     );
 
@@ -70,7 +69,6 @@ class DatabaseService {
       'chatroomId KEY UNIQUE,'
       'hasMessages INT, '
       'title TEXT, '
-      'personality TEXT, '
       'creatorId TEXT NOT NULL, '
       'botId TEXT NOT NULL, '
       'createdAt INT,'
@@ -129,7 +127,6 @@ class DatabaseService {
           'name, '
           'domain, '
           'subdomain, '
-          'repoId, '
           'about) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)',
           [
             bot[CREATED_AT].millisecondsSinceEpoch,
@@ -139,7 +136,6 @@ class DatabaseService {
             bot[BOT_NAME],
             bot[BOT_DOMAIN],
             bot[BOT_SUBDOMAIN],
-            bot[BOT_REPO_ID],
             bot[BOT_ABOUT]
           ]);
     }
@@ -188,7 +184,6 @@ class DatabaseService {
           'chatroomId,'
           'hasMessages, '
           'title, '
-          'personality, '
           'creatorId, '
           'botId, '
           'createdAt,'
@@ -197,7 +192,6 @@ class DatabaseService {
             room[ROOM_ID],
             room[ROOM_HAS_MESSAGES],
             room[ROOM_TITLE],
-            room[ROOM_PERSONALITY],
             room[ROOM_CREATED_BY],
             room[BOT_ID],
             room[CREATED_AT],
