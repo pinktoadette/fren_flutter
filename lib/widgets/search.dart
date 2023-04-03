@@ -38,7 +38,7 @@ class _SearchBarState extends State<SearchBarWidget> {
             decoration: const InputDecoration(
                 icon: Icon(Iconsax.search_normal),
                 border: InputBorder.none,
-                hintText: 'Search user or machi'),
+                hintText: 'Search user'),
           ),
           suggestionsCallback: (pattern) async {
             return await _searchApi.searchUserAndBots(pattern);
@@ -46,8 +46,8 @@ class _SearchBarState extends State<SearchBarWidget> {
           itemBuilder: (context, Map<String, dynamic> suggestion) {
             return ListTile(
               leading: const Icon(Iconsax.user_add),
-              title: Text(suggestion['name']!),
-              subtitle: Text('\$${suggestion['price']}'),
+              title: Text(suggestion['username']!),
+              subtitle: Text('\$${suggestion['fullname']}'),
             );
           },
           onSuggestionSelected: (Map<String, dynamic> suggestion) {
