@@ -25,18 +25,12 @@ class InviteCardState extends State<InviteCard> {
     final _i18n = AppLocalizations.of(context);
 
     return SizedBox(
-      height: 100,
-      width: screenWidth,
+      width: screenWidth * 0.25,
       child: InkWell(
         onTap: () {
           _showQRSheet();
         },
-        child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text(_i18n.translate("invite_user"),
-              style: Theme.of(context).textTheme.titleMedium),
-          const SizedBox(width: 10),
-          const Icon(Iconsax.scan_barcode),
-        ]),
+        child: const Icon(Iconsax.scan_barcode),
       ),
     );
   }

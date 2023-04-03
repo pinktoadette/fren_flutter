@@ -126,6 +126,7 @@ const String USER_ENABLE_MODE = "enablMode";
 const String USER_PROFILE_FILLED = "isProfileFilled";
 const String USER_PROFILE_PHOTO = "photoUrl";
 const String USER_FULLNAME = "fullname";
+const String USER_USERNAME = "username";
 const String USER_GENDER = "gender";
 const String USER_BIRTH_DAY = "birthDay";
 const String USER_BIRTH_MONTH = "birthMonth";

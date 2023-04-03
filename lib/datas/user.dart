@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/constants/constants.dart';
 
-
 class User {
   /// User info
   final String userId;
@@ -13,7 +12,7 @@ class User {
   final int userBirthDay;
   final int userBirthMonth;
   final int userBirthYear;
-  final String userSchool;
+  final String username;
   final String userPhoneNumber;
   final String userEmail;
   final String userCountry;
@@ -38,44 +37,43 @@ class User {
   final Map<String, dynamic>? userEnableMode;
 
   // Constructor
-  User({
-    required this.userId,
-    required this.isFrankInitiated,
-    required this.isProfileFilled,
-    required this.userProfilePhoto,
-    required this.userFullname,
-    required this.userGender,
-    required this.userBirthDay,
-    required this.userBirthMonth,
-    required this.userBirthYear,
-    required this.userSchool,
-    required this.userBio,
-    required this.userPhoneNumber,
-    required this.userEmail,
-    required this.userGallery,
-    required this.userCountry,
-    required this.userLocality,
-    required this.userGeoPoint,
-    required this.userSettings,
-    required this.userStatus,
-    required this.userLevel,
-    required this.userIsVerified,
-    required this.userRegDate,
-    required this.userLastLogin,
-    required this.userLastUpdate,
-    required this.userDeviceToken,
-    required this.userTotalLikes,
-    required this.userTotalVisits,
-    required this.userTotalDisliked,
-    required this.userEnableMode,
-    required this.userInterest,
-    required this.userIndustry,
-    required this.userJob
-  });
+  User(
+      {required this.userId,
+      required this.isFrankInitiated,
+      required this.isProfileFilled,
+      required this.userProfilePhoto,
+      required this.userFullname,
+      required this.userGender,
+      required this.userBirthDay,
+      required this.userBirthMonth,
+      required this.userBirthYear,
+      required this.username,
+      required this.userBio,
+      required this.userPhoneNumber,
+      required this.userEmail,
+      required this.userGallery,
+      required this.userCountry,
+      required this.userLocality,
+      required this.userGeoPoint,
+      required this.userSettings,
+      required this.userStatus,
+      required this.userLevel,
+      required this.userIsVerified,
+      required this.userRegDate,
+      required this.userLastLogin,
+      required this.userLastUpdate,
+      required this.userDeviceToken,
+      required this.userTotalLikes,
+      required this.userTotalVisits,
+      required this.userTotalDisliked,
+      required this.userEnableMode,
+      required this.userInterest,
+      required this.userIndustry,
+      required this.userJob});
 
   /// factory user object
   factory User.fromDocument(Map<String, dynamic> doc) {
-    final _interest = doc[USER_INTERESTS] .cast<String>();
+    final _interest = doc[USER_INTERESTS].cast<String>();
 
     return User(
       userId: doc[USER_ID],
@@ -87,7 +85,7 @@ class User {
       userBirthDay: doc[USER_BIRTH_DAY] ?? 1,
       userBirthMonth: doc[USER_BIRTH_MONTH] ?? 1,
       userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
-      userSchool: doc[USER_SCHOOL] ?? '',
+      username: doc[USER_USERNAME] ?? '',
       userJob: doc[USER_JOB] ?? '',
       userInterest: _interest ?? [],
       userIndustry: doc[USER_INDUSTRY] ?? '',

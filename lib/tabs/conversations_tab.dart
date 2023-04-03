@@ -76,10 +76,6 @@ class ConversationsTab extends StatelessWidget {
                               Text(
                                 room.bot.domain,
                                 style: Theme.of(context).textTheme.labelSmall,
-                              ),
-                              Text(
-                                "mood: ${room.personality}",
-                                style: Theme.of(context).textTheme.labelSmall,
                               )
                             ]),
                         Row(

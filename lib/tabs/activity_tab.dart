@@ -5,6 +5,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/invite_card.dart';
+import 'package:fren_app/widgets/search.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
@@ -45,24 +46,16 @@ class _ActivityTabState extends State<ActivityTab> {
 
     if (_isInitiatedFrank == true) {
       return Scaffold(
-          body: Stack(children: [
-        SizedBox(
-            height: screenHeight,
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: const [
-                  InviteCard(),
-                ])),
-        // ActivityWidget(),
-        // Positioned(
-        //     bottom: 0.0,
-        //     child: SizedBox(
-        //       width: screenWidth,
-        //       child: const QuickChat(),
-        //     )),
-      ]));
+          body: Column(
+        children: [
+          Row(
+            children: const [
+              SearchBar(),
+              InviteCard(),
+            ],
+          )
+        ],
+      ));
     }
     return Scaffold(
         body: Column(children: [
