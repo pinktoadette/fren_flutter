@@ -43,14 +43,14 @@ class _SearchBarState extends State<SearchBarWidget> {
           suggestionsCallback: (pattern) async {
             return await _searchApi.searchUserAndBots(pattern);
           },
-          itemBuilder: (context, Map<String, dynamic> suggestion) {
+          itemBuilder: (context, dynamic suggestion) {
             return ListTile(
               leading: const Icon(Iconsax.user_add),
-              title: Text(suggestion['username']!),
-              subtitle: Text('\$${suggestion['fullname']}'),
+              title: Text(suggestion['fullname']!),
+              subtitle: Text('\@${suggestion['username']}'),
             );
           },
-          onSuggestionSelected: (Map<String, dynamic> suggestion) {
+          onSuggestionSelected: (dynamic suggestion) {
             // Navigator.of(context)
             //     .push<void>(MaterialPageRoute(builder: (context) => ProductPage(product: suggestion)));
           },
