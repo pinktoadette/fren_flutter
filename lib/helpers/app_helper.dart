@@ -134,9 +134,7 @@ class AppHelper {
     final Geoflutterfire geo = Geoflutterfire();
 
     /// Set current user location [GeoFirePoint]
-    final GeoFirePoint center = geo.point(
-        latitude: UserModel().user.userGeoPoint.latitude,
-        longitude: UserModel().user.userGeoPoint.longitude);
+    final GeoFirePoint center = geo.point(latitude: 0, longitude: 0);
 
     /// Return distance (double) between users then round to int
     return center.kmDistance(lat: userLat, lng: userLong).round();

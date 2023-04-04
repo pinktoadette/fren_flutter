@@ -512,70 +512,6 @@ class UserModel extends Model {
     String locality = '';
 
     GeoFirePoint geoPoint;
-
-    // Check the passport param
-    if (!isPassport) {
-      /// Update user location: Country, City and Geo Data
-      ///
-      /// Get user current location using GPS
-      final Position position = await Geolocator.getCurrentPosition(
-          desiredAccuracy: LocationAccuracy.high);
-
-      /// Get User location from formatted address
-      final Placemark place = await _appHelper.getUserAddress(
-          position.latitude, position.longitude);
-      // Set values
-      country = place.country ?? '';
-      // Check
-      if (place.locality != '') {
-        locality = place.locality.toString();
-      } else {
-        locality = place.subAdministrativeArea.toString();
-      }
-
-      /// Set Geolocation point
-      geoPoint = _geo.point(
-          latitude: position.latitude, longitude: position.longitude);
-    } else {
-      // Get location data from passort feature
-      //country = locationResult.country.name ?? '';
-      // Check country result
-      if (locationResult!.country!.name != null) {
-        country = locationResult.country!.name.toString();
-      }
-
-      // Check locality result
-      if (locationResult.city!.name != null) {
-        locality = locationResult.city!.name.toString();
-      } else {
-        locality = locationResult.locality.toString();
-      }
-
-      // Get Latitute & Longitude from passort feature
-      LatLng latAndlong = locationResult.latLng!;
-
-      // Get information from passport feature
-      geoPoint = _geo.point(
-          latitude: latAndlong.latitude, longitude: latAndlong.longitude);
-    }
-
-    /// Check place result before updating user info
-    if (country != '') {
-      // Update user location
-      await UserModel().updateUserData(userId: UserModel().user.userId, data: {
-        USER_GEO_POINT: geoPoint.data,
-        USER_COUNTRY: country,
-        USER_LOCALITY: locality
-      });
-
-      // Show success message
-      onSuccess();
-      debugPrint('updateUserLocation() -> success');
-    } else {
-      // Show error message
-      onSuccess();
-      debugPrint('updateUserLocation() -> success');
-    }
   }
 
   /// Validate the user's maximum distance to
@@ -709,15 +645,11 @@ class UserModel extends Model {
     usr = await _firestore.collection(C_USERS).doc(userId).get();
 
     if (!usr.exists) {
-      // add some default values
-      final GeoFirePoint geoPoint =
-          _geo.point(latitude: 40.7128, longitude: 74.0060);
       await _firestore.collection(C_USERS).doc(user.uid).set(<String, dynamic>{
         USER_ID: user.uid,
         USER_PROFILE_FILLED: false,
         USER_PROFILE_PHOTO: user.photoURL,
         USER_FULLNAME: user.displayName,
-        USER_GEO_POINT: geoPoint.data,
         USER_LAST_LOGIN: FieldValue.serverTimestamp(),
         CREATED_AT: FieldValue.serverTimestamp(),
         UPDATED_AT: FieldValue.serverTimestamp(),

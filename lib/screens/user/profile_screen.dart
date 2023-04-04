@@ -129,8 +129,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         _rowProfileInfo(
                           context,
                           icon: Icon(Iconsax.location, size: _iconSize),
-                          title: widget.user.userLocality != ''
-                              ? "${widget.user.userLocality}, ${widget.user.userCountry}"
+                          title: widget.user.userCountry != ''
+                              ? widget.user.userCountry
                               : "Location not set",
                         ),
 

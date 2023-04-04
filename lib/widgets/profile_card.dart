@@ -116,7 +116,7 @@ class ProfileCard extends StatelessWidget {
                           // Locality & Country
                           Expanded(
                             child: Text(
-                              "${user.userLocality}, ${user.userCountry}",
+                              user.userCountry,
                               style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
@@ -183,18 +183,6 @@ class ProfileCard extends StatelessWidget {
                 ),
               ),
             ),
-          ),
-
-          /// Show location distance
-          Positioned(
-            top: 10,
-            left: page == 'discover' ? 8 : 5,
-            child: CustomBadge(
-                icon: page == 'discover'
-                    ? const Icon(Iconsax.location1, color: Colors.white)
-                    : null,
-                text:
-                    '${_appHelper.getDistanceBetweenUsers(userLat: user.userGeoPoint.latitude, userLong: user.userGeoPoint.longitude)}km'),
           ),
 
           /// Show Like or Dislike

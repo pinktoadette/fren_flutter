@@ -16,8 +16,6 @@ class User {
   final String userPhoneNumber;
   final String userEmail;
   final String userCountry;
-  final String userLocality;
-  final GeoPoint userGeoPoint;
   final String userStatus;
   final bool userIsVerified;
   final String userLevel;
@@ -50,8 +48,6 @@ class User {
       required this.userEmail,
       required this.userGallery,
       required this.userCountry,
-      required this.userLocality,
-      required this.userGeoPoint,
       required this.userSettings,
       required this.userStatus,
       required this.userLevel,
@@ -89,8 +85,6 @@ class User {
         userEmail: doc[USER_EMAIL] ?? '',
         userGallery: doc[USER_GALLERY],
         userCountry: doc[USER_COUNTRY] ?? '',
-        userLocality: doc[USER_LOCALITY] ?? '',
-        userGeoPoint: doc[USER_GEO_POINT]['geopoint'],
         userSettings: doc[USER_SETTINGS],
         userStatus: doc[USER_STATUS] ?? 'active',
         userIsVerified: doc[USER_IS_VERIFIED] ?? false,

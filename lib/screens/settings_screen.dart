@@ -94,8 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ListTile(
                           leading: Icon(Iconsax.location1,
                               color: Theme.of(context).primaryColor),
-                          title: Text(
-                              '${UserModel().user.userCountry}, ${UserModel().user.userLocality}'),
+                          title: Text(UserModel().user.userCountry),
                           trailing: TextButton(
                             style: ButtonStyle(
                               backgroundColor: MaterialStateProperty.all<Color>(
