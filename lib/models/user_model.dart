@@ -90,13 +90,17 @@ class UserModel extends Model {
   }
 
   /// Update user object [User]
-  void updateUserObject(Map<String, dynamic> userDoc) {
+  void updateUserObject(Map<String, dynamic> userDoc) async {
     user = User.fromDocument(userDoc);
     notifyListeners();
     debugPrint('User object -> updated!');
 
     final UserController userController = Get.find();
     userController.setUser(user);
+
+    // external api
+    final mApi = UserApi();
+    await mApi.updateUser(userDoc);
   }
 
   /// Update user data
@@ -108,10 +112,6 @@ class UserModel extends Model {
     // external api
     final mApi = UserApi();
     await mApi.updateUser(data);
-
-    // local device
-    final DatabaseService _databaseService = DatabaseService();
-    _databaseService.updateUser(data);
   }
 
   /// Update user device token and

@@ -21,4 +21,6 @@ class SearchApi {
     final getData = response.data;
     return getData;
   }
+
+  /// calls from firebase
 }

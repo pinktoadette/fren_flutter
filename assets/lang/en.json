@@ -350,6 +350,7 @@
   "publish": "Publish",
   "saved_success": "Saved",
   "search": "Search",
+  "search_not_found": "Nothing found",
   "select_industry": "Select your major or industry",
   "select_interest": "Select your interest",
   "resricted_to_creator": "Only creator/admin can edit",
