@@ -1,3 +1,4 @@
+import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -17,19 +18,34 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  /// Local variables
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final double _iconSize = 16;
+  final _userApi = UserApi();
+  Map<String, dynamic> friendStatus = {"status": "UNFRIEND", "isRequester": 0};
+  bool isFrend = false;
 
   @override
   void initState() {
+    _isUserFriend();
     super.initState();
   }
 
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _isUserFriend() async {
+    final user = await _userApi.getOneFriend(widget.user.userId);
+    final friend =
+        user[0]["friends"].firstWhere((u) => u['userId'] == widget.user.userId);
+    setState(() {
+      friendStatus = {
+        "status": friend["fStatus"],
+        "isRequester": friend["isRequester"]
+      };
+    });
   }
 
   @override
@@ -93,44 +109,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            /// Show VIP badge for current user
-                            // UserModel().user.userId == widget.user.userId &&
-                            //         UserModel().userIsVip
-                            //     ? Container(
-                            //         margin: const EdgeInsets.only(right: 5),
-                            //         child: Image.asset(
-                            //             'assets/images/crow_badge.png',
-                            //             width: 25,
-                            //             height: 25))
-                            //     : const SizedBox(width: 0, height: 0),
-
-                            ElevatedButton(
-                              onPressed: () {},
-                              child: const FittedBox(
-                                  fit: BoxFit.fitWidth,
-                                  child: Icon(Iconsax.message)),
-                            ),
-
-                            /// Location distance
-                            // CustomBadge(
-                            //     icon: const Icon(Iconsax.location,
-                            //         color: Colors.white),
-                            //     text:
-                            //         '${_appHelper.getDistanceBetweenUsers(userLat: widget.user.userGeoPoint.latitude, userLong: widget.user.userGeoPoint.longitude)}km')
-                          ],
+                          children: [_buttonDisplay(context)],
                         ),
 
-                        const SizedBox(height: 5),
-
-                        /// Home location
-                        _rowProfileInfo(
-                          context,
-                          icon: Icon(Iconsax.location, size: _iconSize),
-                          title: widget.user.userCountry != ''
-                              ? widget.user.userCountry
-                              : "Location not set",
-                        ),
+                        // interest
+                        _rowProfileInfo(context,
+                            icon: Icon(Iconsax.heart, size: _iconSize),
+                            title: widget.user.userInterest.join(", ")),
 
                         const SizedBox(height: 5),
 
@@ -169,11 +154,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
       children: [
         icon,
         const SizedBox(width: 10),
-        Padding(
+        Flexible(
+            child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
-        ),
+        ))
       ],
     );
+  }
+
+  Widget _buttonDisplay(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
+    switch (friendStatus["fStatus"]) {
+      case 'REQUEST':
+        ElevatedButton(
+          onPressed: () {},
+          child: friendStatus["fStatus"] == 1
+              ? const Text("You sent a request")
+              : const Text("Accept Request"),
+        );
+        break;
+      case 'ACTIVE':
+        ElevatedButton(
+          onPressed: () {},
+          child: const Icon(Iconsax.message),
+        );
+        break;
+      case 'BLOCK':
+        ElevatedButton(
+          onPressed: () {},
+          child: const Text("Unblock"),
+        );
+        break;
+      case 'UNFRIEND':
+        ElevatedButton.icon(
+            onPressed: () {
+              //OnPressed Logic
+            },
+            icon: const Icon(Iconsax.message),
+            label: const Text("Send Request"));
+        break;
+    }
+    return const Text("");
   }
 }

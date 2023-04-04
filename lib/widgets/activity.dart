@@ -114,8 +114,8 @@ class _ActivityWidgetState extends State<ActivityWidget> {
                                                                             .about))
                                                               ],
                                                             ),
-                                                            Row(
-                                                              children: const [
+                                                            const Row(
+                                                              children: [
                                                                 SizedBox(
                                                                     height: 50),
                                                                 Text(
