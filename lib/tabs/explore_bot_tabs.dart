@@ -2,7 +2,6 @@ import 'package:fren_app/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/widgets/bot/all_bots_vertical.dart';
-import 'package:fren_app/widgets/search.dart';
 import 'package:get/get.dart';
 
 /// Gets recent new bots
@@ -26,9 +25,9 @@ class _ExploreBotState extends State<ExploreBotTab> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
         body: Column(
-      children: const <Widget>[
+      children: <Widget>[
         ListAllBotsVertically(),
       ],
     ));

@@ -8,16 +8,11 @@ class Processing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
+    return const Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: const <Widget>[
+        children: <Widget>[
           Frankloader(),
-          // const SizedBox(height: 10),
-          // Text(text ?? i18n.translate("processing"), style: const TextStyle(fontSize: 18,
-          // fontWeight: FontWeight.w500)),
-          // const SizedBox(height: 5),
-          // Text(i18n.translate("please_wait"), style: const TextStyle(fontSize: 16)),
         ],
       ),
     );

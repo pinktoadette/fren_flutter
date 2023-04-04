@@ -42,7 +42,6 @@ class _ActivityTabState extends State<ActivityTab> {
   Widget build(BuildContext context) {
     /// Initialization
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     if (_isInitiatedFrank == true) {
       return Scaffold(

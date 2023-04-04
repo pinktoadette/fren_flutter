@@ -1,10 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/blocked_users_api.dart';
-import 'package:fren_app/api/conversations_api.dart';
-import 'package:fren_app/api/matches_api.dart';
-import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
-import 'package:fren_app/api/visits_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -27,10 +23,6 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
 
   /// Api instances
   final _notificationsApi = NotificationsApi();
-  final _conversationsApi = ConversationsApi();
-  final _messagesApi = MessagesApi();
-  final _matchesApi = MatchesApi();
-  final _visitsApi = VisitsApi();
 
   /// DELETE USER ACCOUNT
   ///
@@ -55,38 +47,8 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
     }
     debugPrint('Profile images -> deleted...');
 
-    /// DELETE USER MATCHES
-    ///
-    // Get user matches
-    final List<DocumentSnapshot<Map<String, dynamic>>> _matches =
-        await _matchesApi.getMatches();
-    // Check matches
-    if (_matches.isNotEmpty) {
-      // Loop matches to be deleted
-      for (var match in _matches) {
-        await _matchesApi.deleteMatch(match.id);
-      }
-    }
-    debugPrint('Matches -> deleted...');
-
     /// DELETE USER CONVERSATIONS AND CHAT MESSAGES
-    ///
-    /// Get user conversations
-    final List<DocumentSnapshot<Map<String, dynamic>>> _conversations =
-        (await _conversationsApi.getConversations().first).docs;
-    // Check conversations
-    if (_conversations.isNotEmpty) {
-      // Loop conversations to be deleted
-      for (var converse in _conversations) {
-        await _conversationsApi.deleteConverce(converse.id, isDoubleDel: true);
-        // Delete chat for current user and for other users
-        await _messagesApi.deleteChat(converse.id, isDoubleDel: true);
-      }
-    }
-    debugPrint('Conversations -> deleted...');
-
-    /// DELETE VISITED USERS
-    await _visitsApi.deleteVisitedUsers();
+    /// @todo
 
     /// DELETE NOTIFICATIONS RECEIVED BY USER
     ///

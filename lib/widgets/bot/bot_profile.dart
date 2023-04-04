@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:flutter/services.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -11,8 +10,6 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class BotProfileCard extends StatefulWidget {

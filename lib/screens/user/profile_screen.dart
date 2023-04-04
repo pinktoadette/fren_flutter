@@ -1,4 +1,3 @@
-import 'package:fren_app/api/matches_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -20,7 +19,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   /// Local variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  final MatchesApi _matchesApi = MatchesApi();
   late AppLocalizations _i18n;
   final double _iconSize = 16;
 

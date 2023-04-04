@@ -34,9 +34,7 @@ class InviteCardState extends State<InviteCard> {
 
   void _showQRSheet() {
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
-    String myUrl =
-        "https://mymachi.app/u/dfsfsdsdfsdfsdfdsfsdfsdfsdfsdfsdfsdfsd${UserModel().user.userFullname}";
+    String myUrl = "https://mymachi.app/u/${UserModel().user.userFullname}";
 
     showModalBottomSheet<void>(
       context: context,
@@ -44,7 +42,7 @@ class InviteCardState extends State<InviteCard> {
       builder: (BuildContext context) {
         return Scaffold(
           body: SizedBox(
-            height: MediaQuery.of(context).copyWith().size.height,
+            height: height,
             child: Column(children: [
               Padding(
                   padding: const EdgeInsets.all(20),

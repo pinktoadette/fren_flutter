@@ -85,11 +85,11 @@ class _SplashScreenState extends State<SplashScreen> {
       body: SafeArea(
         child: Container(
           color: Colors.white,
-          child: Center(
+          child: const Center(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: const [Frankloader()],
+                children: [Frankloader()],
               ),
             ),
           ),
