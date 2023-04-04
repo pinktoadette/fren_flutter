@@ -38,14 +38,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   void _isUserFriend() async {
     final user = await _userApi.getOneFriend(widget.user.userId);
-    final friend =
-        user[0]["friends"].firstWhere((u) => u['userId'] == widget.user.userId);
-    setState(() {
-      friendStatus = {
-        "status": friend["fStatus"],
-        "isRequester": friend["isRequester"]
-      };
-    });
+    if (user.isNotEmpty) {
+      final friend = user[0]["friends"]
+          .firstWhere((u) => u['userId'] == widget.user.userId);
+      setState(() {
+        friendStatus = {
+          "status": friend["fStatus"],
+          "isRequester": friend["isRequester"]
+        };
+      });
+    }
   }
 
   @override
@@ -167,34 +169,37 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double width = MediaQuery.of(context).size.width;
     switch (friendStatus["fStatus"]) {
       case 'REQUEST':
-        ElevatedButton(
-          onPressed: () {},
-          child: friendStatus["fStatus"] == 1
-              ? const Text("You sent a request")
-              : const Text("Accept Request"),
+        if (friendStatus["fStatus"] == 1) {
+          return const Text("You send a request");
+        }
+        return Row(
+          children: [
+            Text("blah sent you a request"),
+            ElevatedButton(
+                onPressed: () {}, child: const Text("Accept Request")),
+            ElevatedButton(
+                onPressed: () {}, child: const Text("Reject Request")),
+          ],
         );
-        break;
       case 'ACTIVE':
-        ElevatedButton(
+        return ElevatedButton(
           onPressed: () {},
           child: const Icon(Iconsax.message),
         );
-        break;
       case 'BLOCK':
-        ElevatedButton(
+        return ElevatedButton(
           onPressed: () {},
           child: const Text("Unblock"),
         );
-        break;
-      case 'UNFRIEND':
-        ElevatedButton.icon(
-            onPressed: () {
+      default:
+        return ElevatedButton.icon(
+            onPressed: () async {
               //OnPressed Logic
+              await _userApi.sendRequest(widget.user.userId);
+              _isUserFriend();
             },
             icon: const Icon(Iconsax.message),
             label: const Text("Send Request"));
-        break;
     }
-    return const Text("");
   }
 }

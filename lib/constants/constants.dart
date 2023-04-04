@@ -95,9 +95,7 @@ const String C_FLAGGED_USERS = "FlaggedUsers";
 const String C_CONNECTIONS = "Connections";
 const String C_MATCHES = "Matches";
 const String C_CONVERSATIONS = "Conversations";
-const String C_LIKES = "Likes";
 const String C_VISITS = "Visits";
-const String C_DISLIKES = "Dislikes";
 const String C_MESSAGES = "Messages";
 const String C_NOTIFICATIONS = "Notifications";
 const String C_BLOCKED_USERS = 'BlockedUsers';
@@ -178,13 +176,13 @@ const String LAST_MESSAGE = "last_message";
 
 /// DATABASE FIELDS FOR Notifications COLLECTION ///
 ///
-const N_SENDER_ID = "n_sender_id";
-const N_SENDER_FULLNAME = "n_sender_fullname";
-const N_SENDER_PHOTO_LINK = "n_sender_photo_link";
-const N_RECEIVER_ID = "n_receiver_id";
-const N_TYPE = "n_type";
-const N_MESSAGE = "n_message";
-const N_READ = "n_read";
+const NOTIF_SENDER_ID = "senderId";
+const NOTIF_SENDER_FULLNAME = "senderFullname";
+const NOTIF_SENDER_PHOTO_LINK = "senderPhoto";
+const NOTIF_RECEIVER_ID = "receiverId";
+const NOTIF_TYPE = "type";
+const NOTIF_MESSAGE = "message";
+const NOTIF_READ = "read";
 
 /// DATABASE FIELDS FOR Likes COLLECTION
 ///

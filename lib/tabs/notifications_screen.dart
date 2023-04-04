@@ -72,18 +72,19 @@ class NotificationsScreen extends StatelessWidget {
                   /// Get notification DocumentSnapshot<Map<String, dynamic>>
                   final DocumentSnapshot<Map<String, dynamic>> notification =
                       snapshot.data!.docs[index];
-                  final String? nType = notification[N_TYPE];
+                  final String? nType = notification[NOTIF_TYPE];
                   // Handle notification icon
                   late ImageProvider bgImage;
                   if (nType == 'alert') {
                     bgImage = const AssetImage('assets/images/app_logo.png');
                   } else {
-                    bgImage = NetworkImage(notification[N_SENDER_PHOTO_LINK]);
+                    bgImage =
+                        NetworkImage(notification[NOTIF_SENDER_PHOTO_LINK]);
                   }
 
                   /// Show notification
                   return Container(
-                    color: !notification[N_READ]
+                    color: !notification[NOTIF_READ]
                         ? Theme.of(context).primaryColor.withAlpha(40)
                         : null,
                     child: ListTile(
@@ -94,24 +95,27 @@ class NotificationsScreen extends StatelessWidget {
                             {debugPrint(e.toString())},
                       ),
                       title: Text(
-                          notification[N_TYPE] == 'alert'
-                              ? notification[N_SENDER_FULLNAME]
-                              : notification[N_SENDER_FULLNAME].split(" ")[0],
+                          notification[NOTIF_TYPE] == 'alert'
+                              ? notification[NOTIF_SENDER_FULLNAME]
+                              : notification[NOTIF_SENDER_FULLNAME]
+                                  .split(" ")[0],
                           style: const TextStyle(fontSize: 18)),
-                      // subtitle: Text("${notification[N_MESSAGE]}\n"
+                      // subtitle: Text("${notification[NOTIF_MESSAGE]}\n"
                       //     "${timeago.format(notification[TIMESTAMP].toDate())}"),
-                      trailing: !notification[N_READ]
+                      trailing: !notification[NOTIF_READ]
                           ? CustomBadge(text: i18n.translate("new"))
                           : null,
                       onTap: () async {
                         /// Set notification read = true
-                        await notification.reference.update({N_READ: true});
+                        await notification.reference.update({NOTIF_READ: true});
 
                         /// Handle notification click
                         _appNotifications.onNotificationClick(context,
-                            nType: notification.data()?[N_TYPE] ?? '',
-                            nSenderId: notification.data()?[N_SENDER_ID] ?? '',
-                            nMessage: notification.data()?[N_MESSAGE] ?? '');
+                            nType: notification.data()?[NOTIF_TYPE] ?? '',
+                            nSenderId:
+                                notification.data()?[NOTIF_SENDER_ID] ?? '',
+                            nMessage:
+                                notification.data()?[NOTIF_MESSAGE] ?? '');
                       },
                     ),
                   );

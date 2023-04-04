@@ -20,13 +20,13 @@ class NotificationsApi {
     required String nMessage,
   }) async {
     _firestore.collection(C_NOTIFICATIONS).add({
-      N_SENDER_ID: UserModel().user.userId,
-      N_SENDER_FULLNAME: UserModel().user.userFullname,
-      N_SENDER_PHOTO_LINK: UserModel().user.userProfilePhoto,
-      N_RECEIVER_ID: nReceiverId,
-      N_TYPE: nType,
-      N_MESSAGE: nMessage,
-      N_READ: false,
+      NOTIF_SENDER_ID: UserModel().user.userId,
+      NOTIF_SENDER_FULLNAME: UserModel().user.userFullname,
+      NOTIF_SENDER_PHOTO_LINK: UserModel().user.userProfilePhoto,
+      NOTIF_RECEIVER_ID: nReceiverId,
+      NOTIF_TYPE: nType,
+      NOTIF_MESSAGE: nMessage,
+      NOTIF_READ: false,
       TIMESTAMP: FieldValue.serverTimestamp()
     }).then((_) {
       debugPrint('saveNotification() -> success');
@@ -38,11 +38,11 @@ class NotificationsApi {
     required String nMessage,
   }) async {
     _firestore.collection(C_NOTIFICATIONS).add({
-      N_SENDER_FULLNAME: APP_NAME,
-      N_RECEIVER_ID: UserModel().user.userId,
-      N_TYPE: 'alert',
-      N_MESSAGE: nMessage,
-      N_READ: false,
+      NOTIF_SENDER_FULLNAME: APP_NAME,
+      NOTIF_RECEIVER_ID: UserModel().user.userId,
+      NOTIF_TYPE: 'alert',
+      NOTIF_MESSAGE: nMessage,
+      NOTIF_READ: false,
       TIMESTAMP: FieldValue.serverTimestamp()
     }).then((_) {
       debugPrint('saveNotification() -> success');
@@ -54,7 +54,7 @@ class NotificationsApi {
     /// Build query
     return _firestore
         .collection(C_NOTIFICATIONS)
-        .where(N_RECEIVER_ID, isEqualTo: UserModel().user.userId)
+        .where(NOTIF_RECEIVER_ID, isEqualTo: UserModel().user.userId)
 
         /// here
         .orderBy(TIMESTAMP, descending: true)
@@ -65,7 +65,7 @@ class NotificationsApi {
   Future<void> deleteUserNotifications() async {
     await _firestore
         .collection(C_NOTIFICATIONS)
-        .where(N_RECEIVER_ID, isEqualTo: UserModel().user.userId)
+        .where(NOTIF_RECEIVER_ID, isEqualTo: UserModel().user.userId)
         .get()
         .then((QuerySnapshot<Map<String, dynamic>> snapshot) async {
       // Check result
@@ -83,7 +83,7 @@ class NotificationsApi {
   Future<void> deleteUserSentNotifications() async {
     _firestore
         .collection(C_NOTIFICATIONS)
-        .where(N_SENDER_ID, isEqualTo: UserModel().user.userId)
+        .where(NOTIF_SENDER_ID, isEqualTo: UserModel().user.userId)
         .get()
         .then((QuerySnapshot<Map<String, dynamic>> snapshot) async {
       // Check result
@@ -127,9 +127,9 @@ class NotificationsApi {
           },
           'priority': 'high',
           'data': <String, dynamic>{
-            'click_action': 'FLUTTER_NOTIFICATION_CLICK',
-            N_TYPE: nType,
-            N_SENDER_ID: nSenderId,
+            'click_action': 'FLUTTER_NOTIFICATIONOTIF_CLICK',
+            NOTIF_TYPE: nType,
+            NOTIF_SENDER_ID: nSenderId,
             'call_info': nCallInfo, // Call Info Data
             'status': 'done'
           },

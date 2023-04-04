@@ -114,9 +114,9 @@ class _HomeScreenState extends State<HomeScreen> {
     /// Handle notification click
     await _appNotifications.onNotificationClick(
       context,
-      nType: data?[N_TYPE] ?? '',
-      nSenderId: data?[N_SENDER_ID] ?? '',
-      nMessage: data?[N_MESSAGE] ?? '',
+      nType: data?[NOTIF_TYPE] ?? '',
+      nSenderId: data?[NOTIF_SENDER_ID] ?? '',
+      nMessage: data?[NOTIF_MESSAGE] ?? '',
     );
   }
 
@@ -255,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
           } else {
             /// Get total counter to alert user
             final total = snapshot.data!.docs
-                .where((doc) => doc.data()[N_READ] == false)
+                .where((doc) => doc.data()[NOTIF_READ] == false)
                 .toList()
                 .length;
             if (total == 0) return icon;
