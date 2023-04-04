@@ -44,7 +44,10 @@ class _SearchBarState extends State<SearchBarWidget> {
           itemBuilder: (context, dynamic suggestion) {
             User user = User.fromDocument(suggestion);
             return ListTile(
-              leading: AvatarInitials(user: user),
+              leading: AvatarInitials(
+                user: user,
+                radius: 20,
+              ),
               title: Text(suggestion['fullname']!),
               subtitle: Text('\@${suggestion['username']}'),
             );
