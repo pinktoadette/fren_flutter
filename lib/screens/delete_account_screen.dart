@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/blocked_users_api.dart';
 import 'package:fren_app/api/conversations_api.dart';
-import 'package:fren_app/api/dislikes_api.dart';
-import 'package:fren_app/api/likes_api.dart';
 import 'package:fren_app/api/matches_api.dart';
 import 'package:fren_app/api/messages_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
@@ -32,8 +30,6 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
   final _conversationsApi = ConversationsApi();
   final _messagesApi = MessagesApi();
   final _matchesApi = MatchesApi();
-  final _likesApi = LikesApi();
-  final _dislikesApi = DislikesApi();
   final _visitsApi = VisitsApi();
 
   /// DELETE USER ACCOUNT
@@ -88,18 +84,6 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
       }
     }
     debugPrint('Conversations -> deleted...');
-
-    /// DELETE USER ID FROM LIKES
-    ///
-    await _likesApi.deleteLikedUsers();
-
-    await _likesApi.deleteLikedMeUsers();
-
-    /// DELETE USER ID FROM DISLIKES
-    ///
-    await _dislikesApi.deleteDislikedUsers();
-
-    await _dislikesApi.deleteDislikedMeUsers();
 
     /// DELETE VISITED USERS
     await _visitsApi.deleteVisitedUsers();

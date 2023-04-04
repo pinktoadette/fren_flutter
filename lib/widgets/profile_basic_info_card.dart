@@ -73,8 +73,8 @@ class ProfileBasicInfoCard extends StatelessWidget {
                         onPressed: () {
                           /// Go to profile screen
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ProfileScreen(
-                                  user: UserModel().user, showButtons: false)));
+                              builder: (context) =>
+                                  ProfileScreen(user: UserModel().user)));
                         }),
                   ),
                   SizedBox(

@@ -25,9 +25,6 @@ class User {
   final DateTime userLastUpdate;
   final DateTime userLastLogin;
   final String userDeviceToken;
-  final int userTotalLikes;
-  final int userTotalVisits;
-  final int userTotalDisliked;
   final List<String> userInterest;
   final String userIndustry;
   final String userJob;
@@ -63,9 +60,6 @@ class User {
       required this.userLastLogin,
       required this.userLastUpdate,
       required this.userDeviceToken,
-      required this.userTotalLikes,
-      required this.userTotalVisits,
-      required this.userTotalDisliked,
       required this.userEnableMode,
       required this.userInterest,
       required this.userIndustry,
@@ -76,38 +70,34 @@ class User {
     final _interest = doc[USER_INTERESTS].cast<String>();
 
     return User(
-      userId: doc[USER_ID],
-      isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
-      isProfileFilled: doc[USER_PROFILE_FILLED] ?? false,
-      userProfilePhoto: doc[USER_PROFILE_PHOTO] ?? '',
-      userFullname: doc[USER_FULLNAME],
-      userGender: doc[USER_GENDER] ?? '',
-      userBirthDay: doc[USER_BIRTH_DAY] ?? 1,
-      userBirthMonth: doc[USER_BIRTH_MONTH] ?? 1,
-      userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
-      username: doc[USER_USERNAME] ?? '',
-      userJob: doc[USER_JOB] ?? '',
-      userInterest: _interest ?? [],
-      userIndustry: doc[USER_INDUSTRY] ?? '',
-      userBio: doc[USER_BIO] ?? '',
-      userEnableMode: doc[USER_ENABLE_MODE],
-      userPhoneNumber: doc[USER_PHONE_NUMBER] ?? '',
-      userEmail: doc[USER_EMAIL] ?? '',
-      userGallery: doc[USER_GALLERY],
-      userCountry: doc[USER_COUNTRY] ?? '',
-      userLocality: doc[USER_LOCALITY] ?? '',
-      userGeoPoint: doc[USER_GEO_POINT]['geopoint'],
-      userSettings: doc[USER_SETTINGS],
-      userStatus: doc[USER_STATUS] ?? 'active',
-      userIsVerified: doc[USER_IS_VERIFIED] ?? false,
-      userLevel: doc[USER_LEVEL] ?? 'user',
-      userRegDate: doc[CREATED_AT].toDate(), // Firestore Timestamp
-      userLastLogin: doc[USER_LAST_LOGIN].toDate(),
-      userLastUpdate: doc[UPDATED_AT].toDate(),
-      userDeviceToken: doc[USER_DEVICE_TOKEN] ?? '',
-      userTotalLikes: doc[USER_TOTAL_LIKES] ?? 0,
-      userTotalVisits: doc[USER_TOTAL_VISITS] ?? 0,
-      userTotalDisliked: doc[USER_TOTAL_DISLIKED] ?? 0,
-    );
+        userId: doc[USER_ID],
+        isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
+        isProfileFilled: doc[USER_PROFILE_FILLED] ?? false,
+        userProfilePhoto: doc[USER_PROFILE_PHOTO] ?? '',
+        userFullname: doc[USER_FULLNAME],
+        userGender: doc[USER_GENDER] ?? '',
+        userBirthDay: doc[USER_BIRTH_DAY] ?? 1,
+        userBirthMonth: doc[USER_BIRTH_MONTH] ?? 1,
+        userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
+        username: doc[USER_USERNAME] ?? '',
+        userJob: doc[USER_JOB] ?? '',
+        userInterest: _interest ?? [],
+        userIndustry: doc[USER_INDUSTRY] ?? '',
+        userBio: doc[USER_BIO] ?? '',
+        userEnableMode: doc[USER_ENABLE_MODE],
+        userPhoneNumber: doc[USER_PHONE_NUMBER] ?? '',
+        userEmail: doc[USER_EMAIL] ?? '',
+        userGallery: doc[USER_GALLERY],
+        userCountry: doc[USER_COUNTRY] ?? '',
+        userLocality: doc[USER_LOCALITY] ?? '',
+        userGeoPoint: doc[USER_GEO_POINT]['geopoint'],
+        userSettings: doc[USER_SETTINGS],
+        userStatus: doc[USER_STATUS] ?? 'active',
+        userIsVerified: doc[USER_IS_VERIFIED] ?? false,
+        userLevel: doc[USER_LEVEL] ?? 'user',
+        userRegDate: doc[CREATED_AT].toDate(), // Firestore Timestamp
+        userLastLogin: doc[USER_LAST_LOGIN].toDate(),
+        userLastUpdate: doc[UPDATED_AT].toDate(),
+        userDeviceToken: doc[USER_DEVICE_TOKEN] ?? '');
   }
 }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
-import 'package:fren_app/api/machi/search.dart';
-import 'package:fren_app/api/machi/user_api.dart';
+import 'package:fren_app/api/machi/search_api.dart';
 import 'package:fren_app/datas/user.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SearchBarWidget extends StatefulWidget {
@@ -14,10 +15,6 @@ class SearchBarWidget extends StatefulWidget {
 
 class _SearchBarState extends State<SearchBarWidget> {
   final _searchApi = SearchApi();
-  static const List<User> _userOptions = <User>[];
-
-  static String _displayStringForOption(User option) =>
-      "${option.userFullname} @${option.username}";
 
   @override
   void initState() {
@@ -51,8 +48,8 @@ class _SearchBarState extends State<SearchBarWidget> {
             );
           },
           onSuggestionSelected: (dynamic suggestion) {
-            // Navigator.of(context)
-            //     .push<void>(MaterialPageRoute(builder: (context) => ProductPage(product: suggestion)));
+            User user = User.fromDocument(suggestion);
+            Get.to(() => ProfileScreen(user: user));
           },
           suggestionsBoxDecoration: SuggestionsBoxDecoration(
             borderRadius: BorderRadius.circular(10.0),
