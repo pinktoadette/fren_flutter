@@ -3,6 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fren_app/api/machi/search_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -41,8 +42,9 @@ class _SearchBarState extends State<SearchBarWidget> {
             return await _searchApi.searchUserAndBots(pattern);
           },
           itemBuilder: (context, dynamic suggestion) {
+            User user = User.fromDocument(suggestion);
             return ListTile(
-              leading: const Icon(Iconsax.user_add),
+              leading: AvatarInitials(user: user),
               title: Text(suggestion['fullname']!),
               subtitle: Text('\@${suggestion['username']}'),
             );
