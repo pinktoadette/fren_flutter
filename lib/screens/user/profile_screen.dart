@@ -198,13 +198,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _userApi
+                              .sendRequest(widget.user.userId)
+                              .then((_) => {_isUserFriend()});
+                        },
                         child: Text(
                           _i18n.translate("friend_accept_request"),
                           style: const TextStyle(fontSize: 12),
                         )),
                     OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          _userApi
+                              .sendRequest(widget.user.userId)
+                              .then((_) => {_isUserFriend()});
+                        },
                         child: Text(
                           _i18n.translate("friend_reject_request"),
                           style: const TextStyle(fontSize: 12),
@@ -231,8 +239,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       default:
         return ElevatedButton.icon(
             onPressed: () async {
-              await _userApi.sendRequest(widget.user.userId);
-              _isUserFriend();
+              _userApi
+                  .sendRequest(widget.user.userId)
+                  .then((_) => {_isUserFriend()});
             },
             icon: const Icon(Iconsax.message),
             label: Text(

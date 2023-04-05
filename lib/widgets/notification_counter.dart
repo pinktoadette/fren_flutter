@@ -12,23 +12,39 @@ class NotificationCounter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    int finalCounter = counter;
+    if (counter > 1000) {
+      finalCounter = (counter / 1000).ceil();
+    }
+
     return Stack(
       children: <Widget>[
-        icon,
+        Container(
+          margin: const EdgeInsets.only(top: 5, right: 20),
+          child: icon,
+        ),
         Positioned(
           right: 0,
-          top: -5,
+          top: -2,
           child: Container(
-            padding: const EdgeInsets.all(3),
+            width: 20,
+            height: 20,
+            margin: const EdgeInsets.only(top: 5),
+            padding: const EdgeInsets.all(2),
             decoration: const BoxDecoration(
-              color: APP_WARNING,
+              color: APP_ACCENT_COLOR,
               shape: BoxShape.circle,
             ),
-            child: Text(
-              '$counter',
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-              textAlign: TextAlign.right,
-            ),
+            child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  '$finalCounter',
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 8,
+                  ),
+                )),
           ),
         )
       ],
