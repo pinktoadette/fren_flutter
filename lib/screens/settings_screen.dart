@@ -1,13 +1,11 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/sign_out_button_card.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:fren_app/screens/sign_in_screen.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -17,7 +15,6 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _hideProfile = false;
   bool _isDarkMode = false;
@@ -72,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       ? Text(
                           _i18n.translate(
                               'your_profile_is_hidden_on_discover_tab'),
-                          style: const TextStyle(color: Colors.red),
+                          style: const TextStyle(color: APP_ACCENT_COLOR),
                         )
                       : Text(
                           _i18n.translate(
@@ -122,18 +119,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       setState(() {
                         _isDarkMode = newValue;
                       });
-                      // User status
-                      String userStatus = 'active';
-                      // Check status
-                      if (newValue) {
-                        userStatus = 'hidden';
-                      }
+                      Get.changeTheme(
+                        Get.isDarkMode ? ThemeData.light() : ThemeData.dark(),
+                      );
 
                       // Update profile status
                       UserModel().updateUserData(
                           userId: UserModel().user.userId,
-                          data: {USER_STATUS: userStatus}).then((_) {
-                        debugPrint('Profile hidden: $newValue');
+                          data: {USER_DARK_MODE: newValue}).then((_) {
+                        debugPrint('dark mode: $newValue');
                       });
                     },
                   ),

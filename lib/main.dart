@@ -208,7 +208,20 @@ class MyApp extends StatelessWidget {
           primary: APP_PRIMARY_DARK_COLOR,
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_DARK_BACKGROUND),
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: APP_PRIMARY_DARK_COLOR,
+      inputDecorationTheme: InputDecorationTheme(
+          errorStyle: const TextStyle(fontSize: 16),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(28),
+          )),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: APP_PRIMARY_COLOR,
+      ),
+      cardTheme: CardTheme(
+          color: APP_PRIMARY_DARK_BACKGROUND,
+          clipBehavior: Clip.antiAlias,
+          elevation: 4.0,
+          shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
@@ -216,6 +229,7 @@ class MyApp extends StatelessWidget {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
+            backgroundColor: APP_PRIMARY_DARK_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
@@ -230,49 +244,49 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      inputDecorationTheme: InputDecorationTheme(
-          errorStyle: const TextStyle(fontSize: 16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
-          )),
+      iconTheme: const IconThemeData(
+        color: APP_PRIMARY_DARK_COLOR,
+      ),
       textTheme: TextTheme(
-        headline1: GoogleFonts.roboto(
-            fontSize: 96, fontWeight: FontWeight.w300, letterSpacing: -1.5),
-        headline2: GoogleFonts.roboto(
-            fontSize: 60, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-        headline3:
-            GoogleFonts.roboto(fontSize: 48, fontWeight: FontWeight.w400),
-        headline4: GoogleFonts.roboto(
-            fontSize: 34, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-        headline5:
-            GoogleFonts.roboto(fontSize: 24, fontWeight: FontWeight.w400),
-        headline6: GoogleFonts.roboto(
-            fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
-        subtitle1: GoogleFonts.roboto(
-            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15),
-        subtitle2: GoogleFonts.roboto(
-            fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
-        bodyText1: GoogleFonts.poppins(
-            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
-        bodyText2: GoogleFonts.poppins(
-            fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-        button: GoogleFonts.poppins(
-            fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
-        caption: GoogleFonts.poppins(
-            fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
-        overline: GoogleFonts.poppins(
-            fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+        displayLarge:
+            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w700),
+        displayMedium:
+            GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600),
+        displaySmall:
+            GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+        headlineLarge:
+            GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
+        headlineMedium:
+            GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
+        headlineSmall:
+            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
+        titleLarge: GoogleFonts.poppins(fontSize: 20),
+        titleMedium: GoogleFonts.poppins(fontSize: 18),
+        titleSmall: GoogleFonts.poppins(fontSize: 16),
+        bodyLarge: GoogleFonts.poppins(fontSize: 18),
+        bodyMedium: GoogleFonts.poppins(fontSize: 16),
+        bodySmall: GoogleFonts.poppins(fontSize: 14),
+        labelLarge: GoogleFonts.poppins(
+          fontSize: 18,
+        ),
+        labelMedium: GoogleFonts.poppins(
+          fontSize: 16,
+        ),
+        labelSmall: GoogleFonts.poppins(
+          fontSize: 14,
+        ),
       ),
       appBarTheme: const AppBarTheme(
-        color: APP_PRIMARY_DARK_COLOR,
+        color: APP_PRIMARY_DARK_BACKGROUND,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
-        iconTheme: IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: APP_PRIMARY_DARK_COLOR),
         systemOverlayStyle: SystemUiOverlayStyle(
-            statusBarColor: Colors.black, // Only honored in Android M and above
+            statusBarColor:
+                APP_PRIMARY_DARK_COLOR, // Only honored in Android M and above
             statusBarIconBrightness:
                 Brightness.light, // Only honored in Android M and above
             statusBarBrightness: Brightness.dark),
-        titleTextStyle: TextStyle(color: APP_PRIMARY_DARK_COLOR, fontSize: 18),
+        titleTextStyle: TextStyle(color: APP_PRIMARY_COLOR, fontSize: 18),
       ),
     );
   }

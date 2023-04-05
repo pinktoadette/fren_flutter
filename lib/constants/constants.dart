@@ -144,6 +144,7 @@ const String USER_LOCALITY = "locality";
 const String USER_GEO_POINT = "geoPoint";
 const String USER_SETTINGS = "settings";
 const String USER_STATUS = "status";
+const String USER_DARK_MODE = "isDarkMode";
 const String USER_IS_VERIFIED = "isVerified";
 const String USER_LEVEL = "level";
 const String USER_LAST_UPDATE = "lastUpdate";
