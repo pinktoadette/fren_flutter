@@ -168,8 +168,10 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
             GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
-        titleLarge: GoogleFonts.poppins(fontSize: 20),
-        titleMedium: GoogleFonts.poppins(fontSize: 18),
+        titleLarge:
+            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+        titleMedium:
+            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w300),
         titleSmall: GoogleFonts.poppins(fontSize: 16),
         bodyLarge: GoogleFonts.poppins(fontSize: 18),
         bodyMedium: GoogleFonts.poppins(fontSize: 16),
