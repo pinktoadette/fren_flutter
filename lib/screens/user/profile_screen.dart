@@ -95,7 +95,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     crossAxisAlignment: CrossAxisAlignment.center,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      AvatarInitials(user: widget.user),
+                      AvatarInitials(
+                        username: widget.user.username,
+                        photoUrl: widget.user.userProfilePhoto,
+                      ),
                       const SizedBox(width: 20),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.start,

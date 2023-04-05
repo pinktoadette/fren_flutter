@@ -187,11 +187,6 @@ class UserModel extends Model {
     if (getFirebaseUser != null) {
       /// Get current user in database
       await getUser(getFirebaseUser!.uid).then((userDoc) async {
-        /// Check user account in local database
-        /// and get idToken
-        final DatabaseService _databaseService = DatabaseService();
-        _databaseService.getOrAddUser(userDoc);
-
         /// if exists check status and take action
         if (userDoc.exists) {
           // Get User's latitude & longitude

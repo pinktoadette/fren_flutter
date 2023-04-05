@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/datas/user.dart';
 
 class AvatarInitials extends StatelessWidget {
-  final User user;
+  final String photoUrl;
+  final String username;
   final double? radius;
-  const AvatarInitials({Key? key, required this.user, this.radius})
+  const AvatarInitials(
+      {Key? key, this.radius, required this.photoUrl, required this.username})
       : super(key: key);
 
   @override
@@ -15,15 +16,13 @@ class AvatarInitials extends StatelessWidget {
           const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
       child: CircleAvatar(
         radius: radius ?? 50,
-        child: (user.userProfilePhoto == '')
+        child: (photoUrl == '')
             ? Center(
-                child: Text(user.username.substring(0, 1).toUpperCase(),
+                child: Text(username.substring(0, 1).toUpperCase(),
                     style: Theme.of(context).textTheme.headlineSmall),
               )
             : null,
-        foregroundImage: user.userProfilePhoto == ''
-            ? null
-            : NetworkImage(user.userProfilePhoto),
+        foregroundImage: photoUrl == '' ? null : NetworkImage(photoUrl),
         backgroundColor: Colors.white,
       ),
     );

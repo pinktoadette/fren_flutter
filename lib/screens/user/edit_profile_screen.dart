@@ -95,7 +95,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   child: Center(
                     child: Stack(
                       children: <Widget>[
-                        AvatarInitials(user: userModel.user),
+                        AvatarInitials(
+                          photoUrl: userModel.user.userProfilePhoto,
+                          username: userModel.user.username,
+                        ),
 
                         /// Edit icon
                         Positioned(
@@ -117,7 +120,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         path: 'profile');
                   },
                 ),
-
 
                 const SizedBox(height: 20),
 
@@ -149,27 +151,28 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 const SizedBox(height: 20),
 
                 /// interest
-                if (_interestList.isNotEmpty)  SizedBox(
-                    height: 200,
-                    child: SingleChildScrollView(
-                      child: ChipsChoice<String>.multiple(
-                        value: _selectedInterest,
-                        onChanged: (val) => {
-                          setState((){
-                            _selectedInterest = val;
-                          })
-                        },
-                        choiceItems: C2Choice.listFrom<String, String>(
-                          source: _interestList,
-                          value: (i, v) => v,
-                          label: (i, v) => v,
-                          tooltip: (i, v) => v,
+                if (_interestList.isNotEmpty)
+                  SizedBox(
+                      height: 200,
+                      child: SingleChildScrollView(
+                        child: ChipsChoice<String>.multiple(
+                          value: _selectedInterest,
+                          onChanged: (val) => {
+                            setState(() {
+                              _selectedInterest = val;
+                            })
+                          },
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: _interestList,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                            tooltip: (i, v) => v,
+                          ),
+                          choiceCheckmark: true,
+                          choiceStyle: C2ChipStyle.outlined(),
+                          wrapped: true,
                         ),
-                        choiceCheckmark: true,
-                        choiceStyle: C2ChipStyle.outlined(),
-                        wrapped: true,
-                      ),
-                    )),
+                      )),
 
                 /// Bio field
                 Padding(
@@ -239,16 +242,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         onSuccess: () async {
           /// Show success message
           showScaffoldMessage(
-              message:  _i18n.translate("profile_updated_successfully"));
+              message: _i18n.translate("profile_updated_successfully"));
         },
         onFail: (error) {
           // Debug error
           debugPrint(error);
           // Show error message
           showScaffoldMessage(
-              message:  _i18n
-                  .translate("an_error_occurred_while_updating_your_profile"), bgcolor: APP_ERROR);
-
+              message: _i18n
+                  .translate("an_error_occurred_while_updating_your_profile"),
+              bgcolor: APP_ERROR);
         });
   }
 }

@@ -30,7 +30,10 @@ class ProfileBasicInfoCard extends StatelessWidget {
               /// Profile image
               Row(
                 children: [
-                  AvatarInitials(user: UserModel().user),
+                  AvatarInitials(
+                    username: UserModel().user.username,
+                    photoUrl: UserModel().user.userProfilePhoto,
+                  ),
 
                   const SizedBox(width: 10),
 

@@ -1,4 +1,5 @@
 import 'package:fren_app/api/machi/chatroom_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -80,19 +81,12 @@ class ConversationsTab extends StatelessWidget {
                             ]),
                         Row(
                           children: [
-                            SizedBox(
-                                width: width * 0.75 - 20,
-                                child: Text(allUsers,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .titleMedium)),
-                            SizedBox(
-                              width: width * 0.25 - 20,
-                              child: Text(formatDate(lastMsg['createdAt']),
-                                  textAlign: TextAlign.right,
-                                  style:
-                                      Theme.of(context).textTheme.labelSmall),
-                            )
+                            Text(allUsers,
+                                style: Theme.of(context).textTheme.titleMedium),
+                            const Spacer(),
+                            Text(formatDate(lastMsg[CREATED_AT]),
+                                textAlign: TextAlign.right,
+                                style: Theme.of(context).textTheme.labelSmall)
                           ],
                         ),
                         const SizedBox(

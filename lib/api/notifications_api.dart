@@ -21,7 +21,7 @@ class NotificationsApi {
   }) async {
     _firestore.collection(C_NOTIFICATIONS).add({
       NOTIF_SENDER_ID: UserModel().user.userId,
-      NOTIF_SENDER_FULLNAME: UserModel().user.userFullname,
+      NOTIF_SENDER_USERNAME: UserModel().user.username,
       NOTIF_SENDER_PHOTO_LINK: UserModel().user.userProfilePhoto,
       NOTIF_RECEIVER_ID: nReceiverId,
       NOTIF_TYPE: nType,
@@ -38,7 +38,7 @@ class NotificationsApi {
     required String nMessage,
   }) async {
     _firestore.collection(C_NOTIFICATIONS).add({
-      NOTIF_SENDER_FULLNAME: APP_NAME,
+      NOTIF_SENDER_USERNAME: APP_NAME,
       NOTIF_RECEIVER_ID: UserModel().user.userId,
       NOTIF_TYPE: 'alert',
       NOTIF_MESSAGE: nMessage,
@@ -55,9 +55,7 @@ class NotificationsApi {
     return _firestore
         .collection(C_NOTIFICATIONS)
         .where(NOTIF_RECEIVER_ID, isEqualTo: UserModel().user.userId)
-
-        /// here
-        .orderBy(TIMESTAMP, descending: true)
+        // .orderBy(CREATED_AT, descending: true)
         .snapshots();
   }
 

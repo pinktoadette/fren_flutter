@@ -151,39 +151,36 @@ class MyApp extends StatelessWidget {
         ),
       ),
       textTheme: TextTheme(
-        labelMedium: const TextStyle(
-          fontSize: 35,
-          decorationColor: Colors.red,
+        displayLarge:
+            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w700),
+        displayMedium:
+            GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600),
+        displaySmall:
+            GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+        headlineLarge:
+            GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
+        headlineMedium:
+            GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
+        headlineSmall:
+            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
+        titleLarge:
+            GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w700),
+        titleMedium:
+            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w700),
+        titleSmall:
+            GoogleFonts.poppins(fontSize: 14, fontWeight: FontWeight.bold),
+        bodyLarge: GoogleFonts.poppins(fontSize: 18),
+        bodyMedium: GoogleFonts.poppins(fontSize: 16),
+        bodySmall: GoogleFonts.poppins(fontSize: 14),
+        labelLarge: GoogleFonts.poppins(
+          fontSize: 18,
         ),
-        headline1: GoogleFonts.poppins(
-            color: APP_PRIMARY_COLOR,
-            fontSize: 97,
-            fontWeight: FontWeight.w300,
-            letterSpacing: -1.5),
-        headline2: GoogleFonts.poppins(
-            fontSize: 61, fontWeight: FontWeight.w300, letterSpacing: -0.5),
-        headline3:
-            GoogleFonts.poppins(fontSize: 48, fontWeight: FontWeight.w400),
-        headline4: GoogleFonts.poppins(
-            fontSize: 34, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-        headline5:
-            GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w400),
-        headline6: GoogleFonts.poppins(
-            fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.15),
-        subtitle1: GoogleFonts.poppins(
-            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.15),
-        subtitle2: GoogleFonts.poppins(
-            fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
-        bodyText1: GoogleFonts.poppins(
-            fontSize: 16, fontWeight: FontWeight.w400, letterSpacing: 0.5),
-        bodyText2: GoogleFonts.poppins(
-            fontSize: 14, fontWeight: FontWeight.w400, letterSpacing: 0.25),
-        button: GoogleFonts.poppins(
-            fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 1.25),
-        caption: GoogleFonts.poppins(
-            fontSize: 12, fontWeight: FontWeight.w400, letterSpacing: 0.4),
-        overline: GoogleFonts.poppins(
-            fontSize: 10, fontWeight: FontWeight.w400, letterSpacing: 1.5),
+        labelMedium: GoogleFonts.poppins(
+          fontSize: 16,
+        ),
+        labelSmall: GoogleFonts.poppins(
+          fontSize: 14,
+        ),
       ).apply(
         bodyColor: APP_PRIMARY_COLOR,
         displayColor: APP_PRIMARY_COLOR,

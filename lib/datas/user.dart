@@ -62,8 +62,6 @@ class User {
 
   /// factory user object
   factory User.fromDocument(Map<String, dynamic> doc) {
-    final _interest = doc[USER_INTERESTS].cast<String>();
-
     return User(
         userId: doc[USER_ID],
         isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
@@ -76,7 +74,9 @@ class User {
         userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
         username: doc[USER_USERNAME] ?? '',
         userJob: doc[USER_JOB] ?? '',
-        userInterest: _interest ?? [],
+        userInterest: doc.containsKey(USER_INTERESTS)
+            ? doc[USER_INTERESTS].cast<String>()
+            : [],
         userIndustry: doc[USER_INDUSTRY] ?? '',
         userBio: doc[USER_BIO] ?? '',
         userEnableMode: doc[USER_ENABLE_MODE],

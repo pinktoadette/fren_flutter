@@ -174,7 +174,7 @@ const String LAST_MESSAGE = "last_message";
 /// DATABASE FIELDS FOR Notifications COLLECTION ///
 ///
 const NOTIF_SENDER_ID = "senderId";
-const NOTIF_SENDER_FULLNAME = "senderFullname";
+const NOTIF_SENDER_USERNAME = "senderUsername";
 const NOTIF_SENDER_PHOTO_LINK = "senderPhoto";
 const NOTIF_RECEIVER_ID = "receiverId";
 const NOTIF_TYPE = "type";

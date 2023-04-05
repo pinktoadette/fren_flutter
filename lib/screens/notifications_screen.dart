@@ -5,6 +5,8 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
+import 'package:fren_app/helpers/date_format.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
@@ -60,9 +62,6 @@ class NotificationsScreen extends StatelessWidget {
             /// Check data
             if (!snapshot.hasData) {
               return const Frankloader();
-            } else if (snapshot.data!.docs.isEmpty) {
-              /// No notification
-              return Text(i18n.translate("no_notification"));
             } else {
               return ListView.separated(
                 shrinkWrap: true,
@@ -83,41 +82,41 @@ class NotificationsScreen extends StatelessWidget {
                   }
 
                   /// Show notification
-                  return Container(
-                    color: !notification[NOTIF_READ]
-                        ? Theme.of(context).primaryColor.withAlpha(40)
-                        : null,
-                    child: ListTile(
-                      leading: CircleAvatar(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        backgroundImage: bgImage,
-                        onBackgroundImageError: (e, s) =>
-                            {debugPrint(e.toString())},
-                      ),
-                      title: Text(
-                          notification[NOTIF_TYPE] == 'alert'
-                              ? notification[NOTIF_SENDER_FULLNAME]
-                              : notification[NOTIF_SENDER_FULLNAME]
-                                  .split(" ")[0],
-                          style: const TextStyle(fontSize: 18)),
-                      // subtitle: Text("${notification[NOTIF_MESSAGE]}\n"
-                      //     "${timeago.format(notification[TIMESTAMP].toDate())}"),
-                      trailing: !notification[NOTIF_READ]
-                          ? CustomBadge(text: i18n.translate("new"))
-                          : null,
-                      onTap: () async {
-                        /// Set notification read = true
-                        await notification.reference.update({NOTIF_READ: true});
+                  return ListTile(
+                    isThreeLine: true,
+                    leading: InkWell(
+                        onTap: () {},
+                        child: AvatarInitials(
+                          radius: 20,
+                          photoUrl: notification[NOTIF_SENDER_PHOTO_LINK],
+                          username: notification[NOTIF_SENDER_USERNAME],
+                        )),
+                    title: Row(children: [
+                      Text(notification[NOTIF_SENDER_USERNAME],
+                          style: !notification[NOTIF_READ]
+                              ? Theme.of(context).textTheme.titleMedium
+                              : Theme.of(context).textTheme.bodyMedium),
+                      const Spacer(),
+                      Text(formatDate(notification[CREATED_AT]),
+                          style: !notification[NOTIF_READ]
+                              ? Theme.of(context).textTheme.titleMedium
+                              : Theme.of(context).textTheme.bodyMedium),
+                    ]),
+                    subtitle: Text(notification[NOTIF_MESSAGE],
+                        style: !notification[NOTIF_READ]
+                            ? Theme.of(context).textTheme.titleMedium
+                            : Theme.of(context).textTheme.bodyMedium),
+                    onTap: () async {
+                      /// Set notification read = true
+                      await notification.reference.update({NOTIF_READ: true});
 
-                        /// Handle notification click
-                        _appNotifications.onNotificationClick(context,
-                            nType: notification.data()?[NOTIF_TYPE] ?? '',
-                            nSenderId:
-                                notification.data()?[NOTIF_SENDER_ID] ?? '',
-                            nMessage:
-                                notification.data()?[NOTIF_MESSAGE] ?? '');
-                      },
-                    ),
+                      /// Handle notification click
+                      _appNotifications.onNotificationClick(context,
+                          nType: notification.data()?[NOTIF_TYPE] ?? '',
+                          nSenderId:
+                              notification.data()?[NOTIF_SENDER_ID] ?? '',
+                          nMessage: notification.data()?[NOTIF_MESSAGE] ?? '');
+                    },
                   );
                 }),
               );

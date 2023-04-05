@@ -13,7 +13,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
-import 'package:fren_app/tabs/notifications_screen.dart';
+import 'package:fren_app/screens/notifications_screen.dart';
 import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
@@ -190,13 +190,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         actions: [
-          IconButton(
-              icon: _getNotificationCounter(),
-              onPressed: () async {
-                // Go to Notifications Screen
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => NotificationsScreen()));
-              })
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: IconButton(
+                icon: _getNotificationCounter(),
+                onPressed: () async {
+                  // Go to Notifications Screen
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => NotificationsScreen()));
+                }),
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -242,10 +245,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Count unread notifications
   Widget _getNotificationCounter() {
-    // Set icon
     const icon = Icon(Iconsax.notification);
-
-    /// Handle stream
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: _notificationsApi.getNotifications(),
         builder: (context, snapshot) {
