@@ -59,7 +59,7 @@ class UserApi {
     }
   }
 
-  Future<List<dynamic>> sendRequest(String friendId) async {
+  Future<String> sendRequest(String friendId) async {
     try {
       String url = '${baseUri}friends/request';
       debugPrint("Requesting URL $url");

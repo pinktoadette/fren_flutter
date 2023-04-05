@@ -22,7 +22,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final double _iconSize = 16;
   final _userApi = UserApi();
-  Map<String, dynamic> friendStatus = {"status": "UNFRIEND", "isRequester": 0};
+  Map<String, dynamic> friendStatus = {
+    "status": "UNFRIEND",
+    "isRequester": 0,
+    "requester": ""
+  };
   bool isFrend = false;
 
   @override
@@ -40,11 +44,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final user = await _userApi.getOneFriend(widget.user.userId);
     if (user.isNotEmpty) {
       final friend = user[0]["friends"]
-          .firstWhere((u) => u['userId'] == widget.user.userId);
+          .where((u) => u['userId'] == widget.user.userId)
+          .toList()
+          .first;
+      final requester = user[0]["friends"]
+          .where((u) => u['userId'] != widget.user.userId)
+          .toList()
+          .first;
       setState(() {
         friendStatus = {
-          "status": friend["fStatus"],
-          "isRequester": friend["isRequester"]
+          "status": friend["fstatus"],
+          "isRequester": friend["isRequester"],
+          "requester": requester["usernamer"]
         };
       });
     }
@@ -167,18 +178,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buttonDisplay(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    switch (friendStatus["fStatus"]) {
+    _i18n = AppLocalizations.of(context);
+
+    switch (friendStatus["status"]) {
       case 'REQUEST':
-        if (friendStatus["fStatus"] == 1) {
-          return const Text("You send a request");
+        if (friendStatus["isRequester"] == 1) {
+          return OutlinedButton(
+              onPressed: null, child: Text(_i18n.translate("friend_sent")));
         }
         return Row(
           children: [
-            Text("blah sent you a request"),
+            Text(
+                "${friendStatus["requester"]}${_i18n.translate("friend_other_sent")}"),
             ElevatedButton(
-                onPressed: () {}, child: const Text("Accept Request")),
+                onPressed: () {},
+                child: Text(_i18n.translate("friend_accept_request"))),
             ElevatedButton(
-                onPressed: () {}, child: const Text("Reject Request")),
+                onPressed: () {},
+                child: Text(_i18n.translate("friend_reject_request"))),
           ],
         );
       case 'ACTIVE':
@@ -194,12 +211,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
       default:
         return ElevatedButton.icon(
             onPressed: () async {
-              //OnPressed Logic
               await _userApi.sendRequest(widget.user.userId);
               _isUserFriend();
             },
             icon: const Icon(Iconsax.message),
-            label: const Text("Send Request"));
+            label: Text(_i18n.translate("friend_send_request")));
     }
   }
 }

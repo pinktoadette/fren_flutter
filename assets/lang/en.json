@@ -354,5 +354,11 @@
   "select_industry": "Select your major or industry",
   "select_interest": "Select your interest",
   "resricted_to_creator": "Only creator/admin can edit",
-  "required_field": "Please input required field"
+  "required_field": "Please input required field",
+
+  "friend_sent": "You sent a friend request.",
+  "friend_accept_request": "Accept Request",
+  "friend_reject_request": "Reject Request",
+  "friend_other_sent": " sent you a friend request",
+  "friend_send_request": "Send Request"
 }
