@@ -11,11 +11,11 @@ class AvatarInitials extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(5.0),
+      padding: const EdgeInsets.all(2.0),
       decoration:
           const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
       child: CircleAvatar(
-        radius: radius ?? 50,
+        radius: radius ?? 30,
         child: (photoUrl == '')
             ? Center(
                 child: Text(username.substring(0, 1).toUpperCase(),

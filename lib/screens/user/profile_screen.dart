@@ -1,4 +1,5 @@
 import 'package:fren_app/api/machi/user_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -55,7 +56,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         friendStatus = {
           "status": friend["fstatus"],
           "isRequester": friend["isRequester"],
-          "requester": requester["usernamer"]
+          "requester": requester["username"]
         };
       });
     }
@@ -105,7 +106,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.user.userFullname,
+                            widget.user.username,
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           const SizedBox(height: 10),
@@ -167,6 +168,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _buttonDisplay(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double width = MediaQuery.of(context).size.width;
 
     switch (friendStatus["status"]) {
       case 'REQUEST':
@@ -179,15 +181,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ));
         }
         return Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-                "${friendStatus["requester"]}${_i18n.translate("friend_other_sent")}"),
-            ElevatedButton(
-                onPressed: () {},
-                child: Text(_i18n.translate("friend_accept_request"))),
-            ElevatedButton(
-                onPressed: () {},
-                child: Text(_i18n.translate("friend_reject_request"))),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  width: width - 130,
+                  child: Flexible(
+                    fit: FlexFit.tight,
+                    child: Text(_i18n.translate("friend_other_sent"),
+                        style: Theme.of(context).textTheme.bodySmall),
+                  ),
+                ),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    ElevatedButton(
+                        onPressed: () {},
+                        child: Text(
+                          _i18n.translate("friend_accept_request"),
+                          style: const TextStyle(fontSize: 12),
+                        )),
+                    OutlinedButton(
+                        onPressed: () {},
+                        child: Text(
+                          _i18n.translate("friend_reject_request"),
+                          style: const TextStyle(fontSize: 12),
+                        ),
+                        style: OutlinedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50)))),
+                  ],
+                )
+              ],
+            )
           ],
         );
       case 'ACTIVE':
@@ -207,7 +235,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
               _isUserFriend();
             },
             icon: const Icon(Iconsax.message),
-            label: Text(_i18n.translate("friend_send_request")));
+            label: Text(
+              _i18n.translate("friend_send_request"),
+              style: const TextStyle(fontSize: 12),
+            ));
     }
   }
 }

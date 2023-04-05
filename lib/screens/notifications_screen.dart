@@ -1,16 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/helpers/date_format.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/custom_badge.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+
+import '../models/user_model.dart';
 // import 'package:timeago/timeago.dart' as timeago;
 
 class NotificationsScreen extends StatelessWidget {
@@ -71,21 +75,17 @@ class NotificationsScreen extends StatelessWidget {
                   /// Get notification DocumentSnapshot<Map<String, dynamic>>
                   final DocumentSnapshot<Map<String, dynamic>> notification =
                       snapshot.data!.docs[index];
-                  final String? nType = notification[NOTIF_TYPE];
-                  // Handle notification icon
-                  late ImageProvider bgImage;
-                  if (nType == 'alert') {
-                    bgImage = const AssetImage('assets/images/app_logo.png');
-                  } else {
-                    bgImage =
-                        NetworkImage(notification[NOTIF_SENDER_PHOTO_LINK]);
-                  }
 
                   /// Show notification
                   return ListTile(
                     isThreeLine: true,
                     leading: InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          final User user = await UserModel()
+                              .getUserObject(notification[NOTIF_SENDER_ID]);
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ProfileScreen(user: user)));
+                        },
                         child: AvatarInitials(
                           radius: 20,
                           photoUrl: notification[NOTIF_SENDER_PHOTO_LINK],
@@ -109,6 +109,12 @@ class NotificationsScreen extends StatelessWidget {
                     onTap: () async {
                       /// Set notification read = true
                       await notification.reference.update({NOTIF_READ: true});
+                      if (notification[NOTIF_TYPE] == "REQUEST") {
+                        final User user = await UserModel()
+                            .getUserObject(notification[NOTIF_SENDER_ID]);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ProfileScreen(user: user)));
+                      }
 
                       /// Handle notification click
                       _appNotifications.onNotificationClick(context,
