@@ -32,24 +32,20 @@ class BotProfileCard extends StatefulWidget {
 }
 
 class _BotProfileCardState extends State<BotProfileCard> {
+  final _botPrompt = TextEditingController(text: "");
   final _chatroomApi = ChatroomMachiApi();
-  List<String> _moodList = [];
-  String? _selectedMood;
+
+  String? _prompt;
   bool disableSelect = true;
   late AppLocalizations _i18n;
   final TextEditingController personalityController = TextEditingController();
 
   Future<void> _loadMood() async {
-    String data = await rootBundle.loadString("assets/json/mood.json");
-    List<String> mood = List.from(jsonDecode(data) as List<dynamic>);
-
     setState(() {
-      _moodList = mood;
+      _prompt = widget.bot.prompt;
     });
 
     if (widget.room != null) {
-      _selectedMood = widget.room!.bot.prompt;
-
       // only creator of the room can change the mmod
       if (UserModel().user.userId == widget.room!.creatorUser) {
         disableSelect = false;
@@ -66,6 +62,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
   @override
   void dispose() {
     super.dispose();
+    _botPrompt.dispose();
     personalityController.dispose();
   }
 
@@ -73,132 +70,133 @@ class _BotProfileCardState extends State<BotProfileCard> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width - 10;
+    double height = MediaQuery.of(context).size.height * 0.4;
 
-    return Center(
-      child: SizedBox(
-        width: width,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
-            ListTile(
-              isThreeLine: true,
-              leading: const Icon(Iconsax.box_tick),
-              title: Text("Name: ${widget.bot.name}"),
-              subtitle: Text(
-                  "Domain: ${widget.bot.domain} - ${widget.bot.subdomain} \n\n${widget.bot.about}"),
-            ),
+    return Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
+          ListTile(
+            isThreeLine: true,
+            leading: const Icon(Iconsax.box_tick),
+            title: Text("Name: ${widget.bot.name}"),
+            subtitle: Text(
+                "Domain: ${widget.bot.domain} - ${widget.bot.subdomain} \n\n${widget.bot.about}"),
+          ),
+          if (widget.room?.chatroomId == null)
             Row(children: <Widget>[
               Expanded(
                   child: Padding(
-                padding: const EdgeInsets.all(30),
+                padding: const EdgeInsets.all(10),
                 child: widget.bot.price != null
                     ? Text(
                         "Price: ${widget.bot.price! <= 0 ? "Free" : widget.bot.price} \n\n${widget.bot.about}")
                     : const Text(""),
               )),
             ]),
-            if (widget.showStatus == true)
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      children: [
-                        Text(
-                            widget.bot.isActive == false
-                                ? 'Unpublished'
-                                : 'Published',
-                            style: TextStyle(
-                                color: widget.bot.isActive == false
-                                    ? APP_ERROR
-                                    : APP_SUCCESS)),
-                        const SizedBox(width: 120),
-                        widget.bot.isActive == false
-                            ? ElevatedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Step2Container()),
-                                  );
-                                },
-                                child: const Text('Publish'))
-                            : OutlinedButton(
-                                onPressed: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const Step2Container()),
-                                  );
-                                },
-                                child: const Text('Edit'))
-                      ],
-                    ),
+          if (widget.showStatus == true)
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    children: [
+                      Text(
+                          widget.bot.isActive == false
+                              ? 'Unpublished'
+                              : 'Published',
+                          style: TextStyle(
+                              color: widget.bot.isActive == false
+                                  ? APP_ERROR
+                                  : APP_SUCCESS)),
+                      const SizedBox(width: 120),
+                      widget.bot.isActive == false
+                          ? ElevatedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Step2Container()),
+                                );
+                              },
+                              child: const Text('Publish'))
+                          : OutlinedButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const Step2Container()),
+                                );
+                              },
+                              child: const Text('Edit'))
+                    ],
                   ),
-                ],
-              ),
-            if (widget.showPurchase == true)
-              Row(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        Container(
-                          width: 250,
-                          alignment: Alignment.center,
-                          child: ElevatedButton(
-                            child: const Text("Free to Try"),
-                            onPressed: () {
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => const BotChatScreen()));
-                            },
-                          ),
+                ),
+              ],
+            ),
+          if (widget.showPurchase == true)
+            Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        width: 250,
+                        alignment: Alignment.center,
+                        child: ElevatedButton(
+                          child: const Text("Free to Try"),
+                          onPressed: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const BotChatScreen()));
+                          },
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            if (widget.room?.chatroomId != null)
-              Column(
-                children: [
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 20, right: 20, bottom: 50),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Text("Current mood: "),
-                          DropdownButton(
-                            items: _moodList
-                                .map<DropdownMenuItem<String>>((String value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                            value: _selectedMood,
-                            onChanged: disableSelect
-                                ? null
-                                : (value) async {
-                                    _updateRoom(value as String);
-                                  },
-                            disabledHint: disableSelect
-                                ? null
-                                : Text(_i18n.translate("resricted_to_creator")),
-                          ),
-                          const SizedBox(width: 20),
-                        ]),
-                  ),
-                ],
+                ),
+              ],
+            ),
+          if (widget.room?.chatroomId != null)
+            Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+              SizedBox(
+                width: width, // <-- TextField width
+                height: height, // <-- TextField height
+                child: TextFormField(
+                  textAlignVertical: TextAlignVertical.top,
+                  style: Theme.of(context).textTheme.bodySmall,
+                  initialValue: "Prompt: \n ${widget.bot.prompt}",
+                  maxLines: null,
+                  expands: true,
+                  textCapitalization: TextCapitalization.sentences,
+                  onChanged: (text) {},
+                  keyboardType: TextInputType.multiline,
+                  decoration: const InputDecoration(
+                      alignLabelWithHint: true,
+                      filled: true,
+                      hintText: 'Enter a message'),
+                  validator: (prompt) {
+                    if (prompt == null) {
+                      return "Enter a prompt";
+                    }
+                    return null;
+                  },
+                ),
               )
-          ],
-        ),
+              // TextFormField(
+              //
+
+              //   maxLines: 4,
+
+              // )
+            ]),
+        ],
       ),
     );
   }
@@ -206,7 +204,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
   void _updateRoom(String value) async {
     _i18n = AppLocalizations.of(context);
     setState(() {
-      _selectedMood = value;
+      _prompt = value;
     });
     // Chatroom update = widget.room!.copyWith(personality: value);
     // await _chatroomApi.updateRoom(widget.roomIdx!, update);

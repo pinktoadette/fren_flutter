@@ -111,27 +111,16 @@ class _ListNewBotWidget extends State<ListNewBotWidget> {
   }
 
   void _showBotInfo(Bot bot) {
-    double height = MediaQuery.of(context).size.height;
-
     showModalBottomSheet<void>(
       context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: max(height, 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              BotProfileCard(
-                bot: bot,
-                showPurchase: true,
-              )
-            ],
-          ),
-        ),
-      ),
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: BotProfileCard(
+              bot: bot,
+              showPurchase: true,
+            ));
+      },
     );
   }
 }

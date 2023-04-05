@@ -88,7 +88,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// get or create chatroom
   Future<void> _getChatrooms() async {
-    _chatroomApi.getAllMyRooms().then((_) {}).whenComplete(() {
+    await Future.wait(
+            [_chatroomApi.createNewRoom(), _chatroomApi.getAllMyRooms()])
+        .then((_) {})
+        .whenComplete(() {
       debugPrint("Loaded new and all chatrooms");
     }).catchError((onError) {
       debugPrint(onError);

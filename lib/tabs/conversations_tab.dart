@@ -39,79 +39,94 @@ class ConversationsTab extends StatelessWidget {
             // Refresh Functionality
             return _chatroomApi.getAllMyRooms();
           },
-          child: Obx(() => ListView.separated(
-              reverse: true,
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => const Divider(height: 10),
-              itemCount: chatController.roomlist.length,
-              itemBuilder: ((context, index) {
-                final Chatroom room = chatController.roomlist[index];
-                final lastMsg = room.messages.isNotEmpty
-                    ? room.messages[0].toJson()
-                    : {
-                        'text': 'This is an error. Something went wrong',
-                        'createdAt': DateTime.now().millisecondsSinceEpoch
-                      };
-                String allUsers = "${room.bot.name} ";
-                for (var user in room.users) {
-                  allUsers += "& ${user.firstName!} ";
-                }
-
-                return InkWell(
-                  onTap: () {
-                    chatController.onLoadCurrentRoom(room);
-                    Get.to(() => (const BotChatScreen()),
-                        arguments: {"room": room, 'index': index});
-                  },
-                  child: Container(
-                    width: width,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                      vertical: 8,
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(
-                                room.bot.domain,
-                                style: Theme.of(context).textTheme.labelSmall,
-                              )
-                            ]),
-                        Row(
-                          children: [
-                            Text(allUsers,
-                                style: Theme.of(context).textTheme.titleMedium),
-                            const Spacer(),
-                            Text(formatDate(lastMsg[CREATED_AT]),
-                                textAlign: TextAlign.right,
-                                style: Theme.of(context).textTheme.labelSmall)
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          children: [
-                            lastMsg["type"] == "text"
-                                ? Flexible(
-                                    child: Text(lastMsg["text"].length > 100
-                                        ? "${lastMsg["text"].substring(0, 90)}..."
-                                        : lastMsg["text"]))
-                                : SizedBox(
-                                    child: Row(children: [
-                                      const Icon(Iconsax.attach_circle),
-                                      Text(_i18n.translate("media_attached"))
-                                    ]),
-                                  )
-                          ],
-                        ),
-                      ],
-                    ),
+          child: chatController.roomlist.isEmpty
+              ? Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    _i18n.translate("no_conversation"),
+                    textAlign: TextAlign.center,
                   ),
-                );
-              })))),
+                )
+              : Obx(() => ListView.separated(
+                  reverse: true,
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) =>
+                      const Divider(height: 10),
+                  itemCount: chatController.roomlist.length,
+                  itemBuilder: ((context, index) {
+                    final Chatroom room = chatController.roomlist[index];
+                    final lastMsg = room.messages.isNotEmpty
+                        ? room.messages[0].toJson()
+                        : {
+                            'text': 'This is an error. Something went wrong',
+                            'createdAt': DateTime.now().millisecondsSinceEpoch
+                          };
+                    String allUsers = "${room.bot.name} ";
+                    for (var user in room.users) {
+                      allUsers += "& ${user.firstName!} ";
+                    }
+
+                    return InkWell(
+                      onTap: () {
+                        chatController.onLoadCurrentRoom(room);
+                        Get.to(() => (const BotChatScreen()),
+                            arguments: {"room": room, 'index': index});
+                      },
+                      child: Container(
+                        width: width,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 16,
+                          vertical: 8,
+                        ),
+                        child: Column(
+                          children: [
+                            Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    room.bot.domain,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall,
+                                  )
+                                ]),
+                            Row(
+                              children: [
+                                Text(allUsers,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium),
+                                const Spacer(),
+                                Text(formatDate(lastMsg[CREATED_AT]),
+                                    textAlign: TextAlign.right,
+                                    style:
+                                        Theme.of(context).textTheme.labelSmall)
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              children: [
+                                lastMsg["type"] == "text"
+                                    ? Flexible(
+                                        child: Text(lastMsg["text"].length > 100
+                                            ? "${lastMsg["text"].substring(0, 90)}..."
+                                            : lastMsg["text"]))
+                                    : SizedBox(
+                                        child: Row(children: [
+                                          const Icon(Iconsax.attach_circle),
+                                          Text(
+                                              _i18n.translate("media_attached"))
+                                        ]),
+                                      )
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+                  })))),
     );
   }
 }

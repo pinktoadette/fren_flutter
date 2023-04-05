@@ -7,6 +7,7 @@ import 'dart:math';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
+import 'package:fren_app/widgets/friend_list.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:open_filex/open_filex.dart';
@@ -183,23 +184,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
                         Text(_i18n.translate("add_to_chat")),
                       ],
                     )),
-
-                /// change_bot_personality
-                PopupMenuItem(
-                    value: "change_bot_personality",
-                    child: Row(
-                      children: <Widget>[
-                        const TinyBotIcon(image: 'assets/images/frank1.png'),
-                        const SizedBox(width: 5),
-                        Text(_i18n.translate("change_bot_personality"))
-                      ],
-                    )),
               ],
               onSelected: (val) {
                 /// Control selected value
                 switch (val) {
                   case "add_to_chat":
-                    _appHelper.shareApp();
+                    _showFriends();
                     break;
                 }
               },
@@ -429,29 +419,31 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _showBotInfo() {
-    double height = MediaQuery.of(context).size.height;
-
     showModalBottomSheet<void>(
       context: context,
+      isScrollControlled: true,
       backgroundColor: Theme.of(context).colorScheme.background,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: max(height, 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              BotProfileCard(
-                bot: chatController.botController.bot,
-                room: _room,
-                roomIdx: _roomIdx,
-              )
-            ],
-          ),
-        ),
-      ),
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: BotProfileCard(
+              bot: chatController.botController.bot,
+              room: _room,
+              roomIdx: _roomIdx,
+            ));
+      },
+    );
+  }
+
+  void _showFriends() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      builder: (context) {
+        return const FractionallySizedBox(
+            heightFactor: 0.9, child: FriendListWidget());
+      },
     );
   }
 }

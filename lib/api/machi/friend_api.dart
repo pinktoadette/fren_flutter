@@ -55,13 +55,16 @@ class FriendApi {
     }
   }
 
-  Future<List<dynamic>> acceptRequest(String friendId) async {
+  Future<List<dynamic>> getAllFriends() async {
     try {
-      String url = '${baseUri}friends/get_friend';
+      String url = '${baseUri}friends/get_friends';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.get(url, data: {FB_UID: friendId});
-      return response.data;
+      final response = await dio.get(url);
+      if (response.statusCode == 200) {
+        return response.data;
+      }
+      return [];
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();
