@@ -17,7 +17,7 @@ class AvatarInitials extends StatelessWidget {
         radius: radius ?? 50,
         child: (user.userProfilePhoto == '')
             ? Center(
-                child: Text(user.userFullname.substring(0, 1).toUpperCase(),
+                child: Text(user.username.substring(0, 1).toUpperCase(),
                     style: Theme.of(context).textTheme.headlineSmall),
               )
             : null,

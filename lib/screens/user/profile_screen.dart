@@ -97,20 +97,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     children: [
                       AvatarInitials(user: widget.user),
                       const SizedBox(width: 20),
-                      Text(
-                        widget.user.userFullname,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-
-                      /// Show verified badge
-                      widget.user.userIsVerified
-                          ? Container(
-                              margin: const EdgeInsets.only(right: 5),
-                              child: Image.asset(
-                                  'assets/images/verified_badge.png',
-                                  width: 30,
-                                  height: 30))
-                          : const SizedBox(width: 0, height: 0),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            widget.user.userFullname,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          const SizedBox(height: 10),
+                          _buttonDisplay(context)
+                        ],
+                      )
                     ],
                   ),
 
@@ -120,18 +118,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [_buttonDisplay(context)],
-                        ),
-
-                        // interest
-                        _rowProfileInfo(context,
-                            icon: Icon(Iconsax.heart, size: _iconSize),
-                            title: widget.user.userInterest.join(", ")),
-
-                        const SizedBox(height: 5),
-
                         /// indsutry
                         _rowProfileInfo(context,
                             icon: Icon(Iconsax.briefcase, size: _iconSize),
@@ -177,14 +163,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _buttonDisplay(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     _i18n = AppLocalizations.of(context);
 
     switch (friendStatus["status"]) {
       case 'REQUEST':
         if (friendStatus["isRequester"] == 1) {
           return OutlinedButton(
-              onPressed: null, child: Text(_i18n.translate("friend_sent")));
+              onPressed: null,
+              child: Text(
+                _i18n.translate("friend_sent"),
+                style: Theme.of(context).textTheme.labelSmall,
+              ));
         }
         return Row(
           children: [

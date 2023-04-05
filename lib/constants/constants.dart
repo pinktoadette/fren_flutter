@@ -130,7 +130,6 @@ const String USER_GENDER = "gender";
 const String USER_BIRTH_DAY = "birthDay";
 const String USER_BIRTH_MONTH = "birthMonth";
 const String USER_BIRTH_YEAR = "birthYear";
-const String USER_SCHOOL = "school";
 const String USER_INDUSTRY = "industry";
 const String USER_JOB = "job";
 const String USER_INTERESTS = "interests";
@@ -148,9 +147,7 @@ const String USER_LEVEL = "level";
 const String USER_LAST_UPDATE = "lastUpdate";
 const String USER_LAST_LOGIN = "lastLogin";
 const String USER_DEVICE_TOKEN = "deviceToken";
-const String USER_TOTAL_LIKES = "totalLikes";
-const String USER_TOTAL_VISITS = "totalVisits";
-const String USER_TOTAL_DISLIKED = "totalDisliked";
+
 // User Setting map - fields
 const String USER_MIN_AGE = "minAge";
 const String USER_MAX_AGE = "maxAge";
@@ -183,22 +180,6 @@ const NOTIF_RECEIVER_ID = "receiverId";
 const NOTIF_TYPE = "type";
 const NOTIF_MESSAGE = "message";
 const NOTIF_READ = "read";
-
-/// DATABASE FIELDS FOR Likes COLLECTION
-///
-const String LIKED_USER_ID = 'likedUserId';
-const String LIKED_BY_USER_ID = 'likedByUserId';
-const String LIKE_TYPE = 'likeType';
-
-/// DATABASE FIELDS FOR Dislikes COLLECTION
-///
-const String DISLIKED_USER_ID = 'disliked_user_id';
-const String DISLIKED_BY_USER_ID = 'disliked_by_user_id';
-
-/// DATABASE FIELDS FOR Visits COLLECTION
-///
-const String VISITED_USER_ID = 'visited_user_id';
-const String VISITED_BY_USER_ID = 'visited_by_user_id';
 
 /// DATABASE FIELDS FOR [BlockedUsers] (NEW) COLLECTION
 ///

@@ -92,7 +92,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                     _nextScreen(const SignInScreen()),
                                 signUpScreen: () =>
                                     _nextScreen(const SignUpScreen()),
-                                // botChatScreen: (bot) => _nextScreen(BotChatScreen(bot: bot)),
                                 onboardScreen: () =>
                                     _nextScreen(const OnboardingScreen()),
                                 homeScreen: () =>
@@ -100,8 +99,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 blockedScreen: () =>
                                     _nextScreen(const BlockedAccountScreen()));
                           }, onError: () async {
-                            // Hide dialog
-                            // await _pr.hide();
                             // Show error message to user
                             errorDialog(context,
                                 message:
