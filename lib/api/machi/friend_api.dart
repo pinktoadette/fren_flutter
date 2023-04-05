@@ -5,7 +5,7 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
-enum FriendStatus { reject, active, blocked, unfriend }
+enum FriendStatus { request, active, block, unfriend }
 
 class FriendApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -15,13 +15,12 @@ class FriendApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  ///////// User's friend /////////
   Future<List<dynamic>> getOneFriend(String friendId) async {
     try {
       String url = '${baseUri}friends/get_friend';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.get(url, data: {"uid": friendId});
+      final response = await dio.get(url, data: {FB_UID: friendId});
       return response.data;
     } catch (error) {
       debugPrint(error.toString());
@@ -34,7 +33,7 @@ class FriendApi {
       String url = '${baseUri}friends/request';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.post(url, data: {"uid": friendId});
+      final response = await dio.post(url, data: {FB_UID: friendId});
       return response.data;
     } catch (error) {
       debugPrint(error.toString());
@@ -48,7 +47,7 @@ class FriendApi {
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response =
-          await dio.post(url, data: {"uid": friendId, "response": action});
+          await dio.post(url, data: {FB_UID: friendId, FRIEND_STATUS: action});
       return response.data;
     } catch (error) {
       debugPrint(error.toString());
@@ -61,7 +60,7 @@ class FriendApi {
       String url = '${baseUri}friends/get_friend';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.get(url, data: {"uid": friendId});
+      final response = await dio.get(url, data: {FB_UID: friendId});
       return response.data;
     } catch (error) {
       debugPrint(error.toString());

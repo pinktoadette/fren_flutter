@@ -52,7 +52,7 @@ class ProfileTab extends StatelessWidget {
                 child: Column(
                   children: [
                     ListTile(
-                      leading: const Icon(Iconsax.moon),
+                      leading: const Icon(Iconsax.setting),
                       title: Text(_i18n.translate("settings")),
                       onTap: () {
                         /// Go to profile settings
@@ -72,11 +72,6 @@ class ProfileTab extends StatelessWidget {
 
             /// App Section Card
             // AppSectionCard(),
-
-            const SizedBox(height: 20),
-
-            /// Sign out button card
-            const SignOutButtonCard(),
 
             /// Delete Account Button
             // const DeleteAccountButton(),

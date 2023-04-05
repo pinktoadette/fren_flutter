@@ -14,29 +14,28 @@ class CreateBotCard extends StatelessWidget {
     final i18n = AppLocalizations.of(context);
 
     return Card(
-      clipBehavior: Clip.antiAlias,
-      elevation: 4.0,
-      shape: defaultCardBorder(),
-      child: Column(
-        children: [
-          ListTile(
-            leading: const Icon(Iconsax.box_tick),
-            title: Text(i18n.translate("create_bot")),
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AddBotScreen()));
-            },
-          ),
-          ListTile(
-            leading: const Icon(Iconsax.box_remove),
-            title: Text(i18n.translate("manage_bot")),
-            onTap: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const ManageBotScreen()));
-            },
-          ),
-        ],
-      )
-    );
+        clipBehavior: Clip.antiAlias,
+        elevation: 4.0,
+        shape: defaultCardBorder(),
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(Iconsax.box_tick),
+              title: Text(i18n.translate("create_bot")),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const AddBotScreen()));
+              },
+            ),
+            ListTile(
+              leading: const Icon(Iconsax.box_remove),
+              title: Text(i18n.translate("manage_bot")),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => const ManageBotScreen()));
+              },
+            ),
+          ],
+        ));
   }
 }

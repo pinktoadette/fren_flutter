@@ -117,8 +117,10 @@ const String VIP_ACCOUNT_MAX_DISTANCE = "vip_account_max_distance";
 const String ADMOB_APP_ID = "admob_app_id";
 const String ADMOB_INTERSTITIAL_AD_ID = "admob_interstitial_ad_id";
 
+const String FB_UID = "uid";
+
 /// DATABASE FIELDS FOR USER COLLECTION  ///
-///
+
 const String USER_ID = "userId";
 const String USER_INITIATED_FRANK = "initiatedFrank";
 const String USER_ENABLE_MODE = "enablMode";
@@ -180,6 +182,9 @@ const NOTIF_RECEIVER_ID = "receiverId";
 const NOTIF_TYPE = "type";
 const NOTIF_MESSAGE = "message";
 const NOTIF_READ = "read";
+
+/// FRIENDS
+const FRIEND_STATUS = "status";
 
 /// DATABASE FIELDS FOR [BlockedUsers] (NEW) COLLECTION
 ///

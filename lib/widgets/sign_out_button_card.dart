@@ -16,7 +16,8 @@ class SignOutButtonCard extends StatelessWidget {
       shape: defaultCardBorder(),
       child: ListTile(
         leading: const Icon(Icons.exit_to_app),
-        title: Text(i18n.translate("sign_out"), style: const TextStyle(fontSize: 18)),
+        title: Text(i18n.translate("sign_out"),
+            style: Theme.of(context).textTheme.bodyMedium),
         trailing: const Icon(Icons.arrow_forward),
         onTap: () {
           // Log out button
@@ -24,8 +25,8 @@ class SignOutButtonCard extends StatelessWidget {
             /// Go to login screen
             Future(() {
               Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const SignInScreen()));
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
+                  builder: (context) => const SignInScreen()));
             });
           });
         },
