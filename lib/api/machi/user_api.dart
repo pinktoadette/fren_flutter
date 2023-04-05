@@ -44,44 +44,4 @@ class UserApi {
       debugPrint(error.toString());
     }
   }
-
-  ///////// User's friend /////////
-  Future<List<dynamic>> getOneFriend(String friendId) async {
-    try {
-      String url = '${baseUri}friends/get_friend';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url, data: {"uid": friendId});
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
-
-  Future<String> sendRequest(String friendId) async {
-    try {
-      String url = '${baseUri}friends/request';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: {"uid": friendId});
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
-
-  Future<List<dynamic>> acceptRequest(String friendId) async {
-    try {
-      String url = '${baseUri}friends/get_friend';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url, data: {"uid": friendId});
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
 }

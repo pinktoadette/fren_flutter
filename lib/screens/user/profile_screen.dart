@@ -1,3 +1,4 @@
+import 'package:fren_app/api/machi/friend_api.dart';
 import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
@@ -22,7 +23,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final double _iconSize = 16;
-  final _userApi = UserApi();
+  final _friendApi = FriendApi();
   Map<String, dynamic> friendStatus = {
     "status": "UNFRIEND",
     "isRequester": 0,
@@ -42,7 +43,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _isUserFriend() async {
-    final user = await _userApi.getOneFriend(widget.user.userId);
+    final user = await _friendApi.getOneFriend(widget.user.userId);
     if (user.isNotEmpty) {
       final friend = user[0]["friends"]
           .where((u) => u['userId'] == widget.user.userId)
@@ -199,8 +200,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     ElevatedButton(
                         onPressed: () {
-                          _userApi
-                              .sendRequest(widget.user.userId)
+                          _friendApi
+                              .respondRequest(
+                                  widget.user.userId, FriendStatus.active)
                               .then((_) => {_isUserFriend()});
                         },
                         child: Text(
@@ -209,8 +211,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         )),
                     OutlinedButton(
                         onPressed: () {
-                          _userApi
-                              .sendRequest(widget.user.userId)
+                          _friendApi
+                              .respondRequest(
+                                  widget.user.userId, FriendStatus.unfriend)
                               .then((_) => {_isUserFriend()});
                         },
                         child: Text(
@@ -239,7 +242,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       default:
         return ElevatedButton.icon(
             onPressed: () async {
-              _userApi
+              _friendApi
                   .sendRequest(widget.user.userId)
                   .then((_) => {_isUserFriend()});
             },
