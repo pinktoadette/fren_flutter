@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/models/app_model.dart';
@@ -69,39 +70,38 @@ class MyApp extends StatelessWidget {
       child: ScopedModel<UserModel>(
         model: UserModel(),
         child: GetMaterialApp(
-          navigatorKey: navigatorKey,
-          scaffoldMessengerKey: scaffoldMessengerKey,
-          title: APP_NAME,
-          debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            title: APP_NAME,
+            debugShowCheckedModeBanner: false,
 
-          /// Setup translations
-          localizationsDelegates: const [
-            // AppLocalizations is where the lang translations is loaded
-            AppLocalizations.delegate,
-            CountryLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          supportedLocales: SUPPORTED_LOCALES,
+            /// Setup translations
+            localizationsDelegates: const [
+              // AppLocalizations is where the lang translations is loaded
+              AppLocalizations.delegate,
+              CountryLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            supportedLocales: SUPPORTED_LOCALES,
 
-          /// Returns a locale which will be used by the app
-          localeResolutionCallback: (locale, supportedLocales) {
-            // Check if the current device locale is supported
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale!.languageCode) {
-                return supportedLocale;
+            /// Returns a locale which will be used by the app
+            localeResolutionCallback: (locale, supportedLocales) {
+              // Check if the current device locale is supported
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale!.languageCode) {
+                  return supportedLocale;
+                }
               }
-            }
 
-            /// If the locale of the device is not supported, use the first one
-            /// from the list (English, in this case).
-            return supportedLocales.first;
-          },
-          home: const SplashScreen(),
-          darkTheme: _darkTheme(),
-          theme: _lightTheme(),
-          themeMode: ThemeMode.system,
-        ),
+              /// If the locale of the device is not supported, use the first one
+              /// from the list (English, in this case).
+              return supportedLocales.first;
+            },
+            home: const SplashScreen(),
+            darkTheme: _darkTheme(),
+            theme: _lightTheme(),
+            themeMode: ThemeMode.system),
       ),
     );
   }
@@ -135,6 +135,11 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50))),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
@@ -208,7 +213,7 @@ class MyApp extends StatelessWidget {
           primary: APP_PRIMARY_DARK_COLOR,
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_DARK_BACKGROUND),
-      scaffoldBackgroundColor: APP_PRIMARY_DARK_COLOR,
+      scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
       inputDecorationTheme: InputDecorationTheme(
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
@@ -224,12 +229,22 @@ class MyApp extends StatelessWidget {
           shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(
+            backgroundColor: APP_PRIMARY_DARK_COLOR,
+            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
             backgroundColor: APP_PRIMARY_DARK_COLOR,
+            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50))),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: APP_PRIMARY_DARK_COLOR,
+            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
@@ -260,12 +275,18 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
             GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
-        titleLarge: GoogleFonts.poppins(fontSize: 20),
-        titleMedium: GoogleFonts.poppins(fontSize: 18),
-        titleSmall: GoogleFonts.poppins(fontSize: 16),
-        bodyLarge: GoogleFonts.poppins(fontSize: 18),
-        bodyMedium: GoogleFonts.poppins(fontSize: 16),
-        bodySmall: GoogleFonts.poppins(fontSize: 14),
+        titleLarge:
+            GoogleFonts.poppins(fontSize: 20, color: APP_PRIMARY_DARK_COLOR),
+        titleMedium:
+            GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
+        titleSmall:
+            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
+        bodyLarge:
+            GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
+        bodyMedium:
+            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
+        bodySmall:
+            GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
         labelLarge: GoogleFonts.poppins(
           fontSize: 18,
         ),
@@ -282,7 +303,7 @@ class MyApp extends StatelessWidget {
         iconTheme: IconThemeData(color: APP_PRIMARY_DARK_COLOR),
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor:
-                APP_PRIMARY_DARK_COLOR, // Only honored in Android M and above
+                APP_PRIMARY_DARK_BACKGROUND, // Only honored in Android M and above
             statusBarIconBrightness:
                 Brightness.light, // Only honored in Android M and above
             statusBarBrightness: Brightness.dark),

@@ -119,8 +119,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       setState(() {
                         _isDarkMode = newValue;
                       });
-                      Get.changeTheme(
-                        Get.isDarkMode ? ThemeData.light() : ThemeData.dark(),
+                      Get.changeThemeMode(
+                        newValue ? ThemeMode.dark : ThemeMode.light,
                       );
 
                       // Update profile status
