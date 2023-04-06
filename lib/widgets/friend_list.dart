@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/machi/friend_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -8,7 +10,11 @@ import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 
 class FriendListWidget extends StatefulWidget {
-  const FriendListWidget({Key? key}) : super(key: key);
+  final Chatroom chatroom;
+  final int roomIdx;
+  const FriendListWidget(
+      {Key? key, required this.chatroom, required this.roomIdx})
+      : super(key: key);
 
   @override
   _FriendListState createState() => _FriendListState();
@@ -16,6 +22,7 @@ class FriendListWidget extends StatefulWidget {
 
 class _FriendListState extends State<FriendListWidget> {
   final _friendApi = FriendApi();
+  final _chatroomApi = ChatroomMachiApi();
   late AppLocalizations _i18n;
   List<dynamic> _listFriends = [];
 
@@ -24,6 +31,11 @@ class _FriendListState extends State<FriendListWidget> {
     setState(() {
       _listFriends = listFriends;
     });
+  }
+
+  Future<void> _inviteFriend(String friendId) async {
+    await _chatroomApi.inviteUserRoom(
+        widget.roomIdx, friendId, widget.chatroom);
   }
 
   @override
@@ -36,9 +48,10 @@ class _FriendListState extends State<FriendListWidget> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
+
     // need container for the top padding, then add back the scroll
     return SingleChildScrollView(
-        child: Container(
+        child: SizedBox(
       height: height * 0.88,
       child: Padding(
           padding: const EdgeInsets.only(top: 20),
@@ -46,7 +59,9 @@ class _FriendListState extends State<FriendListWidget> {
             separatorBuilder: (context, index) => const Divider(height: 10),
             itemCount: _listFriends.length,
             itemBuilder: ((context, index) {
-              /// Show notification
+              final isUserAdded = widget.chatroom.users.firstWhere(
+                (element) => element.id == _listFriends[index][USER_ID],
+              );
               return ListTile(
                 leading: InkWell(
                     onTap: () async {
@@ -64,13 +79,25 @@ class _FriendListState extends State<FriendListWidget> {
                   Text(_listFriends[index][USER_USERNAME]),
                   const Spacer(),
                 ]),
-                trailing: ElevatedButton(
-                    onPressed: () {},
-                    child: Text(
-                      _i18n.translate("add_to_chat"),
-                      style: const TextStyle(fontSize: 10),
-                    )),
-                onTap: () async {},
+                subtitle: Text(_listFriends[index][USER_USERNAME]),
+                trailing: isUserAdded.id.isNotEmpty
+                    ? OutlinedButton(
+                        onPressed: () {
+                          null;
+                        },
+                        child: Text(
+                          _i18n.translate("added_to_chat"),
+                          style: const TextStyle(fontSize: 10),
+                        ))
+                    : ElevatedButton(
+                        onPressed: () {
+                          _inviteFriend(_listFriends[index][USER_ID]);
+                        },
+                        child: Text(
+                          _i18n.translate("add_to_chat"),
+                          style: const TextStyle(fontSize: 10),
+                        )),
+                onTap: () {},
               );
             }),
           )),

@@ -31,8 +31,6 @@ class Bot {
   final String subdomain;
   final int createdAt;
   final int updatedAt;
-  final String prompt;
-  final double temperature;
   final bool? isActive;
   final String? adminStatus;
   final String? model;
@@ -52,8 +50,6 @@ class Bot {
       required this.createdAt,
       required this.about,
       required this.updatedAt,
-      required this.prompt,
-      required this.temperature,
       this.isActive,
       this.adminStatus,
       this.model,
@@ -92,8 +88,6 @@ class Bot {
       about: doc[BOT_ABOUT],
       domain: doc[BOT_DOMAIN],
       isActive: doc[BOT_ACTIVE] ?? false,
-      prompt: doc[BOT_PROMPT],
-      temperature: doc[BOT_TEMPERATURE] ?? 0.5,
       createdAt: doc[CREATED_AT],
       updatedAt: doc[UPDATED_AT],
       adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',

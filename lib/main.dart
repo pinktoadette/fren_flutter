@@ -189,6 +189,9 @@ class MyApp extends StatelessWidget {
         bodyColor: APP_PRIMARY_COLOR,
         displayColor: APP_PRIMARY_COLOR,
       ),
+      popupMenuTheme: PopupMenuThemeData(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       appBarTheme: const AppBarTheme(
         color: APP_PRIMARY_BACKGROUND,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
@@ -278,9 +281,11 @@ class MyApp extends StatelessWidget {
         headlineSmall:
             GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
         titleLarge:
-            GoogleFonts.poppins(fontSize: 20, color: APP_PRIMARY_DARK_COLOR),
-        titleMedium:
-            GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
+            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
+        titleMedium: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: APP_PRIMARY_DARK_COLOR),
         titleSmall:
             GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         bodyLarge:
@@ -299,6 +304,9 @@ class MyApp extends StatelessWidget {
           fontSize: 14,
         ),
       ),
+      popupMenuTheme: PopupMenuThemeData(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       appBarTheme: const AppBarTheme(
         color: APP_PRIMARY_DARK_BACKGROUND,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,

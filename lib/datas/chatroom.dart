@@ -14,6 +14,8 @@ class Chatroom {
   final List<types.User>? blockedUsers;
   final int createdAt;
   final int updatedAt;
+  final String prompt;
+  final double temperature;
 
   Chatroom(
       {required this.chatroomId,
@@ -24,6 +26,8 @@ class Chatroom {
       required this.messages,
       required this.users,
       required this.creatorUser,
+      required this.prompt,
+      required this.temperature,
       this.blockedUsers,
       this.title});
 
@@ -35,6 +39,8 @@ class Chatroom {
       String? title,
       List<types.Message>? messages,
       String? roomType,
+      String? prompt,
+      double? temperature,
       List<types.User>? users}) {
     return Chatroom(
         chatroomId: chatroomId ?? this.chatroomId,
@@ -44,6 +50,8 @@ class Chatroom {
         roomType: roomType ?? this.roomType,
         messages: messages ?? this.messages,
         users: users ?? this.users,
+        prompt: prompt ?? this.prompt,
+        temperature: temperature ?? this.temperature,
         creatorUser: creatorUser);
   }
 
@@ -94,15 +102,16 @@ class Chatroom {
     Bot bot = Bot.fromDocument(doc[BOT_INFO]);
 
     return Chatroom(
-      chatroomId: doc[ROOM_ID],
-      bot: bot,
-      title: doc['title'],
-      creatorUser: doc['createdBy'],
-      users: users,
-      messages: messages,
-      createdAt: doc[CREATED_AT].toInt(),
-      updatedAt: doc[UPDATED_AT].toInt(),
-      roomType: doc["roomType"],
-    );
+        chatroomId: doc[ROOM_ID],
+        bot: bot,
+        title: doc[ROOM_TITLE],
+        creatorUser: doc[ROOM_CREATED_BY],
+        users: users,
+        messages: messages,
+        createdAt: doc[CREATED_AT].toInt(),
+        updatedAt: doc[UPDATED_AT].toInt(),
+        roomType: doc[ROOM_TYPE],
+        prompt: doc[ROOM_BASE_PROMPT],
+        temperature: doc[ROOM_PROMPT_TEMPERATURE]);
   }
 }

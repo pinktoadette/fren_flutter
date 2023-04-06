@@ -180,12 +180,17 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
+    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
-            Image.asset("assets/images/machi.png", height: 40),
+            Image.asset(
+                isDarkMode
+                    ? "assets/images/logo_pink.png"
+                    : "assets/images/machi.png",
+                height: 40),
             const SizedBox(width: 10),
           ],
         ),

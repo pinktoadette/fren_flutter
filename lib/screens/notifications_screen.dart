@@ -78,7 +78,6 @@ class NotificationsScreen extends StatelessWidget {
 
                   /// Show notification
                   return ListTile(
-                    isThreeLine: true,
                     leading: InkWell(
                         onTap: () async {
                           final User user = await UserModel()
@@ -101,6 +100,15 @@ class NotificationsScreen extends StatelessWidget {
                           style: !notification[NOTIF_READ]
                               ? Theme.of(context).textTheme.titleMedium
                               : Theme.of(context).textTheme.bodyMedium),
+                      !notification[NOTIF_READ]
+                          ? const Icon(
+                              Iconsax.stop_circle,
+                              size: 12,
+                            )
+                          : const SizedBox(
+                              width: 15,
+                              height: 15,
+                            )
                     ]),
                     subtitle: Text(notification[NOTIF_MESSAGE],
                         style: !notification[NOTIF_READ]

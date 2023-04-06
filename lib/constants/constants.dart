@@ -205,6 +205,9 @@ const String ROOM_ID = "chatroomId";
 const String ROOM_HAS_MESSAGES = "hasMessages";
 const String ROOM_TITLE = "title";
 const String ROOM_CREATED_BY = "createdBy";
+const String ROOM_BASE_PROMPT = "prompt";
+const String ROOM_PROMPT_TEMPERATURE = "temperature";
+const String ROOM_TYPE = "roomType";
 
 /// chat
 const String CHAT_AUTHOR_ID = "authorId";

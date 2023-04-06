@@ -442,8 +442,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       isScrollControlled: true,
       backgroundColor: Theme.of(context).colorScheme.background,
       builder: (context) {
-        return const FractionallySizedBox(
-            heightFactor: 0.9, child: FriendListWidget());
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: FriendListWidget(
+              chatroom: _room,
+              roomIdx: _roomIdx,
+            ));
       },
     );
   }

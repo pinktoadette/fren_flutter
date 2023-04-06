@@ -36,20 +36,19 @@ class _BotProfileCardState extends State<BotProfileCard> {
   final _chatroomApi = ChatroomMachiApi();
 
   String? _prompt;
-  bool disableSelect = true;
+  bool disableTextEdit = true;
   late AppLocalizations _i18n;
   final TextEditingController personalityController = TextEditingController();
 
   Future<void> _loadMood() async {
-    setState(() {
-      _prompt = widget.bot.prompt;
-    });
-
     if (widget.room != null) {
       // only creator of the room can change the mmod
       if (UserModel().user.userId == widget.room!.creatorUser) {
-        disableSelect = false;
+        disableTextEdit = false;
       }
+      setState(() {
+        _prompt = widget.room?.prompt;
+      });
     }
   }
 
@@ -166,14 +165,15 @@ class _BotProfileCardState extends State<BotProfileCard> {
           if (widget.room?.chatroomId != null)
             Column(mainAxisAlignment: MainAxisAlignment.start, children: [
               SizedBox(
-                width: width, // <-- TextField width
-                height: height, // <-- TextField height
+                width: width,
+                height: height,
                 child: TextFormField(
                   textAlignVertical: TextAlignVertical.top,
                   style: Theme.of(context).textTheme.bodySmall,
-                  initialValue: "Prompt: \n ${widget.bot.prompt}",
+                  initialValue: "Prompt: \n ${widget.room!.prompt}",
                   maxLines: null,
                   expands: true,
+                  enabled: !disableTextEdit,
                   textCapitalization: TextCapitalization.sentences,
                   onChanged: (text) {},
                   keyboardType: TextInputType.multiline,

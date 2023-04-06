@@ -74,13 +74,13 @@ class ChatController extends GetxController implements GetxService {
                 subdomain: "",
                 createdAt: date,
                 about: "",
-                prompt: "",
-                temperature: 0.5,
                 updatedAt: date),
             users: [],
             createdAt: date,
             updatedAt: date,
             roomType: '',
+            prompt: "",
+            temperature: 0.5,
             messages: [],
             creatorUser: '')
         .obs;
