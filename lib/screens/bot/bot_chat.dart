@@ -162,19 +162,20 @@ class _BotChatScreenState extends State<BotChatScreen> {
             },
           ),
           actions: <Widget>[
-            IconButton(
-              icon: const TinyBotIcon(image: 'assets/images/faces/1.png'),
-              onPressed: () {
-                infoDialog(context,
-                    title: _i18n.translate("bot_naps"),
-                    message: _i18n.translate("bot_nap_message"),
-                    positiveText: _i18n.translate("OK"),
-                    positiveAction: () async {
-                  // Close the confirm dialog
-                  Navigator.of(context).pop();
-                });
-              },
-            ),
+            if (_room.users.length > 1)
+              IconButton(
+                icon: const TinyBotIcon(image: 'assets/images/faces/1.png'),
+                onPressed: () {
+                  infoDialog(context,
+                      title: _i18n.translate("bot_naps"),
+                      message: _i18n.translate("bot_nap_message"),
+                      positiveText: _i18n.translate("OK"),
+                      positiveAction: () async {
+                    // Close the confirm dialog
+                    Navigator.of(context).pop();
+                  });
+                },
+              ),
             PopupMenuButton<String>(
               initialValue: "",
               itemBuilder: (context) => <PopupMenuEntry<String>>[

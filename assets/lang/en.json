@@ -264,7 +264,7 @@
   "bot": "Bot",
   "bot_prompt": "Define your AI in a few sentences",
   "bot_naps": "Napping",
-  "bot_nap_message": "I get overwhelmed with people in group chats. Need to rest.",
+  "bot_nap_message": "Too many people, I'm overwhelmed.",
   "create_bot": "Create Domain Bot",
   "create_bot_success": "Your bot is now published!",
   "manage_bot": "Manage Created Bot",
