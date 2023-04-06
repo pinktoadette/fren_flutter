@@ -62,6 +62,8 @@ class InviteCardState extends State<InviteCard> {
                                       Theme.of(context).textTheme.labelSmall),
                               const SizedBox(height: 10),
                               QrImage(
+                                foregroundColor:
+                                    Theme.of(context).colorScheme.primary,
                                 data: myUrl,
                                 version: QrVersions.auto,
                                 size: 200.0,

@@ -219,7 +219,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
         body: Chat(
             theme: DefaultChatTheme(
-                inputTextStyle: const TextStyle(fontSize: 14, height: 1.5),
+                inputTextStyle: const TextStyle(
+                    fontSize: 14, fontWeight: FontWeight.normal, height: 1.5),
                 primaryColor: Theme.of(context).colorScheme.secondary,
                 sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
                 backgroundColor: Theme.of(context).colorScheme.background),
