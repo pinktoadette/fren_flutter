@@ -119,12 +119,12 @@ void _buildDialog(
       _title = title ?? i18n.translate("error");
       break;
     case "confirm":
-      _icon = icon ??  const Icon(Iconsax.tick_square, color: APP_WARNING);
+      _icon = icon ?? const Icon(Iconsax.tick_square, color: APP_WARNING);
       _title = title ?? i18n.translate("are_you_sure");
       break;
 
     case "info":
-      _icon = icon ??  const Icon(Iconsax.information, color: APP_INFO);
+      _icon = icon ?? const Icon(Iconsax.information, color: APP_INFO);
       _title = title ?? i18n.translate("information");
       break;
   }
@@ -139,7 +139,8 @@ void _buildDialog(
             children: [
               _icon,
               const SizedBox(width: 10),
-              Expanded(child: Text(_title, style: const TextStyle(fontSize: 20)))
+              Expanded(
+                  child: Text(_title, style: const TextStyle(fontSize: 20)))
             ],
           ),
           content: Text(
@@ -153,13 +154,15 @@ void _buildDialog(
                 : TextButton(
                     onPressed: negativeAction,
                     child: Text(negativeText ?? i18n.translate("CANCEL"),
-                        style: const TextStyle(fontSize: 16, color: Colors.grey))),
+                        style:
+                            const TextStyle(fontSize: 16, color: Colors.grey))),
 
             /// Positive button
             TextButton(
                 onPressed: positiveAction ?? () => Navigator.of(context).pop(),
-                child: Text(positiveText ?? i18n.translate("OK"),
-                    style: _textStyle)),
+                child: Text(
+                  positiveText ?? i18n.translate("OK"),
+                )),
           ],
         );
       });

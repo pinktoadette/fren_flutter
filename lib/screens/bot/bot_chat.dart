@@ -9,6 +9,7 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
+import 'package:fren_app/widgets/bot/bot_timer.dart';
 import 'package:fren_app/widgets/friend_list.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
@@ -163,10 +164,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
           actions: <Widget>[
             if (_room.users.length > 1)
-              IconButton(
-                icon: const TinyBotIcon(image: 'assets/images/faces/1.png'),
-                onPressed: () {
+              InkWell(
+                child: const BotTimer(),
+                onTap: () {
                   infoDialog(context,
+                      icon: const TinyBotIcon(
+                          image: 'assets/images/faces/napping.png'),
                       title: _i18n.translate("bot_naps"),
                       message: _i18n.translate("bot_nap_message"),
                       positiveText: _i18n.translate("OK"),
@@ -216,6 +219,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
         body: Chat(
             theme: DefaultChatTheme(
+                inputTextStyle: const TextStyle(fontSize: 14, height: 1.5),
                 primaryColor: Theme.of(context).colorScheme.secondary,
                 sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
                 backgroundColor: Theme.of(context).colorScheme.background),

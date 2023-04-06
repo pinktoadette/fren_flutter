@@ -81,6 +81,7 @@ dependencies:
   qr_flutter: ^4.0.0
   flutter_typeahead: ^4.3.7
   get_storage: ^2.1.1
+  percent_indicator: ^4.2.3
 
 
 dependency_overrides:
