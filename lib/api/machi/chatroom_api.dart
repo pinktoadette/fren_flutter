@@ -88,8 +88,23 @@ class ChatroomMachiApi {
         await dioRequest.post(url, data: {...updateRoom, "friendId": friendId});
 
     if (response.statusCode == 200) {
-      Chatroom updatedRoom = Chatroom.fromJson(response.data);
+      Chatroom updatedRoom = Chatroom.fromJson(response.data ?? room);
       chatController.updateRoom(index, updatedRoom);
+      chatController.onLoadCurrentRoom(updatedRoom);
+    }
+  }
+
+  Future<void> leaveChatroom(int index, Chatroom room) async {
+    String url = '${baseUri}chatroom/leave_chat';
+    debugPrint("Requesting URL $url");
+    final updateRoom = room.toJSON();
+    final dioRequest = await auth.getDio();
+    final response = await dioRequest.post(url, data: updateRoom);
+
+    if (response.statusCode == 200) {
+      // get all rooms, instead of removing index
+      // if we remove index, the position of the rooms will not be correct
+      await getAllMyRooms();
     }
   }
 }

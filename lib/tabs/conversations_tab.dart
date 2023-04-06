@@ -27,6 +27,7 @@ class ConversationsTab extends StatelessWidget {
         IconButton(
             onPressed: () {
               chatController.addEmptyRoomToList();
+              chatController.onLoadCurrentRoom(chatController.emptyRoom);
               Get.to(() => const BotChatScreen(), arguments: {
                 "room": chatController.emptyRoom,
                 "index": chatController.roomlist.length - 1
@@ -108,18 +109,10 @@ class ConversationsTab extends StatelessWidget {
                             ),
                             Row(
                               children: [
-                                lastMsg["type"] == "text"
-                                    ? Flexible(
-                                        child: Text(lastMsg["text"].length > 100
-                                            ? "${lastMsg["text"].substring(0, 90)}..."
-                                            : lastMsg["text"]))
-                                    : SizedBox(
-                                        child: Row(children: [
-                                          const Icon(Iconsax.attach_circle),
-                                          Text(
-                                              _i18n.translate("media_attached"))
-                                        ]),
-                                      )
+                                lastMsg.containsKey("type")
+                                    ? _formatMessages(context, lastMsg["type"],
+                                        lastMsg["text"])
+                                    : const Text(""),
                               ],
                             ),
                           ],
@@ -128,5 +121,25 @@ class ConversationsTab extends StatelessWidget {
                     );
                   })))),
     );
+  }
+
+  Widget _formatMessages(BuildContext context, String type, String text) {
+    final _i18n = AppLocalizations.of(context);
+    switch (type) {
+      case 'text':
+        return Flexible(
+            child:
+                Text(text.length > 100 ? "${text.substring(0, 90)}..." : text));
+      case 'image':
+      case 'video':
+        return SizedBox(
+          child: Row(children: [
+            const Icon(Iconsax.attach_circle),
+            Text(_i18n.translate("media_attached"))
+          ]),
+        );
+      default:
+        return const Text("");
+    }
   }
 }

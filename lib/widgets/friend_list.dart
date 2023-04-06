@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/machi/friend_api.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
+import 'package:get/get.dart';
 
 class FriendListWidget extends StatefulWidget {
-  final Chatroom chatroom;
   final int roomIdx;
-  const FriendListWidget(
-      {Key? key, required this.chatroom, required this.roomIdx})
-      : super(key: key);
+  const FriendListWidget({Key? key, required this.roomIdx}) : super(key: key);
 
   @override
   _FriendListState createState() => _FriendListState();
@@ -23,6 +21,7 @@ class FriendListWidget extends StatefulWidget {
 class _FriendListState extends State<FriendListWidget> {
   final _friendApi = FriendApi();
   final _chatroomApi = ChatroomMachiApi();
+  ChatController chatController = Get.find();
   late AppLocalizations _i18n;
 
   Future<List<dynamic>> _getFriends() async {
@@ -31,7 +30,8 @@ class _FriendListState extends State<FriendListWidget> {
 
   Future<void> _inviteFriend(String friendId) async {
     await _chatroomApi.inviteUserRoom(
-        widget.roomIdx, friendId, widget.chatroom);
+        widget.roomIdx, friendId, chatController.currentRoom);
+    setState(() {});
   }
 
   @override
@@ -68,7 +68,8 @@ class _FriendListState extends State<FriendListWidget> {
                             const Divider(height: 10),
                         itemCount: snapshot.data.length,
                         itemBuilder: ((context, index) {
-                          final isUserAdded = widget.chatroom.users.where(
+                          final isUserAdded =
+                              chatController.currentRoom.users.where(
                             (element) =>
                                 element.id == snapshot.data[index][USER_ID],
                           );
@@ -111,7 +112,13 @@ class _FriendListState extends State<FriendListWidget> {
                                       _i18n.translate("add_to_chat"),
                                       style: const TextStyle(fontSize: 10),
                                     )),
-                            onTap: () {},
+                            onTap: () async {
+                              final User user = await UserModel()
+                                  .getUserObject(snapshot.data[index][USER_ID]);
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      ProfileScreen(user: user)));
+                            },
                           );
                         }),
                       );

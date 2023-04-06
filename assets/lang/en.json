@@ -256,6 +256,8 @@
 
   "add_to_chat": "Add Friend",
   "added_to_chat": "Added",
+  "leave_chatroom": "Leave chatroom",
+  "leave_chat_warning": "Once you leave, you will no longer see any of the messages",
   "about": "About ",
   "activity": "Activity",
   "ask_something": "Ask something...",

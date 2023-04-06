@@ -89,7 +89,7 @@ class ChatController extends GetxController implements GetxService {
   /// when you create a new room, user is already in,
   /// therefore you are also in the current room
   void onCreateRoomList(Chatroom myRooms) {
-    if (myRooms.messages.isNotEmpty) {
+    if (myRooms.messages.isNotEmpty || myRooms.users.length > 1) {
       roomlist.add(myRooms);
       _currentRoom = myRooms.obs;
     } else {
@@ -127,6 +127,7 @@ class ChatController extends GetxController implements GetxService {
   void onLoadCurrentRoom(Chatroom room) {
     currentRoom = room;
     messageController.onCurrentRoom(room.messages);
+    roomlist.refresh();
   }
 
   // update messages from the chatroom, to view once when on convo tab

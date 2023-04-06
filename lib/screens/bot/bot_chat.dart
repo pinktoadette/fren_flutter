@@ -4,6 +4,7 @@ import 'dart:developer';
 import 'dart:io';
 import 'dart:math';
 
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/helpers/theme_helper.dart';
@@ -60,6 +61,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late Chatroom _room;
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
+  final _chatroomApi = ChatroomMachiApi();
   bool _isAttachmentUploading = false;
   bool isLoading = false;
   bool isBotSleeping = false;
@@ -132,7 +134,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
             color: Theme.of(context).primaryColor,
             onPressed: () async {
               // if there are no messages, remove from roomList
-              if (_messages.isEmpty) {
+              if ((_messages.isEmpty) &
+                  (chatController.currentRoom.users.length == 1)) {
                 chatController.removeEmptyRoomfromList();
               }
               if (chatController.isTest == false) {
@@ -185,12 +188,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
                         Text(_i18n.translate("add_to_chat")),
                       ],
                     )),
+                if (_room.users.length > 1)
+                  PopupMenuItem(
+                      value: "leave_chat",
+                      child: Row(
+                        children: <Widget>[
+                          const Icon(Iconsax.logout),
+                          const SizedBox(width: 5),
+                          Text(_i18n.translate("leave_chatroom")),
+                        ],
+                      )),
               ],
               onSelected: (val) {
                 /// Control selected value
                 switch (val) {
                   case "add_to_chat":
                     _showFriends();
+                    break;
+                  case "leave_chat":
+                    _leaveChat(context);
                     break;
                 }
               },
@@ -445,10 +461,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
         return FractionallySizedBox(
             heightFactor: 0.9,
             child: FriendListWidget(
-              chatroom: _room,
               roomIdx: _roomIdx,
             ));
       },
     );
+  }
+
+  void _leaveChat(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
+    confirmDialog(context,
+        message: _i18n.translate("leave_chat_warning"),
+        negativeAction: () => Navigator.of(context).pop(),
+        positiveText: _i18n.translate("leave_chatroom"),
+        positiveAction: () async {
+          /// Delete
+          await _chatroomApi.leaveChatroom(_roomIdx, _room);
+          Navigator.of(context).pop();
+          Get.delete<MessageController>().then((_) {
+            Get.put(MessageController());
+          }).then((_) => messageController.offset = 10);
+        });
   }
 }
