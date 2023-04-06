@@ -300,5 +300,6 @@
   "friend_accept_request": "Accept Request",
   "friend_reject_request": "Reject Request",
   "friend_other_sent": " sent you a friend request",
-  "friend_send_request": "Send Request"
+  "friend_send_request": "Send Request",
+  "friend_none": "No friends"
 }

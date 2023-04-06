@@ -24,13 +24,9 @@ class _FriendListState extends State<FriendListWidget> {
   final _friendApi = FriendApi();
   final _chatroomApi = ChatroomMachiApi();
   late AppLocalizations _i18n;
-  List<dynamic> _listFriends = [];
 
-  Future<void> _getFriends() async {
-    final listFriends = await _friendApi.getAllFriends();
-    setState(() {
-      _listFriends = listFriends;
-    });
+  Future<List<dynamic>> _getFriends() async {
+    return await _friendApi.getAllFriends();
   }
 
   Future<void> _inviteFriend(String friendId) async {
@@ -52,55 +48,73 @@ class _FriendListState extends State<FriendListWidget> {
     // need container for the top padding, then add back the scroll
     return SingleChildScrollView(
         child: SizedBox(
-      height: height * 0.88,
-      child: Padding(
-          padding: const EdgeInsets.only(top: 20),
-          child: ListView.separated(
-            separatorBuilder: (context, index) => const Divider(height: 10),
-            itemCount: _listFriends.length,
-            itemBuilder: ((context, index) {
-              final isUserAdded = widget.chatroom.users.firstWhere(
-                (element) => element.id == _listFriends[index][USER_ID],
-              );
-              return ListTile(
-                leading: InkWell(
-                    onTap: () async {
-                      final User user = await UserModel()
-                          .getUserObject(_listFriends[index][USER_ID]);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileScreen(user: user)));
-                    },
-                    child: AvatarInitials(
-                      radius: 20,
-                      photoUrl: _listFriends[index][USER_PROFILE_PHOTO],
-                      username: _listFriends[index][USER_USERNAME],
-                    )),
-                title: Row(children: [
-                  Text(_listFriends[index][USER_USERNAME]),
-                  const Spacer(),
-                ]),
-                subtitle: Text(_listFriends[index][USER_USERNAME]),
-                trailing: isUserAdded.id.isNotEmpty
-                    ? OutlinedButton(
-                        onPressed: () {
-                          null;
-                        },
-                        child: Text(
-                          _i18n.translate("added_to_chat"),
-                          style: const TextStyle(fontSize: 10),
-                        ))
-                    : ElevatedButton(
-                        onPressed: () {
-                          _inviteFriend(_listFriends[index][USER_ID]);
-                        },
-                        child: Text(
-                          _i18n.translate("add_to_chat"),
-                          style: const TextStyle(fontSize: 10),
-                        )),
-                onTap: () {},
-              );
-            }),
-          )),
-    ));
+            height: height * 0.88,
+            child: Padding(
+                padding: const EdgeInsets.only(top: 20),
+                child: FutureBuilder(
+                    future: _getFriends(),
+                    builder: (context, AsyncSnapshot snapshot) {
+                      if (!snapshot.hasData) {
+                        return Align(
+                          alignment: Alignment.center,
+                          child: Text(
+                            _i18n.translate("friend_none"),
+                            textAlign: TextAlign.center,
+                          ),
+                        );
+                      }
+                      return ListView.separated(
+                        separatorBuilder: (context, index) =>
+                            const Divider(height: 10),
+                        itemCount: snapshot.data.length,
+                        itemBuilder: ((context, index) {
+                          final isUserAdded = widget.chatroom.users.where(
+                            (element) =>
+                                element.id == snapshot.data[index][USER_ID],
+                          );
+                          return ListTile(
+                            leading: InkWell(
+                                onTap: () async {
+                                  final User user = await UserModel()
+                                      .getUserObject(
+                                          snapshot.data[index][USER_ID]);
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) =>
+                                          ProfileScreen(user: user)));
+                                },
+                                child: AvatarInitials(
+                                  radius: 20,
+                                  photoUrl: snapshot.data[index]
+                                      [USER_PROFILE_PHOTO],
+                                  username: snapshot.data[index][USER_USERNAME],
+                                )),
+                            title: Row(children: [
+                              Text(snapshot.data[index][USER_USERNAME]),
+                              const Spacer(),
+                            ]),
+                            subtitle: Text(snapshot.data[index][USER_USERNAME]),
+                            trailing: isUserAdded.isNotEmpty
+                                ? OutlinedButton(
+                                    onPressed: () {
+                                      null;
+                                    },
+                                    child: Text(
+                                      _i18n.translate("added_to_chat"),
+                                      style: const TextStyle(fontSize: 10),
+                                    ))
+                                : ElevatedButton(
+                                    onPressed: () {
+                                      _inviteFriend(
+                                          snapshot.data[index][USER_ID]);
+                                    },
+                                    child: Text(
+                                      _i18n.translate("add_to_chat"),
+                                      style: const TextStyle(fontSize: 10),
+                                    )),
+                            onTap: () {},
+                          );
+                        }),
+                      );
+                    }))));
   }
 }

@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
@@ -10,7 +9,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/sqlite/db.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
