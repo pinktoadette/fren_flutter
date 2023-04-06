@@ -1,5 +1,6 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/sign_out_button_card.dart';
@@ -21,14 +22,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late AppLocalizations _i18n;
 
   /// Initialize user settings
-  void initUserSettings() {
-    // Get user settings
-    // Update variables state
+  void initUserSettings() async {
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
       }
+      _isDarkMode = isDarkMode;
     });
   }
 
@@ -65,16 +66,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           color: Theme.of(context).primaryColor, size: 30),
                   title: Text(_i18n.translate('hide_profile'),
                       style: const TextStyle(fontSize: 18)),
-                  subtitle: _hideProfile
-                      ? Text(
-                          _i18n.translate(
-                              'your_profile_is_hidden_on_discover_tab'),
-                          style: const TextStyle(color: APP_ACCENT_COLOR),
-                        )
-                      : Text(
-                          _i18n.translate(
-                              'your_profile_is_visible_on_discover_tab'),
-                          style: const TextStyle(color: Colors.green)),
                   trailing: Switch(
                     activeColor: Theme.of(context).primaryColor,
                     value: _hideProfile,
@@ -114,14 +105,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   trailing: Switch(
                     activeColor: Theme.of(context).primaryColor,
                     value: _isDarkMode,
-                    onChanged: (newValue) {
+                    onChanged: (newValue) async {
                       // Update UI
                       setState(() {
                         _isDarkMode = newValue;
                       });
-                      Get.changeThemeMode(
-                        newValue ? ThemeMode.dark : ThemeMode.light,
-                      );
+
+                      /// GetX storage
+                      ThemeHelper().switchTheme();
 
                       // Update profile status
                       UserModel().updateUserData(

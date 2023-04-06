@@ -6,6 +6,7 @@ import 'dart:math';
 
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/message_format.dart';
+import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/friend_list.dart';
 import 'package:http/http.dart' as http;
@@ -198,9 +199,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
         body: Chat(
             theme: DefaultChatTheme(
-              primaryColor: Theme.of(context).colorScheme.secondary,
-              sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
-            ),
+                primaryColor: Theme.of(context).colorScheme.secondary,
+                sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
+                backgroundColor: Theme.of(context).colorScheme.background),
             onEndReached: _loadMoreMessage, //get more messages on top
             showUserNames: true,
             showUserAvatars: true,

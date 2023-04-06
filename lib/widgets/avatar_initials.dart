@@ -23,7 +23,7 @@ class AvatarInitials extends StatelessWidget {
               )
             : null,
         foregroundImage: photoUrl == '' ? null : NetworkImage(photoUrl),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.background,
       ),
     );
   }

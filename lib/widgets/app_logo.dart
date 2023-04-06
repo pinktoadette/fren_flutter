@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/helpers/theme_helper.dart';
 
 class AppLogo extends StatelessWidget {
   // Variable
@@ -9,8 +10,14 @@ class AppLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+
     return Center(
-        child: Image.asset("assets/images/logo.png",
-            width: width ?? 120, height: height ?? 120));
+        child: Image.asset(
+            isDarkMode
+                ? "assets/images/logo_pink.png"
+                : "assets/images/logo.png",
+            width: width ?? 120,
+            height: height ?? 120));
   }
 }

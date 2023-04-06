@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/screens/splash_screen.dart';
@@ -101,7 +102,7 @@ class MyApp extends StatelessWidget {
             home: const SplashScreen(),
             darkTheme: _darkTheme(),
             theme: _lightTheme(),
-            themeMode: ThemeMode.system),
+            themeMode: ThemeHelper().theme),
       ),
     );
   }
@@ -168,10 +169,9 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
             GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
-        titleLarge:
-            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500),
+        titleLarge: GoogleFonts.poppins(fontSize: 16),
         titleMedium:
-            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w300),
+            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
         titleSmall: GoogleFonts.poppins(fontSize: 16),
         bodyLarge: GoogleFonts.poppins(fontSize: 18),
         bodyMedium: GoogleFonts.poppins(fontSize: 16),

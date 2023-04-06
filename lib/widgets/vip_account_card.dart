@@ -18,7 +18,10 @@ class VipAccountCard extends StatelessWidget {
       shape: defaultCardBorder(),
       child: ListTile(
         leading: const Icon(Iconsax.element_plus),
-        title: Text(i18n.translate("subscription")),
+        title: Text(
+          i18n.translate("subscription"),
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         onTap: () {
           /// Show VIP dialog
           showDialog(context: context, builder: (context) => const VipDialog());

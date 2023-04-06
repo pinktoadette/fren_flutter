@@ -53,7 +53,10 @@ class ProfileTab extends StatelessWidget {
                   children: [
                     ListTile(
                       leading: const Icon(Iconsax.setting),
-                      title: Text(_i18n.translate("settings")),
+                      title: Text(
+                        _i18n.translate("settings"),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       onTap: () {
                         /// Go to profile settings
                         Navigator.of(context).push(MaterialPageRoute(
@@ -62,7 +65,10 @@ class ProfileTab extends StatelessWidget {
                     ),
                     ListTile(
                       leading: const Icon(Icons.share),
-                      title: Text(_i18n.translate("share_with_friends")),
+                      title: Text(
+                        _i18n.translate("share_with_friends"),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
                       onTap: () async {
                         _appHelper.shareApp();
                       },
