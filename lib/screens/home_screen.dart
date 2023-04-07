@@ -239,8 +239,9 @@ class _HomeScreenState extends State<HomeScreen> {
           onPressed: () {
             // Add your onPressed code here!
           },
-          backgroundColor: Theme.of(context).primaryColor,
-          child: Image.asset('assets/images/face.jpg')),
+          backgroundColor: Colors.white,
+          child:
+              Image.asset('assets/images/frank1.png', width: 30, height: 30)),
     );
   }
 
