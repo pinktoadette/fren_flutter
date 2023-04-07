@@ -123,7 +123,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
 
-                const SizedBox(height: 15),
                 const Spacer(),
 
                 /// sign out

@@ -1,4 +1,5 @@
 import 'package:fren_app/datas/user.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 
 //@todo remove scope model to getX
@@ -9,13 +10,6 @@ class UserController extends GetxController {
   User get user => _user.value;
   set user(User value) => _user.value = value;
 
-  void setUser(User user) {
-    /// homescreen subscribes to user event changes
-    /// calls udateUserObject and updates userController (here)
-    _user = user.obs;
-    updateLocalDB();
-  }
-
   String get idToken => _idToken.value;
   set idToken(String value) => _idToken.value = value;
 
@@ -23,7 +17,13 @@ class UserController extends GetxController {
     _idToken = token.obs;
   }
 
-  void updateLocalDB() {
-    // final DatabaseService db = DatabaseService();
+  @override
+  void onInit() async {
+    initUser();
+    super.onInit();
+  }
+
+  void initUser() {
+    _user = UserModel().user.obs;
   }
 }

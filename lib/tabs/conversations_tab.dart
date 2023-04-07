@@ -66,6 +66,7 @@ class ConversationsTab extends StatelessWidget {
                     for (var user in room.users) {
                       allUsers += "& ${user.firstName!} ";
                     }
+                    final bool isRead = room.read ?? false;
 
                     return InkWell(
                       onTap: () {
@@ -101,7 +102,16 @@ class ConversationsTab extends StatelessWidget {
                                 Text(formatDate(lastMsg[CREATED_AT]),
                                     textAlign: TextAlign.right,
                                     style:
-                                        Theme.of(context).textTheme.labelSmall)
+                                        Theme.of(context).textTheme.labelSmall),
+                                isRead
+                                    ? const Icon(
+                                        Iconsax.stop_circle,
+                                        size: 12,
+                                      )
+                                    : const SizedBox(
+                                        width: 15,
+                                        height: 15,
+                                      )
                               ],
                             ),
                             const SizedBox(

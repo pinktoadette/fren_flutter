@@ -15,8 +15,8 @@ class ExploreBotTab extends StatefulWidget {
 }
 
 class _ExploreBotState extends State<ExploreBotTab> {
-  final BotController botController = Get.put(BotController());
-  final UserController userController = Get.put(UserController());
+  final BotController botController = Get.find();
+  final UserController userController = Get.find();
 
   @override
   void initState() {

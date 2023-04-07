@@ -14,7 +14,6 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:fren_app/screens/sign_in_screen.dart';
-import 'package:get/get.dart';
 import 'first_time/on_boarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -25,9 +24,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  final BotController botController = Get.put(BotController());
-  final UserController userController = Get.put(UserController());
-
   // Variables
   final AppHelper _appHelper = AppHelper();
   late AppLocalizations _i18n;

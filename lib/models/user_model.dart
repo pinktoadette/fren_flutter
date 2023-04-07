@@ -1,7 +1,11 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/machi/user_api.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/app_model.dart';
@@ -19,7 +23,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class UserModel extends Model {
   /// Final Variables
-  ///
+  final _chatroomApi = ChatroomMachiApi();
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final _storageRef = FirebaseStorage.instance;
@@ -91,12 +95,23 @@ class UserModel extends Model {
     notifyListeners();
     debugPrint('User object -> updated!');
 
-    final UserController userController = Get.find();
-    userController.setUser(user);
+    // update allGetx state
+    _initialAllStateAndRooms();
 
     // external api
     final mApi = UserApi();
     await mApi.updateUser(userDoc);
+  }
+
+  Future<void> _initialAllStateAndRooms() async {
+    /// initialize all controllers at one spot
+    final UserController userController = Get.put(UserController());
+    userController.initUser();
+    Get.lazyPut(() => MessageController());
+    final ChatController chatController = Get.put(ChatController());
+    chatController.initUser();
+    chatController.onChatLoad();
+    await _chatroomApi.getChatrooms();
   }
 
   /// Update user data
@@ -183,6 +198,8 @@ class UserModel extends Model {
   }) async {
     /// Check user auth
     if (getFirebaseUser != null) {
+      Get.put(BotController());
+
       /// Get current user in database
       await getUser(getFirebaseUser!.uid).then((userDoc) async {
         /// if exists check status and take action
@@ -661,6 +678,7 @@ class UserModel extends Model {
         await _googleSignIn.signOut();
       }
 
+      Get.deleteAll();
       notifyListeners();
       debugPrint("signOut() -> success");
     } catch (e) {

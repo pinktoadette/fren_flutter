@@ -5,6 +5,7 @@ import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -54,12 +55,16 @@ class ChatController extends GetxController implements GetxService {
 
   @override
   void onInit() async {
-    _chatUser = types.User(
-      id: userController.user.userId,
-      firstName: userController.user.userFullname,
-    ).obs;
+    initUser();
     initCurrentRoom();
     super.onInit();
+  }
+
+  void initUser() {
+    _chatUser = types.User(
+      id: UserModel().user.userId,
+      firstName: UserModel().user.username,
+    ).obs;
   }
 
   void initCurrentRoom() {

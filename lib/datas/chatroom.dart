@@ -15,6 +15,7 @@ class Chatroom {
   final int createdAt;
   final int updatedAt;
   final String prompt;
+  final bool? read;
   final double temperature;
 
   Chatroom(
@@ -28,6 +29,7 @@ class Chatroom {
       required this.creatorUser,
       required this.prompt,
       required this.temperature,
+      this.read,
       this.blockedUsers,
       this.title});
 
@@ -41,6 +43,7 @@ class Chatroom {
       String? roomType,
       String? prompt,
       double? temperature,
+      bool? read,
       List<types.User>? users}) {
     return Chatroom(
         chatroomId: chatroomId ?? this.chatroomId,
@@ -52,6 +55,7 @@ class Chatroom {
         users: users ?? this.users,
         prompt: prompt ?? this.prompt,
         temperature: temperature ?? this.temperature,
+        read: read ?? this.read,
         creatorUser: creatorUser);
   }
 
@@ -112,6 +116,7 @@ class Chatroom {
         updatedAt: doc[UPDATED_AT].toInt(),
         roomType: doc[ROOM_TYPE],
         prompt: doc[ROOM_BASE_PROMPT],
+        read: doc[MESSAGE_READ],
         temperature: doc[ROOM_PROMPT_TEMPERATURE]);
   }
 }

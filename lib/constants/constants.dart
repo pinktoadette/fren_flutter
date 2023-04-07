@@ -171,7 +171,7 @@ const String FLAGGED_BY_USER_ID = "flaggedByUserId";
 const String MESSAGE_TEXT = "message_text";
 const String MESSAGE_TYPE = "message_type";
 const String MESSAGE_IMG_LINK = "message_img_link";
-const String MESSAGE_READ = "message_read";
+const String MESSAGE_READ = "read";
 const String LAST_MESSAGE = "last_message";
 
 /// DATABASE FIELDS FOR Notifications COLLECTION ///

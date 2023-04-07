@@ -156,12 +156,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       textTheme: TextTheme(
-        displayLarge:
-            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w700),
-        displayMedium:
-            GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600),
-        displaySmall:
-            GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+        displayLarge: GoogleFonts.poppins(fontSize: 25),
+        displayMedium: GoogleFonts.poppins(fontSize: 22),
+        displaySmall: GoogleFonts.poppins(fontSize: 18),
         headlineLarge:
             GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
         headlineMedium:

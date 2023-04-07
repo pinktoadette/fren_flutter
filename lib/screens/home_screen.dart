@@ -35,7 +35,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
-  final _chatroomApi = ChatroomMachiApi();
 
   int _selectedIndex = 0;
   late AppLocalizations _i18n;
@@ -52,10 +51,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
-    // load controllers
-    _loadChatControllers();
-    // create a new room for quick chat
-    _getChatrooms();
 
     // _handlePurchaseUpdates();
     _initFirebaseMessage();
@@ -73,28 +68,10 @@ class _HomeScreenState extends State<HomeScreen> {
     // _inAppPurchaseStream.cancel();
   }
 
-  void _loadChatControllers() {
-    Get.lazyPut(() => MessageController()); // injects when needed
-    final ChatController chatController = Get.put(ChatController());
-    chatController.onChatLoad();
-  }
-
   /// Update selected tab
   void _onTappedNavBar(int index) {
     setState(() {
       _selectedIndex = index;
-    });
-  }
-
-  /// get or create chatroom
-  Future<void> _getChatrooms() async {
-    await Future.wait(
-            [_chatroomApi.createNewRoom(), _chatroomApi.getAllMyRooms()])
-        .then((_) {})
-        .whenComplete(() {
-      debugPrint("Loaded new and all chatrooms");
-    }).catchError((onError) {
-      debugPrint(onError);
     });
   }
 

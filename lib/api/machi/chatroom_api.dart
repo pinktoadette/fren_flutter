@@ -44,6 +44,19 @@ class ChatroomMachiApi {
     return {};
   }
 
+  /// This is called on load, where it get or create new chatroom
+  /// and gets all the rooms from the user.
+  /// called when user logs in and usermodel is set
+  Future<void> getChatrooms() async {
+    await Future.wait([createNewRoom(), getAllMyRooms()])
+        .then((_) {})
+        .whenComplete(() {
+      debugPrint("Loaded new and all chatrooms");
+    }).catchError((onError) {
+      debugPrint(onError);
+    });
+  }
+
   Future<List<Chatroom>> getAllMyRooms() async {
     final ChatController chatController = Get.find();
     String url = '${baseUri}chatroom/users_chatrooms';
