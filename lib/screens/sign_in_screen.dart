@@ -4,7 +4,6 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
-import 'package:fren_app/widgets/app_logo.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
