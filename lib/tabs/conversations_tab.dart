@@ -103,7 +103,7 @@ class ConversationsTab extends StatelessWidget {
                                     textAlign: TextAlign.right,
                                     style:
                                         Theme.of(context).textTheme.labelSmall),
-                                isRead
+                                !isRead
                                     ? const Icon(
                                         Iconsax.stop_circle,
                                         size: 12,

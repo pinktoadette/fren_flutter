@@ -11,6 +11,7 @@ import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/bot/bot_timer.dart';
 import 'package:fren_app/widgets/friend_list.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:open_filex/open_filex.dart';
@@ -219,8 +220,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
         ),
         body: Chat(
             theme: DefaultChatTheme(
-                inputTextStyle: const TextStyle(
-                    fontSize: 14, fontWeight: FontWeight.normal, height: 1.5),
+                inputTextStyle: GoogleFonts.poppins(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                ),
                 primaryColor: Theme.of(context).colorScheme.secondary,
                 sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
                 backgroundColor: Theme.of(context).colorScheme.background),
