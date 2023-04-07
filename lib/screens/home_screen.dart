@@ -235,6 +235,12 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ]),
       body: _showCurrentNavBar(),
+      floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            // Add your onPressed code here!
+          },
+          backgroundColor: Theme.of(context).primaryColor,
+          child: Image.asset('assets/images/face.png')),
     );
   }
 

@@ -1,19 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:developer';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/message_format.dart';
-import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/bot/bot_timer.dart';
 import 'package:fren_app/widgets/friend_list.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:open_filex/open_filex.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
