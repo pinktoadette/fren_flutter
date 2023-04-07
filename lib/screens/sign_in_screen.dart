@@ -55,19 +55,12 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: screenHeight * 0.2),
-
-              /// App logo
-              const AppLogo(),
-
               Image.asset("assets/images/machi.png"),
-
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18, color: Colors.black)),
-
               if (isLoading == true) const CircularProgressIndicator(),
               const Spacer(),
-
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
