@@ -30,12 +30,14 @@ class _SearchBarState extends State<SearchBarWidget> {
         padding: const EdgeInsets.only(left: 20),
         child: TypeAheadField(
             minCharsForSuggestions: 3,
-            textFieldConfiguration: const TextFieldConfiguration(
+            textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
               decoration: InputDecoration(
-                  icon: Icon(Iconsax.search_normal),
+                  icon: const Icon(Iconsax.search_normal),
                   border: InputBorder.none,
-                  hintText: 'Search user'),
+                  hintText: 'Search user',
+                  hintStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),
             suggestionsCallback: (pattern) async {
               return await _searchApi.searchUserAndBots(pattern);

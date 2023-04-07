@@ -1,6 +1,4 @@
 import 'package:fren_app/api/machi/friend_api.dart';
-import 'package:fren_app/api/machi/user_api.dart';
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -78,8 +76,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           // Check the current User ID
           if (UserModel().user.userId != widget.user.userId)
             IconButton(
-              icon: Icon(Icons.flag,
-                  color: Theme.of(context).primaryColor, size: 32),
+              icon: Icon(Iconsax.flag,
+                  color: Theme.of(context).primaryColor, size: 24),
               // Report/Block profile dialog
               onPressed: () => ReportDialog(userId: widget.user.userId).show(),
             )

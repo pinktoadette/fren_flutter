@@ -272,7 +272,7 @@ class MyApp extends StatelessWidget {
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         modalBackgroundColor: Colors.black87,
-        backgroundColor: APP_PRIMARY_DARK_BACKGROUND,
+        backgroundColor: Color.fromRGBO(78, 78, 78, 0.8),
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(
