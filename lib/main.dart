@@ -237,7 +237,7 @@ class MyApp extends StatelessWidget {
           hintStyle: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.normal,
-              color: Colors.black54),
+              color: Colors.white30),
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(28),
@@ -246,7 +246,7 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: APP_PRIMARY_DARK_BACKGROUND,
+          color: const Color.fromRGBO(31, 31, 31, 0.95),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           shape: defaultCardBorder()),
@@ -271,8 +271,8 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50))),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        modalBackgroundColor: Colors.black87,
-        backgroundColor: Color.fromRGBO(78, 78, 78, 0.8),
+        modalBackgroundColor: Color.fromRGBO(31, 31, 31, 0.95),
+        backgroundColor: Colors.black87,
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(

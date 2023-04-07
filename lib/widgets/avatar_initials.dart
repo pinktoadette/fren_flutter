@@ -12,8 +12,8 @@ class AvatarInitials extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(2.0),
-      decoration:
-          const BoxDecoration(color: Colors.black, shape: BoxShape.circle),
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.primary, shape: BoxShape.circle),
       child: CircleAvatar(
         radius: radius ?? 30,
         child: (photoUrl == '')
