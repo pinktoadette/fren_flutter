@@ -96,7 +96,7 @@ class UserModel extends Model {
     debugPrint('User object -> updated!');
 
     // update allGetx state
-    _initialAllStateAndRooms();
+    await _initialAllStateAndRooms();
 
     // external api
     final mApi = UserApi();
@@ -105,13 +105,13 @@ class UserModel extends Model {
 
   Future<void> _initialAllStateAndRooms() async {
     /// initialize all controllers at one spot
+    Get.lazyPut(() => BotController());
     final UserController userController = Get.put(UserController());
     userController.initUser();
     Get.lazyPut(() => MessageController());
     final ChatController chatController = Get.put(ChatController());
     chatController.initUser();
     chatController.onChatLoad();
-    await _chatroomApi.getChatrooms();
   }
 
   /// Update user data
@@ -198,8 +198,6 @@ class UserModel extends Model {
   }) async {
     /// Check user auth
     if (getFirebaseUser != null) {
-      Get.put(BotController());
-
       /// Get current user in database
       await getUser(getFirebaseUser!.uid).then((userDoc) async {
         /// if exists check status and take action

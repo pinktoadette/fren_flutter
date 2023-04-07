@@ -5,12 +5,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
-import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
@@ -21,7 +19,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,6 +32,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
+  final _chatroomApi = ChatroomMachiApi();
 
   int _selectedIndex = 0;
   late AppLocalizations _i18n;
@@ -51,6 +49,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
+
+    // create a new room for quick chat
+    _getChatrooms();
 
     // _handlePurchaseUpdates();
     _initFirebaseMessage();
@@ -72,6 +73,18 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onTappedNavBar(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  /// get or create chatroom
+  Future<void> _getChatrooms() async {
+    await Future.wait(
+            [_chatroomApi.createNewRoom(), _chatroomApi.getAllMyRooms()])
+        .then((_) {})
+        .whenComplete(() {
+      debugPrint("Loaded new and all chatrooms");
+    }).catchError((onError) {
+      debugPrint(onError);
     });
   }
 

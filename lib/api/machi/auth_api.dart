@@ -3,15 +3,11 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:get/get.dart';
 
 /// Sets headers
 class AuthApi {
-
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final BotController botControl = Get.find();
   final myKey = '3e27dcb9-5c20-4658-abd2-fe333ae7721a';
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
@@ -30,6 +26,6 @@ class AuthApi {
 
   Future<Map<String, dynamic>> getHeaders() async {
     String token = await getFirebaseUser!.getIdToken();
-    return { "fb-authorization": token , "api-key": myKey };
+    return {"fb-authorization": token, "api-key": myKey};
   }
 }

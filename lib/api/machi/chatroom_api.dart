@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 class ChatroomMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final BotController botControl = Get.find();
+
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
@@ -22,19 +22,21 @@ class ChatroomMachiApi {
   // this way user doesn't need to wait on bot response
   Future<Map<String, dynamic>> createNewRoom() async {
     final ChatController chatController = Get.find();
+    final BotController botController = Get.find();
 
     /// creates a new room
     String url = '${baseUri}chatroom/create_chatroom';
-    debugPrint("Requesting URL $url {botId: ${botControl.bot.botId} }");
+    debugPrint("Requesting URL $url {botId: ${botController.bot.botId} }");
     final dioRequest = await auth.getDio();
-    final response = await dioRequest
-        .post(url, data: {"botId": botControl.bot.botId, "roomType": "groups"});
+    final response = await dioRequest.post(url,
+        data: {"botId": botController.bot.botId, "roomType": "groups"});
     if (response.statusCode == 200) {
       final roomData = response.data;
 
       // create a new room
-      // create a variable for empty room.
+      // create a variable for empty room, _emptyroom.
       // if not empty move to roomlist
+      // upon exit of room, if there is no messages, then remove from roomlist
       Chatroom room = Chatroom.fromJson(roomData);
       chatController.onCreateRoomList(room);
 
@@ -42,19 +44,6 @@ class ChatroomMachiApi {
     }
     debugPrint(response.toString());
     return {};
-  }
-
-  /// This is called on load, where it get or create new chatroom
-  /// and gets all the rooms from the user.
-  /// called when user logs in and usermodel is set
-  Future<void> getChatrooms() async {
-    await Future.wait([createNewRoom(), getAllMyRooms()])
-        .then((_) {})
-        .whenComplete(() {
-      debugPrint("Loaded new and all chatrooms");
-    }).catchError((onError) {
-      debugPrint(onError);
-    });
   }
 
   Future<List<Chatroom>> getAllMyRooms() async {
