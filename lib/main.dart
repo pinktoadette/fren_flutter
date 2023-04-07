@@ -113,11 +113,22 @@ class MyApp extends StatelessWidget {
     return base.copyWith(
       primaryColor: APP_PRIMARY_COLOR,
       colorScheme: const ColorScheme.light().copyWith(
-          primary: APP_PRIMARY_COLOR,
-          secondary: APP_ACCENT_COLOR,
-          background: APP_PRIMARY_BACKGROUND),
+        primary: APP_PRIMARY_COLOR,
+        secondary: APP_ACCENT_COLOR,
+        background: APP_PRIMARY_BACKGROUND,
+      ),
       scaffoldBackgroundColor: Colors.white,
       inputDecorationTheme: InputDecorationTheme(
+          labelStyle: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: APP_PRIMARY_COLOR),
+          floatingLabelStyle:
+              GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_COLOR),
+          hintStyle: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.black54),
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(28),
@@ -145,7 +156,8 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50))),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.black54,
+        modalBackgroundColor: Colors.white,
+        backgroundColor: Colors.white70,
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(
@@ -164,12 +176,12 @@ class MyApp extends StatelessWidget {
         headlineMedium:
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
-            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
-        titleLarge: GoogleFonts.poppins(fontSize: 16),
-        titleMedium:
             GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-        titleSmall: GoogleFonts.poppins(fontSize: 16),
-        bodyLarge: GoogleFonts.poppins(fontSize: 18),
+        titleLarge: GoogleFonts.poppins(fontSize: 16),
+        titleMedium: GoogleFonts.poppins(fontSize: 14),
+        titleSmall: GoogleFonts.poppins(fontSize: 12),
+        bodyLarge:
+            GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.normal),
         bodyMedium: GoogleFonts.poppins(fontSize: 16),
         bodySmall: GoogleFonts.poppins(fontSize: 14),
         labelLarge: GoogleFonts.poppins(
@@ -216,6 +228,16 @@ class MyApp extends StatelessWidget {
           background: APP_PRIMARY_DARK_BACKGROUND),
       scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
       inputDecorationTheme: InputDecorationTheme(
+          labelStyle: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: APP_PRIMARY_DARK_COLOR),
+          floatingLabelStyle:
+              GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
+          hintStyle: GoogleFonts.poppins(
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.black54),
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(28),
@@ -230,8 +252,7 @@ class MyApp extends StatelessWidget {
           shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(
-            backgroundColor: APP_PRIMARY_DARK_COLOR,
-            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
+            foregroundColor: APP_PRIMARY_DARK_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
@@ -250,7 +271,8 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50))),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        backgroundColor: Colors.white30,
+        modalBackgroundColor: Colors.black87,
+        backgroundColor: APP_PRIMARY_DARK_BACKGROUND,
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(
@@ -275,13 +297,11 @@ class MyApp extends StatelessWidget {
         headlineMedium:
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
-            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w300),
+            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
         titleLarge:
             GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
-        titleMedium: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: APP_PRIMARY_DARK_COLOR),
+        titleMedium:
+            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         titleSmall:
             GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         bodyLarge:

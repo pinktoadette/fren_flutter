@@ -443,7 +443,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.background,
       builder: (context) {
         return FractionallySizedBox(
             heightFactor: 0.9,
@@ -460,7 +459,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Theme.of(context).colorScheme.background,
       builder: (context) {
         return FractionallySizedBox(
             heightFactor: 0.9,

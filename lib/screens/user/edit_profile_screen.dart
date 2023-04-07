@@ -206,7 +206,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _selectImage({required String imageUrl, required String path}) async {
     await showModalBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
         builder: (context) => ImageSourceSheet(
               onImageSelected: (image) async {
                 if (image != null) {

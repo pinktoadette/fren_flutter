@@ -11,14 +11,14 @@ import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 
-class ListAllBotsVertically extends StatefulWidget {
-  const ListAllBotsVertically({Key? key}) : super(key: key);
+class MyMachiWidget extends StatefulWidget {
+  const MyMachiWidget({Key? key}) : super(key: key);
 
   @override
-  _ListAllBotWidget createState() => _ListAllBotWidget();
+  _MyMachiWidget createState() => _MyMachiWidget();
 }
 
-class _ListAllBotWidget extends State<ListAllBotsVertically> {
+class _MyMachiWidget extends State<MyMachiWidget> {
   final _botApi = BotModel();
   List<Bot>? _listBot;
 
@@ -49,7 +49,7 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
       return NoData(text: _i18n.translate("no_match"));
     } else {
       return Container(
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
+          margin: const EdgeInsets.symmetric(vertical: .0),
           child: ListView.builder(
               physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
@@ -120,14 +120,6 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
                                                                     .about))
                                                       ],
                                                     ),
-                                                    Row(
-                                                      children: const [
-                                                        SizedBox(height: 50),
-                                                        Text("Downloads"),
-                                                        Spacer(),
-                                                        Text("Contributors")
-                                                      ],
-                                                    )
                                                   ],
                                                 ),
                                               ],

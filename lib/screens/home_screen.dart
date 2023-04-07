@@ -14,6 +14,10 @@ import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
 import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
+import 'package:fren_app/widgets/bot/my_bots.dart';
+import 'package:fren_app/widgets/bot/prompt_create.dart';
+import 'package:fren_app/widgets/button/action_button.dart';
+import 'package:fren_app/widgets/button/expandable_fab.dart';
 import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -235,13 +239,52 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ]),
       body: _showCurrentNavBar(),
-      floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            // Add your onPressed code here!
-          },
-          backgroundColor: Colors.white70,
-          child:
-              Image.asset('assets/images/frank1.png', width: 30, height: 30)),
+      floatingActionButton: ExpandableFab(
+        distance: 80.0,
+        children: [
+          ActionButton(
+            onPressed: () => {
+              showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return const FractionallySizedBox(
+                      heightFactor: 0.9, child: CreateMachiWidget());
+                },
+              )
+            },
+            icon: const Icon(Iconsax.pen_add),
+          ),
+          ActionButton(
+            onPressed: () => {
+              showModalBottomSheet<void>(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return const FractionallySizedBox(
+                      heightFactor: 0.9, child: MyMachiWidget());
+                },
+              )
+            },
+            icon: const Icon(Iconsax.note),
+          ),
+        ],
+      ),
+
+      // floatingActionButton: FloatingActionButton(
+      //     onPressed: () {
+      //       showModalBottomSheet<void>(
+      //         context: context,
+      //         isScrollControlled: true,
+      //         builder: (context) {
+      //           return const FractionallySizedBox(
+      //               heightFactor: 0.9, child: MyMachiWidget());
+      //         },
+      //       );
+      //     },
+      //     backgroundColor: Colors.white70,
+      //     child:
+      //         Image.asset('assets/images/frank1.png', width: 30, height: 30)),
     );
   }
 

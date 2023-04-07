@@ -30,12 +30,9 @@ class _SearchBarState extends State<SearchBarWidget> {
         padding: const EdgeInsets.only(left: 20),
         child: TypeAheadField(
             minCharsForSuggestions: 3,
-            textFieldConfiguration: TextFieldConfiguration(
+            textFieldConfiguration: const TextFieldConfiguration(
               autofocus: false,
-              style: DefaultTextStyle.of(context)
-                  .style
-                  .copyWith(fontStyle: FontStyle.italic),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                   icon: Icon(Iconsax.search_normal),
                   border: InputBorder.none,
                   hintText: 'Search user'),

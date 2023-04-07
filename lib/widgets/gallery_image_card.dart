@@ -86,7 +86,6 @@ class GalleryImageCard extends StatelessWidget {
 
     await showModalBottomSheet(
         context: context,
-        backgroundColor: Colors.transparent,
         builder: (context) => ImageSourceSheet(
               onImageSelected: (image) async {
                 if (image != null) {

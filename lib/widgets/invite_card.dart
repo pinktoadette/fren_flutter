@@ -38,7 +38,6 @@ class InviteCardState extends State<InviteCard> {
 
     showModalBottomSheet<void>(
       context: context,
-      backgroundColor: Theme.of(context).colorScheme.background,
       builder: (BuildContext context) {
         return Scaffold(
           body: SizedBox(

@@ -66,7 +66,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   title: Text(_i18n.translate('hide_profile'),
                       style: const TextStyle(fontSize: 18)),
                   trailing: Switch(
-                    activeColor: Theme.of(context).primaryColor,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: _hideProfile,
                     onChanged: (newValue) {
                       // Update UI
@@ -102,7 +102,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       style: const TextStyle(fontSize: 18)),
                   subtitle: Text(_i18n.translate('enable_mode')),
                   trailing: Switch(
-                    activeColor: Theme.of(context).primaryColor,
+                    activeColor: Theme.of(context).colorScheme.secondary,
                     value: _isDarkMode,
                     onChanged: (newValue) async {
                       // Update UI
