@@ -591,8 +591,8 @@ class UserModel extends Model {
     }
 
     /// Delete previous uploaded image if not nul
-    if (oldImageUrl != null) {
-      await FirebaseStorage.instance.refFromURL(oldImageUrl).delete();
+    if (oldImageUrl != "" || oldImageUrl != null) {
+      await FirebaseStorage.instance.refFromURL(oldImageUrl!).delete();
     }
 
     /// Upload new image

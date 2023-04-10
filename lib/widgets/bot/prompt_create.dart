@@ -154,9 +154,20 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                SizedBox(
+                  width: width - 100,
+                  child: Text(
+                    _i18n.translate("bot_test_warning"),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ),
+                const Spacer(),
                 ElevatedButton(
                     onPressed: () {}, child: Text(_i18n.translate("bot_test")))
               ],
+            ),
+            const SizedBox(
+              height: 20,
             )
           ]));
     }

@@ -31,6 +31,8 @@ class Bot {
   final String subdomain;
   final int createdAt;
   final int updatedAt;
+  final String prompt;
+  final double? temperature;
   final bool? isActive;
   final String? adminStatus;
   final String? model;
@@ -50,6 +52,8 @@ class Bot {
       required this.createdAt,
       required this.about,
       required this.updatedAt,
+      required this.prompt,
+      this.temperature,
       this.isActive,
       this.adminStatus,
       this.model,
@@ -73,25 +77,28 @@ class Bot {
         'adminState': adminStatus,
         'adminNote': adminNote,
         'createdAt': createdAt,
-        'updatedAt': updatedAt
+        'updatedAt': updatedAt,
+        'prompt': prompt,
+        'temperature': temperature
       };
 
   /// factory bot object
   factory Bot.fromDocument(Map<String, dynamic> doc) {
     return Bot(
-      botId: doc[BOT_ID],
-      profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
-      name: doc[BOT_NAME],
-      model: doc[BOT_MODEL] ?? '',
-      subdomain: doc[BOT_SUBDOMAIN] ?? '',
-      botOwnerId: doc[BOT_OWNER_ID],
-      about: doc[BOT_ABOUT],
-      domain: doc[BOT_DOMAIN],
-      isActive: doc[BOT_ACTIVE] ?? false,
-      createdAt: doc[CREATED_AT],
-      updatedAt: doc[UPDATED_AT],
-      adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
-      adminNote: doc[BOT_ADMIN_NOTE] ?? "",
-    );
+        botId: doc[BOT_ID],
+        profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
+        name: doc[BOT_NAME],
+        model: doc[BOT_MODEL] ?? '',
+        subdomain: doc[BOT_SUBDOMAIN] ?? '',
+        botOwnerId: doc[BOT_OWNER_ID],
+        about: doc[BOT_ABOUT],
+        domain: doc[BOT_DOMAIN],
+        isActive: doc[BOT_ACTIVE] ?? false,
+        createdAt: doc[CREATED_AT],
+        updatedAt: doc[UPDATED_AT],
+        adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
+        adminNote: doc[BOT_ADMIN_NOTE] ?? "",
+        prompt: doc[BOT_PROMPT],
+        temperature: doc[BOT_TEMPERATURE] ?? 0.5);
   }
 }

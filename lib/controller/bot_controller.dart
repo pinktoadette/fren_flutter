@@ -13,6 +13,8 @@ class BotController extends GetxController {
           model: '',
           domain: '',
           subdomain: '',
+          prompt: "",
+          temperature: 0.5,
           createdAt: DateTime.now().microsecondsSinceEpoch,
           updatedAt: DateTime.now().microsecondsSinceEpoch,
           adminStatus: '',

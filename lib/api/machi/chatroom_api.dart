@@ -55,7 +55,7 @@ class ChatroomMachiApi {
     final roomData = response.data;
     List<Chatroom> myRooms = [];
     chatController.roomlist.clear();
-
+    chatController.unreadCounter = 0.obs;
     if (response.statusCode == 200) {
       roomData.forEach((room) {
         Chatroom myRoom = Chatroom.fromJson(room);
@@ -108,5 +108,16 @@ class ChatroomMachiApi {
       // if we remove index, the position of the rooms will not be correct
       await getAllMyRooms();
     }
+  }
+
+  /// Gets the bot response. It looks up the last message and responds to that.
+  Future<String> markAsRead(String chatroomId) async {
+    // save to machi api
+    String url = '${baseUri}chat/read';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {"chatroomId": chatroomId});
+
+    return response.data;
   }
 }

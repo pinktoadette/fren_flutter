@@ -14,9 +14,7 @@ class Chatroom {
   final List<types.User>? blockedUsers;
   final int createdAt;
   final int updatedAt;
-  final String prompt;
   final bool? read;
-  final double temperature;
 
   Chatroom(
       {required this.chatroomId,
@@ -27,8 +25,6 @@ class Chatroom {
       required this.messages,
       required this.users,
       required this.creatorUser,
-      required this.prompt,
-      required this.temperature,
       this.read,
       this.blockedUsers,
       this.title});
@@ -41,8 +37,6 @@ class Chatroom {
       String? title,
       List<types.Message>? messages,
       String? roomType,
-      String? prompt,
-      double? temperature,
       bool? read,
       List<types.User>? users}) {
     return Chatroom(
@@ -53,8 +47,6 @@ class Chatroom {
         roomType: roomType ?? this.roomType,
         messages: messages ?? this.messages,
         users: users ?? this.users,
-        prompt: prompt ?? this.prompt,
-        temperature: temperature ?? this.temperature,
         read: read ?? this.read,
         creatorUser: creatorUser);
   }
@@ -94,7 +86,6 @@ class Chatroom {
         message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
         if (message[CHAT_TYPE] == CHAT_IMAGE) {
-          message['uri'] = message[CHAT_PHOTO_URL];
           message['size'] = 256;
           finalMessage = types.ImageMessage.fromJson(message);
         }
@@ -115,8 +106,6 @@ class Chatroom {
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt(),
         roomType: doc[ROOM_TYPE],
-        prompt: doc[ROOM_BASE_PROMPT],
-        read: doc[MESSAGE_READ],
-        temperature: doc[ROOM_PROMPT_TEMPERATURE]);
+        read: doc[MESSAGE_READ]);
   }
 }

@@ -8,6 +8,7 @@ import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class ConversationsTab extends StatelessWidget {
   final _chatroomApi = ChatroomMachiApi();
@@ -62,15 +63,17 @@ class ConversationsTab extends StatelessWidget {
                             'text': 'This is an error. Something went wrong',
                             'createdAt': DateTime.now().millisecondsSinceEpoch
                           };
-                    String allUsers = "${room.bot.name} ";
+                    String allUsers = room.bot.name;
                     for (var user in room.users) {
-                      allUsers += "& ${user.firstName!} ";
+                      allUsers += ", ${user.firstName!}";
                     }
                     final bool isRead = room.read ?? false;
 
                     return InkWell(
-                      onTap: () {
-                        chatController.onLoadCurrentRoom(room);
+                      onTap: () async {
+                        Chatroom updateRoom = room.copyWith(read: true);
+                        chatController.updateRoom(index, updateRoom);
+                        await _chatroomApi.markAsRead(room.chatroomId);
                         Get.to(() => (const BotChatScreen()),
                             arguments: {"room": room, 'index': index});
                       },
@@ -103,26 +106,25 @@ class ConversationsTab extends StatelessWidget {
                                     textAlign: TextAlign.right,
                                     style:
                                         Theme.of(context).textTheme.labelSmall),
-                                !isRead
-                                    ? const Icon(
-                                        Iconsax.stop_circle,
-                                        size: 12,
-                                      )
-                                    : const SizedBox(
-                                        width: 15,
-                                        height: 15,
-                                      )
                               ],
                             ),
                             const SizedBox(
-                              height: 10,
+                              height: 5,
                             ),
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                lastMsg.containsKey("type")
-                                    ? _formatMessages(context, lastMsg["type"],
-                                        lastMsg["text"])
-                                    : const Text(""),
+                                _formatMessages(context, lastMsg),
+                                !isRead
+                                    ? const Icon(
+                                        Iconsax.stop_circle,
+                                        size: 10,
+                                        color: APP_ACCENT_COLOR,
+                                      )
+                                    : const SizedBox(
+                                        width: 5,
+                                        height: 5,
+                                      )
                               ],
                             ),
                           ],
@@ -133,18 +135,25 @@ class ConversationsTab extends StatelessWidget {
     );
   }
 
-  Widget _formatMessages(BuildContext context, String type, String text) {
+  Widget _formatMessages(BuildContext context, Map<String, dynamic> message) {
     final _i18n = AppLocalizations.of(context);
-    switch (type) {
+    switch (message["type"]) {
       case 'text':
+        String text = message['text'];
         return Flexible(
             child:
                 Text(text.length > 100 ? "${text.substring(0, 90)}..." : text));
       case 'image':
+        return SizedBox(
+          child: Row(children: [
+            const Icon(Iconsax.attach_circle, size: 12),
+            Text(_i18n.translate("media_attached"))
+          ]),
+        );
       case 'video':
         return SizedBox(
           child: Row(children: [
-            const Icon(Iconsax.attach_circle),
+            const Icon(Iconsax.attach_circle, size: 12),
             Text(_i18n.translate("media_attached"))
           ]),
         );

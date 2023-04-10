@@ -103,9 +103,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         /// Edit icon
                         Positioned(
                           child: CircleAvatar(
-                            radius: 18,
+                            radius: 12,
                             backgroundColor: Theme.of(context).primaryColor,
-                            child: const Icon(Icons.edit, color: Colors.white),
+                            child: const Icon(
+                              Icons.edit,
+                              color: Colors.white,
+                              size: 12,
+                            ),
                           ),
                           right: 0,
                           bottom: 0,

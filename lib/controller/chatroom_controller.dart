@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
@@ -21,6 +22,7 @@ class ChatController extends GetxController implements GetxService {
 
   // ignore: prefer_final_fields
   RxList<Chatroom> roomlist = <Chatroom>[].obs;
+  RxInt unreadCounter = 0.obs;
   late Rx<Chatroom> _currentRoom;
   late Rx<Chatroom> _emptyRoom;
 
@@ -78,15 +80,16 @@ class ChatController extends GetxController implements GetxService {
                 domain: "",
                 subdomain: "",
                 createdAt: date,
+                prompt: "",
+                temperature: 0.5,
                 about: "",
                 updatedAt: date),
             users: [],
             createdAt: date,
             updatedAt: date,
             roomType: '',
-            prompt: "",
-            temperature: 0.5,
             messages: [],
+            read: false,
             creatorUser: '')
         .obs;
   }
@@ -97,6 +100,9 @@ class ChatController extends GetxController implements GetxService {
     if (myRooms.messages.isNotEmpty || myRooms.users.length > 1) {
       roomlist.add(myRooms);
       _currentRoom = myRooms.obs;
+      if (myRooms.read == false) {
+        unreadCounter += 1;
+      }
     } else {
       _emptyRoom = myRooms.obs;
     }
@@ -142,8 +148,12 @@ class ChatController extends GetxController implements GetxService {
   }
 
   // update messages from the chatroom, to view once when on convo tab
-  void updateRoom(int index, Chatroom data) {
-    roomlist[index] = data;
+  void updateRoom(int index, Chatroom room) {
+    roomlist[index] = room;
+    if (room.read == true) {
+      int unread = unreadCounter.value - 1;
+      unreadCounter = max(unread, 0).obs;
+    }
     roomlist.refresh();
   }
 }

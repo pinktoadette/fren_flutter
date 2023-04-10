@@ -280,6 +280,7 @@
   "bot_subdomain": "Subdomain",
   "bot_pricing": "Price",
   "bot_public":"Publish machi to public",
+  "bot_test_warning": "Limited to prompt. Conversation is not saved.",
   "bot_test": "Test",
   "bot_prepub_headline": "is Ready",
   "bot_prepublish": "is ready to be publish. You can test the chat first on the next page before you publish.",

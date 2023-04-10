@@ -35,7 +35,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
   final _botPrompt = TextEditingController(text: "");
   final _chatroomApi = ChatroomMachiApi();
 
-  String? _prompt;
+  String _prompt = "";
   bool disableTextEdit = true;
   late AppLocalizations _i18n;
   final TextEditingController personalityController = TextEditingController();
@@ -47,7 +47,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
         disableTextEdit = false;
       }
       setState(() {
-        _prompt = widget.room?.prompt;
+        _prompt = widget.bot.prompt;
       });
     }
   }
@@ -162,54 +162,9 @@ class _BotProfileCardState extends State<BotProfileCard> {
                 ),
               ],
             ),
-          if (widget.room?.chatroomId != null)
-            Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-              SizedBox(
-                width: width,
-                height: height,
-                child: TextFormField(
-                  textAlignVertical: TextAlignVertical.top,
-                  style: Theme.of(context).textTheme.bodySmall,
-                  initialValue: "Prompt: \n ${widget.room!.prompt}",
-                  maxLines: null,
-                  expands: true,
-                  enabled: !disableTextEdit,
-                  textCapitalization: TextCapitalization.sentences,
-                  onChanged: (text) {},
-                  keyboardType: TextInputType.multiline,
-                  decoration: const InputDecoration(
-                      alignLabelWithHint: true,
-                      filled: true,
-                      hintText: 'Enter a message'),
-                  validator: (prompt) {
-                    if (prompt == null) {
-                      return "Enter a prompt";
-                    }
-                    return null;
-                  },
-                ),
-              )
-              // TextFormField(
-              //
-
-              //   maxLines: 4,
-
-              // )
-            ]),
         ],
       ),
     );
-  }
-
-  void _updateRoom(String value) async {
-    _i18n = AppLocalizations.of(context);
-    setState(() {
-      _prompt = value;
-    });
-    // Chatroom update = widget.room!.copyWith(personality: value);
-    // await _chatroomApi.updateRoom(widget.roomIdx!, update);
-    // showScaffoldMessage(
-    //     message: _i18n.translate("saved_success"), bgcolor: APP_SUCCESS);
   }
 
   void _tryBot() {

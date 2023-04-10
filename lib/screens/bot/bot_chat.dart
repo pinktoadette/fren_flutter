@@ -413,14 +413,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     Timer.periodic(const Duration(seconds: 1), (Timer t) async {
       var response = await _messagesApi.getTaskResponse(task["task_id"]);
       if (response["status"] == "Success") {
-        t.cancel();
         if (response["result"].containsKey("text")) {
+          t.cancel();
           String strResponse = json.encode({"message": response["result"]});
           _onSocketParse(strResponse);
         }
       }
       // try 5 times
-      if (t.tick == 5) {
+      if (t.tick >= 5) {
         t.cancel();
       }
     });

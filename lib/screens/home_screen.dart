@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/conversations_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
@@ -22,6 +23,7 @@ import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -32,7 +34,7 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  /// Variables
+  final ChatController chatController = Get.find();
   final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
@@ -175,6 +177,7 @@ class _HomeScreenState extends State<HomeScreen> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    var bottomSheetController;
 
     return Scaffold(
       appBar: AppBar(
@@ -244,14 +247,15 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           ActionButton(
             onPressed: () => {
-              showModalBottomSheet<void>(
+              bottomSheetController = showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
                 builder: (context) {
                   return const FractionallySizedBox(
                       heightFactor: 0.9, child: CreateMachiWidget());
                 },
-              )
+              ),
+              bottomSheetController.closed.then
             },
             icon: const Icon(Iconsax.pen_add),
           ),
@@ -270,21 +274,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-
-      // floatingActionButton: FloatingActionButton(
-      //     onPressed: () {
-      //       showModalBottomSheet<void>(
-      //         context: context,
-      //         isScrollControlled: true,
-      //         builder: (context) {
-      //           return const FractionallySizedBox(
-      //               heightFactor: 0.9, child: MyMachiWidget());
-      //         },
-      //       );
-      //     },
-      //     backgroundColor: Colors.white70,
-      //     child:
-      //         Image.asset('assets/images/frank1.png', width: 30, height: 30)),
     );
   }
 
@@ -315,22 +304,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final icon = Icon(Iconsax.message,
         color: _selectedIndex == 1 ? Theme.of(context).primaryColor : null);
 
-    /// Handle stream
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: _conversationsApi.getConversations(),
-        builder: (context, snapshot) {
-          // Check result
-          if (!snapshot.hasData) {
-            return icon;
-          } else {
-            /// Get total counter to alert user
-            final total = snapshot.data!.docs
-                .where((doc) => doc.data()[MESSAGE_READ] == false)
-                .toList()
-                .length;
-            if (total == 0) return icon;
-            return NotificationCounter(icon: icon, counter: total);
-          }
-        });
+    return Obx(() {
+      return chatController.unreadCounter.value == 0
+          ? icon
+          : NotificationCounter(
+              icon: icon, counter: chatController.unreadCounter.value);
+    });
   }
 }
