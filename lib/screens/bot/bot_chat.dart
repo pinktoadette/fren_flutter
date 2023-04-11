@@ -11,6 +11,7 @@ import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/bot/bot_timer.dart';
 import 'package:fren_app/widgets/chat/header_input.dart';
 import 'package:fren_app/widgets/friend_list.dart';
+import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_filex/open_filex.dart';
@@ -330,7 +331,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-  void _handleImageSelection() async {
+  void _handleImageSelection(String imagePath) async {
     final result = await ImagePicker().pickImage(
       imageQuality: 70,
       maxWidth: 256,
@@ -345,12 +346,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
         height: image.height.toDouble(),
         name: result.name,
         size: bytes.length,
-        uri: result.path,
+        uri: imagePath,
         width: image.width.toDouble(),
       );
-      setState(() {
-        attachmentPreview = message;
-      });
+
       // _formatMessageBeforeAPI(message);
     }
   }
@@ -364,42 +363,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: 144,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              TextButton(
-                onPressed: () {
+        context: context,
+        builder: (context) => ImageSourceSheet(
+              includeFile: true,
+              onImageSelected: (image) async {
+                if (image != null) {
                   Navigator.pop(context);
-                  _handleImageSelection();
-                },
-                child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('Photo'),
-                ),
-              ),
-              const TextButton(
-                onPressed: null,
-                child: Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('File'),
-                ),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Align(
-                  alignment: AlignmentDirectional.centerStart,
-                  child: Text('Cancel'),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                  _handleImageSelection(image.path);
+                }
+              },
+            ));
   }
 
   void _formatMessageBeforeAPI(dynamic message) {

@@ -8,12 +8,15 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageSourceSheet extends StatelessWidget {
   // Constructor
-  ImageSourceSheet({Key? key, required this.onImageSelected}) : super(key: key);
+  ImageSourceSheet({Key? key, required this.onImageSelected, this.includeFile})
+      : super(key: key);
 
   // Callback function to return image file
   final Function(File?) onImageSelected;
   // ImagePicker instance
   final picker = ImagePicker();
+
+  bool? includeFile;
 
   Future<void> selectedImage(BuildContext context, File? image) async {
     // init i18n
@@ -73,7 +76,9 @@ class ImageSourceSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(
-                  i18n.translate('photo'),
+                  includeFile == true
+                      ? i18n.translate("document")
+                      : i18n.translate('photo'),
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -124,6 +129,16 @@ class ImageSourceSheet extends StatelessWidget {
             ),
           ),
 
+          // files for future
+          if (includeFile == true)
+            Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextButton.icon(
+                  icon: const Icon(Iconsax.folder_open, color: Colors.grey),
+                  label: Text(i18n.translate("file"),
+                      style: const TextStyle(fontSize: 16)),
+                  onPressed: null,
+                )),
           const SizedBox(height: 30),
         ],
       ),
