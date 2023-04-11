@@ -311,13 +311,14 @@ class MyApp extends StatelessWidget {
         bodySmall:
             GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
         labelLarge: GoogleFonts.poppins(
-          fontSize: 18,
-        ),
-        labelMedium: GoogleFonts.poppins(
           fontSize: 16,
         ),
-        labelSmall: GoogleFonts.poppins(
+        labelMedium: GoogleFonts.poppins(
           fontSize: 14,
+        ),
+        labelSmall: GoogleFonts.poppins(
+          fontSize: 12,
+          wordSpacing: 2.0,
         ),
       ),
       popupMenuTheme: PopupMenuThemeData(

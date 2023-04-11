@@ -92,7 +92,7 @@ class ConversationsTab extends StatelessWidget {
                                   Text(
                                     room.bot.domain,
                                     style:
-                                        Theme.of(context).textTheme.labelSmall,
+                                        Theme.of(context).textTheme.titleMedium,
                                   )
                                 ]),
                             Row(
@@ -104,8 +104,9 @@ class ConversationsTab extends StatelessWidget {
                                 const Spacer(),
                                 Text(formatDate(lastMsg[CREATED_AT]),
                                     textAlign: TextAlign.right,
-                                    style:
-                                        Theme.of(context).textTheme.labelSmall),
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .titleMedium),
                               ],
                             ),
                             const SizedBox(
@@ -116,11 +117,8 @@ class ConversationsTab extends StatelessWidget {
                               children: [
                                 _formatMessages(context, lastMsg),
                                 !isRead
-                                    ? const Icon(
-                                        Iconsax.stop_circle,
-                                        size: 10,
-                                        color: APP_ACCENT_COLOR,
-                                      )
+                                    ? const Icon(Iconsax.info_circle1,
+                                        size: 14, color: APP_ACCENT_COLOR)
                                     : const SizedBox(
                                         width: 5,
                                         height: 5,
@@ -146,15 +144,17 @@ class ConversationsTab extends StatelessWidget {
       case 'image':
         return SizedBox(
           child: Row(children: [
-            const Icon(Iconsax.attach_circle, size: 12),
-            Text(_i18n.translate("media_attached"))
+            const Icon(Iconsax.paperclip, size: 14),
+            Text(_i18n.translate("media_attached"),
+                style: const TextStyle(fontStyle: FontStyle.italic))
           ]),
         );
       case 'video':
         return SizedBox(
           child: Row(children: [
-            const Icon(Iconsax.attach_circle, size: 12),
-            Text(_i18n.translate("media_attached"))
+            const Icon(Iconsax.paperclip, size: 14),
+            Text(_i18n.translate("media_attached"),
+                style: const TextStyle(fontStyle: FontStyle.italic))
           ]),
         );
       default:

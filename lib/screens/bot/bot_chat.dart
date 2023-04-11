@@ -3,9 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
+import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/message_format.dart';
+import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/bot/bot_timer.dart';
+import 'package:fren_app/widgets/chat/header_input.dart';
 import 'package:fren_app/widgets/friend_list.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -62,14 +66,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool _isAttachmentUploading = false;
   bool isLoading = false;
   bool isBotSleeping = false;
+  bool? isBotTyping;
+  types.PartialImage? attachmentPreview;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
   );
 
   Future<void> _listenSocket() async {
-    debugPrint("Initiating to socket");
-
     final _authApi = AuthApi();
     Map<String, dynamic> headers = await _authApi.getHeaders();
     final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${_room.chatroomId}');
@@ -214,6 +218,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ],
         ),
         body: Chat(
+            listBottomWidget: CustomHeaderInputWidget(
+                notifyParent: (e) {
+                  updateFromWidgets(e);
+                },
+                isBotTyping: isBotTyping,
+                attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
                 inputTextStyle: GoogleFonts.poppins(
                   fontSize: 16,
@@ -228,6 +238,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
             isAttachmentUploading: _isAttachmentUploading,
             messages: _messages,
             onSendPressed: _handleSendPressed,
+            onAvatarTap: (messageUser) async {
+              if (!messageUser.id.contains("Bot_")) {
+                User user = await UserModel().getUserObject(messageUser.id);
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => ProfileScreen(user: user)));
+              }
+            },
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
@@ -309,7 +326,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         uri: result.files.single.path!,
       );
 
-      // _addMessage(message);
+      _formatMessageBeforeAPI(message);
     }
   }
 
@@ -324,18 +341,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
       final bytes = await result.readAsBytes();
       final image = await decodeImageFromList(bytes);
 
-      final message = types.ImageMessage(
-        author: chatController.chatUser,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
+      types.PartialImage message = types.PartialImage(
         height: image.height.toDouble(),
-        id: const Uuid().v4(),
         name: result.name,
         size: bytes.length,
         uri: result.path,
         width: image.width.toDouble(),
       );
-
-      // _callAPI(message);
+      setState(() {
+        attachmentPreview = message;
+      });
+      // _formatMessageBeforeAPI(message);
     }
   }
 
@@ -343,7 +359,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   void _handleSendPressed(types.PartialText message) {
     Map<String, dynamic> formatMessage = formatChatMessage(message);
     _channel.sink.add(json.encode({"message": formatMessage}));
-    _callAPI(formatMessage);
+    _formatMessageBeforeAPI(message);
   }
 
   void _handleAttachmentPressed() {
@@ -365,12 +381,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   child: Text('Photo'),
                 ),
               ),
-              TextButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                  _handleFileSelection();
-                },
-                child: const Align(
+              const TextButton(
+                onPressed: null,
+                child: Align(
                   alignment: AlignmentDirectional.centerStart,
                   child: Text('File'),
                 ),
@@ -389,14 +402,20 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
   }
 
+  void _formatMessageBeforeAPI(dynamic message) {
+    Map<String, dynamic> formatMessage = formatChatMessage(message);
+    _channel.sink.add(json.encode({"message": formatMessage}));
+    // _callAPI(formatMessage);
+  }
+
   /// saves user reponse. Backend handles all bot response / timing.
   Future<void> _callAPI(Map<String, dynamic> messageMap) async {
     setState(() {
       _isAttachmentUploading = true;
     });
     try {
-      final task = await _messagesApi.saveUserResponse(messageMap);
-      _streamBotResponse(task);
+      await _messagesApi.saveUserResponse(messageMap);
+      _getMachiResponse();
     } catch (err) {
       showScaffoldMessage(
           message: _i18n.translate("an_error_has_occurred"),
@@ -408,8 +427,21 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
-  // Call task id every 1 second to get bot response
+  Future<void> _getMachiResponse() async {
+    setState(() {
+      isBotTyping = true;
+    });
+    final message = await _messagesApi.getBotResponse();
+    Map<String, dynamic> formatMessage = formatChatMessage(message);
+    _channel.sink.add(json.encode({"message": formatMessage}));
+  }
+
+  /// Use only in group chat, otherwise use api calls
   Future<void> _streamBotResponse(Map<String, dynamic> task) async {
+    setState(() {
+      isBotTyping = true;
+    });
+
     Timer.periodic(const Duration(seconds: 1), (Timer t) async {
       var response = await _messagesApi.getTaskResponse(task["task_id"]);
       if (response["status"] == "Success") {
@@ -417,11 +449,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
           t.cancel();
           String strResponse = json.encode({"message": response["result"]});
           _onSocketParse(strResponse);
+          setState(() {
+            isBotTyping = false;
+          });
         }
       }
-      // try 5 times
-      if (t.tick >= 5) {
+      // try 60 seconds for images
+      if (t.tick > 60) {
         t.cancel();
+        setState(() {
+          isBotTyping = false;
+        });
       }
     });
   }
@@ -437,6 +475,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
           message: _i18n.translate("an_error_has_occurred"),
           bgcolor: APP_ERROR);
     }
+  }
+
+  void updateFromWidgets(element) {
+    setState(() {
+      attachmentPreview = element['image'];
+    });
   }
 
   void _showBotInfo() {

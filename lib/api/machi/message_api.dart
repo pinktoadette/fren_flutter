@@ -24,13 +24,10 @@ class MessageMachiApi {
 
   /// saves the user response
   Future saveUserResponse(Map<String, dynamic> messageMap) async {
-    Bot bot = botControl.bot;
-
     String url = '${baseUri}chat/user_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response =
-        await dio.post(url, data: {...messageMap, BOT_ID: bot.botId});
+    final response = await dio.post(url, data: {...messageMap});
     if (response.statusCode == 200) {
       // gets a task id
       return response.data;
@@ -51,13 +48,16 @@ class MessageMachiApi {
   }
 
   /// Gets the bot response. It looks up the last message and responds to that.
-  Future<Map<String, dynamic>> getBotResponse(messageMap) async {
+  Future<Map<String, dynamic>> getBotResponse() async {
     String botId = botControl.bot.botId;
+    String chatroomId = chatController.currentRoom.chatroomId;
+
     // save to machi api
     String url = '${baseUri}chat/machi_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: {...messageMap, BOT_ID: botId});
+    final response =
+        await dio.post(url, data: {ROOM_ID: chatroomId, BOT_ID: botId});
     log("Saved and got bot responses");
 
     Map<String, dynamic> newMessage = Map.from(response.data);

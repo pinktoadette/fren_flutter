@@ -64,9 +64,10 @@ class ChatController extends GetxController implements GetxService {
 
   void initUser() {
     _chatUser = types.User(
-      id: UserModel().user.userId,
-      firstName: UserModel().user.username,
-    ).obs;
+            id: UserModel().user.userId,
+            firstName: UserModel().user.username,
+            imageUrl: UserModel().user.userProfilePhoto)
+        .obs;
   }
 
   void initCurrentRoom() {

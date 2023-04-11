@@ -5,7 +5,6 @@ import 'package:fren_app/screens/settings_screen.dart';
 import 'package:fren_app/widgets/bot/create_bot.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/profile_basic_info_card.dart';
-import 'package:fren_app/widgets/sign_out_button_card.dart';
 import 'package:fren_app/widgets/vip_account_card.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
