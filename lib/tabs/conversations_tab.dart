@@ -23,18 +23,23 @@ class ConversationsTab extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(actions: <Widget>[
-        IconButton(
-            onPressed: () {
-              chatController.addEmptyRoomToList();
-              chatController.onLoadCurrentRoom(chatController.emptyRoom);
-              Get.to(() => const BotChatScreen(), arguments: {
-                "room": chatController.emptyRoom,
-                "index": chatController.roomlist.length - 1
-              });
-            },
-            icon: const Icon(Iconsax.message_edit))
-      ]),
+      appBar: AppBar(
+          title: Text(
+            _i18n.translate("chat"),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  chatController.addEmptyRoomToList();
+                  chatController.onLoadCurrentRoom(chatController.emptyRoom);
+                  Get.to(() => const BotChatScreen(), arguments: {
+                    "room": chatController.emptyRoom,
+                    "index": chatController.roomlist.length - 1
+                  });
+                },
+                icon: const Icon(Iconsax.message_edit))
+          ]),
       body: RefreshIndicator(
           onRefresh: () {
             // Refresh Functionality

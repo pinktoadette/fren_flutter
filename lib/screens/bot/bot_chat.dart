@@ -7,6 +7,7 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/storyboard/storyboard_home.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/bot/bot_timer.dart';
@@ -236,6 +237,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             showUserAvatars: true,
             isAttachmentUploading: _isAttachmentUploading,
             messages: _messages,
+            onMessageLongPress: _handleMessageLongPress,
             onSendPressed: _handleSendPressed,
             onAvatarTap: (messageUser) async {
               if (!messageUser.id.contains("Bot_")) {
@@ -250,6 +252,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
             user: _user),
       );
     }
+  }
+
+  void _handleMessageLongPress(BuildContext _, types.Message message) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return const FractionallySizedBox(
+            heightFactor: 0.9, child: Storyboard());
+      },
+    );
   }
 
   void _handleMessageTap(BuildContext _, types.Message message) async {

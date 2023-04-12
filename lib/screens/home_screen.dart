@@ -9,6 +9,7 @@ import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/screens/storyboard/storyboard_home.dart';
 import 'package:fren_app/tabs/conversations_tab.dart';
 import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
@@ -163,6 +164,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Widget> options = <Widget>[
       const ActivityTab(),
       ConversationsTab(),
+      const Storyboard(),
       const ExploreBotTab(),
       const ProfileTab()
     ];
@@ -223,9 +225,17 @@ class _HomeScreenState extends State<HomeScreen> {
 
             /// Discover new machi
             BottomNavigationBarItem(
+                label: _i18n.translate("story"),
+                icon: Icon(Iconsax.book,
+                    color: _selectedIndex == 2
+                        ? Theme.of(context).primaryColor
+                        : null)),
+
+            /// Discover new machi
+            BottomNavigationBarItem(
                 label: "Machi",
                 icon: Icon(Iconsax.search_favorite,
-                    color: _selectedIndex == 2
+                    color: _selectedIndex == 3
                         ? Theme.of(context).primaryColor
                         : null)),
 
@@ -233,7 +243,7 @@ class _HomeScreenState extends State<HomeScreen> {
             BottomNavigationBarItem(
               label: _i18n.translate("profile"),
               icon: Icon(Iconsax.user,
-                  color: _selectedIndex == 3
+                  color: _selectedIndex == 4
                       ? Theme.of(context).primaryColor
                       : null),
             ),

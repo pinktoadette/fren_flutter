@@ -1,25 +1,18 @@
-import 'package:fren_app/controller/user_controller.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/bot/all_bots_vertical.dart';
-import 'package:get/get.dart';
 
 /// Gets recent new bots
 /// Gets most installed bots
 /// Save a copy of bots in local, find newest
-class ExploreBotTab extends StatefulWidget {
-  const ExploreBotTab({Key? key}) : super(key: key);
+class Storyboard extends StatefulWidget {
+  const Storyboard({Key? key}) : super(key: key);
 
   @override
-  _ExploreBotState createState() => _ExploreBotState();
+  _StoryboardState createState() => _StoryboardState();
 }
 
-class _ExploreBotState extends State<ExploreBotTab> {
+class _StoryboardState extends State<Storyboard> {
   late AppLocalizations _i18n;
-
-  final BotController botController = Get.find();
-  final UserController userController = Get.find();
 
   @override
   void initState() {
@@ -37,10 +30,9 @@ class _ExploreBotState extends State<ExploreBotTab> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  "Machi",
+                  _i18n.translate("story"),
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                const ListAllBotsVertically(),
               ],
             )));
   }
