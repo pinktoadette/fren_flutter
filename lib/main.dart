@@ -338,7 +338,6 @@ class MyApp extends StatelessWidget {
         ),
         labelSmall: GoogleFonts.poppins(
           fontSize: 12,
-          wordSpacing: 2.0,
         ),
       ),
       popupMenuTheme: PopupMenuThemeData(

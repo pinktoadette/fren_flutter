@@ -256,6 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () => {
               showModalBottomSheet<void>(
                 context: context,
+                enableDrag: true,
                 isScrollControlled: true,
                 builder: (context) {
                   return const FractionallySizedBox(
@@ -269,6 +270,7 @@ class _HomeScreenState extends State<HomeScreen> {
             onPressed: () => {
               showModalBottomSheet<void>(
                 context: context,
+                enableDrag: true,
                 isScrollControlled: true,
                 builder: (context) {
                   return const FractionallySizedBox(
