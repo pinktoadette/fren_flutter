@@ -175,7 +175,6 @@ class _HomeScreenState extends State<HomeScreen> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
     bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    var bottomSheetController;
 
     return Scaffold(
       appBar: AppBar(
@@ -245,15 +244,14 @@ class _HomeScreenState extends State<HomeScreen> {
         children: [
           ActionButton(
             onPressed: () => {
-              bottomSheetController = showModalBottomSheet<void>(
+              showModalBottomSheet<void>(
                 context: context,
                 isScrollControlled: true,
                 builder: (context) {
                   return const FractionallySizedBox(
                       heightFactor: 0.9, child: CreateMachiWidget());
                 },
-              ),
-              bottomSheetController.closed.then
+              )
             },
             icon: const Icon(Iconsax.pen_add),
           ),

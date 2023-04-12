@@ -4,6 +4,8 @@ import 'package:google_sign_in/google_sign_in.dart';
 ///
 /// need google verification, todo some future date
 class ImportGoogleDriveWidget extends StatefulWidget {
+  const ImportGoogleDriveWidget({super.key});
+
   @override
   _ImportGoogleDriveWidgetState createState() => _ImportGoogleDriveWidgetState();
 }
@@ -52,7 +54,7 @@ class _ImportGoogleDriveWidgetState extends State<ImportGoogleDriveWidget> {
   }
 
   Future<void> _importGoogleSheet() async{
-    var scope = await GoogleSignIn().scopes;
+    var scope = GoogleSignIn().scopes;
     if (scope.isEmpty) {
       signIntoGoogle();
     }

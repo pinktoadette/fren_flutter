@@ -16,7 +16,6 @@ import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:open_filex/open_filex.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
@@ -32,13 +31,11 @@ import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:path_provider/path_provider.dart';
 
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
-import 'package:open_filex/open_filex.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
@@ -55,7 +52,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final ChatController chatController = Get.find();
   final MessageController messageController = Get.find();
 
-  late List<types.Message> _messages = [];
+  late final List<types.Message> _messages = [];
 
   late types.User _user;
   late AppLocalizations _i18n;
@@ -95,7 +92,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   void _onSocketParse(String message) {
     Map<String, dynamic> decodeData = json.decode(message);
-    types.Message newMessage = oldMessageTypes(decodeData["message"]);
+    types.Message newMessage = messageFromJson(decodeData["message"]);
     setState(() {
       _messages.insert(0, newMessage);
     });
@@ -389,9 +386,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       isBotTyping = true;
     });
-    final message = await _messagesApi.getBotResponse();
-    Map<String, dynamic> formatMessage = formatChatMessage(message);
-    _channel.sink.add(json.encode({"message": formatMessage}));
+    Map<String, dynamic> message = await _messagesApi.getBotResponse();
+    _channel.sink.add(json.encode({"message": message}));
+    setState(() {
+      isBotTyping = false;
+    });
   }
 
   /// Use only in group chat, otherwise use api calls

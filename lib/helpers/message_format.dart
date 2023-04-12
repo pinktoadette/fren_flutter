@@ -63,7 +63,7 @@ Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
 
 /// Helper function to define old messages
 /// does not have partial message because it is coming from api
-types.Message oldMessageTypes(Map<String, dynamic> message) {
+types.Message messageFromJson(Map<String, dynamic> message) {
   final author = types.User(
       id: message[CHAT_AUTHOR_ID] as String,
       firstName: message[CHAT_USER_NAME] ?? "Frankie");

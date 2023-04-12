@@ -34,11 +34,16 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
   }
 
   Widget _showHeader() {
-    if (widget.isBotTyping != null) {
-      return TypingIndicator(
-        showIndicator: widget.isBotTyping ?? false,
-        bubbleColor: APP_ACCENT_COLOR,
-      );
+    if (widget.isBotTyping == true) {
+      return Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: const EdgeInsets.only(left: 20),
+            child: JumpingDots(
+              numberOfDots: 3,
+              color: APP_ACCENT_COLOR,
+            ),
+          ));
     } else if (widget.attachmentPreview?.uri != null) {
       return Stack(
         children: <Widget>[

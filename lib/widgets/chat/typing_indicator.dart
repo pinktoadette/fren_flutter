@@ -1,88 +1,136 @@
+// ignore_for_file: prefer_final_fields
+
 import 'package:flutter/material.dart';
 
-class TypingIndicator extends StatefulWidget {
-  const TypingIndicator({
-    super.key,
-    this.showIndicator = false,
-    this.bubbleColor = const Color(0xFF646b7f),
-    this.flashingCircleDarkColor = const Color(0xFF333333),
-    this.flashingCircleBrightColor = const Color(0xFFaec1dd),
-  });
-  final bool showIndicator;
-  final Color bubbleColor;
-  final Color flashingCircleDarkColor;
-  final Color flashingCircleBrightColor;
+class DotWidget extends StatelessWidget {
+  final Color? color;
+  final double? radius;
+
+  const DotWidget({
+    Key? key,
+    @required this.color,
+    @required this.radius,
+  }) : super(key: key);
+
   @override
-  State<TypingIndicator> createState() => _TypingIndicatorState();
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(shape: BoxShape.circle, color: color),
+      height: radius,
+      width: radius,
+    );
+  }
 }
 
-class _TypingIndicatorState extends State<TypingIndicator>
+/// Jumping Dot.
+///
+/// [numberOfDots] number of dots,
+/// [color] color of dots.
+/// [radius] radius of dots.
+/// [animationDuration] animation duration in milliseconds
+class JumpingDots extends StatefulWidget {
+  final int numberOfDots;
+  final Color color;
+  final double radius;
+  final double innerPadding;
+  final Duration animationDuration;
+
+  /// Defines how much the animation will offset negatively in the `y` axis.
+  /// Can be either positive or negative, as it'll later be converted into its
+  /// negative value.
+  ///
+  /// Non-finite or zero (0) values are not accepted.
+  final double verticalOffset;
+
+  JumpingDots({
+    Key? key,
+    this.numberOfDots = 3,
+    this.radius = 8,
+    this.innerPadding = 2,
+    this.animationDuration = const Duration(milliseconds: 200),
+    this.color = const Color(0xfff2c300),
+    this.verticalOffset = -5,
+  })  : assert(verticalOffset.isFinite,
+            "Non-finite values cannot be set as an animation offset."),
+        assert(verticalOffset != 0,
+            "Zero values (0) cannot be set as an animation offset."),
+        super(key: key);
+
+  @override
+  _JumpingDotsState createState() => _JumpingDotsState();
+}
+
+class _JumpingDotsState extends State<JumpingDots>
     with TickerProviderStateMixin {
-  late AnimationController _appearanceController;
-  late Animation<double> _indicatorSpaceAnimation;
+  List<AnimationController>? _animationControllers;
+
+  List<Animation<double>> _animations = [];
 
   @override
   void initState() {
     super.initState();
-
-    _appearanceController = AnimationController(
-      vsync: this,
-    );
-
-    _indicatorSpaceAnimation = CurvedAnimation(
-      parent: _appearanceController,
-      curve: const Interval(0.0, 0.4, curve: Curves.easeOut),
-      reverseCurve: const Interval(0.0, 1.0, curve: Curves.easeOut),
-    ).drive(Tween<double>(
-      begin: 0.0,
-      end: 60.0,
-    ));
-
-    if (widget.showIndicator) {
-      _showIndicator();
-    }
-  }
-
-  @override
-  void didUpdateWidget(TypingIndicator oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.showIndicator != oldWidget.showIndicator) {
-      if (widget.showIndicator) {
-        _showIndicator();
-      } else {
-        _hideIndicator();
-      }
-    }
+    _initAnimation();
   }
 
   @override
   void dispose() {
-    _appearanceController.dispose();
+    for (var controller in _animationControllers!) {
+      controller.dispose();
+    }
     super.dispose();
   }
 
-  void _showIndicator() {
-    _appearanceController
-      ..duration = const Duration(milliseconds: 750)
-      ..forward();
-  }
+  void _initAnimation() {
+    _animationControllers = List.generate(
+      widget.numberOfDots,
+      (index) {
+        return AnimationController(
+            vsync: this, duration: widget.animationDuration);
+      },
+    ).toList();
 
-  void _hideIndicator() {
-    _appearanceController
-      ..duration = const Duration(milliseconds: 150)
-      ..reverse();
+    for (int i = 0; i < widget.numberOfDots; i++) {
+      _animations.add(Tween<double>(
+              begin: 0,
+              end:
+                  -widget.verticalOffset.abs() // Ensure the offset is negative.
+              )
+          .animate(_animationControllers![i]));
+    }
+
+    for (int i = 0; i < widget.numberOfDots; i++) {
+      _animationControllers![i].addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          _animationControllers![i].reverse();
+          if (i != widget.numberOfDots - 1) {
+            _animationControllers![i + 1].forward();
+          }
+        }
+        if (i == widget.numberOfDots - 1 &&
+            status == AnimationStatus.dismissed) {
+          _animationControllers![0].forward();
+        }
+      });
+    }
+    _animationControllers!.first.forward();
   }
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _indicatorSpaceAnimation,
-      builder: (context, child) {
-        return SizedBox(
-          height: _indicatorSpaceAnimation.value,
-        );
-      },
-    );
+    return Row(
+        children: List.generate(widget.numberOfDots, (index) {
+      return AnimatedBuilder(
+        animation: _animationControllers![index],
+        builder: (context, child) {
+          return Container(
+            padding: EdgeInsets.all(widget.innerPadding),
+            child: Transform.translate(
+              offset: Offset(0, _animations[index].value),
+              child: DotWidget(color: widget.color, radius: widget.radius),
+            ),
+          );
+        },
+      );
+    }).toList());
   }
 }

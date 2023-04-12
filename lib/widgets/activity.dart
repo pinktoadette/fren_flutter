@@ -10,6 +10,8 @@ import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ActivityWidget extends StatefulWidget {
+  const ActivityWidget({super.key});
+
   @override
   _ActivityWidgetState createState() => _ActivityWidgetState();
 }

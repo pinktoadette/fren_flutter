@@ -57,8 +57,7 @@ class MessageMachiApi {
         await dio.post(url, data: {ROOM_ID: chatroomId, BOT_ID: botId});
     log("Saved and got bot responses");
 
-    Map<String, dynamic> newMessage = Map.from(response.data);
-    return newMessage;
+    return response.data;
   }
 
   /// Get paginations for old messages
@@ -83,7 +82,7 @@ class MessageMachiApi {
       if (theseMessage.isNotEmpty) {
         for (var element in theseMessage) {
           Map<String, dynamic> newMessage = Map.from(element);
-          types.Message msg = oldMessageTypes(newMessage);
+          types.Message msg = messageFromJson(newMessage);
           oldList.add(msg);
         }
         //set the next start page
