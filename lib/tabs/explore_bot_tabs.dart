@@ -1,4 +1,3 @@
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/controller/bot_controller.dart';

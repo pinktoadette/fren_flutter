@@ -29,6 +29,11 @@ class ConversationsTab extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: <Widget>[
+            OutlinedButton(
+              onPressed: () {},
+              child: Text(
+                  "${_i18n.translate("chat_with")} ${_i18n.translate("my_machi")}"),
+            ),
             IconButton(
                 onPressed: () {
                   chatController.addEmptyRoomToList();
