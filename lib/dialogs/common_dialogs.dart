@@ -101,10 +101,7 @@ void _buildDialog(
   required String? positiveText,
   required VoidCallback? positiveAction,
 }) {
-  // Variables
   final i18n = AppLocalizations.of(context);
-  final _textStyle =
-      TextStyle(fontSize: 18, color: Theme.of(context).primaryColor);
   late Widget _icon;
   late String _title;
 

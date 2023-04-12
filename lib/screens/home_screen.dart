@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/conversations_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
@@ -35,7 +34,6 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final ChatController chatController = Get.find();
-  final _conversationsApi = ConversationsApi();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();

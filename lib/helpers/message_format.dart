@@ -5,7 +5,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:get/get.dart';
 
 /// formats partial messages to map string dynamic to pass to api
-Map<String, dynamic> formatChatMessage(dynamic partialMessage) {
+Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
   final ChatController chatController = Get.find();
   // save will always be user, because backend will already save bot;
   late types.Message message;
@@ -41,6 +41,16 @@ Map<String, dynamic> formatChatMessage(dynamic partialMessage) {
 
   final messageMap = message.toJson();
   messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
+  if (partialMessage is types.PartialImage) {
+    messageMap[MESSAGE_IMAGE] = {...messageMap, MESSAGE_IMAGE_URI: uri};
+    messageMap.removeWhere((key, value) =>
+        key == 'size' ||
+        key == 'height' ||
+        key == 'width' ||
+        key == 'uri' ||
+        key == 'name');
+  }
+
   messageMap[CHAT_AUTHOR_ID] = user.id;
   messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
   messageMap[CHAT_USER_NAME] = user.firstName;
@@ -62,7 +72,11 @@ types.Message oldMessageTypes(Map<String, dynamic> message) {
   message[CREATED_AT] = message[CREATED_AT]?.toInt();
 
   if (message[CHAT_TYPE] == CHAT_IMAGE) {
-    message['size'] = 256;
+    // @todo at two places in chatroom model too
+    message['size'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_SIZE];
+    message['height'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_HEIGHT];
+    message['width'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_WIDTH];
+    message['uri'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_URI];
     return types.ImageMessage.fromJson(message);
   }
   return types.Message.fromJson(message);

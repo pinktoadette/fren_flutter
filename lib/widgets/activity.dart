@@ -15,7 +15,6 @@ class ActivityWidget extends StatefulWidget {
 }
 
 class _ActivityWidgetState extends State<ActivityWidget> {
-  static const _pageSize = 20;
   final _botApi = BotModel();
   List<Bot> _listBot = [];
 

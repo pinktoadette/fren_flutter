@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/message_format.dart';
+import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
@@ -38,7 +39,6 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:open_filex/open_filex.dart';
-import 'package:uuid/uuid.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 
@@ -69,6 +69,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool isBotSleeping = false;
   bool? isBotTyping;
   types.PartialImage? attachmentPreview;
+  File? file;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
@@ -311,81 +312,69 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
-  void _handleFileSelection() async {
-    final result = await FilePicker.platform.pickFiles(
-      type: FileType.any,
+  void _handleImageSelection(File image) async {
+    var bytes = image.readAsBytesSync();
+    var result = await decodeImageFromList(bytes);
+    types.PartialImage message = types.PartialImage(
+      height: result.height.toDouble(),
+      name: image.path.split(Platform.pathSeparator).last,
+      size: bytes.length,
+      uri: image.path,
+      width: result.width.toDouble(),
     );
-
-    if (result != null && result.files.single.path != null) {
-      final message = types.FileMessage(
-        author: chatController.chatUser,
-        createdAt: DateTime.now().millisecondsSinceEpoch,
-        id: const Uuid().v4(),
-        // mimeType: lookupMimeType(result.files.single.path!),
-        name: result.files.single.name,
-        size: result.files.single.size,
-        uri: result.files.single.path!,
-      );
-
-      _formatMessageBeforeAPI(message);
-    }
-  }
-
-  void _handleImageSelection(String imagePath) async {
-    final result = await ImagePicker().pickImage(
-      imageQuality: 70,
-      maxWidth: 256,
-      source: ImageSource.gallery,
-    );
-
-    if (result != null) {
-      final bytes = await result.readAsBytes();
-      final image = await decodeImageFromList(bytes);
-
-      types.PartialImage message = types.PartialImage(
-        height: image.height.toDouble(),
-        name: result.name,
-        size: bytes.length,
-        uri: imagePath,
-        width: image.width.toDouble(),
-      );
-
-      // _formatMessageBeforeAPI(message);
-    }
+    setState(() {
+      attachmentPreview = message;
+      file = image;
+    });
   }
 
   // when pressed, it formats the message, sends to socket and calls the api
-  void _handleSendPressed(types.PartialText message) {
+  void _handleSendPressed(types.PartialText message) async {
+    setState(() {
+      _isAttachmentUploading = true;
+    });
     Map<String, dynamic> formatMessage = formatChatMessage(message);
     _channel.sink.add(json.encode({"message": formatMessage}));
-    _formatMessageBeforeAPI(message);
+    String lastMessageId = "";
+    if (attachmentPreview != null) {
+      String uri = await uploadFile(
+          file: file!,
+          category: 'message',
+          categoryId: attachmentPreview!.name);
+      Map<String, dynamic> formatImgMessage =
+          formatChatMessage(attachmentPreview, uri);
+
+      _channel.sink.add(json.encode({"message": formatImgMessage}));
+      // saves the image
+      lastMessageId = await _messagesApi.saveUserResponse(formatImgMessage);
+    }
+
+    // saves the text after the image, the text is linked to the image with lastMessageId
+    await _saveResponseAndGetBot(
+        {...formatMessage, "lastMessageId": lastMessageId});
+
+    setState(() {
+      _isAttachmentUploading = false;
+      attachmentPreview = null;
+    });
   }
 
   void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
         context: context,
         builder: (context) => ImageSourceSheet(
-              includeFile: true,
+              // includeFile: true,
               onImageSelected: (image) async {
                 if (image != null) {
                   Navigator.pop(context);
-                  _handleImageSelection(image.path);
+                  _handleImageSelection(image);
                 }
               },
             ));
   }
 
-  void _formatMessageBeforeAPI(dynamic message) {
-    Map<String, dynamic> formatMessage = formatChatMessage(message);
-    _channel.sink.add(json.encode({"message": formatMessage}));
-    // _callAPI(formatMessage);
-  }
-
   /// saves user reponse. Backend handles all bot response / timing.
-  Future<void> _callAPI(Map<String, dynamic> messageMap) async {
-    setState(() {
-      _isAttachmentUploading = true;
-    });
+  Future<void> _saveResponseAndGetBot(Map<String, dynamic> messageMap) async {
     try {
       await _messagesApi.saveUserResponse(messageMap);
       _getMachiResponse();
@@ -394,10 +383,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
           message: _i18n.translate("an_error_has_occurred"),
           bgcolor: APP_ERROR);
     }
-
-    setState(() {
-      _isAttachmentUploading = false;
-    });
   }
 
   Future<void> _getMachiResponse() async {

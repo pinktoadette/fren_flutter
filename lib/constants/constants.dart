@@ -170,6 +170,11 @@ const String FLAGGED_BY_USER_ID = "flaggedByUserId";
 ///
 const String MESSAGE_TEXT = "message_text";
 const String MESSAGE_TYPE = "message_type";
+const String MESSAGE_IMAGE = "image";
+const String MESSAGE_IMAGE_HEIGHT = "height";
+const String MESSAGE_IMAGE_WIDTH = "width";
+const String MESSAGE_IMAGE_URI = "uri";
+const String MESSAGE_IMAGE_SIZE = "size";
 const String MESSAGE_IMG_LINK = "message_img_link";
 const String MESSAGE_READ = "read";
 const String LAST_MESSAGE = "last_message";
@@ -217,3 +222,4 @@ const String CHAT_FILE = "file";
 const String CHAT_TYPE = "type";
 const String CHAT_MESSAGE_ID = "messageId";
 const String CHAT_PHOTO_URL = "uri";
+const String CHAT_LINKED_MESSAGE_ID = "linkedMessageId"; /// image link to a text

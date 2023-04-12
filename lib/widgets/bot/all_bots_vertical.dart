@@ -120,8 +120,8 @@ class _ListAllBotWidget extends State<ListAllBotsVertically> {
                                                                     .about))
                                                       ],
                                                     ),
-                                                    Row(
-                                                      children: const [
+                                                    const Row(
+                                                      children: [
                                                         SizedBox(height: 50),
                                                         Text("Downloads"),
                                                         Spacer(),

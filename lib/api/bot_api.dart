@@ -43,16 +43,6 @@ class BotApi {
     return botDoc;
   }
 
-  /// Get stream messages for current user
-  Stream<QuerySnapshot<Map<String, dynamic>>> getUserReplies(String userId) {
-    return _firestore
-        .collection(C_BOT_USER_MATCH)
-        .doc(userId)
-        .collection(DEFAULT_BOT_ID)
-        .orderBy(TIMESTAMP)
-        .snapshots();
-  }
-
   Future<void> tryBot(Bot bot) async {
     var query = await _firestore
         .collection(C_BOT_TRIALS)

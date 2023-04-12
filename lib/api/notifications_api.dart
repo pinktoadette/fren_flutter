@@ -27,7 +27,7 @@ class NotificationsApi {
       NOTIF_TYPE: nType,
       NOTIF_MESSAGE: nMessage,
       NOTIF_READ: false,
-      TIMESTAMP: FieldValue.serverTimestamp()
+      CREATED_AT: FieldValue.serverTimestamp()
     }).then((_) {
       debugPrint('saveNotification() -> success');
     });
@@ -43,7 +43,7 @@ class NotificationsApi {
       NOTIF_TYPE: 'alert',
       NOTIF_MESSAGE: nMessage,
       NOTIF_READ: false,
-      TIMESTAMP: FieldValue.serverTimestamp()
+      CREATED_AT: FieldValue.serverTimestamp()
     }).then((_) {
       debugPrint('saveNotification() -> success');
     });

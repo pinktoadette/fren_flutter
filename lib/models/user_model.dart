@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
@@ -22,8 +21,6 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class UserModel extends Model {
-  /// Final Variables
-  final _chatroomApi = ChatroomMachiApi();
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final _firestore = FirebaseFirestore.instance;
   final _storageRef = FirebaseStorage.instance;
@@ -491,7 +488,7 @@ class UserModel extends Model {
       FLAGGED_USER_ID: flaggedUserId,
       FLAG_REASON: reason,
       FLAGGED_BY_USER_ID: user.userId,
-      TIMESTAMP: FieldValue.serverTimestamp()
+      CREATED_AT: FieldValue.serverTimestamp()
     });
     // Update flagged profile status
     await updateUserData(userId: flaggedUserId, data: {USER_STATUS: 'flagged'});
@@ -556,10 +553,6 @@ class UserModel extends Model {
     required String path,
     required String userId,
   }) async {
-    print("uploadfile");
-    print(file);
-    print("path");
-    print(path + '/' + userId + '/');
     // Image name
     String imageName =
         userId + DateTime.now().millisecondsSinceEpoch.toString();

@@ -55,8 +55,8 @@ class _AddBotState extends State<AddBotScreen> {
             },
           ),
         ),
-        body: SingleChildScrollView(
-            child: Column(children: const [Step0CreateBot()])));
+        body: const SingleChildScrollView(
+            child: Column(children: [Step0CreateBot()])));
   }
 }
 

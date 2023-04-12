@@ -7,7 +7,6 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
-import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -23,15 +22,13 @@ class MessageMachiApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   /// saves the user response
-  Future saveUserResponse(Map<String, dynamic> messageMap) async {
+  Future<String> saveUserResponse(Map<String, dynamic> messageMap) async {
     String url = '${baseUri}chat/user_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.post(url, data: {...messageMap});
-    if (response.statusCode == 200) {
-      // gets a task id
-      return response.data;
-    }
+    // returns messageId
+    return response.data;
   }
 
   /// Get task from taskId for background jobs

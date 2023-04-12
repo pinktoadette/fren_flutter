@@ -51,7 +51,7 @@ class _SearchBarState extends State<SearchBarWidget> {
                   radius: 20,
                 ),
                 title: Text(suggestion['fullname']!),
-                subtitle: Text('\@${suggestion['username']}'),
+                subtitle: Text('@${suggestion['username']}'),
               );
             },
             onSuggestionSelected: (dynamic suggestion) {
