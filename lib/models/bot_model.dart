@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:uuid/uuid.dart';
 
 import '../datas/bot.dart';
 
@@ -103,8 +104,11 @@ class BotModel extends Model {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    _firestore.collection(C_BOT).add(<String, dynamic>{
+    String uid = const Uuid().v1().substring(0, 8);
+    String docId = "Machi_$uid";
+    _firestore.collection(C_BOT).doc(docId).set(<String, dynamic>{
       BOT_OWNER_ID: ownerId,
+      BOT_ID: docId,
       BOT_NAME: name,
       BOT_DOMAIN: domain,
       BOT_SUBDOMAIN: subdomain,
@@ -117,7 +121,7 @@ class BotModel extends Model {
       UPDATED_AT: FieldValue.serverTimestamp(),
       BOT_PRICE: double.parse(price),
     }).then((bot) async {
-      onSuccess(bot.id);
+      onSuccess(docId);
     }).catchError((onError) {
       debugPrint('createBot() -> error');
       // Callback function

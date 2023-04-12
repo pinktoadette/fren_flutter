@@ -240,7 +240,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onMessageLongPress: _handleMessageLongPress,
             onSendPressed: _handleSendPressed,
             onAvatarTap: (messageUser) async {
-              if (!messageUser.id.contains("Bot_")) {
+              if (!messageUser.id.contains("Machi_")) {
                 User user = await UserModel().getUserObject(messageUser.id);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ProfileScreen(user: user)));

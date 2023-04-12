@@ -51,7 +51,7 @@ const List<Locale> SUPPORTED_LOCALES = [
 const NOTIFY_USERS = "NOTIFY_USERS";
 
 /// Bot
-const DEFAULT_BOT_ID = 'Bot_GgQ0c3cqypSmKcpfUA9M';
+const DEFAULT_BOT_ID = 'Machi_GgQ0c3cqypSmKcpfUA9M';
 const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
 
 /// Bot Database Collection
