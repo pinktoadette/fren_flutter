@@ -119,6 +119,14 @@ class MyApp extends StatelessWidget {
         secondary: APP_ACCENT_COLOR,
         background: APP_PRIMARY_BACKGROUND,
       ),
+      tabBarTheme: TabBarTheme(
+        indicatorColor: APP_PRIMARY_COLOR,
+        labelColor: APP_PRIMARY_COLOR,
+        labelStyle: GoogleFonts.poppins(
+            fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black26),
+        unselectedLabelStyle: GoogleFonts.poppins(
+            fontSize: 12, fontWeight: FontWeight.normal, color: Colors.black54),
+      ),
       scaffoldBackgroundColor: Colors.white,
       inputDecorationTheme: InputDecorationTheme(
           labelStyle: GoogleFonts.poppins(
@@ -229,6 +237,16 @@ class MyApp extends StatelessWidget {
           secondary: APP_ACCENT_COLOR,
           background: APP_PRIMARY_DARK_BACKGROUND),
       scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
+      tabBarTheme: TabBarTheme(
+        indicatorColor: APP_PRIMARY_DARK_COLOR,
+        labelColor: APP_PRIMARY_DARK_COLOR,
+        labelStyle: GoogleFonts.poppins(
+            fontSize: 12,
+            fontWeight: FontWeight.normal,
+            color: APP_PRIMARY_DARK_COLOR),
+        unselectedLabelStyle: GoogleFonts.poppins(
+            fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white24),
+      ),
       inputDecorationTheme: InputDecorationTheme(
           labelStyle: GoogleFonts.poppins(
               fontSize: 14,
