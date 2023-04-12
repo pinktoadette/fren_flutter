@@ -255,14 +255,20 @@ class _HomeScreenState extends State<HomeScreen> {
           ActionButton(
             onPressed: () => {
               showModalBottomSheet<void>(
-                context: context,
-                enableDrag: true,
-                isScrollControlled: true,
-                builder: (context) {
-                  return const FractionallySizedBox(
-                      heightFactor: 0.9, child: CreateMachiWidget());
-                },
-              )
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => FractionallySizedBox(
+                      heightFactor: 0.9,
+                      child: DraggableScrollableSheet(
+                        snap: true,
+                        initialChildSize: 1,
+                        minChildSize: 0.75,
+                        builder: (context, scrollController) =>
+                            SingleChildScrollView(
+                          controller: scrollController,
+                          child: const CreateMachiWidget(),
+                        ),
+                      ))),
             },
             icon: const Icon(Iconsax.pen_add),
           ),

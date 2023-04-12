@@ -308,6 +308,7 @@
   "select_interest": "Select your interest",
   "resricted_to_creator": "Only creator/admin can edit",
   "required_field": "Please input required field",
+  "required_2_char": "Requires 2 characters",
 
   "friend_sent": "You sent request.",
   "friend_accept_request": "Accept Request",
