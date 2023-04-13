@@ -90,7 +90,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                         width: width * 0.6,
                         height: 80,
                         child: TextFormField(
-                          minLines: 2,
                           maxLength: 40,
                           controller: _nameController,
                           decoration: InputDecoration(

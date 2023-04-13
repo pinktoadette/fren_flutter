@@ -129,19 +129,20 @@ class MyApp extends StatelessWidget {
       ),
       scaffoldBackgroundColor: Colors.white,
       inputDecorationTheme: InputDecorationTheme(
+          isDense: true,
           labelStyle: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.normal,
               color: APP_PRIMARY_COLOR),
           floatingLabelStyle:
-              GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_COLOR),
+              GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_COLOR),
           hintStyle: GoogleFonts.poppins(
               fontSize: 16,
               fontWeight: FontWeight.normal,
-              color: Colors.black54),
+              color: Colors.white30),
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(10),
           )),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
@@ -248,6 +249,7 @@ class MyApp extends StatelessWidget {
             fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white24),
       ),
       inputDecorationTheme: InputDecorationTheme(
+          isDense: true,
           labelStyle: GoogleFonts.poppins(
               fontSize: 14,
               fontWeight: FontWeight.normal,
@@ -260,7 +262,7 @@ class MyApp extends StatelessWidget {
               color: Colors.white30),
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(28),
+            borderRadius: BorderRadius.circular(10),
           )),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
