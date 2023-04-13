@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/bot/list_all_bots.dart';
+import 'package:fren_app/widgets/search.dart';
 import 'package:get/get.dart';
 
 /// Gets recent new bots
@@ -29,15 +30,21 @@ class _ExploreBotState extends State<ExploreBotTab> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double screenWidth = MediaQuery.of(context).size.width;
 
     return DefaultTabController(
         length: 3,
         child: Scaffold(
             appBar: AppBar(
-              title: Text(
-                "Advanced Models",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Models",
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    SizedBox(width: screenWidth * 0.4, child: SearchBarWidget())
+                  ]),
               bottom: TabBar(
                 tabs: [
                   Tab(

@@ -6,6 +6,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -29,10 +30,9 @@ class ConversationsTab extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: <Widget>[
-            OutlinedButton(
+            IconButton(
+              icon: const Icon(Iconsax.note),
               onPressed: () {},
-              child: Text(
-                  "${_i18n.translate("chat_with")} ${_i18n.translate("my_machi")}"),
             ),
             IconButton(
                 onPressed: () {

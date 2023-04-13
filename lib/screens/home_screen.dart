@@ -61,10 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
     _getCurrentUserUpdates();
 
     /// initialize states
-    userController.initUser();
-    botController.fetchCurrentBot(DEFAULT_BOT_ID);
-    chatController.initUser();
-    chatController.onChatLoad();
+    _initializeState();
 
     // create a new room for quick chat
     _getChatrooms();
@@ -90,6 +87,13 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+  }
+
+  void _initializeState() {
+    userController.initUser();
+    botController.fetchCurrentBot(DEFAULT_BOT_ID);
+    chatController.initUser();
+    chatController.onChatLoad();
   }
 
   /// get or create chatroom

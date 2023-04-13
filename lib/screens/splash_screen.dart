@@ -30,7 +30,6 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   // Variables
   final AppHelper _appHelper = AppHelper();
-  late AppLocalizations _i18n;
 
   /// Navigate to next page
   void _nextScreen(screen) {
@@ -89,8 +88,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
     return Scaffold(
       body: SafeArea(
         child: Container(
