@@ -16,6 +16,10 @@ const Color APP_ERROR = Color.fromARGB(255, 236, 110, 85);
 const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
+
+const String GOOGLE_BANNER_ADS = 'ca-app-pub-3940256099942544/6300978111';
+const String GOOGLE_INTERSTI_ADS = 'ca-app-pub-3940256099942544/8691691433';
+
 //
 // Add Google Maps - API KEY required for Passport feature
 //

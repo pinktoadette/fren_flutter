@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:js_interop';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/datas/user.dart';
@@ -28,7 +27,6 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';

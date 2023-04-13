@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/no_data.dart';
@@ -33,6 +34,7 @@ class _ListAllBotWidget extends State<ListAllBots> {
   @override
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
+    double itemHeight = 200;
 
     if (_listBot.isEmpty) {
       /// No match
@@ -40,10 +42,24 @@ class _ListAllBotWidget extends State<ListAllBots> {
     } else {
       return Container(
           margin: const EdgeInsets.symmetric(vertical: 5.0),
-          child: ListView.builder(
+          child: ListView.separated(
               physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
+              separatorBuilder: (context, index) {
+                if ((index + 1) % 2 == 0) {
+                  return Container(
+                    height: itemHeight,
+                    color: Theme.of(context).colorScheme.background,
+                    child: const Padding(
+                      padding: EdgeInsets.only(top: 10, bottom: 10),
+                      child: InlineAdaptiveAds(),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
               itemCount: _listBot.length,
               itemBuilder: (context, index) => InkWell(
                     child: Column(
@@ -53,7 +69,7 @@ class _ListAllBotWidget extends State<ListAllBots> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(28)),
                             child: SizedBox(
-                              height: 200,
+                              height: itemHeight,
                               child: Padding(
                                 padding: const EdgeInsets.only(top: 20),
                                 child: Column(

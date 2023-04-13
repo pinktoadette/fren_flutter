@@ -7,6 +7,7 @@ import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -61,8 +62,21 @@ class ConversationsTab extends StatelessWidget {
               : Obx(() => ListView.separated(
                   reverse: true,
                   shrinkWrap: true,
-                  separatorBuilder: (context, index) =>
-                      const Divider(height: 10),
+                  separatorBuilder: (context, index) {
+                    if ((index + 1) % 2 == 0) {
+                      return Container(
+                        height: 150,
+                        color: Theme.of(context).colorScheme.background,
+                        child: const Padding(
+                          padding:
+                              EdgeInsetsDirectional.only(top: 10, bottom: 10),
+                          child: InlineAdaptiveAds(),
+                        ),
+                      );
+                    } else {
+                      return const Divider(height: 10);
+                    }
+                  },
                   itemCount: chatController.roomlist.length,
                   itemBuilder: ((context, index) {
                     final Chatroom room = chatController.roomlist[index];
