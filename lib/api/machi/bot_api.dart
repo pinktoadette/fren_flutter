@@ -4,6 +4,8 @@ import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/helpers/message_format%20copy.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
@@ -17,14 +19,14 @@ class BotApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<void> createBot({
-    required ownerId,
     required name,
-    required domain,
-    required subdomain,
-    required prompt,
-    required temperature,
-    required price,
-    required priceUnit,
+    domain,
+    subdomain,
+    prompt,
+    temperature,
+    price,
+    priceUnit,
+    required modelType,
     required about,
     required ValueSetter onSuccess,
     required Function(String) onError,
@@ -36,7 +38,7 @@ class BotApi {
       BOT_ID: "MACHI_$uid", // external botId
       BOT_ABOUT: about,
       BOT_NAME: name,
-      BOT_OWNER_ID: ownerId,
+      BOT_OWNER_ID: UserModel().user.userId,
       BOT_DOMAIN: domain,
       BOT_SUBDOMAIN: subdomain,
       BOT_PROMPT: prompt,
@@ -45,15 +47,15 @@ class BotApi {
       BOT_PRICE_UNIT: priceUnit,
       BOT_ACTIVE: false,
       BOT_ADMIN_STATUS: 'pending',
-      CREATED_AT: FieldValue.serverTimestamp(),
-      UPDATED_AT: FieldValue.serverTimestamp(),
+      CREATED_AT: getDateTimeEpoch(),
+      UPDATED_AT: getDateTimeEpoch(),
     };
 
     final dio = await auth.getDio();
     dio.post(url, data: {...data}).then((response) async {
       final created = response.data;
       final Bot bot = created.toJson();
-      onSuccess(bot.botId);
+      onSuccess(bot);
     }).catchError((onError) {
       debugPrint('createBot() -> error');
       // Callback function

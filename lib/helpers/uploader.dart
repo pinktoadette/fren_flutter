@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:fren_app/helpers/message_format%20copy.dart';
 
 Future<String> uploadFile(
     {required File file,
@@ -9,8 +10,7 @@ Future<String> uploadFile(
   final _storageRef = FirebaseStorage.instance;
 
   // Image name
-  String imageName =
-      categoryId + DateTime.now().millisecondsSinceEpoch.toString();
+  String imageName = categoryId + getDateTimeEpoch().toString();
 
   // Upload file
   final UploadTask uploadTask =

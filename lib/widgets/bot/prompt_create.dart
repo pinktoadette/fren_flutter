@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
+import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
+import 'package:fren_app/widgets/show_scaffold_msg.dart';
+import 'package:get/get.dart';
 
 class CreateMachiWidget extends StatefulWidget {
   const CreateMachiWidget({Key? key}) : super(key: key);
@@ -15,6 +21,9 @@ class CreateMachiWidget extends StatefulWidget {
 
 class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _botApi = BotApi();
+  BotController botController = Get.find();
+  ChatController chatController = Get.find();
+
   final _nameController = TextEditingController();
   final _aboutController = TextEditingController();
   final _promptController = TextEditingController();
@@ -186,12 +195,37 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
             Center(
               child: ElevatedButton(
                   onPressed: () {
-                    print(_nameController.text);
+                    _onHandleSubmitBot();
                   },
                   child: Text(_i18n.translate("publish"))),
             ),
           ]));
     }
+  }
+
+  void _onHandleSubmitBot() async {
+    String name = _nameController.text;
+    String modelType = "prompt";
+    String about = _aboutController.text;
+    String prompt = _promptController.text;
+
+    await _botApi.createBot(
+        name: name,
+        modelType: modelType,
+        about: about,
+        prompt: prompt,
+        onSuccess: (bot) {
+          botController.bot = bot.obs;
+          chatController.addEmptyRoomToList();
+          chatController.onLoadCurrentRoom(chatController.emptyRoom);
+          Get.to(() => const BotChatScreen(), arguments: {
+            "room": chatController.emptyRoom,
+            "index": chatController.roomlist.length - 1
+          });
+        },
+        onError: (error) {
+          showScaffoldMessage(message: error.toString(), bgcolor: APP_ERROR);
+        });
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {

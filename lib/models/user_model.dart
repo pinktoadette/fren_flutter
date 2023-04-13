@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/datas/user.dart';
+import 'package:fren_app/helpers/message_format%20copy.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -536,8 +537,7 @@ class UserModel extends Model {
     required String userId,
   }) async {
     // Image name
-    String imageName =
-        userId + DateTime.now().millisecondsSinceEpoch.toString();
+    String imageName = userId + getDateTimeEpoch().toString();
     // Upload file
     final UploadTask uploadTask = _storageRef
         .ref()

@@ -1,5 +1,6 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/helpers/message_format%20copy.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:get/get.dart';
@@ -37,8 +38,6 @@ Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
     );
   }
 
-  DateTime dateTime = DateTime.now();
-
   final messageMap = message.toJson();
   messageMap.removeWhere((key, value) => key == 'author' || key == 'id');
   if (partialMessage is types.PartialImage) {
@@ -52,7 +51,7 @@ Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
   }
 
   messageMap[CHAT_AUTHOR_ID] = user.id;
-  messageMap[CREATED_AT] = dateTime.millisecondsSinceEpoch;
+  messageMap[CREATED_AT] = getDateTimeEpoch();
   messageMap[CHAT_USER_NAME] = user.firstName;
   messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
   messageMap[ROOM_HAS_MESSAGES] = true;

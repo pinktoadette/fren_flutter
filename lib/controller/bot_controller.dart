@@ -1,5 +1,6 @@
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/helpers/message_format%20copy.dart';
 import 'package:get/get.dart';
 import 'package:fren_app/datas/bot.dart';
 
@@ -10,12 +11,13 @@ class BotController extends GetxController {
           about: '',
           name: '',
           model: '',
+          modelType: '',
           domain: '',
           subdomain: '',
           prompt: "",
           temperature: 0.5,
-          createdAt: DateTime.now().microsecondsSinceEpoch,
-          updatedAt: DateTime.now().microsecondsSinceEpoch,
+          createdAt: getDateTimeEpoch(),
+          updatedAt: getDateTimeEpoch(),
           adminStatus: '',
           isActive: false)
       .obs;

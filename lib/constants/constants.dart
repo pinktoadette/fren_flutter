@@ -61,6 +61,7 @@ const BOT_ABOUT = "about";
 const BOT_NAME = 'name';
 const BOT_PROFILE_PHOTO = 'photoUrl';
 const BOT_MODEL = 'model';
+const BOT_MODEL_TYPE = "modelType";
 const BOT_DOMAIN = "domain";
 const BOT_SUBDOMAIN = 'subdomain';
 const BOT_OWNER_ID = 'ownerId';

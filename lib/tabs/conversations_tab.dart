@@ -4,9 +4,9 @@ import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
+import 'package:fren_app/helpers/message_format%20copy.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -70,7 +70,7 @@ class ConversationsTab extends StatelessWidget {
                         ? room.messages[0].toJson()
                         : {
                             'text': 'This is an error. Something went wrong',
-                            'createdAt': DateTime.now().millisecondsSinceEpoch
+                            'createdAt': getDateTimeEpoch()
                           };
                     String allUsers = room.bot.name;
                     for (var user in room.users) {

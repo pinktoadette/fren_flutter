@@ -10,6 +10,7 @@ class Bot {
   final int createdAt;
   final int updatedAt;
   final String prompt;
+  final String modelType;
   final double? temperature;
   final bool? isActive;
   final String? adminStatus;
@@ -31,6 +32,7 @@ class Bot {
       required this.about,
       required this.updatedAt,
       required this.prompt,
+      required this.modelType,
       this.temperature,
       this.isActive,
       this.adminStatus,
@@ -46,6 +48,7 @@ class Bot {
         'about': about,
         'name': name,
         'model': model,
+        'modelType': modelType,
         'domain': domain,
         'subdomain': subdomain,
         'price': price,
@@ -67,6 +70,7 @@ class Bot {
         profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
         name: doc[BOT_NAME],
         model: doc[BOT_MODEL] ?? '',
+        modelType: doc[BOT_MODEL_TYPE],
         subdomain: doc[BOT_SUBDOMAIN] ?? '',
         botOwnerId: doc[BOT_OWNER_ID],
         about: doc[BOT_ABOUT],
