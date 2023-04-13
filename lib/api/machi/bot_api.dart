@@ -32,7 +32,7 @@ class BotApi {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    String url = '${baseUri}bot/create_bot';
+    String url = '${baseUri}bot/create_machi';
 
     var data = {
       BOT_ID: "Machi_$UniqueKey()", // external botId
@@ -67,7 +67,7 @@ class BotApi {
   Future<Bot> getBot({
     required botId,
   }) async {
-    String url = '${baseUri}bot/get_bot?botId=$botId';
+    String url = '${baseUri}bot/get_machi?botId=$botId';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
@@ -103,9 +103,18 @@ class BotApi {
   }
 
   Future<List<Bot>> getMyCreatedBots() async {
-    String url = '${baseUri}own_created_bot';
+    String url = '${baseUri}bot/my_creation';
     final dio = await auth.getDio();
     final response = await dio.get(url);
+    final getData = response.data;
+
+    return getData.toJson();
+  }
+
+  Future<List<Bot>> addBottoList(String botId) async {
+    String url = '${baseUri}bot/add_machi';
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {BOT_ID: botId});
     final getData = response.data;
 
     return getData.toJson();

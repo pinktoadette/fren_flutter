@@ -1,5 +1,7 @@
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -8,6 +10,7 @@ import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class BotProfileCard extends StatefulWidget {
@@ -31,28 +34,15 @@ class BotProfileCard extends StatefulWidget {
 
 class _BotProfileCardState extends State<BotProfileCard> {
   final _botPrompt = TextEditingController(text: "");
-  final _chatroomApi = ChatroomMachiApi();
+  ChatController chatController = Get.find();
+  BotController botController = Get.find();
 
-  String _prompt = "";
   bool disableTextEdit = true;
   late AppLocalizations _i18n;
   final TextEditingController personalityController = TextEditingController();
 
-  Future<void> _loadMood() async {
-    if (widget.room != null) {
-      // only creator of the room can change the mmod
-      if (UserModel().user.userId == widget.room!.creatorUser) {
-        disableTextEdit = false;
-      }
-      setState(() {
-        _prompt = widget.bot.prompt;
-      });
-    }
-  }
-
   @override
   void initState() {
-    _loadMood();
     super.initState();
   }
 
@@ -66,8 +56,6 @@ class _BotProfileCardState extends State<BotProfileCard> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width - 10;
-    double height = MediaQuery.of(context).size.height * 0.4;
 
     return Padding(
       padding: const EdgeInsets.all(20),
@@ -130,20 +118,10 @@ class _BotProfileCardState extends State<BotProfileCard> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                OutlinedButton(
-                  child: const Text("Free to Try"),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const BotChatScreen()));
-                  },
-                ),
                 ElevatedButton.icon(
                   icon: const Icon(Iconsax.add_circle),
                   label: const Text("Machi"),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const BotChatScreen()));
-                  },
+                  onPressed: () {},
                 ),
               ],
             ),
@@ -151,9 +129,5 @@ class _BotProfileCardState extends State<BotProfileCard> {
         ],
       ),
     );
-  }
-
-  void _tryBot() {
-    // save trial chances - limit to 5 chats
   }
 }

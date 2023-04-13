@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:js_interop';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/datas/user.dart';
@@ -48,7 +49,6 @@ class BotChatScreen extends StatefulWidget {
 }
 
 class _BotChatScreenState extends State<BotChatScreen> {
-  final AppHelper _appHelper = AppHelper();
   final BotController botController = Get.find();
   final ChatController chatController = Get.find();
   final MessageController messageController = Get.find();
@@ -355,7 +355,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           formatChatMessage(attachmentPreview, uri);
 
       _channel.sink.add(json.encode({"message": formatImgMessage}));
-      // saves the image
+
       lastMessageId = await _messagesApi.saveUserResponse(formatImgMessage);
     }
 

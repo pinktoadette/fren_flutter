@@ -6,7 +6,6 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
-import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 
 class ListAllBots extends StatefulWidget {
