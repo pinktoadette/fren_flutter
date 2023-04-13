@@ -4,7 +4,7 @@ import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
-import 'package:fren_app/helpers/message_format%20copy.dart';
+import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';

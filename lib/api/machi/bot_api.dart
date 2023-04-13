@@ -4,7 +4,7 @@ import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/helpers/message_format%20copy.dart';
+import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -26,24 +26,25 @@ class BotApi {
     temperature,
     price,
     priceUnit,
+    model,
     required modelType,
     required about,
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
     String url = '${baseUri}bot/create_bot';
-    String uid = const Uuid().v1().substring(0, 8);
 
     var data = {
-      BOT_ID: "MACHI_$uid", // external botId
+      BOT_ID: "Machi_$UniqueKey()", // external botId
       BOT_ABOUT: about,
       BOT_NAME: name,
-      BOT_OWNER_ID: UserModel().user.userId,
+      BOT_MODEL: model,
+      BOT_MODEL_TYPE: modelType,
       BOT_DOMAIN: domain,
       BOT_SUBDOMAIN: subdomain,
       BOT_PROMPT: prompt,
       BOT_TEMPERATURE: temperature,
-      BOT_PRICE: double.parse(price),
+      BOT_PRICE: price ?? 0,
       BOT_PRICE_UNIT: priceUnit,
       BOT_ACTIVE: false,
       BOT_ADMIN_STATUS: 'pending',

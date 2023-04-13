@@ -1,5 +1,7 @@
 import 'package:fren_app/constants/constants.dart';
 
+enum BotModelType { prompt, finetuning, custom }
+
 class Bot {
   /// Bot info
   final String botId;
@@ -10,7 +12,7 @@ class Bot {
   final int createdAt;
   final int updatedAt;
   final String prompt;
-  final String modelType;
+  final BotModelType modelType;
   final double? temperature;
   final bool? isActive;
   final String? adminStatus;
@@ -70,7 +72,7 @@ class Bot {
         profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
         name: doc[BOT_NAME],
         model: doc[BOT_MODEL] ?? '',
-        modelType: doc[BOT_MODEL_TYPE],
+        modelType: BotModelType.values.byName(doc[BOT_MODEL_TYPE]),
         subdomain: doc[BOT_SUBDOMAIN] ?? '',
         botOwnerId: doc[BOT_OWNER_ID],
         about: doc[BOT_ABOUT],

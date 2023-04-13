@@ -196,6 +196,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
               child: ElevatedButton(
                   onPressed: () {
                     _onHandleSubmitBot();
+                    // Navigator.of(context).pop();
                   },
                   child: Text(_i18n.translate("publish"))),
             ),
@@ -205,7 +206,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
   void _onHandleSubmitBot() async {
     String name = _nameController.text;
-    String modelType = "prompt";
+    BotModelType modelType = BotModelType.prompt;
     String about = _aboutController.text;
     String prompt = _promptController.text;
 
@@ -218,6 +219,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           botController.bot = bot.obs;
           chatController.addEmptyRoomToList();
           chatController.onLoadCurrentRoom(chatController.emptyRoom);
+
           Get.to(() => const BotChatScreen(), arguments: {
             "room": chatController.emptyRoom,
             "index": chatController.roomlist.length - 1

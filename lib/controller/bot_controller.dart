@@ -1,6 +1,6 @@
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/message_format%20copy.dart';
+import 'package:fren_app/helpers/date_now.dart';
 import 'package:get/get.dart';
 import 'package:fren_app/datas/bot.dart';
 
@@ -11,7 +11,7 @@ class BotController extends GetxController {
           about: '',
           name: '',
           model: '',
-          modelType: '',
+          modelType: BotModelType.prompt,
           domain: '',
           subdomain: '',
           prompt: "",
