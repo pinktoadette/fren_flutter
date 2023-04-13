@@ -137,10 +137,10 @@ class MyApp extends StatelessWidget {
           floatingLabelStyle:
               GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_COLOR),
           hintStyle: GoogleFonts.poppins(
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.normal,
               color: Colors.white30),
-          errorStyle: const TextStyle(fontSize: 16),
+          errorStyle: const TextStyle(fontSize: 14),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
           )),
@@ -195,15 +195,12 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.normal),
         bodyMedium: GoogleFonts.poppins(fontSize: 16),
         bodySmall: GoogleFonts.poppins(fontSize: 14),
-        labelLarge: GoogleFonts.poppins(
-          fontSize: 18,
-        ),
-        labelMedium: GoogleFonts.poppins(
-          fontSize: 16,
-        ),
+        labelLarge:
+            GoogleFonts.poppins(fontSize: 16, wordSpacing: 0, letterSpacing: 0),
+        labelMedium:
+            GoogleFonts.poppins(fontSize: 14, wordSpacing: 0, letterSpacing: 0),
         labelSmall: GoogleFonts.poppins(
-          fontSize: 14,
-        ),
+            fontSize: 12, wordSpacing: 0, letterSpacing: 0, color: Colors.grey),
       ).apply(
         bodyColor: APP_PRIMARY_COLOR,
         displayColor: APP_PRIMARY_COLOR,

@@ -91,6 +91,11 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                         height: 80,
                         child: TextFormField(
                           maxLength: 40,
+                          buildCounter: (_,
+                                  {required currentLength,
+                                  maxLength,
+                                  required isFocused}) =>
+                              _counter(context, currentLength, maxLength),
                           controller: _nameController,
                           decoration: InputDecoration(
                             labelText: _i18n.translate("bot_name"),
@@ -122,9 +127,14 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                   TextFormField(
                     maxLength: 200,
+                    buildCounter: (_,
+                            {required currentLength,
+                            maxLength,
+                            required isFocused}) =>
+                        _counter(context, currentLength, maxLength),
                     controller: _aboutController,
                     decoration: InputDecoration(
                       labelText: _i18n.translate("about"),
@@ -139,9 +149,14 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
                   TextFormField(
-                    maxLength: 200,
+                    maxLength: 2500,
+                    buildCounter: (_,
+                            {required currentLength,
+                            maxLength,
+                            required isFocused}) =>
+                        _counter(context, currentLength, maxLength),
                     controller: _promptController,
                     decoration: InputDecoration(
                       labelText: _i18n.translate("bot_prompt"),
@@ -160,6 +175,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 ],
               ),
             ),
+            const SizedBox(height: 30),
             Text(
               _i18n.translate("bot_test_warning"),
               style: Theme.of(context).textTheme.labelSmall,
@@ -176,5 +192,17 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
             ),
           ]));
     }
+  }
+
+  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0.0),
+      child: Container(
+          alignment: Alignment.topLeft,
+          child: Text(
+            currentLength.toString() + "/" + maxLength.toString(),
+            style: Theme.of(context).textTheme.labelSmall,
+          )),
+    );
   }
 }
