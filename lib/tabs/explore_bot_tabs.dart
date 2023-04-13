@@ -2,7 +2,7 @@ import 'package:fren_app/controller/user_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/bot/all_bots_vertical.dart';
+import 'package:fren_app/widgets/bot/list_all_bots.dart';
 import 'package:get/get.dart';
 
 /// Gets recent new bots
@@ -56,7 +56,7 @@ class _ExploreBotState extends State<ExploreBotTab> {
               padding: EdgeInsets.only(left: 20, right: 20),
               child: TabBarView(
                 children: [
-                  ListAllBotsVertically(),
+                  ListAllBots(),
                   Icon(Icons.directions_transit),
                   Icon(Icons.directions_bike),
                 ],

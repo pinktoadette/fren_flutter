@@ -40,10 +40,10 @@ class UserApi {
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
 
-      data[CREATED_AT] = data[CREATED_AT]?.millisecondsSinceEpoch;
-      data[UPDATED_AT] = data[UPDATED_AT]?.millisecondsSinceEpoch;
-      data[USER_LAST_LOGIN] = data[USER_LAST_LOGIN]?.millisecondsSinceEpoch;
-      data[USER_GEO_POINT] = null;
+      // data[CREATED_AT] = data[CREATED_AT]?.millisecondsSinceEpoch;
+      // data[UPDATED_AT] = data[UPDATED_AT]?.millisecondsSinceEpoch;
+      // data[USER_LAST_LOGIN] = data[USER_LAST_LOGIN]?.millisecondsSinceEpoch;
+      // data[USER_GEO_POINT] = null;
       await dio.put(url, data: data);
     } catch (error) {
       debugPrint(error.toString());

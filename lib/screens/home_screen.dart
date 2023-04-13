@@ -15,7 +15,7 @@ import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
 import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
-import 'package:fren_app/widgets/bot/my_bots.dart';
+import 'package:fren_app/widgets/bot/list_my_bots.dart';
 import 'package:fren_app/widgets/bot/prompt_create.dart';
 import 'package:fren_app/widgets/button/action_button.dart';
 import 'package:fren_app/widgets/button/expandable_fab.dart';
@@ -26,6 +26,9 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/user_controller.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -34,7 +37,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  final UserController userController = Get.find();
   final ChatController chatController = Get.find();
+  final BotController botController = Get.find();
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();
@@ -54,6 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
+
+    /// initialize states
+    userController.initUser();
+    botController.fetchCurrentBot(DEFAULT_BOT_ID);
+    chatController.initUser();
+    chatController.onChatLoad();
 
     // create a new room for quick chat
     _getChatrooms();
@@ -280,7 +291,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 isScrollControlled: true,
                 builder: (context) {
                   return const FractionallySizedBox(
-                      heightFactor: 0.9, child: MyMachiWidget());
+                      heightFactor: 0.9, child: ListMyBot());
                 },
               )
             },

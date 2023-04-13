@@ -63,15 +63,13 @@ class BotApi {
 
   Future<Bot> getBot({
     required botId,
-    required ValueSetter onSuccess,
-    required Function(String) onError,
   }) async {
-    String url = '${baseUri}bot/get_bot';
+    String url = '${baseUri}bot/get_bot?botId=$botId';
     final dio = await auth.getDio();
-    final response = await dio.get(url, data: {botId: botId});
+    final response = await dio.get(url);
     final getData = response.data;
 
-    return getData.toJson();
+    return Bot.fromDocument(getData);
   }
 
   Future<Bot> updateBot({
@@ -84,16 +82,21 @@ class BotApi {
     final dio = await auth.getDio();
     final response = await dio.put(url, data: {...data, botId: botId});
     final getData = response.data;
-    return getData.toJson();
+    return Bot.fromDocument(getData);
   }
 
-  Future<List<Bot>> getAllBotsTrend() async {
-    String url = '${baseUri}trending_bots';
+  Future<List<Bot>> getAllBots(int limit, int offset) async {
+    String url = '${baseUri}bot/get_all?limit=$limit&offset=$offset';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
 
-    return getData.toJson();
+    List<Bot> result = [];
+    for (var data in getData) {
+      result.add(Bot.fromDocument(data));
+    }
+
+    return result;
   }
 
   Future<List<Bot>> getMyCreatedBots() async {

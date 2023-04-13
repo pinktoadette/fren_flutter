@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 
@@ -16,20 +14,15 @@ class CreateMachiWidget extends StatefulWidget {
 }
 
 class _CreateMachiWidget extends State<CreateMachiWidget> {
-  final _botApi = BotModel();
+  final _botApi = BotApi();
   final _nameController = TextEditingController();
   final _aboutController = TextEditingController();
   final _promptController = TextEditingController();
 
-  List<Bot>? _listBot;
+  List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> bots =
-        await _botApi.getAllBotsTrend();
-    List<Bot> result = [];
-    for (var doc in bots) {
-      result.add(Bot.fromDocument({...doc.data(), BOT_ID: doc.id}));
-    }
+    List<Bot> result = await _botApi.getAllBots(5, 0);
     setState(() => _listBot = result);
   }
 
@@ -54,7 +47,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
     if (_listBot == null) {
       return const Frankloader();
-    } else if (_listBot!.isEmpty) {
+    } else if (_listBot.isEmpty) {
       /// No match
       return NoData(text: _i18n.translate("no_match"));
     } else {

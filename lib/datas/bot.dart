@@ -1,27 +1,5 @@
 import 'package:fren_app/constants/constants.dart';
 
-class BotPrompt {
-  final String text;
-  final int wait;
-  final String? selection;
-  final bool hasNext;
-
-  BotPrompt(
-      {required this.text,
-      required this.wait,
-      required this.selection,
-      required this.hasNext});
-
-  factory BotPrompt.fromJson(Map<String, dynamic> doc) {
-    return BotPrompt(
-      text: doc['text'],
-      wait: doc['wait'] as int,
-      selection: doc['selection'],
-      hasNext: doc['hasNext'] as bool,
-    );
-  }
-}
-
 class Bot {
   /// Bot info
   final String botId;
@@ -99,6 +77,6 @@ class Bot {
         adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
         adminNote: doc[BOT_ADMIN_NOTE] ?? "",
         prompt: doc[BOT_PROMPT],
-        temperature: doc[BOT_TEMPERATURE] ?? 0.5);
+        temperature: doc[BOT_TEMPERATURE]);
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/screens/bot/add_bot_step1.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:flutter/material.dart';
 
@@ -39,10 +38,6 @@ class _AddBotState extends State<AddBotScreen> {
       WillPopScope(
         onWillPop: () => Future.sync(onWillPop),
         child: const Step0CreateBot(),
-      ),
-      WillPopScope(
-        onWillPop: () => Future.sync(onWillPop),
-        child: const Step1CreateBot(),
       ),
     ];
 
@@ -86,11 +81,7 @@ class Step0CreateBot extends StatelessWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        onPressed: () {
-          //@todo make temporary form
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const Step1CreateBot()));
-        },
+        onPressed: () {},
       )
     ]));
   }

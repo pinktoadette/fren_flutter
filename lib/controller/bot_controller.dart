@@ -1,8 +1,7 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:get/get.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/models/bot_model.dart';
 
 class BotController extends GetxController {
   Rx<Bot> _currentBot = Bot(
@@ -26,13 +25,13 @@ class BotController extends GetxController {
 
   @override
   void onInit() async {
-    await fetchCurrentBot(DEFAULT_BOT_ID);
+    // await fetchCurrentBot(DEFAULT_BOT_ID);
     super.onInit();
   }
 
   Future<void> fetchCurrentBot(String botId) async {
-    DocumentSnapshot<Map<String, dynamic>> bot = await BotModel().getBot(botId);
-    final Bot botNow = Bot.fromDocument(bot.data()!);
+    final botApi = BotApi();
+    final Bot botNow = await botApi.getBot(botId: botId);
     _currentBot = botNow.obs;
   }
 }

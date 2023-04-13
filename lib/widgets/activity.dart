@@ -1,10 +1,8 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
@@ -17,17 +15,18 @@ class ActivityWidget extends StatefulWidget {
 }
 
 class _ActivityWidgetState extends State<ActivityWidget> {
-  final _botApi = BotModel();
+  final _botApi = BotApi();
   List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> bots =
-        await _botApi.getAllBotsTrend();
-    List<Bot> result = [];
-    for (var doc in bots) {
-      result.add(Bot.fromDocument({...doc.data(), BOT_ID: doc.id}));
-    }
+    List<Bot> result = await _botApi.getAllBots(5, 0);
     setState(() => _listBot = result);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchAllBots();
   }
 
   @override

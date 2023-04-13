@@ -1,34 +1,27 @@
 import 'dart:math';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/bot_model.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 
-class MyMachiWidget extends StatefulWidget {
-  const MyMachiWidget({Key? key}) : super(key: key);
+class ListAllBots extends StatefulWidget {
+  const ListAllBots({Key? key}) : super(key: key);
 
   @override
-  _MyMachiWidget createState() => _MyMachiWidget();
+  _ListAllBotWidget createState() => _ListAllBotWidget();
 }
 
-class _MyMachiWidget extends State<MyMachiWidget> {
-  final _botApi = BotModel();
-  List<Bot>? _listBot;
+class _ListAllBotWidget extends State<ListAllBots> {
+  final _botApi = BotApi();
+  List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
-    List<QueryDocumentSnapshot<Map<String, dynamic>>> bots =
-        await _botApi.getAllBotsTrend();
-    List<Bot> result = [];
-    for (var doc in bots) {
-      result.add(Bot.fromDocument({...doc.data(), BOT_ID: doc.id}));
-    }
+    List<Bot> result = await _botApi.getAllBots(5, 0);
     setState(() => _listBot = result);
   }
 
@@ -44,17 +37,17 @@ class _MyMachiWidget extends State<MyMachiWidget> {
 
     if (_listBot == null) {
       return const Frankloader();
-    } else if (_listBot!.isEmpty) {
+    } else if (_listBot.isEmpty) {
       /// No match
       return NoData(text: _i18n.translate("no_match"));
     } else {
       return Container(
-          margin: const EdgeInsets.symmetric(vertical: .0),
+          margin: const EdgeInsets.symmetric(vertical: 5.0),
           child: ListView.builder(
               physics: const ClampingScrollPhysics(),
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: _listBot!.length,
+              itemCount: _listBot.length,
               itemBuilder: (context, index) => InkWell(
                     child: Column(
                       children: [
@@ -69,19 +62,19 @@ class _MyMachiWidget extends State<MyMachiWidget> {
                                   children: <Widget>[
                                     ListTile(
                                         onTap: () {
-                                          _showBotInfo(_listBot![index]);
+                                          _showBotInfo(_listBot[index]);
                                         },
                                         // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                                         minLeadingWidth: 15,
                                         leading:
-                                            _listBot![index].profilePhoto != ""
+                                            _listBot[index].profilePhoto != ""
                                                 ? CircleAvatar(
                                                     backgroundColor:
                                                         Theme.of(context)
                                                             .primaryColor,
                                                     backgroundImage:
                                                         NetworkImage(
-                                                      _listBot![index]
+                                                      _listBot[index]
                                                               .profilePhoto ??
                                                           "",
                                                     ))
@@ -90,7 +83,7 @@ class _MyMachiWidget extends State<MyMachiWidget> {
                                         focusColor: Theme.of(context)
                                             .secondaryHeaderColor,
                                         title: Text(
-                                            "${_listBot![index].name} - ${_listBot![index].domain}"),
+                                            "${_listBot[index].name} - ${_listBot[index].domain}"),
                                         subtitle: Align(
                                             alignment: Alignment.topLeft,
                                             child: Column(
@@ -98,28 +91,36 @@ class _MyMachiWidget extends State<MyMachiWidget> {
                                                   CrossAxisAlignment.start,
                                               children: [
                                                 Text(
-                                                    _listBot![index].subdomain),
+                                                    _listBot[index].subdomain),
                                                 Column(
                                                   children: [
                                                     Row(
                                                       children: [
                                                         Flexible(
-                                                            child: Text(_listBot![
+                                                            child: Text(_listBot[
                                                                             index]
                                                                         .about
                                                                         .length >
                                                                     80
-                                                                ? _listBot![index]
+                                                                ? _listBot[index]
                                                                         .about
                                                                         .substring(
                                                                             0,
                                                                             80) +
                                                                     '...'
-                                                                : _listBot![
+                                                                : _listBot[
                                                                         index]
                                                                     .about))
                                                       ],
                                                     ),
+                                                    const Row(
+                                                      children: [
+                                                        SizedBox(height: 50),
+                                                        Text("Downloads"),
+                                                        Spacer(),
+                                                        Text("Contributors")
+                                                      ],
+                                                    )
                                                   ],
                                                 ),
                                               ],

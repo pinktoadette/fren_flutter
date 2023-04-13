@@ -2,10 +2,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
-import 'package:fren_app/controller/message_controller.dart';
-import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -92,23 +88,9 @@ class UserModel extends Model {
     notifyListeners();
     debugPrint('User object -> updated!');
 
-    // update allGetx state
-    await _initialAllStateAndRooms();
-
     // external api
-    final mApi = UserApi();
-    await mApi.updateUser(userDoc);
-  }
-
-  Future<void> _initialAllStateAndRooms() async {
-    /// initialize all controllers at one spot
-    Get.lazyPut(() => BotController());
-    final UserController userController = Get.put(UserController());
-    userController.initUser();
-    Get.lazyPut(() => MessageController());
-    final ChatController chatController = Get.put(ChatController());
-    chatController.initUser();
-    chatController.onChatLoad();
+    // final mApi = UserApi();
+    // await mApi.updateUser(userDoc);
   }
 
   /// Update user data
@@ -134,9 +116,9 @@ class UserModel extends Model {
     /// Update user device token
     /// Check token result
     if (userDeviceToken != null) {
-      await updateUserData(userId: getFirebaseUser!.uid, data: {
-        USER_DEVICE_TOKEN: userDeviceToken,
-      }).then((_) {
+      await updateUserData(
+          userId: getFirebaseUser!.uid,
+          data: {USER_DEVICE_TOKEN: userDeviceToken}).then((_) {
         debugPrint("updateUserDeviceToken() -> success");
       });
     }
