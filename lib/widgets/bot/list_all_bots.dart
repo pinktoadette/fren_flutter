@@ -2,15 +2,12 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:iconsax/iconsax.dart';
 
 class ListAllBots extends StatefulWidget {
   const ListAllBots({Key? key}) : super(key: key);
@@ -38,9 +35,7 @@ class _ListAllBotWidget extends State<ListAllBots> {
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
 
-    if (_listBot == null) {
-      return const Frankloader();
-    } else if (_listBot.isEmpty) {
+    if (_listBot.isEmpty) {
       /// No match
       return NoData(text: _i18n.translate("no_match"));
     } else {

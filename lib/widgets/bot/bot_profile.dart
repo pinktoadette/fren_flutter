@@ -7,6 +7,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:iconsax/iconsax.dart';
 
 class BotProfileCard extends StatefulWidget {
@@ -75,12 +76,40 @@ class _BotProfileCardState extends State<BotProfileCard> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            isThreeLine: true,
-            leading: const Icon(Iconsax.box_tick),
-            title: Text("Name: ${widget.bot.name}"),
-            subtitle: Text(
-                "Domain: ${widget.bot.domain} - ${widget.bot.subdomain} \n\n${widget.bot.about}"),
-          ),
+              isThreeLine: true,
+              leading: AvatarInitials(
+                  photoUrl: widget.bot.profilePhoto ?? "",
+                  username: widget.bot.name),
+              dense: true,
+              focusColor: Theme.of(context).secondaryHeaderColor,
+              title: Text(
+                "${widget.bot.name} - ${widget.bot.modelType.name}",
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              subtitle: Align(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.bot.subdomain,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Column(
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(
+                                  child: Text(widget.bot.about,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall))
+                            ],
+                          ),
+                        ],
+                      ),
+                    ],
+                  ))),
           if (widget.room?.chatroomId == null)
             Row(children: <Widget>[
               Expanded(
@@ -92,73 +121,33 @@ class _BotProfileCardState extends State<BotProfileCard> {
                     : const Text(""),
               )),
             ]),
-          if (widget.showStatus == true)
-            Row(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    children: [
-                      Text(
-                          widget.bot.isActive == false
-                              ? 'Unpublished'
-                              : 'Published',
-                          style: TextStyle(
-                              color: widget.bot.isActive == false
-                                  ? APP_ERROR
-                                  : APP_SUCCESS)),
-                      const SizedBox(width: 120),
-                      widget.bot.isActive == false
-                          ? ElevatedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Step2Container()),
-                                );
-                              },
-                              child: const Text('Publish'))
-                          : OutlinedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const Step2Container()),
-                                );
-                              },
-                              child: const Text('Edit'))
-                    ],
-                  ),
-                ),
-              ],
-            ),
           if (widget.showPurchase == true)
-            Row(
+            const SizedBox(
+              height: 20,
+            ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.max,
-                    children: [
-                      Container(
-                        width: 250,
-                        alignment: Alignment.center,
-                        child: ElevatedButton(
-                          child: const Text("Free to Try"),
-                          onPressed: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const BotChatScreen()));
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
+                OutlinedButton(
+                  child: const Text("Free to Try"),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const BotChatScreen()));
+                  },
+                ),
+                ElevatedButton.icon(
+                  icon: const Icon(Iconsax.add_circle),
+                  label: const Text("Machi"),
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const BotChatScreen()));
+                  },
                 ),
               ],
             ),
+          )
         ],
       ),
     );
