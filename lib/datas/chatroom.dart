@@ -68,7 +68,7 @@ class Chatroom {
     List<types.User> users = [];
     doc['users'].forEach((user) {
       user['id'] = user['userId'];
-      user['firstName'] = user['fullname'];
+      user['firstName'] = user['username'];
       users.add(types.User.fromJson(user));
     });
 

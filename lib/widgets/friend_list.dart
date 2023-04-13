@@ -85,6 +85,7 @@ class _FriendListState extends State<FriendListWidget> {
                                 },
                                 child: AvatarInitials(
                                   radius: 20,
+                                  userId: snapshot.data[index][USER_ID],
                                   photoUrl: snapshot.data[index]
                                       [USER_PROFILE_PHOTO],
                                   username: snapshot.data[index][USER_USERNAME],

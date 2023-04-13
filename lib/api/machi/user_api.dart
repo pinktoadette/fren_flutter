@@ -15,12 +15,23 @@ class UserApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<User> getUser() async {
-    String url = '${baseUri}user_info';
+    String url = '${baseUri}user/get_user';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
     return getData.toJson();
+  }
+
+  Future<User> getUserById(String userId) async {
+    String url = '${baseUri}user/get_userId?userId=$userId';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    final getData = response.data;
+
+    User user = User.fromDocument(getData);
+    return user;
   }
 
   Future<void> saveUser(Map<String, dynamic> data) async {

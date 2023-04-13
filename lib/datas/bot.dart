@@ -2,6 +2,22 @@ import 'package:fren_app/constants/constants.dart';
 
 enum BotModelType { prompt, finetuning, custom }
 
+class BotCreatedBy {
+  final String userId;
+  final String username;
+  final String photoUrl;
+
+  BotCreatedBy(
+      {required this.userId, required this.username, required this.photoUrl});
+
+  factory BotCreatedBy.fromDocument(Map<String, dynamic> doc) {
+    return BotCreatedBy(
+        userId: doc[USER_ID],
+        photoUrl: doc[BOT_PROFILE_PHOTO] ?? '',
+        username: doc[USER_USERNAME]);
+  }
+}
+
 class Bot {
   /// Bot info
   final String botId;
@@ -21,7 +37,7 @@ class Bot {
   final String? adminNote;
   final double? price;
   final String? priceUnit;
-  final Object? botOwnerId;
+  final BotCreatedBy? createdBy;
 
   // Constructor
   Bot(
@@ -42,7 +58,7 @@ class Bot {
       this.adminNote,
       this.price,
       this.priceUnit,
-      this.botOwnerId});
+      this.createdBy});
 
   Map<String, dynamic> toJson() => {
         'botId': botId,
@@ -55,7 +71,7 @@ class Bot {
         'subdomain': subdomain,
         'price': price,
         'priceUnit': priceUnit,
-        'botOwnerId': botOwnerId,
+        'createdBy': createdBy,
         'isActive': isActive,
         'adminState': adminStatus,
         'adminNote': adminNote,
@@ -67,6 +83,7 @@ class Bot {
 
   /// factory bot object
   factory Bot.fromDocument(Map<String, dynamic> doc) {
+    BotCreatedBy createdBy = BotCreatedBy.fromDocument(doc[BOT_CREATED_BY]);
     return Bot(
         botId: doc[BOT_ID],
         profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
@@ -74,15 +91,15 @@ class Bot {
         model: doc[BOT_MODEL] ?? '',
         modelType: BotModelType.values.byName(doc[BOT_MODEL_TYPE]),
         subdomain: doc[BOT_SUBDOMAIN] ?? '',
-        botOwnerId: doc[BOT_OWNER_ID],
+        createdBy: createdBy,
         about: doc[BOT_ABOUT],
-        domain: doc[BOT_DOMAIN],
+        domain: doc[BOT_DOMAIN] ?? '',
         isActive: doc[BOT_ACTIVE] ?? false,
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT],
         adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
         adminNote: doc[BOT_ADMIN_NOTE] ?? "",
-        prompt: doc[BOT_PROMPT],
+        prompt: doc[BOT_PROMPT] ?? '',
         temperature: doc[BOT_TEMPERATURE]);
   }
 }

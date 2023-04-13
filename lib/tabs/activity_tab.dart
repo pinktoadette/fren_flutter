@@ -5,7 +5,7 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/invite_card.dart';
-import 'package:fren_app/widgets/search.dart';
+import 'package:fren_app/widgets/search_user.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);

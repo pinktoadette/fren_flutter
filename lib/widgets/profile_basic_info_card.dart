@@ -1,3 +1,4 @@
+import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/user/edit_profile_screen.dart';
@@ -14,7 +15,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Initialization
     final i18n = AppLocalizations.of(context);
-
+    User user = UserModel().user;
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const ScrollPhysics(),
@@ -32,8 +33,9 @@ class ProfileBasicInfoCard extends StatelessWidget {
               Row(
                 children: [
                   AvatarInitials(
-                    username: UserModel().user.username,
-                    photoUrl: UserModel().user.userProfilePhoto,
+                    userId: user.userId,
+                    username: user.username,
+                    photoUrl: user.userProfilePhoto,
                   ),
 
                   const SizedBox(width: 10),
@@ -43,7 +45,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        UserModel().user.username,
+                        user.username,
                         style: TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.bold,
@@ -72,8 +74,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                         onPressed: () {
                           /// Go to profile screen
                           Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) =>
-                                  ProfileScreen(user: UserModel().user)));
+                              builder: (context) => ProfileScreen(user: user)));
                         }),
                   ),
                   SizedBox(

@@ -266,6 +266,7 @@
   "bot": "Bot",
 
   "bot_naps": "Napping",
+  "bot_owner": "Contributed By",
   "bot_nap_message": "Too many people, I'm overwhelmed.",
   "create_bot": "Create Domain Bot",
   "create_bot_success": "Your bot is now published!",

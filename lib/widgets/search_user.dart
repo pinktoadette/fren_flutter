@@ -46,6 +46,7 @@ class _SearchBarState extends State<SearchBarWidget> {
               User user = User.fromDocument(suggestion);
               return ListTile(
                 leading: AvatarInitials(
+                  userId: user.userId,
                   username: user.username,
                   photoUrl: user.userProfilePhoto,
                   radius: 20,

@@ -2,11 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 
 class ListAllBots extends StatefulWidget {
@@ -56,42 +59,35 @@ class _ListAllBotWidget extends State<ListAllBots> {
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(28)),
                             child: SizedBox(
-                              height: 150,
-                              child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
+                              height: 200,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 20),
+                                child: Column(
+                                  children: [
                                     ListTile(
+                                        isThreeLine: true,
                                         onTap: () {
                                           _showBotInfo(_listBot[index]);
                                         },
                                         // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                                         minLeadingWidth: 15,
-                                        leading:
-                                            _listBot[index].profilePhoto != ""
-                                                ? CircleAvatar(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                      _listBot[index]
-                                                              .profilePhoto ??
-                                                          "",
-                                                    ))
-                                                : const Icon(Iconsax.box_tick),
+                                        leading: AvatarInitials(
+                                            photoUrl:
+                                                _listBot[index].profilePhoto ??
+                                                    "",
+                                            username: _listBot[index].name),
                                         dense: true,
                                         focusColor: Theme.of(context)
                                             .secondaryHeaderColor,
                                         title: Text(
-                                            "${_listBot[index].name} - ${_listBot[index].domain}"),
+                                            "${_listBot[index].name} - ${_listBot[index].modelType.name}"),
                                         subtitle: Align(
                                             alignment: Alignment.topLeft,
                                             child: Column(
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                    _listBot[index].subdomain),
+                                                Text(_listBot[index].subdomain),
                                                 Column(
                                                   children: [
                                                     Row(
@@ -101,31 +97,62 @@ class _ListAllBotWidget extends State<ListAllBots> {
                                                                             index]
                                                                         .about
                                                                         .length >
-                                                                    80
+                                                                    100
                                                                 ? _listBot[index]
                                                                         .about
                                                                         .substring(
                                                                             0,
-                                                                            80) +
+                                                                            100) +
                                                                     '...'
                                                                 : _listBot[
                                                                         index]
                                                                     .about))
                                                       ],
                                                     ),
-                                                    const Row(
-                                                      children: [
-                                                        SizedBox(height: 50),
-                                                        Text("Downloads"),
-                                                        Spacer(),
-                                                        Text("Contributors")
-                                                      ],
-                                                    )
                                                   ],
                                                 ),
                                               ],
                                             ))),
-                                  ]),
+                                    const Spacer(),
+                                    Divider(
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .tertiary,
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          right: 20, bottom: 10),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          Text(
+                                            _i18n.translate("bot_owner"),
+                                            textAlign: TextAlign.left,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall,
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          AvatarInitials(
+                                              radius: 10,
+                                              userId: _listBot[index]
+                                                  .createdBy!
+                                                  .userId,
+                                              photoUrl: _listBot[index]
+                                                  .createdBy!
+                                                  .photoUrl,
+                                              username: _listBot[index]
+                                                  .createdBy!
+                                                  .username)
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
                             ))
                       ],
                     ),

@@ -96,6 +96,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     child: Stack(
                       children: <Widget>[
                         AvatarInitials(
+                          userId: userModel.user.userId,
                           photoUrl: userModel.user.userProfilePhoto,
                           username: userModel.user.username,
                         ),

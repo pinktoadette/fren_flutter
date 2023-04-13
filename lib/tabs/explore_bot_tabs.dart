@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/bot/list_all_bots.dart';
-import 'package:fren_app/widgets/search.dart';
+import 'package:fren_app/widgets/search_bot.dart';
+import 'package:fren_app/widgets/search_user.dart';
 import 'package:get/get.dart';
 
 /// Gets recent new bots
@@ -43,7 +44,8 @@ class _ExploreBotState extends State<ExploreBotTab> {
                       "Models",
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
-                    SizedBox(width: screenWidth * 0.4, child: SearchBarWidget())
+                    SizedBox(
+                        width: screenWidth * 0.4, child: SearchMachiWidget())
                   ]),
               bottom: TabBar(
                 tabs: [

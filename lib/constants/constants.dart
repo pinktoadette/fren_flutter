@@ -73,6 +73,7 @@ const BOT_ADMIN_STATUS = "adminStatus";
 const BOT_ADMIN_NOTE = "adminNote";
 const BOT_PROMPT = "prompt";
 const BOT_TEMPERATURE = "temperature";
+const BOT_CREATED_BY = "createdBy";
 
 /// trials
 const BOT_TRIAL_BOT_ID = BOT_ID;

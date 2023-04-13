@@ -96,6 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       AvatarInitials(
+                        userId: widget.user.userId,
                         username: widget.user.username,
                         photoUrl: widget.user.userProfilePhoto,
                       ),
