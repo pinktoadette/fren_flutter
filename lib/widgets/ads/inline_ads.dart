@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/widgets/ads/ad_helper.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// This example demonstrates inline adaptive banner ads.
@@ -41,7 +42,7 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
         _adWidth.truncate());
 
     _inlineAdaptiveAd = BannerAd(
-      adUnitId: GOOGLE_BANNER_ADS,
+      adUnitId: AdManager.bannerAdUnitId,
       size: size,
       request: const AdRequest(),
       listener: BannerAdListener(

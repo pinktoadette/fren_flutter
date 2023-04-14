@@ -1,4 +1,4 @@
-import 'package:fren_app/dialogs/vip_dialog.dart';
+import 'package:fren_app/dialogs/subscribe_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +24,8 @@ class VipAccountCard extends StatelessWidget {
         ),
         onTap: () {
           /// Show VIP dialog
-          showDialog(context: context, builder: (context) => const VipDialog());
+          showDialog(
+              context: context, builder: (context) => const SubscribeDialog());
         },
       ),
     );

@@ -67,10 +67,15 @@ class ConversationsTab extends StatelessWidget {
                       return Container(
                         height: 150,
                         color: Theme.of(context).colorScheme.background,
-                        child: const Padding(
-                          padding:
-                              EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                          child: InlineAdaptiveAds(),
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              top: 10, bottom: 10),
+                          child: Container(
+                            height: 150,
+                            width: width,
+                            color: Colors.yellow,
+                            child: const Text('ad placeholder'),
+                          ),
                         ),
                       );
                     } else {
@@ -181,7 +186,7 @@ class ConversationsTab extends StatelessWidget {
           ]),
         );
       default:
-        return const Text("");
+        return const SizedBox.shrink();
     }
   }
 }

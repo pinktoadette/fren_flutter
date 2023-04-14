@@ -156,6 +156,7 @@ const String USER_LEVEL = "level";
 const String USER_LAST_UPDATE = "lastUpdate";
 const String USER_LAST_LOGIN = "lastLogin";
 const String USER_DEVICE_TOKEN = "deviceToken";
+const String USER_IS_SUBSCRIBED = "isSubscribed";
 
 // User Setting map - fields
 const String USER_MIN_AGE = "minAge";

@@ -4,7 +4,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/default_card_border.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
-import 'package:fren_app/dialogs/vip_dialog.dart';
+import 'package:fren_app/dialogs/subscribe_dialog.dart';
 import 'package:flutter/material.dart';
 
 class GalleryImageCard extends StatelessWidget {
@@ -79,7 +79,8 @@ class GalleryImageCard extends StatelessWidget {
     /// Check user vip account
     if (!UserModel().userIsVip && index > 3) {
       /// Show VIP dialog
-      showDialog(context: context, builder: (context) => const VipDialog());
+      showDialog(
+          context: context, builder: (context) => const SubscribeDialog());
       debugPrint('You need to activate vip account');
       return;
     }
@@ -116,7 +117,8 @@ class GalleryImageCard extends StatelessWidget {
     /// Check user vip account
     if (!UserModel().userIsVip && index > 3) {
       /// Show VIP dialog
-      showDialog(context: context, builder: (context) => const VipDialog());
+      showDialog(
+          context: context, builder: (context) => const SubscribeDialog());
       debugPrint('You need to activate vip account');
       return;
     }

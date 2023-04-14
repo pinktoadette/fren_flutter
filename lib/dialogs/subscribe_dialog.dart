@@ -1,12 +1,12 @@
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/store_products.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/subscribe/subscription.dart';
 import 'package:iconsax/iconsax.dart';
 
-class VipDialog extends StatelessWidget {
-  const VipDialog({Key? key}) : super(key: key);
+class SubscribeDialog extends StatelessWidget {
+  const SubscribeDialog({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +46,7 @@ class VipDialog extends StatelessWidget {
                         ),
                         title: Text(
                             '${i18n.translate("hello")} ${UserModel().user.userFullname.split(' ')[0]}, '
-                            '${i18n.translate("become_a_vip_member_and_enjoy_the_benefits_below")}',
+                            '${i18n.translate("become_a_subscription_member")}',
                             style: const TextStyle(
                                 fontSize: 18, color: Colors.white),
                             textAlign: TextAlign.center),
@@ -83,7 +83,7 @@ class VipDialog extends StatelessWidget {
                   const Divider(height: 10, thickness: 1),
 
                   /// VIP Subscriptions
-                  StoreProducts(
+                  Subscription(
                     priceColor: Colors.green,
                     icon: Image.asset('assets/images/crow_badge.png',
                         width: 50, height: 50),

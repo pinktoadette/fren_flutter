@@ -3,9 +3,11 @@ import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/widgets/bot/list_all_bots.dart';
 import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/invite_card.dart';
 import 'package:fren_app/widgets/search_user.dart';
+import 'package:fren_app/widgets/subscribe/subscribe_card.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
@@ -42,6 +44,7 @@ class _ActivityTabState extends State<ActivityTab> {
   Widget build(BuildContext context) {
     /// Initialization
     double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
 
     if (_isInitiatedFrank == true) {
       return Scaffold(
@@ -58,6 +61,17 @@ class _ActivityTabState extends State<ActivityTab> {
                 child: const InviteCard(),
               ),
             ],
+          ),
+          Container(
+            alignment: Alignment.center,
+            height: screenHeight - 200,
+            child: const SingleChildScrollView(
+                child: Column(
+              children: [
+                SubscriptionCard(),
+                ListAllBots(),
+              ],
+            )),
           )
         ],
       ));
@@ -69,7 +83,7 @@ class _ActivityTabState extends State<ActivityTab> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // ActivityWidget()
-            if (_currentStep < _listFeatures.length) _onCardClick()
+            if (_currentStep < _listFeatures.length) _onCardClick(),
           ],
         ),
       ),

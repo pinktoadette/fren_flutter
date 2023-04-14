@@ -35,6 +35,7 @@ class _ListAllBotWidget extends State<ListAllBots> {
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
     double itemHeight = 200;
+    final width = MediaQuery.of(context).size.width;
 
     if (_listBot.isEmpty) {
       /// No match
@@ -51,9 +52,14 @@ class _ListAllBotWidget extends State<ListAllBots> {
                   return Container(
                     height: itemHeight,
                     color: Theme.of(context).colorScheme.background,
-                    child: const Padding(
-                      padding: EdgeInsets.only(top: 10, bottom: 10),
-                      child: InlineAdaptiveAds(),
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Container(
+                        height: 150,
+                        width: width,
+                        color: Colors.yellow,
+                        child: const Text('ad placeholder'),
+                      ),
                     ),
                   );
                 } else {

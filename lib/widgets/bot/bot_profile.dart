@@ -63,71 +63,78 @@ class _BotProfileCardState extends State<BotProfileCard> {
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
-          ListTile(
-              isThreeLine: true,
-              leading: AvatarInitials(
-                  photoUrl: widget.bot.profilePhoto ?? "",
-                  username: widget.bot.name),
-              dense: true,
-              focusColor: Theme.of(context).secondaryHeaderColor,
-              title: Text(
-                "${widget.bot.name} - ${widget.bot.modelType.name}",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              subtitle: Align(
-                  alignment: Alignment.topLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        widget.bot.subdomain,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Column(
-                        children: [
-                          Row(
-                            children: [
-                              Flexible(
-                                  child: Text(widget.bot.about,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodySmall))
-                            ],
-                          ),
-                        ],
-                      ),
-                    ],
-                  ))),
-          if (widget.room?.chatroomId == null)
-            Row(children: <Widget>[
-              Expanded(
-                  child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: widget.bot.price != null
-                    ? Text(
-                        "Price: ${widget.bot.price! <= 0 ? "Free" : widget.bot.price} \n\n${widget.bot.about}")
-                    : const Text(""),
-              )),
-            ]),
-          if (widget.showPurchase == true)
-            const SizedBox(
-              height: 20,
-            ),
-          Padding(
-            padding: const EdgeInsets.all(20),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                ElevatedButton.icon(
-                  icon: const Icon(Iconsax.add_circle),
-                  label: const Text("Machi"),
-                  onPressed: () {},
+          SizedBox(
+            height: 180,
+            child: ListTile(
+                isThreeLine: true,
+                leading: AvatarInitials(
+                    photoUrl: widget.bot.profilePhoto ?? "",
+                    username: widget.bot.name),
+                dense: true,
+                focusColor: Theme.of(context).secondaryHeaderColor,
+                title: Text(
+                  "${widget.bot.name} - ${widget.bot.modelType.name}",
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
-              ],
-            ),
-          )
+                subtitle: Align(
+                    alignment: Alignment.topLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.bot.subdomain,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        Column(
+                          children: [
+                            Row(
+                              children: [
+                                Flexible(
+                                    child: Text(widget.bot.about,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodySmall))
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ))),
+          ),
+          const SizedBox(
+            height: 50,
+          ),
+          if (widget.room?.chatroomId == null) _showPricing(),
+          if (widget.showPurchase == true)
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  OutlinedButton.icon(
+                    icon: const Icon(Iconsax.box),
+                    label: Text(_i18n.translate("bot_try")),
+                    onPressed: () {},
+                  ),
+                  ElevatedButton.icon(
+                    icon: const Icon(Iconsax.element_plus),
+                    label: const Text("Machi"),
+                    onPressed: () {},
+                  ),
+                ],
+              ),
+            )
         ],
       ),
     );
+  }
+
+  Widget _showPricing() {
+    return Row(children: <Widget>[
+      Expanded(
+          child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: Text("Price: ${widget.bot.price ?? "Free"}"))),
+    ]);
   }
 }

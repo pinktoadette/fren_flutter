@@ -6,18 +6,18 @@ import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:scoped_model/scoped_model.dart';
 
-class StoreProducts extends StatefulWidget {
+class Subscription extends StatefulWidget {
   final Widget icon;
   final Color priceColor;
 
-  const StoreProducts({Key? key, required this.icon, required this.priceColor})
+  const Subscription({Key? key, required this.icon, required this.priceColor})
       : super(key: key);
 
   @override
-  _StoreProductsState createState() => _StoreProductsState();
+  _SubscriptionState createState() => _SubscriptionState();
 }
 
-class _StoreProductsState extends State<StoreProducts> {
+class _SubscriptionState extends State<Subscription> {
   // Variables
   bool _storeIsAvailable = false;
   List<ProductDetails>? _products;

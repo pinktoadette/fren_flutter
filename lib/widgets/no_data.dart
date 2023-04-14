@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:iconsax/iconsax.dart';
 
 class NoData extends StatelessWidget {
@@ -19,10 +20,13 @@ class NoData extends StatelessWidget {
       // Get SVG icon
       _icon = const Icon(Iconsax.briefcase);
     } else {
-      _icon = const Icon(Iconsax.message);
+      _icon = const TinyBotIcon(image: 'assets/images/frank3.png');
     }
 
-    return Center(
+    final height = MediaQuery.of(context).size.height;
+
+    return SizedBox(
+      height: height - 100,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[

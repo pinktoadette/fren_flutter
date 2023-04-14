@@ -25,6 +25,7 @@ class User {
   final List<String> userInterest;
   final String userIndustry;
   final String userJob;
+  final bool isSubscribed;
   final String? userBio;
   final bool? isDarkMode;
   final Map<String, dynamic>? userGallery;
@@ -58,6 +59,7 @@ class User {
       required this.userDeviceToken,
       required this.userEnableMode,
       required this.isDarkMode,
+      required this.isSubscribed,
       required this.userInterest,
       required this.userIndustry,
       required this.userJob});
@@ -91,6 +93,7 @@ class User {
         userIsVerified: doc[USER_IS_VERIFIED] ?? false,
         userLevel: doc[USER_LEVEL] ?? 'user',
         isDarkMode: doc[USER_DARK_MODE] ?? false,
+        isSubscribed: doc[USER_IS_SUBSCRIBED] ?? false,
         userRegDate: doc[CREATED_AT] is int
             ? DateTime.fromMillisecondsSinceEpoch(doc[CREATED_AT])
             : doc[CREATED_AT].toDate(), // Firestore Timestamp vs mongo

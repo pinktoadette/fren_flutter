@@ -79,6 +79,6 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
       );
     }
 
-    return const Text("");
+    return const SizedBox.shrink();
   }
 }
