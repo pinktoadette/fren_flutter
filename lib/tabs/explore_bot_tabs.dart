@@ -44,7 +44,8 @@ class _ExploreBotState extends State<ExploreBotTab> {
                       style: Theme.of(context).textTheme.headlineMedium,
                     ),
                     SizedBox(
-                        width: screenWidth * 0.4, child: SearchMachiWidget())
+                        width: screenWidth * 0.6,
+                        child: const SearchMachiWidget())
                   ]),
               bottom: TabBar(
                 tabs: [

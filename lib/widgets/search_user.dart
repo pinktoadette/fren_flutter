@@ -40,7 +40,7 @@ class _SearchBarState extends State<SearchBarWidget> {
                       TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),
             suggestionsCallback: (pattern) async {
-              return await _searchApi.searchUserAndBots(pattern);
+              return await _searchApi.searchUser(pattern);
             },
             itemBuilder: (context, dynamic suggestion) {
               User user = User.fromDocument(suggestion);

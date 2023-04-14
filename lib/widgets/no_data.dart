@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/bot/tiny_bot.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:iconsax/iconsax.dart';
 
 class NoData extends StatelessWidget {
@@ -20,7 +21,10 @@ class NoData extends StatelessWidget {
       // Get SVG icon
       _icon = const Icon(Iconsax.briefcase);
     } else {
-      _icon = const TinyBotIcon(image: 'assets/images/frank3.png');
+      _icon = Frankloader(
+        height: 100,
+        width: 100,
+      );
     }
 
     final height = MediaQuery.of(context).size.height;

@@ -13,8 +13,8 @@ class SearchApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<List<dynamic>> searchUserAndBots(String term) async {
-    String url = '${baseUri}search/all?term=$term';
+  Future<List<dynamic>> searchUser(String term) async {
+    String url = '${baseUri}search/user?term=$term';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
@@ -22,5 +22,12 @@ class SearchApi {
     return getData;
   }
 
-  /// calls from firebase
+  Future<List<dynamic>> searchMachi(String term) async {
+    String url = '${baseUri}search/machi?term=$term';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    final getData = response.data;
+    return getData;
+  }
 }

@@ -48,7 +48,7 @@ class _ListAllBotWidget extends State<ListAllBots> {
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
               separatorBuilder: (context, index) {
-                if ((index + 1) % 2 == 0) {
+                if ((index + 1) % 5 == 0) {
                   return Container(
                     height: itemHeight,
                     color: Theme.of(context).colorScheme.background,

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fren_app/api/machi/search_api.dart';
+import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
@@ -29,7 +30,7 @@ class _SearchMachiState extends State<SearchMachiWidget> {
     return Padding(
         padding: const EdgeInsets.only(left: 20),
         child: TypeAheadField(
-            minCharsForSuggestions: 3,
+            minCharsForSuggestions: 5,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
               decoration: InputDecoration(
@@ -40,19 +41,22 @@ class _SearchMachiState extends State<SearchMachiWidget> {
                       TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),
             suggestionsCallback: (pattern) async {
-              return await _searchApi.searchUserAndBots(pattern);
+              return await _searchApi.searchMachi(pattern);
             },
             itemBuilder: (context, dynamic suggestion) {
-              User user = User.fromDocument(suggestion);
+              Bot bot = Bot.fromDocument(suggestion);
               return ListTile(
                 leading: AvatarInitials(
-                  userId: user.userId,
-                  username: user.username,
-                  photoUrl: user.userProfilePhoto,
+                  userId: bot.botId,
+                  username: bot.name,
+                  photoUrl: bot.profilePhoto ?? "",
                   radius: 20,
                 ),
-                title: Text(suggestion['fullname']!),
-                subtitle: Text('@${suggestion['username']}'),
+                title: Text(suggestion['name']!),
+                subtitle: Text(
+                  'Model Type: ${suggestion['modelType']}',
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
               );
             },
             onSuggestionSelected: (dynamic suggestion) {
