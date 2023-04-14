@@ -80,7 +80,7 @@ class _SubscriptionState extends State<Subscription> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Frankloader(),
+              Frankloader(),
               const SizedBox(height: 5),
               Text(_i18n.translate("processing"),
                   style: const TextStyle(fontSize: 18),

@@ -58,6 +58,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late WebSocketChannel _channel;
   late Chatroom _room;
   late int _roomIdx;
+  bool isTrial = false;
   final _messagesApi = MessageMachiApi();
   final _chatroomApi = ChatroomMachiApi();
   bool _isAttachmentUploading = false;
@@ -105,6 +106,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _room = args["room"];
     _user = chatController.chatUser;
     _roomIdx = args["index"];
+
+    if (args["isTrial"] == true) {
+      isTrial = args["isTrial"];
+    }
+
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
 
@@ -125,7 +131,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _i18n = AppLocalizations.of(context);
 
     if (isLoading) {
-      return const Frankloader();
+      return Frankloader();
     } else {
       return Scaffold(
         appBar: AppBar(
@@ -137,10 +143,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   (chatController.currentRoom.users.length == 1)) {
                 chatController.removeEmptyRoomfromList();
               }
-              if (chatController.isTest == false) {
-                botController.fetchCurrentBot(DEFAULT_BOT_ID);
+              if (isTrial == true) {
+                chatController.removeSepcificBotFromRoom(_room);
               }
-
+              botController.fetchCurrentBot(DEFAULT_BOT_ID);
               Navigator.of(context).pop();
 
               Get.delete<MessageController>().then((_) {
@@ -177,42 +183,43 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   });
                 },
               ),
-            PopupMenuButton<String>(
-              initialValue: "",
-              itemBuilder: (context) => <PopupMenuEntry<String>>[
-                /// invite_user
-                PopupMenuItem(
-                    value: "add_to_chat",
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Iconsax.add),
-                        const SizedBox(width: 5),
-                        Text(_i18n.translate("add_to_chat")),
-                      ],
-                    )),
-                if (_room.users.length > 1)
+            if (isTrial == false)
+              PopupMenuButton<String>(
+                initialValue: "",
+                itemBuilder: (context) => <PopupMenuEntry<String>>[
+                  /// invite_user
                   PopupMenuItem(
-                      value: "leave_chat",
+                      value: "add_to_chat",
                       child: Row(
                         children: <Widget>[
-                          const Icon(Iconsax.logout),
+                          const Icon(Iconsax.add),
                           const SizedBox(width: 5),
-                          Text(_i18n.translate("leave_chatroom")),
+                          Text(_i18n.translate("add_to_chat")),
                         ],
                       )),
-              ],
-              onSelected: (val) {
-                /// Control selected value
-                switch (val) {
-                  case "add_to_chat":
-                    _showFriends();
-                    break;
-                  case "leave_chat":
-                    _leaveChat(context);
-                    break;
-                }
-              },
-            ),
+                  if (_room.users.length > 1)
+                    PopupMenuItem(
+                        value: "leave_chat",
+                        child: Row(
+                          children: <Widget>[
+                            const Icon(Iconsax.logout),
+                            const SizedBox(width: 5),
+                            Text(_i18n.translate("leave_chatroom")),
+                          ],
+                        )),
+                ],
+                onSelected: (val) {
+                  /// Control selected value
+                  switch (val) {
+                    case "add_to_chat":
+                      _showFriends();
+                      break;
+                    case "leave_chat":
+                      _leaveChat(context);
+                      break;
+                  }
+                },
+              ),
           ],
         ),
         body: Chat(

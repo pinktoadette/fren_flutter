@@ -18,7 +18,7 @@ class ProgressDialog {
         context: context,
         barrierDismissible: isDismissible,
         builder: (BuildContext context) {
-          return const SimpleDialog(
+          return SimpleDialog(
             elevation: 8.0,
             backgroundColor: Colors.transparent,
             children: <Widget>[

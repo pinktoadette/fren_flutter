@@ -36,7 +36,7 @@ class _ListMyBotWidget extends State<ListMyBot> {
     final _i18n = AppLocalizations.of(context);
 
     if (_listBot == null) {
-      return const Frankloader();
+      return Frankloader();
     } else if (_listBot.isEmpty) {
       /// No match
       return NoData(text: _i18n.translate("no_match"));
@@ -66,19 +66,18 @@ class _ListMyBotWidget extends State<ListMyBot> {
                                         },
                                         // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                                         minLeadingWidth: 15,
-                                        leading:
-                                            _listBot[index].profilePhoto != ""
-                                                ? CircleAvatar(
-                                                    backgroundColor:
-                                                        Theme.of(context)
-                                                            .primaryColor,
-                                                    backgroundImage:
-                                                        NetworkImage(
-                                                      _listBot[index]
-                                                              .profilePhoto ??
-                                                          "",
-                                                    ))
-                                                : const Icon(Iconsax.box_tick),
+                                        leading: _listBot[index].profilePhoto !=
+                                                ""
+                                            ? CircleAvatar(
+                                                backgroundColor:
+                                                    Theme.of(context)
+                                                        .primaryColor,
+                                                backgroundImage: NetworkImage(
+                                                  _listBot[index]
+                                                          .profilePhoto ??
+                                                      "",
+                                                ))
+                                            : const Icon(Iconsax.box_tick),
                                         dense: true,
                                         focusColor: Theme.of(context)
                                             .secondaryHeaderColor,
@@ -90,8 +89,7 @@ class _ListMyBotWidget extends State<ListMyBot> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                Text(
-                                                    _listBot[index].subdomain),
+                                                Text(_listBot[index].subdomain),
                                                 Column(
                                                   children: [
                                                     Row(

@@ -10,6 +10,8 @@ import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/first_time/first_time_user.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
+import 'package:fren_app/widgets/chat/typing_indicator.dart';
+import 'package:fren_app/widgets/loader.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -36,6 +38,8 @@ class _BotProfileCardState extends State<BotProfileCard> {
   final _botPrompt = TextEditingController(text: "");
   ChatController chatController = Get.find();
   BotController botController = Get.find();
+  final _chatroomApi = ChatroomMachiApi();
+  bool isLoading = false;
 
   bool disableTextEdit = true;
   late AppLocalizations _i18n;
@@ -101,9 +105,9 @@ class _BotProfileCardState extends State<BotProfileCard> {
                       ],
                     ))),
           ),
-          const SizedBox(
-            height: 50,
-          ),
+          isLoading == true
+              ? Frankloader(height: 50, width: 50)
+              : const SizedBox(height: 50),
           if (widget.room?.chatroomId == null) _showPricing(),
           if (widget.showPurchase == true)
             Padding(
@@ -114,11 +118,13 @@ class _BotProfileCardState extends State<BotProfileCard> {
                   OutlinedButton.icon(
                     icon: const Icon(Iconsax.box),
                     label: Text(_i18n.translate("bot_try")),
-                    onPressed: () {},
+                    onPressed: () async {
+                      _tryBot();
+                    },
                   ),
                   ElevatedButton.icon(
                     icon: const Icon(Iconsax.element_plus),
-                    label: const Text("Machi"),
+                    label: Text(_i18n.translate("add_machi")),
                     onPressed: () {},
                   ),
                 ],
@@ -134,7 +140,33 @@ class _BotProfileCardState extends State<BotProfileCard> {
       Expanded(
           child: Padding(
               padding: const EdgeInsets.all(10),
-              child: Text("Price: ${widget.bot.price ?? "Free"}"))),
+              child: Text(
+                "Price: ${widget.bot.price ?? "Free"}",
+                style: Theme.of(context).textTheme.labelMedium,
+              ))),
     ]);
   }
+
+  void _tryBot() async {
+    setState(() {
+      isLoading = true;
+    });
+    botController.bot = widget.bot;
+    await _chatroomApi.tryBot();
+
+    /// it is the last one in roomlist, since we just added immediately after api call
+    int index = chatController.roomlist.length;
+    Get.to(() => const BotChatScreen(), arguments: {
+      "room": chatController.roomlist[index - 1],
+      "index": index - 1,
+      "isTrial": true
+    });
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  /// Add machi. Check if machi is free or not
+  /// if free just call api.
+  void_addMachi() async {}
 }

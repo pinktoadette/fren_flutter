@@ -233,6 +233,7 @@
   "sign_in_with_apple": "Continue with Apple",
   "sign_in_with_github": "Continue with GitHub",
 
+  "add_machi": "Add Machi",
   "add_to_chat": "Add Friend",
   "added_to_chat": "Added",
   "leave_chatroom": "Leave chatroom",
@@ -264,7 +265,7 @@
   "bot_public":"Publish machi to public",
   "bot_test_warning": "You agree with abide to the Terms and Condition on publish.",
   "bot_test": "Test",
-  "bot_try": "Try for Free",
+  "bot_try": "Try to Free",
   "bot_prompt_models": "Prompt models",
   "bot_text_to_image": "Text-to-image",
   "bot_image_to_text": "Image-to-text",

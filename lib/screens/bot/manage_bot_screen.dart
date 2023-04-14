@@ -57,7 +57,7 @@ class _ManageBotState extends State<ManageBotScreen> {
 
     /// Check result
     if (_listBot.isEmpty) {
-      return const Frankloader();
+      return Frankloader();
     } else if (_listBot.isEmpty) {
       /// No match
       return NoData(text: _i18n.translate("no_match"));

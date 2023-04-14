@@ -120,4 +120,28 @@ class ChatroomMachiApi {
 
     return response.data;
   }
+
+  ///////// TRIALS /////////////////
+  Future<Map<String, dynamic>> tryBot() async {
+    final ChatController chatController = Get.find();
+    final BotController botController = Get.find();
+
+    String url = '${baseUri}trial/machi';
+    debugPrint("Requesting URL $url {botId: ${botController.bot.botId} }");
+    final dio = await auth.getDio();
+    final response =
+        await dio.post(url, data: {BOT_ID: botController.bot.botId});
+
+    if (response.statusCode == 200) {
+      final roomData = response.data;
+
+      // create a new room
+      Chatroom room = Chatroom.fromJson(roomData);
+      chatController.addSpecificBotToRoom(room);
+
+      return roomData;
+    }
+    debugPrint(response.toString());
+    return {};
+  }
 }

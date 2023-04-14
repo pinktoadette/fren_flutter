@@ -130,11 +130,6 @@ class _ListAllBotWidget extends State<ListAllBots> {
                                               ],
                                             ))),
                                     const Spacer(),
-                                    Divider(
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .tertiary,
-                                    ),
                                     Padding(
                                       padding: const EdgeInsets.only(
                                           right: 20, bottom: 10),

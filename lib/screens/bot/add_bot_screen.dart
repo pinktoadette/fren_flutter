@@ -69,7 +69,7 @@ class Step0CreateBot extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineSmall,
             textAlign: TextAlign.left),
       ),
-      const Frankloader(),
+      Frankloader(),
       Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
         child: Text(_i18n.translate('create_bot_des'),

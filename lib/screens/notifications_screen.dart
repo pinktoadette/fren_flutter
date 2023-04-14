@@ -63,7 +63,7 @@ class NotificationsScreen extends StatelessWidget {
           builder: (context, snapshot) {
             /// Check data
             if (!snapshot.hasData) {
-              return const Frankloader();
+              return Frankloader();
             } else {
               return ListView.separated(
                 shrinkWrap: true,

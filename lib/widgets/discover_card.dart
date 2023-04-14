@@ -41,7 +41,7 @@ class DiscoverCard extends StatelessWidget {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Frankloader(),
+                      Frankloader(),
                       Text(
                         title,
                         style: Theme.of(context).textTheme.headlineSmall,

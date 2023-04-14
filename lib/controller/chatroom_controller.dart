@@ -115,16 +115,24 @@ class ChatController extends GetxController implements GetxService {
   /// and enters the room, then that room gets added to roomlist
   void addEmptyRoomToList() {
     roomlist.add(emptyRoom);
+    roomlist.refresh();
   }
 
   void removeEmptyRoomfromList() {
     roomlist.remove(emptyRoom);
+    roomlist.refresh();
   }
 
-  /// use empty room and update the bot
-  void updateBotToEmptyRoomList(Bot bot) {
-    currentRoom = emptyRoom.copyWith(bot: bot);
-    roomlist.add(currentRoom);
+  /// get/create room with another bot
+  void addSpecificBotToRoom(Chatroom room) {
+    _currentRoom = room.obs;
+    roomlist.add(room);
+    roomlist.refresh();
+  }
+
+  void removeSepcificBotFromRoom(Chatroom room) {
+    roomlist.remove(room);
+    roomlist.refresh();
   }
 
   /// load the current bot

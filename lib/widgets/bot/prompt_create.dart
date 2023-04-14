@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
+import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
@@ -21,6 +22,7 @@ class CreateMachiWidget extends StatefulWidget {
 
 class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _botApi = BotApi();
+  final _chatroomApi = ChatroomMachiApi();
   BotController botController = Get.find();
   ChatController chatController = Get.find();
 
@@ -55,7 +57,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     double width = MediaQuery.of(context).size.width;
 
     if (_listBot == null) {
-      return const Frankloader();
+      return Frankloader();
     } else if (_listBot.isEmpty) {
       /// No match
       return NoData(text: _i18n.translate("no_match"));
@@ -215,11 +217,9 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
         modelType: modelType,
         about: about,
         prompt: prompt,
-        onSuccess: (bot) {
-          botController.bot = bot.obs;
-          chatController.addEmptyRoomToList();
-          chatController.onLoadCurrentRoom(chatController.emptyRoom);
-
+        onSuccess: (bot) async {
+          botController.bot = bot;
+          await _chatroomApi.tryBot();
           Get.to(() => const BotChatScreen(), arguments: {
             "room": chatController.emptyRoom,
             "index": chatController.roomlist.length - 1
