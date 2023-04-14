@@ -63,7 +63,7 @@ class ConversationsTab extends StatelessWidget {
                   reverse: true,
                   shrinkWrap: true,
                   separatorBuilder: (context, index) {
-                    if ((index + 1) % 2 == 0) {
+                    if ((index + 1) % 5 == 0) {
                       return Container(
                         height: 150,
                         color: Theme.of(context).colorScheme.background,

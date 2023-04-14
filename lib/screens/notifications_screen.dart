@@ -85,7 +85,7 @@ class NotificationsScreen extends StatelessWidget {
                         },
                         child: AvatarInitials(
                           radius: 20,
-                          userId: notification[USER_ID],
+                          userId: notification[NOTIF_RECEIVER_ID],
                           photoUrl: notification[NOTIF_SENDER_PHOTO_LINK],
                           username: notification[NOTIF_SENDER_USERNAME],
                         )),
