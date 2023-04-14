@@ -20,28 +20,26 @@ class BotApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<void> createBot({
-    required name,
-    domain,
-    subdomain,
-    prompt,
-    temperature,
-    price,
-    priceUnit,
-    model,
-    required modelType,
-    required about,
-    required ValueSetter onSuccess,
-    required Function(String) onError,
-  }) async {
+  Future<Bot> createBot(
+      {required name,
+      domain,
+      subdomain,
+      prompt,
+      temperature,
+      price,
+      priceUnit,
+      model,
+      required modelType,
+      required about}) async {
     String url = '${baseUri}bot/create_machi';
+    String uuid = const Uuid().v4().replaceAll("[\\s\\-()]", "");
 
     var data = {
-      BOT_ID: "Machi_$UniqueKey()", // external botId
+      BOT_ID: "Machi_${uuid.substring(0, 10)}", // external botId
       BOT_ABOUT: about,
       BOT_NAME: name,
       BOT_MODEL: model,
-      BOT_MODEL_TYPE: modelType,
+      BOT_MODEL_TYPE: modelType.toString().split(".")[1],
       BOT_DOMAIN: domain,
       BOT_SUBDOMAIN: subdomain,
       BOT_PROMPT: prompt,
@@ -55,15 +53,8 @@ class BotApi {
     };
 
     final dio = await auth.getDio();
-    dio.post(url, data: {...data}).then((response) async {
-      final created = response.data;
-      final Bot bot = created.toJson();
-      onSuccess(bot);
-    }).catchError((onError) {
-      debugPrint('createBot() -> error');
-      // Callback function
-      onError(onError);
-    });
+    final response = await dio.post(url, data: {...data});
+    return Bot.fromDocument(response.data);
   }
 
   Future<Bot> getBot({

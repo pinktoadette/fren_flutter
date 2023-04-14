@@ -23,6 +23,7 @@ class CreateMachiWidget extends StatefulWidget {
 class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _botApi = BotApi();
   final _chatroomApi = ChatroomMachiApi();
+  String errorMessage = '';
   BotController botController = Get.find();
   ChatController chatController = Get.find();
 
@@ -186,19 +187,24 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 ],
               ),
             ),
-            const SizedBox(height: 30),
+            errorMessage != ''
+                ? Text(
+                    errorMessage,
+                    style: Theme.of(context).textTheme.labelSmall,
+                    selectionColor: APP_ERROR,
+                  )
+                : const SizedBox(height: 30),
             Text(
               _i18n.translate("bot_test_warning"),
-              style: Theme.of(context).textTheme.labelSmall,
+              style: Theme.of(context).textTheme.labelMedium,
             ),
             const SizedBox(
-              height: 30,
+              height: 10,
             ),
             Center(
               child: ElevatedButton(
                   onPressed: () {
-                    _onHandleSubmitBot();
-                    // Navigator.of(context).pop();
+                    _onHandleSubmitBot(context);
                   },
                   child: Text(_i18n.translate("publish"))),
             ),
@@ -206,28 +212,29 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     }
   }
 
-  void _onHandleSubmitBot() async {
+  void _onHandleSubmitBot(BuildContext context) async {
+    setState(() {
+      errorMessage = '';
+    });
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;
     String about = _aboutController.text;
     String prompt = _promptController.text;
-
-    await _botApi.createBot(
-        name: name,
-        modelType: modelType,
-        about: about,
-        prompt: prompt,
-        onSuccess: (bot) async {
-          botController.bot = bot;
-          await _chatroomApi.tryBot();
-          Get.to(() => const BotChatScreen(), arguments: {
-            "room": chatController.emptyRoom,
-            "index": chatController.roomlist.length - 1
-          });
-        },
-        onError: (error) {
-          showScaffoldMessage(message: error.toString(), bgcolor: APP_ERROR);
-        });
+    try {
+      Bot bot = await _botApi.createBot(
+          name: name, modelType: modelType, about: about, prompt: prompt);
+      botController.bot = bot;
+      await _chatroomApi.tryBot();
+      Navigator.of(context).pop();
+      Get.to(() => const BotChatScreen(), arguments: {
+        "room": chatController.emptyRoom,
+        "index": chatController.roomlist.length - 1
+      });
+    } catch (error) {
+      setState(() {
+        errorMessage = error.toString();
+      });
+    }
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {
