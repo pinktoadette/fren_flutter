@@ -48,33 +48,28 @@ class _ActivityTabState extends State<ActivityTab> {
 
     if (_isInitiatedFrank == true) {
       return Scaffold(
-          body: Column(
-        children: [
-          Row(
+        appBar: AppBar(
+          title: Row(
             children: [
               SizedBox(
                 width: screenWidth * 0.75,
                 child: const SearchBarWidget(),
               ),
-              SizedBox(
-                width: screenWidth * 0.25,
-                child: const InviteCard(),
-              ),
+              // SizedBox(
+              //   width: screenWidth * 0.25,
+              //   child: const InviteCard(),
+              // ),
             ],
           ),
-          Container(
-            alignment: Alignment.center,
-            height: screenHeight - 200,
-            child: const SingleChildScrollView(
-                child: Column(
-              children: [
-                SubscriptionCard(),
-                ListAllBots(),
-              ],
-            )),
-          )
-        ],
-      ));
+        ),
+        body: const SingleChildScrollView(
+            child: Column(
+          children: [
+            SubscriptionCard(),
+            ListAllBots(),
+          ],
+        )),
+      );
     }
     return Scaffold(
         body: Column(children: [
