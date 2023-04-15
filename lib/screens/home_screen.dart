@@ -322,7 +322,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 .toList()
                 .length;
             if (total == 0) return icon;
-            return NotificationCounter(icon: icon, counter: total);
+            return NotificationCounter(
+              icon: icon,
+              counter: total,
+              iconPadding: 10,
+            );
           }
         });
   }

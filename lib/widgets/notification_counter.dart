@@ -5,9 +5,10 @@ class NotificationCounter extends StatelessWidget {
   // Variables
   final Widget icon;
   final int counter;
+  double? iconPadding;
 
-  const NotificationCounter(
-      {Key? key, required this.icon, required this.counter})
+  NotificationCounter(
+      {Key? key, required this.icon, required this.counter, this.iconPadding})
       : super(key: key);
 
   @override
@@ -22,7 +23,10 @@ class NotificationCounter extends StatelessWidget {
       child: Stack(
         alignment: Alignment.center,
         children: <Widget>[
-          icon,
+          Container(
+            margin: EdgeInsets.only(right: iconPadding ?? 0),
+            child: icon,
+          ),
           Positioned(
             right: 0,
             top: -5,
@@ -30,7 +34,7 @@ class NotificationCounter extends StatelessWidget {
               width: 20,
               height: 20,
               margin: const EdgeInsets.only(top: 5),
-              padding: const EdgeInsets.all(2),
+              padding: const EdgeInsets.all(5),
               decoration: const BoxDecoration(
                 color: APP_ACCENT_COLOR,
                 shape: BoxShape.circle,

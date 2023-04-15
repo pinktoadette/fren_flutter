@@ -2,6 +2,10 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/message_controller.dart';
+import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/models/app_model.dart';
@@ -356,7 +360,6 @@ class UserModel extends Model {
     required int userBirthDay,
     required int userBirthMonth,
     required int userBirthYear,
-    String? userIndustry,
     List<String>? userInterest,
     // Callback functions
     required VoidCallback onSuccess,
@@ -373,8 +376,8 @@ class UserModel extends Model {
       USER_PROFILE_FILLED: true,
       USER_ID: getFirebaseUser!.uid,
       USER_FULLNAME: userFullName,
+      USER_USERNAME: userFullName,
       USER_BIRTH_YEAR: userBirthYear,
-      USER_INDUSTRY: userIndustry,
       USER_INTERESTS: userInterest,
       USER_EMAIL: getFirebaseUser!.email ?? '',
       USER_LAST_LOGIN: time.millisecondsSinceEpoch,
@@ -396,10 +399,10 @@ class UserModel extends Model {
       USER_ID: getFirebaseUser!.uid,
       USER_PROFILE_FILLED: true,
       USER_FULLNAME: userFullName,
+      USER_USERNAME: userFullName,
       USER_BIRTH_DAY: userBirthDay,
       USER_BIRTH_MONTH: userBirthMonth,
       USER_BIRTH_YEAR: userBirthYear,
-      USER_INDUSTRY: userIndustry,
       USER_INTERESTS: userInterest,
       USER_STATUS: 'active',
       USER_EMAIL: getFirebaseUser!.email ?? '',
@@ -566,7 +569,7 @@ class UserModel extends Model {
     }
 
     /// Delete previous uploaded image if not nul
-    if (oldImageUrl != "" || oldImageUrl != null) {
+    if (oldImageUrl != "") {
       await FirebaseStorage.instance.refFromURL(oldImageUrl!).delete();
     }
 
@@ -644,16 +647,22 @@ class UserModel extends Model {
   // Sign out
   Future<void> signOut() async {
     try {
-      await _firebaseAuth.signOut();
-
       final isGoogleSignedIn = await _googleSignIn.isSignedIn();
       if (isGoogleSignedIn == true) {
         await _googleSignIn.signOut();
       }
 
-      Get.deleteAll();
+      await _firebaseAuth.signOut();
+
       notifyListeners();
       debugPrint("signOut() -> success");
+      Get.deleteAll();
+
+      /// Need to reassign
+      Get.lazyPut(() => BotController());
+      Get.lazyPut(() => UserController());
+      Get.lazyPut(() => MessageController());
+      Get.lazyPut(() => ChatController());
     } catch (e) {
       debugPrint(e.toString());
     }

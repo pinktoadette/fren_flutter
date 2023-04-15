@@ -37,7 +37,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   bool _agreeTerms = true;
   String? _selectedIndustry;
   List<String> _selectedInterest = ['Animals and Pets'];
-  late List<String> _industryList = [];
   late List<String> _interestList = [];
   late AppLocalizations _i18n;
 
@@ -48,14 +47,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   }
 
   Future<void> getJson() async {
-    String _indu = await rootBundle.loadString('assets/json/industry.json');
-    List<String> industryList = List.from(jsonDecode(_indu) as List<dynamic>);
-
     String _inter = await rootBundle.loadString('assets/json/interest.json');
     List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
 
     setState(() {
-      _industryList = industryList;
       _interestList = interestList;
     });
   }
@@ -162,7 +157,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         controller: _nameController,
                         decoration: InputDecoration(
                             labelText: _i18n.translate("fullname"),
-                            hintText: _i18n.translate("enter_your_fullname"),
+                            hintText: _i18n.translate("name_hint"),
+                            hintStyle: const TextStyle(color: Colors.grey),
                             floatingLabelBehavior: FloatingLabelBehavior.always,
                             prefixIcon: const Padding(
                               padding: EdgeInsets.all(12.0),
@@ -171,8 +167,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         validator: (name) {
                           // Basic validation
                           if (name?.isEmpty ?? false) {
-                            return _i18n
-                                .translate("please_enter_your_fullname");
+                            return _i18n.translate("enter_your_fullname");
                           }
                           return null;
                         },
@@ -183,12 +178,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Card(
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(28),
+                              borderRadius: BorderRadius.circular(10),
                               side: const BorderSide(color: Colors.grey)),
                           child: ListTile(
                             leading: const Icon(Iconsax.cake),
                             title: Text(_birthday!,
-                                style: const TextStyle(color: Colors.black)),
+                                style: Theme.of(context).textTheme.labelMedium),
                             trailing: const Icon(Icons.arrow_drop_down),
                             onTap: () {
                               FocusScope.of(context).unfocus();
@@ -199,60 +194,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           )),
                       const SizedBox(height: 20),
 
-                      /// User industry
-                      DropdownButtonFormField<String>(
-                        decoration: const InputDecoration(
-                          prefixIcon: Icon(Iconsax.briefcase1),
-                        ),
-                        items: _industryList.map((industry) {
-                          return DropdownMenuItem(
-                            value: industry,
-                            child: Text(industry),
-                          );
-                        }).toList(),
-                        hint: Text(_i18n.translate("select_industry")),
-                        onChanged: (industry) {
-                          setState(() {
-                            _selectedIndustry = industry;
-                          });
-                        },
-                        validator: (String? value) {
-                          if (value == null) {
-                            return _i18n.translate("select_industry");
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-
                       /// User interest
                       const Text("What are your interest? Select 3.",
                           style: TextStyle(color: Colors.grey)),
 
                       if (_interestList.isNotEmpty)
                         SizedBox(
-                            height: 200,
                             child: SingleChildScrollView(
-                              child: ChipsChoice<String>.multiple(
-                                value: _selectedInterest,
-                                onChanged: (val) => {
-                                  setState(() {
-                                    _selectedInterest = val;
-                                  })
-                                },
-                                choiceItems: C2Choice.listFrom<String, String>(
-                                  source: _interestList,
-                                  value: (i, v) => v,
-                                  label: (i, v) => v,
-                                  tooltip: (i, v) => v,
-                                ),
-                                choiceCheckmark: true,
-                                choiceStyle: C2ChipStyle.outlined(),
-                                wrapped: true,
-                              ),
-                            )),
+                          child: ChipsChoice<String>.multiple(
+                            value: _selectedInterest,
+                            onChanged: (val) => {
+                              setState(() {
+                                _selectedInterest = val;
+                              })
+                            },
+                            choiceItems: C2Choice.listFrom<String, String>(
+                              source: _interestList,
+                              value: (i, v) => v,
+                              label: (i, v) => v,
+                              tooltip: (i, v) => v,
+                            ),
+                            choiceCheckmark: true,
+                            choiceStyle: C2ChipStyle.outlined(),
+                            wrapped: true,
+                          ),
+                        )),
 
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 20),
                       if (userModel.isLoading)
                         const CircularProgressIndicator(),
                       SizedBox(
@@ -315,7 +283,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       UserModel().signUp(
         isProfileFilled: true,
         userFullName: _nameController.text.trim(),
-        userIndustry: _selectedIndustry!,
         userInterest: _selectedInterest,
         userBirthDay: _userBirthDay,
         userBirthMonth: _userBirthMonth,

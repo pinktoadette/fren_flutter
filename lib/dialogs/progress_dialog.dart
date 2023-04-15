@@ -20,6 +20,7 @@ class ProgressDialog {
         builder: (BuildContext context) {
           return SimpleDialog(
             elevation: 8.0,
+            shadowColor: Colors.transparent,
             backgroundColor: Colors.transparent,
             children: <Widget>[
               Center(

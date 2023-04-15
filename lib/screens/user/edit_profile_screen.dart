@@ -73,6 +73,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextButton(
             child: Text(_i18n.translate("SAVE")),
             onPressed: () {
+              FocusScope.of(context).requestFocus(FocusNode());
+
               /// Validate form
               if (_formKey.currentState!.validate()) {
                 _saveChanges();
@@ -106,9 +108,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           child: CircleAvatar(
                             radius: 12,
                             backgroundColor: Theme.of(context).primaryColor,
-                            child: const Icon(
+                            child: Icon(
                               Icons.edit,
-                              color: Colors.white,
+                              color: Theme.of(context).colorScheme.background,
                               size: 12,
                             ),
                           ),
@@ -126,66 +128,13 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   },
                 ),
 
-                const SizedBox(height: 20),
-
-                /// industry field
-                DropdownButtonFormField<String>(
-                  decoration: const InputDecoration(
-                    prefixIcon: Icon(Iconsax.briefcase1),
-                  ),
-                  items: _industryList.map((industry) {
-                    return DropdownMenuItem(
-                      value: industry,
-                      child: Text(industry),
-                    );
-                  }).toList(),
-                  hint: Text(_i18n.translate("select_industry")),
-                  onChanged: (industry) {
-                    setState(() {
-                      _selectedIndustry = industry!;
-                    });
-                  },
-                  value: _selectedIndustry,
-                  validator: (String? value) {
-                    if (value == null) {
-                      return _i18n.translate("select_industry");
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 20),
-
-                /// interest
-                if (_interestList.isNotEmpty)
-                  SizedBox(
-                      height: 200,
-                      child: SingleChildScrollView(
-                        child: ChipsChoice<String>.multiple(
-                          value: _selectedInterest,
-                          onChanged: (val) => {
-                            setState(() {
-                              _selectedInterest = val;
-                            })
-                          },
-                          choiceItems: C2Choice.listFrom<String, String>(
-                            source: _interestList,
-                            value: (i, v) => v,
-                            label: (i, v) => v,
-                            tooltip: (i, v) => v,
-                          ),
-                          choiceCheckmark: true,
-                          choiceStyle: C2ChipStyle.outlined(),
-                          wrapped: true,
-                        ),
-                      )),
-
                 /// Bio field
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
                     textCapitalization: TextCapitalization.sentences,
                     controller: _bioController,
-                    maxLines: 4,
+                    maxLines: 10,
                     decoration: InputDecoration(
                       labelText: _i18n.translate("bio"),
                       hintText: _i18n.translate("write_about_you"),
@@ -199,6 +148,29 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                   ),
                 ),
+
+                /// interest
+                if (_interestList.isNotEmpty)
+                  SizedBox(
+                      child: SingleChildScrollView(
+                    child: ChipsChoice<String>.multiple(
+                      value: _selectedInterest,
+                      onChanged: (val) => {
+                        setState(() {
+                          _selectedInterest = val;
+                        })
+                      },
+                      choiceItems: C2Choice.listFrom<String, String>(
+                        source: _interestList,
+                        value: (i, v) => v,
+                        label: (i, v) => v,
+                        tooltip: (i, v) => v,
+                      ),
+                      choiceCheckmark: true,
+                      choiceStyle: C2ChipStyle.outlined(),
+                      wrapped: true,
+                    ),
+                  )),
               ],
             );
           }),
@@ -231,13 +203,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   /// Update profile changes for TextFormField only
   void _saveChanges() {
-    if (_selectedInterest.length < 3) {
-      showScaffoldMessage(
-          context: context,
-          message: _i18n.translate("select_three_interest"),
-          bgcolor: Colors.pinkAccent);
-    }
-
     /// Update uer profile
     UserModel().updateProfile(
         userIndustry: _selectedIndustry,

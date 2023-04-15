@@ -114,16 +114,6 @@ class ConversationsTab extends StatelessWidget {
                         child: Column(
                           children: [
                             Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    room.bot.domain,
-                                    style:
-                                        Theme.of(context).textTheme.titleMedium,
-                                  )
-                                ]),
-                            Row(
                               children: [
                                 Text(allUsers,
                                     style: Theme.of(context)

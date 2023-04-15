@@ -166,6 +166,7 @@ class ChatController extends GetxController implements GetxService {
 
   // update messages from the chatroom, to view once when on convo tab
   void updateRoom(int index, Chatroom room) {
+    botController.bot = room.bot;
     roomlist[index] = room;
     if (room.read == true) {
       int unread = unreadCounter.value - 1;
