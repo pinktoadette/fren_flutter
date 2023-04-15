@@ -10,6 +10,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fren_app/widgets/chat/typing_indicator.dart';
+import 'package:fren_app/widgets/loader.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'first_time/on_boarding_screen.dart';
@@ -55,13 +56,14 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: screenHeight * 0.2),
+              SizedBox(height: screenHeight * 0.15),
+              Frankloader(),
               Image.asset("assets/images/machi.png"),
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18, color: Colors.black)),
               const SizedBox(
-                height: 40,
+                height: 20,
               ),
               const Spacer(),
               Expanded(
@@ -79,7 +81,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         if (isLoading == true)
                           SizedBox(
                             width: 50,
-                            child: JumpingDots(),
+                            child: JumpingDots(
+                              color: Colors.black,
+                            ),
                           ),
                         SignInButton(Buttons.Google,
                             shape: RoundedRectangleBorder(

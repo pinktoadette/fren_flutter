@@ -324,11 +324,14 @@ class UserModel extends Model {
   Future<void> signInWithGoogle(
       {required Function() checkUserAccount,
       required VoidCallback onError}) async {
-    final GoogleSignInAccount? googleSignInAccount =
-        await _googleSignIn.signIn();
+    try {
+      final GoogleSignInAccount? googleSignInAccount =
+          await _googleSignIn.signIn();
+      if (googleSignInAccount == null) {
+        return;
+      }
 
-    /// if not null continue, otherwise do nothing
-    if (googleSignInAccount != null) {
+      /// if not null continue, otherwise do nothing
       final GoogleSignInAuthentication googleSignInAuthentication =
           await googleSignInAccount.authentication;
 
@@ -348,6 +351,8 @@ class UserModel extends Model {
         // Callback function
         onError();
       });
+    } catch (e) {
+      return;
     }
   }
 

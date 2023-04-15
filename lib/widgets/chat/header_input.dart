@@ -30,16 +30,16 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [_showHeader()]);
+    return Stack(children: [_showHeader(context)]);
   }
 
-  Widget _showHeader() {
+  Widget _showHeader(BuildContext context) {
     if (widget.isBotTyping == true) {
       return Align(
           alignment: Alignment.bottomLeft,
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
-            child: JumpingDots(),
+            child: JumpingDots(color: Theme.of(context).colorScheme.primary),
           ));
     } else if (widget.attachmentPreview?.uri != null) {
       return Stack(
