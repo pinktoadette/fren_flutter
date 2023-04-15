@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:flutter/material.dart';
+import 'package:fren_app/constants/constants.dart';
 
 class DotWidget extends StatelessWidget {
   final Color? color;
@@ -48,7 +49,7 @@ class JumpingDots extends StatefulWidget {
     this.radius = 8,
     this.innerPadding = 2,
     this.animationDuration = const Duration(milliseconds: 200),
-    this.color = const Color(0xfff2c300),
+    this.color = APP_ACCENT_COLOR,
     this.verticalOffset = -5,
   })  : assert(verticalOffset.isFinite,
             "Non-finite values cannot be set as an animation offset."),

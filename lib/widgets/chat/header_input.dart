@@ -39,10 +39,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
           alignment: Alignment.bottomLeft,
           child: Padding(
             padding: const EdgeInsets.only(left: 20),
-            child: JumpingDots(
-              numberOfDots: 3,
-              color: APP_ACCENT_COLOR,
-            ),
+            child: JumpingDots(),
           ));
     } else if (widget.attachmentPreview?.uri != null) {
       return Stack(

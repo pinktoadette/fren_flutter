@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:fren_app/widgets/chat/typing_indicator.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'first_time/on_boarding_screen.dart';
@@ -58,7 +60,9 @@ class _SignInScreenState extends State<SignInScreen> {
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: const TextStyle(fontSize: 18, color: Colors.black)),
-              if (isLoading == true) const CircularProgressIndicator(),
+              const SizedBox(
+                height: 40,
+              ),
               const Spacer(),
               Expanded(
                 child: Align(
@@ -70,11 +74,20 @@ class _SignInScreenState extends State<SignInScreen> {
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        if (isLoading == true)
+                          SizedBox(
+                            width: 50,
+                            child: JumpingDots(),
+                          ),
                         SignInButton(Buttons.Google,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
                             ), onPressed: () {
+                          setState(() {
+                            isLoading = true;
+                          });
                           UserModel().signInWithGoogle(checkUserAccount: () {
                             /// Authenticate User Account
                             UserModel().authUserAccount(
@@ -91,11 +104,16 @@ class _SignInScreenState extends State<SignInScreen> {
                                 blockedScreen: () =>
                                     _nextScreen(const BlockedAccountScreen()));
                           }, onError: () async {
+                            setState(() {
+                              isLoading = false;
+                            });
                             // Show error message to user
                             errorDialog(context,
                                 message:
                                     _i18n.translate("an_error_has_occurred"));
-                          }).whenComplete(() => isLoading = false);
+                          }).whenComplete(() => setState(() {
+                                isLoading = false;
+                              }));
                         }),
                         SignInButton(
                           Buttons.Apple,
