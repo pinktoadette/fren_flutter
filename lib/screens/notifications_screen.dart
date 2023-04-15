@@ -100,10 +100,8 @@ class NotificationsScreen extends StatelessWidget {
                               ? Theme.of(context).textTheme.titleMedium
                               : Theme.of(context).textTheme.bodyMedium),
                       !notification[NOTIF_READ]
-                          ? const Icon(
-                              Iconsax.stop_circle,
-                              size: 12,
-                            )
+                          ? const Icon(Iconsax.info_circle1,
+                              size: 14, color: APP_ACCENT_COLOR)
                           : const SizedBox(
                               width: 15,
                               height: 15,
