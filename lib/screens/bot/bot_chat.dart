@@ -3,14 +3,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
-import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/storyboard/storyboard_home.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/bot/bot_timer.dart';
+import 'package:fren_app/widgets/chat/double_tap_message.dart';
 import 'package:fren_app/widgets/chat/header_input.dart';
 import 'package:fren_app/widgets/friend_list.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
@@ -242,15 +241,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
             showUserAvatars: true,
             isAttachmentUploading: _isAttachmentUploading,
             messages: _messages,
-            onMessageLongPress: _handleMessageLongPress,
+            onMessageDoubleTap: _handleMessageDoubleTap,
             onSendPressed: _handleSendPressed,
             onAvatarTap: (messageUser) async {
               if (!messageUser.id.contains("Machi_")) {
-                User user = await UserModel().getUserObject(messageUser.id);
+                final user = await UserModel().getUserObject(messageUser.id);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => ProfileScreen(user: user)));
               }
             },
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
@@ -259,14 +259,24 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-  void _handleMessageLongPress(BuildContext _, types.Message message) {
+  void _handleMessageDoubleTap(BuildContext _, types.Message message) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      builder: (context) {
-        return const FractionallySizedBox(
-            heightFactor: 0.9, child: Storyboard());
-      },
+      enableDrag: true,
+      builder: (context) => FractionallySizedBox(
+          heightFactor: 0.9,
+          child: DraggableScrollableSheet(
+            snap: true,
+            initialChildSize: 1,
+            minChildSize: 0.75,
+            builder: (context, scrollController) => SingleChildScrollView(
+              controller: scrollController,
+              child: DoubleTapChatMessage(
+                message: message,
+              ),
+            ),
+          )),
     );
   }
 

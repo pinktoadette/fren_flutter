@@ -212,6 +212,9 @@ const String UPDATED_AT = "updatedAt";
 const String CREATED_AT = "createdAt";
 const String LIMIT = "limit";
 
+/// story
+const String STORY_TITLE = "title";
+
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
 const String ROOM_ID = "chatroomId";

@@ -118,6 +118,7 @@
   "please_contact_support_to_active_it": "Please contact support to active it.",
 
   "_CommonWords": "*** Common Words Translations ***",
+  "add": "Add",
   "hello": "Hello",
   "processing": "Processing...",
   "loading": "Loading...",
@@ -297,6 +298,9 @@
   "friend_send_request": "Send Request",
   "friend_none": "No friends",
 
+  "story_share_message": "Create Story to Share",
   "story": "Story",
-  "storyboard": "Storyboard"
+  "storyboard": "Storyboard",
+  "story_title": "Story Title",
+  "story_enter_title": "Enter a story title"
 }

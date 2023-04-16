@@ -81,7 +81,11 @@ class Chatroom {
         types.Message finalMessage;
         final author = types.User(
             id: message[CHAT_AUTHOR_ID] as String,
-            firstName: message[CHAT_USER_NAME] ?? "Frankie");
+            firstName: message[CHAT_USER_NAME] ?? "Frankie",
+            imageUrl: message[USER_PROFILE_PHOTO],
+            metadata: message[CHAT_AUTHOR_ID].contains("Machi_")
+                ? {"showMeta": true}
+                : null);
         message[CHAT_AUTHOR] = author.toJson();
         message[FLUTTER_UI_ID] = message[CHAT_MESSAGE_ID];
         message[CREATED_AT] = message[CREATED_AT]?.toInt();

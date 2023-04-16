@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 
-/// Gets recent new bots
-/// Gets most installed bots
-/// Save a copy of bots in local, find newest
 class Storyboard extends StatefulWidget {
   const Storyboard({Key? key}) : super(key: key);
 
