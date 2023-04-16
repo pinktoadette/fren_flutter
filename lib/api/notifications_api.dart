@@ -55,7 +55,7 @@ class NotificationsApi {
     return _firestore
         .collection(C_NOTIFICATIONS)
         .where(NOTIF_RECEIVER_ID, isEqualTo: UserModel().user.userId)
-        // .orderBy(CREATED_AT, descending: true)
+        .orderBy(CREATED_AT, descending: true)
         .snapshots();
   }
 
