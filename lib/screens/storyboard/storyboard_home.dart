@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/widgets/storyboard/list_my_story.dart';
 
 class Storyboard extends StatefulWidget {
   const Storyboard({Key? key}) : super(key: key);
@@ -21,16 +22,18 @@ class _StoryboardState extends State<Storyboard> {
     _i18n = AppLocalizations.of(context);
 
     return Scaffold(
-        body: Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  _i18n.translate("story"),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
-            )));
+        body: SingleChildScrollView(
+            child: Padding(
+                padding: const EdgeInsets.only(left: 20, right: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      _i18n.translate("story"),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    const MyStories()
+                  ],
+                ))));
   }
 }

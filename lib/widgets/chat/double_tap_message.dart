@@ -26,17 +26,17 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
+    double height = MediaQuery.of(context).size.height;
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             Text(
-              _i18n.translate("message_share"),
+              _i18n.translate("story_share_message"),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            const Text("Add to storyboard"),
+            Text(_i18n.translate("add_to_new_storyboard")),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -49,7 +49,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                       ),
                       hintText: _i18n.translate("story_title"),
                       hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary),
+                          color: Theme.of(context).colorScheme.tertiary),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                       suffixIcon: OutlinedButton.icon(
                           style: OutlinedButton.styleFrom(
@@ -70,7 +70,22 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                 )),
               ],
             ),
-            const MyStories()
+            const SizedBox(
+              height: 15,
+            ),
+            const Row(children: [
+              Expanded(child: Divider(thickness: 1.5)),
+              Text("OR", style: TextStyle(fontSize: 16, color: Colors.grey)),
+              Expanded(child: Divider(thickness: 1.5)),
+            ]),
+            const SizedBox(
+              height: 15,
+            ),
+            Text(_i18n.translate("add_to_exist_storyboard")),
+            SizedBox(
+              height: height - 200,
+              child: const MyStories(),
+            )
           ],
         ));
   }

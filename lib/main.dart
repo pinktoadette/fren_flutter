@@ -230,12 +230,14 @@ class MyApp extends StatelessWidget {
     final ThemeData darkTheme = ThemeData.dark();
     const APP_PRIMARY_DARK_COLOR = Colors.white;
     const APP_PRIMARY_DARK_BACKGROUND = Colors.black;
+    const APP_TERTIARY = Color.fromARGB(255, 49, 49, 49);
 
     return darkTheme.copyWith(
       primaryColor: APP_PRIMARY_DARK_COLOR,
       colorScheme: const ColorScheme.dark().copyWith(
           primary: APP_PRIMARY_DARK_COLOR,
           secondary: APP_ACCENT_COLOR,
+          tertiary: APP_TERTIARY,
           background: APP_PRIMARY_DARK_BACKGROUND),
       scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
       tabBarTheme: TabBarTheme(
@@ -246,7 +248,7 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.normal,
             color: APP_PRIMARY_DARK_COLOR),
         unselectedLabelStyle: GoogleFonts.poppins(
-            fontSize: 12, fontWeight: FontWeight.normal, color: Colors.white24),
+            fontSize: 12, fontWeight: FontWeight.normal, color: APP_TERTIARY),
       ),
       inputDecorationTheme: InputDecorationTheme(
           isDense: true,
@@ -257,9 +259,7 @@ class MyApp extends StatelessWidget {
           floatingLabelStyle:
               GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
           hintStyle: GoogleFonts.poppins(
-              fontSize: 16,
-              fontWeight: FontWeight.normal,
-              color: Colors.white30),
+              fontSize: 16, fontWeight: FontWeight.normal, color: APP_TERTIARY),
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
@@ -294,7 +294,7 @@ class MyApp extends StatelessWidget {
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         modalBackgroundColor: Color.fromRGBO(31, 31, 31, 0.95),
-        backgroundColor: Colors.black87,
+        backgroundColor: APP_TERTIARY,
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(

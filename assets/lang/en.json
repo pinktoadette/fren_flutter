@@ -298,9 +298,12 @@
   "friend_send_request": "Send Request",
   "friend_none": "No friends",
 
-  "story_share_message": "Create Story to Share",
+  "story_share_message": "Create & Share Story",
   "story": "Story",
   "storyboard": "Storyboard",
   "story_title": "Story Title",
-  "story_enter_title": "Enter a story title"
+  "story_enter_title": "Enter a story title",
+  "add_to_new_storyboard": "Add to a new storyboard",
+  "add_to_exist_storyboard": "Add to existing storyboard"
+
 }

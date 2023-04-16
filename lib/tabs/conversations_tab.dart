@@ -60,6 +60,7 @@ class ConversationsTab extends StatelessWidget {
                   ),
                 )
               : Obx(() => ListView.separated(
+                  cacheExtent: 1000,
                   reverse: true,
                   shrinkWrap: true,
                   separatorBuilder: (context, index) {
