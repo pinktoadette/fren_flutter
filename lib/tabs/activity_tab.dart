@@ -5,7 +5,6 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/bot/list_all_bots.dart';
 import 'package:fren_app/widgets/discover_card.dart';
-import 'package:fren_app/widgets/invite_card.dart';
 import 'package:fren_app/widgets/search_user.dart';
 import 'package:fren_app/widgets/subscribe/subscribe_card.dart';
 

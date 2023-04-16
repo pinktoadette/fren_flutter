@@ -20,20 +20,23 @@ class _StoryboardState extends State<Storyboard> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
+        appBar: AppBar(
+          title: Text(
+            _i18n.translate("storyboard"),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+        ),
         body: SingleChildScrollView(
-            child: Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    Text(
-                      _i18n.translate("story"),
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    const MyStories()
-                  ],
-                ))));
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: height - 300,
+                child: const MyStories(),
+              )
+            ],
+          ),
+        ));
   }
 }
