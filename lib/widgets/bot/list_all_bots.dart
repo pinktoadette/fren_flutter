@@ -22,13 +22,14 @@ class _ListAllBotWidget extends State<ListAllBots> {
 
   Future<void> _fetchAllBots() async {
     List<Bot> result = await _botApi.getAllBots(5, 0);
+    if (!mounted) return;
     setState(() => _listBot = result);
   }
 
   @override
   void initState() {
-    super.initState();
     _fetchAllBots();
+    super.initState();
   }
 
   @override

@@ -67,8 +67,9 @@ class Chatroom {
     /// convert users to types.Users
     List<types.User> users = [];
     doc['users'].forEach((user) {
-      user['id'] = user['userId'];
-      user['firstName'] = user['username'];
+      user['id'] = user[USER_ID];
+      user['firstName'] = user[USER_USERNAME];
+      user['imageUrl'] = user[USER_PROFILE_PHOTO];
       users.add(types.User.fromJson(user));
     });
 

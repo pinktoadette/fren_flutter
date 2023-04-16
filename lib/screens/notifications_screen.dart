@@ -97,8 +97,8 @@ class NotificationsScreen extends StatelessWidget {
                       const Spacer(),
                       Text(formatDate(notification[CREATED_AT]),
                           style: !notification[NOTIF_READ]
-                              ? Theme.of(context).textTheme.titleMedium
-                              : Theme.of(context).textTheme.bodyMedium),
+                              ? Theme.of(context).textTheme.bodyMedium
+                              : Theme.of(context).textTheme.labelSmall),
                       !notification[NOTIF_READ]
                           ? const Icon(Iconsax.info_circle1,
                               size: 14, color: APP_ACCENT_COLOR)
@@ -109,8 +109,8 @@ class NotificationsScreen extends StatelessWidget {
                     ]),
                     subtitle: Text(notification[NOTIF_MESSAGE],
                         style: !notification[NOTIF_READ]
-                            ? Theme.of(context).textTheme.titleMedium
-                            : Theme.of(context).textTheme.bodyMedium),
+                            ? Theme.of(context).textTheme.bodyMedium
+                            : Theme.of(context).textTheme.labelSmall),
                     onTap: () async {
                       /// Set notification read = true
                       await notification.reference.update({NOTIF_READ: true});

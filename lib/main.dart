@@ -200,7 +200,10 @@ class MyApp extends StatelessWidget {
         labelMedium:
             GoogleFonts.poppins(fontSize: 14, wordSpacing: 0, letterSpacing: 0),
         labelSmall: GoogleFonts.poppins(
-            fontSize: 12, wordSpacing: 0, letterSpacing: 0, color: Colors.grey),
+            fontSize: 12,
+            wordSpacing: 0,
+            letterSpacing: 1.0,
+            color: Colors.grey),
       ).apply(
         bodyColor: APP_PRIMARY_COLOR,
         displayColor: APP_PRIMARY_COLOR,
