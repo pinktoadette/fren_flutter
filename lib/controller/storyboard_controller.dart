@@ -30,5 +30,6 @@ class StoryboardController extends GetxController {
     final storyApi = StoryApi();
     final List<Storyboard> stories = await storyApi.getMyStories();
     _stories = stories.obs;
+    _stories.refresh();
   }
 }

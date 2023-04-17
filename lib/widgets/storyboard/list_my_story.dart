@@ -4,6 +4,7 @@ import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -36,23 +37,24 @@ class _MyStoriesState extends State<MyStories> {
           itemCount: storyboardController.stories.length,
           itemBuilder: (BuildContext ctx, index) {
             Storyboard story = storyboardController.stories[index];
-            return Container(
-              padding: const EdgeInsets.all(20),
-              alignment: Alignment.topLeft,
-              decoration: BoxDecoration(
-                  border: Border.all(
-                      color: Colors.black,
-                      strokeAlign: BorderSide.strokeAlignCenter),
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15)),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(story.title,
-                        style:
-                            const TextStyle(fontSize: 14, color: Colors.black)),
-                    _showMessage(story.messages),
-                  ]),
+            return Card(
+              child: Container(
+                padding: const EdgeInsets.all(20),
+                alignment: Alignment.topLeft,
+                child: InkWell(
+                  onTap: () {
+                    Get.to(EditStory(story: story));
+                  },
+                  child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(story.title,
+                            style: const TextStyle(
+                                fontSize: 14, color: Colors.black)),
+                        _showMessage(story.messages),
+                      ]),
+                ),
+              ),
             );
           }),
     );

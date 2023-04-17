@@ -23,7 +23,7 @@ class ChatController extends GetxController implements GetxService {
 
   // ignore: prefer_final_fields
   RxList<Chatroom> roomlist = <Chatroom>[].obs;
-  RxInt unreadCounter = 0.obs;
+  late RxInt unreadCounter;
   late Rx<Chatroom> _currentRoom;
   late Rx<Chatroom> _emptyRoom;
 
@@ -60,6 +60,7 @@ class ChatController extends GetxController implements GetxService {
   void onInit() async {
     initUser();
     initCurrentRoom();
+    unreadCounter = 0.obs;
     super.onInit();
   }
 
