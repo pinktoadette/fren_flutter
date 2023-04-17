@@ -80,9 +80,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _channel.stream
         .listen(
       (_) {},
-      onError: (error) => showScaffoldMessage(
-          message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: APP_ERROR),
+      onError: (error) => Get.snackbar(
+          'Error', _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR),
     )
         .onData((data) {
       _onSocketParse(data);
@@ -404,9 +404,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       await _messagesApi.saveUserResponse(messageMap);
       _getMachiResponse();
     } catch (err) {
-      showScaffoldMessage(
-          message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: APP_ERROR);
+      Get.snackbar(
+        'Error',
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     }
   }
 
@@ -456,9 +459,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
         _messages.addAll(oldMessages);
       });
     } catch (err) {
-      showScaffoldMessage(
-          message: _i18n.translate("an_error_has_occurred"),
-          bgcolor: APP_ERROR);
+      Get.snackbar(
+        'Error',
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     }
   }
 

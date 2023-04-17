@@ -302,6 +302,8 @@
   "story": "Story",
   "storyboard": "Storyboard",
   "story_title": "Story Title",
+  "story_added": "Added",
+  "story_added_info": "Message is added to storyboard",
   "story_add_double_tap": "Double Tap Message to Share",
   "story_enter_title": "Enter a story title",
   "add_to_new_storyboard": "Add to a new storyboard",

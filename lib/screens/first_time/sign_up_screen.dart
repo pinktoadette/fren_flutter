@@ -9,6 +9,7 @@ import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -254,26 +255,31 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// Handle Create account
   void _createAccount() async {
     if (_selectedInterest.length < 3) {
-      showScaffoldMessage(
-          context: context,
-          message: _i18n.translate("select_three_interest"),
-          bgcolor: Colors.pinkAccent);
+      Get.snackbar(
+        'Select 3 Items',
+        _i18n.translate("select_three_interest"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     } else if (!_agreeTerms) {
       // Show error message
-      showScaffoldMessage(
-          context: context,
-          message: _i18n.translate("you_must_agree_to_our_privacy_policy"),
-          bgcolor: Colors.pinkAccent);
+      Get.snackbar(
+        'Terms and Condition',
+        _i18n.translate("you_must_agree_to_our_privacy_policy"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
 
       /// Validate form
     } else if (UserModel().calculateUserAge(_initialDateTime) < 18) {
       // Show error message
-      showScaffoldMessage(
-          context: context,
-          duration: const Duration(seconds: 7),
-          message: _i18n.translate(
-              "only_18_years_old_and_above_are_allowed_to_create_an_account"),
-          bgcolor: Colors.pinkAccent);
+      Get.snackbar(
+        'Must be 18+',
+        _i18n.translate(
+            "only_18_years_old_and_above_are_allowed_to_create_an_account"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     } else if (!_formKey.currentState!.validate()) {
     } else {
       /// Call all input onSaved method

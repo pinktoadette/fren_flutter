@@ -79,6 +79,7 @@ class _EditStoryState extends State<EditStory> {
                     itemBuilder: (BuildContext ctx, index) {
                       final message = widget.story.messages[index];
                       return ListTile(
+                        isThreeLine: true,
                         leading: Text("${index + 1}"),
                         title: Text(message.author.firstName!),
                         subtitle: _showMessage(message),
@@ -98,26 +99,25 @@ class _EditStoryState extends State<EditStory> {
 
   Widget _showMessage(dynamic message) {
     final firstMessage = message;
-
+    Widget icons = const Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [Icon(Iconsax.copy), SizedBox(width: 10), Icon(Iconsax.edit)],
+    );
     switch (firstMessage.type) {
       case (types.MessageType.text):
-        return Flexible(
-            child: Text(
-          firstMessage.text,
-          style: const TextStyle(fontSize: 12, color: Colors.black),
-        ));
+        return Column(children: [Text(firstMessage.text), icons]);
       case (types.MessageType.image):
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: 110,
               child: Image.network(
                 firstMessage.uri,
                 width: double.infinity,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
-            )
+            ),
+            icons
           ],
         );
       default:

@@ -32,13 +32,14 @@ class StoryApi {
   }
 
   Future<Storyboard> addStory(
-      int messageIndex, String chatId, String storyboardId) async {
+      int messageIndex, String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}storyboard/add';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.post(url);
+      final response = await dio.post(url,
+          data: {STORY_MESSAGE_ID: messageId, STORY_ID: storyboardId});
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(messageIndex, story);

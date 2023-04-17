@@ -1,9 +1,11 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/story_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -76,6 +78,13 @@ class _MyStoriesState extends State<MyStories> {
                                               fontSize: 14,
                                               color: Colors.black)),
                                       _showMessage(context, story.messages),
+                                      const Spacer(),
+                                      Text(
+                                        "Items: ${story.messages.length}",
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall,
+                                      )
                                     ]),
                               )));
                         }),
@@ -83,7 +92,23 @@ class _MyStoriesState extends State<MyStories> {
   }
 
   void _addMessage(int index, Storyboard story) async {
-    await _storyApi.addStory(index, story.storyboardId, widget.message!.id);
+    try {
+      await _storyApi.addStory(index, widget.message!.id, story.storyboardId);
+      Get.snackbar(
+        _i18n.translate("story_added"),
+        _i18n.translate("story_added_info"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        'Error',
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 
   Widget _showMessage(BuildContext context, List<dynamic> message) {
@@ -111,7 +136,7 @@ class _MyStoriesState extends State<MyStories> {
               child: Image.network(
                 firstMessage.uri,
                 width: square,
-                fit: BoxFit.fill,
+                fit: BoxFit.cover,
               ),
             )
           ],

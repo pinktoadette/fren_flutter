@@ -9,6 +9,7 @@ import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../constants/constants.dart';
@@ -207,17 +208,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         userBio: _bioController.text.trim(),
         onSuccess: () async {
           /// Show success message
-          showScaffoldMessage(
-              message: _i18n.translate("profile_updated_successfully"));
+          Get.snackbar(
+            'Success',
+            _i18n.translate("profile_updated_successfully"),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: APP_SUCCESS,
+          );
         },
         onFail: (error) {
           // Debug error
           debugPrint(error);
           // Show error message
-          showScaffoldMessage(
-              message: _i18n
-                  .translate("an_error_occurred_while_updating_your_profile"),
-              bgcolor: APP_ERROR);
+          Get.snackbar(
+            'Error',
+            _i18n.translate("an_error_occurred_while_updating_your_profile"),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: APP_ERROR,
+          );
         });
   }
 }
