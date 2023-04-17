@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
@@ -40,6 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final UserController userController = Get.find(tag: 'user');
   final ChatController chatController = Get.find(tag: 'chatroom');
   final BotController botController = Get.find(tag: 'bot');
+  final StoryboardController storyController = Get.find(tag: 'storyboard');
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();
@@ -94,6 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
     chatController.initUser();
     chatController.onChatLoad();
+    storyController.fetchMyStories();
   }
 
   /// get or create chatroom

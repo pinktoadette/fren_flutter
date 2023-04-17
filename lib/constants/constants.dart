@@ -214,6 +214,7 @@ const String LIMIT = "limit";
 
 /// story
 const String STORY_TITLE = "title";
+const String STORY_MESSAGE_ID = "messageId";
 const String STORY_MESSAGES = "messages";
 const String STORY_MESSAGE_TYPE = "type";
 const String STORY_MESSAGE_TEXT = "text";

@@ -23,7 +23,7 @@ class ChatController extends GetxController implements GetxService {
 
   // ignore: prefer_final_fields
   RxList<Chatroom> roomlist = <Chatroom>[].obs;
-  late RxInt unreadCounter;
+  RxInt unreadCounter = 0.obs;
   late Rx<Chatroom> _currentRoom;
   late Rx<Chatroom> _emptyRoom;
 
@@ -60,7 +60,6 @@ class ChatController extends GetxController implements GetxService {
   void onInit() async {
     initUser();
     initCurrentRoom();
-    unreadCounter = 0.obs;
     super.onInit();
   }
 
@@ -110,7 +109,6 @@ class ChatController extends GetxController implements GetxService {
     } else {
       _emptyRoom = myRooms.obs;
     }
-    roomlist.refresh();
   }
 
   /// when user creates a new empty room

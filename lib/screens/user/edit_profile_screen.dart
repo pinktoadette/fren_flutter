@@ -9,7 +9,6 @@ import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 import '../../constants/constants.dart';
@@ -29,7 +28,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
   late String _selectedIndustry;
   late List<String> _selectedInterest;
-  late List<String> _industryList = [];
   late List<String> _interestList = [];
 
   late AppLocalizations _i18n;
@@ -53,7 +51,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
 
     setState(() {
-      _industryList = industryList;
       _interestList = interestList;
     });
   }

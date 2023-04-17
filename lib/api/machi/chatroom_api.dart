@@ -63,6 +63,9 @@ class ChatroomMachiApi {
         myRooms.add(myRoom);
       });
     }
+
+    chatController.roomlist.refresh();
+    chatController.unreadCounter.refresh();
     return myRooms;
   }
 

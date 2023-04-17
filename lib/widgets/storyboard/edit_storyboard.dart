@@ -26,42 +26,61 @@ class _EditStoryState extends State<EditStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double itemHeight = 200;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
-            title: Text(
-              _i18n.translate("storyboard_edit"),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            leading: BackButton(
-              color: Theme.of(context).primaryColor,
-              onPressed: () async {
-                Navigator.of(context).pop();
+          title: Text(
+            _i18n.translate("storyboard_edit"),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          leading: BackButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () async {
+              Navigator.of(context).pop();
+            },
+          ),
+          actions: [
+            // Save changes button
+            TextButton(
+              child: Text(_i18n.translate("SAVE")),
+              onPressed: () {
+                FocusScope.of(context).requestFocus(FocusNode());
               },
-            )),
+            )
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.all(10.0),
-          child: GridView.builder(
-              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-                  maxCrossAxisExtent: 200,
-                  childAspectRatio: 4 / 3,
-                  crossAxisSpacing: 20,
-                  mainAxisSpacing: 20),
+          child: ListView.separated(
+              separatorBuilder: (context, index) {
+                if ((index + 1) % 5 == 0) {
+                  return Container(
+                    height: itemHeight,
+                    color: Theme.of(context).colorScheme.background,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Container(
+                        height: 150,
+                        width: width,
+                        color: Colors.yellow,
+                        child: const Text('ad placeholder'),
+                      ),
+                    ),
+                  );
+                } else {
+                  return Container();
+                }
+              },
               itemCount: widget.story.messages.length,
               itemBuilder: (BuildContext ctx, index) {
-                types.Message message = widget.story.messages[index];
-                return Card(
-                  child: Container(
-                    padding: const EdgeInsets.all(20),
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(message.createdAt.toString(),
-                              style: const TextStyle(
-                                  fontSize: 14, color: Colors.black)),
-                        ]),
-                  ),
+                final message = widget.story.messages[index];
+                return ListTile(
+                  leading: Text(message.type.name),
+                  title: Text(message.author.firstName!),
+                  subtitle: Text(message.createdAt.toString()),
+                  trailing: const Icon(Iconsax.menu_1),
                 );
               }),
         ));

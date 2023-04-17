@@ -84,8 +84,9 @@ class Storyboard {
           message['width'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_WIDTH];
           message['uri'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_URI];
           finalMessage = types.ImageMessage.fromJson(message);
+        } else {
+          finalMessage = types.Message.fromJson(message);
         }
-        finalMessage = types.Message.fromJson(message);
         messages.add(finalMessage);
       });
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/widgets/storyboard/add_storyboard.dart';
@@ -17,6 +18,8 @@ class DoubleTapChatMessage extends StatefulWidget {
 class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
   late AppLocalizations _i18n;
   final _titleController = TextEditingController();
+  final _storyApi = StoryApi();
+  String errorMessage = '';
 
   @override
   void initState() {
@@ -57,7 +60,19 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                               borderRadius: BorderRadius.circular(8.0),
                             ),
                           ),
-                          onPressed: () {},
+                          onPressed: () async {
+                            try {
+                              await _storyApi.createStory(
+                                  _titleController.text, widget.message.id);
+                              _titleController.clear();
+                              FocusScope.of(context).unfocus();
+                            } catch (error) {
+                              setState(() {
+                                errorMessage =
+                                    _i18n.translate("an_error_has_occurred");
+                              });
+                            }
+                          },
                           icon: const Icon(Iconsax.add),
                           label: Text(_i18n.translate("add")))),
                   validator: (reason) {
@@ -70,6 +85,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                 )),
               ],
             ),
+            Text(errorMessage),
             const SizedBox(
               height: 15,
             ),
@@ -84,7 +100,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
             Text(_i18n.translate("add_to_exist_storyboard")),
             SizedBox(
               height: height - 200,
-              child: const MyStories(),
+              child: const MyStories(isAdd: true),
             )
           ],
         ));
