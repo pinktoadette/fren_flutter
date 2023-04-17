@@ -21,6 +21,7 @@ class Storyboard {
   /// Using types and Chatroom together
   final String title;
   final List<types.Message> messages;
+  final String storyboardId;
   final StoryUser createdBy;
   final int createdAt;
   final int updatedAt;
@@ -28,6 +29,7 @@ class Storyboard {
   Storyboard(
       {required this.title,
       required this.messages,
+      required this.storyboardId,
       required this.createdBy,
       required this.createdAt,
       required this.updatedAt});
@@ -36,11 +38,13 @@ class Storyboard {
       {String? title,
       List<types.Message>? messages,
       StoryUser? createdBy,
+      String? storyboardId,
       int? createdAt,
       int? updatedAt}) {
     return Storyboard(
         title: title ?? this.title,
         messages: messages ?? this.messages,
+        storyboardId: storyboardId ?? this.storyboardId,
         createdBy: createdBy ?? this.createdBy,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt);
@@ -52,6 +56,7 @@ class Storyboard {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'messages': messages,
+      'storyboardId': storyboardId,
       'createdBy': createdBy
     };
   }
@@ -95,6 +100,7 @@ class Storyboard {
         title: doc[STORY_TITLE],
         createdBy: user,
         messages: messages,
+        storyboardId: doc[STORY_ID],
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());
   }

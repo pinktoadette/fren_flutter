@@ -52,37 +52,76 @@ class _EditStoryState extends State<EditStory> {
           ],
         ),
         body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: ListView.separated(
-              separatorBuilder: (context, index) {
-                if ((index + 1) % 5 == 0) {
-                  return Container(
-                    height: itemHeight,
-                    color: Theme.of(context).colorScheme.background,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Container(
-                        height: 150,
-                        width: width,
-                        color: Colors.yellow,
-                        child: const Text('ad placeholder'),
-                      ),
-                    ),
-                  );
-                } else {
-                  return Container();
-                }
-              },
-              itemCount: widget.story.messages.length,
-              itemBuilder: (BuildContext ctx, index) {
-                final message = widget.story.messages[index];
-                return ListTile(
-                  leading: Text(message.type.name),
-                  title: Text(message.author.firstName!),
-                  subtitle: Text(message.createdAt.toString()),
-                  trailing: const Icon(Iconsax.menu_1),
-                );
-              }),
+            padding: const EdgeInsets.all(10.0),
+            child: Stack(
+              children: [
+                ListView.separated(
+                    separatorBuilder: (context, index) {
+                      if ((index + 1) % 5 == 0) {
+                        return Container(
+                          height: itemHeight,
+                          color: Theme.of(context).colorScheme.background,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 10, bottom: 10),
+                            child: Container(
+                              height: 150,
+                              width: width,
+                              color: Colors.yellow,
+                              child: const Text('ad placeholder'),
+                            ),
+                          ),
+                        );
+                      } else {
+                        return Container();
+                      }
+                    },
+                    itemCount: widget.story.messages.length,
+                    itemBuilder: (BuildContext ctx, index) {
+                      final message = widget.story.messages[index];
+                      return ListTile(
+                        leading: Text("${index + 1}"),
+                        title: Text(message.author.firstName!),
+                        subtitle: _showMessage(message),
+                        trailing: const Icon(Iconsax.menu_1),
+                      );
+                    }),
+                Positioned(
+                    bottom: 0,
+                    right: 30,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text("Preview"),
+                    ))
+              ],
+            )));
+  }
+
+  Widget _showMessage(dynamic message) {
+    final firstMessage = message;
+
+    switch (firstMessage.type) {
+      case (types.MessageType.text):
+        return Flexible(
+            child: Text(
+          firstMessage.text,
+          style: const TextStyle(fontSize: 12, color: Colors.black),
         ));
+      case (types.MessageType.image):
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: 110,
+              child: Image.network(
+                firstMessage.uri,
+                width: double.infinity,
+                fit: BoxFit.fill,
+              ),
+            )
+          ],
+        );
+      default:
+        return const Icon(Iconsax.activity);
+    }
   }
 }

@@ -10,7 +10,6 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:get/get.dart';
 
 class CreateMachiWidget extends StatefulWidget {

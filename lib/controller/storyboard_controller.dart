@@ -37,4 +37,9 @@ class StoryboardController extends GetxController {
     _stories.insert(0, story);
     _stories.refresh();
   }
+
+  void updateStoryboard(int index, Storyboard story) async {
+    _stories[index] = story;
+    _stories.refresh();
+  }
 }

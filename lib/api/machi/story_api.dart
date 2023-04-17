@@ -31,20 +31,36 @@ class StoryApi {
     }
   }
 
-  Future<List<Storyboard>> addStory(String chatId, String storyboardId) async {
+  Future<Storyboard> addStory(
+      int messageIndex, String chatId, String storyboardId) async {
+    StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}storyboard/my_stories';
+      String url = '${baseUri}storyboard/add';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.get(url);
+      final response = await dio.post(url);
 
-      List<Storyboard> stories = [];
-      for (var story in response.data) {
-        Storyboard s = Storyboard.fromJson(story);
-        stories.add(s);
-      }
+      Storyboard story = Storyboard.fromJson(response.data);
+      storyController.updateStoryboard(messageIndex, story);
+      return story;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 
-      return stories;
+  Future<Storyboard> removeStory(
+      int messageIndex, String chatId, String storyboardId) async {
+    StoryboardController storyController = Get.find(tag: 'storyboard');
+    try {
+      String url = '${baseUri}storyboard/remove';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url);
+
+      Storyboard story = Storyboard.fromJson(response.data);
+      storyController.updateStoryboard(messageIndex, story);
+      return story;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

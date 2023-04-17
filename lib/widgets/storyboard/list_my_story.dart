@@ -9,8 +9,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class MyStories extends StatefulWidget {
-  final bool isAdd;
-  const MyStories({Key? key, required this.isAdd}) : super(key: key);
+  final types.Message? message;
+  const MyStories({Key? key, this.message}) : super(key: key);
 
   @override
   _MyStoriesState createState() => _MyStoriesState();
@@ -33,8 +33,7 @@ class _MyStoriesState extends State<MyStories> {
     return RefreshIndicator(
         onRefresh: () {
           // Refresh Functionality
-          return _storyApi.getMyStories();
-          ;
+          return storyboardController.fetchMyStories();
         },
         child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -51,48 +50,51 @@ class _MyStoriesState extends State<MyStories> {
                         gridDelegate:
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 200,
-                                childAspectRatio: 4 / 3,
+                                childAspectRatio: 1,
                                 crossAxisSpacing: 20,
                                 mainAxisSpacing: 20),
                         itemCount: storyboardController.stories.length,
                         itemBuilder: (BuildContext ctx, index) {
                           Storyboard story =
                               storyboardController.stories[index];
-                          return Card(
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              alignment: Alignment.topLeft,
-                              child: InkWell(
-                                onTap: () {
-                                  widget.isAdd
-                                      ? _addMessage(story)
-                                      : Get.to(EditStory(story: story));
-                                },
+                          return InkWell(
+                              onTap: () {
+                                widget.message != null
+                                    ? _addMessage(index, story)
+                                    : Get.to(EditStory(story: story));
+                              },
+                              child: Card(
+                                  child: Padding(
+                                padding: const EdgeInsets.all(10),
                                 child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(story.title,
                                           style: const TextStyle(
                                               fontSize: 14,
                                               color: Colors.black)),
-                                      _showMessage(story.messages),
+                                      _showMessage(context, story.messages),
                                     ]),
-                              ),
-                            ),
-                          );
+                              )));
                         }),
                   )));
   }
 
-  void _addMessage(Storyboard story) {}
+  void _addMessage(int index, Storyboard story) async {
+    await _storyApi.addStory(index, story.storyboardId, widget.message!.id);
+  }
 
-  Widget _showMessage(List<dynamic> message) {
+  Widget _showMessage(BuildContext context, List<dynamic> message) {
+    // ~ two columns for image to fit into this square
+    double square = MediaQuery.of(context).size.width / 2;
+
     if (message.isEmpty) {
       return const SizedBox.shrink();
     }
     final firstMessage = message[0];
-    print(firstMessage);
+
     switch (firstMessage.type) {
       case (types.MessageType.text):
         return Flexible(
@@ -101,13 +103,19 @@ class _MyStoriesState extends State<MyStories> {
           style: const TextStyle(fontSize: 10, color: Colors.black),
         ));
       case (types.MessageType.image):
-        return Container(
-            constraints: const BoxConstraints.expand(),
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                  image: NetworkImage(firstMessage.image.uri),
-                  fit: BoxFit.cover),
-            ));
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            SizedBox(
+              height: square * 0.5,
+              child: Image.network(
+                firstMessage.uri,
+                width: square,
+                fit: BoxFit.fill,
+              ),
+            )
+          ],
+        );
       default:
         return const Icon(Iconsax.activity);
     }

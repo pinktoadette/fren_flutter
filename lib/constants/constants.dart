@@ -213,6 +213,7 @@ const String CREATED_AT = "createdAt";
 const String LIMIT = "limit";
 
 /// story
+const String STORY_ID = "storyboardId";
 const String STORY_TITLE = "title";
 const String STORY_MESSAGE_ID = "messageId";
 const String STORY_MESSAGES = "messages";

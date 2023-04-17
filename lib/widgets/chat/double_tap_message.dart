@@ -35,16 +35,28 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              _i18n.translate("story_share_message"),
-              style: Theme.of(context).textTheme.headlineMedium,
+            Row(
+              children: [
+                const Icon(Iconsax.book),
+                Text(
+                  _i18n.translate("storyboard"),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+              ],
             ),
+            const SizedBox(height: 15),
             Text(_i18n.translate("add_to_new_storyboard")),
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
                     child: TextFormField(
+                  maxLength: 15,
+                  buildCounter: (_,
+                          {required currentLength,
+                          maxLength,
+                          required isFocused}) =>
+                      _counter(context, currentLength, maxLength),
                   controller: _titleController,
                   decoration: InputDecoration(
                       border: OutlineInputBorder(
@@ -100,9 +112,21 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
             Text(_i18n.translate("add_to_exist_storyboard")),
             SizedBox(
               height: height - 200,
-              child: const MyStories(isAdd: true),
+              child: MyStories(message: widget.message),
             )
           ],
         ));
+  }
+
+  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0.0),
+      child: Container(
+          alignment: Alignment.topLeft,
+          child: Text(
+            currentLength.toString() + "/" + maxLength.toString(),
+            style: Theme.of(context).textTheme.labelSmall,
+          )),
+    );
   }
 }
