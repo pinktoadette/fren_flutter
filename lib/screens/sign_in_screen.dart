@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';

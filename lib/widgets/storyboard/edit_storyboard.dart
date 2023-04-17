@@ -90,7 +90,7 @@ class _EditStoryState extends State<EditStory> {
                     right: 30,
                     child: ElevatedButton(
                       onPressed: () {},
-                      child: Text("Preview"),
+                      child: const Text("Preview"),
                     ))
               ],
             )));

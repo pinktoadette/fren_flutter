@@ -2,11 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/initialize_all.dart';
-import 'package:fren_app/controller/message_controller.dart';
-import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/helpers/theme_helper.dart';

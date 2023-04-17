@@ -7,7 +7,6 @@ import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 

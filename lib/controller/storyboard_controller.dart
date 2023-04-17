@@ -7,6 +7,7 @@ import 'package:get/get.dart';
 class StoryboardController extends GetxController {
   RxList<Storyboard> _stories = [
     Storyboard(
+        storyboardId: '',
         title: '',
         createdBy: StoryUser(
             photoUrl: UserModel().user.userProfilePhoto,

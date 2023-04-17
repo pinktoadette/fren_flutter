@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/widgets/ads/ad_helper.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 

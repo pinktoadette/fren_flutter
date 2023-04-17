@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:fren_app/widgets/loader.dart';
 import 'package:iconsax/iconsax.dart';
 
