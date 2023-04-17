@@ -4,10 +4,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/initialize_all.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -662,12 +664,10 @@ class UserModel extends Model {
       notifyListeners();
       debugPrint("signOut() -> success");
       Get.deleteAll();
+      ThemeHelper().delete();
 
       /// Need to reassign
-      Get.lazyPut(() => BotController());
-      Get.lazyPut(() => UserController());
-      Get.lazyPut(() => MessageController());
-      Get.lazyPut(() => ChatController());
+      initializeAllControllers();
     } catch (e) {
       debugPrint(e.toString());
     }

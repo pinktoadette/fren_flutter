@@ -22,4 +22,8 @@ class ThemeHelper {
     Get.changeThemeMode(loadThemeFromBox() ? ThemeMode.light : ThemeMode.dark);
     _saveThemeToBox(!loadThemeFromBox());
   }
+
+  void delete() {
+    _box.remove(_key);
+  }
 }

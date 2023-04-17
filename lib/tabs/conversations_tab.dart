@@ -18,7 +18,7 @@ class ConversationsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    ChatController chatController = Get.find();
+    ChatController chatController = Get.find(tag: 'chatroom');
 
     /// Initialization
     final _i18n = AppLocalizations.of(context);
@@ -61,7 +61,6 @@ class ConversationsTab extends StatelessWidget {
                 )
               : Obx(() => ListView.separated(
                   cacheExtent: 1000,
-                  reverse: true,
                   shrinkWrap: true,
                   separatorBuilder: (context, index) {
                     if ((index + 1) % 5 == 0) {

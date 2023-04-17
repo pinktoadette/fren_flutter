@@ -24,8 +24,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _botApi = BotApi();
   final _chatroomApi = ChatroomMachiApi();
   String errorMessage = '';
-  BotController botController = Get.find();
-  ChatController chatController = Get.find();
+  BotController botController = Get.find(tag: 'bot');
+  ChatController chatController = Get.find(tag: 'chatroom');
 
   final _nameController = TextEditingController();
   final _aboutController = TextEditingController();

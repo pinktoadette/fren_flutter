@@ -36,8 +36,8 @@ class BotProfileCard extends StatefulWidget {
 
 class _BotProfileCardState extends State<BotProfileCard> {
   final _botPrompt = TextEditingController(text: "");
-  ChatController chatController = Get.find();
-  BotController botController = Get.find();
+  ChatController chatController = Get.find(tag: 'chatroom');
+  BotController botController = Get.find(tag: 'bot');
   final _chatroomApi = ChatroomMachiApi();
   bool isLoading = false;
 

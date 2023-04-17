@@ -21,7 +21,7 @@ class FriendListWidget extends StatefulWidget {
 class _FriendListState extends State<FriendListWidget> {
   final _friendApi = FriendApi();
   final _chatroomApi = ChatroomMachiApi();
-  ChatController chatController = Get.find();
+  ChatController chatController = Get.find(tag: 'chatroom');
   late AppLocalizations _i18n;
 
   Future<List<dynamic>> _getFriends() async {

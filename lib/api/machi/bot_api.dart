@@ -1,13 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/date_now.dart';
-import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
@@ -15,7 +11,7 @@ import 'package:uuid/uuid.dart';
 class BotApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final BotController botControl = Get.find();
+  final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

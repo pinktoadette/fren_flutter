@@ -19,8 +19,7 @@ class ExploreBotTab extends StatefulWidget {
 class _ExploreBotState extends State<ExploreBotTab> {
   late AppLocalizations _i18n;
 
-  final BotController botController = Get.find();
-  final UserController userController = Get.find();
+  final BotController botController = Get.find(tag: 'bot');
 
   @override
   void initState() {

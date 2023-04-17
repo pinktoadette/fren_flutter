@@ -8,7 +8,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 class SearchApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final BotController botControl = Get.find();
+  final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

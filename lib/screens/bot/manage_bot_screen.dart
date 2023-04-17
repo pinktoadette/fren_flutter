@@ -33,7 +33,7 @@ class _ManageBotState extends State<ManageBotScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final BotController botController = Get.find();
+    final BotController botController = Get.find(tag: 'bot');
     return Scaffold(
       appBar: AppBar(
         leading: BackButton(

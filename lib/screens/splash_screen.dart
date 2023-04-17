@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:fren_app/controller/initialize_all.dart';
 import 'package:fren_app/screens/blocked_account_screen.dart';
 import 'package:fren_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
@@ -43,10 +44,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<void> _initialAllStateAndRooms() async {
     /// initialize all controllers at one spot
     // Get.lazyPut(() => BotController());
-    Get.put(BotController());
-    Get.lazyPut(() => UserController());
-    Get.lazyPut(() => MessageController());
-    Get.lazyPut(() => ChatController());
+    initializeAllControllers();
   }
 
   @override

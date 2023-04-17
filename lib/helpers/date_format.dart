@@ -10,7 +10,7 @@ String formatDate(int epochDate) {
 
   bool isYes = isYesterday(d1, d2);
 
-  if (daysDiff < 1 && isYes) {
+  if (daysDiff <= 1 && isYes) {
     return "Yesterday";
   }
   if (daysDiff > 1) {

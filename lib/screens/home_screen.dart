@@ -37,9 +37,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final UserController userController = Get.find();
-  final ChatController chatController = Get.find();
-  final BotController botController = Get.find();
+  final UserController userController = Get.find(tag: 'user');
+  final ChatController chatController = Get.find(tag: 'chatroom');
+  final BotController botController = Get.find(tag: 'bot');
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();

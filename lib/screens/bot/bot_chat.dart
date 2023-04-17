@@ -46,9 +46,9 @@ class BotChatScreen extends StatefulWidget {
 }
 
 class _BotChatScreenState extends State<BotChatScreen> {
-  final BotController botController = Get.find();
-  final ChatController chatController = Get.find();
-  final MessageController messageController = Get.find();
+  final BotController botController = Get.find(tag: 'bot');
+  final ChatController chatController = Get.find(tag: 'chatroom');
+  final MessageController messageController = Get.find(tag: 'message');
 
   late final List<types.Message> _messages = [];
 

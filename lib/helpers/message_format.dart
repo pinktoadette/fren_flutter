@@ -7,7 +7,7 @@ import 'package:get/get.dart';
 
 /// formats partial messages to map string dynamic to pass to api
 Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
-  final ChatController chatController = Get.find();
+  final ChatController chatController = Get.find(tag: 'chatroom');
   // save will always be user, because backend will already save bot;
   late types.Message message;
   types.User user = chatController.chatUser;

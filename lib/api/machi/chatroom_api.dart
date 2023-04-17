@@ -21,8 +21,8 @@ class ChatroomMachiApi {
   // creates a new room with empty messages in quick chat
   // this way user doesn't need to wait on bot response
   Future<Map<String, dynamic>> createNewRoom() async {
-    final ChatController chatController = Get.find();
-    final BotController botController = Get.find();
+    final ChatController chatController = Get.find(tag: 'chatroom');
+    final BotController botController = Get.find(tag: 'bot');
 
     /// creates a new room
     String url = '${baseUri}chatroom/create_chatroom';
@@ -47,7 +47,7 @@ class ChatroomMachiApi {
   }
 
   Future<List<Chatroom>> getAllMyRooms() async {
-    final ChatController chatController = Get.find();
+    final ChatController chatController = Get.find(tag: 'chatroom');
     String url = '${baseUri}chatroom/users_chatrooms';
     debugPrint("Requesting URL $url");
     final dioRequest = await auth.getDio();
@@ -67,7 +67,7 @@ class ChatroomMachiApi {
   }
 
   Future<void> updateRoom(int index, Chatroom room) async {
-    final ChatController chatController = Get.find();
+    final ChatController chatController = Get.find(tag: 'chatroom');
     String url = '${baseUri}chatroom/update_room';
     debugPrint("Requesting URL $url");
     final updateRoom = room.toJSON();
@@ -81,7 +81,7 @@ class ChatroomMachiApi {
   }
 
   Future<void> inviteUserRoom(int index, String friendId, Chatroom room) async {
-    final ChatController chatController = Get.find();
+    final ChatController chatController = Get.find(tag: 'chatroom');
     String url = '${baseUri}chatroom/invite_user';
     debugPrint("Requesting URL $url");
     final updateRoom = room.toJSON();
@@ -123,8 +123,8 @@ class ChatroomMachiApi {
 
   ///////// TRIALS /////////////////
   Future<Map<String, dynamic>> tryBot() async {
-    final ChatController chatController = Get.find();
-    final BotController botController = Get.find();
+    final ChatController chatController = Get.find(tag: 'chatroom');
+    final BotController botController = Get.find(tag: 'bot');
 
     String url = '${baseUri}trial/machi';
     debugPrint("Requesting URL $url {botId: ${botController.bot.botId} }");

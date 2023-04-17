@@ -15,9 +15,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 // the user is currently in. Messages will be in message controller
 class ChatController extends GetxController implements GetxService {
   final MessageController messageController =
-      Get.find(); // current messages in this room
-  final BotController botController = Get.find(); // current bot
-  final UserController userController = Get.find(); // current user
+      Get.find(tag: 'message'); // current messages in this room
+  final BotController botController = Get.find(tag: 'bot'); // current bot
+  final UserController userController = Get.find(tag: 'user'); // current user
   late Rx<types.User> _chatUser;
   late Rx<types.User> _chatBot;
 
@@ -109,6 +109,7 @@ class ChatController extends GetxController implements GetxService {
     } else {
       _emptyRoom = myRooms.obs;
     }
+    roomlist.refresh();
   }
 
   /// when user creates a new empty room

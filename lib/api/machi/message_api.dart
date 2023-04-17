@@ -14,10 +14,10 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final BotController botControl = Get.find();
+  final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
-  ChatController chatController = Get.find();
-  MessageController messageController = Get.find();
+  ChatController chatController = Get.find(tag: 'chatroom');
+  MessageController messageController = Get.find(tag: 'message');
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
@@ -62,7 +62,7 @@ class MessageMachiApi {
 
   /// Get paginations for old messages
   Future<List<types.Message>> getMessages() async {
-    ChatController chatController = Get.find();
+    ChatController chatController = Get.find(tag: 'chatroom');
     int offset = messageController.offset;
     int limit = messageController.limitPage;
 
