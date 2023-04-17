@@ -9,6 +9,7 @@ const Color APP_PRIMARY_COLOR = Colors.black;
 const Color APP_MUTED_COLOR = Colors.black12;
 const Color APP_ACCENT_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
+const Color APP_TERTIARY = Color.fromARGB(255, 49, 49, 49);
 const Color APP_SUCCESS = Color.fromARGB(255, 96, 185, 34);
 const Color APP_WARNING = Color.fromARGB(255, 236, 185, 85);
 const Color APP_INFO = Color.fromARGB(255, 85, 212, 236);

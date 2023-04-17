@@ -74,9 +74,7 @@ class _MyStoriesState extends State<MyStories> {
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
                                       Text(story.title,
-                                          style: const TextStyle(
-                                              fontSize: 14,
-                                              color: Colors.black)),
+                                          style: const TextStyle(fontSize: 14)),
                                       _showMessage(context, story.messages),
                                       const Spacer(),
                                       Text(
@@ -125,7 +123,7 @@ class _MyStoriesState extends State<MyStories> {
         return Flexible(
             child: Text(
           firstMessage.text,
-          style: const TextStyle(fontSize: 10, color: Colors.black),
+          style: const TextStyle(fontSize: 10),
         ));
       case (types.MessageType.image):
         return Column(

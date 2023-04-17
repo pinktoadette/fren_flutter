@@ -117,6 +117,7 @@ class MyApp extends StatelessWidget {
       colorScheme: const ColorScheme.light().copyWith(
         primary: APP_PRIMARY_COLOR,
         secondary: APP_ACCENT_COLOR,
+        tertiary: APP_TERTIARY,
         background: APP_PRIMARY_BACKGROUND,
       ),
       tabBarTheme: TabBarTheme(
@@ -230,7 +231,6 @@ class MyApp extends StatelessWidget {
     final ThemeData darkTheme = ThemeData.dark();
     const APP_PRIMARY_DARK_COLOR = Colors.white;
     const APP_PRIMARY_DARK_BACKGROUND = Colors.black;
-    const APP_TERTIARY = Color.fromARGB(255, 49, 49, 49);
 
     return darkTheme.copyWith(
       primaryColor: APP_PRIMARY_DARK_COLOR,
@@ -293,8 +293,9 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50))),
       ),
       bottomSheetTheme: const BottomSheetThemeData(
-        modalBackgroundColor: Color.fromRGBO(31, 31, 31, 0.95),
-        backgroundColor: APP_TERTIARY,
+        modalBackgroundColor:
+            APP_PRIMARY_DARK_BACKGROUND, //Color.fromRGBO(31, 31, 31, 1),
+        backgroundColor: APP_PRIMARY_DARK_BACKGROUND,
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(

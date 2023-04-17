@@ -82,7 +82,7 @@ class _EditStoryState extends State<EditStory> {
                         isThreeLine: true,
                         leading: Text("${index + 1}"),
                         title: Text(message.author.firstName!),
-                        subtitle: _showMessage(message),
+                        subtitle: _showMessage(context, message),
                         trailing: const Icon(Iconsax.menu_1),
                       );
                     }),
@@ -97,11 +97,28 @@ class _EditStoryState extends State<EditStory> {
             )));
   }
 
-  Widget _showMessage(dynamic message) {
+  Widget _showMessage(BuildContext context, dynamic message) {
     final firstMessage = message;
-    Widget icons = const Row(
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [Icon(Iconsax.copy), SizedBox(width: 10), Icon(Iconsax.edit)],
+    Widget icons = Column(
+      children: [
+        Divider(
+          color: Theme.of(context).colorScheme.primary,
+        ),
+        const Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            Icon(
+              Iconsax.copy,
+              size: 20,
+            ),
+            SizedBox(width: 20),
+            Icon(
+              Iconsax.edit,
+              size: 20,
+            )
+          ],
+        )
+      ],
     );
     switch (firstMessage.type) {
       case (types.MessageType.text):
