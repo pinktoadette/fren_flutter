@@ -3,6 +3,7 @@ import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -26,8 +27,6 @@ class _EditStoryState extends State<EditStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double itemHeight = 200;
-    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
@@ -55,42 +54,49 @@ class _EditStoryState extends State<EditStory> {
             padding: const EdgeInsets.all(10.0),
             child: Stack(
               children: [
-                ListView.separated(
-                    separatorBuilder: (context, index) {
-                      if ((index + 1) % 5 == 0) {
-                        return Container(
-                          height: itemHeight,
-                          color: Theme.of(context).colorScheme.background,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 10, bottom: 10),
-                            child: Container(
-                              height: 150,
-                              width: width,
-                              color: Colors.yellow,
-                              child: const Text('ad placeholder'),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50),
+                  child: ReorderableListView(
+                    children: <Widget>[
+                      for (int index = 0;
+                          index < widget.story.scene.length;
+                          index += 1)
+                        Container(
+                            key: ValueKey(widget.story.scene[index].seq),
+                            decoration: const BoxDecoration(
+                              border: Border(
+                                bottom:
+                                    BorderSide(width: 1, color: Colors.grey),
+                              ),
                             ),
-                          ),
-                        );
-                      } else {
-                        return Container();
-                      }
+                            child: ListTile(
+                              isThreeLine: true,
+                              title: Text(widget.story.scene[index].messages
+                                  .author.firstName!),
+                              subtitle: _showMessage(
+                                  context, widget.story.scene[index].messages),
+                              trailing: const Icon(Iconsax.menu_1),
+                            ))
+                    ],
+                    onReorder: (int oldIndex, int newIndex) {
+                      setState(() {
+                        if (oldIndex < newIndex) {
+                          newIndex -= 1;
+                        }
+                        final Scene item =
+                            widget.story.scene.removeAt(oldIndex);
+                        widget.story.scene.insert(newIndex, item);
+                      });
                     },
-                    itemCount: widget.story.scene.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      final message = widget.story.scene[index].messages;
-                      return ListTile(
-                        isThreeLine: true,
-                        leading: Text("${widget.story.scene[index].seq}"),
-                        title: Text(message.author.firstName!),
-                        subtitle: _showMessage(context, message),
-                        trailing: const Icon(Iconsax.menu_1),
-                      );
-                    }),
+                  ),
+                ),
                 Positioned(
                     bottom: 0,
                     right: 30,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(PreviewStory(story: widget.story));
+                      },
                       child: const Text("Preview"),
                     ))
               ],
@@ -99,24 +105,19 @@ class _EditStoryState extends State<EditStory> {
 
   Widget _showMessage(BuildContext context, dynamic message) {
     final firstMessage = message;
-    Widget icons = Column(
+    Widget icons = const Column(
       children: [
-        Divider(
-          color: Theme.of(context).colorScheme.primary,
-        ),
-        const Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Icon(
-              Iconsax.copy,
-              size: 20,
-            ),
-            SizedBox(width: 20),
-            Icon(
-              Iconsax.edit,
-              size: 20,
-            )
-          ],
+        Padding(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Icon(
+                Iconsax.trash,
+                size: 20,
+              )
+            ],
+          ),
         )
       ],
     );

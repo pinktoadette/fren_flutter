@@ -308,6 +308,7 @@
   "story_enter_title": "Enter a story title",
   "add_to_new_storyboard": "Add to a new storyboard",
   "add_to_exist_storyboard": "Add to existing storyboard",
-  "storyboard_edit": "Edit Story",
+  "storyboard_edit": "Edit",
+  "storyboard_preview": "Preview",
   "story_nothing": "No stories"
 }
