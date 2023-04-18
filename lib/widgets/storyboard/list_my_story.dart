@@ -5,6 +5,7 @@ import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
 import 'package:get/get.dart';
@@ -59,6 +60,10 @@ class _MyStoriesState extends State<MyStories> {
                         itemBuilder: (BuildContext ctx, index) {
                           Storyboard story =
                               storyboardController.stories[index];
+                          if (story.scene.isEmpty) {
+                            return NoData(
+                                text: _i18n.translate("story_nothing"));
+                          }
                           return InkWell(
                               onTap: () {
                                 widget.message != null
@@ -75,10 +80,10 @@ class _MyStoriesState extends State<MyStories> {
                                     children: [
                                       Text(story.title,
                                           style: const TextStyle(fontSize: 14)),
-                                      _showMessage(context, story.messages),
+                                      _showMessage(context, story.scene),
                                       const Spacer(),
                                       Text(
-                                        "Items: ${story.messages.length}",
+                                        "Items: ${story.scene.length}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .labelSmall,
@@ -116,7 +121,7 @@ class _MyStoriesState extends State<MyStories> {
     if (message.isEmpty) {
       return const SizedBox.shrink();
     }
-    final firstMessage = message[0];
+    final firstMessage = message[0].messages;
 
     switch (firstMessage.type) {
       case (types.MessageType.text):

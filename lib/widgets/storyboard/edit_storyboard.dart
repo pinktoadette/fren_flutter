@@ -75,12 +75,12 @@ class _EditStoryState extends State<EditStory> {
                         return Container();
                       }
                     },
-                    itemCount: widget.story.messages.length,
+                    itemCount: widget.story.scene.length,
                     itemBuilder: (BuildContext ctx, index) {
-                      final message = widget.story.messages[index];
+                      final message = widget.story.scene[index].messages;
                       return ListTile(
                         isThreeLine: true,
-                        leading: Text("${index + 1}"),
+                        leading: Text("${widget.story.scene[index].seq}"),
                         title: Text(message.author.firstName!),
                         subtitle: _showMessage(context, message),
                         trailing: const Icon(Iconsax.menu_1),

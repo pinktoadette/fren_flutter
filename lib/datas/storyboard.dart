@@ -17,18 +17,28 @@ class StoryUser {
   }
 }
 
+/// Sequence, SceneId, types.Message
+class Scene {
+  final int seq;
+  final String sceneId;
+  final types.Message messages;
+
+  Scene({required this.seq, required this.sceneId, required this.messages});
+}
+
 class Storyboard {
   /// Using types and Chatroom together
   final String title;
-  final List<types.Message> messages;
   final String storyboardId;
+
+  final List<Scene> scene;
   final StoryUser createdBy;
   final int createdAt;
   final int updatedAt;
 
   Storyboard(
       {required this.title,
-      required this.messages,
+      required this.scene,
       required this.storyboardId,
       required this.createdBy,
       required this.createdAt,
@@ -36,14 +46,14 @@ class Storyboard {
 
   Storyboard copyWith(
       {String? title,
-      List<types.Message>? messages,
+      List<Scene>? scene,
       StoryUser? createdBy,
       String? storyboardId,
       int? createdAt,
       int? updatedAt}) {
     return Storyboard(
         title: title ?? this.title,
-        messages: messages ?? this.messages,
+        scene: scene ?? this.scene,
         storyboardId: storyboardId ?? this.storyboardId,
         createdBy: createdBy ?? this.createdBy,
         createdAt: createdAt ?? this.createdAt,
@@ -55,7 +65,7 @@ class Storyboard {
       'title': title,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'messages': messages,
+      'scene': scene,
       'storyboardId': storyboardId,
       'createdBy': createdBy
     };
@@ -66,16 +76,16 @@ class Storyboard {
 
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
 
-    /// convert messages to types.Message
-    /// note: can't call function, but it is same as message_api _createTypeMessages
-    List<types.Message> messages = [];
-    if (doc.containsKey('messages')) {
-      doc['messages'].forEach((message) {
+    /// convert messages to scene with types.Messages as messages
+    List<Scene> listScene = [];
+    if (doc.containsKey('scene')) {
+      late Scene detailScene;
+      doc['scene'].forEach((scene) {
+        var message = scene['messages'];
         types.Message finalMessage;
         final author = types.User(
             id: message[CHAT_AUTHOR_ID] as String,
             firstName: message[CHAT_USER_NAME] ?? "Frankie",
-            imageUrl: message[USER_PROFILE_PHOTO],
             metadata: message[CHAT_AUTHOR_ID].contains("Machi_")
                 ? {"showMeta": true}
                 : null);
@@ -92,14 +102,18 @@ class Storyboard {
         } else {
           finalMessage = types.Message.fromJson(message);
         }
-        messages.add(finalMessage);
+        detailScene = Scene(
+            seq: scene['sequence_num'],
+            sceneId: scene['sceneId'],
+            messages: finalMessage);
+        listScene.add(detailScene);
       });
     }
 
     return Storyboard(
         title: doc[STORY_TITLE],
         createdBy: user,
-        messages: messages,
+        scene: listScene,
         storyboardId: doc[STORY_ID],
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());

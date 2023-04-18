@@ -13,7 +13,7 @@ class StoryboardController extends GetxController {
             photoUrl: UserModel().user.userProfilePhoto,
             userId: UserModel().user.userId,
             username: UserModel().user.username),
-        messages: [],
+        scene: [],
         createdAt: getDateTimeEpoch(),
         updatedAt: getDateTimeEpoch())
   ].obs;
