@@ -51,13 +51,14 @@ class StoryApi {
   }
 
   Future<Storyboard> removeStory(
-      int messageIndex, String chatId, String storyboardId) async {
+      int messageIndex, String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}storyboard/remove';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.post(url);
+      final response = await dio.delete(url,
+          data: {STORY_MESSAGE_ID: messageId, STORY_ID: storyboardId});
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(messageIndex, story);
@@ -69,6 +70,8 @@ class StoryApi {
   }
 
   Future<List<Storyboard>> getMyStories() async {
+    StoryboardController storyController = Get.find(tag: 'storyboard');
+
     try {
       String url = '${baseUri}storyboard/my_stories';
       debugPrint("Requesting URL $url");
@@ -80,7 +83,7 @@ class StoryApi {
         Storyboard s = Storyboard.fromJson(story);
         stories.add(s);
       }
-
+      storyController.myStories(stories);
       return stories;
     } catch (error) {
       debugPrint(error.toString());

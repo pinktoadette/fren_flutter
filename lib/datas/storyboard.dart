@@ -1,6 +1,8 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/constants/constants.dart';
 
+enum StoryStatus { UNPUBLISHED, PUBLISHED, BLOCKED }
+
 class StoryUser {
   final String userId;
   final String photoUrl;
@@ -31,16 +33,18 @@ class Storyboard {
   final String title;
   final String storyboardId;
 
-  final List<Scene> scene;
+  final List<Scene>? scene;
   final StoryUser createdBy;
   final int createdAt;
   final int updatedAt;
+  final StoryStatus status;
 
   Storyboard(
       {required this.title,
       required this.scene,
       required this.storyboardId,
       required this.createdBy,
+      required this.status,
       required this.createdAt,
       required this.updatedAt});
 
@@ -49,6 +53,7 @@ class Storyboard {
       List<Scene>? scene,
       StoryUser? createdBy,
       String? storyboardId,
+      StoryStatus? status,
       int? createdAt,
       int? updatedAt}) {
     return Storyboard(
@@ -56,6 +61,7 @@ class Storyboard {
         scene: scene ?? this.scene,
         storyboardId: storyboardId ?? this.storyboardId,
         createdBy: createdBy ?? this.createdBy,
+        status: status ?? this.status,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt);
   }
@@ -66,6 +72,7 @@ class Storyboard {
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'scene': scene,
+      'status': status,
       'storyboardId': storyboardId,
       'createdBy': createdBy
     };
@@ -78,7 +85,7 @@ class Storyboard {
 
     /// convert messages to scene with types.Messages as messages
     List<Scene> listScene = [];
-    if (doc.containsKey('scene')) {
+    if (doc.containsKey('scene') && doc['scene'][0]['title'] == null) {
       late Scene detailScene;
       doc['scene'].forEach((scene) {
         var message = scene['messages'];
@@ -115,6 +122,7 @@ class Storyboard {
         createdBy: user,
         scene: listScene,
         storyboardId: doc[STORY_ID],
+        status: StoryStatus.values.byName(doc[STORY_STATUS]),
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());
   }

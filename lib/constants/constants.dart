@@ -224,6 +224,7 @@ const String STORY_MESSAGE_IMAGE = "image";
 const String STORY_MESSAGE_URI = "uri";
 const String STORY_MESSAGE_VIDEO = "video";
 const String STORY_CREATED_BY = "createdBy";
+const String STORY_STATUS = "status";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id

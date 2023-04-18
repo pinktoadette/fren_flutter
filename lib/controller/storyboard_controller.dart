@@ -14,6 +14,7 @@ class StoryboardController extends GetxController {
             userId: UserModel().user.userId,
             username: UserModel().user.username),
         scene: [],
+        status: StoryStatus.UNPUBLISHED,
         createdAt: getDateTimeEpoch(),
         updatedAt: getDateTimeEpoch())
   ].obs;
@@ -30,6 +31,11 @@ class StoryboardController extends GetxController {
   Future<void> fetchMyStories() async {
     final storyApi = StoryApi();
     final List<Storyboard> stories = await storyApi.getMyStories();
+    _stories = stories.obs;
+    _stories.refresh();
+  }
+
+  Future<void> myStories(List<Storyboard> stories) async {
     _stories = stories.obs;
     _stories.refresh();
   }

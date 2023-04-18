@@ -34,9 +34,9 @@ class _MyStoriesState extends State<MyStories> {
     _i18n = AppLocalizations.of(context);
 
     return RefreshIndicator(
-        onRefresh: () {
+        onRefresh: () async {
           // Refresh Functionality
-          return storyboardController.fetchMyStories();
+          await _storyApi.getMyStories();
         },
         child: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -60,7 +60,7 @@ class _MyStoriesState extends State<MyStories> {
                         itemBuilder: (BuildContext ctx, index) {
                           Storyboard story =
                               storyboardController.stories[index];
-                          if (story.scene.isEmpty) {
+                          if (story.title.isEmpty) {
                             return NoData(
                                 text: _i18n.translate("story_nothing"));
                           }
@@ -68,7 +68,10 @@ class _MyStoriesState extends State<MyStories> {
                               onTap: () {
                                 widget.message != null
                                     ? _addMessage(index, story)
-                                    : Get.to(EditStory(story: story));
+                                    : Get.to(EditStory(
+                                        story: story,
+                                        storyIdx: index,
+                                      ));
                               },
                               child: Card(
                                   child: Padding(
@@ -80,10 +83,11 @@ class _MyStoriesState extends State<MyStories> {
                                     children: [
                                       Text(story.title,
                                           style: const TextStyle(fontSize: 14)),
-                                      _showMessage(context, story.scene),
+                                      if (story.scene != null)
+                                        _showMessage(context, story.scene!),
                                       const Spacer(),
                                       Text(
-                                        "Items: ${story.scene.length}",
+                                        "Items: ${story.scene!.length}",
                                         style: Theme.of(context)
                                             .textTheme
                                             .labelSmall,

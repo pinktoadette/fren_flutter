@@ -49,9 +49,9 @@ class _PreviewStoryState extends State<PreviewStory> {
                 Padding(
                     padding: const EdgeInsets.only(bottom: 50),
                     child: ListView.builder(
-                        itemCount: widget.story.scene.length,
+                        itemCount: widget.story.scene!.length,
                         itemBuilder: (BuildContext ctx, index) {
-                          final message = widget.story.scene[index].messages;
+                          final message = widget.story.scene![index].messages;
                           return ListTile(
                             isThreeLine: true,
                             subtitle: _showMessage(context, message),

@@ -22,10 +22,6 @@ class InviteCardState extends State<InviteCard> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
-    double screenWidth = MediaQuery.of(context).size.width;
-    final _i18n = AppLocalizations.of(context);
-
     return InkWell(
       onTap: () {
         _showQRSheet();

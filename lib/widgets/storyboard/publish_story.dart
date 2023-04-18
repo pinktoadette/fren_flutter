@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/screens/storyboard/storyboard_home.dart';
+import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/widgets/animations/fireworks.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:get/get.dart';
@@ -23,7 +23,9 @@ class _PublishStoryState extends State<PublishStory> {
   @override
   void initState() {
     timer = Timer(const Duration(seconds: 2), () {
-      Get.to(const Storyboard(), popGesture: true);
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const HomeScreen()),
+          (route) => false);
     });
     super.initState();
   }
