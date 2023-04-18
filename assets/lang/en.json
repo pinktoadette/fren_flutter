@@ -300,6 +300,7 @@
 
   "story_share_message": "Create Story",
   "story": "Story",
+  "story_share": "Share",
   "storyboard": "Storyboard",
   "story_title": "Story Title",
   "story_added": "Added",
@@ -310,5 +311,6 @@
   "add_to_exist_storyboard": "Add to existing storyboard",
   "storyboard_edit": "Edit",
   "storyboard_preview": "Preview",
-  "story_nothing": "No stories"
+  "story_nothing": "No stories",
+  "story_success": "Story published!"
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 
 class ProgressDialog {
   final BuildContext context;

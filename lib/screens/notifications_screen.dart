@@ -9,7 +9,7 @@ import 'package:fren_app/helpers/app_notifications.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

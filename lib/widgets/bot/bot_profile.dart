@@ -7,7 +7,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 

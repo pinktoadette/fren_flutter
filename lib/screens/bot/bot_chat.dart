@@ -34,7 +34,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 

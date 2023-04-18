@@ -1,7 +1,7 @@
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 
 class AddBotScreen extends StatefulWidget {

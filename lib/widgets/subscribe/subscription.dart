@@ -1,7 +1,7 @@
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:scoped_model/scoped_model.dart';

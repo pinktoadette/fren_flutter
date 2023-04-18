@@ -2,7 +2,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/screens/first_time/sign_up_screen.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:onboarding/onboarding.dart';
 
 class OnboardingScreen extends StatefulWidget {

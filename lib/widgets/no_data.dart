@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:iconsax/iconsax.dart';
 
 class NoData extends StatelessWidget {

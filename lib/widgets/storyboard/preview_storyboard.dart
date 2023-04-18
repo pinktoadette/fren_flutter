@@ -1,8 +1,10 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -26,7 +28,7 @@ class _PreviewStoryState extends State<PreviewStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
+    double width = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -58,15 +60,13 @@ class _PreviewStoryState extends State<PreviewStory> {
                 Positioned(
                     bottom: 0,
                     right: 30,
-                    child: Row(
-                      children: [
-                        ElevatedButton(
-                          onPressed: () {},
-                          child: Text(
-                            _i18n.translate("publish"),
-                          ),
-                        )
-                      ],
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(const PublishStory());
+                      },
+                      child: Text(
+                        _i18n.translate("publish"),
+                      ),
                     ))
               ],
             )));

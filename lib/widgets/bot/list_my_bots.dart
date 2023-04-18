@@ -5,7 +5,7 @@ import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 

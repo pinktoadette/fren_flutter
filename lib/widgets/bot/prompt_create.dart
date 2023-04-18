@@ -8,7 +8,7 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:get/get.dart';
 

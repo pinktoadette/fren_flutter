@@ -4,7 +4,7 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
-import 'package:fren_app/widgets/loader.dart';
+import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:get/get.dart';
