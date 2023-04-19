@@ -7,6 +7,7 @@ import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/widgets/animations/fireworks.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 
 class PublishStory extends StatefulWidget {
   const PublishStory({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _PublishStoryState extends State<PublishStory> {
 
   @override
   void initState() {
-    timer = Timer(const Duration(seconds: 2), () {
+    timer = Timer(const Duration(seconds: 10), () {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
@@ -38,6 +39,7 @@ class _PublishStoryState extends State<PublishStory> {
         body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
                   height: height / 3,
@@ -50,7 +52,7 @@ class _PublishStoryState extends State<PublishStory> {
                     Frankloader(),
                   ],
                 ),
-                Text(_i18n.translate("story_success"))
+                Text(_i18n.translate("story_success")),
               ],
             )));
   }

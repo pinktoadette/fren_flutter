@@ -85,10 +85,10 @@ class Storyboard {
 
     /// convert messages to scene with types.Messages as messages
     List<Scene> listScene = [];
-    if (doc.containsKey('scene') && doc['scene'][0]['title'] == null) {
+    if (doc[STORY_SCENE][0][STORY_MESSAGES].isNotEmpty) {
       late Scene detailScene;
-      doc['scene'].forEach((scene) {
-        var message = scene['messages'];
+      doc[STORY_SCENE].forEach((scene) {
+        var message = scene[STORY_MESSAGES];
         types.Message finalMessage;
         final author = types.User(
             id: message[CHAT_AUTHOR_ID] as String,
@@ -110,8 +110,8 @@ class Storyboard {
           finalMessage = types.Message.fromJson(message);
         }
         detailScene = Scene(
-            seq: scene['sequence_num'],
-            sceneId: scene['sceneId'],
+            seq: scene[STORY_SCENE_SEQ],
+            sceneId: scene[STORY_SCENE_ID],
             messages: finalMessage);
         listScene.add(detailScene);
       });

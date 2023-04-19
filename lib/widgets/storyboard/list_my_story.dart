@@ -8,6 +8,8 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/show_scaffold_msg.dart';
 import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
+import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
+import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -66,34 +68,44 @@ class _MyStoriesState extends State<MyStories> {
                           }
                           return InkWell(
                               onTap: () {
-                                widget.message != null
-                                    ? _addMessage(index, story)
-                                    : Get.to(EditStory(
-                                        story: story,
-                                        storyIdx: index,
-                                      ));
+                                _onStoryClick(index, story);
                               },
                               child: Card(
+                                  color: story.status == StoryStatus.PUBLISHED
+                                      ? APP_ACCENT_COLOR
+                                      : Theme.of(context)
+                                          .colorScheme
+                                          .background,
                                   child: Padding(
-                                padding: const EdgeInsets.all(10),
-                                child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    children: [
-                                      Text(story.title,
-                                          style: const TextStyle(fontSize: 14)),
-                                      if (story.scene != null)
-                                        _showMessage(context, story.scene!),
-                                      const Spacer(),
-                                      Text(
-                                        "Items: ${story.scene!.length}",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall,
-                                      )
-                                    ]),
-                              )));
+                                    padding: const EdgeInsets.all(10),
+                                    child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Text(story.title,
+                                              style: const TextStyle(
+                                                  fontSize: 14,
+                                                  fontWeight: FontWeight.bold)),
+                                          if (story.scene != null)
+                                            _showMessage(context, story.scene!),
+                                          const Spacer(),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                  "Items: ${story.scene!.length}",
+                                                  style: const TextStyle(
+                                                      fontSize: 12)),
+                                              Text(story.status.name,
+                                                  style: const TextStyle(
+                                                      fontSize: 12))
+                                            ],
+                                          )
+                                        ]),
+                                  )));
                         }),
                   )));
   }
@@ -115,6 +127,36 @@ class _MyStoriesState extends State<MyStories> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );
+    }
+  }
+
+  void _onStoryClick(int index, Storyboard story) {
+    double height = MediaQuery.of(context).size.height;
+    if (story.status == StoryStatus.PUBLISHED) {
+      showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => FractionallySizedBox(
+              heightFactor: 0.9,
+              child: DraggableScrollableSheet(
+                snap: true,
+                initialChildSize: 1,
+                minChildSize: 0.75,
+                builder: (context, scrollController) => SingleChildScrollView(
+                  controller: scrollController,
+                  child: SizedBox(
+                    height: height,
+                    child: StoryView(story: story),
+                  ),
+                ),
+              )));
+    } else {
+      widget.message != null
+          ? _addMessage(index, story)
+          : Get.to(EditStory(
+              story: story,
+              storyIdx: index,
+            ));
     }
   }
 

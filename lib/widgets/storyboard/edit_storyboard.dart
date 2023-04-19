@@ -7,6 +7,7 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
+import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -24,16 +25,17 @@ class _EditStoryState extends State<EditStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
+  late Storyboard _original;
 
   @override
   void initState() {
+    _original = widget.story.copyWith();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -43,22 +45,23 @@ class _EditStoryState extends State<EditStory> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              Navigator.of(context).pop();
+              _saveStory();
+              Get.back();
             },
           ),
           actions: [
             // Save changes button
             TextButton(
-              child: Text(_i18n.translate("SAVE")),
+              child: Text(_i18n.translate("storyboard_preview")),
               onPressed: () {
-                FocusScope.of(context).requestFocus(FocusNode());
+                Get.to(PreviewStory(story: widget.story));
               },
             )
           ],
         ),
-        body: Obx(() => Padding(
+        body: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: storyboardController.stories[widget.storyIdx].scene == null
+            child: widget.story.scene == null
                 ? const Text("No stories")
                 : Stack(
                     children: [
@@ -67,15 +70,10 @@ class _EditStoryState extends State<EditStory> {
                         child: ReorderableListView(
                           children: <Widget>[
                             for (int index = 0;
-                                index <
-                                    storyboardController
-                                        .stories[widget.storyIdx].scene!.length;
+                                index < widget.story.scene!.length;
                                 index += 1)
                               Container(
-                                  key: ValueKey(storyboardController
-                                      .stories[widget.storyIdx]
-                                      .scene![index]
-                                      .seq),
+                                  key: ValueKey(widget.story.scene![index].seq),
                                   decoration: const BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -84,18 +82,10 @@ class _EditStoryState extends State<EditStory> {
                                   ),
                                   child: ListTile(
                                     isThreeLine: true,
-                                    title: Text(storyboardController
-                                        .stories[widget.storyIdx]
-                                        .scene![index]
-                                        .messages
-                                        .author
-                                        .firstName!),
-                                    subtitle: _showMessage(
-                                        context,
-                                        storyboardController
-                                            .stories[widget.storyIdx]
-                                            .scene![index]
-                                            .messages),
+                                    title: Text(widget.story.scene![index]
+                                        .messages.author.firstName!),
+                                    subtitle: _showMessage(context,
+                                        widget.story.scene![index].messages),
                                     trailing: const Icon(Iconsax.menu_1),
                                   ))
                           ],
@@ -105,12 +95,9 @@ class _EditStoryState extends State<EditStory> {
                                 newIndex -= 1;
                               }
 
-                              final Scene item = storyboardController
-                                  .stories[widget.storyIdx].scene!
-                                  .removeAt(oldIndex);
-                              storyboardController
-                                  .stories[widget.storyIdx].scene!
-                                  .insert(newIndex, item);
+                              final Scene item =
+                                  widget.story.scene!.removeAt(oldIndex);
+                              widget.story.scene!.insert(newIndex, item);
                             });
                           },
                         ),
@@ -120,36 +107,29 @@ class _EditStoryState extends State<EditStory> {
                           right: 30,
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(PreviewStory(
-                                  story: storyboardController
-                                      .stories[widget.storyIdx]));
+                              Get.to(const PublishStory());
                             },
-                            child: const Text("Preview"),
+                            child: Text(
+                              _i18n.translate("publish"),
+                            ),
                           ))
                     ],
-                  ))));
+                  )));
   }
 
   Widget _showMessage(BuildContext context, dynamic message) {
     final firstMessage = message;
-    Widget icons = Column(
+    Widget icons = Row(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    _deleteMessage(message);
-                  },
-                  icon: const Icon(
-                    Iconsax.trash,
-                    size: 20,
-                  ))
-            ],
-          ),
-        )
+        IconButton(
+            onPressed: () {
+              _deleteMessage(message);
+            },
+            icon: const Icon(
+              Iconsax.trash,
+              size: 20,
+            ))
       ],
     );
     switch (firstMessage.type) {
@@ -160,12 +140,14 @@ class _EditStoryState extends State<EditStory> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
+                child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
                 firstMessage.uri,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),
-            ),
+            )),
             icons
           ],
         );
@@ -193,5 +175,29 @@ class _EditStoryState extends State<EditStory> {
             );
           }
         });
+  }
+
+  void _saveStory() async {
+    List<Scene> scenes = widget.story.scene!;
+    List<Map<String, dynamic>> newSequence = [];
+    int i = 1;
+    for (Scene scene in scenes) {
+      Map<String, dynamic> s = {
+        STORY_SCENE_SEQ: i,
+        STORY_SCENE_ID: scene.sceneId
+      };
+      newSequence.add(s);
+      i++;
+    }
+    try {
+      await _storyApi.updateSequence(newSequence);
+    } catch (_) {
+      Get.snackbar(
+        'Error',
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 }

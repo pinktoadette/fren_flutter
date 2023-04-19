@@ -90,4 +90,18 @@ class StoryApi {
       throw error.toString();
     }
   }
+
+  Future<String> updateSequence(List<Map<String, dynamic>> stories) async {
+    try {
+      String url = '${baseUri}storyboard/update';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: stories);
+
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }

@@ -1,12 +1,9 @@
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/storyboard/publish_story.dart';
+import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 class PreviewStory extends StatefulWidget {
   final Storyboard story;
@@ -28,7 +25,7 @@ class _PreviewStoryState extends State<PreviewStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -42,57 +39,6 @@ class _PreviewStoryState extends State<PreviewStory> {
             },
           ),
         ),
-        body: Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Stack(
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 50),
-                    child: ListView.builder(
-                        itemCount: widget.story.scene!.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          final message = widget.story.scene![index].messages;
-                          return ListTile(
-                            isThreeLine: true,
-                            subtitle: _showMessage(context, message),
-                          );
-                        })),
-                Positioned(
-                    bottom: 0,
-                    right: 30,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.to(const PublishStory());
-                      },
-                      child: Text(
-                        _i18n.translate("publish"),
-                      ),
-                    ))
-              ],
-            )));
-  }
-
-  Widget _showMessage(BuildContext context, dynamic message) {
-    final firstMessage = message;
-
-    switch (firstMessage.type) {
-      case (types.MessageType.text):
-        return Text(firstMessage.text);
-      case (types.MessageType.image):
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-              child: Image.network(
-                firstMessage.uri,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ],
-        );
-      default:
-        return const Icon(Iconsax.activity);
-    }
+        body: SizedBox(height: height, child: StoryView(story: widget.story)));
   }
 }
