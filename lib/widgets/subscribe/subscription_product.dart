@@ -85,6 +85,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         Padding(
             padding: const EdgeInsets.all(20),
             child: Card(
+                child: Padding(
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   Row(
@@ -126,7 +128,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                           "subscribe_detail_access_additional_models"))
                 ],
               ),
-            ))
+            )))
       ],
     );
   }
