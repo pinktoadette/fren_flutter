@@ -7,6 +7,7 @@ import 'package:fren_app/widgets/bot/list_all_bots.dart';
 import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/search_user.dart';
 import 'package:fren_app/widgets/subscribe/subscribe_card.dart';
+import 'package:fren_app/widgets/timeline_widget.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
@@ -64,7 +65,7 @@ class _ActivityTabState extends State<ActivityTab> {
             child: Column(
           children: [
             SubscriptionCard(),
-            ListAllBots(),
+            Timeline(),
           ],
         )),
       );
