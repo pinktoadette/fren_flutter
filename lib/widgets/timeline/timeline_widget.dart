@@ -3,13 +3,14 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/timeline.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:like_button/like_button.dart';
 
 class Timeline extends StatefulWidget {
   const Timeline({Key? key}) : super(key: key);
@@ -74,14 +75,14 @@ class _TimelineWidget extends State<Timeline> {
                     ),
                   );
                 } else {
-                  return Container();
+                  return const Divider();
                 }
               },
               itemCount: _timelines.length,
               itemBuilder: (context, index) => ListTile(
+                    minLeadingWidth: 15,
                     isThreeLine: true,
                     leading: AvatarInitials(
-                        radius: 30,
                         photoUrl: _timelines[index]["createdBy"]["photoUrl"],
                         username: _timelines[index]["createdBy"]["username"]),
                     title: TimelineHeader(
@@ -97,10 +98,26 @@ class _TimelineWidget extends State<Timeline> {
                           textAlign: TextAlign.left,
                         ),
                         _showTitle(_timelines[index]),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Icon(Iconsax.heart),
+                            LikeButton(
+                              bubblesColor: BubblesColor(
+                                dotPrimaryColor: APP_ACCENT_COLOR,
+                                dotSecondaryColor:
+                                    Theme.of(context).primaryColor,
+                              ),
+                              likeBuilder: (bool isLiked) {
+                                return Icon(
+                                  isLiked
+                                      ? Icons.favorite
+                                      : Icons.favorite_border,
+                                  color:
+                                      isLiked ? APP_ACCENT_COLOR : Colors.grey,
+                                );
+                              },
+                              likeCount: 10,
+                            )
                           ],
                         )
                       ],
@@ -111,13 +128,6 @@ class _TimelineWidget extends State<Timeline> {
 
   Widget _showTitle(dynamic post) {
     double width = MediaQuery.of(context).size.width;
-    Widget author = Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const SizedBox(width: 10),
-        Text(post["createdBy"]["username"]),
-      ],
-    );
     switch (post["postType"]) {
       case "board":
         if (post["subText"].isNotEmpty) {

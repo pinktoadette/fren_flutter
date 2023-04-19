@@ -44,9 +44,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> getJson() async {
-    String _indu = await rootBundle.loadString('assets/json/industry.json');
-    List<String> industryList = List.from(jsonDecode(_indu) as List<dynamic>);
-
     String _inter = await rootBundle.loadString('assets/json/interest.json');
     List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
 

@@ -229,15 +229,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
           ],
         );
       case 'ACTIVE':
-        return ElevatedButton(
-          onPressed: () {},
-          child: const Icon(Iconsax.message),
-        );
+        return const SizedBox.shrink();
       case 'BLOCK':
-        return ElevatedButton(
-          onPressed: () {},
-          child: const Text("Unblock"),
-        );
+        return const SizedBox.shrink();
       default:
         return ElevatedButton.icon(
             onPressed: () async {

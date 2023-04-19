@@ -3,6 +3,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/subscribe/subscription.dart';
+import 'package:fren_app/widgets/subscribe/subscription_product.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SubscriptionCard extends StatefulWidget {
@@ -33,7 +34,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
           child: SizedBox(
               width: screenWidth,
               child: Container(
-                  padding: const EdgeInsets.all(40),
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -50,7 +51,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                             Text(_i18n
                                 .translate("become_a_subscription_member")),
                             const SizedBox(
-                              height: 30,
+                              height: 20,
                             ),
                             ElevatedButton(
                                 onPressed: () {
@@ -66,22 +67,23 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
   }
 
   void _showSubscription() {
+    double height = MediaQuery.of(context).size.height;
+
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         builder: (context) => FractionallySizedBox(
             heightFactor: 0.9,
             child: DraggableScrollableSheet(
-              snap: true,
-              initialChildSize: 1,
-              minChildSize: 0.75,
-              builder: (context, scrollController) => SingleChildScrollView(
-                controller: scrollController,
-                child: const Subscription(
-                  icon: Icon(Iconsax.buy_crypto),
-                  priceColor: APP_ACCENT_COLOR,
-                ),
-              ),
-            )));
+                snap: true,
+                initialChildSize: 1,
+                minChildSize: 0.75,
+                builder: (context, scrollController) => SingleChildScrollView(
+                      controller: scrollController,
+                      child: SizedBox(
+                        height: height,
+                        child: const SubscriptionProduct(),
+                      ),
+                    ))));
   }
 }

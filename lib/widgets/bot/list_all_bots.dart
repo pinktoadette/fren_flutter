@@ -63,108 +63,98 @@ class _ListAllBotWidget extends State<ListAllBots> {
                     ),
                   );
                 } else {
-                  return Container();
+                  return const Divider();
                 }
               },
               itemCount: _listBot.length,
               itemBuilder: (context, index) => InkWell(
                     child: Column(
                       children: [
-                        Card(
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(28)),
-                            child: SizedBox(
-                              height: itemHeight,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 20),
-                                child: Column(
-                                  children: [
-                                    ListTile(
-                                        isThreeLine: true,
-                                        onTap: () {
-                                          _showBotInfo(_listBot[index]);
-                                        },
-                                        // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                        minLeadingWidth: 15,
-                                        leading: AvatarInitials(
-                                            photoUrl:
-                                                _listBot[index].profilePhoto ??
-                                                    "",
-                                            username: _listBot[index].name),
-                                        dense: true,
-                                        focusColor: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        title: Text(
-                                            "${_listBot[index].name} - ${_listBot[index].modelType.name}"),
-                                        subtitle: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
+                        SizedBox(
+                          height: itemHeight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              children: [
+                                ListTile(
+                                    isThreeLine: true,
+                                    onTap: () {
+                                      _showBotInfo(_listBot[index]);
+                                    },
+                                    // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                                    minLeadingWidth: 15,
+                                    leading: AvatarInitials(
+                                        photoUrl:
+                                            _listBot[index].profilePhoto ?? "",
+                                        username: _listBot[index].name),
+                                    focusColor:
+                                        Theme.of(context).secondaryHeaderColor,
+                                    title: Text(
+                                        "${_listBot[index].name} - ${_listBot[index].modelType.name}"),
+                                    subtitle: Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(_listBot[index].subdomain),
+                                            Column(
                                               children: [
-                                                Text(_listBot[index].subdomain),
-                                                Column(
+                                                Row(
                                                   children: [
-                                                    Row(
-                                                      children: [
-                                                        Flexible(
-                                                            child: Text(_listBot[
-                                                                            index]
-                                                                        .about
-                                                                        .length >
-                                                                    100
-                                                                ? _listBot[index]
-                                                                        .about
-                                                                        .substring(
-                                                                            0,
-                                                                            100) +
-                                                                    '...'
-                                                                : _listBot[
+                                                    Flexible(
+                                                        child: Text(_listBot[
                                                                         index]
-                                                                    .about))
-                                                      ],
-                                                    ),
+                                                                    .about
+                                                                    .length >
+                                                                80
+                                                            ? _listBot[index]
+                                                                    .about
+                                                                    .substring(
+                                                                        0, 80) +
+                                                                '...'
+                                                            : _listBot[index]
+                                                                .about))
                                                   ],
                                                 ),
                                               ],
-                                            ))),
-                                    const Spacer(),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          right: 20, bottom: 10),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          Text(
-                                            _i18n.translate("bot_owner"),
-                                            textAlign: TextAlign.left,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall,
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          AvatarInitials(
-                                              radius: 10,
-                                              userId: _listBot[index]
-                                                  .createdBy!
-                                                  .userId,
-                                              photoUrl: _listBot[index]
-                                                  .createdBy!
-                                                  .photoUrl,
-                                              username: _listBot[index]
-                                                  .createdBy!
-                                                  .username)
-                                        ],
+                                            ),
+                                          ],
+                                        ))),
+                                const Spacer(),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 20, bottom: 10),
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      Text(
+                                        _i18n.translate("bot_owner"),
+                                        textAlign: TextAlign.left,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall,
                                       ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ))
+                                      const SizedBox(
+                                        width: 5,
+                                      ),
+                                      AvatarInitials(
+                                          radius: 10,
+                                          userId:
+                                              _listBot[index].createdBy!.userId,
+                                          photoUrl: _listBot[index]
+                                              .createdBy!
+                                              .photoUrl,
+                                          username: _listBot[index]
+                                              .createdBy!
+                                              .username)
+                                    ],
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                        )
                       ],
                     ),
                   )));
