@@ -107,7 +107,7 @@ class _EditStoryState extends State<EditStory> {
                           right: 30,
                           child: ElevatedButton(
                             onPressed: () {
-                              Get.to(const PublishStory());
+                              Get.to(PublishStory(story: widget.story));
                             },
                             child: Text(
                               _i18n.translate("publish"),

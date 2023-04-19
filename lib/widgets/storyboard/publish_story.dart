@@ -1,16 +1,19 @@
 import 'dart:async';
 
+import 'package:fren_app/api/machi/story_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
+import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/screens/home_screen.dart';
 import 'package:fren_app/widgets/animations/fireworks.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 class PublishStory extends StatefulWidget {
-  const PublishStory({Key? key}) : super(key: key);
+  final Storyboard story;
+  const PublishStory({Key? key, required this.story}) : super(key: key);
 
   @override
   _PublishStoryState createState() => _PublishStoryState();
@@ -19,16 +22,45 @@ class PublishStory extends StatefulWidget {
 class _PublishStoryState extends State<PublishStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  late Timer timer;
+  final _storyApi = StoryApi();
+  bool isLoading = false;
+  bool hasError = false;
 
   @override
   void initState() {
-    timer = Timer(const Duration(seconds: 10), () {
+    _publishStory();
+
+    super.initState();
+  }
+
+  void _publishStory() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await _storyApi.publishStory(widget.story.storyboardId);
+
+      setState(() {
+        isLoading = false;
+      });
+      _goToNextStep();
+    } catch (err) {
+      debugPrint(err.toString());
+      setState(() {
+        hasError = true;
+      });
+      Get.snackbar('Error', _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+      _goToNextStep();
+    }
+  }
+
+  void _goToNextStep() {
+    Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
     });
-    super.initState();
   }
 
   @override
@@ -52,7 +84,10 @@ class _PublishStoryState extends State<PublishStory> {
                     Frankloader(),
                   ],
                 ),
-                Text(_i18n.translate("story_success")),
+                if (isLoading == true)
+                  Text(_i18n.translate("story_publishing")),
+                if (hasError == false && isLoading == false)
+                  Text(_i18n.translate("story_success")),
               ],
             )));
   }

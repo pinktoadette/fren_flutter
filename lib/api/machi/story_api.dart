@@ -104,4 +104,18 @@ class StoryApi {
       throw error.toString();
     }
   }
+
+  Future<String> publishStory(String storyId) async {
+    try {
+      String url = '${baseUri}storyboard/publish';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {STORY_ID: storyId});
+
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }

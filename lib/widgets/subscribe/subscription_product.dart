@@ -78,7 +78,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   Widget _showPricing(int index) {
-    Color color = index == 1 ? APP_WARNING : APP_SUCCESS;
+    Color color = index == 1 ? APP_ERROR : APP_SUCCESS;
     double width = MediaQuery.of(context).size.width;
     return Column(
       children: [
@@ -114,16 +114,18 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                   const SizedBox(height: 20),
                   _rowFeature(
                       APP_SUCCESS,
+                      index,
                       _i18n.translate("subscribe_detail_unlimted_request") +
                           (index == 1 ? " of 5 Per Day" : "")),
-                  _rowFeature(
-                      color, _i18n.translate("subscribe_detail_image_genator")),
-                  _rowFeature(
-                      color, _i18n.translate("subscribe_detail_read_image")),
-                  _rowFeature(
-                      color, _i18n.translate("subscribe_detail_add_friends")),
+                  _rowFeature(color, index,
+                      _i18n.translate("subscribe_detail_image_genator")),
+                  _rowFeature(color, index,
+                      _i18n.translate("subscribe_detail_read_image")),
+                  _rowFeature(color, index,
+                      _i18n.translate("subscribe_detail_add_friends")),
                   _rowFeature(
                       color,
+                      index,
                       _i18n.translate(
                           "subscribe_detail_access_additional_models"))
                 ],
@@ -133,7 +135,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     );
   }
 
-  Widget _rowFeature(Color iconColor, String text) {
+  Widget _rowFeature(Color iconColor, int index, String text) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
