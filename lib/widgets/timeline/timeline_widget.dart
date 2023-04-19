@@ -8,6 +8,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/no_data.dart';
+import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:iconsax/iconsax.dart';
 
 class Timeline extends StatefulWidget {
@@ -45,6 +46,7 @@ class _TimelineWidget extends State<Timeline> {
     final _i18n = AppLocalizations.of(context);
     double itemHeight = 200;
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     if (_timelines.isEmpty) {
       /// No match
@@ -77,23 +79,28 @@ class _TimelineWidget extends State<Timeline> {
               },
               itemCount: _timelines.length,
               itemBuilder: (context, index) => ListTile(
-                    leading: const Icon(Iconsax.box),
-                    title: Text(
-                      _timelines[index]["text"],
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    ),
+                    isThreeLine: true,
+                    leading: AvatarInitials(
+                        radius: 30,
+                        photoUrl: _timelines[index]["createdBy"]["photoUrl"],
+                        username: _timelines[index]["createdBy"]["username"]),
+                    title: TimelineHeader(
+                        photoUrl: _timelines[index]["createdBy"]["photoUrl"],
+                        username: _timelines[index]["createdBy"]["username"],
+                        userId: _timelines[index]["createdBy"]["userId"]),
                     subtitle: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(
+                          _timelines[index]["text"],
+                          style: Theme.of(context).textTheme.headlineSmall,
+                          textAlign: TextAlign.left,
+                        ),
                         _showTitle(_timelines[index]),
                         const Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             Icon(Iconsax.heart),
-                            SizedBox(width: 50),
-                            Icon(Iconsax.document_download)
                           ],
                         )
                       ],
@@ -104,36 +111,52 @@ class _TimelineWidget extends State<Timeline> {
 
   Widget _showTitle(dynamic post) {
     double width = MediaQuery.of(context).size.width;
+    Widget author = Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(width: 10),
+        Text(post["createdBy"]["username"]),
+      ],
+    );
     switch (post["postType"]) {
       case "board":
         if (post["subText"].isNotEmpty) {
-          return SizedBox(
-              width: width - 100,
-              child: SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        for (var i = 0; i < post["subText"].length; i++)
-                          SizedBox(
-                              width: 100.0,
-                              height: 100.0,
-                              child: Card(
-                                  child: Flexible(
-                                      child: Text(post["subText"][i]["messages"]
-                                          ["text"])))),
-                      ])));
+          return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                    width: width,
+                    child: SingleChildScrollView(
+                        scrollDirection: Axis.horizontal,
+                        child: Row(children: [
+                          for (var i = 0; i < post["subText"].length; i++)
+                            SizedBox(
+                                width: 100.0,
+                                height: 100.0,
+                                child: Card(
+                                    shape: const RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.all(
+                                            Radius.circular(10))),
+                                    child: post["subText"][i]["messages"]
+                                                ["type"] ==
+                                            "image"
+                                        ? Image.network(
+                                            post["subText"][i]["messages"]
+                                                ["image"]["uri"],
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Text(
+                                            post["subText"][i]["messages"]
+                                                ["text"],
+                                            style:
+                                                const TextStyle(fontSize: 10),
+                                          ))),
+                        ]))),
+              ]);
         }
         return const SizedBox.shrink();
       case "machi":
-        return Row(
-          children: [
-            Text(post["subText"]),
-            AvatarInitials(
-                photoUrl: post["user"]["photoUrl"],
-                username: post["user"]["username"])
-          ],
-        );
       default:
         return const SizedBox.shrink();
     }
