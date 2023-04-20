@@ -34,7 +34,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 
-    return Stack(children: [
+    return Column(children: [
       Text(
         _i18n.translate("story_add_double_tap"),
         style: Theme.of(context).textTheme.labelSmall,
