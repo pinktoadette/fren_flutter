@@ -2,14 +2,18 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
+import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/api/machi/timeline.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
+import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
+import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 
 class Timeline extends StatefulWidget {
@@ -21,7 +25,9 @@ class Timeline extends StatefulWidget {
 
 class _TimelineWidget extends State<Timeline> {
   final _botApi = BotApi();
+  final _storyApi = StoryApi();
   final _timelineApi = TimelineApi();
+  late AppLocalizations _i18n;
 
   /// timeline items
   int _offset = 0;
@@ -44,7 +50,7 @@ class _TimelineWidget extends State<Timeline> {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    _i18n = AppLocalizations.of(context);
     double itemHeight = 200;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
@@ -131,39 +137,38 @@ class _TimelineWidget extends State<Timeline> {
     switch (post["postType"]) {
       case "board":
         if (post["subText"].isNotEmpty) {
-          return Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                    width: width,
-                    child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: Row(children: [
-                          for (var i = 0; i < post["subText"].length; i++)
-                            SizedBox(
-                                width: 100.0,
-                                height: 100.0,
-                                child: Card(
-                                    shape: const RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    child: post["subText"][i]["messages"]
-                                                ["type"] ==
-                                            "image"
-                                        ? Image.network(
-                                            post["subText"][i]["messages"]
-                                                ["image"]["uri"],
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Text(
-                                            post["subText"][i]["messages"]
-                                                ["text"],
-                                            style:
-                                                const TextStyle(fontSize: 10),
-                                          ))),
-                        ]))),
-              ]);
+          Widget hasMore = const SizedBox.shrink();
+          if (post["subText"].length > 1) {
+            hasMore = Text(_i18n.translate("story_read_more"));
+          }
+
+          return InkWell(
+              onTap: () async {
+                Storyboard story = await _storyApi.getStoryById(post["id"]);
+                Get.to(StoryboardView(
+                  story: story,
+                ));
+              },
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                        width: width - 100,
+                        child: post["subText"][0]["messages"]["type"] == "image"
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(10.0),
+                                child: Image.network(
+                                  post["subText"][0]["messages"]["image"]
+                                      ["uri"],
+                                  fit: BoxFit.cover,
+                                ),
+                              )
+                            : Text(
+                                post["subText"][0]["messages"]["text"],
+                              )),
+                    hasMore,
+                  ]));
         }
         return const SizedBox.shrink();
       case "machi":

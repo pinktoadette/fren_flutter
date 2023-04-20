@@ -91,6 +91,21 @@ class StoryApi {
     }
   }
 
+  Future<Storyboard> getStoryById(String storyboardId) async {
+    try {
+      String url = '${baseUri}storyboard/story?storyId=$storyboardId';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.get(url);
+
+      Storyboard story = Storyboard.fromJson(response.data);
+      return story;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
   Future<String> updateSequence(List<Map<String, dynamic>> stories) async {
     try {
       String url = '${baseUri}storyboard/update';
@@ -111,6 +126,35 @@ class StoryApi {
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyId});
+
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
+  Future<String> postComment(String storyId, String comment) async {
+    try {
+      String url = '${baseUri}storyboard/comment';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio
+          .post(url, data: {STORY_ID: storyId, STORY_COMMENT: comment});
+
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
+  Future<dynamic> getComments(int page, int limit, String storyId) async {
+    try {
+      String url = '${baseUri}storyboard/comment?storyId=$storyId';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.get(url, data: {LIMIT: limit, "offset": page});
 
       return response.data;
     } catch (error) {

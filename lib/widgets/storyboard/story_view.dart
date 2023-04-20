@@ -3,6 +3,8 @@ import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/list_comments.dart';
+import 'package:fren_app/widgets/storyboard/story_stats_action.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -29,54 +31,36 @@ class _StoryViewState extends State<StoryView> {
     double height = MediaQuery.of(context).size.height;
 
     return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        padding: const EdgeInsets.only(left: 10),
+        child: ListView(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    widget.story.title,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    textAlign: TextAlign.left,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        "343 Views",
-                        style: Theme.of(context).textTheme.labelSmall,
-                        textAlign: TextAlign.left,
-                      ),
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      Text(
-                        "53 Likes",
-                        style: Theme.of(context).textTheme.labelSmall,
-                        textAlign: TextAlign.left,
-                      ),
-                    ],
-                  )
-                ],
-              ),
+            Text(
+              widget.story.title,
+              style: Theme.of(context).textTheme.headlineMedium,
+              textAlign: TextAlign.left,
+            ),
+            ListView.builder(
+                physics: const ScrollPhysics(),
+                shrinkWrap: true,
+                itemCount: widget.story.scene!.length,
+                itemBuilder: (BuildContext ctx, index) {
+                  final message = widget.story.scene![index].messages;
+
+                  return ListTile(
+                    isThreeLine: true,
+                    subtitle: _showMessage(context, message),
+                  );
+                }),
+            StoryStatsAction(story: widget.story),
+            const SizedBox(
+              height: 100,
             ),
             SizedBox(
-                height: height * 0.8,
-                child: ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: widget.story.scene!.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      final message = widget.story.scene![index].messages;
-
-                      return ListTile(
-                        isThreeLine: true,
-                        subtitle: _showMessage(context, message),
-                      );
-                    }))
+              child: ListComments(storyboardId: widget.story.storyboardId),
+            ),
+            const SizedBox(
+              height: 100,
+            ),
           ],
         ));
   }

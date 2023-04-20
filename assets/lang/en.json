@@ -136,6 +136,7 @@
   "loading": "Loading...",
   "please_wait": "Please wait!",
   "success": "Success",
+  "posted": "Posted",
   "error": "Error",
   "are_you_sure": "Are you sure?",
   "information": "Information",
@@ -319,6 +320,8 @@
   "story_added": "Added",
   "story_added_info": "Message is added to the board",
   "story_add_double_tap": "Double Tap Message to Share",
+  "story_comment": "Reply to board",
+  "story_comment_sucess": "Reply sent",
   "story_enter_title": "Enter a story title",
   "add_to_new_storyboard": "Add to a new board",
   "add_to_exist_storyboard": "Add to existing board",
@@ -327,5 +330,6 @@
   "story_nothing": "No boards",
   "story_publishing": "Your story is publishing...",
   "story_success": "Your board is published!",
-  "story_sure_delete": "Are you sure you want to delete from the board?"
+  "story_sure_delete": "Are you sure you want to delete from the board?",
+  "story_read_more": "Read more..."
 }

@@ -229,6 +229,7 @@ const String STORY_SCENE = "scene";
 const String STORY_SCENE_SEQ = "sequence_num";
 const String STORY_SCENE_ID = "sceneId";
 const String STORY = "story";
+const String STORY_COMMENT = "comment";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
