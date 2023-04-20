@@ -1,8 +1,11 @@
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:like_button/like_button.dart';
 
 class StoryStatsAction extends StatefulWidget {
   final Storyboard story;
@@ -26,22 +29,30 @@ class _StoryStatsActionState extends State<StoryStatsAction> {
     _i18n = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
 
-    return Row(
-      children: [
-        Text(
-          "343 Views",
-          style: Theme.of(context).textTheme.labelSmall,
-          textAlign: TextAlign.left,
-        ),
-        const SizedBox(
-          width: 20,
-        ),
-        Text(
-          "53 Likes",
-          style: Theme.of(context).textTheme.labelSmall,
-          textAlign: TextAlign.left,
-        ),
-      ],
-    );
+    return Padding(
+        padding: const EdgeInsets.only(left: 10, right: 10),
+        child: Row(
+          children: [
+            Text(
+              "343 Views",
+              style: Theme.of(context).textTheme.labelMedium,
+              textAlign: TextAlign.left,
+            ),
+            const Spacer(),
+            LikeButton(
+              bubblesColor: BubblesColor(
+                dotPrimaryColor: APP_ACCENT_COLOR,
+                dotSecondaryColor: Theme.of(context).primaryColor,
+              ),
+              likeBuilder: (bool isLiked) {
+                return Icon(
+                  isLiked ? Icons.favorite : Icons.favorite_border,
+                  color: isLiked ? APP_ACCENT_COLOR : Colors.grey,
+                );
+              },
+              likeCount: 10,
+            )
+          ],
+        ));
   }
 }

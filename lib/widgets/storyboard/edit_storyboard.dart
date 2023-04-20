@@ -40,7 +40,7 @@ class _EditStoryState extends State<EditStory> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("storyboard_edit"),
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,

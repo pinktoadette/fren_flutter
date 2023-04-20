@@ -51,8 +51,10 @@ class _ListCommentsState extends State<ListComments> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
+
     return SizedBox(
-        height: 200,
+        height: height,
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
@@ -60,9 +62,22 @@ class _ListCommentsState extends State<ListComments> {
             // [transitionDuration] has a default value of 250 milliseconds.
             transitionDuration: const Duration(milliseconds: 500),
             itemBuilder: (context, item, index) {
-              return Text(item["comment"]);
+              return _rowGenerator(item);
             },
           ),
+        ));
+  }
+
+  Widget _rowGenerator(dynamic item) {
+    return Padding(
+        padding: const EdgeInsets.all(15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(item["user"]["username"]),
+            Text(item["comment"]),
+            const Divider()
+          ],
         ));
   }
 }

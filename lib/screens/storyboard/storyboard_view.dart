@@ -42,7 +42,7 @@ class _StoryboardViewState extends State<StoryboardView> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("storyboard"),
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.bodyLarge,
           ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,
@@ -61,16 +61,12 @@ class _StoryboardViewState extends State<StoryboardView> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          TimelineHeader(
-                              showAvatar: true,
-                              userId: widget.story.createdBy.userId,
-                              photoUrl: widget.story.createdBy.photoUrl,
-                              username: widget.story.createdBy.username),
+                          Padding(
+                              padding: const EdgeInsets.only(left: 15),
+                              child: TimelineHeader(
+                                  showAvatar: true,
+                                  user: widget.story.createdBy)),
                           StoryView(story: widget.story),
-                          Container(
-                            color: Colors.blue,
-                            height: height,
-                          ),
                           StoryStatsAction(story: widget.story),
                           ListComments(storyboardId: widget.story.storyboardId),
                         ])),

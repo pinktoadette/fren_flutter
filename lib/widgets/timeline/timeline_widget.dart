@@ -91,10 +91,7 @@ class _TimelineWidget extends State<Timeline> {
                     leading: AvatarInitials(
                         photoUrl: _timelines[index]["createdBy"]["photoUrl"],
                         username: _timelines[index]["createdBy"]["username"]),
-                    title: TimelineHeader(
-                        photoUrl: _timelines[index]["createdBy"]["photoUrl"],
-                        username: _timelines[index]["createdBy"]["username"],
-                        userId: _timelines[index]["createdBy"]["userId"]),
+                    title: TimelineHeader(user: _timelines[index]["createdBy"]),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
