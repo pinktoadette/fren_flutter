@@ -30,7 +30,7 @@ class _PreviewStoryState extends State<PreviewStory> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("storyboard_preview"),
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,
@@ -39,6 +39,19 @@ class _PreviewStoryState extends State<PreviewStory> {
             },
           ),
         ),
-        body: SizedBox(height: height, child: StoryView(story: widget.story)));
+        body: SingleChildScrollView(
+            physics: const ScrollPhysics(),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    widget.story.title,
+                    style: Theme.of(context).textTheme.headlineMedium,
+                    textAlign: TextAlign.left,
+                  ),
+                  StoryView(story: widget.story)
+                ])));
   }
 }

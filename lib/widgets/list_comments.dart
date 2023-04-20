@@ -51,16 +51,18 @@ class _ListCommentsState extends State<ListComments> {
 
   @override
   Widget build(BuildContext context) {
-    return PagedListView<int, dynamic>(
-      pagingController: _pagingController,
-      builderDelegate: PagedChildBuilderDelegate<dynamic>(
-        animateTransitions: true,
-        // [transitionDuration] has a default value of 250 milliseconds.
-        transitionDuration: const Duration(milliseconds: 500),
-        itemBuilder: (context, item, index) {
-          return item;
-        },
-      ),
-    );
+    return SizedBox(
+        height: 200,
+        child: PagedListView<int, dynamic>(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+            animateTransitions: true,
+            // [transitionDuration] has a default value of 250 milliseconds.
+            transitionDuration: const Duration(milliseconds: 500),
+            itemBuilder: (context, item, index) {
+              return Text(item["comment"]);
+            },
+          ),
+        ));
   }
 }

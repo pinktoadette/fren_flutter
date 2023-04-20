@@ -142,9 +142,19 @@ class _MyStoriesState extends State<MyStories> {
                 minChildSize: 0.75,
                 builder: (context, scrollController) => SingleChildScrollView(
                   controller: scrollController,
-                  child: SizedBox(
-                    height: height,
-                    child: StoryView(story: story),
+                  physics: const ScrollPhysics(),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        story.title,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        textAlign: TextAlign.left,
+                      ),
+                      StoryView(story: story),
+                    ],
                   ),
                 ),
               )));

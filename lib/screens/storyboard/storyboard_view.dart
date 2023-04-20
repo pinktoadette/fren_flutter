@@ -3,8 +3,10 @@ import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/widgets/list_comments.dart';
 import 'package:fren_app/widgets/storyboard/story_stats_action.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
+import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -40,7 +42,7 @@ class _StoryboardViewState extends State<StoryboardView> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("storyboard"),
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineSmall,
           ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,
@@ -49,18 +51,35 @@ class _StoryboardViewState extends State<StoryboardView> {
             },
           ),
         ),
-        body: Stack(
-          alignment: AlignmentDirectional.bottomCenter,
-          // overflow: Overflow.visible,
-          children: [
-            StoryView(story: widget.story),
-            Positioned(
-              bottom: 0,
-              right: 5,
-              child: _commentStory(),
-            ),
-          ],
-        ));
+        body: SizedBox(
+            height: height,
+            child: Stack(
+              children: [
+                SingleChildScrollView(
+                    physics: const ScrollPhysics(),
+                    child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          TimelineHeader(
+                              showAvatar: true,
+                              userId: widget.story.createdBy.userId,
+                              photoUrl: widget.story.createdBy.photoUrl,
+                              username: widget.story.createdBy.username),
+                          StoryView(story: widget.story),
+                          Container(
+                            color: Colors.blue,
+                            height: height,
+                          ),
+                          StoryStatsAction(story: widget.story),
+                          ListComments(storyboardId: widget.story.storyboardId),
+                        ])),
+                Positioned(
+                  bottom: 0,
+                  child: _commentStory(),
+                ),
+              ],
+            )));
   }
 
   Widget _commentStory() {
