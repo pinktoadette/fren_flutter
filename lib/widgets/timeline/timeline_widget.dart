@@ -97,7 +97,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _timelines[index].comment,
+                          _timelines[index].text,
                           style: Theme.of(context).textTheme.headlineSmall,
                           textAlign: TextAlign.left,
                         ),

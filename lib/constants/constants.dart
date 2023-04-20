@@ -231,7 +231,9 @@ const String STORY_SCENE_ID = "sceneId";
 const String STORY = "story";
 const String STORY_COMMENT = "comment";
 const String STORY_POST_TYPE = "postType";
+const String STORY_POST_TEXT = "text";
 const String STORY_POST_SUB_TEXT = "subText";
+const String TIMELINE_ID = "id";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id

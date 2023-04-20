@@ -33,7 +33,7 @@ class TimelineHeader extends StatelessWidget {
               Column(
                 children: [
                   if (showAvatar == true) Text(user.username.toUpperCase()),
-                  Text("@$user.username")
+                  Text("@${user.username}")
                 ],
               )
             ]));
