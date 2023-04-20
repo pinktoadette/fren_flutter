@@ -1,4 +1,5 @@
 import 'package:fren_app/api/machi/story_api.dart';
+import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
@@ -36,7 +37,7 @@ class _ListCommentsState extends State<ListComments> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      final newItems =
+      List<StoryComment> newItems =
           await _storyApi.getComments(pageKey, _pageSize, widget.storyboardId);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
@@ -69,14 +70,15 @@ class _ListCommentsState extends State<ListComments> {
         ));
   }
 
-  Widget _rowGenerator(dynamic item) {
+  Widget _rowGenerator(StoryComment item) {
     return Padding(
         padding: const EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TimelineHeader(showAvatar: true, user: item["user"]),
-            Text(item["comment"]),
+            TimelineHeader(showAvatar: true, user: item.user),
+            Text(item.comment),
+            const SizedBox(height: 20),
             const Divider()
           ],
         ));

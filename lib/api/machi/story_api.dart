@@ -149,14 +149,20 @@ class StoryApi {
     }
   }
 
-  Future<dynamic> getComments(int page, int limit, String storyId) async {
+  Future<List<StoryComment>> getComments(
+      int page, int limit, String storyId) async {
     try {
       String url = '${baseUri}storyboard/comment?storyId=$storyId';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url, data: {LIMIT: limit, "offset": page});
 
-      return response.data;
+      List<StoryComment> comments = [];
+      for (var res in response.data) {
+        StoryComment c = StoryComment.fromDocument(res);
+        comments.add(c);
+      }
+      return comments;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

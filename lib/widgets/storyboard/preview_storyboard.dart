@@ -30,7 +30,7 @@ class _PreviewStoryState extends State<PreviewStory> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("storyboard_preview"),
-            style: Theme.of(context).textTheme.headlineSmall,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,
