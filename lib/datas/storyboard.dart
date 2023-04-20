@@ -3,6 +3,19 @@ import 'package:fren_app/constants/constants.dart';
 
 enum StoryStatus { UNPUBLISHED, PUBLISHED, BLOCKED }
 
+class ShortStoryboard {
+  final String storyboardId;
+  final String title;
+  ShortStoryboard({
+    required this.storyboardId,
+    required this.title,
+  });
+  factory ShortStoryboard.fromDocument(Map<String, dynamic> doc) {
+    return ShortStoryboard(
+        storyboardId: doc[STORY_ID], title: doc[STORY_TITLE]);
+  }
+}
+
 class StoryUser {
   final String userId;
   final String photoUrl;

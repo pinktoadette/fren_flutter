@@ -1,6 +1,7 @@
 import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ListComments extends StatefulWidget {
@@ -54,7 +55,7 @@ class _ListCommentsState extends State<ListComments> {
     double height = MediaQuery.of(context).size.height;
 
     return SizedBox(
-        height: height,
+        height: height * 0.75,
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
@@ -74,7 +75,7 @@ class _ListCommentsState extends State<ListComments> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(item["user"]["username"]),
+            TimelineHeader(showAvatar: true, user: item["user"]),
             Text(item["comment"]),
             const Divider()
           ],

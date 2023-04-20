@@ -7,6 +7,7 @@ import 'package:fren_app/api/machi/timeline.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
+import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
@@ -16,14 +17,14 @@ import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 
-class Timeline extends StatefulWidget {
-  const Timeline({Key? key}) : super(key: key);
+class TimelineWidget extends StatefulWidget {
+  const TimelineWidget({Key? key}) : super(key: key);
 
   @override
-  _TimelineWidget createState() => _TimelineWidget();
+  _TimelineWidgetState createState() => _TimelineWidgetState();
 }
 
-class _TimelineWidget extends State<Timeline> {
+class _TimelineWidgetState extends State<TimelineWidget> {
   final _botApi = BotApi();
   final _storyApi = StoryApi();
   final _timelineApi = TimelineApi();
@@ -31,11 +32,11 @@ class _TimelineWidget extends State<Timeline> {
 
   /// timeline items
   int _offset = 0;
-  List _timelines = [];
+  List<Timeline> _timelines = [];
 
   Future<void> _getTimeline() async {
     int limit = 30;
-    List timeline = await _timelineApi.getTimeline(limit, _offset);
+    List<Timeline> timeline = await _timelineApi.getTimeline(limit, _offset);
     setState(() {
       _timelines = timeline;
       _offset = _offset + 1;
@@ -89,14 +90,14 @@ class _TimelineWidget extends State<Timeline> {
                     minLeadingWidth: 15,
                     isThreeLine: true,
                     leading: AvatarInitials(
-                        photoUrl: _timelines[index]["createdBy"]["photoUrl"],
-                        username: _timelines[index]["createdBy"]["username"]),
-                    title: TimelineHeader(user: _timelines[index]["createdBy"]),
+                        photoUrl: _timelines[index].user.photoUrl,
+                        username: _timelines[index].user.username),
+                    title: TimelineHeader(user: _timelines[index].user),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          _timelines[index]["text"],
+                          _timelines[index].comment,
                           style: Theme.of(context).textTheme.headlineSmall,
                           textAlign: TextAlign.left,
                         ),
@@ -129,19 +130,19 @@ class _TimelineWidget extends State<Timeline> {
     }
   }
 
-  Widget _showTitle(dynamic post) {
+  Widget _showTitle(Timeline post) {
     double width = MediaQuery.of(context).size.width;
-    switch (post["postType"]) {
+    switch (post.postType) {
       case "board":
-        if (post["subText"].isNotEmpty) {
+        if (post.subText.isNotEmpty) {
           Widget hasMore = const SizedBox.shrink();
-          if (post["subText"].length > 1) {
+          if (post.subText.length > 1) {
             hasMore = Text(_i18n.translate("story_read_more"));
           }
 
           return InkWell(
               onTap: () async {
-                Storyboard story = await _storyApi.getStoryById(post["id"]);
+                Storyboard story = await _storyApi.getStoryById(post.id);
                 Get.to(StoryboardView(
                   story: story,
                 ));
@@ -152,17 +153,16 @@ class _TimelineWidget extends State<Timeline> {
                   children: [
                     SizedBox(
                         width: width - 100,
-                        child: post["subText"][0]["messages"]["type"] == "image"
+                        child: post.subText[0]["messages"]["type"] == "image"
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
                                 child: Image.network(
-                                  post["subText"][0]["messages"]["image"]
-                                      ["uri"],
+                                  post.subText[0]["messages"]["image"]["uri"],
                                   fit: BoxFit.cover,
                                 ),
                               )
                             : Text(
-                                post["subText"][0]["messages"]["text"],
+                                post.subText[0]["messages"]["text"],
                               )),
                     hasMore,
                   ]));
@@ -174,7 +174,7 @@ class _TimelineWidget extends State<Timeline> {
             //   Bot bot = await _botApi.getBot(botId: )
             //   _showBotInfo(bot);
             // },
-            child: Text(post["subText"]));
+            child: Text(post.subText));
       default:
         return const SizedBox.shrink();
     }

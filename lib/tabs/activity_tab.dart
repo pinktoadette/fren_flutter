@@ -64,7 +64,7 @@ class _ActivityTabState extends State<ActivityTab> {
             child: Column(
           children: [
             SubscriptionCard(),
-            Timeline(),
+            TimelineWidget(),
           ],
         )),
       );
