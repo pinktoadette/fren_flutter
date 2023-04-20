@@ -170,10 +170,10 @@ class _TimelineWidgetState extends State<TimelineWidget> {
         return const SizedBox.shrink();
       case "machi":
         return InkWell(
-            // onTap: () async {
-            //   Bot bot = await _botApi.getBot(botId: )
-            //   _showBotInfo(bot);
-            // },
+            onTap: () async {
+              Bot bot = await _botApi.getBot(botId: post.id);
+              _showBotInfo(bot);
+            },
             child: Text(post.subText));
       default:
         return const SizedBox.shrink();
