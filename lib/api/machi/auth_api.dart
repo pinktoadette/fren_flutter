@@ -3,12 +3,13 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/constants/secrets.dart';
 
 /// Sets headers
 class AuthApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final myKey = '3e27dcb9-5c20-4658-abd2-fe333ae7721a';
+  final myKey = MACHI_KEY;
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 

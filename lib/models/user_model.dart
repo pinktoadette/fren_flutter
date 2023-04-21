@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fren_app/api/machi/user_api.dart';
+import 'package:fren_app/constants/secrets.dart';
 import 'package:fren_app/controller/initialize_all.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/date_now.dart';
@@ -12,12 +14,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
+import 'package:fren_app/widgets/third_party_signin/github_signin.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:place_picker/place_picker.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:http/http.dart' as http;
 
 class UserModel extends Model {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -345,6 +349,48 @@ class UserModel extends Model {
           .then((fire_auth.UserCredential userCredential) {
         /// Auth user account
         checkUserAccount();
+      }).catchError((error) {
+        // Callback function
+        onError();
+      });
+    } catch (e) {
+      return;
+    }
+  }
+
+  /// Sign in with GitHub
+  Future<void> signInWithGitHub(String code,
+      {required Function(fire_auth.UserCredential) checkUserAccount,
+      required VoidCallback onError}) async {
+    Uri url = Uri(
+        scheme: 'https', host: 'github.com', path: '/login/oauth/access_token');
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json"
+        },
+        body: jsonEncode(GitHubLoginRequest(
+          clientId: GITHUB_CLIENT_ID,
+          clientSecret: GITHUB_CLIENT_SECRET,
+          code: code,
+        )),
+      );
+
+      GitHubLoginResponse loginResponse =
+          GitHubLoginResponse.fromJson(json.decode(response.body));
+
+      final fire_auth.AuthCredential credential =
+          fire_auth.GithubAuthProvider.credential(loginResponse.accessToken);
+
+      /// Try to sign in with provided credential
+      await _firebaseAuth
+          .signInWithCredential(credential)
+          .then((fire_auth.UserCredential userCredential) {
+        /// Auth user account
+        checkUserAccount(userCredential);
       }).catchError((error) {
         // Callback function
         onError();
