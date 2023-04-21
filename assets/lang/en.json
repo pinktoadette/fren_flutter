@@ -264,6 +264,7 @@
   "create_bot_success": "Your machi is now published!",
   "manage_bot": "Manage Published Models",
   "media_attached": "Media attached",
+  "login_from_desktop": "Login from Desktop",
   "create_bot_des": "Add models by signing in your GitHub account and earn. \n\nYour GitHub account must be linked to hugging face dataset.",
   "bot_name": "Machi name",
   "bot_name_hint": "Frankie",

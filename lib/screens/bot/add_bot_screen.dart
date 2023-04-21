@@ -3,9 +3,7 @@ import 'package:flutter_signin_button/button_view.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/constants/secrets.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/animations/desktop.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -28,11 +26,6 @@ class _AddBotState extends State<AddBotScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 
@@ -46,32 +39,37 @@ class _AddBotState extends State<AddBotScreen> {
           ),
         ),
         body: Center(
-            child: Column(children: [
-          Padding(
-            padding: const EdgeInsets.only(top: 10),
-            child: Text(_i18n.translate('create_bot'),
-                style: Theme.of(context).textTheme.displayLarge,
-                textAlign: TextAlign.left),
-          ),
-          const DesktopAnimation(),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-            child: Text(_i18n.translate('create_bot_des'),
-                style: Theme.of(context).textTheme.bodyLarge,
-                textAlign: TextAlign.left),
-          ),
-          const Spacer(),
-          SignInButton(
-            text: "Login in from Desktop",
-            Buttons.GitHub,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20.0),
-            ),
-            onPressed: () {
-              null;
-            },
-          )
-        ])));
+            child: Padding(
+                padding: EdgeInsets.all(50),
+                child: Column(children: [
+                  const SizedBox(
+                    height: 40,
+                  ),
+                  const DesktopAnimation(),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 10),
+                    child: Text(_i18n.translate('create_bot'),
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        textAlign: TextAlign.left),
+                  ),
+                  Text(_i18n.translate('create_bot_des'),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                      textAlign: TextAlign.left),
+                  const Spacer(),
+                  SignInButton(
+                    text: _i18n.translate("login_from_desktop"),
+                    Buttons.GitHub,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    onPressed: () {
+                      null;
+                    },
+                  ),
+                  const SizedBox(
+                    height: 100,
+                  )
+                ]))));
   }
 
   void onClickGitHubLoginButton() async {
