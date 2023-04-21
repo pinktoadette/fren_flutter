@@ -80,7 +80,7 @@ class _PublishStoryState extends State<PublishStory> {
                   children: [
                     Padding(
                         padding: const EdgeInsets.only(bottom: 50),
-                        child: Fireworks()),
+                        child: FireworksAnimation()),
                     Frankloader(),
                   ],
                 ),

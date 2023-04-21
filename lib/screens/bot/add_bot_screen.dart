@@ -4,12 +4,11 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/constants/secrets.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/widgets/animations/desktop.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:async';
-import 'package:uni_links/uni_links.dart';
 
 class AddBotScreen extends StatefulWidget {
   const AddBotScreen({Key? key}) : super(key: key);
@@ -19,47 +18,18 @@ class AddBotScreen extends StatefulWidget {
 }
 
 class _AddBotState extends State<AddBotScreen> {
-  late StreamSubscription _subs;
   late AppLocalizations _i18n;
 
   bool loader = false;
 
   @override
   void initState() {
-    _initDeepLinkListener();
     super.initState();
   }
 
   @override
   void dispose() {
-    _disposeDeepLinkListener();
     super.dispose();
-  }
-
-  void _initDeepLinkListener() async {
-    _subs = linkStream.listen((link) {
-      if (link != null) {
-        _checkDeepLink(link);
-      }
-    }, cancelOnError: true);
-  }
-
-  void _checkDeepLink(String link) {
-    String code = link.substring(link.indexOf(RegExp('code=')) + 5);
-    UserModel().signInWithGitHub(code, checkUserAccount: (user) {
-      print(user);
-    }, onError: () {
-      Get.snackbar(
-        'Error',
-        'Unable to login to Github',
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    });
-  }
-
-  void _disposeDeepLinkListener() {
-    _subs.cancel();
   }
 
   @override
@@ -80,23 +50,25 @@ class _AddBotState extends State<AddBotScreen> {
           Padding(
             padding: const EdgeInsets.only(top: 10),
             child: Text(_i18n.translate('create_bot'),
-                style: Theme.of(context).textTheme.headlineSmall,
+                style: Theme.of(context).textTheme.displayLarge,
                 textAlign: TextAlign.left),
           ),
-          Frankloader(),
+          const DesktopAnimation(),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
             child: Text(_i18n.translate('create_bot_des'),
                 style: Theme.of(context).textTheme.bodyLarge,
                 textAlign: TextAlign.left),
           ),
+          const Spacer(),
           SignInButton(
+            text: "Login in from Desktop",
             Buttons.GitHub,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20.0),
             ),
             onPressed: () {
-              onClickGitHubLoginButton();
+              null;
             },
           )
         ])));
