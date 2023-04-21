@@ -9,6 +9,7 @@ class Timeline {
   final int createdAt;
   final int updatedAt;
   final StoryUser user;
+  final String? photoUrl;
 
   Timeline(
       {required this.id,
@@ -17,7 +18,8 @@ class Timeline {
       required this.subText,
       required this.createdAt,
       required this.updatedAt,
-      required this.user});
+      required this.user,
+      required this.photoUrl});
 
   factory Timeline.fromJson(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
@@ -28,6 +30,7 @@ class Timeline {
         text: doc[STORY_POST_TEXT],
         subText: doc[STORY_POST_SUB_TEXT],
         user: user,
+        photoUrl: doc[BOT_PROFILE_PHOTO] ?? "",
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT]);
   }

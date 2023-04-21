@@ -89,10 +89,8 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               itemBuilder: (context, index) => ListTile(
                     minLeadingWidth: 15,
                     isThreeLine: true,
-                    leading: AvatarInitials(
-                        photoUrl: _timelines[index].user.photoUrl,
-                        username: _timelines[index].user.username),
-                    title: TimelineHeader(user: _timelines[index].user),
+                    title: TimelineHeader(
+                        showAvatar: true, user: _timelines[index].user),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -152,7 +150,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     SizedBox(
-                        width: width - 100,
+                        width: width,
                         child: post.subText[0]["messages"]["type"] == "image"
                             ? ClipRRect(
                                 borderRadius: BorderRadius.circular(10.0),
@@ -170,11 +168,27 @@ class _TimelineWidgetState extends State<TimelineWidget> {
         return const SizedBox.shrink();
       case "machi":
         return InkWell(
-            onTap: () async {
-              Bot bot = await _botApi.getBot(botId: post.id);
-              _showBotInfo(bot);
-            },
-            child: Text(post.subText));
+          onTap: () async {
+            Bot bot = await _botApi.getBot(botId: post.id);
+            _showBotInfo(bot);
+          },
+          child: Align(
+              alignment: Alignment.center,
+              child: Column(children: [
+                Text(post.subText),
+                ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: post.photoUrl != ""
+                        ? Image.network(
+                            post.photoUrl!,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.asset(
+                            "assets/images/frank.png",
+                            fit: BoxFit.cover,
+                          ))
+              ])),
+        );
       default:
         return const SizedBox.shrink();
     }

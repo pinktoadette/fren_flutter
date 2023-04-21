@@ -81,7 +81,6 @@ class _AddBotState extends State<AddBotScreen> {
           'client_id': GITHUB_CLIENT_ID,
           'scope': 'public_repo'
         });
-    print(url);
     if (await canLaunchUrl(url)) {
       await launchUrl(
         url,

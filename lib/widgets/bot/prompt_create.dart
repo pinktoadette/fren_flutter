@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
@@ -6,9 +8,12 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
+import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:get/get.dart';
 
@@ -29,6 +34,9 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _nameController = TextEditingController();
   final _aboutController = TextEditingController();
   final _promptController = TextEditingController();
+  late ProgressDialog _pr;
+  late AppLocalizations _i18n;
+  File? _uploadPath;
 
   List<Bot> _listBot = [];
 
@@ -53,8 +61,9 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
+    _pr = ProgressDialog(context, isDismissible: false);
 
     if (_listBot == null) {
       return Frankloader();
@@ -79,7 +88,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       infoDialog(context,
                           title: "Join the Waitlist",
                           message:
-                              "Domain knowledge creation. \nConnect your Github, link your account to Hugging Face. Let others contribute to your data or monetize your domain knowledge.");
+                              "Connect your Github, link your account to Replicate.");
                     },
                     child: Text(
                       "Advance",
@@ -98,7 +107,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SizedBox(
-                        width: width * 0.6,
+                        width: width * 0.7,
                         height: 80,
                         child: TextFormField(
                           maxLength: 40,
@@ -125,17 +134,46 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                           },
                         ),
                       ),
-                      SizedBox(
-                        width: width * 0.25,
-                        child: CircleAvatar(
-                          radius: 30,
-                          backgroundColor:
-                              Theme.of(context).colorScheme.primary,
-                          child: Text(_nameController.text.length > 1
-                              ? _nameController.text.substring(0, 1)
-                              : "MA"),
+                      GestureDetector(
+                        child: Center(
+                          child: Stack(
+                            children: <Widget>[
+                              CircleAvatar(
+                                radius: 40,
+                                foregroundImage: _uploadPath != null
+                                    ? FileImage(_uploadPath!)
+                                    : null,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                child: Text(_nameController.text.length > 1
+                                    ? _nameController.text.substring(0, 1)
+                                    : "MA"),
+                              ),
+
+                              /// Edit icon
+                              Positioned(
+                                child: CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.background,
+                                  child: Icon(
+                                    Icons.edit,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 12,
+                                  ),
+                                ),
+                                right: 0,
+                                bottom: 0,
+                              ),
+                            ],
+                          ),
                         ),
-                      ),
+                        onTap: () async {
+                          /// Update profile image
+                          _selectImage(path: 'machi');
+                        },
+                      )
                     ],
                   ),
                   const SizedBox(height: 30),
@@ -148,10 +186,11 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                         _counter(context, currentLength, maxLength),
                     controller: _aboutController,
                     decoration: InputDecoration(
-                      labelText: _i18n.translate("about"),
-                      hintText: _i18n.translate("bot_about_hint"),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
+                        labelText: _i18n.translate("about"),
+                        hintText: _i18n.translate("bot_about_hint"),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.tertiary)),
                     maxLines: 2,
                     validator: (bio) {
                       if (bio?.isEmpty ?? false) {
@@ -172,6 +211,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                     decoration: InputDecoration(
                       labelText: _i18n.translate("bot_prompt"),
                       hintText: _i18n.translate("bot_prompt_hint"),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
                     maxLines: 10,
@@ -215,13 +256,22 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     setState(() {
       errorMessage = '';
     });
+    _pr.show(_i18n.translate("processing"));
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;
     String about = _aboutController.text;
     String prompt = _promptController.text;
+
+    String photoUrl = await uploadFile(
+        file: _uploadPath!, category: 'machi', categoryId: name);
+
     try {
       Bot bot = await _botApi.createBot(
-          name: name, modelType: modelType, about: about, prompt: prompt);
+          name: name,
+          modelType: modelType,
+          about: about,
+          prompt: prompt,
+          photoUrl: photoUrl);
       botController.bot = bot;
       await _chatroomApi.tryBot();
       Navigator.of(context).pop();
@@ -230,9 +280,14 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
         "index": chatController.roomlist.length - 1
       });
     } catch (error) {
-      setState(() {
-        errorMessage = error.toString();
-      });
+      Get.snackbar(
+        'Error',
+        _i18n.translate("an_error_occurred_while_updating_your_profile"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    } finally {
+      _pr.hide();
     }
   }
 
@@ -246,5 +301,20 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
             style: Theme.of(context).textTheme.labelSmall,
           )),
     );
+  }
+
+  void _selectImage({required String path}) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) => ImageSourceSheet(
+              onImageSelected: (image) async {
+                if (image != null) {
+                  setState(() {
+                    _uploadPath = image;
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+            ));
   }
 }

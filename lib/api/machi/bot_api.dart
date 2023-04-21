@@ -25,6 +25,7 @@ class BotApi {
       price,
       priceUnit,
       model,
+      photoUrl,
       required modelType,
       required about}) async {
     String url = '${baseUri}bot/create_machi';
@@ -43,6 +44,7 @@ class BotApi {
       BOT_PRICE: price ?? 0,
       BOT_PRICE_UNIT: priceUnit,
       BOT_ACTIVE: false,
+      BOT_PROFILE_PHOTO: photoUrl,
       BOT_ADMIN_STATUS: 'pending',
       CREATED_AT: getDateTimeEpoch(),
       UPDATED_AT: getDateTimeEpoch(),

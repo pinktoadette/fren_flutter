@@ -34,7 +34,7 @@ class _ListMyBotWidget extends State<ListMyBot> {
   @override
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
-
+    double width = MediaQuery.of(context).size.width;
     if (_listBot == null) {
       return Frankloader();
     } else if (_listBot.isEmpty) {
@@ -42,92 +42,65 @@ class _ListMyBotWidget extends State<ListMyBot> {
       return NoData(text: _i18n.translate("no_match"));
     } else {
       return Container(
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
-          child: ListView.builder(
-              physics: const ClampingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: _listBot.length,
-              itemBuilder: (context, index) => InkWell(
-                    child: Column(
-                      children: [
-                        Card(
-                            clipBehavior: Clip.antiAlias,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(28)),
-                            child: SizedBox(
-                              height: 150,
-                              child: Column(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: <Widget>[
-                                    ListTile(
-                                        onTap: () {
-                                          _showBotInfo(_listBot[index]);
-                                        },
-                                        // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                        minLeadingWidth: 15,
-                                        leading: _listBot[index].profilePhoto !=
-                                                ""
-                                            ? CircleAvatar(
-                                                backgroundColor:
-                                                    Theme.of(context)
-                                                        .primaryColor,
-                                                backgroundImage: NetworkImage(
-                                                  _listBot[index]
-                                                          .profilePhoto ??
-                                                      "",
-                                                ))
-                                            : const Icon(Iconsax.box_tick),
-                                        dense: true,
-                                        focusColor: Theme.of(context)
-                                            .secondaryHeaderColor,
-                                        title: Text(
-                                            "${_listBot[index].name} - ${_listBot[index].domain}"),
-                                        subtitle: Align(
-                                            alignment: Alignment.topLeft,
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Text(_listBot[index].subdomain),
-                                                Column(
-                                                  children: [
-                                                    Row(
-                                                      children: [
-                                                        Flexible(
-                                                            child: Text(_listBot[
-                                                                            index]
-                                                                        .about
-                                                                        .length >
-                                                                    80
-                                                                ? _listBot[index]
-                                                                        .about
-                                                                        .substring(
-                                                                            0,
-                                                                            80) +
-                                                                    '...'
-                                                                : _listBot[
-                                                                        index]
-                                                                    .about))
-                                                      ],
-                                                    ),
-                                                    const Row(
-                                                      children: [
-                                                        SizedBox(height: 50),
-                                                        Text("Downloads"),
-                                                        Spacer(),
-                                                        Text("Contributors")
-                                                      ],
-                                                    )
-                                                  ],
-                                                ),
-                                              ],
-                                            ))),
-                                  ]),
-                            ))
-                      ],
-                    ),
-                  )));
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        child: ListView.builder(
+            physics: const ClampingScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: _listBot.length,
+            itemBuilder: (context, index) => InkWell(
+                  onTap: () {},
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                            SizedBox(
+                                width: width * 0.35,
+                                child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                    child: _listBot[index].profilePhoto != ""
+                                        ? Image.network(
+                                            _listBot[index].profilePhoto!,
+                                            fit: BoxFit.cover,
+                                          )
+                                        : Frankloader()))
+                          ])),
+                      SizedBox(
+                          width: width * 0.6,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                      "${_listBot[index].name} - ${_listBot[index].domain}"),
+                                  Text(
+                                    _listBot[index].about,
+                                    overflow: TextOverflow.ellipsis,
+                                  )
+                                  // Flexible(
+                                  //     fit: FlexFit.tight,
+                                  //     child: Text(
+                                  //       _listBot[index].about,
+                                  //       overflow: TextOverflow.ellipsis,
+                                  //     )),
+                                ],
+                              ),
+                            ],
+                          )),
+                      const Divider()
+                    ],
+                  ),
+                )),
+      );
     }
   }
 

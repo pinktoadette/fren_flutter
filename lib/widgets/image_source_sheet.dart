@@ -17,6 +17,7 @@ class ImageSourceSheet extends StatelessWidget {
   final picker = ImagePicker();
 
   bool? includeFile;
+  bool? useAIGenerator;
 
   Future<void> selectedImage(BuildContext context, File? image) async {
     // init i18n
@@ -136,6 +137,15 @@ class ImageSourceSheet extends StatelessWidget {
                 child: TextButton.icon(
                   icon: const Icon(Iconsax.folder_open, color: Colors.grey),
                   label: Text(i18n.translate("file"),
+                      style: const TextStyle(fontSize: 16)),
+                  onPressed: null,
+                )),
+          if (useAIGenerator == true)
+            Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextButton.icon(
+                  icon: const Icon(Iconsax.pen_add, color: Colors.grey),
+                  label: Text(i18n.translate("bot_generator"),
                       style: const TextStyle(fontSize: 16)),
                   onPressed: null,
                 )),
