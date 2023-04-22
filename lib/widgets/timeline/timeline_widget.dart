@@ -116,7 +116,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                                       isLiked ? APP_ACCENT_COLOR : Colors.grey,
                                 );
                               },
-                              likeCount: 10,
+                              likeCount: _timelines[index].likes,
                             )
                           ],
                         )

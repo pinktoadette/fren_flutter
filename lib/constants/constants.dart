@@ -235,6 +235,8 @@ const String STORY_POST_TEXT = "text";
 const String STORY_POST_SUB_TEXT = "subText";
 const String TIMELINE_ID = "id";
 
+const String ITEM_LIKES = "likes";
+
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
 const String ROOM_ID = "chatroomId";
