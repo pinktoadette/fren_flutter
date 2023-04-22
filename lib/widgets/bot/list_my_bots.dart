@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -41,91 +43,57 @@ class _ListMyBotWidget extends State<ListMyBot> {
       /// No match
       return NoData(text: _i18n.translate("no_match"));
     } else {
-      return Container(
-        margin: const EdgeInsets.symmetric(vertical: 5.0),
-        child: ListView.builder(
-            physics: const ClampingScrollPhysics(),
-            shrinkWrap: true,
-            scrollDirection: Axis.vertical,
-            itemCount: _listBot.length,
-            itemBuilder: (context, index) => InkWell(
-                  onTap: () {},
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                            SizedBox(
-                                width: width * 0.35,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    child: _listBot[index].profilePhoto != ""
-                                        ? Image.network(
-                                            _listBot[index].profilePhoto!,
-                                            fit: BoxFit.cover,
-                                          )
-                                        : Frankloader()))
-                          ])),
-                      SizedBox(
-                          width: width * 0.6,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                      "${_listBot[index].name} - ${_listBot[index].domain}"),
-                                  Text(
-                                    _listBot[index].about,
-                                    overflow: TextOverflow.ellipsis,
-                                  )
-                                  // Flexible(
-                                  //     fit: FlexFit.tight,
-                                  //     child: Text(
-                                  //       _listBot[index].about,
-                                  //       overflow: TextOverflow.ellipsis,
-                                  //     )),
-                                ],
-                              ),
-                            ],
-                          )),
-                      const Divider()
-                    ],
-                  ),
-                )),
-      );
-    }
-  }
-
-  void _showBotInfo(Bot bot) {
-    double height = MediaQuery.of(context).size.height;
-
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: max(height, 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              BotProfileCard(
-                bot: bot,
-                showPurchase: true,
-              )
-            ],
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(
+              _i18n.translate("start_chat_with"),
+              style: Theme.of(context).textTheme.bodyLarge,
+            ),
+            automaticallyImplyLeading: false,
           ),
-        ),
-      ),
-    );
+          body: ListView.separated(
+              separatorBuilder: (context, index) {
+                if ((index + 1) % 5 == 0) {
+                  return Container(
+                    height: 200,
+                    color: Theme.of(context).colorScheme.background,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Container(
+                        height: 150,
+                        width: width,
+                        color: Colors.yellow,
+                        child: const Text('ad placeholder'),
+                      ),
+                    ),
+                  );
+                } else {
+                  return const Divider();
+                }
+              },
+              physics: const ScrollPhysics(),
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: _listBot.length,
+              itemBuilder: (context, index) => ListTile(
+                    isThreeLine: true,
+                    leading: RoundedImage(
+                        width: width * 0.15,
+                        height: width * 0.15,
+                        icon: const Icon(Iconsax.box_add),
+                        photoUrl: _listBot[index].profilePhoto ?? ""),
+                    title: Text(
+                        "${_listBot[index].name} - ${_listBot[index].domain}"),
+                    subtitle: Flexible(
+                        child: Text(
+                      truncateText(50, _listBot[index].about),
+                      style: Theme.of(context).textTheme.labelSmall,
+                    )),
+                    trailing: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(_i18n.translate("chat")),
+                    ),
+                  )));
+    }
   }
 }
