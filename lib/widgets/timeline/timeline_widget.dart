@@ -9,12 +9,15 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
+import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:like_button/like_button.dart';
 
 class TimelineWidget extends StatefulWidget {
@@ -94,11 +97,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          _timelines[index].text,
-                          style: Theme.of(context).textTheme.headlineSmall,
-                          textAlign: TextAlign.left,
-                        ),
                         _showTitle(_timelines[index]),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
@@ -149,16 +147,20 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text(
+                      post.text,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                      textAlign: TextAlign.left,
+                    ),
                     SizedBox(
                         width: width,
                         child: post.subText[0]["messages"]["type"] == "image"
-                            ? ClipRRect(
-                                borderRadius: BorderRadius.circular(10.0),
-                                child: Image.network(
-                                  post.subText[0]["messages"]["image"]["uri"],
-                                  fit: BoxFit.cover,
-                                ),
-                              )
+                            ? RoundedImage(
+                                width: width * 0.15,
+                                height: width * 0.15,
+                                icon: const Icon(Iconsax.box_add),
+                                photoUrl: post.subText[0]["messages"]["image"]
+                                    ["uri"])
                             : Text(
                                 post.subText[0]["messages"]["text"],
                               )),
@@ -167,28 +169,34 @@ class _TimelineWidgetState extends State<TimelineWidget> {
         }
         return const SizedBox.shrink();
       case "machi":
-        return InkWell(
-          onTap: () async {
-            Bot bot = await _botApi.getBot(botId: post.id);
-            _showBotInfo(bot);
-          },
-          child: Align(
-              alignment: Alignment.center,
-              child: Column(children: [
-                Text(post.subText),
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(10.0),
-                    child: post.photoUrl != ""
-                        ? Image.network(
-                            post.photoUrl!,
-                            fit: BoxFit.cover,
-                          )
-                        : Image.asset(
-                            "assets/images/frank.png",
-                            fit: BoxFit.cover,
-                          ))
-              ])),
+        return ListTile(
+          dense: true,
+          minLeadingWidth: width * 0.15,
+          isThreeLine: true,
+          leading: RoundedImage(
+              width: width * 0.15,
+              height: width * 0.15,
+              icon: const Icon(Iconsax.box_add),
+              photoUrl: post.photoUrl ?? ""),
+          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+            Text(
+              post.text,
+              style: Theme.of(context).textTheme.headlineSmall,
+            ),
+          ]),
+          subtitle: Text(
+            truncateText(50, post.subText),
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+          trailing: ElevatedButton(
+            onPressed: () async {
+              Bot bot = await _botApi.getBot(botId: post.id);
+              _showBotInfo(bot);
+            },
+            child: Text(_i18n.translate("get")),
+          ),
         );
+
       default:
         return const SizedBox.shrink();
     }

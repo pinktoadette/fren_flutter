@@ -5,6 +5,7 @@ import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -155,9 +156,7 @@ class ConversationsTab extends StatelessWidget {
     switch (message["type"]) {
       case 'text':
         String text = message['text'];
-        return Flexible(
-            child:
-                Text(text.length > 100 ? "${text.substring(0, 90)}..." : text));
+        return Flexible(child: Text(truncateText(100, text)));
       case 'image':
         return SizedBox(
           child: Row(children: [

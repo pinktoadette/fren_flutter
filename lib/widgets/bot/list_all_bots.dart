@@ -1,12 +1,10 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/no_data.dart';
+
+import 'row_bot_info.dart';
 
 class ListAllBots extends StatefulWidget {
   const ListAllBots({Key? key}) : super(key: key);
@@ -67,122 +65,8 @@ class _ListAllBotWidget extends State<ListAllBots> {
                 }
               },
               itemCount: _listBot.length,
-              itemBuilder: (context, index) => InkWell(
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: itemHeight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: Column(
-                              children: [
-                                ListTile(
-                                    isThreeLine: true,
-                                    onTap: () {
-                                      _showBotInfo(_listBot[index]);
-                                    },
-                                    // contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
-                                    minLeadingWidth: 15,
-                                    leading: AvatarInitials(
-                                        photoUrl:
-                                            _listBot[index].profilePhoto ?? "",
-                                        username: _listBot[index].name),
-                                    focusColor:
-                                        Theme.of(context).secondaryHeaderColor,
-                                    title: Text(
-                                        "${_listBot[index].name} - ${_listBot[index].modelType.name}"),
-                                    subtitle: Align(
-                                        alignment: Alignment.topLeft,
-                                        child: Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(_listBot[index].subdomain),
-                                            Column(
-                                              children: [
-                                                Row(
-                                                  children: [
-                                                    Flexible(
-                                                        child: Text(_listBot[
-                                                                        index]
-                                                                    .about
-                                                                    .length >
-                                                                80
-                                                            ? _listBot[index]
-                                                                    .about
-                                                                    .substring(
-                                                                        0, 80) +
-                                                                '...'
-                                                            : _listBot[index]
-                                                                .about))
-                                                  ],
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ))),
-                                const Spacer(),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 20, bottom: 10),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(
-                                        _i18n.translate("bot_owner"),
-                                        textAlign: TextAlign.left,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall,
-                                      ),
-                                      const SizedBox(
-                                        width: 5,
-                                      ),
-                                      AvatarInitials(
-                                          radius: 10,
-                                          userId:
-                                              _listBot[index].createdBy!.userId,
-                                          photoUrl: _listBot[index]
-                                              .createdBy!
-                                              .photoUrl,
-                                          username: _listBot[index]
-                                              .createdBy!
-                                              .username)
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  )));
+              itemBuilder: (context, index) =>
+                  RowMachiInfo(bot: _listBot[index])));
     }
-  }
-
-  void _showBotInfo(Bot bot) {
-    double height = MediaQuery.of(context).size.height;
-
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: max(height, 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              BotProfileCard(
-                bot: bot,
-                showPurchase: true,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

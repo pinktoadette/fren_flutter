@@ -27,14 +27,12 @@ class TimelineHeader extends StatelessWidget {
             children: [
               if (showAvatar == true)
                 AvatarInitials(
-                    radius: 20,
+                    radius: 10,
                     photoUrl: user.photoUrl,
                     username: user.username),
+              const SizedBox(width: 5),
               Column(
-                children: [
-                  if (showAvatar == true) Text(user.username.toUpperCase()),
-                  Text("@${user.username}")
-                ],
+                children: [Text(user.username)],
               )
             ]));
   }

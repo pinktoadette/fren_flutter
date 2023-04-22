@@ -8,6 +8,7 @@ import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -56,7 +57,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
+    double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(20),
       child: Column(
@@ -67,20 +68,23 @@ class _BotProfileCardState extends State<BotProfileCard> {
             height: 180,
             child: ListTile(
                 isThreeLine: true,
-                leading: AvatarInitials(
-                    photoUrl: widget.bot.profilePhoto ?? "",
-                    username: widget.bot.name),
+                leading: RoundedImage(
+                    width: width * 0.15,
+                    height: width * 0.15,
+                    icon: const Icon(Iconsax.box_add),
+                    photoUrl: widget.bot.profilePhoto ?? ""),
                 dense: true,
                 focusColor: Theme.of(context).secondaryHeaderColor,
                 title: Text(
-                  "${widget.bot.name} - ${widget.bot.modelType.name}",
-                  style: Theme.of(context).textTheme.bodyMedium,
+                  widget.bot.name,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 subtitle: Align(
                     alignment: Alignment.topLeft,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Text(widget.bot.modelType.name),
                         Text(
                           widget.bot.subdomain,
                           style: Theme.of(context).textTheme.bodyMedium,
