@@ -35,6 +35,6 @@ class Timeline {
         photoUrl: doc[BOT_PROFILE_PHOTO] ?? "",
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT],
-        likes: doc[ITEM_LIKES]["count"] ?? 0);
+        likes: doc[ITEM_LIKES]["likes"] ?? 0);
   }
 }
