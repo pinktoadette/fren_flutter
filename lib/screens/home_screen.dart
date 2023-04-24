@@ -49,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
   int _selectedIndex = 0;
   late AppLocalizations _i18n;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
+  bool isFabOpen = false;
   // in_app_purchase stream
   // late StreamSubscription<List<PurchaseDetails>> _inAppPurchaseStream;
 
@@ -268,6 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ]),
       body: _showCurrentNavBar(),
       floatingActionButton: ExpandableFab(
+        isOpen: isFabOpen,
         distance: 80.0,
         children: [
           ActionButton(
@@ -287,6 +289,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: const CreateMachiWidget(),
                         ),
                       ))),
+              setState(() {
+                isFabOpen = false;
+              })
             },
             icon: const Icon(Iconsax.pen_add),
           ),
@@ -300,7 +305,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   return const FractionallySizedBox(
                       heightFactor: 0.9, child: ListMyBot());
                 },
-              )
+              ),
+              setState(() {
+                isFabOpen = false;
+              })
             },
             icon: const Icon(Iconsax.note),
           ),

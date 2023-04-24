@@ -38,6 +38,10 @@ class Bot {
   final double? price;
   final String? priceUnit;
   final BotCreatedBy? createdBy;
+  final int? likes;
+  final int? mylikes;
+  final bool? isSubscribed;
+  final int? subscribedAt;
 
   // Constructor
   Bot(
@@ -58,7 +62,11 @@ class Bot {
       this.adminNote,
       this.price,
       this.priceUnit,
-      this.createdBy});
+      this.createdBy,
+      this.likes,
+      this.mylikes,
+      this.isSubscribed,
+      this.subscribedAt});
 
   Map<String, dynamic> toJson() => {
         'botId': botId,
@@ -78,7 +86,11 @@ class Bot {
         'createdAt': createdAt,
         'updatedAt': updatedAt,
         'prompt': prompt,
-        'temperature': temperature
+        'temperature': temperature,
+        'likes': likes,
+        'mylikes': mylikes,
+        'isSubscribed': isSubscribed,
+        'subscribedAt': subscribedAt
       };
 
   /// factory bot object
@@ -100,6 +112,10 @@ class Bot {
         adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
         adminNote: doc[BOT_ADMIN_NOTE] ?? "",
         prompt: doc[BOT_PROMPT] ?? '',
-        temperature: doc[BOT_TEMPERATURE]);
+        temperature: doc[BOT_TEMPERATURE],
+        likes: doc[ITEM_LIKES] ?? 0,
+        mylikes: doc[ITEM_MY_LIKES] ?? 0,
+        isSubscribed: doc[IS_SUBSCRIBED],
+        subscribedAt: doc[SUBSCRIBED_AT]);
   }
 }

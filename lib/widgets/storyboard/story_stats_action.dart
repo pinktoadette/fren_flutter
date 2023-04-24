@@ -4,7 +4,6 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:like_button/like_button.dart';
 
 class StoryStatsAction extends StatefulWidget {

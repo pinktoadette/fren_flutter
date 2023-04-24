@@ -1,11 +1,16 @@
 import 'dart:math';
 
+import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class RowMachiInfo extends StatelessWidget {
@@ -15,11 +20,16 @@ class RowMachiInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BotController botController = Get.find(tag: 'bot');
+    ChatController chatController = Get.find(tag: 'chatroom');
     final _i18n = AppLocalizations.of(context);
 
     final width = MediaQuery.of(context).size.width;
 
     return ListTile(
+      onTap: () {
+        _showBotInfo(context);
+      },
       dense: true,
       minLeadingWidth: width * 0.15,
       isThreeLine: true,
@@ -39,13 +49,26 @@ class RowMachiInfo extends StatelessWidget {
         Text(
           truncateText(40, bot.about),
           style: Theme.of(context).textTheme.bodySmall,
-        )
+        ),
+        if ((showChat == true) && (bot.isSubscribed == false))
+          Text(
+            _i18n.translate("subscribe_expired"),
+            style: TextStyle(color: APP_ERROR),
+          )
       ]),
       trailing: ElevatedButton(
         onPressed: () {
-          _showBotInfo(context);
+          if (bot.isSubscribed == true) {
+            botController.bot = bot;
+            Get.to(() => const BotChatScreen(), arguments: {
+              "room": chatController.emptyRoom,
+              "index": chatController.roomlist.length - 1
+            });
+          } else {
+            null;
+          }
         },
-        child: showChat == true
+        child: (showChat == true) && (bot.isSubscribed == true)
             ? Text(_i18n.translate("chat"))
             : Text(_i18n.translate("get")),
       ),

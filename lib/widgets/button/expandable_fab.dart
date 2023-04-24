@@ -6,11 +6,13 @@ class ExpandableFab extends StatefulWidget {
   const ExpandableFab({
     super.key,
     this.initialOpen,
+    this.isOpen,
     required this.distance,
     required this.children,
   });
 
   final bool? initialOpen;
+  final bool? isOpen;
   final double distance;
   final List<Widget> children;
 
@@ -23,6 +25,15 @@ class _ExpandableFabState extends State<ExpandableFab>
   late final AnimationController _controller;
   late final Animation<double> _expandAnimation;
   bool _open = false;
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (_open != widget.isOpen) {
+      _toggle();
+    }
+    ;
+    super.didUpdateWidget(oldWidget);
+  }
 
   @override
   void initState() {

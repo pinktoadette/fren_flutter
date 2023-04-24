@@ -238,6 +238,10 @@ const String TIMELINE_ID = "id";
 const String ITEM_MY_LIKES = "mylikes";
 const String ITEM_LIKES = "likes";
 
+/// subscription
+const String SUBSCRIBED_AT = "subscribedAt";
+const String IS_SUBSCRIBED = "subscribed";
+
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
 const String ROOM_ID = "chatroomId";

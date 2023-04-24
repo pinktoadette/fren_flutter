@@ -66,7 +66,6 @@
   "rate_on_play_store": "Rate on Play Store",
   "rate_on_app_store": "Rate on App Store",
 
-  
   "_subscribe_dialog": "*** SUBSCRIBE Dialog ***",
   "subscription": "Subscription",
   "subscriptions": "Subscriptions",
@@ -84,6 +83,7 @@
   "subscribe_detail_plan_free": "Restricted access with essential features and functions at no cost",
   "subscribe_detail_plan_premium": "Full unlimited access with essential features, group chat, add additional models",
   "subscribe_start_button": "Start free trial and plan",
+  "subscribe_expired": "Subscription is expired",
   "benefits": "Benefits",
   "get": "Get",
 

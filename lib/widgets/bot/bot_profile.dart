@@ -1,4 +1,6 @@
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
@@ -6,7 +8,6 @@ import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
   ChatController chatController = Get.find(tag: 'chatroom');
   BotController botController = Get.find(tag: 'bot');
   final _chatroomApi = ChatroomMachiApi();
+  final _botApi = BotApi();
   bool isLoading = false;
 
   bool disableTextEdit = true;
@@ -125,7 +127,9 @@ class _BotProfileCardState extends State<BotProfileCard> {
                   ElevatedButton.icon(
                     icon: const Icon(Iconsax.element_plus),
                     label: Text(_i18n.translate("add_machi")),
-                    onPressed: () {},
+                    onPressed: () {
+                      _addMachi();
+                    },
                   ),
                 ],
               ),
@@ -168,5 +172,22 @@ class _BotProfileCardState extends State<BotProfileCard> {
 
   /// Add machi. Check if machi is free or not
   /// if free just call api.
-  void_addMachi() async {}
+  void _addMachi() async {
+    try {
+      await _botApi.addBottoList(widget.bot.botId);
+      Get.snackbar(
+        _i18n.translate("Success"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    } catch (error) {
+      Get.snackbar(
+        _i18n.translate("Error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
+  }
 }

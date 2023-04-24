@@ -13,7 +13,6 @@ import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
-import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';

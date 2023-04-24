@@ -404,7 +404,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _getMachiResponse();
     } catch (err) {
       Get.snackbar(
-        'Error',
+        _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
@@ -459,7 +459,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       });
     } catch (err) {
       Get.snackbar(
-        'Error',
+        _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,

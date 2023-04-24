@@ -110,4 +110,18 @@ class BotApi {
 
     return getData.toJson();
   }
+
+  Future<List<Bot>> myAddedMachi() async {
+    String url = '${baseUri}bot/user_added_machi';
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    final getData = response.data;
+
+    List<Bot> botList = [];
+    for (var data in getData) {
+      botList.add(Bot.fromDocument(data));
+    }
+
+    return botList;
+  }
 }
