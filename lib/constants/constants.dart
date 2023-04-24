@@ -235,6 +235,7 @@ const String STORY_POST_TEXT = "text";
 const String STORY_POST_SUB_TEXT = "subText";
 const String TIMELINE_ID = "id";
 
+const String ITEM_MY_LIKES = "mylikes";
 const String ITEM_LIKES = "likes";
 
 /// chatroom

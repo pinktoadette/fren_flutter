@@ -12,7 +12,7 @@ class TimelineApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<List<Timeline>> getTimeline(int limit, int offset) async {
-    String url = '${baseUri}timeline/feed?limit=$limit&offset=$offset';
+    String url = '${baseUri}timeline/user_feed?limit=$limit&offset=$offset';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
@@ -23,5 +23,15 @@ class TimelineApi {
       timeline.add(time);
     }
     return timeline;
+  }
+
+  Future<String> likeStoryMachi(
+      String item, String itemId, int actionValue) async {
+    String url = '${baseUri}storyboard/like';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url,
+        data: {'itemType': item, 'itemId': itemId, 'like': actionValue});
+    return response.data;
   }
 }

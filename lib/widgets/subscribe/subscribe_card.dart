@@ -2,6 +2,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/subscribe/subscription_product.dart';
+import 'package:iconsax/iconsax.dart';
 
 class SubscriptionCard extends StatefulWidget {
   const SubscriptionCard({Key? key}) : super(key: key);
@@ -30,34 +31,33 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
       return Card(
           child: SizedBox(
               width: screenWidth,
-              child: Container(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text(
-                              _i18n.translate("subscription"),
-                              style: Theme.of(context).textTheme.headlineSmall,
-                            ),
-                            Text(_i18n
-                                .translate("become_a_subscription_member")),
+              child: InkWell(
+                  onTap: () {
+                    _showSubscription();
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.all(10),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
                             const SizedBox(
-                              height: 20,
+                              width: 50,
+                              height: 50,
+                              child: Icon(Iconsax.activity),
                             ),
-                            ElevatedButton(
-                                onPressed: () {
-                                  _showSubscription();
-                                },
-                                child: Text(_i18n.translate("SUBSCRIBE")))
-                          ],
-                        ),
-                      ]))));
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  _i18n.translate("subscription"),
+                                  style:
+                                      Theme.of(context).textTheme.headlineSmall,
+                                ),
+                                Text(_i18n
+                                    .translate("become_a_subscription_member")),
+                              ],
+                            )
+                          ])))));
     } else {
       return const SizedBox.shrink();
     }

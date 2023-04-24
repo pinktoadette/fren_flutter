@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/story_api.dart';
-import 'package:fren_app/api/machi/timeline.dart';
+import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
@@ -11,13 +11,13 @@ import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:like_button/like_button.dart';
 
 class TimelineWidget extends StatefulWidget {
@@ -33,22 +33,32 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   final _timelineApi = TimelineApi();
   late AppLocalizations _i18n;
 
-  /// timeline items
-  int _offset = 0;
-  List<Timeline> _timelines = [];
+  static const _pageSize = 20;
 
-  Future<void> _getTimeline() async {
-    int limit = 30;
-    List<Timeline> timeline = await _timelineApi.getTimeline(limit, _offset);
-    setState(() {
-      _timelines = timeline;
-      _offset = _offset + 1;
-    });
+  final PagingController<int, dynamic> _pagingController =
+      PagingController(firstPageKey: 0);
+
+  Future<void> _getTimeline(int pageKey) async {
+    try {
+      List<Timeline> newItems =
+          await _timelineApi.getTimeline(_pageSize, pageKey);
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey as int);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override
   void initState() {
-    _getTimeline();
+    _pagingController.addPageRequestListener((pageKey) {
+      _getTimeline(pageKey);
+    });
     super.initState();
   }
 
@@ -59,49 +69,32 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    if (_timelines.isEmpty) {
-      /// No match
-      return NoData(text: _i18n.translate("no_match"));
-    } else {
-      return Container(
-          margin: const EdgeInsets.symmetric(vertical: 5.0),
-          child: ListView.separated(
-              physics: const ClampingScrollPhysics(),
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              separatorBuilder: (context, index) {
-                if ((index + 1) % 5 == 0) {
-                  return Container(
-                    height: itemHeight,
-                    color: Theme.of(context).colorScheme.background,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Container(
-                        height: 150,
-                        width: width,
-                        color: Colors.yellow,
-                        child: const Text('ad placeholder'),
-                      ),
-                    ),
-                  );
-                } else {
-                  return const Divider();
-                }
-              },
-              itemCount: _timelines.length,
-              itemBuilder: (context, index) => ListTile(
+    return Container(
+        height: height - 290,
+        margin: const EdgeInsets.symmetric(vertical: 5.0),
+        child: PagedListView<int, dynamic>(
+          pagingController: _pagingController,
+          builderDelegate: PagedChildBuilderDelegate<dynamic>(
+              animateTransitions: true,
+              transitionDuration: const Duration(milliseconds: 500),
+              itemBuilder: (context, item, index) {
+                return ListTile(
                     minLeadingWidth: 15,
                     isThreeLine: true,
-                    title: TimelineHeader(
-                        showAvatar: true, user: _timelines[index].user),
+                    title: TimelineHeader(showAvatar: true, user: item.user),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        _showTitle(_timelines[index]),
+                        _showTitle(item),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             LikeButton(
+                              isLiked: item.mylikes == 1 ? true : false,
+                              onTap: (value) async {
+                                await _onLikePressed(item, value);
+                                return value;
+                              },
                               bubblesColor: BubblesColor(
                                 dotPrimaryColor: APP_ACCENT_COLOR,
                                 dotSecondaryColor:
@@ -116,14 +109,85 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                                       isLiked ? APP_ACCENT_COLOR : Colors.grey,
                                 );
                               },
-                              likeCount: _timelines[index].likes,
+                              likeCount: item.likes,
                             )
                           ],
                         )
                       ],
-                    ),
-                  )));
-    }
+                    ));
+              }),
+        )
+
+        // ListView.separated(
+        //     physics: const ClampingScrollPhysics(),
+        //     shrinkWrap: true,
+        //     scrollDirection: Axis.vertical,
+        //     separatorBuilder: (context, index) {
+        //       if ((index + 1) % 5 == 0) {
+        //         return Container(
+        //           height: itemHeight,
+        //           color: Theme.of(context).colorScheme.background,
+        //           child: Padding(
+        //             padding: const EdgeInsets.only(top: 10, bottom: 10),
+        //             child: Container(
+        //               height: 150,
+        //               width: width,
+        //               color: Colors.yellow,
+        //               child: const Text('ad placeholder'),
+        //             ),
+        //           ),
+        //         );
+        //       } else {
+        //         return const Divider();
+        //       }
+        //     },
+        //     itemCount: item.length,
+        //     itemBuilder: (context, index) => ListTile(
+        //           minLeadingWidth: 15,
+        //           isThreeLine: true,
+        //           title: TimelineHeader(
+        //               showAvatar: true, user: item[index].user),
+        //           subtitle: Column(
+        //             crossAxisAlignment: CrossAxisAlignment.start,
+        //             children: [
+        //               _showTitle(_timelines[index]),
+        //               Row(
+        //                 mainAxisAlignment: MainAxisAlignment.end,
+        //                 children: [
+        //                   LikeButton(
+        //                     isLiked:
+        //                         _timelines[index].mylikes == 1 ? true : false,
+        //                     onTap: (value) async {
+        //                       await _onLikePressed(_timelines[index], value);
+        //                       return value;
+        //                     },
+        //                     bubblesColor: BubblesColor(
+        //                       dotPrimaryColor: APP_ACCENT_COLOR,
+        //                       dotSecondaryColor:
+        //                           Theme.of(context).primaryColor,
+        //                     ),
+        //                     likeBuilder: (bool isLiked) {
+        //                       return Icon(
+        //                         isLiked
+        //                             ? Icons.favorite
+        //                             : Icons.favorite_border,
+        //                         color:
+        //                             isLiked ? APP_ACCENT_COLOR : Colors.grey,
+        //                       );
+        //                     },
+        //                     likeCount: _timelines[index].likes,
+        //                   )
+        //                 ],
+        //               )
+        //             ],
+        //           ),
+        //         ))
+        );
+  }
+
+  Future<String> _onLikePressed(Timeline item, bool value) async {
+    return await _timelineApi.likeStoryMachi(
+        item.postType, item.id, value == true ? 1 : 0);
   }
 
   Widget _showTitle(Timeline post) {

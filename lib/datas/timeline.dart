@@ -11,6 +11,7 @@ class Timeline {
   final StoryUser user;
   final String? photoUrl;
   final int? likes;
+  final int? mylikes;
 
   Timeline(
       {required this.id,
@@ -21,7 +22,8 @@ class Timeline {
       required this.updatedAt,
       required this.user,
       required this.photoUrl,
-      required this.likes});
+      required this.likes,
+      required this.mylikes});
 
   factory Timeline.fromJson(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
@@ -35,6 +37,8 @@ class Timeline {
         photoUrl: doc[BOT_PROFILE_PHOTO] ?? "",
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT],
-        likes: doc[ITEM_LIKES] == null ? 0 : doc[ITEM_LIKES]["likes"] ?? 0);
+        likes: doc[ITEM_LIKES] == null ? 0 : doc[ITEM_LIKES]["likes"] ?? 0,
+        mylikes:
+            doc[ITEM_MY_LIKES] == null ? 0 : doc[ITEM_MY_LIKES]["likes"] ?? 0);
   }
 }
