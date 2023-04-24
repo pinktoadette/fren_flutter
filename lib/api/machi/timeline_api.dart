@@ -31,7 +31,7 @@ class TimelineApi {
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.post(url,
-        data: {'itemType': item, 'itemId': itemId, 'like': actionValue});
+        data: {'itemType': item, 'itemId': itemId, 'value': actionValue});
     return response.data;
   }
 }

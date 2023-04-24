@@ -78,6 +78,21 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               animateTransitions: true,
               transitionDuration: const Duration(milliseconds: 500),
               itemBuilder: (context, item, index) {
+                if ((index + 1) % 5 == 0) {
+                  return Container(
+                    height: itemHeight,
+                    color: Theme.of(context).colorScheme.background,
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, bottom: 10),
+                      child: Container(
+                        height: 150,
+                        width: width,
+                        color: Colors.yellow,
+                        child: const Text('ad placeholder'),
+                      ),
+                    ),
+                  );
+                }
                 return ListTile(
                     minLeadingWidth: 15,
                     isThreeLine: true,
@@ -92,8 +107,8 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                             LikeButton(
                               isLiked: item.mylikes == 1 ? true : false,
                               onTap: (value) async {
-                                await _onLikePressed(item, value);
-                                return value;
+                                await _onLikePressed(item, !value);
+                                return !value;
                               },
                               bubblesColor: BubblesColor(
                                 dotPrimaryColor: APP_ACCENT_COLOR,
