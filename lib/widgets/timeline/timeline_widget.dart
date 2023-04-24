@@ -5,11 +5,13 @@ import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
+import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
@@ -31,6 +33,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   final _storyApi = StoryApi();
   final _timelineApi = TimelineApi();
   late AppLocalizations _i18n;
+  ChatController chatController = Get.find(tag: 'chatroom');
 
   static const _pageSize = 20;
 
@@ -130,73 +133,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                       ],
                     ));
               }),
-        )
-
-        // ListView.separated(
-        //     physics: const ClampingScrollPhysics(),
-        //     shrinkWrap: true,
-        //     scrollDirection: Axis.vertical,
-        //     separatorBuilder: (context, index) {
-        //       if ((index + 1) % 5 == 0) {
-        //         return Container(
-        //           height: itemHeight,
-        //           color: Theme.of(context).colorScheme.background,
-        //           child: Padding(
-        //             padding: const EdgeInsets.only(top: 10, bottom: 10),
-        //             child: Container(
-        //               height: 150,
-        //               width: width,
-        //               color: Colors.yellow,
-        //               child: const Text('ad placeholder'),
-        //             ),
-        //           ),
-        //         );
-        //       } else {
-        //         return const Divider();
-        //       }
-        //     },
-        //     itemCount: item.length,
-        //     itemBuilder: (context, index) => ListTile(
-        //           minLeadingWidth: 15,
-        //           isThreeLine: true,
-        //           title: TimelineHeader(
-        //               showAvatar: true, user: item[index].user),
-        //           subtitle: Column(
-        //             crossAxisAlignment: CrossAxisAlignment.start,
-        //             children: [
-        //               _showTitle(_timelines[index]),
-        //               Row(
-        //                 mainAxisAlignment: MainAxisAlignment.end,
-        //                 children: [
-        //                   LikeButton(
-        //                     isLiked:
-        //                         _timelines[index].mylikes == 1 ? true : false,
-        //                     onTap: (value) async {
-        //                       await _onLikePressed(_timelines[index], value);
-        //                       return value;
-        //                     },
-        //                     bubblesColor: BubblesColor(
-        //                       dotPrimaryColor: APP_ACCENT_COLOR,
-        //                       dotSecondaryColor:
-        //                           Theme.of(context).primaryColor,
-        //                     ),
-        //                     likeBuilder: (bool isLiked) {
-        //                       return Icon(
-        //                         isLiked
-        //                             ? Icons.favorite
-        //                             : Icons.favorite_border,
-        //                         color:
-        //                             isLiked ? APP_ACCENT_COLOR : Colors.grey,
-        //                       );
-        //                     },
-        //                     likeCount: _timelines[index].likes,
-        //                   )
-        //                 ],
-        //               )
-        //             ],
-        //           ),
-        //         ))
-        );
+        ));
   }
 
   Future<String> _onLikePressed(Timeline item, bool value) async {
@@ -266,13 +203,24 @@ class _TimelineWidgetState extends State<TimelineWidget> {
             truncateText(50, post.subText),
             style: Theme.of(context).textTheme.labelSmall,
           ),
-          trailing: ElevatedButton(
-            onPressed: () async {
-              Bot bot = await _botApi.getBot(botId: post.id);
-              _showBotInfo(bot);
-            },
-            child: Text(_i18n.translate("get")),
-          ),
+          trailing: post.mymachi == false
+              ? ElevatedButton(
+                  onPressed: () async {
+                    Bot bot = await _botApi.getBot(botId: post.id);
+                    _showBotInfo(bot);
+                  },
+                  child: Text(_i18n.translate("get")),
+                )
+              : OutlinedButton(
+                  onPressed: () async {
+                    Bot bot = await _botApi.getBot(botId: post.id);
+                    Get.to(() => const BotChatScreen(), arguments: {
+                      "room": chatController.emptyRoom,
+                      "index": chatController.roomlist.length - 1
+                    });
+                  },
+                  child: Text(_i18n.translate("chat")),
+                ),
         );
 
       default:

@@ -241,6 +241,7 @@ const String ITEM_LIKES = "likes";
 /// subscription
 const String SUBSCRIBED_AT = "subscribedAt";
 const String IS_SUBSCRIBED = "subscribed";
+const String SUBSCRIBED_MACHI = "mymachi";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id

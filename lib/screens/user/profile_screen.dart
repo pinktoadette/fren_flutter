@@ -123,13 +123,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         /// indsutry
-                        _rowProfileInfo(context,
-                            icon: Icon(Iconsax.briefcase, size: _iconSize),
-                            title: widget.user.userIndustry),
-
-                        const SizedBox(height: 5),
-
-                        const Divider(),
+                        // _rowProfileInfo(context,
+                        //     icon: Icon(Iconsax.briefcase, size: _iconSize),
+                        //     title: widget.user.userIndustry),
+                        // const SizedBox(height: 5),
+                        // const Divider(),
 
                         /// Profile bio
                         Padding(

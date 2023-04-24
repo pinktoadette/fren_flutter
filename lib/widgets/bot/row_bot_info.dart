@@ -56,22 +56,27 @@ class RowMachiInfo extends StatelessWidget {
             style: const TextStyle(color: APP_ERROR),
           )
       ]),
-      trailing: ElevatedButton(
-        onPressed: () {
-          if (bot.isSubscribed == true) {
-            botController.bot = bot;
-            Get.to(() => const BotChatScreen(), arguments: {
-              "room": chatController.emptyRoom,
-              "index": chatController.roomlist.length - 1
-            });
-          } else {
-            null;
-          }
-        },
-        child: (showChat == true) && (bot.isSubscribed == true)
-            ? Text(_i18n.translate("chat"))
-            : Text(_i18n.translate("get")),
-      ),
+      trailing: bot.isSubscribed == true
+          ? OutlinedButton(
+              onPressed: () {
+                botController.bot = bot;
+                Get.to(() => const BotChatScreen(), arguments: {
+                  "room": chatController.emptyRoom,
+                  "index": chatController.roomlist.length - 1
+                });
+              },
+              child: showChat == true
+                  ? Text(_i18n.translate("chat"))
+                  : Text(_i18n.translate("get")),
+            )
+          : ElevatedButton(
+              onPressed: () {
+                null;
+              },
+              child: showChat == true
+                  ? Text(_i18n.translate("chat"))
+                  : Text(_i18n.translate("get")),
+            ),
     );
   }
 

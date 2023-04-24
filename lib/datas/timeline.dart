@@ -12,6 +12,7 @@ class Timeline {
   final String? photoUrl;
   final int? likes;
   final int? mylikes;
+  final bool? mymachi;
 
   Timeline(
       {required this.id,
@@ -23,7 +24,8 @@ class Timeline {
       required this.user,
       required this.photoUrl,
       required this.likes,
-      required this.mylikes});
+      required this.mylikes,
+      required this.mymachi});
 
   factory Timeline.fromJson(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
@@ -39,6 +41,9 @@ class Timeline {
         updatedAt: doc[UPDATED_AT],
         likes: doc[ITEM_LIKES] == null ? 0 : doc[ITEM_LIKES]["likes"] ?? 0,
         mylikes:
-            doc[ITEM_MY_LIKES] == null ? 0 : doc[ITEM_MY_LIKES]["likes"] ?? 0);
+            doc[ITEM_MY_LIKES] == null ? 0 : doc[ITEM_MY_LIKES]["likes"] ?? 0,
+        mymachi: doc[SUBSCRIBED_MACHI] == null
+            ? false
+            : doc[SUBSCRIBED_MACHI][IS_SUBSCRIBED]);
   }
 }

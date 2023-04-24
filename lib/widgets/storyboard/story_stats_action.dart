@@ -33,7 +33,7 @@ class _StoryStatsActionState extends State<StoryStatsAction> {
         child: Row(
           children: [
             Text(
-              "343 Views",
+              "3 Comments",
               style: Theme.of(context).textTheme.labelMedium,
               textAlign: TextAlign.left,
             ),

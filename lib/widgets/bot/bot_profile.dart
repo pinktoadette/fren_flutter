@@ -116,27 +116,35 @@ class _BotProfileCardState extends State<BotProfileCard> {
               padding: const EdgeInsets.all(20),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  OutlinedButton.icon(
-                    icon: const Icon(Iconsax.box),
-                    label: Text(_i18n.translate("bot_try")),
-                    onPressed: () async {
-                      _tryBot();
-                    },
-                  ),
-                  ElevatedButton.icon(
-                    icon: const Icon(Iconsax.element_plus),
-                    label: Text(_i18n.translate("add_machi")),
-                    onPressed: () {
-                      _addMachi();
-                    },
-                  ),
-                ],
+                children: _displayButtons(),
               ),
             )
         ],
       ),
     );
+  }
+
+  List<Widget> _displayButtons() {
+    if (widget.bot.isSubscribed == true) {
+      return [const Text("You have this machi")];
+    } else {
+      return [
+        OutlinedButton.icon(
+          icon: const Icon(Iconsax.box),
+          label: Text(_i18n.translate("bot_try")),
+          onPressed: () async {
+            _tryBot();
+          },
+        ),
+        ElevatedButton.icon(
+          icon: const Icon(Iconsax.element_plus),
+          label: Text(_i18n.translate("add_machi")),
+          onPressed: () {
+            _addMachi();
+          },
+        ),
+      ];
+    }
   }
 
   Widget _showPricing() {
