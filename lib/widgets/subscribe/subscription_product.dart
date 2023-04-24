@@ -25,10 +25,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return MaterialApp(
       home: DefaultTabController(
+        initialIndex: 1,
         length: 2,
         child: Scaffold(
           backgroundColor: Theme.of(context).colorScheme.background,
@@ -60,31 +59,100 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     color: APP_ACCENT_COLOR,
                     borderRadius: BorderRadius.all(Radius.circular(10))),
                 padding: const EdgeInsets.all(5),
-                child: Text(_i18n.translate("subscribe_pro")),
+                child: Text(
+                  _i18n.translate("subscribe_pro"),
+                  style: const TextStyle(fontSize: 12),
+                ),
               )
             ]),
           ),
-          body: TabBarView(
-            children: [
-              _showPricing(1),
-              _showPricing(2),
-            ],
-          ),
+          body: TabBarView(children: [
+            _showPricing(1),
+            Container(
+              margin: const EdgeInsets.only(left: 10, right: 10),
+              child: Column(
+                children: [_showPricing(2), _showTiers()],
+              ),
+            )
+          ]),
         ),
       ),
     );
   }
 
+  Widget _showTiers() {
+    var tiers = [
+      {
+        "tier": "1 \nMonth",
+        "price_week": "\$3.45 per week",
+        "price": "\$14.99 per\n Month"
+      },
+      {
+        "tier": "1 \nWeek",
+        "price_week": "\$7.99 per week",
+        "price": "\$7.99 per\n Week"
+      },
+      {
+        "tier": "12 \nMonth",
+        "price_week": "\$0.96 per week",
+        "price": "\$49.99 per\n Year"
+      }
+    ];
+
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: tiers.map((e) {
+          return _individualTier(e);
+        }).toList());
+  }
+
+  Widget _individualTier(dynamic info) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
+    return Padding(
+        padding: const EdgeInsets.all(5),
+        child: Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10.0),
+              color: Colors.white,
+              border: Border.all(
+                color: Theme.of(context).colorScheme.primary,
+                width: 0,
+              ),
+            ),
+            width: (screenWidth / 3) - 30,
+            child: Column(
+              children: [
+                const SizedBox(height: 20),
+                Text(info["tier"],
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.headlineSmall),
+                const SizedBox(height: 20),
+                Text(info["price_week"],
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 10)),
+                const Divider(),
+                const SizedBox(height: 10),
+                Text(info["price"],
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelSmall),
+                const SizedBox(height: 10),
+              ],
+            )));
+  }
+
   Widget _showPricing(int index) {
-    Color color = index == 1 ? APP_ERROR : APP_SUCCESS;
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    Icon icon = index == 1
+        ? const Icon(Iconsax.close_circle)
+        : const Icon(Iconsax.tick_circle);
     return SizedBox(
-      height: height * 0.8,
       child: Column(
         children: [
           Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10),
               child: Card(
                   child: Padding(
                 padding: const EdgeInsets.all(10),
@@ -114,18 +182,18 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     ),
                     const SizedBox(height: 20),
                     _rowFeature(
-                        APP_SUCCESS,
+                        const Icon(Iconsax.tick_circle),
                         index,
                         _i18n.translate("subscribe_detail_unlimted_request") +
                             (index == 1 ? " of 5 Per Day" : "")),
-                    _rowFeature(color, index,
+                    _rowFeature(icon, index,
                         _i18n.translate("subscribe_detail_image_genator")),
-                    _rowFeature(color, index,
+                    _rowFeature(icon, index,
                         _i18n.translate("subscribe_detail_read_image")),
-                    _rowFeature(color, index,
+                    _rowFeature(icon, index,
                         _i18n.translate("subscribe_detail_add_friends")),
                     _rowFeature(
-                        color,
+                        icon,
                         index,
                         _i18n.translate(
                             "subscribe_detail_access_additional_models"))
@@ -137,14 +205,14 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     );
   }
 
-  Widget _rowFeature(Color iconColor, int index, String text) {
+  Widget _rowFeature(Icon icon, int index, String text) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [
           Icon(
-            Iconsax.tick_circle,
-            color: iconColor,
+            icon.icon,
+            color: icon.icon == Iconsax.tick_circle ? APP_SUCCESS : APP_ERROR,
           ),
           const SizedBox(
             width: 10,
