@@ -6,19 +6,19 @@ import 'package:fren_app/widgets/no_data.dart';
 
 import 'row_bot_info.dart';
 
-class ListPromptBots extends StatefulWidget {
-  const ListPromptBots({Key? key}) : super(key: key);
+class TextImageBots extends StatefulWidget {
+  const TextImageBots({Key? key}) : super(key: key);
 
   @override
-  _ListPromptBotState createState() => _ListPromptBotState();
+  _TextImageBotsWidget createState() => _TextImageBotsWidget();
 }
 
-class _ListPromptBotState extends State<ListPromptBots> {
+class _TextImageBotsWidget extends State<TextImageBots> {
   final _botApi = BotApi();
   List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
-    List<Bot> result = await _botApi.getAllBots(30, 0, BotModelType.prompt);
+    List<Bot> result = await _botApi.getAllBots(30, 0, BotModelType.textImage);
     if (!mounted) return;
     setState(() => _listBot = result);
   }

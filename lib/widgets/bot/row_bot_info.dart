@@ -35,7 +35,7 @@ class RowMachiInfo extends StatelessWidget {
       isThreeLine: true,
       leading: RoundedImage(
           width: width * 0.15,
-          height: width * 0.15,
+          height: 300,
           icon: const Icon(Iconsax.box_add),
           photoUrl: bot.profilePhoto ?? ""),
       title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
@@ -53,7 +53,7 @@ class RowMachiInfo extends StatelessWidget {
         if ((showChat == true) && (bot.isSubscribed == false))
           Text(
             _i18n.translate("subscribe_expired"),
-            style: TextStyle(color: APP_ERROR),
+            style: const TextStyle(color: APP_ERROR),
           )
       ]),
       trailing: ElevatedButton(

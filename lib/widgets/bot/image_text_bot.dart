@@ -6,19 +6,19 @@ import 'package:fren_app/widgets/no_data.dart';
 
 import 'row_bot_info.dart';
 
-class ListPromptBots extends StatefulWidget {
-  const ListPromptBots({Key? key}) : super(key: key);
+class ImageTextBots extends StatefulWidget {
+  const ImageTextBots({Key? key}) : super(key: key);
 
   @override
-  _ListPromptBotState createState() => _ListPromptBotState();
+  _ImageTextBotsState createState() => _ImageTextBotsState();
 }
 
-class _ListPromptBotState extends State<ListPromptBots> {
+class _ImageTextBotsState extends State<ImageTextBots> {
   final _botApi = BotApi();
   List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
-    List<Bot> result = await _botApi.getAllBots(30, 0, BotModelType.prompt);
+    List<Bot> result = await _botApi.getAllBots(30, 0, BotModelType.imageText);
     if (!mounted) return;
     setState(() => _listBot = result);
   }
@@ -37,7 +37,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
 
     if (_listBot.isEmpty) {
       /// No match
-      return NoData(text: _i18n.translate("no_match"));
+      return NoData(text: _i18n.translate("no_result"));
     } else {
       return Container(
           margin: const EdgeInsets.symmetric(vertical: 5.0),

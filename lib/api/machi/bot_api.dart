@@ -79,8 +79,10 @@ class BotApi {
     return Bot.fromDocument(getData);
   }
 
-  Future<List<Bot>> getAllBots(int limit, int offset) async {
-    String url = '${baseUri}bot/get_all?limit=$limit&offset=$offset';
+  Future<List<Bot>> getAllBots(
+      int limit, int offset, BotModelType modelType) async {
+    String url =
+        '${baseUri}bot/get_all?limit=$limit&offset=$offset&model=${modelType.toString().split('.').last}';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;

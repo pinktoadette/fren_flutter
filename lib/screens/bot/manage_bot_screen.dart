@@ -27,7 +27,7 @@ class _ManageBotState extends State<ManageBotScreen> {
   }
 
   Future<void> _fetchMyCreateBot() async {
-    List<Bot> result = await _botApi.getAllBots(5, 0);
+    List<Bot> result = await _botApi.getAllBots(5, 0, BotModelType.prompt);
     setState(() => _listBot = result);
   }
 

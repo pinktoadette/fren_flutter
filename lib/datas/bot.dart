@@ -1,6 +1,6 @@
 import 'package:fren_app/constants/constants.dart';
 
-enum BotModelType { prompt, finetuning, custom }
+enum BotModelType { prompt, finetuning, textImage, imageText }
 
 class BotCreatedBy {
   final String userId;
@@ -113,9 +113,9 @@ class Bot {
         adminNote: doc[BOT_ADMIN_NOTE] ?? "",
         prompt: doc[BOT_PROMPT] ?? '',
         temperature: doc[BOT_TEMPERATURE],
-        likes: doc[ITEM_LIKES] ?? 0,
-        mylikes: doc[ITEM_MY_LIKES] ?? 0,
-        isSubscribed: doc[IS_SUBSCRIBED],
+        likes: doc[ITEM_LIKES] == null ? 0 : doc[ITEM_LIKES]["likes"] ?? 0,
+        mylikes: doc[ITEM_MY_LIKES] == null ? 0 : doc[ITEM_LIKES]["likes"] ?? 0,
+        isSubscribed: doc[IS_SUBSCRIBED] ?? false,
         subscribedAt: doc[SUBSCRIBED_AT]);
   }
 }

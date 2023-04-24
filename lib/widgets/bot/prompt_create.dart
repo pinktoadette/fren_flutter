@@ -41,7 +41,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
-    List<Bot> result = await _botApi.getAllBots(5, 0);
+    List<Bot> result = await _botApi.getAllBots(5, 0, BotModelType.prompt);
     setState(() => _listBot = result);
   }
 
@@ -65,10 +65,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     double width = MediaQuery.of(context).size.width;
     _pr = ProgressDialog(context, isDismissible: false);
 
-    if (_listBot == null) {
-      return Frankloader();
-    } else if (_listBot.isEmpty) {
-      /// No match
+    if (_listBot.isEmpty) {
       return NoData(text: _i18n.translate("no_match"));
     } else {
       return Padding(
