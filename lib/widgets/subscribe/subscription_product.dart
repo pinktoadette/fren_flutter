@@ -3,6 +3,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:onboarding/onboarding.dart';
 
 class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
@@ -14,7 +15,7 @@ class SubscriptionProduct extends StatefulWidget {
 class _SubscriptionProductState extends State<SubscriptionProduct> {
   bool isUserSubscribed = false;
   late AppLocalizations _i18n;
-  int _selectedIndex = 0;
+  int _selectedTier = 2;
   @override
   void initState() {
     super.initState();
@@ -38,11 +39,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
               dividerColor: APP_ACCENT_COLOR,
               indicatorColor: Theme.of(context).colorScheme.primary,
               labelColor: Theme.of(context).colorScheme.primary,
-              onTap: (value) {
-                setState(() {
-                  _selectedIndex = value;
-                });
-              },
               tabs: [
                 Tab(text: _i18n.translate("subscribe_free")),
                 Tab(text: _i18n.translate("subscribe_premium")),
@@ -83,63 +79,87 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget _showTiers() {
     var tiers = [
       {
+        "id": 1,
         "tier": "1 \nMonth",
         "price_week": "\$3.45 per week",
         "price": "\$14.99 per\n Month"
       },
       {
+        "id": 2,
         "tier": "1 \nWeek",
         "price_week": "\$7.99 per week",
         "price": "\$7.99 per\n Week"
       },
       {
+        "id": 3,
         "tier": "12 \nMonth",
         "price_week": "\$0.96 per week",
         "price": "\$49.99 per\n Year"
       }
     ];
 
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: tiers.map((e) {
-          return _individualTier(e);
-        }).toList());
+    return Column(
+      children: [
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: tiers.map((e) {
+              return _individualTier(e);
+            }).toList()),
+        ElevatedButton(
+            onPressed: () {},
+            style: ElevatedButton.styleFrom(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20.0),
+              ),
+              elevation: 4,
+              backgroundColor: Theme.of(context).colorScheme.primary,
+            ),
+            child: Text(_i18n.translate("subscribe_start_button")))
+      ],
+    );
   }
 
   Widget _individualTier(dynamic info) {
     double screenWidth = MediaQuery.of(context).size.width;
 
-    return Padding(
-        padding: const EdgeInsets.all(5),
-        child: Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10.0),
-              color: Colors.white,
-              border: Border.all(
-                color: Theme.of(context).colorScheme.primary,
-                width: 0,
-              ),
-            ),
-            width: (screenWidth / 3) - 30,
-            child: Column(
-              children: [
-                const SizedBox(height: 20),
-                Text(info["tier"],
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.headlineSmall),
-                const SizedBox(height: 20),
-                Text(info["price_week"],
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(fontSize: 10)),
-                const Divider(),
-                const SizedBox(height: 10),
-                Text(info["price"],
-                    textAlign: TextAlign.center,
-                    style: Theme.of(context).textTheme.labelSmall),
-                const SizedBox(height: 10),
-              ],
-            )));
+    return InkWell(
+        onTap: () {
+          setState(() {
+            _selectedTier = info["id"];
+          });
+        },
+        child: Padding(
+            padding: const EdgeInsets.all(5),
+            child: Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  border: Border.all(
+                    color: _selectedTier == info["id"]
+                        ? APP_ACCENT_COLOR
+                        : Theme.of(context).colorScheme.primary,
+                    width: _selectedTier == info["id"] ? 3 : 1,
+                  ),
+                ),
+                width: (screenWidth / 3) - 30,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 20),
+                    Text(info["tier"],
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.headlineSmall),
+                    const SizedBox(height: 20),
+                    Text(info["price_week"],
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontSize: 10)),
+                    const Divider(),
+                    const SizedBox(height: 10),
+                    Text(info["price"],
+                        textAlign: TextAlign.center,
+                        style: Theme.of(context).textTheme.labelSmall),
+                    const SizedBox(height: 10),
+                  ],
+                ))));
   }
 
   Widget _showPricing(int index) {
@@ -160,24 +180,20 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                   children: [
                     Row(
                       children: [
-                        SizedBox(
-                            width: width * 0.8,
-                            child: Flexible(
-                                child: index == 1
-                                    ? Text(
-                                        _i18n.translate(
-                                            "subscribe_detail_plan_free"),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      )
-                                    : Text(
-                                        _i18n.translate(
-                                            "subscribe_detail_plan_premium"),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyMedium,
-                                      )))
+                        Flexible(
+                            child: index == 1
+                                ? Text(
+                                    _i18n.translate(
+                                        "subscribe_detail_plan_free"),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  )
+                                : Text(
+                                    _i18n.translate(
+                                        "subscribe_detail_plan_premium"),
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ))
                       ],
                     ),
                     const SizedBox(height: 20),

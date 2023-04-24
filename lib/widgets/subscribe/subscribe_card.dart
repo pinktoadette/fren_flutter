@@ -72,11 +72,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
-        builder: (context) => FractionallySizedBox(
-            heightFactor: 0.9,
-            child: SizedBox(
-              height: height - 200,
-              child: const SubscriptionProduct(),
-            )));
+        builder: (context) => const FractionallySizedBox(
+            heightFactor: 0.9, child: SubscriptionProduct()));
   }
 }
