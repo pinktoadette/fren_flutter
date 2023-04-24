@@ -43,7 +43,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                             const SizedBox(
                               width: 50,
                               height: 50,
-                              child: Icon(Iconsax.activity),
+                              child: Icon(Iconsax.element_plus),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,8 +53,11 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                                   style:
                                       Theme.of(context).textTheme.headlineSmall,
                                 ),
-                                Text(_i18n
-                                    .translate("become_a_subscription_member")),
+                                Text(
+                                  _i18n.translate(
+                                      "become_a_subscription_member"),
+                                  style: Theme.of(context).textTheme.labelSmall,
+                                ),
                               ],
                             )
                           ])))));
@@ -71,16 +74,9 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
         isScrollControlled: true,
         builder: (context) => FractionallySizedBox(
             heightFactor: 0.9,
-            child: DraggableScrollableSheet(
-                snap: true,
-                initialChildSize: 1,
-                minChildSize: 0.75,
-                builder: (context, scrollController) => SingleChildScrollView(
-                      controller: scrollController,
-                      child: SizedBox(
-                        height: height,
-                        child: const SubscriptionProduct(),
-                      ),
-                    ))));
+            child: SizedBox(
+              height: height - 200,
+              child: const SubscriptionProduct(),
+            )));
   }
 }

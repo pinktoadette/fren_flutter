@@ -2,8 +2,6 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/app_logo.dart';
-import 'package:fren_app/widgets/subscribe/subscription.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SubscriptionProduct extends StatefulWidget {
@@ -80,58 +78,62 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget _showPricing(int index) {
     Color color = index == 1 ? APP_ERROR : APP_SUCCESS;
     double width = MediaQuery.of(context).size.width;
-    return Column(
-      children: [
-        Padding(
-            padding: const EdgeInsets.all(20),
-            child: Card(
-                child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      SizedBox(
-                          width: width * 0.8,
-                          child: Flexible(
-                              child: index == 1
-                                  ? Text(
-                                      _i18n.translate(
-                                          "subscribe_detail_plan_free"),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    )
-                                  : Text(
-                                      _i18n.translate(
-                                          "subscribe_detail_plan_premium"),
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .bodyMedium,
-                                    )))
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  _rowFeature(
-                      APP_SUCCESS,
-                      index,
-                      _i18n.translate("subscribe_detail_unlimted_request") +
-                          (index == 1 ? " of 5 Per Day" : "")),
-                  _rowFeature(color, index,
-                      _i18n.translate("subscribe_detail_image_genator")),
-                  _rowFeature(color, index,
-                      _i18n.translate("subscribe_detail_read_image")),
-                  _rowFeature(color, index,
-                      _i18n.translate("subscribe_detail_add_friends")),
-                  _rowFeature(
-                      color,
-                      index,
-                      _i18n.translate(
-                          "subscribe_detail_access_additional_models"))
-                ],
-              ),
-            )))
-      ],
+    double height = MediaQuery.of(context).size.height;
+    return SizedBox(
+      height: height * 0.8,
+      child: Column(
+        children: [
+          Padding(
+              padding: const EdgeInsets.all(20),
+              child: Card(
+                  child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        SizedBox(
+                            width: width * 0.8,
+                            child: Flexible(
+                                child: index == 1
+                                    ? Text(
+                                        _i18n.translate(
+                                            "subscribe_detail_plan_free"),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      )
+                                    : Text(
+                                        _i18n.translate(
+                                            "subscribe_detail_plan_premium"),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      )))
+                      ],
+                    ),
+                    const SizedBox(height: 20),
+                    _rowFeature(
+                        APP_SUCCESS,
+                        index,
+                        _i18n.translate("subscribe_detail_unlimted_request") +
+                            (index == 1 ? " of 5 Per Day" : "")),
+                    _rowFeature(color, index,
+                        _i18n.translate("subscribe_detail_image_genator")),
+                    _rowFeature(color, index,
+                        _i18n.translate("subscribe_detail_read_image")),
+                    _rowFeature(color, index,
+                        _i18n.translate("subscribe_detail_add_friends")),
+                    _rowFeature(
+                        color,
+                        index,
+                        _i18n.translate(
+                            "subscribe_detail_access_additional_models"))
+                  ],
+                ),
+              )))
+        ],
+      ),
     );
   }
 
