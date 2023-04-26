@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/helpers/message_format.dart';
@@ -136,28 +137,19 @@ class _BotChatScreenState extends State<BotChatScreen> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              // if there are no messages, remove from roomList
-              if ((_messages.isEmpty) &
-                  (chatController.currentRoom.users.length == 1)) {
-                chatController.removeEmptyRoomfromList();
-              }
-              if (isTrial == true) {
-                chatController.removeSepcificBotFromRoom(_room);
-              }
-              botController.fetchCurrentBot(DEFAULT_BOT_ID);
-              Navigator.of(context).pop();
-
-              Get.delete<MessageController>().then((_) {
-                Get.put(MessageController());
-              }).then((_) => messageController.offset = 10);
+              // alert user if bot is typing that process will end
+              // unless subscribe to advanced
+              _leaveBotTyping();
             },
           ),
           // Show User profile info
           title: GestureDetector(
             child: ListTile(
               contentPadding: const EdgeInsets.only(left: 0),
-              title: Text(botController.bot.name,
-                  style: const TextStyle(fontSize: 24)),
+              title: Flexible(
+                  child: Text(botController.bot.name,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(fontSize: 24))),
             ),
             onTap: () {
               /// Show bot info
@@ -474,12 +466,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _showBotInfo() {
+    double height = MediaQuery.of(context).size.height;
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.9,
+            heightFactor: 400 / height,
             child: BotProfileCard(
               bot: chatController.botController.bot,
               room: _room,
@@ -513,6 +506,30 @@ class _BotChatScreenState extends State<BotChatScreen> {
           /// Delete
           await _chatroomApi.leaveChatroom(_roomIdx, _room);
           Navigator.of(context).pop();
+          Get.delete<MessageController>().then((_) {
+            Get.put(MessageController());
+          }).then((_) => messageController.offset = 10);
+        });
+  }
+
+  void _leaveBotTyping() {
+    confirmDialog(context,
+        message: _i18n.translate("leave_chat_bot_tying"),
+        negativeAction: () => Navigator.of(context).pop(),
+        positiveText: _i18n.translate("OK"),
+        positiveAction: () async {
+          /// Delete
+          // if there are no messages, remove from roomList
+          if ((_messages.isEmpty) &
+              (chatController.currentRoom.users.length == 1)) {
+            chatController.removeEmptyRoomfromList();
+          }
+          if (isTrial == true) {
+            chatController.removeSepcificBotFromRoom(_room);
+          }
+          botController.fetchCurrentBot(DEFAULT_BOT_ID);
+          Navigator.of(context).pop();
+
           Get.delete<MessageController>().then((_) {
             Get.put(MessageController());
           }).then((_) => messageController.offset = 10);

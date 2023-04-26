@@ -12,7 +12,6 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
@@ -195,10 +194,12 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               icon: const Icon(Iconsax.box_add),
               photoUrl: post.photoUrl ?? ""),
           title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Text(
+            Flexible(
+                child: Text(
               post.text,
               style: Theme.of(context).textTheme.headlineSmall,
-            ),
+              overflow: TextOverflow.ellipsis,
+            )),
           ]),
           subtitle: Text(
             truncateText(50, post.subText),

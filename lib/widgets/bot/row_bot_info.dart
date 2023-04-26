@@ -22,7 +22,6 @@ class RowMachiInfo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     BotController botController = Get.find(tag: 'bot');
-    ChatController chatController = Get.find(tag: 'chatroom');
     final _i18n = AppLocalizations.of(context);
 
     final width = MediaQuery.of(context).size.width;
@@ -40,9 +39,12 @@ class RowMachiInfo extends StatelessWidget {
           icon: const Icon(Iconsax.box_add),
           photoUrl: bot.profilePhoto ?? ""),
       title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-        Text(
-          bot.name,
-          style: Theme.of(context).textTheme.headlineSmall,
+        Flexible(
+          child: Text(
+            bot.name,
+            style: Theme.of(context).textTheme.headlineSmall,
+            overflow: TextOverflow.ellipsis,
+          ),
         ),
       ]),
       subtitle: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

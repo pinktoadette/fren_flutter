@@ -99,14 +99,7 @@ class ConversationsTab extends StatelessWidget {
 
                     return InkWell(
                       onTap: () async {
-                        Chatroom updateRoom = room.copyWith(read: true);
-                        chatController.updateRoom(index, updateRoom);
-                        await _chatroomApi.markAsRead(room.chatroomId);
-
-                        /// set bot
-                        print(room);
-                        Get.to(() => (const BotChatScreen()),
-                            arguments: {"room": room, 'index': index});
+                        SetCurrentRoom().updateRoomReadBot(room, index);
                       },
                       child: Container(
                         width: width,

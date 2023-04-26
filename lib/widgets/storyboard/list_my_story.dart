@@ -129,7 +129,6 @@ class _MyStoriesState extends State<MyStories> {
   }
 
   void _onStoryClick(int index, Storyboard story) {
-    double height = MediaQuery.of(context).size.height;
     if (story.status == StoryStatus.PUBLISHED) {
       showModalBottomSheet<void>(
           context: context,

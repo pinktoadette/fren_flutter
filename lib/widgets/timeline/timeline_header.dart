@@ -32,7 +32,12 @@ class TimelineHeader extends StatelessWidget {
                     username: user.username),
               const SizedBox(width: 5),
               Column(
-                children: [Text(user.username)],
+                children: [
+                  Text(
+                    user.username,
+                    overflow: TextOverflow.ellipsis,
+                  )
+                ],
               )
             ]));
   }
