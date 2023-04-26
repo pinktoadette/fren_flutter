@@ -1,6 +1,9 @@
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/set_room_bot.dart';
+import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
@@ -18,6 +21,7 @@ class ConversationsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BotController botController = Get.find(tag: 'bot');
     ChatController chatController = Get.find(tag: 'chatroom');
 
     /// Initialization
@@ -37,12 +41,8 @@ class ConversationsTab extends StatelessWidget {
             ),
             IconButton(
                 onPressed: () {
-                  chatController.addEmptyRoomToList();
-                  chatController.onLoadCurrentRoom(chatController.emptyRoom);
-                  Get.to(() => const BotChatScreen(), arguments: {
-                    "room": chatController.emptyRoom,
-                    "index": chatController.roomlist.length - 1
-                  });
+                  Bot bot = botController.bot;
+                  SetCurrentRoom().setRoom(bot);
                 },
                 icon: const Icon(Iconsax.message_edit))
           ]),
@@ -102,6 +102,9 @@ class ConversationsTab extends StatelessWidget {
                         Chatroom updateRoom = room.copyWith(read: true);
                         chatController.updateRoom(index, updateRoom);
                         await _chatroomApi.markAsRead(room.chatroomId);
+
+                        /// set bot
+                        print(room);
                         Get.to(() => (const BotChatScreen()),
                             arguments: {"room": room, 'index': index});
                       },

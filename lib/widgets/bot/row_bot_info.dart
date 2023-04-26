@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -60,10 +61,7 @@ class RowMachiInfo extends StatelessWidget {
           ? OutlinedButton(
               onPressed: () {
                 botController.bot = bot;
-                Get.to(() => const BotChatScreen(), arguments: {
-                  "room": chatController.emptyRoom,
-                  "index": chatController.roomlist.length - 1
-                });
+                SetCurrentRoom().setRoom(bot);
               },
               child: showChat == true
                   ? Text(_i18n.translate("chat"))

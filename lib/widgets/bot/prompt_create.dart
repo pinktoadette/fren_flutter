@@ -6,13 +6,13 @@ import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/screens/bot/bot_chat.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:get/get.dart';
@@ -29,7 +29,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _chatroomApi = ChatroomMachiApi();
   String errorMessage = '';
   BotController botController = Get.find(tag: 'bot');
-  ChatController chatController = Get.find(tag: 'chatroom');
 
   final _nameController = TextEditingController();
   final _aboutController = TextEditingController();
@@ -269,13 +268,10 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           about: about,
           prompt: prompt,
           photoUrl: photoUrl);
-      botController.bot = bot;
       await _chatroomApi.tryBot();
+      _clear();
       Navigator.of(context).pop();
-      Get.to(() => const BotChatScreen(), arguments: {
-        "room": chatController.emptyRoom,
-        "index": chatController.roomlist.length - 1
-      });
+      SetCurrentRoom().setRoom(bot);
     } catch (error) {
       Get.snackbar(
         'Error',
@@ -286,6 +282,12 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     } finally {
       _pr.hide();
     }
+  }
+
+  void _clear() {
+    _promptController.clear();
+    _nameController.clear();
+    _aboutController.clear();
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {

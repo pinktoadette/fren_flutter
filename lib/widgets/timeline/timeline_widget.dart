@@ -6,6 +6,7 @@ import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
@@ -214,10 +215,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               : OutlinedButton(
                   onPressed: () async {
                     Bot bot = await _botApi.getBot(botId: post.id);
-                    Get.to(() => const BotChatScreen(), arguments: {
-                      "room": chatController.emptyRoom,
-                      "index": chatController.roomlist.length - 1
-                    });
+                    SetCurrentRoom().setRoom(bot);
                   },
                   child: Text(_i18n.translate("chat")),
                 ),
