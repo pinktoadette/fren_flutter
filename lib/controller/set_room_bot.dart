@@ -8,6 +8,9 @@ class SetCurrentRoom {
   ChatController chatController = Get.find(tag: 'chatroom');
   BotController botController = Get.find(tag: 'bot');
 
+  /// Sets the current room and bot and redirects to the page
+  /// Note: there is one more place that does this
+  /// bot_profile to try bot
   void setRoom(Bot bot) {
     botController.bot = bot;
     chatController.addEmptyRoomToList();
