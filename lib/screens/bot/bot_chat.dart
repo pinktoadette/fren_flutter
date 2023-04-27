@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
+import 'package:fren_app/controller/countdown.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/helpers/uploader.dart';
@@ -48,6 +49,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final BotController botController = Get.find(tag: 'bot');
   final ChatController chatController = Get.find(tag: 'chatroom');
   final MessageController messageController = Get.find(tag: 'message');
+  final TimerController timerController =
+      Get.put(TimerController(), tag: 'timer');
 
   late final List<types.Message> _messages = [];
 
@@ -62,8 +65,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool isLoading = false;
   bool isBotSleeping = false;
   bool? isBotTyping;
-  types.PartialImage? attachmentPreview;
   File? file;
+  types.PartialImage? attachmentPreview;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
@@ -107,6 +110,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
 
+    // countdown to bot typing
+    if (_messages.isNotEmpty && _room.users.length > 1) {
+      try {
+        types.Message lastMachiMessage = _messages
+            .firstWhere((message) => message.author.id.contains('Machi_'));
+        timerController.startTimer(lastMachiMessage.createdAt!.toInt());
+      } catch (_) {
+        debugPrint("no messages from machi");
+      }
+    }
+
     //initialize socket
     _listenSocket();
     super.initState();
@@ -126,17 +140,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (isLoading) {
       return Frankloader();
     } else {
-      double timeRemain = 0.0;
-      if (_messages.isNotEmpty) {
-        int lasttimeDiff = _messages[0].createdAt!;
-        timeRemain = countdown(lasttimeDiff);
-      }
-
       return Scaffold(
         appBar: AppBar(
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
+              timerController.onClose();
               // alert user if bot is typing that process will end
               // unless subscribe to advanced
               _leaveBotTyping();
@@ -155,7 +164,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
           actions: <Widget>[
             if (_room.users.length > 1)
               InkWell(
-                child: BotTimer(percent: timeRemain),
+                child: Obx(() {
+                  return Text(
+                    "${timerController.time}",
+                    style: TextStyle(fontSize: 12, color: Colors.black),
+                  );
+                }), //BotTimer(),
                 onTap: () {
                   infoDialog(context,
                       icon: const Icon(Iconsax.clock),
@@ -403,8 +417,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
       isBotTyping = true;
     });
     try {
-      Map<String, dynamic> message = await _messagesApi.getBotResponse();
-      _channel.sink.add(json.encode({"message": message}));
+      if (timerController.time.value == 0) {
+        Map<String, dynamic> message = await _messagesApi.getBotResponse();
+        _channel.sink.add(json.encode({"message": message}));
+        if (_room.users.length > 1) {
+          timerController.startTimer(getDateTimeEpoch());
+        }
+      }
     } catch (err) {
       var response = {
         CHAT_AUTHOR_ID: _room.bot.botId,

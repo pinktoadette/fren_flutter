@@ -1,17 +1,14 @@
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/countdown.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:percent_indicator/percent_indicator.dart';
 import 'package:flutter/material.dart';
 
-class BotTimer extends StatefulWidget {
-  final double percent;
-  const BotTimer({Key? key, required this.percent}) : super(key: key);
+class BotTimer extends StatelessWidget {
+  BotTimer({Key? key}) : super(key: key);
+  final TimerController timerController = Get.find(tag: 'timer');
 
-  @override
-  _BotTimerState createState() => _BotTimerState();
-}
-
-class _BotTimerState extends State<BotTimer> {
   @override
   Widget build(BuildContext context) {
     /// Initialization
@@ -19,7 +16,7 @@ class _BotTimerState extends State<BotTimer> {
     return CircularPercentIndicator(
       radius: 10.0,
       lineWidth: 10.0,
-      percent: widget.percent,
+      percent: timerController.remainingSeconds * 1.0,
       center: Icon(
         Iconsax.clock,
         size: 14,

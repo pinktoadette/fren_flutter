@@ -1,7 +1,9 @@
+import 'dart:math';
+
 import 'package:fren_app/constants/constants.dart';
 
 bool isYesterday(d1, d2) {
-  return d1.day - 1 == d2.day && d1.month == d2.month && d1.year == d2.year;
+  return (d1.day - 1) == d2.day && d1.month == d2.month && d1.year == d2.year;
 }
 
 String formatDate(int epochDate) {
@@ -39,15 +41,11 @@ int getDateTimeEpoch() {
   return dateTime.millisecondsSinceEpoch;
 }
 
-double countdown(int timestamp) {
+int countdown(int timestamp) {
   final d1 = DateTime.now();
   final time = DateTime.fromMicrosecondsSinceEpoch(timestamp * 1000);
   final stopAt = time.add(const Duration(minutes: 5));
-  final diff = (stopAt.difference(d1).inMinutes).abs();
+  final diff = stopAt.difference(d1).inSeconds;
 
-  if (diff > BOT_RESPONSE_SPEED_MIN) {
-    return 1.0;
-  } else {
-    return diff / BOT_RESPONSE_SPEED_MIN;
-  }
+  return max(0, diff);
 }
