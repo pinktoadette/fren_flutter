@@ -162,12 +162,20 @@ class _BotChatScreenState extends State<BotChatScreen> {
             },
           ),
           actions: <Widget>[
-            if (_room.users.length > 1)
+            if (_room.users.length > 1 && timerController.time > 0)
               InkWell(
                 child: Obx(() {
-                  return Text(
-                    "${timerController.time}",
-                    style: TextStyle(fontSize: 12, color: Colors.black),
+                  return Row(
+                    children: [
+                      const Icon(
+                        Iconsax.clock,
+                        size: 16,
+                      ),
+                      Text(
+                        "${timerController.time}",
+                        style: Theme.of(context).textTheme.labelSmall,
+                      )
+                    ],
                   );
                 }), //BotTimer(),
                 onTap: () {

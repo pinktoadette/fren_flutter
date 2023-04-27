@@ -6,6 +6,7 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/storyboard/add_scene.dart';
 import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
@@ -36,6 +37,8 @@ class _EditStoryState extends State<EditStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -51,12 +54,23 @@ class _EditStoryState extends State<EditStory> {
           ),
           actions: [
             // Save changes button
-            TextButton(
-              child: Text(_i18n.translate("storyboard_preview")),
-              onPressed: () {
-                Get.to(PreviewStory(story: widget.story));
-              },
-            )
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  child: Text(_i18n.translate("publish")),
+                  onPressed: () {
+                    confirmDialog(context,
+                        icon: const Icon(Iconsax.warning_2),
+                        negativeAction: () => Navigator.of(context).pop(),
+                        negativeText: _i18n.translate("CANCEL"),
+                        message: _i18n.translate("publish_confirm"),
+                        positiveText: _i18n.translate("publish"),
+                        positiveAction: () {
+                          Navigator.of(context).pop();
+                          Get.to(PublishStory(story: widget.story));
+                        });
+                  },
+                ))
           ],
         ),
         body: Padding(
@@ -103,16 +117,30 @@ class _EditStoryState extends State<EditStory> {
                         ),
                       ),
                       Positioned(
+                          width: width - 50,
                           bottom: 0,
-                          right: 30,
-                          child: ElevatedButton(
-                            onPressed: () {
-                              Get.to(PublishStory(story: widget.story));
-                            },
-                            child: Text(
-                              _i18n.translate("publish"),
-                            ),
-                          ))
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                OutlinedButton.icon(
+                                  icon: const Icon(Iconsax.add),
+                                  onPressed: () {
+                                    _addEntry();
+                                  },
+                                  label: Text(
+                                    _i18n.translate("add"),
+                                  ),
+                                ),
+                                const Spacer(),
+                                OutlinedButton(
+                                  onPressed: () {
+                                    Get.to(PreviewStory(story: widget.story));
+                                  },
+                                  child: Text(
+                                      _i18n.translate("storyboard_preview")),
+                                )
+                              ]))
                     ],
                   )));
   }
@@ -175,6 +203,27 @@ class _EditStoryState extends State<EditStory> {
             );
           }
         });
+  }
+
+  void _addEntry() async {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      builder: (context) => FractionallySizedBox(
+          heightFactor: 0.9,
+          child: DraggableScrollableSheet(
+            snap: true,
+            initialChildSize: 1,
+            minChildSize: 0.75,
+            builder: (context, scrollController) => SingleChildScrollView(
+              controller: scrollController,
+              child: AddSceneBoard(
+                story: widget.story,
+              ),
+            ),
+          )),
+    );
   }
 
   void _saveStory() async {
