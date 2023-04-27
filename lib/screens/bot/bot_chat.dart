@@ -10,7 +10,6 @@ import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
-import 'package:fren_app/widgets/bot/bot_timer.dart';
 import 'package:fren_app/widgets/chat/double_tap_message.dart';
 import 'package:fren_app/widgets/chat/header_input.dart';
 import 'package:fren_app/widgets/friend_list.dart';

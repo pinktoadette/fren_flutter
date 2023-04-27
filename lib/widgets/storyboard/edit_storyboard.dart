@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/constants/constants.dart';
@@ -6,6 +8,7 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/storyboard/add_scene.dart';
 import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/publish_story.dart';
@@ -27,6 +30,7 @@ class _EditStoryState extends State<EditStory> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
   late Storyboard _original;
+  File? _attachmentPreview;
 
   @override
   void initState() {
@@ -123,14 +127,17 @@ class _EditStoryState extends State<EditStory> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                OutlinedButton.icon(
-                                  icon: const Icon(Iconsax.add),
+                                IconButton(
+                                  icon: const Icon(Iconsax.gallery_add),
                                   onPressed: () {
-                                    _addEntry();
+                                    _addImage();
                                   },
-                                  label: Text(
-                                    _i18n.translate("add"),
-                                  ),
+                                ),
+                                IconButton(
+                                  icon: const Icon(Iconsax.pen_add),
+                                  onPressed: () {
+                                    _addImage();
+                                  },
                                 ),
                                 const Spacer(),
                                 OutlinedButton(
@@ -205,25 +212,29 @@ class _EditStoryState extends State<EditStory> {
         });
   }
 
-  void _addEntry() async {
+  void _addImage() async {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       enableDrag: true,
-      builder: (context) => FractionallySizedBox(
-          heightFactor: 0.9,
-          child: DraggableScrollableSheet(
-            snap: true,
-            initialChildSize: 1,
-            minChildSize: 0.75,
-            builder: (context, scrollController) => SingleChildScrollView(
-              controller: scrollController,
-              child: AddSceneBoard(
-                story: widget.story,
-              ),
-            ),
-          )),
+      builder: (context) => ImageSourceSheet(
+        onImageSelected: (image) async {
+          if (image != null) {
+            Navigator.pop(context);
+            _handleImageSelection(image);
+          }
+        },
+      ),
     );
+  }
+
+  void _handleImageSelection(File image) async {
+    // var bytes = image.readAsBytesSync();
+    // var result = await decodeImageFromList(bytes);
+
+    setState(() {
+      _attachmentPreview = image;
+    });
   }
 
   void _saveStory() async {
