@@ -46,11 +46,13 @@ class _PreviewStoryState extends State<PreviewStory> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(
-                    widget.story.title,
-                    style: Theme.of(context).textTheme.headlineMedium,
-                    textAlign: TextAlign.left,
-                  ),
+                  Padding(
+                      padding: const EdgeInsets.only(left: 20, bottom: 20),
+                      child: Text(
+                        widget.story.title,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                        textAlign: TextAlign.left,
+                      )),
                   StoryView(story: widget.story)
                 ])));
   }
