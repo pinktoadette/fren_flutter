@@ -263,7 +263,7 @@
   "machi": "Machi",
   "bot_naps": "Napping",
   "bot_owner": "Contributed By",
-  "bot_nap_message": "Too many people, I'm overwhelmed. I have a limit of 5 minutes from last message. If I dont wake up, wake me up.",
+  "bot_nap_message": "Too many people, I am overwhelmed. 😴😴😴 I have a limit of 5 mins from my last message. \nIf I dont wake up in 5 mins, wake me up by messaging me 🙏⏰",
   "create_bot": "Import Models from GitHub",
   "create_bot_success": "Your machi is now published!",
   "manage_bot": "Manage Published Models",
