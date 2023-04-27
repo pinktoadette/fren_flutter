@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:math';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/message_format.dart';
 import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -27,7 +27,6 @@ import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/message_controller.dart';
 import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/widgets/bot/tiny_bot.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:path_provider/path_provider.dart';
@@ -57,7 +56,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late WebSocketChannel _channel;
   late Chatroom _room;
   late int _roomIdx;
-  bool isTrial = false;
   final _messagesApi = MessageMachiApi();
   final _chatroomApi = ChatroomMachiApi();
   bool _isAttachmentUploading = false;
@@ -106,10 +104,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _user = chatController.chatUser;
     _roomIdx = args["index"];
 
-    if (args["isTrial"] == true) {
-      isTrial = args["isTrial"];
-    }
-
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
 
@@ -132,6 +126,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (isLoading) {
       return Frankloader();
     } else {
+      double timeRemain = 0.0;
+      if (_messages.isNotEmpty) {
+        int lasttimeDiff = _messages[0].createdAt!;
+        timeRemain = countdown(lasttimeDiff);
+      }
+
       return Scaffold(
         appBar: AppBar(
           leading: BackButton(
@@ -144,13 +144,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
           // Show User profile info
           title: GestureDetector(
-            child: ListTile(
-              contentPadding: const EdgeInsets.only(left: 0),
-              title: Flexible(
-                  child: Text(botController.bot.name,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(fontSize: 24))),
-            ),
+            child: Text(chatController.botController.bot.name,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(fontSize: 24)),
             onTap: () {
               /// Show bot info
               _showBotInfo();
@@ -159,11 +155,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
           actions: <Widget>[
             if (_room.users.length > 1)
               InkWell(
-                child: const BotTimer(),
+                child: BotTimer(percent: timeRemain),
                 onTap: () {
                   infoDialog(context,
-                      icon: const TinyBotIcon(
-                          image: 'assets/images/faces/napping.png'),
+                      icon: const Icon(Iconsax.clock),
                       title: _i18n.translate("bot_naps"),
                       message: _i18n.translate("bot_nap_message"),
                       positiveText: _i18n.translate("OK"),
@@ -173,43 +168,42 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   });
                 },
               ),
-            if (isTrial == false)
-              PopupMenuButton<String>(
-                initialValue: "",
-                itemBuilder: (context) => <PopupMenuEntry<String>>[
-                  /// invite_user
+            PopupMenuButton<String>(
+              initialValue: "",
+              itemBuilder: (context) => <PopupMenuEntry<String>>[
+                /// invite_user
+                PopupMenuItem(
+                    value: "add_to_chat",
+                    child: Row(
+                      children: <Widget>[
+                        const Icon(Iconsax.add),
+                        const SizedBox(width: 5),
+                        Text(_i18n.translate("add_to_chat")),
+                      ],
+                    )),
+                if (_room.users.length > 1)
                   PopupMenuItem(
-                      value: "add_to_chat",
+                      value: "leave_chat",
                       child: Row(
                         children: <Widget>[
-                          const Icon(Iconsax.add),
+                          const Icon(Iconsax.logout),
                           const SizedBox(width: 5),
-                          Text(_i18n.translate("add_to_chat")),
+                          Text(_i18n.translate("leave_chatroom")),
                         ],
                       )),
-                  if (_room.users.length > 1)
-                    PopupMenuItem(
-                        value: "leave_chat",
-                        child: Row(
-                          children: <Widget>[
-                            const Icon(Iconsax.logout),
-                            const SizedBox(width: 5),
-                            Text(_i18n.translate("leave_chatroom")),
-                          ],
-                        )),
-                ],
-                onSelected: (val) {
-                  /// Control selected value
-                  switch (val) {
-                    case "add_to_chat":
-                      _showFriends();
-                      break;
-                    case "leave_chat":
-                      _leaveChat(context);
-                      break;
-                  }
-                },
-              ),
+              ],
+              onSelected: (val) {
+                /// Control selected value
+                switch (val) {
+                  case "add_to_chat":
+                    _showFriends();
+                    break;
+                  case "leave_chat":
+                    _leaveChat(context);
+                    break;
+                }
+              },
+            ),
           ],
         ),
         body: Chat(
@@ -415,7 +409,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
-  /// Use only in group chat, otherwise use api calls
+  /// @todo enable subscription
+  /// Use only in subscribed, otherwise use api calls
   Future<void> _streamBotResponse(Map<String, dynamic> task) async {
     setState(() {
       isBotTyping = true;
@@ -483,17 +478,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _showFriends() {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-            heightFactor: 0.9,
-            child: FriendListWidget(
-              roomIdx: _roomIdx,
-            ));
-      },
-    );
+    if (_room.users.length >= 2) {
+      confirmDialog(context,
+          message: _i18n.translate("friend_invite_limit_chat"),
+          positiveText: _i18n.translate("OK"), positiveAction: () {
+        Navigator.of(context).pop();
+      });
+    } else {
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) {
+          return FractionallySizedBox(
+              heightFactor: 0.9,
+              child: FriendListWidget(
+                roomIdx: _roomIdx,
+              ));
+        },
+      );
+    }
   }
 
   void _leaveChat(BuildContext context) {
@@ -513,26 +516,33 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _leaveBotTyping() {
-    confirmDialog(context,
-        message: _i18n.translate("leave_chat_bot_tying"),
-        negativeAction: () => Navigator.of(context).pop(),
-        positiveText: _i18n.translate("OK"),
-        positiveAction: () async {
-          /// Delete
-          // if there are no messages, remove from roomList
-          if ((_messages.isEmpty) &
-              (chatController.currentRoom.users.length == 1)) {
-            chatController.removeEmptyRoomfromList();
-          }
-          if (isTrial == true) {
-            chatController.removeSepcificBotFromRoom(_room);
-          }
-          botController.fetchCurrentBot(DEFAULT_BOT_ID);
-          Navigator.of(context).pop();
+    if (isBotTyping == true) {
+      confirmDialog(context,
+          message: _i18n.translate("leave_chat_bot_tying"),
+          negativeAction: () => Navigator.of(context).pop(),
+          positiveText: _i18n.translate("OK"),
+          positiveAction: () async {
+            Navigator.of(context).pop();
+            _leaveChatroom();
+          });
+    } else {
+      _leaveChatroom();
+    }
+  }
 
-          Get.delete<MessageController>().then((_) {
-            Get.put(MessageController());
-          }).then((_) => messageController.offset = 10);
-        });
+  void _leaveChatroom() {
+    // if there are no messages, remove from roomList
+    if ((_messages.isEmpty) & (chatController.currentRoom.users.length == 1)) {
+      chatController.removeEmptyRoomfromList();
+    }
+
+    botController.fetchCurrentBot(DEFAULT_BOT_ID);
+
+    Get.delete<MessageController>()
+        .then((_) {
+          Get.put(MessageController());
+        })
+        .then((_) => messageController.offset = 10)
+        .then((_) => Get.back());
   }
 }

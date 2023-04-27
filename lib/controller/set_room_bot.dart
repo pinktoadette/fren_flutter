@@ -11,15 +11,26 @@ class SetCurrentRoom {
   BotController botController = Get.find(tag: 'bot');
   final _chatroomApi = ChatroomMachiApi();
 
-  /// Sets the current room and bot and redirects to the page
-  /// Note: there is one more place that does this
-  /// bot_profile to try bot
-  void setRoom(Bot bot) {
+  /// Get and set empty room and direct there
+  void setEmptyRoom(Bot bot) {
     botController.bot = bot;
     chatController.addEmptyRoomToList();
     chatController.onLoadCurrentRoom(chatController.emptyRoom);
     Get.to(() => const BotChatScreen(), arguments: {
       "room": chatController.emptyRoom,
+      "index": chatController.roomlist.length - 1
+    });
+  }
+
+  void setNewBotRoom(Bot bot) async {
+    /// create new room and bot
+    /// Adds to the end of the list
+    botController.bot = bot;
+    await _chatroomApi.createNewRoom();
+    chatController.addEmptyRoomToList();
+    chatController.onLoadCurrentRoom(chatController.emptyRoom);
+    Get.to(() => const BotChatScreen(), arguments: {
+      "room": chatController.currentRoom,
       "index": chatController.roomlist.length - 1
     });
   }
@@ -32,6 +43,7 @@ class SetCurrentRoom {
     Chatroom updateRoom = room.copyWith(read: true);
     chatController.updateRoom(index, updateRoom);
     await _chatroomApi.markAsRead(room.chatroomId);
+    chatController.currentRoom = room;
 
     Get.to(() => (const BotChatScreen()),
         arguments: {"room": room, 'index': index});

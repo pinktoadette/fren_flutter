@@ -55,6 +55,8 @@ const List<Locale> SUPPORTED_LOCALES = [
 /// FIREBASE MESSAGING TOPIC
 const NOTIFY_USERS = "NOTIFY_USERS";
 
+/// Bot chat returned speed in multi user
+const BOT_RESPONSE_SPEED_MIN = 5; //5 mins
 /// Bot
 const DEFAULT_BOT_ID = 'Machi_GgQ0c3cqypSmKcpfUA9M';
 const DEFAULT_BOT_INTRO_ID = 'DEFAULT_BOT_ID';
@@ -79,7 +81,6 @@ const BOT_ADMIN_NOTE = "adminNote";
 const BOT_PROMPT = "prompt";
 const BOT_TEMPERATURE = "temperature";
 const BOT_CREATED_BY = "createdBy";
-const BOT_IS_TRIAL = "isTrial";
 
 /// trials
 const BOT_TRIAL_BOT_ID = BOT_ID;

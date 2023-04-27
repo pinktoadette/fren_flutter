@@ -31,7 +31,6 @@ class _ExpandableFabState extends State<ExpandableFab>
     if (_open != widget.isOpen) {
       _toggle();
     }
-    ;
     super.didUpdateWidget(oldWidget);
   }
 

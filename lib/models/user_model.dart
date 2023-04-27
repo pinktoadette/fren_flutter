@@ -6,7 +6,7 @@ import 'package:fren_app/api/machi/user_api.dart';
 import 'package:fren_app/constants/secrets.dart';
 import 'package:fren_app/controller/initialize_all.dart';
 import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/theme_helper.dart';
 import 'package:fren_app/models/app_model.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';

@@ -5,14 +5,12 @@ import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/uploader.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:get/get.dart';
@@ -271,7 +269,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       await _chatroomApi.tryBot();
       _clear();
       Navigator.of(context).pop();
-      SetCurrentRoom().setRoom(bot);
+      SetCurrentRoom().setNewBotRoom(bot);
     } catch (error) {
       Get.snackbar(
         'Error',

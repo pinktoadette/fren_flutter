@@ -3,7 +3,7 @@ import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';

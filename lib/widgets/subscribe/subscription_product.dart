@@ -211,7 +211,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                         icon,
                         index,
                         _i18n.translate(
-                            "subscribe_detail_access_additional_models"))
+                            "subscribe_detail_access_additional_models")),
+                    _rowFeature(
+                        icon,
+                        index,
+                        _i18n
+                            .translate("subscribe_get_notification_from_machi"))
                   ],
                 ),
               )))

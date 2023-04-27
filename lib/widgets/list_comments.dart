@@ -44,7 +44,7 @@ class _ListCommentsState extends State<ListComments> {
         _pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey as int);
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;

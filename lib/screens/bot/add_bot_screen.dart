@@ -40,7 +40,7 @@ class _AddBotState extends State<AddBotScreen> {
         ),
         body: Center(
             child: Padding(
-                padding: EdgeInsets.all(50),
+                padding: const EdgeInsets.all(50),
                 child: Column(children: [
                   const SizedBox(
                     height: 40,

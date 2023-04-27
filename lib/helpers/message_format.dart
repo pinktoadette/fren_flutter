@@ -1,6 +1,6 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
-import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:get/get.dart';

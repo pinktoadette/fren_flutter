@@ -1,6 +1,6 @@
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:get/get.dart';
 import 'package:fren_app/datas/bot.dart';
 
@@ -35,5 +35,6 @@ class BotController extends GetxController {
     final botApi = BotApi();
     final Bot botNow = await botApi.getBot(botId: botId);
     _currentBot = botNow.obs;
+    _currentBot.refresh();
   }
 }

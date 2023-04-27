@@ -60,12 +60,13 @@ class _ActivityTabState extends State<ActivityTab> {
             ],
           ),
         ),
-        body: const Column(
+        body: const SingleChildScrollView(
+            child: Column(
           children: [
             SubscriptionCard(),
             TimelineWidget(),
           ],
-        ),
+        )),
       );
     }
     return Scaffold(

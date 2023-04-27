@@ -6,7 +6,7 @@ import 'package:fren_app/controller/user_controller.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -127,11 +127,6 @@ class ChatController extends GetxController implements GetxService {
   void addSpecificBotToRoom(Chatroom room) {
     _currentRoom = room.obs;
     roomlist.add(room);
-    roomlist.refresh();
-  }
-
-  void removeSepcificBotFromRoom(Chatroom room) {
-    roomlist.remove(room);
     roomlist.refresh();
   }
 

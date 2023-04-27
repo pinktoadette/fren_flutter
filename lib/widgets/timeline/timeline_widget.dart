@@ -49,7 +49,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
         _pagingController.appendLastPage(newItems);
       } else {
         final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey as int);
+        _pagingController.appendPage(newItems, nextPageKey);
       }
     } catch (error) {
       _pagingController.error = error;
@@ -72,7 +72,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     final height = MediaQuery.of(context).size.height;
 
     return Container(
-        height: height - 290,
+        height: height - 280,
         margin: const EdgeInsets.symmetric(vertical: 5.0),
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
@@ -216,7 +216,8 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               : OutlinedButton(
                   onPressed: () async {
                     Bot bot = await _botApi.getBot(botId: post.id);
-                    SetCurrentRoom().setRoom(bot);
+                    Navigator.of(context).pop();
+                    SetCurrentRoom().setNewBotRoom(bot);
                   },
                   child: Text(_i18n.translate("chat")),
                 ),

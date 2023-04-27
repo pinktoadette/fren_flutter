@@ -3,6 +3,7 @@ import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
@@ -67,7 +68,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SizedBox(
-            height: 180,
+            height: 200,
             child: ListTile(
                 isThreeLine: true,
                 leading: RoundedImage(
@@ -91,19 +92,8 @@ class _BotProfileCardState extends State<BotProfileCard> {
                           widget.bot.subdomain,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
-                        Column(
-                          children: [
-                            Row(
-                              children: [
-                                Flexible(
-                                    child: Text(widget.bot.about,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall))
-                              ],
-                            ),
-                          ],
-                        ),
+                        Text(widget.bot.about,
+                            style: Theme.of(context).textTheme.bodySmall)
                       ],
                     ))),
           ),
@@ -115,7 +105,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
             Padding(
               padding: const EdgeInsets.all(20),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: _displayButtons(),
               ),
             )
@@ -164,15 +154,9 @@ class _BotProfileCardState extends State<BotProfileCard> {
       isLoading = true;
     });
     botController.bot = widget.bot;
-    await _chatroomApi.tryBot();
+    Navigator.of(context).pop();
+    SetCurrentRoom().setNewBotRoom(widget.bot);
 
-    /// it is the last one in roomlist, since we just added immediately after api call
-    int index = chatController.roomlist.length;
-    Get.to(() => const BotChatScreen(), arguments: {
-      "room": chatController.roomlist[index - 1],
-      "index": index - 1,
-      "isTrial": true
-    });
     setState(() {
       isLoading = false;
     });

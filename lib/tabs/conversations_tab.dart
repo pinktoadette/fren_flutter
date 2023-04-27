@@ -7,9 +7,7 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
-import 'package:fren_app/helpers/date_now.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -42,7 +40,7 @@ class ConversationsTab extends StatelessWidget {
             IconButton(
                 onPressed: () {
                   Bot bot = botController.bot;
-                  SetCurrentRoom().setRoom(bot);
+                  SetCurrentRoom().setEmptyRoom(bot);
                 },
                 icon: const Icon(Iconsax.message_edit))
           ]),

@@ -39,7 +39,7 @@ class ChatroomMachiApi {
       // upon exit of room, if there is no messages, then remove from roomlist
       Chatroom room = Chatroom.fromJson(roomData);
       chatController.onCreateRoomList(room);
-
+      chatController.currentRoom = room;
       return roomData;
     }
     debugPrint(response.toString());
@@ -124,7 +124,7 @@ class ChatroomMachiApi {
     return response.data;
   }
 
-  ///////// TRIALS /////////////////
+  ///////// ADD BOT / Trials /////////////////
   Future<Map<String, dynamic>> tryBot() async {
     final ChatController chatController = Get.find(tag: 'chatroom');
     final BotController botController = Get.find(tag: 'bot');

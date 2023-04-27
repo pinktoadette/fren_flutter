@@ -1,6 +1,6 @@
 import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/date_now.dart';
+import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 
