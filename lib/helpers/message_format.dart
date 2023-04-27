@@ -55,7 +55,7 @@ Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
   messageMap[CHAT_USER_NAME] = user.firstName;
   messageMap[ROOM_ID] = chatController.currentRoom.chatroomId;
   messageMap[ROOM_HAS_MESSAGES] = true;
-  messageMap[CHAT_MESSAGE_ID] = const Uuid().v4();
+  messageMap[CHAT_MESSAGE_ID] = const Uuid().v4().replaceAll(RegExp('/-/'), '');
 
   return messageMap;
 }

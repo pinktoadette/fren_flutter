@@ -40,7 +40,7 @@ class ConversationsTab extends StatelessWidget {
             IconButton(
                 onPressed: () {
                   Bot bot = botController.bot;
-                  SetCurrentRoom().setEmptyRoom(bot);
+                  SetCurrentRoom().setNewBotRoom(bot, false);
                 },
                 icon: const Icon(Iconsax.message_edit))
           ]),

@@ -11,22 +11,13 @@ class SetCurrentRoom {
   BotController botController = Get.find(tag: 'bot');
   final _chatroomApi = ChatroomMachiApi();
 
-  /// Get and set empty room and direct there
-  void setEmptyRoom(Bot bot) {
-    botController.bot = bot;
-    chatController.addEmptyRoomToList();
-    chatController.onLoadCurrentRoom(chatController.emptyRoom);
-    Get.to(() => const BotChatScreen(), arguments: {
-      "room": chatController.emptyRoom,
-      "index": chatController.roomlist.length - 1
-    });
-  }
-
-  void setNewBotRoom(Bot bot) async {
+  void setNewBotRoom(Bot bot, bool createNew) async {
     /// create new room and bot
     /// Adds to the end of the list
     botController.bot = bot;
-    await _chatroomApi.createNewRoom();
+    if (createNew == true) {
+      await _chatroomApi.createNewRoom();
+    }
     chatController.addEmptyRoomToList();
     chatController.onLoadCurrentRoom(chatController.emptyRoom);
     Get.to(() => const BotChatScreen(), arguments: {

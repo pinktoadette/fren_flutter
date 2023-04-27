@@ -7,7 +7,6 @@ import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/chatroom.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/animations/loader.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
@@ -100,7 +99,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
           isLoading == true
               ? Frankloader(height: 50, width: 50)
               : const SizedBox(height: 50),
-          if (widget.room?.chatroomId == null) _showPricing(),
+          // if (widget.room?.chatroomId == null) _showPricing(),
           if (widget.showPurchase == true)
             Padding(
               padding: const EdgeInsets.all(20),
@@ -119,20 +118,20 @@ class _BotProfileCardState extends State<BotProfileCard> {
       return [const Text("You have this machi")];
     } else {
       return [
-        OutlinedButton.icon(
-          icon: const Icon(Iconsax.box),
-          label: Text(_i18n.translate("bot_try")),
+        ElevatedButton.icon(
+          icon: const Icon(Iconsax.message),
+          label: Text(_i18n.translate("chat")),
           onPressed: () async {
             _tryBot();
           },
         ),
-        ElevatedButton.icon(
-          icon: const Icon(Iconsax.element_plus),
-          label: Text(_i18n.translate("add_machi")),
-          onPressed: () {
-            _addMachi();
-          },
-        ),
+        // ElevatedButton.icon(
+        //   icon: const Icon(Iconsax.element_plus),
+        //   label: Text(_i18n.translate("add_machi")),
+        //   onPressed: () {
+        //     _addMachi();
+        //   },
+        // ),
       ];
     }
   }
@@ -153,9 +152,8 @@ class _BotProfileCardState extends State<BotProfileCard> {
     setState(() {
       isLoading = true;
     });
-    botController.bot = widget.bot;
     Navigator.of(context).pop();
-    SetCurrentRoom().setNewBotRoom(widget.bot);
+    SetCurrentRoom().setNewBotRoom(widget.bot, true);
 
     setState(() {
       isLoading = false;

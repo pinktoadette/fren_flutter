@@ -402,8 +402,19 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       isBotTyping = true;
     });
-    Map<String, dynamic> message = await _messagesApi.getBotResponse();
-    _channel.sink.add(json.encode({"message": message}));
+    try {
+      Map<String, dynamic> message = await _messagesApi.getBotResponse();
+      _channel.sink.add(json.encode({"message": message}));
+    } catch (err) {
+      var response = {
+        CHAT_AUTHOR_ID: _room.bot.botId,
+        CHAT_AUTHOR: _room.bot.name,
+        CHAT_TEXT: "Sorry, I encountered an error 😕",
+        CREATED_AT: getDateTimeEpoch()
+      };
+      _channel.sink.add(json.encode({"message": response}));
+    }
+
     setState(() {
       isBotTyping = false;
     });

@@ -217,7 +217,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                   onPressed: () async {
                     Bot bot = await _botApi.getBot(botId: post.id);
                     Navigator.of(context).pop();
-                    SetCurrentRoom().setNewBotRoom(bot);
+                    SetCurrentRoom().setNewBotRoom(bot, true);
                   },
                   child: Text(_i18n.translate("chat")),
                 ),

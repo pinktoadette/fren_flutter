@@ -266,10 +266,10 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           about: about,
           prompt: prompt,
           photoUrl: photoUrl);
-      await _chatroomApi.tryBot();
+      await _chatroomApi.createNewRoom();
       _clear();
       Navigator.of(context).pop();
-      SetCurrentRoom().setNewBotRoom(bot);
+      SetCurrentRoom().setNewBotRoom(bot, true);
     } catch (error) {
       Get.snackbar(
         'Error',
