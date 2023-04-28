@@ -35,7 +35,7 @@ class _SearchBarState extends State<SearchBarWidget> {
               decoration: InputDecoration(
                   icon: const Icon(Iconsax.search_normal),
                   border: InputBorder.none,
-                  hintText: 'Search user',
+                  hintText: _i18n.translate("search_user"),
                   hintStyle:
                       TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),

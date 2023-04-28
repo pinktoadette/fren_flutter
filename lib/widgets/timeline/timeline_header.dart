@@ -36,6 +36,7 @@ class TimelineHeader extends StatelessWidget {
                   Text(
                     user.username,
                     overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelSmall,
                   )
                 ],
               )

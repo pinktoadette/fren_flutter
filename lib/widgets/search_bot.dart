@@ -6,6 +6,7 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
+import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -30,13 +31,13 @@ class _SearchMachiState extends State<SearchMachiWidget> {
     return Padding(
         padding: const EdgeInsets.only(left: 20),
         child: TypeAheadField(
-            minCharsForSuggestions: 5,
+            minCharsForSuggestions: 3,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
               decoration: InputDecoration(
                   icon: const Icon(Iconsax.search_normal),
                   border: InputBorder.none,
-                  hintText: 'Search machi',
+                  hintText: _i18n.translate("search_machi"),
                   hintStyle:
                       TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),
@@ -60,8 +61,8 @@ class _SearchMachiState extends State<SearchMachiWidget> {
               );
             },
             onSuggestionSelected: (dynamic suggestion) {
-              User user = User.fromDocument(suggestion);
-              Get.to(() => ProfileScreen(user: user));
+              Bot bot = Bot.fromDocument(suggestion);
+              _showBotInfo(bot);
             },
             suggestionsBoxDecoration: SuggestionsBoxDecoration(
               borderRadius: BorderRadius.circular(10.0),
@@ -74,5 +75,21 @@ class _SearchMachiState extends State<SearchMachiWidget> {
                 child: Text(_i18n.translate('search_not_found')),
               );
             }));
+  }
+
+  void _showBotInfo(Bot bot) {
+    double height = MediaQuery.of(context).size.height;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 400 / height,
+            child: BotProfileCard(
+              bot: bot,
+              showPurchase: true,
+            ));
+      },
+    );
   }
 }

@@ -31,50 +31,9 @@ class _ExploreBotState extends State<ExploreBotTab> {
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-          title:
-              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text(
-              "Models",
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            SizedBox(width: screenWidth * 0.6, child: const SearchMachiWidget())
-          ]),
+          title: SizedBox(
+              width: screenWidth - 100, child: const SearchMachiWidget()),
         ),
         body: const ListPromptBots());
-    // return DefaultTabController(
-    //     length: 3,
-    //     child: Scaffold(
-    //         appBar: AppBar(
-    //           title: Row(
-    //               mainAxisAlignment: MainAxisAlignment.spaceBetween,
-    //               children: [
-    //                 Text(
-    //                   "Models",
-    //                   style: Theme.of(context).textTheme.headlineMedium,
-    //                 ),
-    //                 SizedBox(
-    //                     width: screenWidth * 0.6,
-    //                     child: const SearchMachiWidget())
-    //               ]),
-    //           bottom: TabBar(
-    //             tabs: [
-    //               Tab(
-    //                 text: _i18n.translate("bot_prompt_models"),
-    //               ),
-    //               Tab(
-    //                 text: _i18n.translate("bot_text_to_image"),
-    //               ),
-    //               Tab(
-    //                 text: _i18n.translate("bot_image_to_text"),
-    //               ),
-    //             ],
-    //           ),
-    //         ),
-    //         body: const Padding(
-    //           padding: EdgeInsets.only(left: 20, right: 20),
-    //           child: TabBarView(
-    //             children: [ListPromptBots(), TextImageBots(), ImageTextBots()],
-    //           ),
-    //         )));
   }
 }

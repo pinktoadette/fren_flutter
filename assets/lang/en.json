@@ -306,6 +306,8 @@
   "publish_confirm": "Are you sure you want to publish this board?",
   "saved_success": "Saved",
   "search": "Search",
+  "search_machi": "Search machi",
+  "search_user": "Search user",
   "search_not_found": "Nothing found",
   "select_industry": "Select your major or industry",
   "select_interest": "Select your interest",
