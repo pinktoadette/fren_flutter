@@ -12,9 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/add_scene.dart';
-import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
-import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:uuid/uuid.dart';
@@ -34,6 +32,7 @@ class _EditStoryState extends State<EditStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   ChatController chatController = Get.find(tag: 'chatroom');
+  bool _showName = false;
   final _storyApi = StoryApi();
   late Storyboard _copyStory;
 
@@ -61,6 +60,26 @@ class _EditStoryState extends State<EditStory> {
               Get.back();
             },
           ),
+          actions: [
+            Row(
+              children: [
+                Text(
+                  "Show Names",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: _showName,
+                  onChanged: (newValue) async {
+                    // Update UI
+                    setState(() {
+                      _showName = newValue;
+                    });
+                  },
+                )
+              ],
+            ),
+          ],
         ),
         body: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -76,7 +95,8 @@ class _EditStoryState extends State<EditStory> {
                                 index < _copyStory.scene!.length;
                                 index += 1)
                               Container(
-                                  key: ValueKey(_copyStory.scene![index].seq),
+                                  key: ValueKey(
+                                      _copyStory.scene![index].sceneId),
                                   decoration: const BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -85,10 +105,18 @@ class _EditStoryState extends State<EditStory> {
                                   ),
                                   child: ListTile(
                                     isThreeLine: true,
-                                    title: Text(_copyStory.scene![index]
-                                        .messages.author.firstName!),
-                                    subtitle: _showMessage(context,
-                                        _copyStory.scene![index].messages),
+                                    title: _showName == true
+                                        ? Text(
+                                            _copyStory.scene![index].messages
+                                                .author.firstName!,
+                                            style: const TextStyle(
+                                                color: APP_ACCENT_COLOR,
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 16),
+                                          )
+                                        : const SizedBox.shrink(),
+                                    subtitle: _showMessage(
+                                        context, _copyStory.scene![index]),
                                     trailing: const Icon(Iconsax.menu_1),
                                   ))
                           ],
@@ -127,7 +155,9 @@ class _EditStoryState extends State<EditStory> {
                                 const Spacer(),
                                 OutlinedButton(
                                   onPressed: () {
-                                    Get.to(PreviewStory(story: _copyStory));
+                                    Get.to(PreviewStory(
+                                        story: _copyStory,
+                                        showName: _showName));
                                   },
                                   child: Text(
                                       _i18n.translate("storyboard_preview")),
@@ -138,7 +168,7 @@ class _EditStoryState extends State<EditStory> {
   }
 
   Widget _showMessage(BuildContext context, dynamic message) {
-    final firstMessage = message;
+    final firstMessage = message.messages;
     Widget icons = Row(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
@@ -154,7 +184,13 @@ class _EditStoryState extends State<EditStory> {
     );
     switch (firstMessage.type) {
       case (types.MessageType.text):
-        return Column(children: [Text(firstMessage.text), icons]);
+        return Column(children: [
+          Text(
+            firstMessage.text,
+            textAlign: TextAlign.left,
+          ),
+          icons
+        ]);
       case (types.MessageType.image):
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,7 +218,8 @@ class _EditStoryState extends State<EditStory> {
     }
   }
 
-  void _deleteMessage(dynamic message) async {
+  void _deleteMessage(dynamic scene) async {
+    var message = scene.messages;
     confirmDialog(context,
         positiveText: _i18n.translate("OK"),
         message: _i18n.translate("story_sure_delete"),
@@ -193,8 +230,9 @@ class _EditStoryState extends State<EditStory> {
               await _storyApi.removeStory(
                   widget.storyIdx, message.id, _copyStory.storyboardId);
             }
-
-            _copyStory.scene!.removeAt(widget.storyIdx);
+            setState(() {
+              _copyStory.scene!.remove(scene);
+            });
 
             Navigator.of(context).pop();
           } catch (err) {
@@ -233,8 +271,9 @@ class _EditStoryState extends State<EditStory> {
                   seq: _copyStory.scene!.length - 1,
                   sceneId: const Uuid().v4(),
                   messages: message);
-              _copyStory.scene!.add(newScene);
-
+              setState(() {
+                _copyStory.scene!.add(newScene);
+              });
               Get.snackbar(
                 _i18n.translate("story_added"),
                 _i18n.translate("story_added_info"),
@@ -260,19 +299,40 @@ class _EditStoryState extends State<EditStory> {
         context: context,
         isScrollControlled: true,
         enableDrag: true,
-        builder: (context) => AddSceneBoard(onTextComplete: (text) async {
-              var author = _authorObject();
-              var newMessage = {
-                ...author,
-                'type': 'text',
-                'text': text,
-              };
-              types.Message message = types.TextMessage.fromJson(newMessage);
-              Scene newScene = Scene(
-                  seq: _copyStory.scene!.length - 1,
-                  sceneId: const Uuid().v4(),
-                  messages: message);
-              _copyStory.scene!.add(newScene);
+        builder: (context) => AddTextScene(onTextComplete: (text) async {
+              try {
+                if (text != null) {
+                  Navigator.pop(context);
+                  var author = _authorObject();
+                  var newMessage = {
+                    ...author,
+                    'type': 'text',
+                    'text': text,
+                  };
+                  types.Message message =
+                      types.TextMessage.fromJson(newMessage);
+                  Scene newScene = Scene(
+                      seq: _copyStory.scene!.length - 1,
+                      sceneId: const Uuid().v4(),
+                      messages: message);
+                  setState(() {
+                    _copyStory.scene!.add(newScene);
+                  });
+                }
+                Get.snackbar(
+                  _i18n.translate("story_added"),
+                  _i18n.translate("story_added_info"),
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: APP_SUCCESS,
+                );
+              } catch (err) {
+                Get.snackbar(
+                  _i18n.translate("error"),
+                  _i18n.translate("an_error_has_occurred"),
+                  snackPosition: SnackPosition.BOTTOM,
+                  backgroundColor: APP_ERROR,
+                );
+              }
             }));
   }
 

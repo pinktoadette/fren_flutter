@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
@@ -15,7 +14,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class PublishItemsWidget extends StatefulWidget {
   final Storyboard story;
-  const PublishItemsWidget({Key? key, required this.story}) : super(key: key);
+  final Function(bool?) onCaptureImage;
+  const PublishItemsWidget(
+      {Key? key, required this.story, required this.onCaptureImage})
+      : super(key: key);
 
   @override
   _PublishItemsWidgetState createState() => _PublishItemsWidgetState();
@@ -104,7 +106,9 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   icon: const Icon(Iconsax.image, size: 27),
                   label: Text(_i18n.translate("story_as_image"),
                       style: const TextStyle(fontSize: 16)),
-                  onPressed: () async {},
+                  onPressed: () async {
+                    widget.onCaptureImage(true);
+                  },
                 ),
               ),
             ]));

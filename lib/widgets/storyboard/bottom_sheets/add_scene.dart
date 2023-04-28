@@ -1,13 +1,16 @@
-import 'dart:math';
-
-import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 
-class AddSceneBoard extends StatelessWidget {
-  AddSceneBoard({Key? key, required this.onTextComplete}) : super(key: key);
-
+class AddTextScene extends StatefulWidget {
   final Function(String?) onTextComplete;
+  const AddTextScene({Key? key, required this.onTextComplete})
+      : super(key: key);
+
+  @override
+  _AddTextSceneState createState() => _AddTextSceneState();
+}
+
+class _AddTextSceneState extends State<AddTextScene> {
   late AppLocalizations _i18n;
   final _textController = TextEditingController();
 
@@ -18,8 +21,12 @@ class AddSceneBoard extends StatelessWidget {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-        height: min(500, height * 0.4),
-        padding: const EdgeInsets.all(10),
+        height: height * 0.9,
+        padding: EdgeInsets.only(
+            top: 10,
+            left: 10,
+            right: 10,
+            bottom: MediaQuery.of(context).viewInsets.bottom),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -32,10 +39,11 @@ class AddSceneBoard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    _i18n.translate("story_add_text_scene"),
-                    style: Theme.of(context).textTheme.headlineMedium,
-                  ),
+                  Text(_i18n.translate("story_add_text_scene"),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
                   ElevatedButton(
                       onPressed: () {
                         _onComplete(_textController.text);
@@ -54,8 +62,7 @@ class AddSceneBoard extends StatelessWidget {
                             required isFocused}) =>
                         _counter(context, currentLength, maxLength),
                     controller: _textController,
-                  )),
-              const Spacer(),
+                  ))
             ]));
   }
 
@@ -72,6 +79,6 @@ class AddSceneBoard extends StatelessWidget {
   }
 
   void _onComplete(String text) {
-    onTextComplete(text);
+    widget.onTextComplete(text);
   }
 }
