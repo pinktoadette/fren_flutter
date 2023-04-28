@@ -116,6 +116,15 @@ class _PreviewStoryState extends State<PreviewStory> {
           backgroundColor: APP_ERROR,
         );
       }
+    } else {
+      Navigator.of(context).pop();
+      Get.snackbar(
+        _i18n.translate("error"),
+        // _i18n.translate("an_error_has_occurred"),
+        "Your device does not allow permission to access your folder",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     }
   }
 }
