@@ -9,6 +9,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -65,10 +66,10 @@ class ConversationsTab extends StatelessWidget {
                           padding: const EdgeInsetsDirectional.only(
                               top: 10, bottom: 10),
                           child: Container(
-                            height: 150,
+                            height: AD_HEIGHT,
                             width: width,
-                            color: Colors.yellow,
-                            child: const Text('ad placeholder'),
+                            color: Theme.of(context).colorScheme.background,
+                            child: const InlineAdaptiveAds(),
                           ),
                         ),
                       );
@@ -108,7 +109,7 @@ class ConversationsTab extends StatelessWidget {
                                 Text(allUsers,
                                     style: Theme.of(context)
                                         .textTheme
-                                        .titleMedium),
+                                        .headlineSmall),
                                 const Spacer(),
                                 Text(formatDate(lastMsg[CREATED_AT]),
                                     textAlign: TextAlign.right,

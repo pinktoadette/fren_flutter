@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/timeline.dart';
+import 'package:fren_app/widgets/ads/ad_helper.dart';
+import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:fren_app/widgets/timeline/timeline_row.dart';
 import 'package:get/get.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TimelineWidget extends StatefulWidget {
@@ -16,7 +20,6 @@ class TimelineWidget extends StatefulWidget {
 class _TimelineWidgetState extends State<TimelineWidget> {
   final _timelineApi = TimelineApi();
   ChatController chatController = Get.find(tag: 'chatroom');
-
   static const _pageSize = 20;
 
   final PagingController<int, dynamic> _pagingController =
@@ -68,10 +71,10 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Container(
-                        height: 150,
+                        height: AD_HEIGHT,
                         width: width,
-                        color: Colors.yellow,
-                        child: const Text('ad placeholder'),
+                        color: Theme.of(context).colorScheme.background,
+                        child: const InlineAdaptiveAds(),
                       ),
                     ),
                   );

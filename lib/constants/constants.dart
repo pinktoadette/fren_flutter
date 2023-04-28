@@ -31,6 +31,8 @@ const String IOS_MAPS_API_KEY = "YOUR IOS API KEY";
 //
 // For Android Platform
 const String ANDROID_INTERSTITIAL_ID = "YOUR ANDROID AD ID";
+const double AD_HEIGHT = 80;
+
 // For IOS Platform
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 

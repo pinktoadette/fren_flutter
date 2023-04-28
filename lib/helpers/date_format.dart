@@ -5,14 +5,13 @@ bool isYesterday(d1, d2) {
 }
 
 String formatDate(int epochDate) {
-  final d1 = DateTime.now();
-  final d2 = d1.subtract(const Duration(days: 1));
+  final today = DateTime.now();
   final comparedDate = DateTime.fromMicrosecondsSinceEpoch(epochDate * 1000);
-  int minsDiff = comparedDate.difference(d2).inMinutes;
+  int minsDiff = comparedDate.difference(today).inMinutes;
 
-  bool isYes = isYesterday(d1, d2);
+  bool isYes = isYesterday(today, comparedDate);
 
-  if (minsDiff <= (24 * 60) && isYes) {
+  if (isYes == true && minsDiff < (24 * 60)) {
     return "Yesterday";
   }
   if (minsDiff > (24 * 60)) {
