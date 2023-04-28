@@ -3,11 +3,13 @@ import 'dart:io';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/add_scene.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
@@ -15,6 +17,7 @@ import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:uuid/uuid.dart';
 
 class EditStory extends StatefulWidget {
   final Storyboard story;
@@ -27,15 +30,16 @@ class EditStory extends StatefulWidget {
 }
 
 class _EditStoryState extends State<EditStory> {
+  String LOCAL_FLAG = 'LOCAL';
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  ChatController chatController = Get.find(tag: 'chatroom');
   final _storyApi = StoryApi();
-  late Storyboard _original;
-  File? _attachmentPreview;
+  late Storyboard _copyStory;
 
   @override
   void initState() {
-    _original = widget.story.copyWith();
+    _copyStory = widget.story.copyWith();
     super.initState();
   }
 
@@ -60,7 +64,7 @@ class _EditStoryState extends State<EditStory> {
         ),
         body: Padding(
             padding: const EdgeInsets.all(10.0),
-            child: widget.story.scene == null
+            child: _copyStory.scene == null
                 ? const Text("No stories")
                 : Stack(
                     children: [
@@ -69,10 +73,10 @@ class _EditStoryState extends State<EditStory> {
                         child: ReorderableListView(
                           children: <Widget>[
                             for (int index = 0;
-                                index < widget.story.scene!.length;
+                                index < _copyStory.scene!.length;
                                 index += 1)
                               Container(
-                                  key: ValueKey(widget.story.scene![index].seq),
+                                  key: ValueKey(_copyStory.scene![index].seq),
                                   decoration: const BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -81,10 +85,10 @@ class _EditStoryState extends State<EditStory> {
                                   ),
                                   child: ListTile(
                                     isThreeLine: true,
-                                    title: Text(widget.story.scene![index]
+                                    title: Text(_copyStory.scene![index]
                                         .messages.author.firstName!),
                                     subtitle: _showMessage(context,
-                                        widget.story.scene![index].messages),
+                                        _copyStory.scene![index].messages),
                                     trailing: const Icon(Iconsax.menu_1),
                                   ))
                           ],
@@ -95,8 +99,8 @@ class _EditStoryState extends State<EditStory> {
                               }
 
                               final Scene item =
-                                  widget.story.scene!.removeAt(oldIndex);
-                              widget.story.scene!.insert(newIndex, item);
+                                  _copyStory.scene!.removeAt(oldIndex);
+                              _copyStory.scene!.insert(newIndex, item);
                             });
                           },
                         ),
@@ -123,7 +127,7 @@ class _EditStoryState extends State<EditStory> {
                                 const Spacer(),
                                 OutlinedButton(
                                   onPressed: () {
-                                    Get.to(PreviewStory(story: widget.story));
+                                    Get.to(PreviewStory(story: _copyStory));
                                   },
                                   child: Text(
                                       _i18n.translate("storyboard_preview")),
@@ -158,11 +162,17 @@ class _EditStoryState extends State<EditStory> {
             SizedBox(
                 child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                firstMessage.uri,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: firstMessage.uri.startsWith('http') == true
+                  ? Image.network(
+                      firstMessage.uri,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.file(
+                      File(firstMessage.uri),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             )),
             icons
           ],
@@ -179,12 +189,17 @@ class _EditStoryState extends State<EditStory> {
         negativeAction: () => Navigator.of(context).pop(),
         positiveAction: () async {
           try {
-            await _storyApi.removeStory(
-                widget.storyIdx, message.id, widget.story.storyboardId);
+            if (message.id.contains(LOCAL_FLAG) == false) {
+              await _storyApi.removeStory(
+                  widget.storyIdx, message.id, _copyStory.storyboardId);
+            }
+
+            _copyStory.scene!.removeAt(widget.storyIdx);
+
             Navigator.of(context).pop();
-          } catch (_) {
+          } catch (err) {
             Get.snackbar(
-              'Error',
+              _i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),
               snackPosition: SnackPosition.BOTTOM,
               backgroundColor: APP_ERROR,
@@ -202,9 +217,38 @@ class _EditStoryState extends State<EditStory> {
         onImageSelected: (image) async {
           if (image != null) {
             Navigator.pop(context);
-            setState(() {
-              _attachmentPreview = image;
-            });
+
+            try {
+              var author = _authorObject();
+              var newMessage = {
+                ...author,
+                'size': 19345,
+                'height': 512,
+                'width': 512,
+                'type': 'image',
+                'uri': image.path
+              };
+              types.Message message = types.ImageMessage.fromJson(newMessage);
+              Scene newScene = Scene(
+                  seq: _copyStory.scene!.length - 1,
+                  sceneId: const Uuid().v4(),
+                  messages: message);
+              _copyStory.scene!.add(newScene);
+
+              Get.snackbar(
+                _i18n.translate("story_added"),
+                _i18n.translate("story_added_info"),
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: APP_SUCCESS,
+              );
+            } catch (err) {
+              Get.snackbar(
+                _i18n.translate("error"),
+                _i18n.translate("an_error_has_occurred"),
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: APP_ERROR,
+              );
+            }
           }
         },
       ),
@@ -216,11 +260,36 @@ class _EditStoryState extends State<EditStory> {
         context: context,
         isScrollControlled: true,
         enableDrag: true,
-        builder: (context) => AddSceneBoard(story: widget.story));
+        builder: (context) => AddSceneBoard(onTextComplete: (text) async {
+              var author = _authorObject();
+              var newMessage = {
+                ...author,
+                'type': 'text',
+                'text': text,
+              };
+              types.Message message = types.TextMessage.fromJson(newMessage);
+              Scene newScene = Scene(
+                  seq: _copyStory.scene!.length - 1,
+                  sceneId: const Uuid().v4(),
+                  messages: message);
+              _copyStory.scene!.add(newScene);
+            }));
+  }
+
+  Map<String, dynamic> _authorObject() {
+    String id = const Uuid().v4();
+    return {
+      'id': '${LOCAL_FLAG}_$id',
+      'name': UserModel().user.userFullname,
+      'author': {
+        'id': UserModel().user.userId,
+        'firstName': UserModel().user.username,
+      }
+    };
   }
 
   void _saveStory() async {
-    List<Scene> scenes = widget.story.scene!;
+    List<Scene> scenes = _copyStory.scene!;
     List<Map<String, dynamic>> newSequence = [];
     int i = 1;
     for (Scene scene in scenes) {
@@ -235,7 +304,7 @@ class _EditStoryState extends State<EditStory> {
       await _storyApi.updateSequence(newSequence);
     } catch (_) {
       Get.snackbar(
-        'Error',
+        _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,

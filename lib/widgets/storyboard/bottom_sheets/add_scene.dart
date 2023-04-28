@@ -1,38 +1,15 @@
-import 'dart:io';
 import 'dart:math';
 
-import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/uploader.dart';
-import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
-class AddSceneBoard extends StatefulWidget {
-  final Storyboard story;
-  const AddSceneBoard({Key? key, required this.story}) : super(key: key);
+class AddSceneBoard extends StatelessWidget {
+  AddSceneBoard({Key? key, required this.onTextComplete}) : super(key: key);
 
-  @override
-  _AddSceneBoardState createState() => _AddSceneBoardState();
-}
-
-class _AddSceneBoardState extends State<AddSceneBoard> {
+  final Function(String?) onTextComplete;
   late AppLocalizations _i18n;
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  File? _attachmentPreview;
   final _textController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _textController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +38,7 @@ class _AddSceneBoardState extends State<AddSceneBoard> {
                   ),
                   ElevatedButton(
                       onPressed: () {
-                        _onHandleSubmitScene();
+                        _onComplete(_textController.text);
                       },
                       child: Text(_i18n.translate("add")))
                 ],
@@ -94,12 +71,7 @@ class _AddSceneBoardState extends State<AddSceneBoard> {
     );
   }
 
-  void _onHandleSubmitScene() async {
-    if (_attachmentPreview != null) {
-      String uri = await uploadFile(
-          file: _attachmentPreview!,
-          category: 'scene',
-          categoryId: widget.story.storyboardId);
-    }
+  void _onComplete(String text) {
+    onTextComplete(text);
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
@@ -55,11 +57,17 @@ class _StoryViewState extends State<StoryView> {
             SizedBox(
                 child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
-              child: Image.network(
-                firstMessage.uri,
-                width: double.infinity,
-                fit: BoxFit.cover,
-              ),
+              child: firstMessage.uri.startsWith('http') == true
+                  ? Image.network(
+                      firstMessage.uri,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    )
+                  : Image.file(
+                      File(firstMessage.uri),
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                    ),
             )),
           ],
         );
