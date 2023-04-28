@@ -65,6 +65,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool isBotSleeping = false;
   bool? isBotTyping;
   File? file;
+  bool _hasNewMessages = false;
   types.PartialImage? attachmentPreview;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
@@ -363,6 +364,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   void _handleSendPressed(types.PartialText message) async {
     setState(() {
       _isAttachmentUploading = true;
+      _hasNewMessages = true;
     });
     Map<String, dynamic> formatMessage = formatChatMessage(message);
     _channel.sink.add(json.encode({"message": formatMessage}));
@@ -571,6 +573,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
     // if there are no messages, remove from roomList
     if ((_messages.isEmpty) & (chatController.currentRoom.users.length == 1)) {
       chatController.removeEmptyRoomfromList();
+    }
+    if (_hasNewMessages == true) {
+      chatController.sortRoomExit(_roomIdx);
     }
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);

@@ -169,4 +169,10 @@ class ChatController extends GetxController implements GetxService {
     }
     roomlist.refresh();
   }
+
+  void sortRoomExit(int currentIndx) {
+    Chatroom currentRoom = roomlist[currentIndx];
+    roomlist.remove(currentRoom);
+    roomlist.insert(0, currentRoom);
+  }
 }

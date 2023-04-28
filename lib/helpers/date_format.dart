@@ -8,7 +8,7 @@ String formatDate(int epochDate) {
   final d1 = DateTime.now();
   final d2 = d1.subtract(const Duration(days: 1));
   final comparedDate = DateTime.fromMicrosecondsSinceEpoch(epochDate * 1000);
-  int minsDiff = d2.difference(comparedDate).inMinutes;
+  int minsDiff = comparedDate.difference(d2).inMinutes;
 
   bool isYes = isYesterday(d1, d2);
 
