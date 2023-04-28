@@ -9,7 +9,8 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
-import 'package:fren_app/widgets/storyboard/add_scene.dart';
+import 'package:fren_app/widgets/storyboard/bottom_sheets/add_scene.dart';
+import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
@@ -56,26 +57,6 @@ class _EditStoryState extends State<EditStory> {
               Get.back();
             },
           ),
-          actions: [
-            // Save changes button
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  child: Text(_i18n.translate("publish")),
-                  onPressed: () {
-                    confirmDialog(context,
-                        icon: const Icon(Iconsax.warning_2),
-                        negativeAction: () => Navigator.of(context).pop(),
-                        negativeText: _i18n.translate("CANCEL"),
-                        message: _i18n.translate("publish_confirm"),
-                        positiveText: _i18n.translate("publish"),
-                        positiveAction: () {
-                          Navigator.of(context).pop();
-                          Get.to(PublishStory(story: widget.story));
-                        });
-                  },
-                ))
-          ],
         ),
         body: Padding(
             padding: const EdgeInsets.all(10.0),
@@ -134,7 +115,7 @@ class _EditStoryState extends State<EditStory> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Iconsax.pen_add),
+                                  icon: const Icon(Iconsax.edit),
                                   onPressed: () {
                                     _addText();
                                   },

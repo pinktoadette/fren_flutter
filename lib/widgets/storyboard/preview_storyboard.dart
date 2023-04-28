@@ -2,6 +2,7 @@ import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 
@@ -38,6 +39,16 @@ class _PreviewStoryState extends State<PreviewStory> {
               Navigator.of(context).pop();
             },
           ),
+          actions: [
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: ElevatedButton(
+                  child: Text(_i18n.translate("publish")),
+                  onPressed: () {
+                    _publish();
+                  },
+                ))
+          ],
         ),
         body: SingleChildScrollView(
             physics: const ScrollPhysics(),
@@ -55,5 +66,13 @@ class _PreviewStoryState extends State<PreviewStory> {
                       )),
                   StoryView(story: widget.story)
                 ])));
+  }
+
+  void _publish() async {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        enableDrag: true,
+        builder: (context) => PublishItemsWidget(story: widget.story));
   }
 }

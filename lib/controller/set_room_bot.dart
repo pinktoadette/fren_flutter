@@ -30,13 +30,14 @@ class SetCurrentRoom {
   /// updates the room to read on roomlist index
   /// sets current bot to onClicked bot
   void updateRoomReadBot(Chatroom room, int index) async {
-    /// mark as read when clicked
-    Chatroom updateRoom = room.copyWith(read: true);
-    chatController.updateRoom(index, updateRoom);
-    await _chatroomApi.markAsRead(room.chatroomId);
     chatController.currentRoom = room;
 
     Get.to(() => (const BotChatScreen()),
         arguments: {"room": room, 'index': index});
+
+    /// mark as read when clicked
+    Chatroom updateRoom = room.copyWith(read: true);
+    chatController.updateRoom(index, updateRoom);
+    await _chatroomApi.markAsRead(room.chatroomId);
   }
 }
