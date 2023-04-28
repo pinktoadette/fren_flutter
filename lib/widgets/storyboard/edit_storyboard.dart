@@ -136,7 +136,7 @@ class _EditStoryState extends State<EditStory> {
                                 IconButton(
                                   icon: const Icon(Iconsax.pen_add),
                                   onPressed: () {
-                                    _addImage();
+                                    _addText();
                                   },
                                 ),
                                 const Spacer(),
@@ -221,20 +221,21 @@ class _EditStoryState extends State<EditStory> {
         onImageSelected: (image) async {
           if (image != null) {
             Navigator.pop(context);
-            _handleImageSelection(image);
+            setState(() {
+              _attachmentPreview = image;
+            });
           }
         },
       ),
     );
   }
 
-  void _handleImageSelection(File image) async {
-    // var bytes = image.readAsBytesSync();
-    // var result = await decodeImageFromList(bytes);
-
-    setState(() {
-      _attachmentPreview = image;
-    });
+  void _addText() async {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        enableDrag: true,
+        builder: (context) => AddSceneBoard(story: widget.story));
   }
 
   void _saveStory() async {

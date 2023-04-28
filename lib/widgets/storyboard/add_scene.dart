@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
@@ -40,7 +41,7 @@ class _AddSceneBoardState extends State<AddSceneBoard> {
     double width = MediaQuery.of(context).size.width;
 
     return Container(
-        height: height - 100,
+        height: min(500, height * 0.4),
         padding: const EdgeInsets.all(10),
         child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -55,7 +56,7 @@ class _AddSceneBoardState extends State<AddSceneBoard> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    _i18n.translate("story_add_scene"),
+                    _i18n.translate("story_add_text_scene"),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   ElevatedButton(
@@ -78,13 +79,6 @@ class _AddSceneBoardState extends State<AddSceneBoard> {
                     controller: _textController,
                   )),
               const Spacer(),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  IconButton(icon: const Icon(Iconsax.image), onPressed: () {}),
-                ],
-              )
             ]));
   }
 
