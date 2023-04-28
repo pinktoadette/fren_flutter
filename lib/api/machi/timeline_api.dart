@@ -25,6 +25,20 @@ class TimelineApi {
     return timeline;
   }
 
+  Future<List<Timeline>> getTimelineByPageUserId(String userId) async {
+    String url = '${baseUri}timeline/user_timeline?userId=$userId';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+
+    List<Timeline> timeline = [];
+    for (var data in response.data) {
+      Timeline time = Timeline.fromJson(data);
+      timeline.add(time);
+    }
+    return timeline;
+  }
+
   Future<String> likeStoryMachi(
       String item, String itemId, int actionValue) async {
     String url = '${baseUri}storyboard/like';

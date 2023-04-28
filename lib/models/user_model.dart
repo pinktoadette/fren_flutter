@@ -489,19 +489,13 @@ class UserModel extends Model {
 
   /// Update current user profile
   Future<void> updateProfile({
-    required String userIndustry,
-    required List<String> interests,
     required String userBio,
     // Callback functions
     required VoidCallback onSuccess,
     required Function(String) onFail,
   }) async {
     /// Update user profile
-    updateUserData(userId: user.userId, data: {
-      USER_INDUSTRY: userIndustry,
-      USER_INTERESTS: interests,
-      USER_BIO: userBio
-    }).then((_) {
+    updateUserData(userId: user.userId, data: {USER_BIO: userBio}).then((_) {
       isLoading = false;
       notifyListeners();
       debugPrint('updateProfile() -> success');

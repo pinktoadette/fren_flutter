@@ -144,27 +144,27 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
 
                 /// interest
-                if (_interestList.isNotEmpty)
-                  SizedBox(
-                      child: SingleChildScrollView(
-                    child: ChipsChoice<String>.multiple(
-                      value: _selectedInterest,
-                      onChanged: (val) => {
-                        setState(() {
-                          _selectedInterest = val;
-                        })
-                      },
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: _interestList,
-                        value: (i, v) => v,
-                        label: (i, v) => v,
-                        tooltip: (i, v) => v,
-                      ),
-                      choiceCheckmark: true,
-                      choiceStyle: C2ChipStyle.outlined(),
-                      wrapped: true,
-                    ),
-                  )),
+                // if (_interestList.isNotEmpty)
+                //   SizedBox(
+                //       child: SingleChildScrollView(
+                //     child: ChipsChoice<String>.multiple(
+                //       value: _selectedInterest,
+                //       onChanged: (val) => {
+                //         setState(() {
+                //           _selectedInterest = val;
+                //         })
+                //       },
+                //       choiceItems: C2Choice.listFrom<String, String>(
+                //         source: _interestList,
+                //         value: (i, v) => v,
+                //         label: (i, v) => v,
+                //         tooltip: (i, v) => v,
+                //       ),
+                //       choiceCheckmark: true,
+                //       choiceStyle: C2ChipStyle.outlined(),
+                //       wrapped: true,
+                //     ),
+                //   )),
               ],
             );
           }),
@@ -199,8 +199,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   void _saveChanges() {
     /// Update uer profile
     UserModel().updateProfile(
-        userIndustry: _selectedIndustry,
-        interests: _selectedInterest,
         userBio: _bioController.text.trim(),
         onSuccess: () async {
           /// Show success message

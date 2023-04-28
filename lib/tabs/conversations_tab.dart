@@ -1,3 +1,4 @@
+import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
@@ -14,12 +15,12 @@ import 'package:iconsax/iconsax.dart';
 
 class ConversationsTab extends StatelessWidget {
   final _chatroomApi = ChatroomMachiApi();
+  final _botApi = BotApi();
 
   ConversationsTab({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    BotController botController = Get.find(tag: 'bot');
     ChatController chatController = Get.find(tag: 'chatroom');
 
     /// Initialization
@@ -34,13 +35,9 @@ class ConversationsTab extends StatelessWidget {
           ),
           actions: <Widget>[
             IconButton(
-              icon: const Icon(Iconsax.note),
-              onPressed: () {},
-            ),
-            IconButton(
-                onPressed: () {
-                  Bot bot = botController.bot;
-                  SetCurrentRoom().setNewBotRoom(bot, false);
+                onPressed: () async {
+                  Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
+                  SetCurrentRoom().setNewBotRoom(bot, true);
                 },
                 icon: const Icon(Iconsax.message_edit))
           ]),
