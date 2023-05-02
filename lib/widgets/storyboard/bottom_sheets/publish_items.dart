@@ -6,6 +6,7 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/uploader.dart';
+import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -65,7 +66,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: Text(
-                      _i18n.translate("publish"),
+                      _i18n.translate("storyboard"),
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -76,6 +77,18 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                       onPressed: () => Navigator.pop(context),
                       icon: const Icon(Iconsax.document)),
                 ],
+              ),
+              const Divider(height: 5, thickness: 1),
+              Padding(
+                padding: const EdgeInsets.only(left: 10.0),
+                child: TextButton.icon(
+                  icon: const Icon(Iconsax.edit, size: 27),
+                  label: Text(_i18n.translate("edit"),
+                      style: const TextStyle(fontSize: 16)),
+                  onPressed: () async {
+                    Get.to(const EditStory());
+                  },
+                ),
               ),
               const Divider(height: 5, thickness: 1),
               Padding(
@@ -103,8 +116,8 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
               Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextButton.icon(
-                  icon: const Icon(Iconsax.image, size: 27),
-                  label: Text(_i18n.translate("story_as_image"),
+                  icon: const Icon(Iconsax.microphone, size: 27),
+                  label: Text(_i18n.translate("story_as_audio"),
                       style: const TextStyle(fontSize: 16)),
                   onPressed: () async {
                     widget.onCaptureImage(true);

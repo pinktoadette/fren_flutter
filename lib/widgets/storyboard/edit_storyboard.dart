@@ -18,10 +18,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:uuid/uuid.dart';
 
 class EditStory extends StatefulWidget {
-  final Storyboard story;
-  final int storyIdx;
-  const EditStory({Key? key, required this.story, required this.storyIdx})
-      : super(key: key);
+  const EditStory({Key? key}) : super(key: key);
 
   @override
   _EditStoryState createState() => _EditStoryState();
@@ -38,7 +35,7 @@ class _EditStoryState extends State<EditStory> {
 
   @override
   void initState() {
-    _copyStory = widget.story.copyWith();
+    _copyStory = storyboardController.currentStory.copyWith();
     super.initState();
   }
 
@@ -155,9 +152,7 @@ class _EditStoryState extends State<EditStory> {
                                 const Spacer(),
                                 OutlinedButton(
                                   onPressed: () {
-                                    Get.to(PreviewStory(
-                                        story: _copyStory,
-                                        showName: _showName));
+                                    Get.to(PreviewStory(showName: _showName));
                                   },
                                   child: Text(
                                       _i18n.translate("storyboard_preview")),
@@ -227,8 +222,7 @@ class _EditStoryState extends State<EditStory> {
         positiveAction: () async {
           try {
             if (message.id.contains(LOCAL_FLAG) == false) {
-              await _storyApi.removeStory(
-                  widget.storyIdx, message.id, _copyStory.storyboardId);
+              await _storyApi.removeStory(message.id, _copyStory.storyboardId);
             }
             setState(() {
               _copyStory.scene!.remove(scene);

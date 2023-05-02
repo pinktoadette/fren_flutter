@@ -4,20 +4,25 @@ import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:get/get.dart';
 
+Storyboard initial = Storyboard(
+    storyboardId: '',
+    title: '',
+    createdBy: StoryUser(
+        photoUrl: UserModel().user.userProfilePhoto,
+        userId: UserModel().user.userId,
+        username: UserModel().user.username),
+    scene: [],
+    status: StoryStatus.UNPUBLISHED,
+    createdAt: getDateTimeEpoch(),
+    updatedAt: getDateTimeEpoch());
+
 class StoryboardController extends GetxController {
-  RxList<Storyboard> _stories = [
-    Storyboard(
-        storyboardId: '',
-        title: '',
-        createdBy: StoryUser(
-            photoUrl: UserModel().user.userProfilePhoto,
-            userId: UserModel().user.userId,
-            username: UserModel().user.username),
-        scene: [],
-        status: StoryStatus.UNPUBLISHED,
-        createdAt: getDateTimeEpoch(),
-        updatedAt: getDateTimeEpoch())
-  ].obs;
+  RxList<Storyboard> _stories = [initial].obs;
+  // ignore: prefer_final_fields
+  Rx<Storyboard> _currentStory = initial.obs;
+
+  Storyboard get currentStory => _currentStory.value;
+  set currentStory(Storyboard value) => _currentStory.value = value;
 
   List<Storyboard> get stories => _stories;
   set stories(List<Storyboard> value) => _stories.value = value;
@@ -45,8 +50,15 @@ class StoryboardController extends GetxController {
     _stories.refresh();
   }
 
-  void updateStoryboard(int index, Storyboard story) async {
+  void updateStoryboard(Storyboard story) async {
+    // find story index
+    int index = _stories
+        .indexWhere((element) => element.storyboardId == story.storyboardId);
     _stories[index] = story;
     _stories.refresh();
+  }
+
+  void setCurrentBoard(Storyboard story) async {
+    currentStory = story;
   }
 }

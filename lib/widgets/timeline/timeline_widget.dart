@@ -3,11 +3,9 @@ import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/timeline.dart';
-import 'package:fren_app/widgets/ads/ad_helper.dart';
 import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:fren_app/widgets/timeline/timeline_row.dart';
 import 'package:get/get.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class TimelineWidget extends StatefulWidget {

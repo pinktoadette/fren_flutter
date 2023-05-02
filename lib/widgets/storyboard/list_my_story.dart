@@ -7,6 +7,7 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
+import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -75,7 +76,7 @@ class _MyStoriesState extends State<MyStories> {
                                           .colorScheme
                                           .background,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.all(5),
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -88,20 +89,6 @@ class _MyStoriesState extends State<MyStories> {
                                                   fontWeight: FontWeight.bold)),
                                           if (story.scene != null)
                                             _showMessage(context, story.scene!),
-                                          const Spacer(),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Text(
-                                                  "Items: ${story.scene!.length}",
-                                                  style: const TextStyle(
-                                                      fontSize: 12)),
-                                              Text(story.status.name,
-                                                  style: const TextStyle(
-                                                      fontSize: 12))
-                                            ],
-                                          )
                                         ]),
                                   )));
                         }),
@@ -160,11 +147,13 @@ class _MyStoriesState extends State<MyStories> {
     } else {
       widget.message != null
           ? _addMessage(index, story)
-          : Get.to(EditStory(
-              story: story,
-              storyIdx: index,
-            ));
+          : _setCurrentStory(story);
     }
+  }
+
+  void _setCurrentStory(Storyboard story) {
+    storyboardController.currentStory = story;
+    Get.to(PreviewStory());
   }
 
   Widget _showMessage(BuildContext context, List<dynamic> message) {
@@ -188,13 +177,15 @@ class _MyStoriesState extends State<MyStories> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             SizedBox(
-              height: square * 0.5,
-              child: Image.network(
-                firstMessage.uri,
-                width: square,
-                fit: BoxFit.cover,
-              ),
-            )
+                height: square * 0.5,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(10.0),
+                  child: Image.network(
+                    firstMessage.uri,
+                    width: square,
+                    fit: BoxFit.cover,
+                  ),
+                ))
           ],
         );
       default:

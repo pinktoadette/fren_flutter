@@ -7,16 +7,16 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
+import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:widgets_to_image/widgets_to_image.dart';
 
 class PreviewStory extends StatefulWidget {
-  final Storyboard story;
   bool? showName = false;
-  PreviewStory({Key? key, required this.story, this.showName})
-      : super(key: key);
+  PreviewStory({Key? key, this.showName}) : super(key: key);
 
   @override
   _PreviewStoryState createState() => _PreviewStoryState();
@@ -50,14 +50,14 @@ class _PreviewStoryState extends State<PreviewStory> {
             },
           ),
           actions: [
-            Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  child: Text(_i18n.translate("publish")),
-                  onPressed: () {
-                    _publish();
-                  },
-                ))
+            InkWell(
+                child: const Padding(
+                  padding: EdgeInsets.all(20),
+                  child: Icon(Iconsax.menu),
+                ),
+                onTap: () {
+                  _publish();
+                })
           ],
         ),
         body: SingleChildScrollView(
@@ -72,11 +72,13 @@ class _PreviewStoryState extends State<PreviewStory> {
                       Padding(
                           padding: const EdgeInsets.only(left: 20, bottom: 20),
                           child: Text(
-                            widget.story.title,
+                            storyboardController.currentStory.title,
                             style: Theme.of(context).textTheme.headlineMedium,
                             textAlign: TextAlign.left,
                           )),
-                      StoryView(story: widget.story, shownames: widget.showName)
+                      StoryView(
+                          story: storyboardController.currentStory,
+                          shownames: widget.showName)
                     ]))));
   }
 
@@ -86,7 +88,7 @@ class _PreviewStoryState extends State<PreviewStory> {
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => PublishItemsWidget(
-            story: widget.story,
+            story: storyboardController.currentStory,
             onCaptureImage: (isCapture) async {
               if (isCapture == true) {
                 Uint8List? bytes = await controller.capture();

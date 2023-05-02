@@ -42,7 +42,7 @@ class StoryApi {
           data: {STORY_MESSAGE_ID: messageId, STORY_ID: storyboardId});
 
       Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(messageIndex, story);
+      storyController.updateStoryboard(story);
       return story;
     } catch (error) {
       debugPrint(error.toString());
@@ -50,8 +50,7 @@ class StoryApi {
     }
   }
 
-  Future<Storyboard> removeStory(
-      int messageIndex, String messageId, String storyboardId) async {
+  Future<Storyboard> removeStory(String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}storyboard/remove';
@@ -61,7 +60,7 @@ class StoryApi {
           data: {STORY_MESSAGE_ID: messageId, STORY_ID: storyboardId});
 
       Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(messageIndex, story);
+      storyController.updateStoryboard(story);
       return story;
     } catch (error) {
       debugPrint(error.toString());
