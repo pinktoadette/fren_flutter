@@ -22,73 +22,45 @@ class RowMachiInfo extends StatelessWidget {
     final _i18n = AppLocalizations.of(context);
 
     final width = MediaQuery.of(context).size.width;
+    double widthPercent = 0.2;
 
-    return ListTile(
-        onTap: () {
-          _showBotInfo(context);
-        },
-        dense: true,
-        minLeadingWidth: width * 0.15,
-        isThreeLine: true,
-        leading: RoundedImage(
-            width: width * 0.15,
-            height: 300,
-            icon: const Icon(Iconsax.box_add),
-            photoUrl: bot.profilePhoto ?? ""),
-        title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-          Flexible(
-            child: Text(
-              bot.name,
-              style: Theme.of(context).textTheme.headlineSmall,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ),
-        ]),
-        subtitle:
-            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(bot.modelType.name,
-              style: Theme.of(context).textTheme.labelSmall),
-          Text(
-            truncateText(40, bot.about),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ]),
-        trailing: ElevatedButton(
-          onPressed: () {
-            if (showChat == true) {
-              SetCurrentRoom().setNewBotRoom(bot, true);
-            } else {
-              _showBotInfo(context);
-            }
+    return Container(
+        padding: const EdgeInsets.all(10),
+        width: width,
+        child: InkWell(
+          onTap: () {
+            SetCurrentRoom().setNewBotRoom(bot, true);
+            // _showBotInfo(context);
           },
-          child: showChat == true
-              ? Text(_i18n.translate("chat"))
-              : Text(_i18n.translate("get")),
-        ));
-  }
-
-  void _showBotInfo(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
-
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: max(height, 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              BotProfileCard(
-                bot: bot,
-                showPurchase: true,
+          child: Row(
+            children: [
+              RoundedImage(
+                  width: (width * widthPercent) + 5,
+                  height: (width * widthPercent) + 5,
+                  icon: const Icon(Iconsax.box_add),
+                  photoUrl: bot.profilePhoto ?? ""),
+              const SizedBox(width: 5),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    bot.name,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(width: 5),
+                  SizedBox(
+                      height: width * widthPercent,
+                      width: width * (1 - widthPercent) - 30,
+                      child: Text(
+                        bot.about,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ))
+                ],
               )
             ],
           ),
-        ),
-      ),
-    );
+        ));
   }
 }

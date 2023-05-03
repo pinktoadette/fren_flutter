@@ -50,6 +50,7 @@ class StreamApi {
 
     var xml =
         "<speak version='1.0' xml:lang='en-US'><voice xml:lang='en-US' xml:gender='Female' name='en-US-SaraNeural'> $text </voice></speak>";
+    // "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='zh-TW'><voice name='zh-TW-HsiaoChenNeural'> $text </voice></speak>";
 
     request.body = xml;
     var streamedResponse = await http.Client().send(request);

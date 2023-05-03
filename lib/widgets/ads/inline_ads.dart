@@ -64,7 +64,9 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
       width: _adWidth,
       height: AD_HEIGHT,
       alignment: Alignment.center,
-      child: _ad != null ? AdWidget(ad: _ad!) : const Text("Your ad here"),
+      child: _ad != null
+          ? AdWidget(ad: _ad!)
+          : const Text("Put your business on Machi"),
     );
   }
 }

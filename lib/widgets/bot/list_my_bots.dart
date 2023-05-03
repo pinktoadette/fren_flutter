@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:fren_app/widgets/bot/row_bot_info.dart';
 import 'package:fren_app/widgets/no_data.dart';
 
@@ -52,10 +54,10 @@ class _ListMyBotWidget extends State<ListMyBot> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Container(
-                        height: 150,
+                        height: AD_HEIGHT,
                         width: width,
-                        color: Colors.yellow,
-                        child: const Text('ad placeholder'),
+                        color: Theme.of(context).colorScheme.background,
+                        child: const InlineAdaptiveAds(),
                       ),
                     ),
                   );

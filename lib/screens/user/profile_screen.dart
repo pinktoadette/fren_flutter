@@ -1,5 +1,6 @@
 import 'package:fren_app/api/machi/friend_api.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
@@ -7,6 +8,7 @@ import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/dialogs/report_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
+import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/timeline/timeline_row.dart';
@@ -154,23 +156,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
 
                   /// Profile details
-                  Padding(
-                    padding: const EdgeInsets.all(10),
-                    child: Column(
-                      children: [
-                        /// Profile bio
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(_i18n.translate("bio"),
-                              style: Theme.of(context).textTheme.labelLarge),
-                        ),
-                        SizedBox(
-                          height: height * 0.1,
-                          child: Text(widget.user.userBio ?? "",
-                              style: Theme.of(context).textTheme.bodyMedium),
-                        )
-                      ],
-                    ),
+                  SizedBox(
+                    height: height * 0.1,
+                    child: Text(widget.user.userBio ?? "",
+                        style: Theme.of(context).textTheme.bodyMedium),
                   ),
                   Row(
                     children: [
@@ -178,7 +167,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(_i18n.translate("story"))
                     ],
                   ),
-                  _userPost()
+                  widget.user.userStatus == "active"
+                      ? _userPost()
+                      : Text(_i18n.translate("profile_nothing"))
                 ],
               ),
             ),
@@ -209,10 +200,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(top: 10, bottom: 10),
                       child: Container(
-                        height: 150,
+                        height: AD_HEIGHT,
                         width: width,
-                        color: Colors.yellow,
-                        child: const Text('ad placeholder'),
+                        color: Theme.of(context).colorScheme.background,
+                        child: const InlineAdaptiveAds(),
                       ),
                     ),
                   );
