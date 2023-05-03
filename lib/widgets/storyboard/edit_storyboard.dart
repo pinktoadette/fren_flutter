@@ -9,6 +9,8 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/helpers/message_format.dart';
+import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/add_scene.dart';
@@ -61,7 +63,7 @@ class _EditStoryState extends State<EditStory> {
             Row(
               children: [
                 Text(
-                  "Show Names",
+                  _i18n.translate("story_show_names"),
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 Switch(
@@ -180,7 +182,7 @@ class _EditStoryState extends State<EditStory> {
     );
     switch (firstMessage.type) {
       case (types.MessageType.text):
-        return Column(children: [
+        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
             firstMessage.text,
             textAlign: TextAlign.left,
@@ -290,6 +292,8 @@ class _EditStoryState extends State<EditStory> {
   }
 
   void _addText() async {
+    String uuid = const Uuid().v4();
+
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -308,7 +312,7 @@ class _EditStoryState extends State<EditStory> {
                       types.TextMessage.fromJson(newMessage);
                   Scene newScene = Scene(
                       seq: _copyStory.scene!.length - 1,
-                      sceneId: const Uuid().v4(),
+                      sceneId: "LOCAL_" + uuid.replaceAll(RegExp(r'-'), ''),
                       messages: message);
                   setState(() {
                     _copyStory.scene!.add(newScene);
@@ -347,11 +351,11 @@ class _EditStoryState extends State<EditStory> {
     List<Scene> scenes = _copyStory.scene!;
     List<Map<String, dynamic>> newSequence = [];
     int i = 1;
-    for (Scene scene in scenes) {
-      Map<String, dynamic> s = {
+    for (dynamic scene in scenes) {
+      Map<String, dynamic> s = await formatStoryboard({
+        ...scene,
         STORY_SCENE_SEQ: i,
-        STORY_SCENE_ID: scene.sceneId
-      };
+      });
       newSequence.add(s);
       i++;
     }

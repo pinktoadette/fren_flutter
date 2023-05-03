@@ -11,6 +11,7 @@ import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/timeline/timeline_row.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -122,6 +123,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: ScopedModelDescendant<UserModel>(
           builder: (context, child, userModel) {
+        if (widget.user.userStatus == "hidden") {
+          return NoData(text: _i18n.translate("profile_nothing"));
+        }
         return Stack(
           children: [
             SingleChildScrollView(
@@ -167,9 +171,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Text(_i18n.translate("story"))
                     ],
                   ),
-                  widget.user.userStatus == "active"
-                      ? _userPost()
-                      : Text(_i18n.translate("profile_nothing"))
+                  _userPost()
                 ],
               ),
             ),

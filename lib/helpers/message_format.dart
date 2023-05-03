@@ -1,6 +1,8 @@
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
+import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/date_format.dart';
+import 'package:fren_app/helpers/uploader.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:get/get.dart';
@@ -79,4 +81,49 @@ types.Message messageFromJson(Map<String, dynamic> message) {
     return types.ImageMessage.fromJson(message);
   }
   return types.Message.fromJson(message);
+}
+
+Future<Map<String, dynamic>> formatStoryboard(dynamic customMessage) async {
+  var additional = {};
+  switch (customMessage.messages.type) {
+    case (types.MessageType.text):
+      additional = {
+        MESSAGE_TEXT: customMessage.messages.text,
+        MESSAGE_TYPE: "text"
+      };
+      break;
+    case (types.MessageType.image):
+      String uuid = const Uuid().v4();
+      String photoUrl = await uploadFile(
+        file: customMessage.messages.uri!,
+        category: 'board',
+        categoryId: uuid.replaceAll(RegExp(r'-'), ''),
+      );
+
+      additional = {
+        'size': 19345,
+        'height': 512,
+        'width': 512,
+        'type': 'image',
+        'uri': photoUrl,
+      };
+      break;
+    // @todo
+    case types.MessageType.audio:
+    case types.MessageType.custom:
+    case types.MessageType.file:
+    case types.MessageType.system:
+    case types.MessageType.unsupported:
+    case types.MessageType.video:
+      break;
+  }
+
+  return {
+    STORY_SCENE_SEQ: customMessage.seq,
+    STORY_SCENE_ID: customMessage.sceneId,
+    STORY_MESSAGES: {
+      CHAT_USER_NAME: customMessage.messages.author.firstName,
+      ...additional
+    }
+  };
 }

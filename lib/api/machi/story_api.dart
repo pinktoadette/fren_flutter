@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
@@ -110,6 +112,7 @@ class StoryApi {
       String url = '${baseUri}storyboard/update';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
+      log(stories.toString());
       final response = await dio.post(url, data: stories);
 
       return response.data;
