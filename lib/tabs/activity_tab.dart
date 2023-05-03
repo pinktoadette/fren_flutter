@@ -7,6 +7,7 @@ import 'package:fren_app/widgets/discover_card.dart';
 import 'package:fren_app/widgets/search_user.dart';
 import 'package:fren_app/widgets/subscribe/subscribe_card.dart';
 import 'package:fren_app/widgets/timeline/timeline_widget.dart';
+import 'package:fren_app/widgets/tips/tips_widget.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
@@ -47,12 +48,13 @@ class _ActivityTabState extends State<ActivityTab> {
     if (_isInitiatedFrank == true) {
       return Scaffold(
         appBar: AppBar(
-          title: Row(
+          title: Column(
             children: [
               SizedBox(
                 width: screenWidth * 0.75,
                 child: const SearchBarWidget(),
               ),
+
               // SizedBox(
               //   width: screenWidth * 0.25,
               //   child: const InviteCard(),
@@ -60,11 +62,12 @@ class _ActivityTabState extends State<ActivityTab> {
             ],
           ),
         ),
-        body: const SingleChildScrollView(
+        body: SingleChildScrollView(
             child: Column(
           children: [
-            SubscriptionCard(),
-            TimelineWidget(),
+            const SubscriptionCard(),
+            TipWidget(),
+            const TimelineWidget(),
           ],
         )),
       );
