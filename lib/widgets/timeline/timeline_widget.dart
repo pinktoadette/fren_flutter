@@ -55,7 +55,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
 
     return Container(
         height: height - 280,
-        margin: const EdgeInsets.symmetric(vertical: 5.0),
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(

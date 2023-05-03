@@ -10,8 +10,9 @@ class TimelineHeader extends StatelessWidget {
   final _userApi = UserApi();
   final StoryUser user;
   final bool? showAvatar;
+  final bool? showName;
 
-  TimelineHeader({Key? key, required this.user, this.showAvatar})
+  TimelineHeader({Key? key, required this.user, this.showAvatar, this.showName})
       : super(key: key);
 
   @override
@@ -31,15 +32,16 @@ class TimelineHeader extends StatelessWidget {
                     photoUrl: user.photoUrl,
                     username: user.username),
               const SizedBox(width: 5),
-              Column(
-                children: [
-                  Text(
-                    user.username,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  )
-                ],
-              )
+              if (showName == true)
+                Column(
+                  children: [
+                    Text(
+                      user.username,
+                      overflow: TextOverflow.ellipsis,
+                      style: Theme.of(context).textTheme.labelSmall,
+                    )
+                  ],
+                )
             ]));
   }
 }

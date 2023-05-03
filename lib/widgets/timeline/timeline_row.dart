@@ -42,9 +42,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     return ListTile(
-        minLeadingWidth: 15,
         isThreeLine: true,
-        title: TimelineHeader(showAvatar: true, user: widget.item.user),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -52,6 +50,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                TimelineHeader(
+                    showAvatar: true, showName: false, user: widget.item.user),
                 LikeButton(
                   isLiked: widget.item.mylikes == 1 ? true : false,
                   onTap: (value) async {
@@ -71,7 +71,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                   likeCount: widget.item.likes,
                 )
               ],
-            )
+            ),
+            const Divider()
           ],
         ));
   }
@@ -124,72 +125,50 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
         }
         return const SizedBox.shrink();
       case "machi":
-        return ListTile(
-          dense: true,
-          minLeadingWidth: width * 0.15,
-          isThreeLine: true,
-          leading: RoundedImage(
-              width: width * 0.15,
-              height: width * 0.15,
-              icon: const Icon(Iconsax.box_add),
-              photoUrl: post.photoUrl ?? ""),
-          title: Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-            Flexible(
-                child: Text(
-              post.text,
-              style: Theme.of(context).textTheme.headlineSmall,
-              overflow: TextOverflow.ellipsis,
-            )),
-          ]),
-          subtitle: Text(
-            truncateText(50, post.subText),
-            style: Theme.of(context).textTheme.labelSmall,
-          ),
-          trailing: post.mymachi == false
-              ? ElevatedButton(
-                  onPressed: () async {
-                    Bot bot = await _botApi.getBot(botId: post.id);
-                    _showBotInfo(bot);
-                  },
-                  child: Text(_i18n.translate("get")),
-                )
-              : OutlinedButton(
-                  onPressed: () async {
-                    Bot bot = await _botApi.getBot(botId: post.id);
-                    Navigator.of(context).pop();
-                    SetCurrentRoom().setNewBotRoom(bot, true);
-                  },
-                  child: Text(_i18n.translate("chat")),
-                ),
+        // Note: same as row_Bot_info but this class is different
+        final width = MediaQuery.of(context).size.width;
+        double widthPercent = 0.2;
+
+        return SizedBox(
+          width: width,
+          child: InkWell(
+              onTap: () async {
+                Bot bot = await _botApi.getBot(botId: post.id);
+                SetCurrentRoom().setNewBotRoom(bot, true);
+              },
+              child: Row(
+                children: [
+                  RoundedImage(
+                      width: (width * widthPercent) + 5,
+                      height: (width * widthPercent) + 5,
+                      icon: const Icon(Iconsax.box_add),
+                      photoUrl: post.photoUrl ?? ""),
+                  const SizedBox(width: 5),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        post.text,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      const SizedBox(width: 5),
+                      SizedBox(
+                          height: width * widthPercent,
+                          width: (width * (1 - widthPercent)) - 42,
+                          child: Text(
+                            post.subText,
+                            style: Theme.of(context).textTheme.bodySmall,
+                          ))
+                    ],
+                  )
+                ],
+              )),
         );
 
       default:
         return const SizedBox.shrink();
     }
-  }
-
-  void _showBotInfo(Bot bot) {
-    double height = MediaQuery.of(context).size.height;
-
-    showModalBottomSheet<void>(
-      context: context,
-      builder: (BuildContext context) => SafeArea(
-        child: SizedBox(
-          height: max(height, 400),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              const SizedBox(
-                height: 30,
-              ),
-              BotProfileCard(
-                bot: bot,
-                showPurchase: true,
-              )
-            ],
-          ),
-        ),
-      ),
-    );
   }
 }

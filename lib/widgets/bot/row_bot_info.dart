@@ -1,12 +1,8 @@
-import 'dart:math';
-
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/truncate_text.dart';
-import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -24,6 +20,7 @@ class RowMachiInfo extends StatelessWidget {
     final width = MediaQuery.of(context).size.width;
     double widthPercent = 0.2;
 
+    // Note: timeline widget row is saw under 'machi' case
     return Container(
         padding: const EdgeInsets.all(10),
         width: width,
