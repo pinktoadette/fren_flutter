@@ -1,5 +1,7 @@
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AddTextScene extends StatefulWidget {
   final Function(String?) onTextComplete;
@@ -79,6 +81,15 @@ class _AddTextSceneState extends State<AddTextScene> {
   }
 
   void _onComplete(String text) {
-    widget.onTextComplete(text);
+    if (text.length < 3) {
+      Get.snackbar(
+        _i18n.translate("validation_warning"),
+        _i18n.translate("validation_3_characters"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_WARNING,
+      );
+    } else {
+      widget.onTextComplete(text);
+    }
   }
 }

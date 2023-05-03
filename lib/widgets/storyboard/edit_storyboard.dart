@@ -12,7 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/add_scene.dart';
-import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
+import 'package:fren_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:uuid/uuid.dart';
@@ -152,7 +152,8 @@ class _EditStoryState extends State<EditStory> {
                                 const Spacer(),
                                 OutlinedButton(
                                   onPressed: () {
-                                    Get.to(PreviewStory(showName: _showName));
+                                    Get.to(
+                                        () => ViewStory(showName: _showName));
                                   },
                                   child: Text(
                                       _i18n.translate("storyboard_preview")),

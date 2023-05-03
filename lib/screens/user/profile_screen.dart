@@ -1,5 +1,4 @@
 import 'package:fren_app/api/machi/friend_api.dart';
-import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';

@@ -31,6 +31,7 @@
     </queries>
 
    <application
+        android:usesCleartextTraffic="true"
         android:label="Machi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
@@ -73,22 +74,12 @@
         <meta-data
           android:name="com.google.android.gms.ads.APPLICATION_ID"
           android:value="ca-app-pub-3940256099942544~3347511713"/>
-
-        <!-- Config for Place Picker plugin to use the Passport feature
-          Get your Android API Key from your Google Cloud Platform Account
-          Link: https://console.cloud.google.com/apis/credentials
-
-          Add your Androd API key here -->
-        <meta-data android:name="com.google.android.geo.API_KEY"
-               android:value="YOUR ANDROID API KEY"/>             
+       
 
     </application>
     
     <!-- Contact persmission -->
     <uses-permission android:name="android.permission.READ_CONTACTS" />  
 
-    <!-- Save stories as images-->
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
 </manifest>

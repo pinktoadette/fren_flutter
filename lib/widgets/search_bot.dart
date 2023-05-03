@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fren_app/api/machi/search_api.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
 import 'package:fren_app/widgets/avatar_initials.dart';
 import 'package:fren_app/widgets/bot/bot_profile.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SearchMachiWidget extends StatefulWidget {

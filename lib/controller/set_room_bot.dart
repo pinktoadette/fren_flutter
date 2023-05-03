@@ -31,7 +31,7 @@ class SetCurrentRoom {
   /// sets current bot to onClicked bot
   void updateRoomReadBot(Chatroom room, int index) async {
     chatController.currentRoom = room;
-
+    botController.bot = room.bot;
     Get.to(() => (const BotChatScreen()),
         arguments: {"room": room, 'index': index});
 

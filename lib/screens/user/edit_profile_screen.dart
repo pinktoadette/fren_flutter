@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/services.dart';
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';

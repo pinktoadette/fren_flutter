@@ -6,8 +6,7 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/widgets/no_data.dart';
-import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
-import 'package:fren_app/widgets/storyboard/preview_storyboard.dart';
+import 'package:fren_app/widgets/storyboard/view_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -153,7 +152,7 @@ class _MyStoriesState extends State<MyStories> {
 
   void _setCurrentStory(Storyboard story) {
     storyboardController.currentStory = story;
-    Get.to(PreviewStory());
+    Get.to(() => ViewStory());
   }
 
   Widget _showMessage(BuildContext context, List<dynamic> message) {

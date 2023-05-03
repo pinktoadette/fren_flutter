@@ -27,7 +27,11 @@
   "enter_your_number": "Enter your number",
   "please_enter_your_phone_number": "Please enter your phone number",
   "we_were_unable_to_verify_your_number": "We were unable to verify your phone number.\nPlease try again!",
+  
   "an_error_has_occurred": "An error has occurred.",
+  "error_launch_url": "Unable to launch URL",
+  "validation_warning": "Validation Error",
+  "validation_3_characters": "At least 3 character is needed",
 
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",

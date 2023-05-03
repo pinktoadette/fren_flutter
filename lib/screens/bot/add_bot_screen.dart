@@ -87,8 +87,8 @@ class _AddBotState extends State<AddBotScreen> {
       );
     } else {
       Get.snackbar(
-        'Error',
-        'Unable to launch URL',
+        _i18n.translate("error"),
+        _i18n.translate("error_launch_url"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );

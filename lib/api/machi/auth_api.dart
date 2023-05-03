@@ -29,4 +29,15 @@ class AuthApi {
     String token = await getFirebaseUser!.getIdToken();
     return {"fb-authorization": token, "api-key": myKey};
   }
+
+  Future<Dio> getAzure() async {
+    String url = 'https://eastus.tts.speech.microsoft.com/cognitiveservices/v1';
+    String token = await getFirebaseUser!.getIdToken();
+    log(token);
+    final dio = Dio();
+    dio.options.headers['Accept'] = '*/*';
+    dio.options.headers['content-Type'] = 'application/json';
+    dio.options.headers["api-key"] = myKey;
+    return dio;
+  }
 }
