@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:chips_choice/chips_choice.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
@@ -193,33 +192,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               _showDatePicker();
                             },
                           )),
-                      const SizedBox(height: 20),
-
-                      /// User interest
-                      const Text("What are your interest? Select 3.",
-                          style: TextStyle(color: Colors.grey)),
-
-                      if (_interestList.isNotEmpty)
-                        SizedBox(
-                            child: SingleChildScrollView(
-                          child: ChipsChoice<String>.multiple(
-                            value: _selectedInterest,
-                            onChanged: (val) => {
-                              setState(() {
-                                _selectedInterest = val;
-                              })
-                            },
-                            choiceItems: C2Choice.listFrom<String, String>(
-                              source: _interestList,
-                              value: (i, v) => v,
-                              label: (i, v) => v,
-                              tooltip: (i, v) => v,
-                            ),
-                            choiceCheckmark: true,
-                            choiceStyle: C2ChipStyle.outlined(),
-                            wrapped: true,
-                          ),
-                        )),
 
                       const SizedBox(height: 20),
                       if (userModel.isLoading)
@@ -254,14 +226,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   /// Handle Create account
   void _createAccount() async {
-    if (_selectedInterest.length < 3) {
-      Get.snackbar(
-        'Select 3 Items',
-        _i18n.translate("select_three_interest"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    } else if (!_agreeTerms) {
+    if (!_agreeTerms) {
       // Show error message
       Get.snackbar(
         'Terms and Condition',
@@ -289,7 +254,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
       UserModel().signUp(
         isProfileFilled: true,
         userFullName: _nameController.text.trim(),
-        userInterest: _selectedInterest,
         userBirthDay: _userBirthDay,
         userBirthMonth: _userBirthMonth,
         userBirthYear: _userBirthYear,

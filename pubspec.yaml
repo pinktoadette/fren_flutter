@@ -55,7 +55,6 @@ dependencies:
   geolocator: 9.0.2 # Used to get User location by GPS 
   geocoding: 2.0.5 # Used to translate User latitude and longitude coordinates into a readable address
   rxdart: 0.27.3 # required by geoflutterfire plugin that helps us to query users by geolocation center
-  shimmer: 2.0.0 # Used to create placeholder widget while app is loading the image
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
   place_picker: 0.10.0 # This plugin help us to create Passport feature
@@ -70,19 +69,15 @@ dependencies:
   file_picker: ^5.2.5
   open_filex: ^4.3.2
   get: ^4.6.5
-  chips_choice: ^3.0.0
-  googleapis: ^10.1.0
   flutter_chat_ui: ^1.6.6
   firebase_dynamic_links: ^5.0.17
   web_socket_channel: ^2.3.0
   qr_flutter: ^4.0.0
   flutter_typeahead: ^4.3.7
   get_storage: ^2.1.1
-  percent_indicator: ^4.2.3
   like_button: ^2.0.5
   infinite_scroll_pagination: ^3.2.0
   uni_links: ^0.5.1
-  permission_handler: ^10.2.0
   just_audio: ^0.9.32
 
 

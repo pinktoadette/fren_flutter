@@ -8,13 +8,14 @@ import 'package:iconsax/iconsax.dart';
 
 class CustomHeaderInputWidget extends StatefulWidget {
   final Function(dynamic data) notifyParent;
-
+  final bool? showDoubleTap;
   final bool? isBotTyping;
   final types.PartialImage? attachmentPreview;
   const CustomHeaderInputWidget(
       {super.key,
       required this.notifyParent,
       this.isBotTyping,
+      this.showDoubleTap,
       this.attachmentPreview});
 
   @override
@@ -35,10 +36,12 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
     _i18n = AppLocalizations.of(context);
 
     return Column(children: [
-      Text(
-        _i18n.translate("story_add_double_tap"),
-        style: Theme.of(context).textTheme.labelSmall,
-      ),
+      widget.showDoubleTap == true
+          ? Text(
+              _i18n.translate("story_add_double_tap"),
+              style: Theme.of(context).textTheme.labelSmall,
+            )
+          : const SizedBox.shrink(),
       _showHeader(context)
     ]);
   }

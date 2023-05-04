@@ -183,7 +183,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                       )
                     ],
                   );
-                }), //BotTimer(),
+                }),
                 onTap: () {
                   infoDialog(context,
                       icon: const Icon(Iconsax.clock),
@@ -240,6 +240,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   updateFromWidgets(e);
                 },
                 isBotTyping: isBotTyping,
+                showDoubleTap: _room.users.length == 1,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
                 inputTextStyle: GoogleFonts.poppins(
@@ -273,24 +274,26 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _handleMessageDoubleTap(BuildContext _, types.Message message) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      enableDrag: true,
-      builder: (context) => FractionallySizedBox(
-          heightFactor: 0.9,
-          child: DraggableScrollableSheet(
-            snap: true,
-            initialChildSize: 1,
-            minChildSize: 0.75,
-            builder: (context, scrollController) => SingleChildScrollView(
-              controller: scrollController,
-              child: DoubleTapChatMessage(
-                message: message,
+    if (_room.users.length == 1) {
+      showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        enableDrag: true,
+        builder: (context) => FractionallySizedBox(
+            heightFactor: 0.9,
+            child: DraggableScrollableSheet(
+              snap: true,
+              initialChildSize: 1,
+              minChildSize: 0.75,
+              builder: (context, scrollController) => SingleChildScrollView(
+                controller: scrollController,
+                child: DoubleTapChatMessage(
+                  message: message,
+                ),
               ),
-            ),
-          )),
-    );
+            )),
+      );
+    }
   }
 
   void _handleMessageTap(BuildContext _, types.Message message) async {

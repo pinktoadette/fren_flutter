@@ -409,7 +409,6 @@ class UserModel extends Model {
     required int userBirthDay,
     required int userBirthMonth,
     required int userBirthYear,
-    List<String>? userInterest,
     // Callback functions
     required VoidCallback onSuccess,
     required Function(String) onFail,
@@ -427,7 +426,6 @@ class UserModel extends Model {
       USER_FULLNAME: userFullName,
       USER_USERNAME: userFullName,
       USER_BIRTH_YEAR: userBirthYear,
-      USER_INTERESTS: userInterest,
       USER_EMAIL: getFirebaseUser!.email ?? '',
       USER_LAST_LOGIN: time.millisecondsSinceEpoch,
       CREATED_AT: time.millisecondsSinceEpoch,
@@ -452,7 +450,6 @@ class UserModel extends Model {
       USER_BIRTH_DAY: userBirthDay,
       USER_BIRTH_MONTH: userBirthMonth,
       USER_BIRTH_YEAR: userBirthYear,
-      USER_INTERESTS: userInterest,
       USER_STATUS: 'active',
       USER_EMAIL: getFirebaseUser!.email ?? '',
       USER_LAST_LOGIN: FieldValue.serverTimestamp(),
