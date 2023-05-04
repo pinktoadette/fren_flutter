@@ -32,7 +32,6 @@ class _PreviewStoryState extends State<ViewStory> {
 
   @override
   void initState() {
-    _getPlayer();
     super.initState();
   }
 
@@ -82,8 +81,7 @@ class _PreviewStoryState extends State<ViewStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -116,8 +114,8 @@ class _PreviewStoryState extends State<ViewStory> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   StoryViewDetails(
-                      story: storyboardController.currentStory,
-                      showNames: widget.showName),
+                    story: storyboardController.currentStory,
+                  ),
                 ])
           ])),
       floatingActionButton: FloatingActionButton(
@@ -135,6 +133,9 @@ class _PreviewStoryState extends State<ViewStory> {
     if (_isPlaying) {
       await _player.pause();
     } else {
+      if (_player.audioSource == null) {
+        _getPlayer();
+      }
       _player.play();
     }
 

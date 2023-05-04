@@ -67,8 +67,6 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
   }
 
   void _showSubscription() {
-    double height = MediaQuery.of(context).size.height;
-
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,

@@ -12,9 +12,7 @@ import 'package:iconsax/iconsax.dart';
 // View story details by list
 class StoryViewDetails extends StatefulWidget {
   final Storyboard story;
-  bool? showNames = false;
-  StoryViewDetails({Key? key, required this.story, this.showNames})
-      : super(key: key);
+  const StoryViewDetails({Key? key, required this.story}) : super(key: key);
 
   @override
   _StoryViewState createState() => _StoryViewState();

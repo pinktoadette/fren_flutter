@@ -25,54 +25,39 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 
-    return MaterialApp(
-      home: DefaultTabController(
-        initialIndex: 1,
-        length: 2,
-        child: Scaffold(
+    return Scaffold(
+        backgroundColor: Theme.of(context).colorScheme.background,
+        appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
-          appBar: AppBar(
-            backgroundColor: Theme.of(context).colorScheme.background,
-            bottom: TabBar(
-              unselectedLabelColor: Theme.of(context).colorScheme.primary,
-              dividerColor: APP_ACCENT_COLOR,
-              indicatorColor: Theme.of(context).colorScheme.primary,
-              labelColor: Theme.of(context).colorScheme.primary,
-              tabs: [
-                Tab(text: _i18n.translate("subscribe_free")),
-                Tab(text: _i18n.translate("subscribe_premium")),
-              ],
-            ),
-            title: Row(children: [
-              Image.asset(
-                "assets/images/machi.png",
-                width: 100,
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 10),
-                decoration: const BoxDecoration(
-                    color: APP_ACCENT_COLOR,
-                    borderRadius: BorderRadius.all(Radius.circular(10))),
-                padding: const EdgeInsets.all(5),
-                child: Text(
-                  _i18n.translate("subscribe_pro"),
-                  style: const TextStyle(fontSize: 12),
-                ),
-              )
-            ]),
+          bottom: TabBar(
+            unselectedLabelColor: Theme.of(context).colorScheme.primary,
+            dividerColor: APP_ACCENT_COLOR,
+            indicatorColor: Theme.of(context).colorScheme.primary,
+            labelColor: Theme.of(context).colorScheme.primary,
+            tabs: [
+              Tab(text: _i18n.translate("subscribe_free")),
+              Tab(text: _i18n.translate("subscribe_premium")),
+            ],
           ),
-          body: TabBarView(children: [
-            _showPricing(1),
+          title: Row(children: [
+            Image.asset(
+              "assets/images/machi.png",
+              width: 100,
+            ),
             Container(
-              margin: const EdgeInsets.only(left: 10, right: 10),
-              child: Column(
-                children: [_showPricing(2), _showTiers()],
+              margin: const EdgeInsets.only(left: 10),
+              decoration: const BoxDecoration(
+                  color: APP_ACCENT_COLOR,
+                  borderRadius: BorderRadius.all(Radius.circular(10))),
+              padding: const EdgeInsets.all(5),
+              child: Text(
+                _i18n.translate("subscribe_pro"),
+                style: const TextStyle(fontSize: 12),
               ),
             )
           ]),
         ),
-      ),
-    );
+        body: _showTiers());
   }
 
   Widget _showTiers() {

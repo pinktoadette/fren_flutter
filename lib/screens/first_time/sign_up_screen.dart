@@ -36,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _birthday;
   bool _agreeTerms = true;
   String? _selectedIndustry;
-  List<String> _selectedInterest = ['Animals and Pets'];
+  final List<String> _selectedInterest = ['Animals and Pets'];
   late List<String> _interestList = [];
   late AppLocalizations _i18n;
 
