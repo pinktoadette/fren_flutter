@@ -9,10 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
+// View story as a user
 class StoryView extends StatefulWidget {
   final Storyboard story;
-  bool? shownames = false;
-  StoryView({Key? key, required this.story, this.shownames}) : super(key: key);
+  bool? showNames = false;
+  StoryView({Key? key, required this.story, this.showNames}) : super(key: key);
 
   @override
   _StoryViewState createState() => _StoryViewState();
@@ -41,7 +42,7 @@ class _StoryViewState extends State<StoryView> {
 
           return ListTile(
             isThreeLine: true,
-            title: widget.shownames == true
+            title: widget.story.showNames == true
                 ? Text(
                     widget.story.scene![index].messages.author.firstName!,
                     style: const TextStyle(

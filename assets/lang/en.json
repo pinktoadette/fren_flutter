@@ -2,7 +2,7 @@
   "lang": "en",
 
   "_app_information": "*** App Basic Informaton ***",
-  "app_short_description": "Mingling with Humans and AI",
+  "app_short_description": "Mingling with Humans and Machine",
 
   "_AboutScreen": "*** About us Screen Translations ***",
   "about_us": "About us",
@@ -359,5 +359,5 @@
   "tips_2": "Learn a new language by listening and reading",
   "tips_3": "What's that movie where they switch bodies...",
   "tips_4": "Pronounce honorificabilitudinitatibus",
-  "tips_5": "Can you give me a summary of this website in Japanese?"
+  "tips_5": "Summarize this website in Japanese.."
 }

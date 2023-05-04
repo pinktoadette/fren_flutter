@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 
 Storyboard initial = Storyboard(
     storyboardId: '',
+    showNames: true,
     title: '',
     createdBy: StoryUser(
         photoUrl: UserModel().user.userProfilePhoto,

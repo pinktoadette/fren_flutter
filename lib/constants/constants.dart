@@ -230,13 +230,15 @@ const String STORY_MESSAGE_VIDEO = "video";
 const String STORY_CREATED_BY = "createdBy";
 const String STORY_STATUS = "status";
 const String STORY_SCENE = "scene";
-const String STORY_SCENE_SEQ = "sequence_num";
+const String STORY_SCENE_SEQ = "seq";
 const String STORY_SCENE_ID = "sceneId";
 const String STORY = "story";
 const String STORY_COMMENT = "comment";
 const String STORY_POST_TYPE = "postType";
 const String STORY_POST_TEXT = "text";
 const String STORY_POST_SUB_TEXT = "subText";
+const String STORY_SHOW_NAMES = "showNames";
+const String SCENE_CUSTOM_FLAG = "CUSTOM_";
 const String TIMELINE_ID = "id";
 
 const String ITEM_MY_LIKES = "mylikes";

@@ -66,6 +66,22 @@ class Scene {
   final types.Message messages;
 
   Scene({required this.seq, required this.sceneId, required this.messages});
+
+  Scene copyWith({int? seq, String? sceneId, types.Message? messages}) {
+    return Scene(
+        seq: seq ?? this.seq,
+        sceneId: sceneId ?? this.sceneId,
+        messages: messages ?? this.messages);
+  }
+
+  Map<String, dynamic> toJSON() {
+    Map<String, dynamic> message = messages.toJson();
+    return <String, dynamic>{
+      'seq': seq,
+      'sceneId': sceneId,
+      'message': message
+    };
+  }
 }
 
 class Storyboard {
@@ -78,6 +94,7 @@ class Storyboard {
   final int createdAt;
   final int updatedAt;
   final StoryStatus status;
+  final bool? showNames;
 
   Storyboard(
       {required this.title,
@@ -86,7 +103,8 @@ class Storyboard {
       required this.createdBy,
       required this.status,
       required this.createdAt,
-      required this.updatedAt});
+      required this.updatedAt,
+      required this.showNames});
 
   Storyboard copyWith(
       {String? title,
@@ -95,13 +113,15 @@ class Storyboard {
       String? storyboardId,
       StoryStatus? status,
       int? createdAt,
-      int? updatedAt}) {
+      int? updatedAt,
+      bool? showNames}) {
     return Storyboard(
         title: title ?? this.title,
         scene: scene ?? this.scene,
         storyboardId: storyboardId ?? this.storyboardId,
         createdBy: createdBy ?? this.createdBy,
         status: status ?? this.status,
+        showNames: showNames ?? this.showNames,
         createdAt: createdAt ?? this.createdAt,
         updatedAt: updatedAt ?? this.updatedAt);
   }
@@ -114,7 +134,8 @@ class Storyboard {
       'scene': scene,
       'status': status,
       'storyboardId': storyboardId,
-      'createdBy': createdBy
+      'createdBy': createdBy,
+      'showNames': showNames
     };
   }
 
@@ -163,6 +184,7 @@ class Storyboard {
         scene: listScene,
         storyboardId: doc[STORY_ID],
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
+        showNames: doc[STORY_SHOW_NAMES] ?? false,
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());
   }

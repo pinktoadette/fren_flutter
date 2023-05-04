@@ -83,19 +83,21 @@ types.Message messageFromJson(Map<String, dynamic> message) {
   return types.Message.fromJson(message);
 }
 
-Future<Map<String, dynamic>> formatStoryboard(dynamic customMessage) async {
+Future<Map<String, dynamic>> formatStoryboard(Scene customMessage) async {
   var additional = {};
+  Map<String, dynamic> mapScene = customMessage.toJSON();
+
   switch (customMessage.messages.type) {
     case (types.MessageType.text):
       additional = {
-        MESSAGE_TEXT: customMessage.messages.text,
-        MESSAGE_TYPE: "text"
+        STORY_MESSAGE_TEXT: mapScene["message"]["text"],
+        STORY_MESSAGE_TYPE: STORY_MESSAGE_TEXT
       };
       break;
     case (types.MessageType.image):
       String uuid = const Uuid().v4();
       String photoUrl = await uploadFile(
-        file: customMessage.messages.uri!,
+        file: mapScene["message"]["uri"],
         category: 'board',
         categoryId: uuid.replaceAll(RegExp(r'-'), ''),
       );
@@ -104,8 +106,8 @@ Future<Map<String, dynamic>> formatStoryboard(dynamic customMessage) async {
         'size': 19345,
         'height': 512,
         'width': 512,
-        'type': 'image',
-        'uri': photoUrl,
+        STORY_MESSAGE_TYPE: STORY_MESSAGE_IMAGE,
+        STORY_MESSAGE_URI: photoUrl,
       };
       break;
     // @todo

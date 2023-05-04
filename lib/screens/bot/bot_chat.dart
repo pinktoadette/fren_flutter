@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:fren_app/api/machi/chatroom_api.dart';
+import 'package:fren_app/api/machi/stream.dart';
 import 'package:fren_app/controller/countdown.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/message_format.dart';
@@ -16,6 +18,7 @@ import 'package:fren_app/widgets/friend_list.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:just_audio/just_audio.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -60,12 +63,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
   final _chatroomApi = ChatroomMachiApi();
+  final _streamApi = StreamApi();
   bool _isAttachmentUploading = false;
   bool isLoading = false;
   bool isBotSleeping = false;
   bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
+  final _player = AudioPlayer();
   types.PartialImage? attachmentPreview;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
@@ -129,6 +134,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   @override
   void dispose() {
     _channel.sink.close(status.normalClosure);
+    _player.dispose();
     super.dispose();
   }
 
@@ -143,7 +149,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       return Scaffold(
         appBar: AppBar(
           leading: BackButton(
-            color: Theme.of(context).primaryColor,
+            color: Theme.of(context).colorScheme.primary,
             onPressed: () async {
               timerController.onClose();
               // alert user if bot is typing that process will end
@@ -155,7 +161,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           title: GestureDetector(
             child: Text(chatController.botController.bot.name,
                 overflow: TextOverflow.ellipsis,
-                style: const TextStyle(fontSize: 24)),
+                style: Theme.of(context).textTheme.displayMedium),
             onTap: () {
               /// Show bot info
               _showBotInfo();
@@ -329,6 +335,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
       }
 
       await OpenFilex.open(localPath);
+    }
+    if (message is types.TextMessage) {
+      String key = await _streamApi.getAuthToken();
+      http.StreamedResponse streamedResponse =
+          await _streamApi.streamAudio(key, message.text, 'eastus');
+      Uint8List data = await streamedResponse.stream.toBytes();
+      await _player.setAudioSource(BytesSource(data));
+      _player.play();
     }
   }
 

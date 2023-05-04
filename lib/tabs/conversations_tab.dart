@@ -9,9 +9,12 @@ import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/date_format.dart';
 import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+
+import '../datas/user.dart';
 
 class ConversationsTab extends StatelessWidget {
   final _chatroomApi = ChatroomMachiApi();
@@ -22,6 +25,7 @@ class ConversationsTab extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     ChatController chatController = Get.find(tag: 'chatroom');
+    User self = UserModel().user;
 
     /// Initialization
     final _i18n = AppLocalizations.of(context);
@@ -88,7 +92,9 @@ class ConversationsTab extends StatelessWidget {
                           };
                     String allUsers = room.bot.name;
                     for (var user in room.users) {
-                      allUsers += ", ${user.firstName!}";
+                      if (user.id != self.userId) {
+                        allUsers += ", ${user.firstName!}";
+                      }
                     }
                     final bool isRead = room.read ?? false;
 

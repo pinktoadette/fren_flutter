@@ -14,7 +14,7 @@ String formatDate(int epochDate) {
   if (isYes == true && minsDiff < (24 * 60)) {
     return "Yesterday";
   }
-  if (minsDiff > (24 * 60)) {
+  if (minsDiff.abs() > (24 * 60)) {
     String month = "${comparedDate.month}";
     String day = "${comparedDate.day}";
     if (comparedDate.month < 10) {

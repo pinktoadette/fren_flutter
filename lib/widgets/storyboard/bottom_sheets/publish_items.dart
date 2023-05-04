@@ -86,6 +86,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   label: Text(_i18n.translate("edit"),
                       style: const TextStyle(fontSize: 16)),
                   onPressed: () async {
+                    Navigator.pop(context);
                     Get.to(const EditStory());
                   },
                 ),
@@ -98,6 +99,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   label: Text(_i18n.translate("story_publish_time"),
                       style: const TextStyle(fontSize: 16)),
                   onPressed: () async {
+                    Navigator.pop(context);
                     _publishAsBoard();
                   },
                 ),
@@ -109,6 +111,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   label: Text(_i18n.translate("story_as_email"),
                       style: const TextStyle(fontSize: 16)),
                   onPressed: () async {
+                    Navigator.pop(context);
                     _createEmail();
                   },
                 ),
@@ -119,9 +122,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   icon: const Icon(Iconsax.microphone, size: 27),
                   label: Text(_i18n.translate("story_as_audio"),
                       style: const TextStyle(fontSize: 16)),
-                  onPressed: () async {
-                    widget.onCaptureImage(true);
-                  },
+                  onPressed: () async {},
                 ),
               ),
             ]));

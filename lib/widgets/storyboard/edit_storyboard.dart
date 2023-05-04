@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -10,7 +11,6 @@ import 'package:fren_app/dialogs/common_dialogs.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/helpers/message_format.dart';
-import 'package:fren_app/helpers/uploader.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/image_source_sheet.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/add_scene.dart';
@@ -38,6 +38,9 @@ class _EditStoryState extends State<EditStory> {
   @override
   void initState() {
     _copyStory = storyboardController.currentStory.copyWith();
+    setState(() {
+      _showName = _copyStory.showNames ?? false;
+    });
     super.initState();
   }
 
@@ -312,7 +315,8 @@ class _EditStoryState extends State<EditStory> {
                       types.TextMessage.fromJson(newMessage);
                   Scene newScene = Scene(
                       seq: _copyStory.scene!.length - 1,
-                      sceneId: "LOCAL_" + uuid.replaceAll(RegExp(r'-'), ''),
+                      sceneId:
+                          SCENE_CUSTOM_FLAG + uuid.replaceAll(RegExp(r'-'), ''),
                       messages: message);
                   setState(() {
                     _copyStory.scene!.add(newScene);
@@ -351,15 +355,18 @@ class _EditStoryState extends State<EditStory> {
     List<Scene> scenes = _copyStory.scene!;
     List<Map<String, dynamic>> newSequence = [];
     int i = 1;
-    for (dynamic scene in scenes) {
-      Map<String, dynamic> s = await formatStoryboard({
-        ...scene,
-        STORY_SCENE_SEQ: i,
+    for (Scene scene in scenes) {
+      Scene updateSeq = scene.copyWith(seq: i);
+      Map<String, dynamic> s = await formatStoryboard(updateSeq);
+      newSequence.add({
+        ...s,
+        STORY_SHOW_NAMES: _showName,
+        STORY_ID: _copyStory.storyboardId
       });
-      newSequence.add(s);
       i++;
     }
     try {
+      log(newSequence.toString());
       await _storyApi.updateSequence(newSequence);
     } catch (_) {
       Get.snackbar(

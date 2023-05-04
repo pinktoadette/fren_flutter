@@ -107,15 +107,18 @@ class StoryApi {
     }
   }
 
-  Future<String> updateSequence(List<Map<String, dynamic>> stories) async {
+  Future<Storyboard> updateSequence(List<Map<String, dynamic>> stories) async {
+    StoryboardController storyController = Get.find(tag: 'storyboard');
+
     try {
       String url = '${baseUri}storyboard/update';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       log(stories.toString());
       final response = await dio.post(url, data: stories);
-
-      return response.data;
+      Storyboard story = Storyboard.fromJson(response.data);
+      storyController.updateStoryboard(story);
+      return story;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

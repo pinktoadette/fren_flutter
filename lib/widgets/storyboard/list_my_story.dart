@@ -54,8 +54,8 @@ class _MyStoriesState extends State<MyStories> {
                             const SliverGridDelegateWithMaxCrossAxisExtent(
                                 maxCrossAxisExtent: 200,
                                 childAspectRatio: 1,
-                                crossAxisSpacing: 20,
-                                mainAxisSpacing: 20),
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5),
                         itemCount: storyboardController.stories.length,
                         itemBuilder: (BuildContext ctx, index) {
                           Storyboard story =
@@ -75,7 +75,7 @@ class _MyStoriesState extends State<MyStories> {
                                           .colorScheme
                                           .background,
                                   child: Padding(
-                                    padding: const EdgeInsets.all(5),
+                                    padding: const EdgeInsets.all(10),
                                     child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
@@ -83,9 +83,10 @@ class _MyStoriesState extends State<MyStories> {
                                             MainAxisAlignment.start,
                                         children: [
                                           Text(story.title,
-                                              style: const TextStyle(
-                                                  fontSize: 14,
-                                                  fontWeight: FontWeight.bold)),
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall),
                                           if (story.scene != null)
                                             _showMessage(context, story.scene!),
                                         ]),
@@ -169,7 +170,7 @@ class _MyStoriesState extends State<MyStories> {
         return Flexible(
             child: Text(
           firstMessage.text,
-          style: const TextStyle(fontSize: 10),
+          style: Theme.of(context).textTheme.bodySmall,
         ));
       case (types.MessageType.image):
         return Column(

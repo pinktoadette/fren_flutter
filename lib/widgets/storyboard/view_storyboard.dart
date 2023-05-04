@@ -1,4 +1,3 @@
-import 'dart:developer';
 import 'dart:typed_data';
 
 import 'package:fren_app/api/machi/stream.dart';
@@ -12,8 +11,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:http/http.dart' as http;
 
+// view story board as the creator
 class ViewStory extends StatefulWidget {
   bool? showName = false;
   ViewStory({Key? key, this.showName}) : super(key: key);
@@ -44,7 +43,6 @@ class _PreviewStoryState extends State<ViewStory> {
   }
 
   void _getPlayer() async {
-    // await _player.setUrl('http://canada1.reliastream.com:8052/live?type=.mp3');
     String token = await _streamApi.getAuthToken();
     String text = storyboardController.currentStory.scene!.map((s) {
       dynamic message = s.messages;
@@ -119,7 +117,7 @@ class _PreviewStoryState extends State<ViewStory> {
                 children: [
                   StoryView(
                       story: storyboardController.currentStory,
-                      shownames: widget.showName),
+                      showNames: widget.showName),
                 ])
           ])),
       floatingActionButton: FloatingActionButton(

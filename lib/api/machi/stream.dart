@@ -18,6 +18,62 @@ class StreamApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
+  Map<String, String> detectLanguage({required String string}) {
+    Map<String, String> languageCodes = {
+      'lang': 'en',
+      'person': 'en-US-SaraNeural'
+    };
+
+    final RegExp persian = RegExp(r'^[\u0600-\u06FF]+');
+    final RegExp english = RegExp(r'^[a-zA-Z]+');
+    final RegExp arabic = RegExp(r'^[\u0621-\u064A]+');
+    final RegExp chinese = RegExp(r'^[\u4E00-\u9FFF]+');
+    final RegExp japanese = RegExp(r'^[\u3040-\u30FF]+');
+    final RegExp korean = RegExp(r'^[\uAC00-\uD7AF]+');
+    final RegExp ukrainian = RegExp(r'^[\u0400-\u04FF\u0500-\u052F]+');
+    final RegExp russian = RegExp(r'^[\u0400-\u04FF]+');
+    final RegExp italian = RegExp(r'^[\u00C0-\u017F]+');
+    final RegExp french = RegExp(r'^[\u00C0-\u017F]+');
+    final RegExp spanish = RegExp(
+        r'[\u00C0-\u024F\u1E00-\u1EFF\u2C60-\u2C7F\uA720-\uA7FF\u1D00-\u1D7F]+');
+
+    if (persian.hasMatch(string)) {
+      languageCodes = {'lang': 'fa', 'person': 'en-US-SaraNeural'};
+    }
+    if (english.hasMatch(string)) {
+      languageCodes = {'lang': 'en-US', 'person': 'en-US-SaraNeural'};
+    }
+    if (arabic.hasMatch(string)) {
+      languageCodes = {'lang': 'ar', 'person': 'en-US-SaraNeural'};
+    }
+    if (chinese.hasMatch(string)) {
+      languageCodes = {'lang': 'zh-TW', 'person': 'zh-TW-HsiaoChenNeural'};
+    }
+    if (japanese.hasMatch(string)) {
+      languageCodes = {'lang': 'ja-JP', 'person': 'ja-JP-MayuNeural'};
+    }
+    if (korean.hasMatch(string)) {
+      languageCodes = {'lang': 'ko-KR', 'person': 'en-US-SaraNeural'};
+    }
+    if (russian.hasMatch(string)) {
+      languageCodes = {'lang': 'ru', 'person': 'en-US-SaraNeural'};
+    }
+    if (ukrainian.hasMatch(string)) {
+      languageCodes = {'lang': 'uk', 'person': 'en-US-SaraNeural'};
+    }
+    if (italian.hasMatch(string)) {
+      languageCodes = {'lang': 'it', 'person': 'en-US-SaraNeural'};
+    }
+    if (french.hasMatch(string)) {
+      languageCodes = {'lang': 'fr', 'person': 'en-US-SaraNeural'};
+    }
+    if (spanish.hasMatch(string)) {
+      languageCodes = {'lang': 'es', 'person': 'en-US-SaraNeural'};
+    }
+
+    return languageCodes;
+  }
+
   Future<void> getOrCreateToken() async {
     /// suggests to use token every 10mins
     final box = GetStorage();
@@ -47,10 +103,10 @@ class StreamApi {
       'X-Microsoft-OutputFormat': 'audio-16khz-128kbitrate-mono-mp3',
       'user-agent': 'machitts'
     });
+    Map<String, String> lang = detectLanguage(string: text);
 
     var xml =
-        "<speak version='1.0' xml:lang='en-US'><voice xml:lang='en-US' xml:gender='Female' name='en-US-SaraNeural'> $text </voice></speak>";
-    // "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='zh-TW'><voice name='zh-TW-HsiaoChenNeural'> $text </voice></speak>";
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'> $text </voice></speak>";
 
     request.body = xml;
     var streamedResponse = await http.Client().send(request);
