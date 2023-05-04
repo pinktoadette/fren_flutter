@@ -53,7 +53,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return Container(
+    return SizedBox(
         height: height - 280,
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,

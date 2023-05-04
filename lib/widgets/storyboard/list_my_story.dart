@@ -139,7 +139,7 @@ class _MyStoriesState extends State<MyStories> {
                         style: Theme.of(context).textTheme.headlineMedium,
                         textAlign: TextAlign.left,
                       ),
-                      StoryView(story: story),
+                      StoryViewDetails(story: story),
                     ],
                   ),
                 ),

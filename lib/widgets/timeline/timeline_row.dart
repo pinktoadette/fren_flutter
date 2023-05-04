@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
@@ -10,9 +9,7 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/helpers/truncate_text.dart';
 import 'package:fren_app/screens/storyboard/storyboard_view.dart';
-import 'package:fren_app/widgets/bot/bot_profile.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';

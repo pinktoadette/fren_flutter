@@ -115,7 +115,7 @@ class _PreviewStoryState extends State<ViewStory> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  StoryView(
+                  StoryViewDetails(
                       story: storyboardController.currentStory,
                       showNames: widget.showName),
                 ])

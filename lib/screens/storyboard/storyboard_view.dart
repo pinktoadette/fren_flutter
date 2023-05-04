@@ -66,7 +66,7 @@ class _StoryboardViewState extends State<StoryboardView> {
                               child: TimelineHeader(
                                   showAvatar: true,
                                   user: widget.story.createdBy)),
-                          StoryView(story: widget.story),
+                          StoryViewDetails(story: widget.story),
                           StoryStatsAction(story: widget.story),
                           ListComments(storyboardId: widget.story.storyboardId),
                         ])),

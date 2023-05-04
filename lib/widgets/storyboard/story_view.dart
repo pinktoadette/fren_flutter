@@ -9,17 +9,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-// View story as a user
-class StoryView extends StatefulWidget {
+// View story details by list
+class StoryViewDetails extends StatefulWidget {
   final Storyboard story;
   bool? showNames = false;
-  StoryView({Key? key, required this.story, this.showNames}) : super(key: key);
+  StoryViewDetails({Key? key, required this.story, this.showNames})
+      : super(key: key);
 
   @override
   _StoryViewState createState() => _StoryViewState();
 }
 
-class _StoryViewState extends State<StoryView> {
+class _StoryViewState extends State<StoryViewDetails> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 

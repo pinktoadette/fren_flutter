@@ -4,6 +4,8 @@ import 'package:fren_app/helpers/app_localizations.dart';
 class TipWidget extends StatelessWidget {
   late AppLocalizations _i18n;
 
+  TipWidget({super.key});
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
