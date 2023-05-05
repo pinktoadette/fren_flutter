@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/bot_api.dart';
 import 'package:fren_app/api/machi/story_api.dart';
@@ -15,6 +14,7 @@ import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:like_button/like_button.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class TimelineRowWidget extends StatefulWidget {
   final Timeline item;
@@ -38,40 +38,48 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    return ListTile(
-        isThreeLine: true,
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _showTitle(widget.item),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                TimelineHeader(
-                    showAvatar: true, showName: false, user: widget.item.user),
-                LikeButton(
-                  isLiked: widget.item.mylikes == 1 ? true : false,
-                  onTap: (value) async {
-                    await _onLikePressed(widget.item, !value);
-                    return !value;
-                  },
-                  bubblesColor: BubblesColor(
-                    dotPrimaryColor: APP_ACCENT_COLOR,
-                    dotSecondaryColor: Theme.of(context).primaryColor,
-                  ),
-                  likeBuilder: (bool isLiked) {
-                    return Icon(
-                      isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? APP_ACCENT_COLOR : Colors.grey,
-                    );
-                  },
-                  likeCount: widget.item.likes,
-                )
-              ],
-            ),
-            const Divider()
-          ],
-        ));
+    return Card(
+        child: Padding(
+      padding: const EdgeInsets.all(20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.item.text,
+            style: Theme.of(context).textTheme.headlineSmall,
+          ),
+          _showTitle(widget.item),
+          const Divider(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              TimelineHeader(
+                  showAvatar: true, showName: false, user: widget.item.user),
+              LikeButton(
+                isLiked: widget.item.mylikes == 1 ? true : false,
+                onTap: (value) async {
+                  await _onLikePressed(widget.item, !value);
+                  return !value;
+                },
+                bubblesColor: BubblesColor(
+                  dotPrimaryColor: APP_ACCENT_COLOR,
+                  dotSecondaryColor: Theme.of(context).primaryColor,
+                ),
+                likeBuilder: (bool isLiked) {
+                  return Icon(
+                    isLiked ? Icons.favorite : Icons.favorite_border,
+                    color: isLiked ? APP_ACCENT_COLOR : Colors.grey,
+                  );
+                },
+                likeCount: widget.item.likes,
+              ),
+              const Spacer(),
+              SizedBox(width: 40, child: const Icon(Iconsax.play))
+            ],
+          ),
+        ],
+      ),
+    ));
   }
 
   Future<String> _onLikePressed(Timeline item, bool value) async {
@@ -81,46 +89,60 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
 
   Widget _showTitle(Timeline post) {
     double width = MediaQuery.of(context).size.width;
-    switch (post.postType) {
-      case "board":
-        if (post.subText.isNotEmpty) {
-          Widget hasMore = const SizedBox.shrink();
-          if (post.subText.length > 1) {
-            hasMore = Text(_i18n.translate("story_read_more"));
-          }
+    double itemHeight = 150;
 
-          return InkWell(
-              onTap: () async {
-                Storyboard story = await _storyApi.getStoryById(post.id);
-                Get.to(StoryboardView(
-                  story: story,
-                ));
-              },
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      post.text,
-                      style: Theme.of(context).textTheme.headlineSmall,
-                      textAlign: TextAlign.left,
-                    ),
-                    SizedBox(
-                        width: width,
-                        child: post.subText[0]["messages"]["type"] == "image"
-                            ? RoundedImage(
-                                width: width * 0.15,
-                                height: width * 0.15,
-                                icon: const Icon(Iconsax.box_add),
-                                photoUrl: post.subText[0]["messages"]["image"]
-                                    ["uri"])
-                            : Text(
-                                post.subText[0]["messages"]["text"],
-                              )),
-                    hasMore,
-                  ]));
+    switch (post.postType) {
+      /// Note: this is the similar to as list_my_board: _showMessage()
+      case "board":
+        dynamic firstText;
+        dynamic firstImage;
+
+        for (var sub in post.subText) {
+          if (sub["messages"]["type"] == "text" && firstText == null) {
+            firstText = sub["messages"];
+          }
+          if (sub["messages"]["type"] == "images" && firstText == null) {
+            firstImage = sub["messages"];
+          }
         }
-        return const SizedBox.shrink();
+        double imageHeight = width * 0.3 - 20;
+
+        return Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width:
+                        firstImage != null ? width * 0.65 - 120 : width - 100,
+                    height: itemHeight - 50,
+                    child: Text(
+                      firstText["text"],
+                      style: Theme.of(context).textTheme.bodySmall,
+                    ),
+                  ),
+                  if (firstImage != null)
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(
+                            height: imageHeight,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10.0),
+                              child: Image.network(
+                                firstImage.messages.uri,
+                                width: width * 0.3,
+                                fit: BoxFit.cover,
+                              ),
+                            ))
+                      ],
+                    )
+                ],
+              ),
+            ]);
+
       case "machi":
         // Note: same as row_Bot_info but this class is different
         final width = MediaQuery.of(context).size.width;
