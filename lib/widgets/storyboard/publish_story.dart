@@ -44,16 +44,17 @@ class _PublishStoryState extends State<PublishStory> {
         _isLoading = false;
         _isSuccess = true;
       });
-      _goToNextStep();
+      _goToNextStep(3);
     } catch (err) {
       Get.snackbar(
           _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+      _goToNextStep(1);
     }
   }
 
-  void _goToNextStep() {
-    Timer(const Duration(seconds: 3), () {
+  void _goToNextStep(int second) {
+    Timer(Duration(seconds: second), () {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
@@ -63,16 +64,12 @@ class _PublishStoryState extends State<PublishStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.all(10.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                SizedBox(
-                  height: height / 3,
-                ),
                 Stack(
                   children: [
                     if (_isSuccess == true)
