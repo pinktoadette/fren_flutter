@@ -77,16 +77,23 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                             ),
                           ),
                           onPressed: () async {
-                            try {
-                              await _storyApi.createStory(
-                                  _titleController.text, widget.message.id);
-                              _titleController.clear();
-                              FocusScope.of(context).unfocus();
-                            } catch (error) {
+                            if (_titleController.text.length < 3) {
                               setState(() {
                                 errorMessage =
-                                    _i18n.translate("an_error_has_occurred");
+                                    _i18n.translate("validation_3_characters");
                               });
+                            } else {
+                              try {
+                                await _storyApi.createStory(
+                                    _titleController.text, widget.message.id);
+                                _titleController.clear();
+                                FocusScope.of(context).unfocus();
+                              } catch (error) {
+                                setState(() {
+                                  errorMessage =
+                                      _i18n.translate("an_error_has_occurred");
+                                });
+                              }
                             }
                           },
                           icon: const Icon(Iconsax.add),

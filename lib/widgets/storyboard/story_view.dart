@@ -9,7 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
-// View story details by list
+// View details of each message
 class StoryViewDetails extends StatefulWidget {
   final Storyboard story;
   const StoryViewDetails({Key? key, required this.story}) : super(key: key);

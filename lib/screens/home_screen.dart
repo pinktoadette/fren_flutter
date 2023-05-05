@@ -230,7 +230,7 @@ class _HomeScreenState extends State<HomeScreen> {
           items: [
             /// Discover Tab
             BottomNavigationBarItem(
-                label: _i18n.translate("activity"),
+                label: _i18n.translate("discover"),
                 icon: Icon(Iconsax.activity,
                     color: _selectedIndex == 0
                         ? Theme.of(context).primaryColor

@@ -4,17 +4,18 @@ import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/set_room_bot.dart';
+import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/screens/storyboard/storyboard_view.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
+import 'package:fren_app/widgets/storyboard/story_view.dart';
+import 'package:fren_app/widgets/storyboard/view_storyboard.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:like_button/like_button.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class TimelineRowWidget extends StatefulWidget {
   final Timeline item;
@@ -25,6 +26,8 @@ class TimelineRowWidget extends StatefulWidget {
 }
 
 class _TimelineRowWidgetState extends State<TimelineRowWidget> {
+  StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   late AppLocalizations _i18n;
   final _botApi = BotApi();
   final _storyApi = StoryApi();
@@ -48,7 +51,16 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
             widget.item.text,
             style: Theme.of(context).textTheme.headlineSmall,
           ),
-          _showTitle(widget.item),
+          InkWell(
+            onTap: () async {
+              if (widget.item.postType == "board") {
+                Storyboard story = await _storyApi.getStoryById(widget.item.id);
+                storyboardController.currentStory = story;
+                Get.to(() => ViewStory());
+              }
+            },
+            child: _showTitle(widget.item),
+          ),
           const Divider(),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -74,7 +86,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                 likeCount: widget.item.likes,
               ),
               const Spacer(),
-              SizedBox(width: 40, child: const Icon(Iconsax.play))
+              SizedBox(width: 40, child: const Icon(Iconsax.play_add))
             ],
           ),
         ],

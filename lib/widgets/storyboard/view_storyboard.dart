@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:fren_app/controller/storyboard_controller.dart';
+import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/audio/play_control.dart';
 import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
@@ -47,14 +49,18 @@ class _PreviewStoryState extends State<ViewStory> {
             },
           ),
           actions: [
-            InkWell(
-                child: const Padding(
-                  padding: EdgeInsets.all(20),
-                  child: Icon(Iconsax.menu),
-                ),
-                onTap: () {
-                  _publish();
-                })
+            if (storyboardController.currentStory.status ==
+                    StoryStatus.UNPUBLISHED &&
+                storyboardController.currentStory.createdBy.userId ==
+                    UserModel().user.userId)
+              InkWell(
+                  child: const Padding(
+                    padding: EdgeInsets.all(20),
+                    child: Icon(Iconsax.menu),
+                  ),
+                  onTap: () {
+                    _publish();
+                  })
           ],
         ),
         body: SizedBox(
