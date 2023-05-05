@@ -88,7 +88,8 @@ class StreamApi {
     return response.data;
   }
 
-  Future<dynamic> streamAudio(String key, String text, String region) async {
+  Future<http.StreamedResponse> streamAudio(
+      String key, String text, String region) async {
     String url =
         'https://$region.tts.speech.microsoft.com/cognitiveservices/v1';
     debugPrint("Requesting URL $url");
