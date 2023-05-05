@@ -29,23 +29,28 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              children: [
-                const Icon(Iconsax.book),
-                Text(
-                  _i18n.translate("storyboard"),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-              ],
-            ),
-            const SizedBox(height: 15),
-            Text(_i18n.translate("add_to_new_storyboard")),
-            Row(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            children: [
+              const Icon(Iconsax.book),
+              Text(
+                _i18n.translate("storyboard"),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+            ],
+          ),
+        ),
+        const SizedBox(height: 15),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(_i18n.translate("add_to_new_storyboard"))),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Expanded(
@@ -95,26 +100,35 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                   },
                 )),
               ],
-            ),
-            Text(errorMessage),
-            const SizedBox(
-              height: 15,
-            ),
-            const Row(children: [
-              Expanded(child: Divider(thickness: 1.5)),
-              Text("OR", style: TextStyle(fontSize: 16, color: Colors.grey)),
-              Expanded(child: Divider(thickness: 1.5)),
-            ]),
-            const SizedBox(
-              height: 15,
-            ),
-            Text(_i18n.translate("add_to_exist_storyboard")),
-            SizedBox(
-              height: height - 200,
-              child: MyStories(message: widget.message),
-            )
-          ],
-        ));
+            )),
+        Text(errorMessage),
+        const SizedBox(
+          height: 15,
+        ),
+        const Row(children: [
+          Expanded(child: Divider(thickness: 1.5)),
+          Text("OR", style: TextStyle(fontSize: 16, color: Colors.grey)),
+          Expanded(child: Divider(thickness: 1.5)),
+        ]),
+        const SizedBox(
+          height: 15,
+        ),
+        Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(_i18n.translate("add_to_exist_storyboard"))),
+        SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Column(
+            children: <Widget>[
+              SizedBox(
+                height: height * 0.5,
+                child: MyStories(message: widget.message),
+              )
+            ],
+          ),
+        )
+      ],
+    );
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {

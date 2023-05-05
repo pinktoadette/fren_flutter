@@ -173,4 +173,19 @@ class StoryApi {
       throw error.toString();
     }
   }
+
+  Future<String> updateShowNames(String storyId, bool showNames) async {
+    try {
+      String url = '${baseUri}storyboard/show_names';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio
+          .post(url, data: {STORY_ID: storyId, STORY_SHOW_NAMES: showNames});
+
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }

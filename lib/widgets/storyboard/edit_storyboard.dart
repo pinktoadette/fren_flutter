@@ -59,7 +59,6 @@ class _EditStoryState extends State<EditStory> {
             color: Theme.of(context).primaryColor,
             onPressed: () async {
               _saveStory();
-              Get.back();
             },
           ),
           actions: [
@@ -73,6 +72,11 @@ class _EditStoryState extends State<EditStory> {
                   activeColor: Theme.of(context).colorScheme.secondary,
                   value: _showName,
                   onChanged: (newValue) async {
+                    await _storyApi.updateShowNames(
+                        _copyStory.storyboardId, newValue);
+                    Storyboard story = _copyStory.copyWith(showNames: newValue);
+                    storyboardController.updateStoryboard(story);
+                    storyboardController.setCurrentBoard(story);
                     // Update UI
                     setState(() {
                       _showName = newValue;
@@ -358,16 +362,12 @@ class _EditStoryState extends State<EditStory> {
     for (Scene scene in scenes) {
       Scene updateSeq = scene.copyWith(seq: i);
       Map<String, dynamic> s = await formatStoryboard(updateSeq);
-      newSequence.add({
-        ...s,
-        STORY_SHOW_NAMES: _showName,
-        STORY_ID: _copyStory.storyboardId
-      });
+      newSequence.add({...s, STORY_ID: _copyStory.storyboardId});
       i++;
     }
     try {
-      log(newSequence.toString());
       await _storyApi.updateSequence(newSequence);
+      Get.back();
     } catch (_) {
       Get.snackbar(
         _i18n.translate("error"),

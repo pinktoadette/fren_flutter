@@ -5,11 +5,9 @@ import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/no_data.dart';
 import 'package:fren_app/widgets/storyboard/view_storyboard.dart';
 import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 
 class MyStories extends StatefulWidget {
   final types.Message? message;
@@ -21,7 +19,7 @@ class MyStories extends StatefulWidget {
 
 class _MyStoriesState extends State<MyStories> {
   late AppLocalizations _i18n;
-  double itemHeight = 200;
+  double itemHeight = 150;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
@@ -49,7 +47,7 @@ class _MyStoriesState extends State<MyStories> {
             : Obx(
                 () => ListView.builder(
                     shrinkWrap: true,
-                    // scrollDirection: Axis.vertical,
+                    scrollDirection: Axis.vertical,
                     itemCount: storyboardController.stories.length,
                     itemBuilder: (BuildContext ctx, index) {
                       Storyboard story = storyboardController.stories[index];
@@ -79,11 +77,22 @@ class _MyStoriesState extends State<MyStories> {
                                         CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.start,
                                     children: [
-                                      Text(story.title,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall),
+                                      Row(
+                                        children: [
+                                          Text(story.title,
+                                              overflow: TextOverflow.ellipsis,
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .headlineSmall),
+                                          const Spacer(),
+                                          if (story.status ==
+                                              StoryStatus.PUBLISHED)
+                                            Text(story.status.name,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall)
+                                        ],
+                                      ),
                                       if (story.scene != null)
                                         _showMessage(context, story.scene!),
                                     ]),
@@ -95,6 +104,7 @@ class _MyStoriesState extends State<MyStories> {
   void _addMessage(int index, Storyboard story) async {
     try {
       await _storyApi.addStory(index, widget.message!.id, story.storyboardId);
+      Navigator.of(context).pop();
       Get.snackbar(
         _i18n.translate("story_added"),
         _i18n.translate("story_added_info"),
@@ -167,35 +177,29 @@ class _MyStoriesState extends State<MyStories> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: width * 0.65 - 20,
+          width: firstImage != null ? width * 0.65 - 20 : width - 40,
           height: itemHeight - 50,
-          child: Flexible(
-              child: Text(
+          child: Text(
             firstText.messages.text,
             style: Theme.of(context).textTheme.bodySmall,
-            // overflow: TextOverflow.ellipsis,
-          )),
+          ),
         ),
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            SizedBox(
-                height: imageHeight,
-                child: firstImage != null
-                    ? ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: Image.network(
-                          firstImage.messages.uri,
-                          width: width * 0.3,
-                          fit: BoxFit.cover,
-                        ),
-                      )
-                    : SizedBox(
-                        height: imageHeight,
-                        width: imageHeight,
-                        child: const Icon(Iconsax.activity)))
-          ],
-        )
+        if (firstImage != null)
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              SizedBox(
+                  height: imageHeight,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(10.0),
+                    child: Image.network(
+                      firstImage.messages.uri,
+                      width: width * 0.3,
+                      fit: BoxFit.cover,
+                    ),
+                  ))
+            ],
+          )
       ],
     );
   }
