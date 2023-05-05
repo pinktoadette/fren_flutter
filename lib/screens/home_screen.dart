@@ -6,6 +6,7 @@ import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
+import 'package:fren_app/controller/timeline_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
@@ -55,6 +56,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    /// initialize states
+    _initializeState();
+
     super.initState();
 
     /// Restore VIP Subscription
@@ -62,9 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
-
-    /// initialize states
-    _initializeState();
 
     // create a new room for quick chat
     _getChatrooms();

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/bot_api.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/controller/timeline_controller.dart';
 import 'package:fren_app/datas/user.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:fren_app/widgets/discover_card.dart';
@@ -8,6 +9,7 @@ import 'package:fren_app/widgets/search_user.dart';
 import 'package:fren_app/widgets/subscribe/subscribe_card.dart';
 import 'package:fren_app/widgets/timeline/timeline_widget.dart';
 import 'package:fren_app/widgets/tips/tips_widget.dart';
+import 'package:get/get.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
@@ -17,6 +19,8 @@ class ActivityTab extends StatefulWidget {
 }
 
 class _ActivityTabState extends State<ActivityTab> {
+  final TimelineController timelineController = Get.find(tag: 'timeline');
+
   final _botApi = BotApi();
   List _listFeatures = [];
   int _currentStep = 0;
@@ -30,6 +34,8 @@ class _ActivityTabState extends State<ActivityTab> {
 
   @override
   void initState() {
+    timelineController.fetchMyTimeline();
+
     super.initState();
     User user = UserModel().user;
     if (user.isFrankInitiated == false) {

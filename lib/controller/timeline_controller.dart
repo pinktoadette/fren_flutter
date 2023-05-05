@@ -32,8 +32,8 @@ class TimelineController extends GetxController {
 
   @override
   void onInit() async {
-    fetchMyTimeline();
     super.onInit();
+    fetchMyTimeline();
   }
 
   Future<void> fetchMyTimeline() async {

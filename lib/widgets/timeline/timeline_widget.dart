@@ -36,7 +36,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               return timelineController.fetchMyTimeline();
             },
             child: Obx(() => ListView.separated(
-                cacheExtent: 1000,
+                // cacheExtent: 1000,
                 shrinkWrap: true,
                 separatorBuilder: (context, index) {
                   if ((index + 1) % 5 == 0) {
