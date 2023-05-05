@@ -10,7 +10,6 @@ import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/widgets/image/image_rounded.dart';
-import 'package:fren_app/widgets/storyboard/story_view.dart';
 import 'package:fren_app/widgets/storyboard/view_storyboard.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
@@ -113,7 +112,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
           if (sub["messages"]["type"] == "text" && firstText == null) {
             firstText = sub["messages"];
           }
-          if (sub["messages"]["type"] == "images" && firstText == null) {
+          if (sub["messages"]["type"] == "image" && firstImage == null) {
             firstImage = sub["messages"];
           }
         }
@@ -127,8 +126,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width:
-                        firstImage != null ? width * 0.65 - 120 : width - 100,
+                    width: firstImage != null ? width * 0.65 - 30 : width - 100,
                     height: itemHeight - 50,
                     child: Text(
                       firstText["text"],
@@ -144,7 +142,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                             child: ClipRRect(
                               borderRadius: BorderRadius.circular(10.0),
                               child: Image.network(
-                                firstImage.messages.uri,
+                                firstImage["image"]["uri"],
                                 width: width * 0.3,
                                 fit: BoxFit.cover,
                               ),
