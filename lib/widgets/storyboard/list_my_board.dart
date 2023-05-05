@@ -104,7 +104,7 @@ class _MyStoriesState extends State<MyStories> {
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
-        'Error',
+        _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,

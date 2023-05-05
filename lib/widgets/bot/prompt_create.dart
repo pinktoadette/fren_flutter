@@ -272,8 +272,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       SetCurrentRoom().setNewBotRoom(bot, true);
     } catch (error) {
       Get.snackbar(
-        'Error',
-        _i18n.translate("an_error_occurred_while_updating_your_profile"),
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );

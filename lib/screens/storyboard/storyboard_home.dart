@@ -32,7 +32,7 @@ class _StoryboardState extends State<Storyboard> {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: height - 300,
+                height: height,
                 child: const MyStories(),
               )
             ],

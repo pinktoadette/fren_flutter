@@ -49,7 +49,8 @@ class _PublishStoryState extends State<PublishStory> {
       setState(() {
         hasError = true;
       });
-      Get.snackbar('Error', _i18n.translate("an_error_has_occurred"),
+      Get.snackbar(
+          _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
       _goToNextStep();
     }

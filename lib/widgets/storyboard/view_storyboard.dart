@@ -80,6 +80,9 @@ class _PreviewStoryState extends State<ViewStory> {
                             StoryViewDetails(
                               story: storyboardController.currentStory,
                             ),
+                            const SizedBox(
+                              height: 250,
+                            )
                           ])
                     ])),
                 Positioned(bottom: 0, child: AudioWidget())
