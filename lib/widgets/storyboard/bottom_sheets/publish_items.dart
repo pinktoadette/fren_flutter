@@ -136,8 +136,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
         message: _i18n.translate("publish_confirm"),
         positiveText: _i18n.translate("publish"),
         positiveAction: () {
-          Navigator.of(context).pop();
-          Get.to(PublishStory(story: widget.story));
+          Get.to(() => PublishStory(story: widget.story));
         });
   }
 

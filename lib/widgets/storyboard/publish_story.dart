@@ -23,8 +23,8 @@ class _PublishStoryState extends State<PublishStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
-  bool isLoading = false;
-  bool hasError = false;
+  bool _isLoading = false;
+  bool _isSuccess = false;
 
   @override
   void initState() {
@@ -36,23 +36,19 @@ class _PublishStoryState extends State<PublishStory> {
   void _publishStory() async {
     try {
       setState(() {
-        isLoading = true;
+        _isLoading = true;
       });
       await _storyApi.publishStory(widget.story.storyboardId);
 
       setState(() {
-        isLoading = false;
+        _isLoading = false;
+        _isSuccess = true;
       });
       _goToNextStep();
     } catch (err) {
-      debugPrint(err.toString());
-      setState(() {
-        hasError = true;
-      });
       Get.snackbar(
           _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
-      _goToNextStep();
     }
   }
 
@@ -79,16 +75,16 @@ class _PublishStoryState extends State<PublishStory> {
                 ),
                 Stack(
                   children: [
-                    Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
-                        child: FireworksAnimation()),
+                    if (_isSuccess == true)
+                      Padding(
+                          padding: const EdgeInsets.only(bottom: 50),
+                          child: FireworksAnimation()),
                     Frankloader(),
                   ],
                 ),
-                if (isLoading == true)
+                if (_isLoading == true)
                   Text(_i18n.translate("story_publishing")),
-                if (hasError == false && isLoading == false)
-                  Text(_i18n.translate("story_success")),
+                if (_isSuccess == true) Text(_i18n.translate("story_success")),
               ],
             )));
   }
