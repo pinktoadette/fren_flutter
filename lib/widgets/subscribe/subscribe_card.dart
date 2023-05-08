@@ -1,3 +1,4 @@
+import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
 
     if (!isUserSubscribed) {
       return Card(
+          color: APP_ACCENT_COLOR,
           child: SizedBox(
               width: screenWidth,
               child: InkWell(

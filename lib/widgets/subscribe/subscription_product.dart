@@ -2,6 +2,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:fren_app/widgets/app_logo.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SubscriptionProduct extends StatefulWidget {
@@ -29,21 +30,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
-          bottom: TabBar(
-            unselectedLabelColor: Theme.of(context).colorScheme.primary,
-            dividerColor: APP_ACCENT_COLOR,
-            indicatorColor: Theme.of(context).colorScheme.primary,
-            labelColor: Theme.of(context).colorScheme.primary,
-            tabs: [
-              Tab(text: _i18n.translate("subscribe_free")),
-              Tab(text: _i18n.translate("subscribe_premium")),
-            ],
-          ),
+          automaticallyImplyLeading: false,
           title: Row(children: [
-            Image.asset(
-              "assets/images/machi.png",
-              width: 100,
-            ),
+            const AppLogo(),
             Container(
               margin: const EdgeInsets.only(left: 10),
               decoration: const BoxDecoration(

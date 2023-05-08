@@ -16,6 +16,7 @@ import 'package:fren_app/tabs/explore_bot_tabs.dart';
 import 'package:fren_app/screens/notifications_screen.dart';
 import 'package:fren_app/tabs/activity_tab.dart';
 import 'package:fren_app/tabs/profile_tab.dart';
+import 'package:fren_app/widgets/app_logo.dart';
 import 'package:fren_app/widgets/bot/list_my_bots.dart';
 import 'package:fren_app/widgets/bot/prompt_create.dart';
 import 'package:fren_app/widgets/button/action_button.dart';
@@ -24,6 +25,7 @@ import 'package:fren_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:fren_app/constants/constants.dart';
+import 'package:fren_app/widgets/search_user.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -195,31 +197,37 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
-        title: Row(
+        title: const Row(
           children: [
-            Image.asset(
-                isDarkMode
-                    ? "assets/images/logo_pink.png"
-                    : "assets/images/machi.png",
-                height: 40),
-            const SizedBox(width: 10),
+            AppLogo(),
+            SizedBox(width: 10),
           ],
         ),
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: IconButton(
-                icon: _getNotificationCounter(),
-                onPressed: () async {
-                  // Go to Notifications Screen
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => NotificationsScreen()));
-                }),
-          ),
+              padding: const EdgeInsets.only(right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  SizedBox(
+                    width: width * 0.45,
+                    height: 45,
+                    child: const SearchBarWidget(),
+                  ),
+                  IconButton(
+                      icon: _getNotificationCounter(),
+                      onPressed: () async {
+                        // Go to Notifications Screen
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => NotificationsScreen()));
+                      }),
+                ],
+              )),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

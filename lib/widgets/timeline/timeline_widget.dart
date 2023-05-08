@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
@@ -20,18 +18,11 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
   final _timelineApi = TimelineApi();
-  Timer? timer;
 
   @override
   void initState() {
     _getTimeline();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    timer?.cancel();
-    super.dispose();
   }
 
   void _getTimeline() async {
@@ -54,6 +45,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
             child: Obx(() => ListView.separated(
                 cacheExtent: 1000,
                 shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
                 separatorBuilder: (context, index) {
                   if ((index + 1) % 5 == 0) {
                     return Container(

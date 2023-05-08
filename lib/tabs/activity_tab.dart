@@ -46,36 +46,15 @@ class _ActivityTabState extends State<ActivityTab> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
-    final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
-
     if (_isInitiatedFrank == true) {
-      return Scaffold(
-        appBar: AppBar(
-          title: Column(
-            children: [
-              SizedBox(
-                width: width * 0.75,
-                child: const SearchBarWidget(),
-              ),
-
-              // SizedBox(
-              //   width: screenWidth * 0.25,
-              //   child: const InviteCard(),
-              // ),
-            ],
-          ),
-        ),
-        body: SingleChildScrollView(
-            child: Column(
-          children: [
-            const SubscriptionCard(),
-            TipWidget(),
-            const TimelineWidget(),
-          ],
-        )),
-      );
+      return SingleChildScrollView(
+          child: Column(
+        children: [
+          const SubscriptionCard(),
+          TipWidget(),
+          const TimelineWidget(),
+        ],
+      ));
     }
     return Scaffold(
         body: Column(children: [

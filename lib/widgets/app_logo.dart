@@ -14,9 +14,9 @@ class AppLogo extends StatelessWidget {
     return Center(
         child: Image.asset(
             isDarkMode
-                ? "assets/images/logo_pink.png"
+                ? "assets/images/logo_white.png"
                 : "assets/images/logo.png",
             width: width ?? 120,
-            height: height ?? 120));
+            height: height ?? 40));
   }
 }
