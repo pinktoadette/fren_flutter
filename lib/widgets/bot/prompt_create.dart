@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -7,7 +8,7 @@ import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/bot_controller.dart';
 import 'package:fren_app/controller/set_room_bot.dart';
 import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
+import 'package:flutter/services.dart' show rootBundle;
 import 'package:fren_app/dialogs/progress_dialog.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/uploader.dart';
@@ -38,16 +39,22 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   File? _uploadPath;
 
   List<Bot> _listBot = [];
+  late List<String> _category;
+  String _selectedCategory = "General";
 
   Future<void> _fetchAllBots() async {
+    String _cat = await rootBundle.loadString('assets/json/interest.json');
+    List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
+
     List<Bot> result = await _botApi.getAllBots(5, 0, BotModelType.prompt);
-    setState(() => _listBot = result);
+    setState(() => {_listBot = result, _category = category});
   }
 
   @override
   void initState() {
-    super.initState();
     _fetchAllBots();
+
+    super.initState();
   }
 
   @override
@@ -81,7 +88,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 )
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             SizedBox(
               width: width,
               child: Column(
@@ -161,7 +168,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       )
                     ],
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                   TextFormField(
                     maxLength: 200,
                     buildCounter: (_,
@@ -184,7 +191,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       return null;
                     },
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 10),
                   TextFormField(
                     maxLength: 2500,
                     buildCounter: (_,
@@ -200,7 +207,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                           color: Theme.of(context).colorScheme.tertiary),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
                     ),
-                    maxLines: 10,
+                    maxLines: 8,
                     validator: (name) {
                       // Basic validation
                       if (name?.isEmpty ?? false) {
@@ -211,6 +218,34 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                   ),
                 ],
               ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(_i18n.translate("bot_category")),
+                _category.isNotEmpty
+                    ? DropdownButton<String>(
+                        value: _selectedCategory,
+                        // icon: const Icon(Icons.arrow_downward),
+                        elevation: 16,
+                        underline: Container(
+                          height: 1,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        onChanged: (String? value) {
+                          setState(() {
+                            _selectedCategory = value!;
+                          });
+                        },
+                        items: _category
+                            .map<DropdownMenuItem<String>>((String value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList())
+                    : const SizedBox.shrink()
+              ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -233,11 +268,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                     style: Theme.of(context).textTheme.labelSmall,
                     selectionColor: APP_ERROR,
                   )
-                : const SizedBox(height: 30),
-            Text(
-              _i18n.translate("bot_test_warning"),
-              style: Theme.of(context).textTheme.labelMedium,
-            ),
+                : const SizedBox(height: 50),
             Center(
               child: ElevatedButton(
                   onPressed: () {
@@ -245,6 +276,13 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                   },
                   child: Text(_i18n.translate("publish"))),
             ),
+            const SizedBox(
+              height: 30,
+            ),
+            Text(
+              _i18n.translate("bot_test_warning"),
+              style: Theme.of(context).textTheme.labelSmall,
+            )
           ]));
     }
   }
@@ -267,6 +305,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           name: name,
           modelType: modelType,
           about: about,
+          category: _selectedCategory,
           prompt: prompt,
           photoUrl: photoUrl);
       await _chatroomApi.createNewRoom();
