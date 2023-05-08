@@ -24,6 +24,7 @@ class ProfileTab extends StatelessWidget {
           builder: (context, child, userModel) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             /// Basic profile info
             const ProfileBasicInfoCard(),
@@ -40,8 +41,7 @@ class ProfileTab extends StatelessWidget {
             const SizedBox(height: 10),
 
             /// add bot
-            const CreateBotCard(),
-            const SizedBox(height: 20),
+            // const CreateBotCard(),
 
             /// enable dark mode
             Card(

@@ -6,7 +6,6 @@ import 'package:fren_app/api/machi/chatroom_api.dart';
 import 'package:fren_app/api/notifications_api.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/controller/timeline_controller.dart';
 import 'package:fren_app/helpers/app_helper.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
 import 'package:fren_app/helpers/app_notifications.dart';
@@ -283,7 +282,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       child: DraggableScrollableSheet(
                         snap: true,
                         initialChildSize: 1,
-                        minChildSize: 0.75,
+                        minChildSize: 1,
                         builder: (context, scrollController) =>
                             SingleChildScrollView(
                           controller: scrollController,

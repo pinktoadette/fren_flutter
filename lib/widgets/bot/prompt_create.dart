@@ -31,6 +31,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _nameController = TextEditingController();
   final _aboutController = TextEditingController();
   final _promptController = TextEditingController();
+  bool _isPrivate = false;
+
   late ProgressDialog _pr;
   late AppLocalizations _i18n;
   File? _uploadPath;
@@ -76,21 +78,10 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                   _i18n.translate("my_machi"),
                   style: Theme.of(context).textTheme.headlineMedium,
                   textAlign: TextAlign.left,
-                ),
-                TextButton(
-                    onPressed: () {
-                      infoDialog(context,
-                          title: "Join the Waitlist",
-                          message:
-                              "Connect your Github, link your account to Replicate.");
-                    },
-                    child: Text(
-                      "Advance",
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ))
+                )
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 20),
             SizedBox(
               width: width,
               child: Column(
@@ -221,6 +212,21 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 ],
               ),
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(_i18n.translate("bot_is_private")),
+                Switch(
+                  activeColor: Theme.of(context).colorScheme.secondary,
+                  value: _isPrivate,
+                  onChanged: (newValue) {
+                    setState(() {
+                      _isPrivate = newValue;
+                    });
+                  },
+                ),
+              ],
+            ),
             errorMessage != ''
                 ? Text(
                     errorMessage,
@@ -231,9 +237,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
             Text(
               _i18n.translate("bot_test_warning"),
               style: Theme.of(context).textTheme.labelMedium,
-            ),
-            const SizedBox(
-              height: 10,
             ),
             Center(
               child: ElevatedButton(

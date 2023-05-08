@@ -9,7 +9,6 @@ import 'package:fren_app/datas/bot.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/image/image_rounded.dart';
 import 'package:fren_app/widgets/storyboard/view_storyboard.dart';
 import 'package:fren_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
@@ -49,6 +48,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
           Text(
             widget.item.text,
             style: Theme.of(context).textTheme.headlineSmall,
+            overflow: TextOverflow.ellipsis,
           ),
           InkWell(
             onTap: () async {
@@ -65,7 +65,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               TimelineHeader(
-                  showAvatar: true, showName: false, user: widget.item.user),
+                  showAvatar: true, showName: true, user: widget.item.user),
+              const Spacer(),
               LikeButton(
                 isLiked: widget.item.mylikes == 1 ? true : false,
                 onTap: (value) async {
@@ -84,7 +85,6 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                 },
                 likeCount: widget.item.likes,
               ),
-              const Spacer(),
               SizedBox(width: 40, child: const Icon(Iconsax.play_add))
             ],
           ),
@@ -116,7 +116,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
             firstImage = sub["messages"];
           }
         }
-        double imageHeight = width * 0.3 - 20;
+        double imageHeight = width * 0.3 - 50;
 
         return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -126,7 +126,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SizedBox(
-                    width: firstImage != null ? width * 0.65 - 30 : width - 100,
+                    width: firstImage != null ? width * 0.65 - 30 : width - 50,
                     height: itemHeight - 50,
                     child: Text(
                       firstText["text"],
@@ -155,7 +155,6 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
 
       case "machi":
         // Note: same as row_Bot_info but this class is different
-        final width = MediaQuery.of(context).size.width;
         double widthPercent = 0.2;
 
         return SizedBox(
@@ -167,22 +166,10 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
               },
               child: Row(
                 children: [
-                  RoundedImage(
-                      width: (width * widthPercent) + 5,
-                      height: (width * widthPercent) + 5,
-                      icon: const Icon(Iconsax.box_add),
-                      photoUrl: post.photoUrl ?? ""),
-                  const SizedBox(width: 5),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        post.text,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      const SizedBox(width: 5),
                       SizedBox(
                           height: width * widthPercent,
                           width: (width * (1 - widthPercent)) - 42,

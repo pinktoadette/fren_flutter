@@ -84,6 +84,7 @@ const BOT_ADMIN_STATUS = "adminStatus";
 const BOT_ADMIN_NOTE = "adminNote";
 const BOT_PROMPT = "prompt";
 const BOT_TEMPERATURE = "temperature";
+const BOT_IS_PRIVATE = "isPrivate";
 const BOT_CREATED_BY = "createdBy";
 
 /// trials

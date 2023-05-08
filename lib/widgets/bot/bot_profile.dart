@@ -136,18 +136,6 @@ class _BotProfileCardState extends State<BotProfileCard> {
     }
   }
 
-  Widget _showPricing() {
-    return Row(children: <Widget>[
-      Expanded(
-          child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Text(
-                "Price: ${widget.bot.price ?? "Free"}",
-                style: Theme.of(context).textTheme.labelMedium,
-              ))),
-    ]);
-  }
-
   void _tryBot() async {
     setState(() {
       isLoading = true;
@@ -158,26 +146,5 @@ class _BotProfileCardState extends State<BotProfileCard> {
     setState(() {
       isLoading = false;
     });
-  }
-
-  /// Add machi. Check if machi is free or not
-  /// if free just call api.
-  void _addMachi() async {
-    try {
-      await _botApi.addBottoList(widget.bot.botId);
-      Get.snackbar(
-        _i18n.translate("Success"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    } catch (error) {
-      Get.snackbar(
-        _i18n.translate("Error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
   }
 }

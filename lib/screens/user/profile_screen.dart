@@ -129,47 +129,44 @@ class _ProfileScreenState extends State<ProfileScreen> {
         return Stack(
           children: [
             SingleChildScrollView(
-              padding: const EdgeInsets.all(10.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      AvatarInitials(
-                        userId: widget.user.userId,
-                        username: widget.user.username,
-                        photoUrl: widget.user.userProfilePhoto,
-                      ),
-                      const SizedBox(width: 20),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.user.username,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          const SizedBox(height: 10),
-                          _buttonDisplay(context)
-                        ],
-                      )
-                    ],
+                  Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        AvatarInitials(
+                          userId: widget.user.userId,
+                          username: widget.user.username,
+                          photoUrl: widget.user.userProfilePhoto,
+                        ),
+                        const SizedBox(width: 20),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.user.username,
+                              style: Theme.of(context).textTheme.headlineSmall,
+                            ),
+                            const SizedBox(height: 10),
+                            _buttonDisplay(context)
+                          ],
+                        )
+                      ],
+                    ),
                   ),
 
                   /// Profile details
-                  SizedBox(
+                  Container(
+                    padding: const EdgeInsets.all(10.0),
                     height: height * 0.1,
                     child: Text(widget.user.userBio ?? "",
                         style: Theme.of(context).textTheme.bodyMedium),
-                  ),
-                  Row(
-                    children: [
-                      Text("${_i18n.translate("machi")} & "),
-                      Text(_i18n.translate("story"))
-                    ],
                   ),
                   _userPost()
                 ],
@@ -186,9 +183,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
 
-    return Container(
-        height: height * 0.60,
-        margin: const EdgeInsets.symmetric(vertical: 5.0),
+    return SizedBox(
+        height: height * 0.7,
+        width: width,
         child: PagedListView<int, dynamic>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<dynamic>(
@@ -213,21 +210,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 return TimelineRowWidget(item: item);
               }),
         ));
-  }
-
-  Widget _rowProfileInfo(BuildContext context,
-      {required Widget icon, required String title}) {
-    return Row(
-      children: [
-        icon,
-        const SizedBox(width: 10),
-        Flexible(
-            child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(title, style: Theme.of(context).textTheme.bodyMedium),
-        ))
-      ],
-    );
   }
 
   Widget _buttonDisplay(BuildContext context) {

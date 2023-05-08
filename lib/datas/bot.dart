@@ -31,12 +31,11 @@ class Bot {
   final BotModelType modelType;
   final double? temperature;
   final bool? isActive;
+  final bool? isPrivate;
   final String? adminStatus;
   final String? model;
   final String? profilePhoto;
   final String? adminNote;
-  final double? price;
-  final String? priceUnit;
   final BotCreatedBy? createdBy;
   final int? likes;
   final int? mylikes;
@@ -57,11 +56,10 @@ class Bot {
       required this.modelType,
       this.temperature,
       this.isActive,
+      this.isPrivate,
       this.adminStatus,
       this.model,
       this.adminNote,
-      this.price,
-      this.priceUnit,
       this.createdBy,
       this.likes,
       this.mylikes,
@@ -77,8 +75,6 @@ class Bot {
         'modelType': modelType,
         'domain': domain,
         'subdomain': subdomain,
-        'price': price,
-        'priceUnit': priceUnit,
         'createdBy': createdBy,
         'isActive': isActive,
         'adminState': adminStatus,
@@ -107,6 +103,7 @@ class Bot {
         about: doc[BOT_ABOUT],
         domain: doc[BOT_DOMAIN] ?? '',
         isActive: doc[BOT_ACTIVE] ?? false,
+        isPrivate: doc[BOT_IS_PRIVATE] ?? true,
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT],
         adminStatus: doc[BOT_ADMIN_STATUS] ?? 'pending',
