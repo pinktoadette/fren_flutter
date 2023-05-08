@@ -12,6 +12,7 @@ class BotController extends GetxController {
           name: '',
           model: '',
           modelType: BotModelType.prompt,
+          category: 'General',
           domain: '',
           subdomain: '',
           prompt: "",

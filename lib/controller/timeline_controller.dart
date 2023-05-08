@@ -1,4 +1,3 @@
-import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
 import 'package:fren_app/helpers/date_format.dart';
