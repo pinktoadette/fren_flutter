@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/chatroom_controller.dart';
 import 'package:fren_app/controller/timeline_controller.dart';
@@ -16,10 +19,23 @@ class TimelineWidget extends StatefulWidget {
 class _TimelineWidgetState extends State<TimelineWidget> {
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
+  final _timelineApi = TimelineApi();
+  Timer? timer;
 
   @override
   void initState() {
+    _getTimeline();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
+  }
+
+  void _getTimeline() async {
+    await _timelineApi.getTimeline();
   }
 
   @override
@@ -33,7 +49,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
         child: RefreshIndicator(
             onRefresh: () {
               // Refresh Functionality
-              return timelineController.fetchMyTimeline();
+              return _timelineApi.getTimeline();
             },
             child: Obx(() => ListView.separated(
                 // cacheExtent: 1000,
@@ -58,10 +74,10 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     return const Divider(height: 10);
                   }
                 },
-                itemCount: timelineController.feed.length,
+                itemCount: timelineController.feedList.length,
                 itemBuilder: ((context, index) {
                   return TimelineRowWidget(
-                      item: timelineController.feed[index]);
+                      item: timelineController.feedList[index]);
                 })))));
   }
 }

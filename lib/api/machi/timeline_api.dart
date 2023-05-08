@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:fren_app/controller/timeline_controller.dart';
 import 'package:fren_app/datas/timeline.dart';
+import 'package:get/get.dart';
 
 class TimelineApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -11,7 +13,11 @@ class TimelineApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<List<Timeline>> getTimeline(int limit, int offset) async {
+  Future<List<Timeline>> getTimeline() async {
+    final TimelineController timelineController = Get.find(tag: 'timeline');
+    int limit = timelineController.limit;
+    int offset = timelineController.offset;
+
     String url = '${baseUri}timeline/user_feed?limit=$limit&offset=$offset';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
@@ -20,6 +26,7 @@ class TimelineApi {
     List<Timeline> timeline = [];
     for (var data in response.data) {
       Timeline time = Timeline.fromJson(data);
+      timelineController.fetchMyTimeline(time);
       timeline.add(time);
     }
     return timeline;

@@ -34,8 +34,6 @@ class _ActivityTabState extends State<ActivityTab> {
 
   @override
   void initState() {
-    timelineController.fetchMyTimeline();
-
     super.initState();
     User user = UserModel().user;
     if (user.isFrankInitiated == false) {
@@ -49,7 +47,8 @@ class _ActivityTabState extends State<ActivityTab> {
   @override
   Widget build(BuildContext context) {
     /// Initialization
-    double screenWidth = MediaQuery.of(context).size.width;
+    final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     if (_isInitiatedFrank == true) {
       return Scaffold(
@@ -57,7 +56,7 @@ class _ActivityTabState extends State<ActivityTab> {
           title: Column(
             children: [
               SizedBox(
-                width: screenWidth * 0.75,
+                width: width * 0.75,
                 child: const SearchBarWidget(),
               ),
 

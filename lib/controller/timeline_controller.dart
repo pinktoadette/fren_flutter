@@ -1,4 +1,3 @@
-import 'package:fren_app/api/machi/story_api.dart';
 import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/datas/storyboard.dart';
 import 'package:fren_app/datas/timeline.dart';
@@ -23,23 +22,17 @@ Timeline initial = Timeline(
     updatedAt: getDateTimeEpoch());
 
 class TimelineController extends GetxController {
-  RxList<Timeline> _feed = [initial].obs;
+  // ignore: prefer_final_fields
+  RxList<Timeline> feedList = <Timeline>[].obs;
   int offset = 0;
   int limit = 30;
 
-  List<Timeline> get feed => _feed;
-  set feed(List<Timeline> value) => _feed.value = value;
-
-  @override
-  void onInit() async {
-    super.onInit();
-    fetchMyTimeline();
+  Stream<List<Timeline>> get streamFeed async* {
+    yield feedList;
   }
 
-  Future<void> fetchMyTimeline() async {
-    final timelineApi = TimelineApi();
-    final List<Timeline> stories = await timelineApi.getTimeline(limit, offset);
-    _feed = stories.obs;
-    _feed.refresh();
+  void fetchMyTimeline(Timeline item) {
+    feedList.add(item);
+    feedList.refresh();
   }
 }

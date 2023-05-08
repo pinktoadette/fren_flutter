@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:fren_app/api/machi/auth_api.dart';
+import 'package:fren_app/api/machi/timeline_api.dart';
 import 'package:fren_app/constants/constants.dart';
 import 'package:fren_app/controller/storyboard_controller.dart';
 import 'package:fren_app/controller/timeline_controller.dart';
@@ -127,13 +128,13 @@ class StoryApi {
   }
 
   Future<String> publishStory(String storyId) async {
-    TimelineController timelineController = Get.find(tag: 'timeline');
+    final _timelineApi = TimelineApi();
     try {
       String url = '${baseUri}storyboard/publish';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyId});
-      timelineController.fetchMyTimeline();
+      await _timelineApi.getTimeline();
       return response.data;
     } catch (error) {
       debugPrint(error.toString());
