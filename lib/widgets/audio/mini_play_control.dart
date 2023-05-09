@@ -93,8 +93,8 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
         padding: const EdgeInsets.only(left: 10, right: 10),
         margin: const EdgeInsets.only(left: 10, right: 10, bottom: 10),
         decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.tertiary,
-            borderRadius: BorderRadius.all(Radius.circular(50))),
+            color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
+            borderRadius: const BorderRadius.all(Radius.circular(50))),
         child: Stack(alignment: Alignment.center, children: [
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -117,7 +117,7 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
             bottom: 0,
             child: Center(
                 child: SizedBox(
-                    width: width * 0.65,
+                    width: width * 0.8,
                     child: StreamBuilder(
                         stream: _player.positionStream,
                         builder: (context, asyncSnapshot) {

@@ -34,12 +34,15 @@ class TimelineHeader extends StatelessWidget {
               const SizedBox(width: 5),
               if (showName == true)
                 Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(
-                      user.username,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelSmall,
-                    )
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Text(user.username,
+                        overflow: TextOverflow.ellipsis,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14))
                   ],
                 )
             ]));
