@@ -18,8 +18,7 @@ import 'package:machi_app/screens/notifications_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/widgets/app_logo.dart';
-import 'package:machi_app/widgets/audio/voice_chat.dart';
-import 'package:machi_app/widgets/bot/list_my_bots.dart';
+import 'package:machi_app/tabs/voice_chat_tab.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/button/action_button.dart';
 import 'package:machi_app/widgets/button/expandable_fab.dart';
@@ -238,15 +237,18 @@ class _HomeScreenState extends State<HomeScreen> {
           type: BottomNavigationBarType.fixed,
           elevation: Platform.isIOS ? 0 : 8,
           currentIndex: _selectedIndex,
+          backgroundColor: Theme.of(context).colorScheme.background,
+          selectedItemColor: Theme.of(context).colorScheme.primary,
+          unselectedItemColor:
+              Theme.of(context).colorScheme.primary.withAlpha(155),
           onTap: _onTappedNavBar,
           items: [
             /// Discover Tab
             BottomNavigationBarItem(
                 label: _i18n.translate("discover"),
-                icon: Icon(Iconsax.activity,
-                    color: _selectedIndex == 0
-                        ? Theme.of(context).primaryColor
-                        : null)),
+                icon: const Icon(
+                  Iconsax.activity,
+                )),
 
             /// Conversations Tab
             BottomNavigationBarItem(
@@ -257,27 +259,17 @@ class _HomeScreenState extends State<HomeScreen> {
             /// Discover new machi
             BottomNavigationBarItem(
                 label: _i18n.translate("story"),
-                icon: Icon(Iconsax.book,
-                    color: _selectedIndex == 2
-                        ? Theme.of(context).primaryColor
-                        : null)),
+                icon: const Icon(Iconsax.book)),
 
             /// Discover new machi
             BottomNavigationBarItem(
                 label: _i18n.translate("storyboard_record"),
-                icon: Icon(Iconsax.microphone,
-                    color: _selectedIndex == 3
-                        ? Theme.of(context).primaryColor
-                        : null)),
+                icon: const Icon(Iconsax.microphone)),
 
             /// Profile Tab
             BottomNavigationBarItem(
-              label: _i18n.translate("profile"),
-              icon: Icon(Iconsax.user,
-                  color: _selectedIndex == 4
-                      ? Theme.of(context).primaryColor
-                      : null),
-            ),
+                label: _i18n.translate("profile"),
+                icon: const Icon(Iconsax.user)),
           ]),
       body: _showCurrentNavBar(),
       floatingActionButton: ExpandableFab(
@@ -315,7 +307,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 isScrollControlled: true,
                 builder: (context) {
                   return const FractionallySizedBox(
-                      heightFactor: 0.9, child: ListMyBot());
+                      heightFactor: 0.9, child: ExploreBotTab()
+                      //  ListMyBot()
+                      );
                 },
               ),
               setState(() {

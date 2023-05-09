@@ -28,12 +28,9 @@ class _ExploreBotState extends State<ExploreBotTab> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
         appBar: AppBar(
-          title: SizedBox(
-              width: screenWidth - 100, child: const SearchMachiWidget()),
-        ),
+            automaticallyImplyLeading: false, title: const SearchMachiWidget()),
         body: const ListPromptBots());
   }
 }

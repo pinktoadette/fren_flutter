@@ -33,11 +33,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _friendApi = FriendApi();
   final _timelineApi = TimelineApi();
   ChatController chatController = Get.find(tag: 'chatroom');
-
   static const _pageSize = 20;
-
-  final PagingController<int, dynamic> _pagingController =
-      PagingController(firstPageKey: 0);
 
   Map<String, dynamic> friendStatus = {
     "status": "UNFRIEND",
@@ -50,9 +46,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     _isUserFriend();
-    _pagingController.addPageRequestListener((pageKey) {
-      _getUserBoard(pageKey);
-    });
     super.initState();
   }
 
@@ -61,20 +54,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.dispose();
   }
 
-  void _getUserBoard(int pageKey) async {
-    try {
-      List<Timeline> newItems =
-          await _timelineApi.getTimelineByPageUserId(widget.user.userId);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
+  Future<List<Timeline>> _getUserBoard() async {
+    /// @todo need infinite
+    List<Timeline> newItems =
+        await _timelineApi.getTimelineByPageUserId(widget.user.userId);
+    return newItems;
   }
 
   void _isUserFriend() async {
@@ -154,20 +138,34 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                             const SizedBox(height: 10),
-                            _buttonDisplay(context)
+                            Row(
+                              children: [
+                                Text("123 \nFollowes"),
+                                const SizedBox(width: 10),
+                                Text("431 \nFollowing"),
+                              ],
+                            )
                           ],
                         )
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [_followButton(), _friendRequest(context)],
+                    ),
+                  ),
 
                   /// Profile details
                   Container(
-                    padding: const EdgeInsets.all(10.0),
+                    padding: const EdgeInsets.only(left: 20.0, right: 20),
                     height: height * 0.1,
                     child: Text(widget.user.userBio ?? "",
                         style: Theme.of(context).textTheme.bodyMedium),
                   ),
+
                   _userPost()
                 ],
               ),
@@ -186,33 +184,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
     return SizedBox(
         height: height * 0.7,
         width: width,
-        child: PagedListView<int, dynamic>(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
-              animateTransitions: true,
-              transitionDuration: const Duration(milliseconds: 500),
-              itemBuilder: (context, item, index) {
-                if ((index + 1) % 5 == 0) {
-                  return Container(
-                    height: itemHeight,
-                    color: Theme.of(context).colorScheme.background,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10),
-                      child: Container(
-                        height: AD_HEIGHT,
-                        width: width,
-                        color: Theme.of(context).colorScheme.background,
-                        child: const InlineAdaptiveAds(),
-                      ),
-                    ),
-                  );
-                }
+        child: FutureBuilder(
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Container();
+            }
+            return ListView.builder(
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                Timeline item = snapshot.data![index];
                 return TimelineRowWidget(item: item);
-              }),
+              },
+            );
+          },
+          future: _getUserBoard(),
         ));
   }
 
-  Widget _buttonDisplay(BuildContext context) {
+  Widget _followButton() {
+    return OutlinedButton.icon(
+      onPressed: () async {
+        _friendApi
+            .sendRequest(widget.user.userId)
+            .then((_) => {_isUserFriend()});
+      },
+      icon: const Icon(Icons.check),
+      label: Text(_i18n.translate("follow")),
+    );
+  }
+
+  Widget _friendRequest(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
 
@@ -279,17 +280,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
       case 'BLOCK':
         return const SizedBox.shrink();
       default:
-        return ElevatedButton.icon(
-            onPressed: () async {
-              _friendApi
-                  .sendRequest(widget.user.userId)
-                  .then((_) => {_isUserFriend()});
-            },
-            icon: const Icon(Iconsax.message),
-            label: Text(
-              _i18n.translate("friend_send_request"),
-              style: const TextStyle(fontSize: 12),
-            ));
+        return OutlinedButton.icon(
+          onPressed: () async {
+            _friendApi
+                .sendRequest(widget.user.userId)
+                .then((_) => {_isUserFriend()});
+          },
+          icon: const Icon(Iconsax.message),
+          label: Text(_i18n.translate("friend_send_request")),
+        );
     }
   }
 }

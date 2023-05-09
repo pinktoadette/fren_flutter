@@ -236,7 +236,7 @@ class MyApp extends StatelessWidget {
   ThemeData _darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     const APP_PRIMARY_DARK_COLOR = Colors.white;
-    const APP_PRIMARY_DARK_BACKGROUND = Colors.black;
+    const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 15, 15, 15);
 
     return darkTheme.copyWith(
       primaryColor: APP_PRIMARY_DARK_COLOR,

@@ -36,7 +36,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     final height = MediaQuery.of(context).size.height;
 
     return SizedBox(
-        height: height - 200,
+        height: height,
         child: RefreshIndicator(
             onRefresh: () {
               // Refresh Functionality

@@ -29,11 +29,9 @@ class AvatarInitials extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(2.0),
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.primary,
-            shape: BoxShape.circle),
+        decoration: const BoxDecoration(shape: BoxShape.circle),
         child: CircleAvatar(
-          radius: radius ?? 30,
+          radius: radius ?? 50,
           child: (photoUrl == '')
               ? Center(
                   child: Text(username.substring(0, 1).toUpperCase(),

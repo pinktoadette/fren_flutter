@@ -52,15 +52,6 @@ class _MyStoriesState extends State<ListMyStories> {
                     itemBuilder: (BuildContext ctx, index) {
                       Storyboard story =
                           storyboardController.unpublished[index];
-                      if (story.title.isEmpty) {
-                        return Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _i18n.translate("story_nothing"),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
-                      }
                       return InkWell(
                           onTap: () {
                             _onStoryClick(index, story);
