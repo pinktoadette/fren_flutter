@@ -1,9 +1,9 @@
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
-import 'package:fren_app/widgets/processing.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/processing.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/button/default_button.dart';
+import 'package:machi_app/widgets/button/default_button.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 

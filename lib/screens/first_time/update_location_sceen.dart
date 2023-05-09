@@ -1,19 +1,19 @@
 import 'dart:async';
 
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_helper.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
-import 'package:fren_app/screens/home_screen.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_helper.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/bot/bot_chat.dart';
+import 'package:machi_app/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iconsax/iconsax.dart';
 
-import 'package:fren_app/widgets/rounded_top.dart';
+import 'package:machi_app/widgets/rounded_top.dart';
 
 class UpdateLocationScreen extends StatefulWidget {
   final bool isSignUpProcess;

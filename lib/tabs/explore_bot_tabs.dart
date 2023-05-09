@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/bot/list_all_bots.dart';
-import 'package:fren_app/widgets/search_bot.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/bot/list_all_bots.dart';
+import 'package:machi_app/widgets/search_bot.dart';
 import 'package:get/get.dart';
 
 /// Gets recent new bots

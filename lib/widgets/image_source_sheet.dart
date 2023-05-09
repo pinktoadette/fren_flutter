@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_cropper/image_cropper.dart';

@@ -1,15 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/notifications_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/helpers/app_notifications.dart';
-import 'package:fren_app/helpers/date_format.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:machi_app/api/notifications_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_notifications.dart';
+import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/screens/user/profile_screen.dart';
+import 'package:machi_app/widgets/avatar_initials.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

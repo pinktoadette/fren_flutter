@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fren_app/api/machi/auth_api.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/api/machi/auth_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:fren_app/controller/timeline_controller.dart';
-import 'package:fren_app/datas/timeline.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/timeline.dart';
 import 'package:get/get.dart';
 
 class TimelineApi {

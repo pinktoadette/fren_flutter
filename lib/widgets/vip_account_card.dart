@@ -1,6 +1,6 @@
-import 'package:fren_app/dialogs/subscribe_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/default_card_border.dart';
+import 'package:machi_app/dialogs/subscribe_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

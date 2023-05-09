@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoped_model/scoped_model.dart';
-import 'package:fren_app/datas/app_info.dart';
+import 'package:machi_app/datas/app_info.dart';
 
 class AppModel extends Model {
   // Variables

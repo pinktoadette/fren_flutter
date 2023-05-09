@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_final_fields
 
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class DotWidget extends StatelessWidget {
   final Color? color;

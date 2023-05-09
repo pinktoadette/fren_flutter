@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/storyboard/list_my_board.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/storyboard/list_my_board.dart';
 
 class Storyboard extends StatefulWidget {
   const Storyboard({Key? key}) : super(key: key);

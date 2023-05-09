@@ -1,14 +1,14 @@
 import 'dart:async';
 
-import 'package:fren_app/api/machi/story_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/widgets/animations/fireworks.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:machi_app/screens/home_screen.dart';
+import 'package:machi_app/widgets/animations/fireworks.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:get/get.dart';
 
 class PublishStory extends StatefulWidget {

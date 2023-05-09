@@ -1,10 +1,10 @@
 import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:fren_app/api/machi/stream.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/api/machi/stream.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';

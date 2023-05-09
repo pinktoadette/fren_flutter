@@ -4,17 +4,17 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/helpers/theme_helper.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/models/app_model.dart';
-import 'package:fren_app/screens/splash_screen.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/models/app_model.dart';
+import 'package:machi_app/screens/splash_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:fren_app/widgets/default_card_border.dart';
+import 'package:machi_app/widgets/default_card_border.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -222,6 +222,12 @@ class MyApp extends StatelessWidget {
                 Brightness.dark, // Only honored in Android M and above
             statusBarBrightness: Brightness.light),
         titleTextStyle: TextStyle(color: APP_PRIMARY_COLOR, fontSize: 18),
+      ),
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
+          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
+          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
+        },
       ),
     );
   }

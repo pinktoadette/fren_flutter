@@ -1,13 +1,13 @@
 import 'dart:typed_data';
 
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/audio/play_control.dart';
-import 'package:fren_app/widgets/storyboard/bottom_sheets/publish_items.dart';
-import 'package:fren_app/widgets/storyboard/story_view.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/audio/play_control.dart';
+import 'package:machi_app/widgets/storyboard/bottom_sheets/publish_items.dart';
+import 'package:machi_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 

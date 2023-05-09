@@ -1,9 +1,8 @@
-
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/main.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/main.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
 
 class FlagUserDialog extends StatefulWidget {
@@ -185,7 +184,7 @@ class _FlagUserDialogState extends State<FlagUserDialog> {
 
                             // Show success dialog
                             showScaffoldMessage(
-                              message: message, bgcolor: Colors.green);
+                                message: message, bgcolor: Colors.green);
                           },
                   ),
                 ],

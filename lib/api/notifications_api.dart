@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/models/app_model.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/models/app_model.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 

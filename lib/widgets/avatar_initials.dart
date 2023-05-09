@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/machi/user_api.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
+import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:get/get.dart';
 
 class AvatarInitials extends StatelessWidget {

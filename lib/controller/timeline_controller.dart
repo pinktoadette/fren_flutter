@@ -1,7 +1,7 @@
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/datas/timeline.dart';
-import 'package:fren_app/helpers/date_format.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/datas/timeline.dart';
+import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 
 Timeline initial = Timeline(

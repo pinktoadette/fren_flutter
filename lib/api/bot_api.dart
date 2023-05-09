@@ -1,5 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class BotApi {
   /// FINAL VARIABLES

@@ -1,5 +1,5 @@
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/storyboard.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/storyboard.dart';
 
 class Timeline {
   final String id;

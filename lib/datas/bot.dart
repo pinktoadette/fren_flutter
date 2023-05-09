@@ -1,4 +1,4 @@
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 
 enum BotModelType { prompt, finetuning, textImage, imageText }
 

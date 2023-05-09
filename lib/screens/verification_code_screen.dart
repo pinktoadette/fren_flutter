@@ -1,12 +1,12 @@
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/plugins/otp_screen/otp_screen.dart';
-import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/screens/first_time/sign_up_screen.dart';
-import 'package:fren_app/screens/first_time/update_location_sceen.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/plugins/otp_screen/otp_screen.dart';
+import 'package:machi_app/screens/home_screen.dart';
+import 'package:machi_app/screens/first_time/sign_up_screen.dart';
+import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:iconsax/iconsax.dart';
 
 class VerificationCodeScreen extends StatefulWidget {

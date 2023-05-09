@@ -1,8 +1,8 @@
-import 'package:fren_app/api/machi/story_api.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/timeline/timeline_header.dart';
+import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class ListComments extends StatefulWidget {

@@ -1,5 +1,5 @@
-import 'package:fren_app/helpers/app_helper.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_helper.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class TermsOfServiceRow extends StatelessWidget {

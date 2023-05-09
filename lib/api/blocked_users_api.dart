@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class BlockedUsersApi {
   /// Get firestore instance
@@ -34,17 +34,15 @@ class BlockedUsersApi {
     return querySnapshot.docs;
   }
 
-
   /// Remove Blocked Profiles from the list
   Future<void> removeBlockedUsers(
-    List<DocumentSnapshot<Map<String, dynamic>>> allUsers) async {
-      
+      List<DocumentSnapshot<Map<String, dynamic>>> allUsers) async {
     // Get Blocked Profiles
     final List<DocumentSnapshot<Map<String, dynamic>>> blockedProfiles =
         (await _firestore
-            .collection(C_BLOCKED_USERS)
-            .where(BLOCKED_BY_USER_ID, isEqualTo: UserModel().user.userId)
-            .get())
+                .collection(C_BLOCKED_USERS)
+                .where(BLOCKED_BY_USER_ID, isEqualTo: UserModel().user.userId)
+                .get())
             .docs;
     // Remove Liked Profiles from the list
     if (blockedProfiles.isNotEmpty) {

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/machi/bot_api.dart';
-import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/no_data.dart';
+import 'package:machi_app/api/machi/bot_api.dart';
+import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/no_data.dart';
 
 import 'row_bot_info.dart';
 

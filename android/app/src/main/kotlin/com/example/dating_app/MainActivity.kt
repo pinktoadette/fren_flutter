@@ -1,4 +1,4 @@
-package app.fren
+package app.machi
 
 import io.flutter.embedding.android.FlutterActivity
 

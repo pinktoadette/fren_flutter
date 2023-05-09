@@ -1,14 +1,14 @@
 import 'package:country_code_picker/country_code_picker.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/blocked_account_screen.dart';
-import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/screens/first_time/sign_up_screen.dart';
-import 'package:fren_app/screens/first_time/update_location_sceen.dart';
-import 'package:fren_app/screens/verification_code_screen.dart';
-import 'package:fren_app/widgets/button/default_button.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/blocked_account_screen.dart';
+import 'package:machi_app/screens/home_screen.dart';
+import 'package:machi_app/screens/first_time/sign_up_screen.dart';
+import 'package:machi_app/screens/first_time/update_location_sceen.dart';
+import 'package:machi_app/screens/verification_code_screen.dart';
+import 'package:machi_app/widgets/button/default_button.dart';
+import 'package:machi_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

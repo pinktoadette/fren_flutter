@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:flutter/services.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/image_source_sheet.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/avatar_initials.dart';
+import 'package:machi_app/widgets/image_source_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';

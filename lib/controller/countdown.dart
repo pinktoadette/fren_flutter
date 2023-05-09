@@ -1,5 +1,5 @@
 import 'dart:async';
-import 'package:fren_app/helpers/date_format.dart';
+import 'package:machi_app/helpers/date_format.dart';
 import 'package:get/get.dart';
 
 class TimerController extends GetxController {

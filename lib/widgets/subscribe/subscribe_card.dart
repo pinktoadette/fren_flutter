@@ -1,8 +1,8 @@
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/subscribe/subscription_product.dart';
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SubscriptionCard extends StatefulWidget {

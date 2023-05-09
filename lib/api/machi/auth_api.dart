@@ -2,8 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/constants/secrets.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/constants/secrets.dart';
 
 /// Sets headers
 class AuthApi {

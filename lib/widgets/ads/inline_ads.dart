@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/widgets/ads/ad_helper.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/widgets/ads/ad_helper.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
 /// This example demonstrates inline adaptive banner ads.

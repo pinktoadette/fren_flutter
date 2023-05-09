@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:fren_app/api/blocked_users_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/dialogs/flag_user_dialog.dart';
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/main.dart';
-import 'package:fren_app/widgets/show_scaffold_msg.dart';
+import 'package:machi_app/api/blocked_users_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/dialogs/flag_user_dialog.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/main.dart';
+import 'package:machi_app/widgets/show_scaffold_msg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

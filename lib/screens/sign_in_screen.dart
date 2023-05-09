@@ -1,15 +1,15 @@
 import 'dart:async';
 
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/home_screen.dart';
-import 'package:fren_app/screens/first_time/sign_up_screen.dart';
-import 'package:fren_app/screens/first_time/update_location_sceen.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/home_screen.dart';
+import 'package:machi_app/screens/first_time/sign_up_screen.dart';
+import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:fren_app/widgets/chat/typing_indicator.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/chat/typing_indicator.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'first_time/on_boarding_screen.dart';

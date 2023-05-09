@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/bot_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/timeline_controller.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/discover_card.dart';
-import 'package:fren_app/widgets/search_user.dart';
-import 'package:fren_app/widgets/subscribe/subscribe_card.dart';
-import 'package:fren_app/widgets/timeline/timeline_widget.dart';
-import 'package:fren_app/widgets/tips/tips_widget.dart';
+import 'package:machi_app/api/bot_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/discover_card.dart';
+import 'package:machi_app/widgets/search_user.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
+import 'package:machi_app/widgets/timeline/timeline_widget.dart';
+import 'package:machi_app/widgets/tips/tips_widget.dart';
 import 'package:get/get.dart';
 
 class ActivityTab extends StatefulWidget {

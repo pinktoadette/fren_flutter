@@ -1,9 +1,9 @@
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
-import 'package:fren_app/controller/message_controller.dart';
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/controller/timeline_controller.dart';
-import 'package:fren_app/controller/user_controller.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/controller/message_controller.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:get/get.dart';
 
 void initializeAllControllers() {

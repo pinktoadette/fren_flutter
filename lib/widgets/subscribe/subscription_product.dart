@@ -1,8 +1,10 @@
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/api/machi/purchases_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/app_logo.dart';
+import 'package:machi_app/widgets/app_logo.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class SubscriptionProduct extends StatefulWidget {
@@ -47,6 +49,21 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           ]),
         ),
         body: _showTiers());
+  }
+
+  Future fetchOffers() async {
+    final offerings = await PurchasesApi.fetchOffers();
+    if (offerings.isEmpty) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("subscribe_no_offering_found"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    } else {
+      final offer = offerings.first;
+      print(offer);
+    }
   }
 
   Widget _showTiers() {

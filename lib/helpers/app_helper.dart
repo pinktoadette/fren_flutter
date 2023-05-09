@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
@@ -9,9 +9,9 @@ import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/plugins/geoflutterfire/geoflutterfire.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/models/app_model.dart';
+import 'package:machi_app/plugins/geoflutterfire/geoflutterfire.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/models/app_model.dart';
 
 class AppHelper {
   /// Local variables

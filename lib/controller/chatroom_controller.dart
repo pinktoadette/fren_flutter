@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:fren_app/controller/message_controller.dart';
-import 'package:fren_app/controller/user_controller.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/helpers/date_format.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/controller/message_controller.dart';
+import 'package:machi_app/controller/user_controller.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/datas/chatroom.dart';
+import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 

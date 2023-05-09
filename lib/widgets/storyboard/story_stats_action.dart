@@ -1,7 +1,7 @@
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';

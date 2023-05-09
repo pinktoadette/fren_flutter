@@ -1,9 +1,9 @@
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/helpers/theme_helper.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/sign_out_button_card.dart';
+import 'package:machi_app/widgets/sign_out_button_card.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 

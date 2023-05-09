@@ -1,7 +1,7 @@
-import 'package:fren_app/api/machi/story_api.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/date_format.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 
 Storyboard initial = Storyboard(

@@ -1,12 +1,12 @@
-import 'package:fren_app/api/machi/bot_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/bot/bot_profile.dart';
-import 'package:fren_app/widgets/animations/loader.dart';
+import 'package:machi_app/api/machi/bot_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/bot/bot_profile.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/no_data.dart';
 import 'package:get/get.dart';
 
 class ManageBotScreen extends StatefulWidget {

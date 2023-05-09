@@ -1,9 +1,9 @@
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/set_room_bot.dart';
-import 'package:fren_app/datas/bot.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/controller/set_room_bot.dart';
+import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/widgets/image/image_rounded.dart';
+import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 

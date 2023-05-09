@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:fren_app/api/blocked_users_api.dart';
-import 'package:fren_app/api/notifications_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/sign_in_screen.dart';
-import 'package:fren_app/widgets/processing.dart';
+import 'package:machi_app/api/blocked_users_api.dart';
+import 'package:machi_app/api/notifications_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/sign_in_screen.dart';
+import 'package:machi_app/widgets/processing.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 

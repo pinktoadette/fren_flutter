@@ -1,9 +1,9 @@
-import 'package:fren_app/screens/first_time/update_location_sceen.dart';
+import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/widgets/rounded_top.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/rounded_top.dart';
 import 'package:iconsax/iconsax.dart';
 
 class EnableMode extends StatefulWidget {
@@ -75,70 +75,74 @@ class _EnableModeState extends State<EnableMode> {
 
     return Scaffold(
       body: SafeArea(
-        child: Column(crossAxisAlignment: CrossAxisAlignment.center, children: <
-            Widget>[
-          const RoundedTop(),
-          Center(
-              child: Column(children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Text(_i18n.translate('enable_mode'),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.left),
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
-              child: Text(_i18n.translate('enable_mode_des'),
-                  textAlign: TextAlign.left),
-            ),
-            Container(
-              //Added the color here
-              margin: const EdgeInsets.only(top: 10),
-              child: ListView.builder(
-                physics: const ClampingScrollPhysics(),
-                shrinkWrap: true,
-                scrollDirection: Axis.vertical,
-                itemCount: 2,
-                itemBuilder: (context, int index) {
-                  return Container(
-                      height: 100,
-                      margin: const EdgeInsets.fromLTRB(30, 0, 30, 24),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Theme.of(context).colorScheme.background,
-                        boxShadow: [
-                          BoxShadow(
-                            color: const Color(0xff131200).withOpacity(0.20),
-                            spreadRadius: 1,
-                            blurRadius: 8,
-                            offset: const Offset(
-                                3, 3), // changes position of shadow
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              const RoundedTop(),
+              Center(
+                  child: Column(children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: Text(_i18n.translate('enable_mode'),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                      textAlign: TextAlign.left),
+                ),
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+                  child: Text(_i18n.translate('enable_mode_des'),
+                      textAlign: TextAlign.left),
+                ),
+                Container(
+                  //Added the color here
+                  margin: const EdgeInsets.only(top: 10),
+                  child: ListView.builder(
+                    physics: const ClampingScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: 2,
+                    itemBuilder: (context, int index) {
+                      return Container(
+                          height: 100,
+                          margin: const EdgeInsets.fromLTRB(30, 0, 30, 24),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            color: Theme.of(context).colorScheme.background,
+                            boxShadow: [
+                              BoxShadow(
+                                color:
+                                    const Color(0xff131200).withOpacity(0.20),
+                                spreadRadius: 1,
+                                blurRadius: 8,
+                                offset: const Offset(
+                                    3, 3), // changes position of shadow
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: CheckboxListTile(
-                        title: listRec[index].title,
-                        subtitle: listRec[index].subtitle,
-                        onChanged: (bool? value) {
-                          _setSelection(listRec[index].type, value!);
-                        },
-                        secondary: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 10, vertical: 20),
-                          child: listRec[index].icon,
-                        ),
-                        value: values[listRec[index].type],
-                      ));
-                },
-              ),
-            ),
-            ElevatedButton(
-                child: Text(_i18n.translate('enable')),
-                onPressed: () async {
-                  _updateEnable();
-                })
-          ])),
-        ]),
+                          child: CheckboxListTile(
+                            title: listRec[index].title,
+                            subtitle: listRec[index].subtitle,
+                            onChanged: (bool? value) {
+                              _setSelection(listRec[index].type, value!);
+                            },
+                            secondary: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 20),
+                              child: listRec[index].icon,
+                            ),
+                            value: values[listRec[index].type],
+                          ));
+                    },
+                  ),
+                ),
+                ElevatedButton(
+                    child: Text(_i18n.translate('enable')),
+                    onPressed: () async {
+                      _updateEnable();
+                    })
+              ])),
+            ]),
       ),
     );
   }

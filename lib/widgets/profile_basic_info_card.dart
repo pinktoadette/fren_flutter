@@ -1,10 +1,10 @@
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/user/edit_profile_screen.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
-import 'package:fren_app/widgets/default_card_border.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/user/edit_profile_screen.dart';
+import 'package:machi_app/screens/user/profile_screen.dart';
+import 'package:machi_app/widgets/avatar_initials.dart';
+import 'package:machi_app/widgets/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/machi/story_api.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:fren_app/widgets/storyboard/list_my_board.dart';
+import 'package:machi_app/widgets/storyboard/list_my_board.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: must_be_immutable

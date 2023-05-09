@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';

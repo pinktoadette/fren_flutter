@@ -2,11 +2,11 @@
   "lang": "en",
 
   "_app_information": "*** App Basic Informaton ***",
-  "app_short_description": "Mingling with Humans and Machine",
+  "app_short_description": "Storycast that Unites Humans and AI",
 
   "_AboutScreen": "*** About us Screen Translations ***",
   "about_us": "About us",
-  "about_us_description": "Fren is more than just a personal assistant - it's your go-to destination for friendly and personalized support. Have a unique professional skill, or need someone with that skills? Fren will match for you.",
+  "about_us_description": "Machi is an AI podcast app that allows human to AI interactions and AI to human interactions by voice or chat. With Machi, users can generate images and read text using advanced AI technology. We provide a platform where users can enjoy intelligent conversations with our AI technology in a natural and seamless way. Our app offers group chat features, allowing users to engage in meaningful discussions and share ideas with their friends.",
   "share_app": "Share App",
   "do_you_have_a_question": "Do you have a question?",
   "contact_us": "Contact us",
@@ -88,6 +88,7 @@
   "subscribe_detail_plan_free": "Restricted access with essential features and functions at no cost",
   "subscribe_detail_plan_premium": "Full unlimited access with essential features, group chat, add additional models",
   "subscribe_start_button": "Start free trial and plan",
+  "subscribe_no_offering_found": "No offers found",
   "subscribe_get_notification_from_machi": "Get notification from response",
   "subscribe_expired": "Subscription is expired",
   "benefits": "Benefits",

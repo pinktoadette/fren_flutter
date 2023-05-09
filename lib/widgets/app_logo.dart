@@ -15,7 +15,7 @@ class AppLogo extends StatelessWidget {
         child: Image.asset(
             isDarkMode
                 ? "assets/images/logo_white.png"
-                : "assets/images/logo.png",
+                : "assets/images/machi.png",
             width: width ?? 120,
             height: height ?? 40));
   }

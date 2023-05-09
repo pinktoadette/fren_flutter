@@ -1,8 +1,8 @@
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_helper.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/widgets/app_logo.dart';
-import 'package:fren_app/models/app_model.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_helper.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/app_logo.dart';
+import 'package:machi_app/models/app_model.dart';
 import 'package:flutter/material.dart';
 
 class AboutScreen extends StatelessWidget {
@@ -54,8 +54,8 @@ class AboutScreen extends StatelessWidget {
               const SizedBox(height: 10),
               TextButton.icon(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor)
-                ),
+                    backgroundColor: MaterialStateProperty.all<Color>(
+                        Theme.of(context).primaryColor)),
                 icon: const Icon(Icons.share, color: Colors.white),
                 label: Text(i18n.translate('share_app'),
                     style: const TextStyle(
@@ -80,8 +80,8 @@ class AboutScreen extends StatelessWidget {
                 children: <Widget>[
                   // Contact
                   Text(i18n.translate('do_you_have_a_question'),
-                      style:
-                          const TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                      style: const TextStyle(
+                          fontSize: 12, fontWeight: FontWeight.bold)),
                   const SizedBox(height: 10),
                   Text(i18n.translate('send_your_message_to_our_email_address'),
                       style: const TextStyle(fontSize: 18),

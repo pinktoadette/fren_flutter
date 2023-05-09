@@ -14,7 +14,7 @@
 
 import 'dart:io';
 
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class AdManager {
   static String get bannerAdUnitId {

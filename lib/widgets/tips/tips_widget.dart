@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 
 class TipWidget extends StatelessWidget {
   late AppLocalizations _i18n;

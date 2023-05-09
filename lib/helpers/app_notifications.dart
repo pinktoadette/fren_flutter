@@ -1,7 +1,7 @@
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:flutter/material.dart';
 
 class AppNotifications {

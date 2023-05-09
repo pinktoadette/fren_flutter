@@ -1,10 +1,10 @@
-import 'package:fren_app/api/machi/chatroom_api.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
-import 'package:fren_app/datas/chatroom.dart';
-import 'package:fren_app/screens/bot/bot_chat.dart';
+import 'package:machi_app/api/machi/chatroom_api.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/datas/chatroom.dart';
+import 'package:machi_app/screens/bot/bot_chat.dart';
 import 'package:get/get.dart';
-import 'package:fren_app/datas/bot.dart';
+import 'package:machi_app/datas/bot.dart';
 
 class SetCurrentRoom {
   ChatController chatController = Get.find(tag: 'chatroom');

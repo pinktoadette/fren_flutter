@@ -1,5 +1,5 @@
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 
 //@todo remove scope model to getX

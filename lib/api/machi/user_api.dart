@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:fren_app/api/machi/auth_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/datas/user.dart';
+import 'package:machi_app/api/machi/auth_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class UserApi {

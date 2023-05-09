@@ -1,4 +1,4 @@
-# fren_app
+# machi_app
 
 A new Flutter project.
 

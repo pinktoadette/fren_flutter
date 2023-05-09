@@ -18,8 +18,8 @@ const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
 
-const String GOOGLE_BANNER_ADS =
-    'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
+const String GOOGLE_BANNER_ADS = 'ca-app-pub-8475595365680681/9246193145';
+// test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
 const String GOOGLE_INTERSTI_ADS = 'ca-app-pub-3940256099942544/8691691433';
 
 //
@@ -48,6 +48,14 @@ const SOCKET_WS = "wss://api.mymachi.app/";
 const List<Locale> SUPPORTED_LOCALES = [
   Locale('en'),
 ];
+
+///
+/// Subscription - Revenue Cat
+/// Reference: https://www.revenuecat.com/blog/engineering/flutter-subscriptions-tutorial/
+const entitlementID = 'Premium';
+const googleApiKey = "goog_jAIlfHZWRiuTKpiMgFaYSTIhNea";
+const footerText =
+    """A purchase will be applied to your account upon confirmation of the amount selected. Subscriptions will automatically renew unless canceled within 24 hours of the end of the current period. You can cancel any time using your account settings. Any unused portion of a free trial will be forfeited if you purchase a subscription.""";
 
 ///
 /// END APP SETINGS - SECTION

@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/machi/chatroom_api.dart';
-import 'package:fren_app/api/machi/friend_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/chatroom_controller.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/models/user_model.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
+import 'package:machi_app/api/machi/chatroom_api.dart';
+import 'package:machi_app/api/machi/friend_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/user/profile_screen.dart';
+import 'package:machi_app/widgets/avatar_initials.dart';
 import 'package:get/get.dart';
 
 class FriendListWidget extends StatefulWidget {

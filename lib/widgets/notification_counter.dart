@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class NotificationCounter extends StatelessWidget {
   // Variables

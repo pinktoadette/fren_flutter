@@ -2,18 +2,18 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/machi/bot_api.dart';
-import 'package:fren_app/api/machi/chatroom_api.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/controller/bot_controller.dart';
-import 'package:fren_app/controller/set_room_bot.dart';
-import 'package:fren_app/datas/bot.dart';
+import 'package:machi_app/api/machi/bot_api.dart';
+import 'package:machi_app/api/machi/chatroom_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/bot_controller.dart';
+import 'package:machi_app/controller/set_room_bot.dart';
+import 'package:machi_app/datas/bot.dart';
 import 'package:flutter/services.dart' show rootBundle;
-import 'package:fren_app/dialogs/progress_dialog.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/helpers/uploader.dart';
-import 'package:fren_app/widgets/image_source_sheet.dart';
-import 'package:fren_app/widgets/no_data.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/image_source_sheet.dart';
+import 'package:machi_app/widgets/no_data.dart';
 import 'package:get/get.dart';
 
 class CreateMachiWidget extends StatefulWidget {

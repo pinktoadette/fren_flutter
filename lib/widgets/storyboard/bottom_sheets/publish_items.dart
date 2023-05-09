@@ -1,13 +1,13 @@
 import 'dart:io';
 
-import 'package:fren_app/controller/storyboard_controller.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/helpers/uploader.dart';
-import 'package:fren_app/widgets/storyboard/edit_storyboard.dart';
-import 'package:fren_app/widgets/storyboard/publish_story.dart';
+import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/storyboard/edit_storyboard.dart';
+import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';

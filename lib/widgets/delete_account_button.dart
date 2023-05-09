@@ -1,7 +1,7 @@
-import 'package:fren_app/dialogs/common_dialogs.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/screens/delete_account_screen.dart';
-import 'package:fren_app/widgets/button/default_button.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/screens/delete_account_screen.dart';
+import 'package:machi_app/widgets/button/default_button.dart';
 import 'package:flutter/material.dart';
 
 class DeleteAccountButton extends StatelessWidget {

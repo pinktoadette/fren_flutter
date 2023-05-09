@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:fren_app/constants/constants.dart';
-import 'package:fren_app/helpers/app_localizations.dart';
-import 'package:fren_app/helpers/app_helper.dart';
-import 'package:fren_app/widgets/app_logo.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/app_helper.dart';
+import 'package:machi_app/widgets/app_logo.dart';
 
 class UpdateAppScreen extends StatelessWidget {
   // Variables
@@ -40,13 +40,16 @@ class UpdateAppScreen extends StatelessWidget {
                   textAlign: TextAlign.center),
               const SizedBox(height: 10),
               Text(_i18n.translate("please_install_it_now"),
-                  style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
+                  style: const TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center),
               const SizedBox(height: 5),
               Text(_i18n.translate("don_worry_your_data_will_not_be_lost"),
-                  style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
+                  style: const TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center),
               const Divider(thickness: 1),
               Text(_i18n.translate("click_this_button_to_install"),
-                  style: const TextStyle(fontSize: 18), textAlign: TextAlign.center),
+                  style: const TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center),
               GestureDetector(
                 child: Image.asset(Platform.isAndroid
                     ? "assets/images/google_play_badge.png"

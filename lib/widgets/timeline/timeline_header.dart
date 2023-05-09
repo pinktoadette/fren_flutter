@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:fren_app/api/machi/user_api.dart';
-import 'package:fren_app/datas/storyboard.dart';
-import 'package:fren_app/datas/user.dart';
-import 'package:fren_app/screens/user/profile_screen.dart';
-import 'package:fren_app/widgets/avatar_initials.dart';
+import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/screens/user/profile_screen.dart';
+import 'package:machi_app/widgets/avatar_initials.dart';
 import 'package:get/get.dart';
 
 class TimelineHeader extends StatelessWidget {
@@ -28,7 +28,7 @@ class TimelineHeader extends StatelessWidget {
             children: [
               if (showAvatar == true)
                 AvatarInitials(
-                    radius: 10,
+                    radius: 20,
                     photoUrl: user.photoUrl,
                     username: user.username),
               const SizedBox(width: 5),

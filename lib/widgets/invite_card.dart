@@ -1,6 +1,6 @@
-import 'package:fren_app/constants/constants.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:fren_app/models/user_model.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:qr_flutter/qr_flutter.dart';

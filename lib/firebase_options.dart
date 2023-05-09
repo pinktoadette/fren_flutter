@@ -63,8 +63,10 @@ class DefaultFirebaseOptions {
     messagingSenderId: '350828450571',
     projectId: 'fren-9cc3c',
     storageBucket: 'fren-9cc3c.appspot.com',
-    androidClientId: '350828450571-33s9lbm7rnt6mfteu6u46lbr99c1qh98.apps.googleusercontent.com',
-    iosClientId: '350828450571-tej1jo4ofag50cq36q1l5kp1750q6qpb.apps.googleusercontent.com',
-    iosBundleId: 'app.fren',
+    androidClientId:
+        '350828450571-33s9lbm7rnt6mfteu6u46lbr99c1qh98.apps.googleusercontent.com',
+    iosClientId:
+        '350828450571-tej1jo4ofag50cq36q1l5kp1750q6qpb.apps.googleusercontent.com',
+    iosBundleId: 'app.machi',
   );
 }
