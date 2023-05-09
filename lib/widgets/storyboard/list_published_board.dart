@@ -9,15 +9,15 @@ import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:machi_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 
-class ListMyStories extends StatefulWidget {
+class ListMyPublishedStories extends StatefulWidget {
   final types.Message? message;
-  const ListMyStories({Key? key, this.message}) : super(key: key);
+  const ListMyPublishedStories({Key? key, this.message}) : super(key: key);
 
   @override
-  _MyStoriesState createState() => _MyStoriesState();
+  _MyPublishedStoriesState createState() => _MyPublishedStoriesState();
 }
 
-class _MyStoriesState extends State<ListMyStories> {
+class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
   late AppLocalizations _i18n;
   double itemHeight = 150;
   final _storyApi = StoryApi();
@@ -25,7 +25,7 @@ class _MyStoriesState extends State<ListMyStories> {
 
   @override
   void initState() {
-    storyboardController.getUnpublised();
+    storyboardController.getPublished();
     super.initState();
   }
 
@@ -37,7 +37,7 @@ class _MyStoriesState extends State<ListMyStories> {
           // Refresh Functionality
           await _storyApi.getMyStories();
         },
-        child: storyboardController.stories.isEmpty
+        child: storyboardController.published.isEmpty
             ? Align(
                 alignment: Alignment.center,
                 child: Text(
@@ -49,10 +49,9 @@ class _MyStoriesState extends State<ListMyStories> {
                 () => ListView.builder(
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
-                    itemCount: storyboardController.unpublished.length,
+                    itemCount: storyboardController.published.length,
                     itemBuilder: (BuildContext ctx, index) {
-                      Storyboard story =
-                          storyboardController.unpublished[index];
+                      Storyboard story = storyboardController.published[index];
                       if (story.title.isEmpty) {
                         return Align(
                           alignment: Alignment.center,

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -33,6 +35,14 @@ class ConversationsTab extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+          flexibleSpace: ClipRect(
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 7, sigmaY: 10),
+              child: Container(
+                color: Colors.transparent,
+              ),
+            ),
+          ),
           title: Text(
             _i18n.translate("chat"),
             style: Theme.of(context).textTheme.headlineMedium,

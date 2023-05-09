@@ -26,7 +26,6 @@ import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/widgets/search_user.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -204,7 +203,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         flexibleSpace: ClipRect(
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 7, sigmaY: 7),
+            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 10),
             child: Container(
               color: Colors.transparent,
             ),
@@ -223,11 +222,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  SizedBox(
-                    width: width * 0.45,
-                    height: 45,
-                    child: const SearchBarWidget(),
-                  ),
                   IconButton(
                       icon: _getNotificationCounter(),
                       onPressed: () async {

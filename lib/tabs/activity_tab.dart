@@ -5,6 +5,7 @@ import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/discover_card.dart';
+import 'package:machi_app/widgets/search_user.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 import 'package:machi_app/widgets/tips/tips_widget.dart';
@@ -48,10 +49,15 @@ class _ActivityTabState extends State<ActivityTab> {
     if (_isInitiatedFrank == true) {
       return SingleChildScrollView(
           child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const SearchBarWidget(),
           const SubscriptionCard(),
           TipWidget(),
           const TimelineWidget(),
+          const SizedBox(
+            height: 100,
+          )
         ],
       ));
     }

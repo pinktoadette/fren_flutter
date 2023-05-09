@@ -70,7 +70,7 @@ class _AddStoryBoardState extends State<AddStoryBoard> {
         ),
         const Scrollbar(
             child: SingleChildScrollView(
-          child: MyStories(),
+          child: ListMyStories(),
         ))
       ],
     );

@@ -28,6 +28,9 @@ class StoryboardController extends GetxController {
   List<Storyboard> get stories => _stories;
   set stories(List<Storyboard> value) => _stories.value = value;
 
+  RxList<Storyboard> unpublished = <Storyboard>[].obs;
+  RxList<Storyboard> published = <Storyboard>[].obs;
+
   @override
   void onInit() async {
     // fetchMyStories();
@@ -61,5 +64,17 @@ class StoryboardController extends GetxController {
 
   void setCurrentBoard(Storyboard story) async {
     currentStory = story;
+  }
+
+  getUnpublised() {
+    unpublished.assignAll(_stories
+        .where((element) => element.status == StoryStatus.UNPUBLISHED)
+        .toList());
+  }
+
+  getPublished() {
+    published.assignAll(_stories
+        .where((element) => element.status == StoryStatus.PUBLISHED)
+        .toList());
   }
 }
