@@ -1,12 +1,10 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/story_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
-import 'package:machi_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 
 class ListMyPublishedStories extends StatefulWidget {
@@ -97,64 +95,7 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
               ));
   }
 
-  void _addMessage(int index, Storyboard story) async {
-    try {
-      await _storyApi.addStory(index, widget.message!.id, story.storyboardId);
-      Navigator.of(context).pop();
-      Get.snackbar(
-        _i18n.translate("story_added"),
-        _i18n.translate("story_added_info"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
-    } catch (err) {
-      debugPrint(err.toString());
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
-  }
-
   void _onStoryClick(int index, Storyboard story) {
-    if (story.status == StoryStatus.PUBLISHED) {
-      showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => FractionallySizedBox(
-              heightFactor: 0.9,
-              child: DraggableScrollableSheet(
-                snap: true,
-                initialChildSize: 1,
-                minChildSize: 0.75,
-                builder: (context, scrollController) => SingleChildScrollView(
-                  controller: scrollController,
-                  physics: const ScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        story.title,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        textAlign: TextAlign.left,
-                      ),
-                      StoryViewDetails(story: story),
-                    ],
-                  ),
-                ),
-              )));
-    } else {
-      widget.message != null
-          ? _addMessage(index, story)
-          : _setCurrentStory(story);
-    }
-  }
-
-  void _setCurrentStory(Storyboard story) {
     storyboardController.currentStory = story;
     Get.to(() => ViewStory());
   }

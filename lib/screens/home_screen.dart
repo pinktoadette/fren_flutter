@@ -18,6 +18,7 @@ import 'package:machi_app/screens/notifications_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/widgets/app_logo.dart';
+import 'package:machi_app/widgets/audio/voice_chat.dart';
 import 'package:machi_app/widgets/bot/list_my_bots.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/button/action_button.dart';
@@ -186,7 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const ActivityTab(),
       ConversationsTab(),
       const Storyboard(),
-      const ExploreBotTab(),
+      const VoiceRecordTab(),
       const ProfileTab()
     ];
 
@@ -263,8 +264,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
             /// Discover new machi
             BottomNavigationBarItem(
-                label: "Machi",
-                icon: Icon(Iconsax.search_favorite,
+                label: _i18n.translate("storyboard_record"),
+                icon: Icon(Iconsax.microphone,
                     color: _selectedIndex == 3
                         ? Theme.of(context).primaryColor
                         : null)),

@@ -6,7 +6,6 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
-import 'package:machi_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
 
 class ListMyStories extends StatefulWidget {
@@ -120,39 +119,9 @@ class _MyStoriesState extends State<ListMyStories> {
   }
 
   void _onStoryClick(int index, Storyboard story) {
-    if (story.status == StoryStatus.PUBLISHED) {
-      showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => FractionallySizedBox(
-              heightFactor: 0.9,
-              child: DraggableScrollableSheet(
-                snap: true,
-                initialChildSize: 1,
-                minChildSize: 0.75,
-                builder: (context, scrollController) => SingleChildScrollView(
-                  controller: scrollController,
-                  physics: const ScrollPhysics(),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        story.title,
-                        style: Theme.of(context).textTheme.headlineMedium,
-                        textAlign: TextAlign.left,
-                      ),
-                      StoryViewDetails(story: story),
-                    ],
-                  ),
-                ),
-              )));
-    } else {
-      widget.message != null
-          ? _addMessage(index, story)
-          : _setCurrentStory(story);
-    }
+    widget.message != null
+        ? _addMessage(index, story)
+        : _setCurrentStory(story);
   }
 
   void _setCurrentStory(Storyboard story) {

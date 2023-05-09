@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/storytab_controller%20copy.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -23,12 +22,6 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _tabController.dispose();
   }
 
   @override
