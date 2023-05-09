@@ -63,7 +63,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                       ),
                     );
                   } else {
-                    return const Divider(height: 10);
+                    return const SizedBox.shrink();
                   }
                 },
                 itemCount: timelineController.feedList.length,

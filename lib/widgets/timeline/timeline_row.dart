@@ -11,9 +11,7 @@ import 'package:machi_app/datas/timeline.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/audio/mini_play_control.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:like_button/like_button.dart';
 
 class TimelineRowWidget extends StatefulWidget {
@@ -57,23 +55,16 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
         semanticContainer: true,
         clipBehavior: Clip.antiAliasWithSaveLayer,
         child: Container(
-          decoration: BoxDecoration(
-            image: firstImage != null
-                ? DecorationImage(
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.7), BlendMode.darken),
-                    image: NetworkImage(firstImage["image"]["uri"]),
-                    fit: BoxFit.cover,
-                    alignment: Alignment.center,
-                  )
-                : DecorationImage(
-                    colorFilter: ColorFilter.mode(
-                        Colors.black.withOpacity(0.2), BlendMode.darken),
-                    image: const AssetImage("assets/images/camera.png"),
-                    fit: BoxFit.cover,
-                    alignment: Alignment.topCenter,
-                  ),
-          ),
+          decoration: firstImage != null
+              ? BoxDecoration(
+                  image: DecorationImage(
+                  colorFilter: ColorFilter.mode(
+                      Colors.black.withOpacity(0.7), BlendMode.darken),
+                  image: NetworkImage(firstImage["image"]["uri"]),
+                  fit: BoxFit.cover,
+                  alignment: Alignment.center,
+                ))
+              : BoxDecoration(color: Colors.black.withOpacity(0.8)),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -129,7 +120,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                       await _storyApi.getStoryById(widget.item.id);
                   storyboardController.currentStory = story;
                 },
-                child: MiniAudioWidget(user: widget.item.user),
+                child: MiniAudioWidget(post: widget.item),
               ),
             ],
           ),

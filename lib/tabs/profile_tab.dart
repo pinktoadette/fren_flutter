@@ -2,7 +2,6 @@ import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/settings_screen.dart';
-import 'package:machi_app/widgets/bot/create_bot.dart';
 import 'package:machi_app/widgets/default_card_border.dart';
 import 'package:machi_app/widgets/profile_basic_info_card.dart';
 import 'package:machi_app/widgets/vip_account_card.dart';

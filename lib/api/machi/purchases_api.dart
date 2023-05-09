@@ -1,15 +1,8 @@
-import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:machi_app/helpers/date_format.dart';
-import 'package:get_storage/get_storage.dart';
-import 'package:http/http.dart' as http;
-import 'package:just_audio/just_audio.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchasesApi {
@@ -30,7 +23,7 @@ class PurchasesApi {
       final offerings = await Purchases.getOfferings();
       final current = offerings.current;
       return current == null ? [] : [current];
-    } on PlatformException catch (e) {
+    } on PlatformException {
       return [];
     }
   }

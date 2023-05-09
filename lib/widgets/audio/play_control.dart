@@ -14,7 +14,7 @@ import 'package:http/http.dart' as http;
 
 // view story board as the creator
 class AudioWidget extends StatefulWidget {
-  AudioWidget({Key? key}) : super(key: key);
+  const AudioWidget({Key? key}) : super(key: key);
 
   @override
   _AudioWidgetState createState() => _AudioWidgetState();

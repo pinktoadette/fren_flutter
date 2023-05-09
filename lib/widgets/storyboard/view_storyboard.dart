@@ -91,7 +91,7 @@ class _PreviewStoryState extends State<ViewStory> {
                             )
                           ])
                     ])),
-                Positioned(bottom: 0, child: AudioWidget())
+                const Positioned(bottom: 0, child: AudioWidget())
               ],
             )));
   }

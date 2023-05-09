@@ -84,12 +84,12 @@ types.Message messageFromJson(Map<String, dynamic> message) {
 }
 
 Future<Map<String, dynamic>> formatStoryboard(Scene customMessage) async {
-  String LOCAL_FLAG = 'LOCAL';
+  String localFlag = 'LOCAL';
 
   Map<String, dynamic> mapScene = customMessage.toJSON();
   var additional = mapScene["message"];
 
-  if (customMessage.messages.id.contains(LOCAL_FLAG) == true) {
+  if (customMessage.messages.id.contains(localFlag) == true) {
     switch (customMessage.messages.type) {
       case (types.MessageType.text):
         additional = {

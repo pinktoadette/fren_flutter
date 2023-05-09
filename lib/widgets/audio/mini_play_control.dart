@@ -1,24 +1,24 @@
-import 'dart:math';
 import 'dart:typed_data';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machi_app/api/machi/stream.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/datas/timeline.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // view story board as the creator
+// ignore: must_be_immutable
 class MiniAudioWidget extends StatefulWidget {
-  StoryUser user;
-  MiniAudioWidget({Key? key, required this.user}) : super(key: key);
+  Timeline post;
+  MiniAudioWidget({Key? key, required this.post}) : super(key: key);
 
   @override
   _MiniAudioWidgetState createState() => _MiniAudioWidgetState();
@@ -31,7 +31,6 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
   final _player = AudioPlayer();
   bool _isPlaying = false;
   bool _isBuffering = false;
-  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -57,6 +56,10 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
     Uint8List data = await streamedResponse.stream.toBytes();
     await _player.setAudioSource(BytesSource(data));
 
+    if (storyboardController.currentStory.storyboardId != widget.post.id) {
+      _player.pause();
+    }
+
     _player.playerStateStream.listen((state) {
       switch (state.processingState) {
         case ProcessingState.idle:
@@ -72,13 +75,11 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
           });
           break;
         case ProcessingState.ready:
-          break;
-        case ProcessingState.completed:
-          _player.pause();
           setState(() {
-            _isPlaying = false;
             _isBuffering = false;
           });
+          break;
+        case ProcessingState.completed:
           break;
       }
     });
@@ -86,7 +87,6 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
         height: 60,
@@ -103,7 +103,7 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   TimelineHeader(
-                      showAvatar: true, showName: true, user: widget.user),
+                      showAvatar: true, showName: true, user: widget.post.user),
                   SizedBox(
                     height: 45,
                     width: 45,
@@ -140,7 +140,8 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
                                 value: value,
                                 valueColor: const AlwaysStoppedAnimation<Color>(
                                     APP_ACCENT_COLOR),
-                                backgroundColor: const Color(0xffD6D6D6),
+                                backgroundColor:
+                                    const Color.fromARGB(255, 43, 43, 43),
                               ),
                             ),
                           );
@@ -154,11 +155,13 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
       onPressed: () {
         _listen();
       },
-      child: Icon(
-        _isPlaying == true ? Iconsax.pause : Iconsax.play,
-        color: Theme.of(context).colorScheme.background,
-        size: 14,
-      ),
+      child: _isBuffering
+          ? loadingButton(size: 24)
+          : Icon(
+              _isPlaying == true ? Iconsax.pause : Iconsax.play,
+              color: Theme.of(context).colorScheme.background,
+              size: 14,
+            ),
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(10),

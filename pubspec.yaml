@@ -112,7 +112,6 @@ flutter:
   assets:
     - assets/images/
     - assets/images/imports/
-    - assets/images/faces/
     - assets/icons/
     - assets/lang/
     - assets/fonts/
