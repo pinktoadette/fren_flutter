@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/forms/category_dropdown.dart';
@@ -48,7 +50,7 @@ class _AddNewStoryboardState extends State<AddNewStoryboard> {
           }),
         ),
         TextFormField(
-          maxLength: 20,
+          maxLength: 80,
           buildCounter: (_,
                   {required currentLength, maxLength, required isFocused}) =>
               _counter(context, currentLength, maxLength),
@@ -98,11 +100,19 @@ class _AddNewStoryboardState extends State<AddNewStoryboard> {
                             _selectedCategory, widget.message.id);
                         _titleController.clear();
                         FocusScope.of(context).unfocus();
+                        Get.snackbar(
+                          _i18n.translate("success"),
+                          _i18n.translate("story_added"),
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: APP_SUCCESS,
+                        );
                       } catch (error) {
-                        setState(() {
-                          errorMessage =
-                              _i18n.translate("an_error_has_occurred");
-                        });
+                        Get.snackbar(
+                          _i18n.translate("error"),
+                          _i18n.translate("error_launch_url"),
+                          snackPosition: SnackPosition.BOTTOM,
+                          backgroundColor: APP_ERROR,
+                        );
                       }
                     }
                   },

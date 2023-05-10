@@ -47,7 +47,7 @@ class _EditStoryState extends State<EditStory> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
-
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -92,51 +92,63 @@ class _EditStoryState extends State<EditStory> {
                 ? const Text("No stories")
                 : Stack(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 50),
-                        child: ReorderableListView(
-                          children: <Widget>[
-                            for (int index = 0;
-                                index < _copyStory.scene!.length;
-                                index += 1)
-                              Container(
-                                  key: ValueKey(
-                                      _copyStory.scene![index].sceneId),
-                                  decoration: const BoxDecoration(
-                                    border: Border(
-                                      bottom: BorderSide(
-                                          width: 1, color: Colors.grey),
-                                    ),
-                                  ),
-                                  child: ListTile(
-                                    isThreeLine: true,
-                                    title: _showName == true
-                                        ? Text(
-                                            _copyStory.scene![index].messages
-                                                .author.firstName!,
-                                            style: const TextStyle(
-                                                color: APP_ACCENT_COLOR,
-                                                fontWeight: FontWeight.bold,
-                                                fontSize: 16),
-                                          )
-                                        : const SizedBox.shrink(),
-                                    subtitle: _showMessage(
-                                        context, _copyStory.scene![index]),
-                                    trailing: const Icon(Iconsax.menu_1),
-                                  ))
-                          ],
-                          onReorder: (int oldIndex, int newIndex) {
-                            setState(() {
-                              if (oldIndex < newIndex) {
-                                newIndex -= 1;
-                              }
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text("category",
+                              style: Theme.of(context).textTheme.labelMedium),
+                          Text(_copyStory.title,
+                              style:
+                                  Theme.of(context).textTheme.headlineMedium),
+                          Container(
+                            height: height - 200,
+                            padding: const EdgeInsets.only(bottom: 50),
+                            child: ReorderableListView(
+                              children: <Widget>[
+                                for (int index = 0;
+                                    index < _copyStory.scene!.length;
+                                    index += 1)
+                                  Container(
+                                      key: ValueKey(
+                                          _copyStory.scene![index].sceneId),
+                                      decoration: const BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                              width: 1, color: Colors.grey),
+                                        ),
+                                      ),
+                                      child: ListTile(
+                                        isThreeLine: true,
+                                        title: _showName == true
+                                            ? Text(
+                                                _copyStory.scene![index]
+                                                    .messages.author.firstName!,
+                                                style: const TextStyle(
+                                                    color: APP_ACCENT_COLOR,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontSize: 16),
+                                              )
+                                            : const SizedBox.shrink(),
+                                        subtitle: _showMessage(
+                                            context, _copyStory.scene![index]),
+                                        trailing: const Icon(Iconsax.menu_1),
+                                      ))
+                              ],
+                              onReorder: (int oldIndex, int newIndex) {
+                                setState(() {
+                                  if (oldIndex < newIndex) {
+                                    newIndex -= 1;
+                                  }
 
-                              final Scene item =
-                                  _copyStory.scene!.removeAt(oldIndex);
-                              _copyStory.scene!.insert(newIndex, item);
-                            });
-                          },
-                        ),
+                                  final Scene item =
+                                      _copyStory.scene!.removeAt(oldIndex);
+                                  _copyStory.scene!.insert(newIndex, item);
+                                });
+                              },
+                            ),
+                          ),
+                        ],
                       ),
                       Positioned(
                           width: width - 20,
