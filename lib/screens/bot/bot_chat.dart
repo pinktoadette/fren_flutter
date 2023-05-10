@@ -284,7 +284,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             child: DraggableScrollableSheet(
               snap: true,
               initialChildSize: 1,
-              minChildSize: 0.75,
+              minChildSize: 0.9,
               builder: (context, scrollController) => SingleChildScrollView(
                 controller: scrollController,
                 child: DoubleTapChatMessage(

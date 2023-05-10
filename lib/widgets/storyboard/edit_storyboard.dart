@@ -139,12 +139,16 @@ class _EditStoryState extends State<EditStory> {
                         ),
                       ),
                       Positioned(
-                          width: width - 50,
+                          width: width - 20,
                           bottom: 0,
                           child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
+                                TextButton(
+                                    onPressed: () {},
+                                    child: Text(
+                                        _i18n.translate("story_category"))),
                                 IconButton(
                                   icon: const Icon(Iconsax.gallery_add),
                                   onPressed: () {
@@ -152,7 +156,7 @@ class _EditStoryState extends State<EditStory> {
                                   },
                                 ),
                                 IconButton(
-                                  icon: const Icon(Iconsax.edit),
+                                  icon: const Icon(Iconsax.text),
                                   onPressed: () {
                                     _addText();
                                   },

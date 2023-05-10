@@ -25,7 +25,6 @@ class BotApi {
       isPrivate,
       model,
       photoUrl,
-      required category,
       required modelType,
       required about}) async {
     String url = '${baseUri}bot/create_machi';
@@ -35,7 +34,6 @@ class BotApi {
       BOT_ID: "Machi_${uuid.substring(0, 10)}", // external botId
       BOT_ABOUT: about,
       BOT_NAME: name,
-      BOT_CATEGORY: category,
       BOT_MODEL: model,
       BOT_MODEL_TYPE: modelType.toString().split(".")[1],
       BOT_DOMAIN: domain,

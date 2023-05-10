@@ -80,6 +80,7 @@ dependencies:
   uni_links: ^0.5.1
   just_audio: ^0.9.32
   purchases_flutter: ^4.12.0
+  dotted_border: ^2.0.0+3
 
 
 dependency_overrides:

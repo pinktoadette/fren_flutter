@@ -1,7 +1,8 @@
+import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:machi_app/widgets/chat/add_new_storyboard.dart';
 import 'package:machi_app/widgets/storyboard/list_my_board.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -16,8 +17,6 @@ class DoubleTapChatMessage extends StatefulWidget {
 
 class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
   late AppLocalizations _i18n;
-  final _titleController = TextEditingController();
-  final _storyApi = StoryApi();
   String errorMessage = '';
 
   @override
@@ -29,6 +28,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -45,52 +45,27 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
               _i18n.translate("story_added_info"),
               style: Theme.of(context).textTheme.labelSmall,
             )),
-        Card(
-          child: Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.all(10),
-                      child: Text(_i18n.translate("add_to_new_storyboard"))),
-                  TextFormField(
-                    maxLength: 20,
-                    buildCounter: (_,
-                            {required currentLength,
-                            maxLength,
-                            required isFocused}) =>
-                        _counter(context, currentLength, maxLength),
-                    controller: _titleController,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(8),
-                      ),
-                      hintText: _i18n.translate("story_title"),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    validator: (reason) {
-                      // Basic validation
-                      if (reason?.isEmpty ?? false) {
-                        return _i18n.translate("story_enter_title");
-                      }
-                      return null;
-                    },
-                  ),
-                ],
-              )),
-        ),
-        Text(errorMessage),
-        const SizedBox(
-          height: 5,
-        ),
-        const Row(children: [
-          Expanded(child: Divider(thickness: 1.5)),
-          Text("OR", style: TextStyle(fontSize: 16, color: Colors.grey)),
-          Expanded(child: Divider(thickness: 1.5)),
-        ]),
+        Padding(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            child: DottedBorder(
+              dashPattern: [4],
+              strokeWidth: 2,
+              borderType: BorderType.RRect,
+              radius: const Radius.circular(10),
+              padding: const EdgeInsets.all(6),
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                child: SizedBox(
+                    height: 100,
+                    width: width,
+                    child: InkWell(
+                      onTap: () {
+                        _showBottomSheet(widget.message);
+                      },
+                      child: const Icon(Iconsax.add),
+                    )),
+              ),
+            )),
         const SizedBox(
           height: 5,
         ),
@@ -102,7 +77,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: height * 0.5,
+                height: height - 345,
                 child: ListMyStories(message: widget.message),
               )
             ],
@@ -112,43 +87,20 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
     );
   }
 
-  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0.0),
-      child: Container(
-          alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                currentLength.toString() + "/" + maxLength.toString(),
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              ElevatedButton.icon(
-                  onPressed: () async {
-                    if (_titleController.text.length < 3) {
-                      setState(() {
-                        errorMessage =
-                            _i18n.translate("validation_3_characters");
-                      });
-                    } else {
-                      try {
-                        await _storyApi.createStory(
-                            _titleController.text, widget.message.id);
-                        _titleController.clear();
-                        FocusScope.of(context).unfocus();
-                      } catch (error) {
-                        setState(() {
-                          errorMessage =
-                              _i18n.translate("an_error_has_occurred");
-                        });
-                      }
-                    }
-                  },
-                  icon: const Icon(Iconsax.add),
-                  label: Text(_i18n.translate("add")))
-            ],
-          )),
-    );
+  void _showBottomSheet(types.Message message) {
+    Navigator.of(context).pop();
+
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: 250,
+                  child: AddNewStoryboard(
+                    message: message,
+                  )),
+            ));
   }
 }

@@ -80,7 +80,6 @@ class ChatController extends GetxController implements GetxService {
                 profilePhoto: "",
                 name: "",
                 domain: "",
-                category: "",
                 subdomain: "",
                 modelType: BotModelType.prompt,
                 createdAt: date,

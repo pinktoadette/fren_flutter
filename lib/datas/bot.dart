@@ -23,7 +23,6 @@ class Bot {
   final String botId;
   final String about;
   final String name;
-  final String category;
   final String domain;
   final String subdomain;
   final int createdAt;
@@ -48,7 +47,6 @@ class Bot {
       {required this.botId,
       required this.profilePhoto,
       required this.name,
-      required this.category,
       required this.domain,
       required this.subdomain,
       required this.createdAt,
@@ -75,7 +73,6 @@ class Bot {
         'name': name,
         'model': model,
         'modelType': modelType,
-        'category': category,
         'domain': domain,
         'subdomain': subdomain,
         'createdBy': createdBy,
@@ -99,7 +96,6 @@ class Bot {
         botId: doc[BOT_ID],
         profilePhoto: doc[BOT_PROFILE_PHOTO] ?? '',
         name: doc[BOT_NAME],
-        category: doc[BOT_CATEGORY] ?? 'general',
         model: doc[BOT_MODEL] ?? '',
         modelType: BotModelType.values.byName(doc[BOT_MODEL_TYPE]),
         subdomain: doc[BOT_SUBDOMAIN] ?? '',

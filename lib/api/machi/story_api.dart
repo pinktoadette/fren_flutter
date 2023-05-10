@@ -16,14 +16,18 @@ class StoryApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<Storyboard> createStory(String title, String messageId) async {
+  Future<Storyboard> createStory(
+      String title, String category, String messageId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}storyboard/create';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio
-          .post(url, data: {STORY_TITLE: title, STORY_MESSAGE_ID: messageId});
+      final response = await dio.post(url, data: {
+        STORY_TITLE: title,
+        STORY_CATEGORY: category,
+        STORY_MESSAGE_ID: messageId
+      });
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.addNewStoryboard(story);

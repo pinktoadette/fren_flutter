@@ -116,15 +116,6 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                   },
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: TextButton.icon(
-                  icon: const Icon(Iconsax.microphone, size: 27),
-                  label: Text(_i18n.translate("story_as_audio"),
-                      style: const TextStyle(fontSize: 16)),
-                  onPressed: () async {},
-                ),
-              ),
             ]));
   }
 

@@ -231,6 +231,7 @@ const String LIMIT = "limit";
 /// story
 const String STORY_ID = "storyboardId";
 const String STORY_TITLE = "title";
+const String STORY_CATEGORY = "category";
 const String STORY_MESSAGE_ID = "messageId";
 const String STORY_MESSAGES = "messages";
 const String STORY_MESSAGE_TYPE = "type";
@@ -269,6 +270,7 @@ const String ROOM_CREATED_BY = "createdBy";
 const String ROOM_TYPE = "roomType";
 
 /// chat
+const int GROUP_TIMER = 1;
 const String CHAT_AUTHOR_ID = "authorId";
 const String CHAT_AUTHOR = "author";
 const String CHAT_USER_NAME = "name";
