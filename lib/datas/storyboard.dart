@@ -88,7 +88,7 @@ class Storyboard {
   /// Using types and Chatroom together
   final String title;
   final String storyboardId;
-
+  final String category;
   final List<Scene>? scene;
   final StoryUser createdBy;
   final int createdAt;
@@ -100,6 +100,7 @@ class Storyboard {
       {required this.title,
       required this.scene,
       required this.storyboardId,
+      required this.category,
       required this.createdBy,
       required this.status,
       required this.createdAt,
@@ -111,6 +112,7 @@ class Storyboard {
       List<Scene>? scene,
       StoryUser? createdBy,
       String? storyboardId,
+      String? category,
       StoryStatus? status,
       int? createdAt,
       int? updatedAt,
@@ -119,6 +121,7 @@ class Storyboard {
         title: title ?? this.title,
         scene: scene ?? this.scene,
         storyboardId: storyboardId ?? this.storyboardId,
+        category: category ?? this.category,
         createdBy: createdBy ?? this.createdBy,
         status: status ?? this.status,
         showNames: showNames ?? this.showNames,
@@ -129,6 +132,7 @@ class Storyboard {
   Map<String, dynamic> toJSON() {
     return <String, dynamic>{
       'title': title,
+      'category': category,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
       'scene': scene,
@@ -181,6 +185,7 @@ class Storyboard {
     return Storyboard(
         title: doc[STORY_TITLE],
         createdBy: user,
+        category: doc[STORY_CATEGORY] ?? "Other",
         scene: listScene,
         storyboardId: doc[STORY_ID],
         status: StoryStatus.values.byName(doc[STORY_STATUS]),

@@ -8,6 +8,7 @@ Storyboard initial = Storyboard(
     storyboardId: '',
     showNames: true,
     title: '',
+    category: '',
     createdBy: StoryUser(
         photoUrl: UserModel().user.userProfilePhoto,
         userId: UserModel().user.userId,

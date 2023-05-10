@@ -11,6 +11,8 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/decoration/fade_effect.dart';
+import 'package:machi_app/widgets/forms/category_dropdown.dart';
 import 'package:machi_app/widgets/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_scene.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
@@ -33,12 +35,14 @@ class _EditStoryState extends State<EditStory> {
   bool _showName = false;
   final _storyApi = StoryApi();
   late Storyboard _copyStory;
+  String? _selectedCategory;
 
   @override
   void initState() {
     _copyStory = storyboardController.currentStory.copyWith();
     setState(() {
       _showName = _copyStory.showNames ?? false;
+      _selectedCategory = _copyStory.category;
     });
     super.initState();
   }
@@ -96,13 +100,24 @@ class _EditStoryState extends State<EditStory> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text("category",
-                              style: Theme.of(context).textTheme.labelMedium),
-                          Text(_copyStory.title,
-                              style:
-                                  Theme.of(context).textTheme.headlineMedium),
+                          Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(_copyStory.title,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .headlineMedium),
+                                if (_selectedCategory != null)
+                                  CategoryDropdownWidget(
+                                      selectedCategory: _selectedCategory,
+                                      notifyParent: (value) {
+                                        setState(() {
+                                          _selectedCategory = value;
+                                        });
+                                      }),
+                              ]),
                           Container(
-                            height: height - 200,
+                            height: height - 220,
                             padding: const EdgeInsets.only(bottom: 50),
                             child: ReorderableListView(
                               children: <Widget>[
@@ -147,7 +162,7 @@ class _EditStoryState extends State<EditStory> {
                                 });
                               },
                             ),
-                          ),
+                          )
                         ],
                       ),
                       Positioned(
@@ -157,10 +172,6 @@ class _EditStoryState extends State<EditStory> {
                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                TextButton(
-                                    onPressed: () {},
-                                    child: Text(
-                                        _i18n.translate("story_category"))),
                                 IconButton(
                                   icon: const Icon(Iconsax.gallery_add),
                                   onPressed: () {

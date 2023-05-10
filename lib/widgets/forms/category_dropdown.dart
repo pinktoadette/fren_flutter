@@ -1,10 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/chat/typing_indicator.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class CategoryDropdownWidget extends StatefulWidget {
@@ -19,8 +16,8 @@ class CategoryDropdownWidget extends StatefulWidget {
 
 class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
   late AppLocalizations _i18n;
-  late List<String> _category;
-  String _selectedCategory = "Crime";
+  List<String> _category = [];
+  late String _selectedCategory;
 
   @override
   void initState() {
@@ -33,7 +30,7 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
     List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
     setState(() {
       _category = category;
-      _selectedCategory = category[0];
+      _selectedCategory = widget.selectedCategory ?? category[0];
     });
   }
 

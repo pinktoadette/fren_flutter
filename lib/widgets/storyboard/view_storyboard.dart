@@ -42,6 +42,11 @@ class _PreviewStoryState extends State<ViewStory> {
 
     return Scaffold(
         appBar: AppBar(
+          title: Text(
+            storyboardController.currentStory.title,
+            style: Theme.of(context).textTheme.headlineMedium,
+            overflow: TextOverflow.fade,
+          ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
@@ -75,14 +80,6 @@ class _PreviewStoryState extends State<ViewStory> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(15),
-                              child: Text(
-                                storyboardController.currentStory.title,
-                                style:
-                                    Theme.of(context).textTheme.headlineMedium,
-                              ),
-                            ),
                             StoryViewDetails(
                               story: storyboardController.currentStory,
                             ),
