@@ -36,13 +36,13 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
     _i18n = AppLocalizations.of(context);
 
     return Column(children: [
+      _showHeader(context),
       widget.showDoubleTap == true
           ? Text(
               _i18n.translate("story_add_double_tap"),
               style: Theme.of(context).textTheme.labelSmall,
             )
           : const SizedBox.shrink(),
-      _showHeader(context)
     ]);
   }
 

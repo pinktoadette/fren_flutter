@@ -19,7 +19,7 @@ class ListMyStories extends StatefulWidget {
 
 class _MyStoriesState extends State<ListMyStories> {
   late AppLocalizations _i18n;
-  double itemHeight = 150;
+  double itemHeight = 120;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
@@ -138,15 +138,16 @@ class _MyStoriesState extends State<ListMyStories> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          width: firstImage != null ? width * 0.65 - 20 : width - 40,
-          height: itemHeight - 110,
-          child: Text(
-            firstText.messages.text,
-            style: Theme.of(context).textTheme.bodySmall,
-            overflow: TextOverflow.ellipsis,
+        if (firstText != null)
+          SizedBox(
+            width: firstImage != null ? width * 0.65 - 20 : width - 40,
+            height: itemHeight - 60,
+            child: Text(
+              firstText.messages.text,
+              style: Theme.of(context).textTheme.bodySmall,
+              // overflow: TextOverflow.ellipsis,
+            ),
           ),
-        ),
         if (firstImage != null)
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -157,7 +158,7 @@ class _MyStoriesState extends State<ListMyStories> {
                     borderRadius: BorderRadius.circular(10.0),
                     child: Image.network(
                       firstImage.messages.uri,
-                      width: width * 0.3,
+                      width: firstText != null ? width * 0.3 : width - 40,
                       fit: BoxFit.cover,
                     ),
                   ))

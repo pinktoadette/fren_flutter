@@ -398,6 +398,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       lastMessageId = await _messagesApi.saveUserResponse(formatImgMessage);
     }
+    setState(() {
+      attachmentPreview = null;
+    });
 
     // saves the text after the image, the text is linked to the image with lastMessageId
     await _saveResponseAndGetBot(
@@ -405,7 +408,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     setState(() {
       _isAttachmentUploading = false;
-      attachmentPreview = null;
     });
   }
 
@@ -451,7 +453,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         }
       }
     } catch (err) {
-      var response = {
+      dynamic response = {
         CHAT_AUTHOR_ID: _room.bot.botId,
         CHAT_AUTHOR: _room.bot.name,
         CHAT_TEXT: "Sorry, I encountered an error 😕",
