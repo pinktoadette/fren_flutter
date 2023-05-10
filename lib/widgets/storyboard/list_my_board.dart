@@ -5,6 +5,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 
@@ -73,11 +74,15 @@ class _MyStoriesState extends State<ListMyStories> {
                                               .textTheme
                                               .headlineSmall),
                                       const Spacer(),
-                                      if (story.status == StoryStatus.PUBLISHED)
-                                        Text(story.status.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall)
+                                      Text(_i18n.translate("story_created_at"),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall),
+                                      const Text(" ∙ "),
+                                      Text(formatDate(story.createdAt),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall)
                                     ],
                                   ),
                                   if (story.scene != null)
@@ -129,16 +134,17 @@ class _MyStoriesState extends State<ListMyStories> {
     final firstImage = message.firstWhereOrNull(
         (ele) => ele.messages.type == types.MessageType.image) as dynamic;
     double width = MediaQuery.of(context).size.width;
-    double imageHeight = width * 0.3 - 20;
+    double imageHeight = width * 0.2;
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
           width: firstImage != null ? width * 0.65 - 20 : width - 40,
-          height: itemHeight - 50,
+          height: itemHeight - 110,
           child: Text(
             firstText.messages.text,
             style: Theme.of(context).textTheme.bodySmall,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         if (firstImage != null)

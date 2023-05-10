@@ -4,6 +4,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 
@@ -80,11 +81,15 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
                                               .textTheme
                                               .headlineSmall),
                                       const Spacer(),
-                                      if (story.status == StoryStatus.PUBLISHED)
-                                        Text(story.status.name,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall)
+                                      Text(story.status.name,
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall),
+                                      const Text(" ∙ "),
+                                      Text(formatDate(story.createdAt),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall)
                                     ],
                                   ),
                                   if (story.scene != null)

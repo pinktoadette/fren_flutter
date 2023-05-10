@@ -43,9 +43,9 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
             color: Theme.of(context).colorScheme.background,
             boxShadow: [
               BoxShadow(
-                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.5),
-                spreadRadius: 2,
-                blurRadius: 3,
+                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
+                spreadRadius: 1,
+                blurRadius: 2,
                 offset: const Offset(0, 3), // changes position of shadow
               ),
             ],
@@ -56,11 +56,9 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Iconsax.note_add),
-                  const SizedBox(width: 10),
                   Text(
                     _i18n.translate("storyboard"),
-                    style: Theme.of(context).textTheme.displaySmall,
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ],
               ),
@@ -69,11 +67,9 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Iconsax.note_favorite),
-                  const SizedBox(width: 10),
                   Text(
                     _i18n.translate("story_published"),
-                    style: Theme.of(context).textTheme.displaySmall,
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                 ],
               ),
