@@ -1,3 +1,4 @@
+import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
@@ -15,4 +16,5 @@ void initializeAllControllers() {
   Get.lazyPut<TimelineController>(() => TimelineController(), tag: "timeline");
   Get.lazyPut<StoryboardController>(() => StoryboardController(),
       tag: "storyboard");
+  Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
 }

@@ -112,6 +112,42 @@ class StreamApi {
     var streamedResponse = await http.Client().send(request);
     return streamedResponse;
   }
+
+  Future<BytesSource> setPlayer(Map person, String text) async {
+    String token = await getAuthToken();
+    http.StreamedResponse streamedResponse = await streamPlayer(
+        key: token, text: text, region: 'eastus', lang: person);
+    Uint8List data = await streamedResponse.stream.toBytes();
+    return BytesSource(data);
+  }
+
+  Future<http.StreamedResponse> streamPlayer(
+      {required String key,
+      required String text,
+      required String region,
+      Map? lang}) async {
+    lang ??= detectLanguage(string: text);
+    String url =
+        'https://$region.tts.speech.microsoft.com/cognitiveservices/v1';
+    debugPrint("Requesting URL $url");
+    final request = http.Request(
+      'POST',
+      Uri.parse(url),
+    );
+    request.headers.addAll({
+      HttpHeaders.authorizationHeader: 'Bearer $key',
+      'content-type': 'application/ssml+xml',
+      'X-Microsoft-OutputFormat': 'audio-16khz-128kbitrate-mono-mp3',
+      'user-agent': 'machitts'
+    });
+
+    var xml =
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'>$text</voice></speak>";
+
+    request.body = xml;
+    var streamedResponse = await http.Client().send(request);
+    return streamedResponse;
+  }
 }
 
 class BytesSource extends StreamAudioSource {

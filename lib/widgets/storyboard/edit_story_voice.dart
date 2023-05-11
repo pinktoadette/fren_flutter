@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/api/machi/voice/voice_lookup.dart';
+import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/helpers/truncate_text.dart';
+import 'package:machi_app/widgets/audio/just_play.dart';
 
 /// allows user to change the gender of the voice
 /// Note: style doesn't work in just_audio
@@ -18,14 +23,23 @@ class StorycastVoice extends StatefulWidget {
 }
 
 class _StorycastVoiceState extends State<StorycastVoice> {
+  AudioController audioController = Get.find(tag: 'audio');
   late AppLocalizations _i18n;
   final _streamApi = StreamApi();
   List<Map<String, dynamic>> _script = [];
+  bool _isPlaying = false;
+  final _player = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
     _formatData();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _player.dispose();
   }
 
   void _formatData() async {
@@ -41,14 +55,16 @@ class _StorycastVoiceState extends State<StorycastVoice> {
         dynamic detect = _streamApi.detectLanguage(string: text);
         List<String> lang = detect["lang"].split("-");
         List<String> voices = regionLang(lang: lang[0])
-            .map((e) => "${e['region']} - ${e['person']} - ${e['age']}")
+            .map((e) =>
+                "${e['lang']} - ${e['region']} - ${e['age']} - ${e['person']}")
             .toList();
         _scriptList.add({
           "text": text,
           "person": message.author.firstName,
           "language": detect,
           "voices": voices,
-          "selected": voices[0]
+          "selected": voices[0],
+          "isPlaying": false
         });
       }
     }
@@ -94,6 +110,7 @@ class _StorycastVoiceState extends State<StorycastVoice> {
                       style: Theme.of(context).textTheme.labelSmall,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         DropdownButton<String>(
                             iconSize: 0.0,
@@ -114,7 +131,8 @@ class _StorycastVoiceState extends State<StorycastVoice> {
                                 value: value,
                                 child: Text(value),
                               );
-                            }).toList())
+                            }).toList()),
+                        _showPlay(index: index)
                       ],
                     ),
                     const Divider(
@@ -126,5 +144,14 @@ class _StorycastVoiceState extends State<StorycastVoice> {
             ))
       ],
     );
+  }
+
+  Widget _showPlay({required int index}) {
+    var selection = _script[index]["selected"].split(" - ");
+
+    String lang = "${selection[0]}-${selection[1]}";
+    Map person = {"lang": lang, "person": "$lang-${selection[3]}Neural"};
+
+    return JustPlayWidget(text: _script[index]["text"], person: person);
   }
 }

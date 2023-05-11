@@ -120,20 +120,6 @@ List<Map<String, String>> regionLang({required String lang}) {
         {
           ...base,
           'region': 'US',
-          'person': 'Jenny',
-          'age': 'Adult',
-          'tone': 'MultilingualNeural'
-        },
-        {
-          ...base,
-          'region': 'US',
-          'person': 'Jenny',
-          'age': 'Adult',
-          'tone': 'Neural'
-        },
-        {
-          ...base,
-          'region': 'US',
           'person': 'Michelle',
           'age': 'Adult',
           'tone': 'Neural'
