@@ -11,10 +11,11 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/decoration/fade_effect.dart';
+import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
 import 'package:machi_app/widgets/forms/category_dropdown.dart';
 import 'package:machi_app/widgets/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_scene.dart';
+import 'package:machi_app/widgets/storyboard/edit_story_voice.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -91,33 +92,35 @@ class _EditStoryState extends State<EditStory> {
           ],
         ),
         body: Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.only(left: 8.0, right: 8.0),
             child: _copyStory.scene == null
                 ? const Text("No stories")
                 : Stack(
                     children: [
+                      Positioned(
+                        width: width - 20,
+                        top: 0,
+                        child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              StoryboardTitleCategory(
+                                title: _copyStory.title,
+                                category: _copyStory.category,
+                                onUpdate: (e) {
+                                  print(e);
+                                },
+                              ),
+                            ]),
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(_copyStory.title,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .headlineMedium),
-                                if (_selectedCategory != null)
-                                  CategoryDropdownWidget(
-                                      selectedCategory: _selectedCategory,
-                                      notifyParent: (value) {
-                                        setState(() {
-                                          _selectedCategory = value;
-                                        });
-                                      }),
-                              ]),
+                          const SizedBox(
+                            height: 200,
+                          ),
                           Container(
-                            height: height - 220,
+                            height: height - 290,
                             padding: const EdgeInsets.only(bottom: 50),
                             child: ReorderableListView(
                               children: <Widget>[
@@ -184,6 +187,12 @@ class _EditStoryState extends State<EditStory> {
                                     _addText();
                                   },
                                 ),
+                                IconButton(
+                                  icon: const Icon(Iconsax.voice_square),
+                                  onPressed: () {
+                                    _changeVoice();
+                                  },
+                                ),
                                 const Spacer(),
                                 OutlinedButton(
                                   onPressed: () {
@@ -247,6 +256,22 @@ class _EditStoryState extends State<EditStory> {
       default:
         return const Icon(Iconsax.activity);
     }
+  }
+
+  void _changeVoice() {
+    double height = MediaQuery.of(context).size.height;
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => Padding(
+              padding: MediaQuery.of(context).viewInsets,
+              child: Container(
+                  padding: const EdgeInsets.all(20),
+                  height: height * 0.9,
+                  child: StorycastVoice(
+                    story: _copyStory,
+                  )),
+            ));
   }
 
   void _deleteMessage(dynamic scene) async {

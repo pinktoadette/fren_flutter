@@ -40,7 +40,7 @@ class StreamApi {
       languageCodes = {'lang': 'fa', 'person': 'fa-IR-FaridNeural'};
     }
     if (english.hasMatch(string)) {
-      languageCodes = {'lang': 'en-US', 'person': 'en-US-SaraNeural'};
+      languageCodes = {'lang': 'en-US', 'person': 'en-US-JasonNeural'};
     }
     if (arabic.hasMatch(string)) {
       languageCodes = {'lang': 'ar', 'person': 'ar-AE-HamdanNeural'};
@@ -106,7 +106,7 @@ class StreamApi {
     Map<String, String> lang = detectLanguage(string: text);
 
     var xml =
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'> $text </voice></speak>";
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'>$text</voice></speak>";
 
     request.body = xml;
     var streamedResponse = await http.Client().send(request);

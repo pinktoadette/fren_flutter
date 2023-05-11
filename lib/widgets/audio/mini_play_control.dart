@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:machi_app/api/machi/stream.dart';
+import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';

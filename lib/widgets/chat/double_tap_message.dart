@@ -1,8 +1,11 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/widgets/chat/add_new_storyboard.dart';
+import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
 import 'package:machi_app/widgets/storyboard/list_my_board.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -18,6 +21,7 @@ class DoubleTapChatMessage extends StatefulWidget {
 class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
   late AppLocalizations _i18n;
   String errorMessage = '';
+  final _storyApi = StoryApi();
 
   @override
   void initState() {
@@ -97,10 +101,42 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
               padding: MediaQuery.of(context).viewInsets,
               child: Container(
                   padding: const EdgeInsets.all(20),
-                  height: 250,
-                  child: AddNewStoryboard(
-                    message: message,
+                  height: 280,
+                  child: Column(
+                    children: [
+                      Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Text(
+                            _i18n.translate("add_to_new_storyboard"),
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          )),
+                      StoryboardTitleCategory(
+                        onUpdate: (e) {
+                          _updateTitleCategory(e);
+                        },
+                      )
+                    ],
                   )),
             ));
+  }
+
+  void _updateTitleCategory(Map<String, String> values) async {
+    try {
+      await _storyApi.createStory(
+          values['title']!, values['category']!, widget.message.id);
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("story_added"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (error) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("error_launch_url"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 }
