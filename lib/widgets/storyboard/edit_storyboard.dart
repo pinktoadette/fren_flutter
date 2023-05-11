@@ -107,7 +107,7 @@ class _EditStoryState extends State<EditStory> {
                                 title: _copyStory.title,
                                 category: _copyStory.category,
                                 onUpdate: (e) {
-                                  print(e);
+                                  _updateTitle(e);
                                 },
                               ),
                             ]),
@@ -255,6 +255,25 @@ class _EditStoryState extends State<EditStory> {
         );
       default:
         return const Icon(Iconsax.activity);
+    }
+  }
+
+  void _updateTitle(Map<String, String> data) async {
+    try {
+      await _storyApi.updateStoryTitle(_copyStory.storyboardId, data);
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("update_successful"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (_) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("error_launch_url"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     }
   }
 

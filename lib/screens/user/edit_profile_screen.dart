@@ -202,8 +202,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         onSuccess: () async {
           /// Show success message
           Get.snackbar(
-            'Success',
-            _i18n.translate("profile_updated_successfully"),
+            _i18n.translate("success"),
+            _i18n.translate("update_successful"),
             snackPosition: SnackPosition.BOTTOM,
             backgroundColor: APP_SUCCESS,
           );

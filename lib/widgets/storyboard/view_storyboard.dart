@@ -6,6 +6,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/audio/play_control.dart';
+import 'package:machi_app/widgets/decoration/fade_effect.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:machi_app/widgets/storyboard/story_view.dart';
 import 'package:get/get.dart';
@@ -80,15 +81,22 @@ class _PreviewStoryState extends State<ViewStory> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            StoryViewDetails(
-                              story: storyboardController.currentStory,
-                            ),
+                            Obx(() => StoryViewDetails(
+                                  story: storyboardController.currentStory,
+                                )),
                             const SizedBox(
                               height: 250,
                             )
                           ])
                     ])),
-                const Positioned(bottom: 0, child: AudioWidget())
+                Positioned(
+                    bottom: 0,
+                    child: CustomPaint(
+                      painter: FadingEffect(),
+                      child: const Padding(
+                          padding: EdgeInsets.only(top: 50),
+                          child: AudioWidget()),
+                    ))
               ],
             )));
   }
