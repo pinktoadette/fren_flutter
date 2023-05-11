@@ -37,13 +37,13 @@ class StreamApi {
         r'[\u00C0-\u024F\u1E00-\u1EFF\u2C60-\u2C7F\uA720-\uA7FF\u1D00-\u1D7F]+');
 
     if (persian.hasMatch(string)) {
-      languageCodes = {'lang': 'fa', 'person': 'fa-IR-FaridNeural'};
+      languageCodes = {'lang': 'fa-IR', 'person': 'fa-IR-FaridNeural'};
     }
     if (english.hasMatch(string)) {
       languageCodes = {'lang': 'en-US', 'person': 'en-US-JasonNeural'};
     }
     if (arabic.hasMatch(string)) {
-      languageCodes = {'lang': 'ar', 'person': 'ar-AE-HamdanNeural'};
+      languageCodes = {'lang': 'ar-AE', 'person': 'ar-AE-HamdanNeural'};
     }
     if (chinese.hasMatch(string)) {
       languageCodes = {'lang': 'zh-TW', 'person': 'zh-TW-HsiaoChenNeural'};
@@ -55,19 +55,19 @@ class StreamApi {
       languageCodes = {'lang': 'ko-KR', 'person': 'ko-KR-SeoHyeonNeural'};
     }
     if (russian.hasMatch(string)) {
-      languageCodes = {'lang': 'ru', 'person': 'ru-RU-DmitryNeural'};
+      languageCodes = {'lang': 'ru-RU', 'person': 'ru-RU-DmitryNeural'};
     }
     if (ukrainian.hasMatch(string)) {
-      languageCodes = {'lang': 'uk', 'person': 'uk-UA-PolinaNeural'};
+      languageCodes = {'lang': 'uk-UA', 'person': 'uk-UA-PolinaNeural'};
     }
     if (italian.hasMatch(string)) {
-      languageCodes = {'lang': 'it', 'person': 'it-IT-FabiolaNeural'};
+      languageCodes = {'lang': 'it-IT', 'person': 'it-IT-FabiolaNeural'};
     }
     if (french.hasMatch(string)) {
-      languageCodes = {'lang': 'fr', 'person': 'fr-FR-JacquelineNeural'};
+      languageCodes = {'lang': 'fr-FR', 'person': 'fr-FR-JacquelineNeural'};
     }
     if (spanish.hasMatch(string)) {
-      languageCodes = {'lang': 'es', 'person': 'es-ES-EstrellaNeural'};
+      languageCodes = {'lang': 'es-ES', 'person': 'es-ES-EstrellaNeural'};
     }
 
     return languageCodes;

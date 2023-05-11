@@ -103,12 +103,13 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
                   padding: const EdgeInsets.all(20),
                   height: 280,
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
                           padding: const EdgeInsets.all(10),
                           child: Text(
                             _i18n.translate("add_to_new_storyboard"),
-                            style: Theme.of(context).textTheme.headlineSmall,
+                            style: Theme.of(context).textTheme.displayMedium,
                           )),
                       StoryboardTitleCategory(
                         onUpdate: (e) {

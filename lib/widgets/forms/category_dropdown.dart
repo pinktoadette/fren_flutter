@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 class CategoryDropdownWidget extends StatefulWidget {
@@ -15,7 +14,6 @@ class CategoryDropdownWidget extends StatefulWidget {
 }
 
 class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
-  late AppLocalizations _i18n;
   List<String> _category = [];
   late String _selectedCategory;
 

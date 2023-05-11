@@ -213,6 +213,12 @@ class _EditStoryState extends State<EditStory> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         IconButton(
+            onPressed: () {},
+            icon: const Icon(
+              Iconsax.edit,
+              size: 20,
+            )),
+        IconButton(
             onPressed: () {
               _deleteMessage(message);
             },
