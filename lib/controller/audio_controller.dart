@@ -6,4 +6,5 @@ class AudioController extends GetxController {
   RxBool hasActive = false.obs;
   RxString text = ''.obs;
   RxMap person = {}.obs;
+  RxInt audioId = 0.obs; // just_audio id 1004128165
 }

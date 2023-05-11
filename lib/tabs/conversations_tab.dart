@@ -110,7 +110,7 @@ class ConversationsTab extends StatelessWidget {
 
                     return InkWell(
                       onTap: () async {
-                        SetCurrentRoom().updateRoomReadBot(room, index);
+                        SetCurrentRoom().updateRoomAsCurrentRoom(room, index);
                       },
                       child: Container(
                         width: width,

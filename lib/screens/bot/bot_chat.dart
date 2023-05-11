@@ -588,13 +588,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-  void _leaveChatroom() {
+  void _leaveChatroom() async {
     // if there are no messages, remove from roomList
     if ((_messages.isEmpty) & (chatController.currentRoom.users.length == 1)) {
       chatController.removeEmptyRoomfromList();
     }
     if (_hasNewMessages == true) {
       chatController.sortRoomExit(_roomIdx);
+
+      /// mark as read when clicked when exit
+      chatController.updateRoom(_roomIdx, chatController.currentRoom);
+      await _chatroomApi.markAsRead(chatController.currentRoom.chatroomId);
     }
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);

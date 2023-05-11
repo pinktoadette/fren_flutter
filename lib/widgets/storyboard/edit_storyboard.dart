@@ -187,6 +187,10 @@ class _EditStoryState extends State<EditStory> {
                                   },
                                 ),
                                 IconButton(
+                                  icon: const Icon(Iconsax.music),
+                                  onPressed: () {},
+                                ),
+                                IconButton(
                                   icon: const Icon(Iconsax.voice_square),
                                   onPressed: () {
                                     _changeVoice();

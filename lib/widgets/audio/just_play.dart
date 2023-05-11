@@ -31,8 +31,6 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
 
   @override
   void initState() {
-    ever(audioController.text, (value) => print("$value has been changed"));
-
     super.initState();
   }
 
@@ -62,12 +60,17 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
           });
           break;
         case ProcessingState.ready:
+          setState(() {
+            _isBuffering = false;
+          });
           break;
         case ProcessingState.completed:
           setState(() {
             _isPlaying = false;
             _isBuffering = false;
           });
+          _player.seek(Duration.zero);
+          _player.pause();
           break;
       }
     });
@@ -103,13 +106,15 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
   }
 
   void _listen() async {
+    audioController.audioId = _player.hashCode.obs;
+    audioController.update();
     if (_player.playing == true) {
       _player.pause();
     } else {
       if (_player.audioSource == null) {
         _getPlayer();
       }
-      _player.play();
+      await _player.play();
     }
 
     setState(() {
