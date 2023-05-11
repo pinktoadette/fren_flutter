@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/api/machi/voice/voice_lookup.dart';
@@ -27,7 +26,7 @@ class _StorycastVoiceState extends State<StorycastVoice> {
   late AppLocalizations _i18n;
   final _streamApi = StreamApi();
   List<Map<String, dynamic>> _script = [];
-  bool _isPlaying = false;
+  final bool _isPlaying = false;
   final _player = AudioPlayer();
 
   @override

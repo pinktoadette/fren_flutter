@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -8,7 +7,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/datas/bot.dart';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/uploader.dart';

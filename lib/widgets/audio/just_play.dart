@@ -64,7 +64,6 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
         case ProcessingState.ready:
           break;
         case ProcessingState.completed:
-          _player.dispose();
           setState(() {
             _isPlaying = false;
             _isBuffering = false;
@@ -104,7 +103,7 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
   }
 
   void _listen() async {
-    if (_isPlaying) {
+    if (_player.playing == true) {
       _player.pause();
     } else {
       if (_player.audioSource == null) {

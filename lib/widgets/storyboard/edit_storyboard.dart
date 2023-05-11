@@ -12,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
-import 'package:machi_app/widgets/forms/category_dropdown.dart';
 import 'package:machi_app/widgets/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_scene.dart';
 import 'package:machi_app/widgets/storyboard/edit_story_voice.dart';

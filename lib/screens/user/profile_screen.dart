@@ -1,6 +1,5 @@
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/timeline.dart';
@@ -8,14 +7,12 @@ import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/dialogs/report_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/avatar_initials.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/no_data.dart';
 import 'package:machi_app/widgets/timeline/timeline_row.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -138,10 +135,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               style: Theme.of(context).textTheme.headlineSmall,
                             ),
                             const SizedBox(height: 10),
-                            Row(
+                            const Row(
                               children: [
                                 Text("123 \nFollowes"),
-                                const SizedBox(width: 10),
+                                SizedBox(width: 10),
                                 Text("431 \nFollowing"),
                               ],
                             )

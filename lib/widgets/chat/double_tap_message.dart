@@ -52,7 +52,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
         Padding(
             padding: const EdgeInsets.only(left: 10, right: 10),
             child: DottedBorder(
-              dashPattern: [4],
+              dashPattern: const [4],
               strokeWidth: 2,
               borderType: BorderType.RRect,
               radius: const Radius.circular(10),
