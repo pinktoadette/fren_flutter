@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:machi_app/controller/initialize_all.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
 import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
@@ -34,16 +33,9 @@ class _SplashScreenState extends State<SplashScreen> {
     });
   }
 
-  Future<void> _initialAllStateAndRooms() async {
-    /// initialize all controllers at one spot
-    // Get.lazyPut(() => BotController());
-    initializeAllControllers();
-  }
-
   @override
   void initState() {
     super.initState();
-    _initialAllStateAndRooms();
     _appHelper.getAppStoreVersion().then((storeVersion) async {
       debugPrint('storeVersion: $storeVersion');
 

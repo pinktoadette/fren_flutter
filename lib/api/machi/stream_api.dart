@@ -2,9 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:machi_app/controller/audio_controller.dart';
+import 'package:machi_app/datas/media.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +17,7 @@ class StreamApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final auth = AuthApi();
+  AudioController audioController = Get.find(tag: 'audio');
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
@@ -113,20 +117,18 @@ class StreamApi {
     return streamedResponse;
   }
 
-  Future<BytesSource> setPlayer(Map person, String text) async {
+  Future<BytesSource> getCurrentStreamBytes(MediaStreamItem media) async {
     String token = await getAuthToken();
-    http.StreamedResponse streamedResponse = await streamPlayer(
-        key: token, text: text, region: 'eastus', lang: person);
+    http.StreamedResponse streamedResponse =
+        await streamPlayer(key: token, region: 'eastus', media: media);
     Uint8List data = await streamedResponse.stream.toBytes();
     return BytesSource(data);
   }
 
   Future<http.StreamedResponse> streamPlayer(
       {required String key,
-      required String text,
       required String region,
-      Map? lang}) async {
-    lang ??= detectLanguage(string: text);
+      required MediaStreamItem media}) async {
     String url =
         'https://$region.tts.speech.microsoft.com/cognitiveservices/v1';
     debugPrint("Requesting URL $url");
@@ -142,7 +144,8 @@ class StreamApi {
     });
 
     var xml =
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'>$text</voice></speak>";
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${media.language}'>"
+        "<voice name='${media.voiceName}'>${media.text}</voice></speak>";
 
     request.body = xml;
     var streamedResponse = await http.Client().send(request);

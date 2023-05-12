@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/secrets.dart';
-import 'package:machi_app/controller/initialize_all.dart';
+import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
@@ -700,7 +700,9 @@ class UserModel extends Model {
       ThemeHelper().delete();
 
       /// Need to reassign
-      initializeAllControllers();
+      // initializeAllControllers();
+      MainBinding mainBinding = MainBinding();
+      await mainBinding.dependencies();
     } catch (e) {
       debugPrint(e.toString());
     }

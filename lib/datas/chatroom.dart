@@ -1,4 +1,5 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/bot.dart';
 
@@ -79,10 +80,12 @@ class Chatroom {
     if (doc.containsKey('messages')) {
       doc['messages'].forEach((message) {
         types.Message finalMessage;
+        types.User? photo = users
+            .firstWhereOrNull((user) => user.id == message[CHAT_AUTHOR_ID]);
         final author = types.User(
             id: message[CHAT_AUTHOR_ID] as String,
             firstName: message[CHAT_USER_NAME] ?? "Frankie",
-            imageUrl: message[USER_PROFILE_PHOTO],
+            imageUrl: photo?.imageUrl,
             metadata: message[CHAT_AUTHOR_ID].contains("Machi_")
                 ? {"showMeta": true}
                 : null);

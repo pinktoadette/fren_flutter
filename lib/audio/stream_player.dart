@@ -1,30 +1,30 @@
+import 'package:audio_service/audio_service.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
-// view story board as the creator
 // ignore: must_be_immutable
-class JustPlayWidget extends StatefulWidget {
-  String text;
-  Map person;
+class StreamPlayWidget extends StatefulWidget {
   double? size;
-  JustPlayWidget({Key? key, required this.text, required this.person})
+  String id;
+  final Function(dynamic data) onPress;
+
+  StreamPlayWidget(
+      {Key? key, required this.onPress, required this.size, required this.id})
       : super(key: key);
 
   @override
   _JustPlayWidgetState createState() => _JustPlayWidgetState();
 }
 
-class _JustPlayWidgetState extends State<JustPlayWidget> {
+class _JustPlayWidgetState extends State<StreamPlayWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   AudioController audioController = Get.find(tag: 'audio');
-
-  final _streamApi = StreamApi();
   final _player = AudioPlayer();
   bool _isPlaying = false;
   bool _isBuffering = false;
@@ -34,15 +34,66 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
     super.initState();
   }
 
-  @override
-  void dispose() {
-    _player.dispose();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   audioController.onDispose();
+  //   super.dispose();
+  // }
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   return StreamBuilder(
+  //     stream: audioController.player.playerStateStream,
+  //     builder: (context, snapshot) {
+  //       final playbackState = snapshot.data;
+  //       final processingState = playbackState?.processingState;
+  //       final playing = playbackState?.playing;
+  //       if (processingState == AudioProcessingState.loading ||
+  //           processingState == AudioProcessingState.buffering) {
+  //         return loadingButton(size: 24);
+  //       } else if (playing != true ||
+  //           processingState == AudioProcessingState.idle) {
+  //         return _playButton();
+  //       } else {
+  //         return ElevatedButton(
+  //             child: Icon(
+  //               Iconsax.pause,
+  //               size: widget.size ?? 64.0,
+  //               color: Theme.of(context).colorScheme.background,
+  //             ),
+  //             onPressed: () {
+  //               widget.onPress({"play": false});
+  //             },
+  //             style: ElevatedButton.styleFrom(
+  //               shape: const CircleBorder(),
+  //               padding: const EdgeInsets.all(10),
+  //               foregroundColor: Theme.of(context).colorScheme.tertiary,
+  //             ));
+  //       }
+  //     },
+  //   );
+  // }
+
+  // Widget _playButton() {
+  //   return ElevatedButton(
+  //       child: Icon(
+  //         Iconsax.play,
+  //         size: widget.size ?? 64.0,
+  //         color: Theme.of(context).colorScheme.background,
+  //       ),
+  //       onPressed: () {
+  //         widget.onPress({"play": true});
+  //       }, //audioController.audioHandler.play,
+  //       style: ElevatedButton.styleFrom(
+  //         shape: const CircleBorder(),
+  //         padding: const EdgeInsets.all(10),
+  //         foregroundColor: Theme.of(context).colorScheme.tertiary,
+  //       ));
+  // }
 
   void _getPlayer() async {
     /// person = lang-region {'lang': 'uk-UA', 'person': 'uk-UA-PolinaNeural'}
-    BytesSource stream = await _streamApi.setPlayer(widget.person, widget.text);
+    BytesSource stream = audioController.currentBytes!.value;
     await _player.setAudioSource(stream);
 
     _player.playerStateStream.listen((state) {
@@ -88,6 +139,7 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
   Widget _playButton() {
     return ElevatedButton(
       onPressed: () {
+        widget.onPress({"play": true});
         _listen();
       },
       child: _isBuffering
@@ -106,14 +158,10 @@ class _JustPlayWidgetState extends State<JustPlayWidget> {
   }
 
   void _listen() async {
-    audioController.audioId = _player.hashCode.obs;
-    audioController.update();
     if (_player.playing == true) {
       _player.pause();
     } else {
-      if (_player.audioSource == null) {
-        _getPlayer();
-      }
+      _getPlayer();
       await _player.play();
     }
 

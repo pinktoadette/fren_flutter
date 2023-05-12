@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/controller/storytab_controller%20copy.dart';
+import 'package:machi_app/controller/storytab_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/storyboard/list_my_board.dart';
 import 'package:machi_app/widgets/storyboard/list_published_board.dart';
