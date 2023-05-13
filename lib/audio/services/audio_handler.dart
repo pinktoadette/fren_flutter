@@ -2,9 +2,8 @@ import 'dart:async';
 
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/audio/old/media_library.dart';
-import 'package:machi_app/audio/queue_state.dart';
+import 'package:machi_app/audio/services/queue_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 /// Before an item gets publish it streams
@@ -15,7 +14,6 @@ class MyAudioHandler extends BaseAudioHandler {
 
   final BehaviorSubject<List<MediaItem>> _recentSubject =
       BehaviorSubject.seeded(<MediaItem>[]);
-  final _mediaLibrary = MediaLibrary();
 
   @override
   final BehaviorSubject<double> volume = BehaviorSubject.seeded(1.0);
@@ -216,7 +214,6 @@ class MyAudioHandler extends BaseAudioHandler {
     }
     if (name == "source") {
       await _player.setAudioSource(extras?["byteSource"]);
-      await _player.play();
     }
   }
 

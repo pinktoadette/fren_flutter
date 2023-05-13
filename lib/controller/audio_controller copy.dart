@@ -4,7 +4,6 @@ import 'package:audio_service/audio_service.dart';
 import 'package:get/get.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
-import 'package:machi_app/audio/services/audio_handler.dart';
 import 'package:machi_app/datas/media.dart';
 
 /// Tracks current audio that is playing
@@ -18,10 +17,6 @@ class AudioController extends GetxController {
   List<BytesSource> listStream = [];
   Rx<BytesSource>? currentBytes;
 
-  @override
-  void onInit() async {
-    super.onInit();
-  }
 
   void playStreamList(int index) async {
     await _player.setAudioSource(listStream[index]);

@@ -23,7 +23,9 @@ class MainBinding implements Bindings {
         tag: "timeline");
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
+
     // Get.put<AudioGetService>(AudioGetService(), tag: "audio");
+
     await Get.putAsync<MyAudioHandler>(
         () => AudioService.init(
               builder: () => MyAudioHandler(),
@@ -31,13 +33,12 @@ class MainBinding implements Bindings {
                 androidNotificationChannelId: 'com.machi.app.audio',
                 androidNotificationChannelName: 'Machi',
                 androidNotificationOngoing: true,
-                androidStopForegroundOnPause: true,
               ),
             ),
         permanent: true,
         tag: 'audioHandler');
 
-    Get.put<PlaylistRepository>(DemoPlaylist(), tag: 'playlist');
+    // Get.put<PlaylistRepository>(DemoPlaylist(), tag: 'playlist');
     Get.put<PageManager>(PageManager(), tag: 'pageManager');
   }
 }

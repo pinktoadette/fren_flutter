@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
+import 'package:machi_app/audio/services/audio_handler.dart';
 import 'package:machi_app/datas/media.dart';
 import 'notifiers/play_button_notifier.dart';
 import 'notifiers/progress_notifier.dart';
@@ -18,7 +19,7 @@ class PageManager {
   final playButtonNotifier = PlayButtonNotifier();
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  late AudioHandler audioHandler;
+  late MyAudioHandler audioHandler;
 
   // Events: Calls coming from the UI
 
@@ -49,7 +50,7 @@ class PageManager {
   // }
 
   void addStream(MediaStreamItem media) async {
-    AudioHandler audioHandler = Get.find<AudioHandler>(tag: 'audioHandler');
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
 
     final streamApi = StreamApi();
     String token = await streamApi.getAuthToken();
@@ -176,17 +177,17 @@ class PageManager {
     }
   }
 
-  Future<void> add() async {
-    final songRepository = Get.find(tag: 'playlist');
-    final song = await songRepository.fetchAnotherSong();
-    final mediaItem = MediaItem(
-      id: song['id'] ?? '',
-      album: song['album'] ?? '',
-      title: song['title'] ?? '',
-      extras: {'url': song['url']},
-    );
-    audioHandler.addQueueItem(mediaItem);
-  }
+  // Future<void> add() async {
+  //   final songRepository = Get.find(tag: 'playlist');
+  //   final song = await songRepository.fetchAnotherSong();
+  //   final mediaItem = MediaItem(
+  //     id: song['id'] ?? '',
+  //     album: song['album'] ?? '',
+  //     title: song['title'] ?? '',
+  //     extras: {'url': song['url']},
+  //   );
+  //   audioHandler.addQueueItem(mediaItem);
+  // }
 
   void remove() {
     final lastIndex = audioHandler.queue.value.length - 1;
