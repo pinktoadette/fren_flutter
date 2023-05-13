@@ -1,52 +1,10 @@
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:machi_app/audio/notifiers/play_button_notifier.dart';
-import 'package:machi_app/audio/page_manager.dart';
-
-class PlayButton extends StatelessWidget {
-  double? size;
-  final Function(dynamic data)? onPress;
-  PlayButton({Key? key, this.size, this.onPress}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    final pageManager = Get.find<PageManager>(tag: 'pageManager');
-
-    return ValueListenableBuilder<ButtonState>(
-      valueListenable: pageManager.playButtonNotifier,
-      builder: (_, value, __) {
-        switch (value) {
-          case ButtonState.loading:
-            return Container(
-              margin: const EdgeInsets.all(8.0),
-              width: size ?? 32.0,
-              height: size ?? 32.0,
-              child: const CircularProgressIndicator(),
-            );
-          case ButtonState.paused:
-            return IconButton(
-              icon: const Icon(Icons.play_arrow),
-              iconSize: size ?? 32.0,
-              onPressed: () {
-                onPress!({"play": true});
-                pageManager.play;
-              },
-            );
-          case ButtonState.playing:
-            return IconButton(
-              icon: const Icon(Icons.pause),
-              iconSize: size ?? 32.0,
-              onPressed: pageManager.pause,
-            );
-        }
-      },
-    );
-  }
-}
-
-
-
-
+// import 'package:audio_service/audio_service.dart';
+// import 'package:machi_app/controller/audio_controller.dart';
+// import 'package:machi_app/controller/storyboard_controller.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get.dart';
+// import 'package:iconsax/iconsax.dart';
+// import 'package:machi_app/widgets/button/loading_button.dart';
 
 // // ignore: must_be_immutable
 // class StreamPlayWidget extends StatefulWidget {
@@ -65,9 +23,6 @@ class PlayButton extends StatelessWidget {
 // class _JustPlayWidgetState extends State<StreamPlayWidget> {
 //   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 //   AudioController audioController = Get.find(tag: 'audio');
-//   final _player = AudioPlayer();
-//   bool _isPlaying = false;
-//   bool _isBuffering = false;
 
 //   @override
 //   void initState() {
@@ -82,36 +37,37 @@ class PlayButton extends StatelessWidget {
 
 //   @override
 //   Widget build(BuildContext context) {
-//     return StreamBuilder(
-//       stream: audioController.player.playerStateStream,
-//       builder: (context, snapshot) {
-//         final playbackState = snapshot.data;
-//         final processingState = playbackState?.processingState;
-//         final playing = playbackState?.playing;
-//         if (processingState == AudioProcessingState.loading ||
-//             processingState == AudioProcessingState.buffering) {
-//           return loadingButton(size: 24);
-//         } else if (playing != true ||
-//             processingState == AudioProcessingState.idle) {
-//           return _playButton();
-//         } else {
-//           return ElevatedButton(
-//               child: Icon(
-//                 Iconsax.pause,
-//                 size: widget.size ?? 64.0,
-//                 color: Theme.of(context).colorScheme.background,
-//               ),
-//               onPressed: () {
-//                 widget.onPress({"play": false});
-//               },
-//               style: ElevatedButton.styleFrom(
-//                 shape: const CircleBorder(),
-//                 padding: const EdgeInsets.all(10),
-//                 foregroundColor: Theme.of(context).colorScheme.tertiary,
-//               ));
-//         }
-//       },
-//     );
+//     return _playButton();
+//     //   return StreamBuilder(
+//     //     stream: audioController.player.playerStateStream,
+//     //     builder: (context, snapshot) {
+//     //       final playbackState = snapshot.data;
+//     //       final processingState = playbackState?.processingState;
+//     //       final playing = playbackState?.playing;
+//     //       if (processingState == AudioProcessingState.loading ||
+//     //           processingState == AudioProcessingState.buffering) {
+//     //         return loadingButton(size: 24);
+//     //       } else if (playing != true ||
+//     //           processingState == AudioProcessingState.idle) {
+//     //         return _playButton();
+//     //       } else {
+//     //         return ElevatedButton(
+//     //             child: Icon(
+//     //               Iconsax.pause,
+//     //               size: widget.size ?? 64.0,
+//     //               color: Theme.of(context).colorScheme.background,
+//     //             ),
+//     //             onPressed: () {
+//     //               widget.onPress({"play": false});
+//     //             },
+//     //             style: ElevatedButton.styleFrom(
+//     //               shape: const CircleBorder(),
+//     //               padding: const EdgeInsets.all(10),
+//     //               foregroundColor: Theme.of(context).colorScheme.tertiary,
+//     //             ));
+//     //       }
+//     //     },
+//     //   );
 //   }
 
 //   Widget _playButton() {
@@ -133,7 +89,7 @@ class PlayButton extends StatelessWidget {
 
 //   // void _getPlayer() async {
 //   //   /// person = lang-region {'lang': 'uk-UA', 'person': 'uk-UA-PolinaNeural'}
-//   //   BytesSource stream = audioController.currentBytes!.value;
+//   //   BytesSource stream = await _streamApi.getCurrentStreamBytes();
 //   //   await _player.setAudioSource(stream);
 
 //   //   _player.playerStateStream.listen((state) {
@@ -179,8 +135,7 @@ class PlayButton extends StatelessWidget {
 //   // Widget _playButton() {
 //   //   return ElevatedButton(
 //   //     onPressed: () {
-//   //       widget.onPress({"play": true});
-//   //       _listen();
+//   //       widget.onPress(true);
 //   //     },
 //   //     child: _isBuffering
 //   //         ? loadingButton(size: 24)
@@ -196,19 +151,4 @@ class PlayButton extends StatelessWidget {
 //   //     ),
 //   //   );
 //   // }
-
-//   // void _listen() async {
-//   //   if (_player.playing == true) {
-//   //     _player.pause();
-//   //   } else {
-//   //     _getPlayer();
-//   //     await _player.play();
-//   //   }
-
-//   //   setState(() {
-//   //     _isPlaying = !_isPlaying;
-//   //   });
-//   // }
-
-
 // }

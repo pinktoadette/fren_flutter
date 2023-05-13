@@ -2,11 +2,9 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/datas/media.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:get_storage/get_storage.dart';
@@ -17,7 +15,6 @@ class StreamApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final auth = AuthApi();
-  AudioController audioController = Get.find(tag: 'audio');
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 

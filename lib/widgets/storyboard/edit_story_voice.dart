@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/api/machi/voice/voice_lookup.dart';
+import 'package:machi_app/audio/page_manager.dart';
 import 'package:machi_app/audio/stream_player.dart';
-import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/datas/media.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -12,8 +11,6 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/helpers/truncate_text.dart';
 
 /// allows user to change the gender of the voice
-/// Note: style doesn't work in just_audio
-// ignore: must_be_immutable
 class StorycastVoice extends StatefulWidget {
   Storyboard story;
   StorycastVoice({Key? key, required this.story}) : super(key: key);
@@ -23,21 +20,14 @@ class StorycastVoice extends StatefulWidget {
 }
 
 class _StorycastVoiceState extends State<StorycastVoice> {
-  AudioController audioController = Get.find(tag: 'audio');
   late AppLocalizations _i18n;
   final _streamApi = StreamApi();
   List<Map<String, dynamic>> _script = [];
-  final bool _isPlaying = false;
 
   @override
   void initState() {
     super.initState();
     _formatData();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   void _formatData() async {
@@ -145,19 +135,27 @@ class _StorycastVoiceState extends State<StorycastVoice> {
   }
 
   Widget _showPlay({required int index}) {
-    return StreamPlayWidget(
-        id: index.toString(),
-        size: 14.0,
+    print("playyyyyyyyy");
+    return PlayButton(
+        size: 14,
         onPress: (val) async {
-          if (val["play"] == true) {
-            await _setupVoice(index: index);
-          } else {
-            audioController.currentStream = null;
-          }
+          await _setupVoice(index: index);
         });
+    // return StreamPlayWidget(
+    //     id: index.toString(),
+    //     size: 14.0,
+    //     onPress: (val) async {
+    //       if (val["play"] == true) {
+    //         await _setupVoice(index: index);
+    //       } else {
+    //         audioController.currentStream = null;
+    //       }
+    //     });
   }
 
   Future<void> _setupVoice({required int index}) async {
+    final pageManager = Get.find<PageManager>(tag: 'pageManager');
+
     var selection = _script[index]["selected"].split(" - ");
     String lang = "${selection[0]}-${selection[1]}";
 
@@ -166,6 +164,6 @@ class _StorycastVoiceState extends State<StorycastVoice> {
         text: _script[index]["text"],
         language: lang,
         voiceName: "$lang-${selection[3]}Neural");
-    await audioController.createCurrentStrem(item);
+    pageManager.addStream(item);
   }
 }

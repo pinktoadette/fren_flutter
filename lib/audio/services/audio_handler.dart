@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:audio_service/audio_service.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
-import 'package:machi_app/audio/media_library.dart';
+import 'package:machi_app/audio/old/media_library.dart';
 import 'package:machi_app/audio/queue_state.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -213,6 +213,10 @@ class MyAudioHandler extends BaseAudioHandler {
     if (name == 'dispose') {
       await _player.dispose();
       super.stop();
+    }
+    if (name == "source") {
+      await _player.setAudioSource(extras?["byteSource"]);
+      await _player.play();
     }
   }
 

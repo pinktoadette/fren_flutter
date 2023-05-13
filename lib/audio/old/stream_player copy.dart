@@ -1,5 +1,4 @@
 import 'package:audio_service/audio_service.dart';
-import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -22,7 +21,6 @@ class StreamPlayWidget extends StatefulWidget {
 
 class _JustPlayWidgetState extends State<StreamPlayWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  AudioController audioController = Get.find(tag: 'audio');
 
   @override
   void initState() {
@@ -31,7 +29,6 @@ class _JustPlayWidgetState extends State<StreamPlayWidget> {
 
   @override
   void dispose() {
-    audioController.onDispose();
     super.dispose();
   }
 

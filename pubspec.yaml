@@ -42,19 +42,19 @@ dependencies:
   cloud_firestore: ^4.4.5
   firebase_messaging: ^14.3.0
   firebase_storage: ^11.0.16  
-  google_mobile_ads: 2.3.0 
+  google_mobile_ads: 3.0.0 
   # END 
 
   in_app_purchase: 3.1.1
   flutter_native_splash: 2.2.16 # Used to generate the app splash screen for both platforms android and iOS 
   country_code_picker: 2.0.2 # Used to Select User Country Code
   scoped_model: 2.0.0 # Used to Manage Application State
-  image_picker: 0.8.6+1 # # Used to select images from the User's device image library or take a new photo using the camera
-  image_cropper: 3.0.1 # Used to Crop/Rotate Selected images from user's device
-  url_launcher: 6.1.9 # Used to open link schemes in application or browser
+  image_picker: 0.8.7+5 # # Used to select images from the User's device image library or take a new photo using the camera
+  image_cropper: 3.0.3 # Used to Crop/Rotate Selected images from user's device
+  url_launcher: 6.1.11 # Used to open link schemes in application or browser
   geolocator: 9.0.2 # Used to get User location by GPS 
   geocoding: 2.0.5 # Used to translate User latitude and longitude coordinates into a readable address
-  rxdart: 0.27.3 # required by geoflutterfire plugin that helps us to query users by geolocation center
+  rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
   place_picker: 0.10.0 # This plugin help us to create Passport feature
@@ -82,7 +82,6 @@ dependencies:
   purchases_flutter: ^4.12.0
   dotted_border: ^2.0.0+3
   audio_service: ^0.18.9
-
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre
