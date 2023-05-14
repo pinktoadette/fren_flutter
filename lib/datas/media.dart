@@ -26,6 +26,12 @@ class MediaStreamTracker {
   }
 }
 
+class TTSLanguage {
+  String language;
+  String region;
+  TTSLanguage({required this.region, required this.language});
+}
+
 class MediaStreamItem {
   final String id;
   final String? title;
@@ -34,7 +40,7 @@ class MediaStreamItem {
   final BytesSource? bytes;
   final String? url;
   final String text;
-  final String language;
+  final TTSLanguage language;
   final String voiceName;
   final String? genre;
   final Duration? duration;
@@ -66,7 +72,7 @@ class MediaStreamItem {
       BytesSource? bytes,
       String? url,
       String? text,
-      String? language,
+      TTSLanguage? language,
       String? voiceName,
       String? genre,
       Duration? duration,
@@ -100,6 +106,7 @@ class MediaStreamItem {
       'displaySubtitle': displaySubtitle,
       'text': text,
       'voiceName': voiceName,
+      'language': language,
       'genre': genre,
       'duration': duration?.inMicroseconds ?? 0,
       'rating': rating

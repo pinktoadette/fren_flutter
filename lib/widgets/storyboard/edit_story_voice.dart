@@ -58,7 +58,7 @@ class _StorycastVoiceState extends State<StorycastVoice> {
               item: MediaStreamItem(
                   id: const Uuid().v1(),
                   text: text,
-                  language: detect,
+                  language: TTSLanguage(language: lang[0], region: lang[1]),
                   voiceName: voices[0]),
               state: ButtonState.paused,
               voiceList: voices,
@@ -163,7 +163,7 @@ class _StorycastVoiceState extends State<StorycastVoice> {
     MediaStreamItem item = MediaStreamItem(
         id: const Uuid().v4(),
         text: audioController.playlistButtons[index].item.text,
-        language: lang,
+        language: TTSLanguage(language: selection[0], region: selection[1]),
         voiceName: "$lang-${selection[3]}Neural");
     pageManager.addStream(item);
   }
