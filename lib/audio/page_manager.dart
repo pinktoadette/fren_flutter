@@ -19,13 +19,10 @@ class PageManager {
   final playButtonNotifier = PlayButtonNotifier();
   final isLastSongNotifier = ValueNotifier<bool>(true);
   final isShuffleModeEnabledNotifier = ValueNotifier<bool>(false);
-  late MyAudioHandler audioHandler;
 
   // Events: Calls coming from the UI
 
   void init() async {
-    audioHandler = Get.find(tag: 'audioHandler');
-
     // await _loadPlaylist();
     _listenToChangesInPlaylist();
     _listenToPlaybackState();
@@ -57,10 +54,13 @@ class PageManager {
     http.StreamedResponse streamedResponse = await streamApi.streamPlayer(
         key: token, region: 'eastus', media: media);
     Uint8List data = await streamedResponse.stream.toBytes();
-    audioHandler.customAction("source", {"byteSource": BytesSource(data)});
+    audioHandler.customAction(
+        "source", {"byteSource": BytesSource(data), "id": media.id});
   }
 
   void _listenToChangesInPlaylist() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     audioHandler.queue.listen((playlist) {
       if (playlist.isEmpty) {
         playlistNotifier.value = [];
@@ -74,6 +74,8 @@ class PageManager {
   }
 
   void _listenToPlaybackState() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     audioHandler.playbackState.listen((playbackState) {
       final isPlaying = playbackState.playing;
       final processingState = playbackState.processingState;
@@ -103,6 +105,8 @@ class PageManager {
   }
 
   void _listenToBufferedPosition() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     audioHandler.playbackState.listen((playbackState) {
       final oldState = progressNotifier.value;
       progressNotifier.value = ProgressBarState(
@@ -114,6 +118,8 @@ class PageManager {
   }
 
   void _listenToTotalDuration() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     audioHandler.mediaItem.listen((mediaItem) {
       final oldState = progressNotifier.value;
       progressNotifier.value = ProgressBarState(
@@ -125,6 +131,8 @@ class PageManager {
   }
 
   void _listenToChangesInSong() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     audioHandler.mediaItem.listen((mediaItem) {
       currentSongTitleNotifier.value = mediaItem?.title ?? '';
       _updateSkipButtons();
@@ -132,6 +140,8 @@ class PageManager {
   }
 
   void _updateSkipButtons() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     final mediaItem = audioHandler.mediaItem.value;
     final playlist = audioHandler.queue.value;
     if (playlist.length < 2 || mediaItem == null) {
@@ -143,15 +153,34 @@ class PageManager {
     }
   }
 
-  void play() => audioHandler.play();
-  void pause() => audioHandler.pause();
+  void play() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+    audioHandler.play();
+  }
 
-  void seek(Duration position) => audioHandler.seek(position);
+  void pause() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+    audioHandler.pause();
+  }
 
-  void previous() => audioHandler.skipToPrevious();
-  void next() => audioHandler.skipToNext();
+  void seek(Duration position) {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+    audioHandler.seek(position);
+  }
+
+  void previous() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+    audioHandler.skipToPrevious();
+  }
+
+  void next() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+    audioHandler.skipToNext();
+  }
 
   void repeat() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     repeatButtonNotifier.nextState();
     final repeatMode = repeatButtonNotifier.value;
     switch (repeatMode) {
@@ -168,6 +197,8 @@ class PageManager {
   }
 
   void shuffle() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     final enable = !isShuffleModeEnabledNotifier.value;
     isShuffleModeEnabledNotifier.value = enable;
     if (enable) {
@@ -190,16 +221,20 @@ class PageManager {
   // }
 
   void remove() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
+
     final lastIndex = audioHandler.queue.value.length - 1;
     if (lastIndex < 0) return;
     audioHandler.removeQueueItemAt(lastIndex);
   }
 
   void dispose() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
     audioHandler.customAction('dispose');
   }
 
   void stop() {
+    AudioHandler audioHandler = Get.find<MyAudioHandler>(tag: 'audioHandler');
     audioHandler.stop();
   }
 }

@@ -214,6 +214,7 @@ class MyAudioHandler extends BaseAudioHandler {
     }
     if (name == "source") {
       await _player.setAudioSource(extras?["byteSource"]);
+      _player.play();
     }
   }
 

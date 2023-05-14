@@ -1,8 +1,7 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:machi_app/audio/page_manager.dart';
 import 'package:machi_app/audio/services/audio_handler.dart';
-import 'package:machi_app/audio/services/playlist_repo.dart';
-import 'package:machi_app/controller/audio_service.dart';
+import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
@@ -24,7 +23,7 @@ class MainBinding implements Bindings {
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
 
-    // Get.put<AudioGetService>(AudioGetService(), tag: "audio");
+    Get.put<AudioController>(AudioController(), tag: "audio");
 
     await Get.putAsync<MyAudioHandler>(
         () => AudioService.init(
@@ -39,6 +38,6 @@ class MainBinding implements Bindings {
         tag: 'audioHandler');
 
     // Get.put<PlaylistRepository>(DemoPlaylist(), tag: 'playlist');
-    Get.put<PageManager>(PageManager(), tag: 'pageManager');
+    Get.put<PageManager>(PageManager(), tag: 'pageManager', permanent: true);
   }
 }

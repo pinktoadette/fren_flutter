@@ -696,11 +696,10 @@ class UserModel extends Model {
 
       notifyListeners();
       debugPrint("signOut() -> success");
-      Get.deleteAll();
+      Get.reset();
       ThemeHelper().delete();
 
       /// Need to reassign
-      // initializeAllControllers();
       MainBinding mainBinding = MainBinding();
       await mainBinding.dependencies();
     } catch (e) {

@@ -164,8 +164,7 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
       style: ElevatedButton.styleFrom(
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(10),
-        foregroundColor:
-            Theme.of(context).colorScheme.tertiary, // <-- Splash color
+        foregroundColor: Theme.of(context).colorScheme.tertiary,
       ),
     );
   }

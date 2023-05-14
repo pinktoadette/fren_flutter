@@ -1,6 +1,30 @@
 import 'package:audio_service/audio_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
+import 'package:machi_app/audio/notifiers/play_button_notifier.dart';
+
+class MediaStreamTracker {
+  final ButtonState state; // the state of the media being read
+  final MediaStreamItem item; // the media that's being read
+  final String voiceSelection; // selected voice
+  final List<String> voiceList; // list of available voice to read
+  MediaStreamTracker(
+      {required this.state,
+      required this.item,
+      required this.voiceSelection,
+      required this.voiceList});
+  MediaStreamTracker copyWith(
+      {ButtonState? state,
+      MediaStreamItem? item,
+      String? voiceSelection,
+      List<String>? voiceList}) {
+    return MediaStreamTracker(
+        state: state ?? this.state,
+        item: this.item,
+        voiceList: voiceList ?? this.voiceList,
+        voiceSelection: voiceSelection ?? this.voiceSelection);
+  }
+}
 
 class MediaStreamItem {
   final String id;

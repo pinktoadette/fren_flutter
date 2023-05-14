@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/api/machi/voice/voice_lookup.dart';
+import 'package:machi_app/audio/notifiers/play_button_notifier.dart';
 import 'package:machi_app/audio/page_manager.dart';
 import 'package:machi_app/audio/stream_player.dart';
+import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/datas/media.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/helpers/truncate_text.dart';
+import 'package:uuid/uuid.dart';
 
 /// allows user to change the gender of the voice
 class StorycastVoice extends StatefulWidget {
@@ -21,8 +24,8 @@ class StorycastVoice extends StatefulWidget {
 
 class _StorycastVoiceState extends State<StorycastVoice> {
   late AppLocalizations _i18n;
+  AudioController audioController = Get.find(tag: 'audio');
   final _streamApi = StreamApi();
-  List<Map<String, dynamic>> _script = [];
 
   @override
   void initState() {
@@ -30,10 +33,14 @@ class _StorycastVoiceState extends State<StorycastVoice> {
     _formatData();
   }
 
+  @override
+  void dispose() {
+    audioController.playlistButtons.clear();
+    super.dispose();
+  }
+
   void _formatData() async {
     List<String> _trackUser = [];
-    List<Map<String, dynamic>> _scriptList = [];
-
     for (int i = 0; i < widget.story.scene!.length; i++) {
       dynamic message = widget.story.scene![i].messages;
       if (message.type == types.MessageType.text &&
@@ -46,20 +53,19 @@ class _StorycastVoiceState extends State<StorycastVoice> {
             .map((e) =>
                 "${e['lang']} - ${e['region']} - ${e['age']} - ${e['person']}")
             .toList();
-        _scriptList.add({
-          "text": text,
-          "person": message.author.firstName,
-          "language": detect,
-          "voices": voices,
-          "selected": voices[0],
-          "isPlaying": false
-        });
+        audioController.playlistButtons.add(
+          MediaStreamTracker(
+              item: MediaStreamItem(
+                  id: const Uuid().v1(),
+                  text: text,
+                  language: detect,
+                  voiceName: voices[0]),
+              state: ButtonState.paused,
+              voiceList: voices,
+              voiceSelection: voices[0]),
+        );
       }
     }
-
-    setState(() {
-      _script = _scriptList;
-    });
   }
 
   @override
@@ -82,86 +88,81 @@ class _StorycastVoiceState extends State<StorycastVoice> {
         ),
         SizedBox(
             height: height * 0.7,
-            child: ListView.builder(
-              itemCount: _script.length,
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      _script[index]["person"],
-                      style: Theme.of(context).textTheme.displayMedium,
-                    ),
-                    Text(
-                      "${_i18n.translate("story_voice_read_text")}: ${_script[index]["text"]}",
-                      style: Theme.of(context).textTheme.labelSmall,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Obx(() => ListView.builder(
+                  itemCount: audioController.playlistButtons.length,
+                  itemBuilder: (context, index) {
+                    return Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        DropdownButton<String>(
-                            iconSize: 0.0,
-                            elevation: 16,
-                            value: _script[index]["selected"],
-                            underline: Container(
-                              height: 1,
-                              color: Theme.of(context).colorScheme.primary,
-                            ),
-                            onChanged: (value) {
-                              setState(() {
-                                _script[index]["selected"] = value;
-                              });
-                            },
-                            items: _script[index]["voices"]
-                                .map<DropdownMenuItem<String>>((value) {
-                              return DropdownMenuItem<String>(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList()),
-                        _showPlay(index: index)
+                        Text(
+                          audioController.playlistButtons[index].item.voiceName,
+                          style: Theme.of(context).textTheme.displayMedium,
+                        ),
+                        Text(
+                          "${_i18n.translate("story_voice_read_text")}: ${audioController.playlistButtons[index].item.text}",
+                          style: Theme.of(context).textTheme.labelSmall,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            DropdownButton<String>(
+                                iconSize: 0.0,
+                                elevation: 16,
+                                value: audioController
+                                    .playlistButtons[index].voiceSelection,
+                                underline: Container(
+                                  height: 1,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                onChanged: (value) {
+                                  setState(() {
+                                    audioController.playlistButtons[index] =
+                                        audioController.playlistButtons[index]
+                                            .copyWith(voiceSelection: value);
+                                  });
+                                },
+                                items: audioController
+                                    .playlistButtons[index].voiceList
+                                    .map<DropdownMenuItem<String>>((value) {
+                                  return DropdownMenuItem<String>(
+                                    value: value,
+                                    child: Text(value),
+                                  );
+                                }).toList()),
+                            _showPlay(index: index)
+                          ],
+                        ),
+                        const Divider(
+                          height: 10,
+                        ),
                       ],
-                    ),
-                    const Divider(
-                      height: 10,
-                    ),
-                  ],
-                );
-              },
-            ))
+                    );
+                  },
+                )))
       ],
     );
   }
 
   Widget _showPlay({required int index}) {
-    print("playyyyyyyyy");
-    return PlayButton(
+    return StreamPlaylistButton(
         size: 14,
+        index: index,
         onPress: (val) async {
           await _setupVoice(index: index);
         });
-    // return StreamPlayWidget(
-    //     id: index.toString(),
-    //     size: 14.0,
-    //     onPress: (val) async {
-    //       if (val["play"] == true) {
-    //         await _setupVoice(index: index);
-    //       } else {
-    //         audioController.currentStream = null;
-    //       }
-    //     });
   }
 
   Future<void> _setupVoice({required int index}) async {
     final pageManager = Get.find<PageManager>(tag: 'pageManager');
 
-    var selection = _script[index]["selected"].split(" - ");
+    var selection =
+        audioController.playlistButtons[index].voiceSelection.split(" - ");
     String lang = "${selection[0]}-${selection[1]}";
 
     MediaStreamItem item = MediaStreamItem(
-        id: index.toString(),
-        text: _script[index]["text"],
+        id: const Uuid().v4(),
+        text: audioController.playlistButtons[index].item.text,
         language: lang,
         voiceName: "$lang-${selection[3]}Neural");
     pageManager.addStream(item);
