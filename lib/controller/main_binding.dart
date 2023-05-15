@@ -1,6 +1,3 @@
-import 'package:audio_service/audio_service.dart';
-import 'package:machi_app/audio/page_manager.dart';
-import 'package:machi_app/audio/services/audio_handler.dart';
 import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
@@ -24,20 +21,5 @@ class MainBinding implements Bindings {
         tag: "storyboard");
 
     Get.put<AudioController>(AudioController(), tag: "audio");
-
-    await Get.putAsync<MyAudioHandler>(
-        () => AudioService.init(
-              builder: () => MyAudioHandler(),
-              config: const AudioServiceConfig(
-                androidNotificationChannelId: 'com.machi.app.audio',
-                androidNotificationChannelName: 'Machi',
-                androidNotificationOngoing: true,
-              ),
-            ),
-        permanent: true,
-        tag: 'audioHandler');
-
-    // Get.put<PlaylistRepository>(DemoPlaylist(), tag: 'playlist');
-    Get.put<PageManager>(PageManager(), tag: 'pageManager', permanent: true);
   }
 }

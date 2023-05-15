@@ -47,9 +47,8 @@ class _StorycastVoiceState extends State<StorycastVoice> {
           !_trackUser.contains(message.author.firstName)) {
         _trackUser.add(message.author.firstName);
         String text = truncateText(200, message.text);
-        dynamic detect = _streamApi.detectLanguage(string: text);
-        List<String> lang = detect["lang"].split("-");
-        List<String> voices = regionLang(lang: lang[0])
+        Map<String, String> language = _streamApi.detectLanguage(string: text);
+        List<String> voices = regionLang(lang: language["lang"]!)
             .map((e) =>
                 "${e['lang']} - ${e['region']} - ${e['age']} - ${e['person']}")
             .toList();
@@ -58,7 +57,8 @@ class _StorycastVoiceState extends State<StorycastVoice> {
               item: MediaStreamItem(
                   id: const Uuid().v1(),
                   text: text,
-                  language: TTSLanguage(language: lang[0], region: lang[1]),
+                  language: TTSLanguage(
+                      language: language["lang"]!, region: language["region"]!),
                   voiceName: voices[0]),
               state: ButtonState.paused,
               voiceList: voices,

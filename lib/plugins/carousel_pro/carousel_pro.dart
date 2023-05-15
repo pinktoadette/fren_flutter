@@ -94,7 +94,8 @@ class Carousel extends StatefulWidget {
   //On image change event, passes previous image index and current image index as arguments
   final void Function(int, int)? onImageChange;
 
-  const Carousel({Key? key, 
+  const Carousel({
+    Key? key,
     this.images,
     this.animationCurve = Curves.ease,
     this.animationDuration = const Duration(milliseconds: 300),
@@ -169,115 +170,108 @@ class CarouselState extends State<Carousel> {
 
   @override
   Widget build(BuildContext context) {
-    final List<Widget> listImages = (widget.images != null &&
-            widget.images!.isNotEmpty)
-        ? widget.images!.map<Widget>(
-            (netImage) {
-              if (netImage is ImageProvider) {
-                return Container(
-                  decoration: BoxDecoration(
-                    borderRadius: widget.borderRadius!
-                        ? BorderRadius.all(widget.radius != null
-                            ? widget.radius!
-                            : const Radius.circular(8.0))
-                        : null,
-                    image: DecorationImage(
-                      //colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                      image: netImage,
-                      fit: widget.boxFit,
-                    ),
-                  ),
-                  child: widget.overlayShadow!
-                      ? Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.bottomCenter,
-                              end: Alignment.center,
-                              stops: [0.0, widget.overlayShadowSize!],
-                              colors: [
-                                widget.overlayShadowColors != null
-                                    ? widget.overlayShadowColors!
-                                        .withOpacity(1.0)
-                                    : Colors.grey[800]!.withOpacity(1.0),
-                                widget.overlayShadowColors != null
-                                    ? widget.overlayShadowColors!
-                                        .withOpacity(0.0)
-                                    : Colors.grey[800]!.withOpacity(0.0)
-                              ],
-                            ),
-                          ),
-                        )
-                      : Container(),
-                );
-              } else if (netImage is FadeInImage) {
-                return ClipRRect(
-                  borderRadius: widget.borderRadius!
-                      ? BorderRadius.all(widget.radius != null
-                          ? widget.radius!
-                          : const Radius.circular(8.0))
-                      : null,
-                  child: Container(
+    final List<Widget> listImages =
+        (widget.images != null && widget.images!.isNotEmpty)
+            ? widget.images!.map<Widget>(
+                (netImage) {
+                  if (netImage is ImageProvider) {
+                    return Container(
                       decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.bottomCenter,
-                          end: Alignment.center,
-                          stops: [0.0, widget.overlayShadowSize!],
-                          colors: [
-                            widget.overlayShadowColors != null
-                                ? widget.overlayShadowColors!.withOpacity(1.0)
-                                : Colors.grey[800]!.withOpacity(1.0),
-                            widget.overlayShadowColors != null
-                                ? widget.overlayShadowColors!.withOpacity(0.0)
-                                : Colors.grey[800]!.withOpacity(0.0)
-                          ],
+                        borderRadius: widget.borderRadius!
+                            ? BorderRadius.all(widget.radius != null
+                                ? widget.radius!
+                                : const Radius.circular(8.0))
+                            : null,
+                        image: DecorationImage(
+                          //colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                          image: netImage,
+                          fit: widget.boxFit,
                         ),
                       ),
-                      child: netImage),
-                );
-              } else {
-                return netImage;
-              }
-            },
-          ).toList()
-        : [
-            widget.defaultImage is ImageProvider
-                ? Container(
-                    decoration: BoxDecoration(
-                      borderRadius: widget.borderRadius!
-                          ? BorderRadius.all(widget.radius != null
-                              ? widget.radius!
-                              : const Radius.circular(8.0))
-                          : null,
-                      image: DecorationImage(
-                        //colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
-                        image: widget.defaultImage,
-                        fit: widget.boxFit,
-                      ),
-                    ),
-                    child: widget.overlayShadow!
-                        ? Container(
-                            decoration: BoxDecoration(
-                              gradient: LinearGradient(
-                                begin: Alignment.bottomCenter,
-                                end: Alignment.center,
-                                stops: [0.0, widget.overlayShadowSize!],
-                                colors: [
-                                  widget.overlayShadowColors != null
-                                      ? widget.overlayShadowColors!
-                                          .withOpacity(1.0)
-                                      : Colors.grey[800]!.withOpacity(1.0),
-                                  widget.overlayShadowColors != null
-                                      ? widget.overlayShadowColors!
-                                          .withOpacity(0.0)
-                                      : Colors.grey[800]!.withOpacity(0.0)
-                                ],
+                      child: widget.overlayShadow!
+                          ? Container(
+                              decoration: BoxDecoration(
+                                gradient: LinearGradient(
+                                  begin: Alignment.bottomCenter,
+                                  end: Alignment.center,
+                                  stops: [0.0, widget.overlayShadowSize!],
+                                  colors: [
+                                    widget.overlayShadowColors != null
+                                        ? widget.overlayShadowColors!
+                                            .withOpacity(1.0)
+                                        : Colors.grey[800]!.withOpacity(1.0),
+                                    widget.overlayShadowColors != null
+                                        ? widget.overlayShadowColors!
+                                            .withOpacity(0.0)
+                                        : Colors.grey[800]!.withOpacity(0.0)
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        : Container(),
-                  )
-                : widget.defaultImage,
-          ];
+                            )
+                          : Container(),
+                    );
+                  } else if (netImage is FadeInImage) {
+                    return Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.bottomCenter,
+                            end: Alignment.center,
+                            stops: [0.0, widget.overlayShadowSize!],
+                            colors: [
+                              widget.overlayShadowColors != null
+                                  ? widget.overlayShadowColors!.withOpacity(1.0)
+                                  : Colors.grey[800]!.withOpacity(1.0),
+                              widget.overlayShadowColors != null
+                                  ? widget.overlayShadowColors!.withOpacity(0.0)
+                                  : Colors.grey[800]!.withOpacity(0.0)
+                            ],
+                          ),
+                        ),
+                        child: netImage);
+                  } else {
+                    return netImage;
+                  }
+                },
+              ).toList()
+            : [
+                widget.defaultImage is ImageProvider
+                    ? Container(
+                        decoration: BoxDecoration(
+                          borderRadius: widget.borderRadius!
+                              ? BorderRadius.all(widget.radius != null
+                                  ? widget.radius!
+                                  : const Radius.circular(8.0))
+                              : null,
+                          image: DecorationImage(
+                            //colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.2), BlendMode.dstATop),
+                            image: widget.defaultImage,
+                            fit: widget.boxFit,
+                          ),
+                        ),
+                        child: widget.overlayShadow!
+                            ? Container(
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    begin: Alignment.bottomCenter,
+                                    end: Alignment.center,
+                                    stops: [0.0, widget.overlayShadowSize!],
+                                    colors: [
+                                      widget.overlayShadowColors != null
+                                          ? widget.overlayShadowColors!
+                                              .withOpacity(1.0)
+                                          : Colors.grey[800]!.withOpacity(1.0),
+                                      widget.overlayShadowColors != null
+                                          ? widget.overlayShadowColors!
+                                              .withOpacity(0.0)
+                                          : Colors.grey[800]!.withOpacity(0.0)
+                                    ],
+                                  ),
+                                ),
+                              )
+                            : Container(),
+                      )
+                    : widget.defaultImage,
+              ];
 
     final bottom = [
       DotPosition.bottomLeft,
@@ -316,7 +310,7 @@ class CarouselState extends State<Carousel> {
               children: listImages,
               onPageChanged: (currentPage) {
                 if (widget.onImageChange != null) {
-                   widget.onImageChange!(_currentImageIndex, currentPage);
+                  widget.onImageChange!(_currentImageIndex, currentPage);
                 }
 
                 _currentImageIndex = currentPage;
@@ -341,7 +335,8 @@ class CarouselState extends State<Carousel> {
                 right: right,
                 child: Container(
                   decoration: BoxDecoration(
-                    color: widget.dotBgColor ?? Colors.grey[800]!.withOpacity(0.5),
+                    color:
+                        widget.dotBgColor ?? Colors.grey[800]!.withOpacity(0.5),
                     borderRadius: widget.borderRadius!
                         ? (widget.noRadiusForIndicator!
                             ? null
@@ -384,7 +379,8 @@ class CarouselState extends State<Carousel> {
 /// An indicator showing the currently selected page of a PageController
 class DotsIndicator extends AnimatedWidget {
   DotsIndicator(
-      {Key? key, this.controller,
+      {Key? key,
+      this.controller,
       this.itemCount,
       this.onPageSelected,
       this.color,

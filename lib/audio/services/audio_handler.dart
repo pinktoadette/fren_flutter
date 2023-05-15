@@ -106,6 +106,7 @@ class MyAudioHandler extends BaseAudioHandler {
     _player.sequenceStateStream.listen((SequenceState? sequenceState) {
       final sequence = sequenceState?.effectiveSequence;
       if (sequence == null || sequence.isEmpty) return;
+      print(sequence);
       final items = sequence.map((source) => source.tag as MediaItem);
       queue.add(items.toList());
     });
@@ -214,6 +215,7 @@ class MyAudioHandler extends BaseAudioHandler {
     }
     if (name == "source") {
       await _player.setAudioSource(extras?["byteSource"]);
+      _playlist.add(extras?["byteSource"]);
       _player.play();
     }
   }
