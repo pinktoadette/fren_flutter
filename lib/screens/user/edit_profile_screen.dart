@@ -25,7 +25,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _bioController = TextEditingController(text: UserModel().user.userBio);
 
-  late String _selectedIndustry;
   late List<String> _selectedInterest;
   late List<String> _interestList = [];
 
@@ -37,7 +36,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     super.initState();
     getJson();
     setState(() {
-      _selectedIndustry = UserModel().user.userIndustry;
       _selectedInterest = UserModel().user.userInterest;
     });
   }

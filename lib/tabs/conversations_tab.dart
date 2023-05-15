@@ -15,8 +15,10 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/bot/prompt_create.dart';
 
 import '../datas/user.dart';
+import 'explore_bot_tabs.dart';
 
 class ConversationsTab extends StatelessWidget {
   final _chatroomApi = ChatroomMachiApi();
@@ -48,6 +50,16 @@ class ConversationsTab extends StatelessWidget {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: <Widget>[
+            IconButton(
+                onPressed: () {
+                  _createBot(context);
+                },
+                icon: const Icon(Iconsax.message_add_1)),
+            IconButton(
+                onPressed: () {
+                  _viewBots(context);
+                },
+                icon: const Icon(Iconsax.messages)),
             IconButton(
                 onPressed: () async {
                   Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
@@ -155,6 +167,37 @@ class ConversationsTab extends StatelessWidget {
                       ),
                     );
                   })))),
+    );
+  }
+
+  void _createBot(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => FractionallySizedBox(
+            heightFactor: 0.9,
+            child: DraggableScrollableSheet(
+              snap: true,
+              initialChildSize: 1,
+              minChildSize: 1,
+              builder: (context, scrollController) => SingleChildScrollView(
+                controller: scrollController,
+                child: const CreateMachiWidget(),
+              ),
+            )));
+  }
+
+  void _viewBots(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      enableDrag: true,
+      isScrollControlled: true,
+      builder: (context) {
+        return const FractionallySizedBox(
+            heightFactor: 0.9, child: ExploreBotTab()
+            //  ListMyBot()
+            );
+      },
     );
   }
 

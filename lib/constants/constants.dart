@@ -37,7 +37,9 @@ const double AD_HEIGHT = 80;
 // For IOS Platform
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
-const PY_API = "https://api.mymachi.app/api/";
+// const PY_API = "https://api.mymachi.app/api/";
+const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/";
+const PY_API = PY_DEV;
 const SOCKET_WS = "wss://api.mymachi.app/";
 
 /// List of Supported Locales

@@ -13,15 +13,12 @@ import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/tabs/conversations_tab.dart';
-import 'package:machi_app/tabs/explore_bot_tabs.dart';
 import 'package:machi_app/screens/notifications_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/widgets/app_logo.dart';
 import 'package:machi_app/tabs/playlist.dart';
-import 'package:machi_app/widgets/bot/prompt_create.dart';
-import 'package:machi_app/widgets/button/action_button.dart';
-import 'package:machi_app/widgets/button/expandable_fab.dart';
+import 'package:machi_app/widgets/audio/main_play.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -258,7 +255,7 @@ class _HomeScreenState extends State<HomeScreen> {
             /// Discover new machi
             BottomNavigationBarItem(
                 label: _i18n.translate("storycast_board"),
-                icon: const Icon(Iconsax.book)),
+                icon: const Icon(Iconsax.bookmark)),
 
             /// Conversations Tab
             BottomNavigationBarItem(
@@ -272,54 +269,63 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Iconsax.user)),
           ]),
       body: _showCurrentNavBar(),
-      floatingActionButton: ExpandableFab(
-        isOpen: isFabOpen,
-        distance: 80.0,
-        children: [
-          ActionButton(
-            onPressed: () => {
-              showModalBottomSheet<void>(
-                  context: context,
-                  isScrollControlled: true,
-                  builder: (context) => FractionallySizedBox(
-                      heightFactor: 0.9,
-                      child: DraggableScrollableSheet(
-                        snap: true,
-                        initialChildSize: 1,
-                        minChildSize: 1,
-                        builder: (context, scrollController) =>
-                            SingleChildScrollView(
-                          controller: scrollController,
-                          child: const CreateMachiWidget(),
-                        ),
-                      ))),
-              setState(() {
-                isFabOpen = false;
-              })
-            },
-            icon: const Icon(Iconsax.pen_add),
-          ),
-          ActionButton(
-            onPressed: () => {
-              showModalBottomSheet<void>(
-                context: context,
-                enableDrag: true,
-                isScrollControlled: true,
-                builder: (context) {
-                  return const FractionallySizedBox(
-                      heightFactor: 0.9, child: ExploreBotTab()
-                      //  ListMyBot()
-                      );
-                },
-              ),
-              setState(() {
-                isFabOpen = false;
-              })
-            },
-            icon: const Icon(Iconsax.note),
-          ),
-        ],
-      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: const Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MainControlWidget(),
+          ])
+
+      // ExpandableFab(
+      //     isOpen: isFabOpen,
+      //     distance: 80.0,
+      //     children: [
+      //       ActionButton(
+      //         onPressed: () => {
+      //           showModalBottomSheet<void>(
+      //               context: context,
+      //               isScrollControlled: true,
+      //               builder: (context) => FractionallySizedBox(
+      //                   heightFactor: 0.9,
+      //                   child: DraggableScrollableSheet(
+      //                     snap: true,
+      //                     initialChildSize: 1,
+      //                     minChildSize: 1,
+      //                     builder: (context, scrollController) =>
+      //                         SingleChildScrollView(
+      //                       controller: scrollController,
+      //                       child: const CreateMachiWidget(),
+      //                     ),
+      //                   ))),
+      //           setState(() {
+      //             isFabOpen = false;
+      //           })
+      //         },
+      //         icon: const Icon(Iconsax.pen_add),
+      //       ),
+      //       ActionButton(
+      //         onPressed: () => {
+      //           showModalBottomSheet<void>(
+      //             context: context,
+      //             enableDrag: true,
+      //             isScrollControlled: true,
+      //             builder: (context) {
+      //               return const FractionallySizedBox(
+      //                   heightFactor: 0.9, child: ExploreBotTab()
+      //                   //  ListMyBot()
+      //                   );
+      //             },
+      //           ),
+      //           setState(() {
+      //             isFabOpen = false;
+      //           })
+      //         },
+      //         icon: const Icon(Iconsax.note),
+      //       ),
+      //     ],
+      //   )
+      ,
     );
   }
 
