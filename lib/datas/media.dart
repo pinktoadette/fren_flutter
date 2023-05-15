@@ -32,6 +32,21 @@ class TTSLanguage {
   TTSLanguage({required this.region, required this.language});
 }
 
+/// BytesSource stream purposes
+class MediaStreamCharacter {
+  String id;
+  String username;
+  final String text;
+  final TTSLanguage language;
+  final String voiceName;
+  MediaStreamCharacter(
+      {required this.id,
+      required this.username,
+      required this.text,
+      required this.language,
+      required this.voiceName});
+}
+
 class MediaStreamItem {
   final String id;
   final String? title;
@@ -39,9 +54,7 @@ class MediaStreamItem {
   final User? artist;
   final BytesSource? bytes;
   final String? url;
-  final String text;
-  final TTSLanguage language;
-  final String voiceName;
+  final MediaStreamCharacter? character;
   final String? genre;
   final Duration? duration;
   final String? displayTitle;
@@ -55,9 +68,7 @@ class MediaStreamItem {
     this.artist,
     this.bytes,
     this.url,
-    required this.text,
-    required this.language,
-    required this.voiceName,
+    this.character,
     this.genre,
     this.duration,
     this.displayTitle,
@@ -71,9 +82,7 @@ class MediaStreamItem {
       User? artist,
       BytesSource? bytes,
       String? url,
-      String? text,
-      TTSLanguage? language,
-      String? voiceName,
+      MediaStreamCharacter? character,
       String? genre,
       Duration? duration,
       String? displayTitle,
@@ -87,9 +96,7 @@ class MediaStreamItem {
         url: url ?? this.url,
         displayTitle: displayTitle ?? this.displayTitle,
         displaySubtitle: displaySubtitle ?? this.displaySubtitle,
-        text: text ?? this.text,
-        language: language ?? this.language,
-        voiceName: voiceName ?? this.voiceName,
+        character: character ?? this.character,
         genre: genre ?? this.genre,
         duration: duration ?? this.duration,
         rating: rating ?? this.rating);
@@ -104,9 +111,7 @@ class MediaStreamItem {
       'url': url,
       'displayTitle': displayTitle,
       'displaySubtitle': displaySubtitle,
-      'text': text,
-      'voiceName': voiceName,
-      'language': language,
+      'character': character,
       'genre': genre,
       'duration': duration?.inMicroseconds ?? 0,
       'rating': rating

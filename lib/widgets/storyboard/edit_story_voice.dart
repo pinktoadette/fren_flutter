@@ -5,6 +5,7 @@ import 'package:machi_app/api/machi/voice/voice_lookup.dart';
 import 'package:machi_app/audio/notifiers/play_button_notifier.dart';
 import 'package:machi_app/audio/page_manager.dart';
 import 'package:machi_app/audio/stream_player.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/datas/media.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -55,11 +56,16 @@ class _StorycastVoiceState extends State<StorycastVoice> {
         audioController.playlistButtons.add(
           MediaStreamTracker(
               item: MediaStreamItem(
-                  id: const Uuid().v1(),
-                  text: text,
-                  language: TTSLanguage(
-                      language: language["lang"]!, region: language["region"]!),
-                  voiceName: voices[0]),
+                id: const Uuid().v1(),
+                character: MediaStreamCharacter(
+                    id: message.author.id,
+                    username: message.author.firstName,
+                    text: text,
+                    language: TTSLanguage(
+                        language: language["lang"]!,
+                        region: language["region"]!),
+                    voiceName: voices[0]),
+              ),
               state: ButtonState.paused,
               voiceList: voices,
               voiceSelection: voices[0]),
@@ -75,9 +81,22 @@ class _StorycastVoiceState extends State<StorycastVoice> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          _i18n.translate("story_voice_assign"),
-          style: Theme.of(context).textTheme.headlineMedium,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              _i18n.translate("story_voice_assign"),
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            OutlinedButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text(
+                  _i18n.translate("SAVE"),
+                  style: const TextStyle(fontSize: 14),
+                ))
+          ],
         ),
         Text(
           _i18n.translate("story_voice_assign_info"),
@@ -96,11 +115,15 @@ class _StorycastVoiceState extends State<StorycastVoice> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          audioController.playlistButtons[index].item.voiceName,
-                          style: Theme.of(context).textTheme.displayMedium,
+                          audioController
+                              .playlistButtons[index].item.character!.username,
+                          style: const TextStyle(
+                              fontSize: 16,
+                              color: APP_ACCENT_COLOR,
+                              fontWeight: FontWeight.bold),
                         ),
                         Text(
-                          "${_i18n.translate("story_voice_read_text")}: ${audioController.playlistButtons[index].item.text}",
+                          "${_i18n.translate("story_voice_read_text")}: ${audioController.playlistButtons[index].item.character!.text}",
                           style: Theme.of(context).textTheme.labelSmall,
                         ),
                         Row(
@@ -161,10 +184,15 @@ class _StorycastVoiceState extends State<StorycastVoice> {
     String lang = "${selection[0]}-${selection[1]}";
 
     MediaStreamItem item = MediaStreamItem(
-        id: const Uuid().v4(),
-        text: audioController.playlistButtons[index].item.text,
-        language: TTSLanguage(language: selection[0], region: selection[1]),
-        voiceName: "$lang-${selection[3]}Neural");
+      id: const Uuid().v4(),
+      character: MediaStreamCharacter(
+          id: audioController.playlistButtons[index].item.character!.id,
+          username:
+              audioController.playlistButtons[index].item.character!.username,
+          text: audioController.playlistButtons[index].item.character!.text,
+          language: TTSLanguage(language: selection[0], region: selection[1]),
+          voiceName: "$lang-${selection[3]}Neural"),
+    );
     pageManager.addStream(item);
   }
 }

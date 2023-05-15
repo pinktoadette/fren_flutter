@@ -184,8 +184,8 @@ class StreamApi {
     });
 
     var xml =
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${media.language.language}'>"
-        "<voice name='${media.voiceName}'>${media.text}</voice></speak>";
+        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${media.character!.language.language}'>"
+        "<voice name='${media.character!.voiceName}'>${media.character!.text}</voice></speak>";
 
     request.body = xml;
     var streamedResponse = await http.Client().send(request);
