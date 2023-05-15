@@ -337,6 +337,7 @@
 
   "story_share_message": "Create Storycast",
   "story": "Storycast",
+  "storycast_board": "Board",
   "story_share": "Share",
   "storyboard": "Storycast",
   "story_title": "Storycast Title",
@@ -354,7 +355,7 @@
   "add_to_exist_storyboard": "Add to existing Storycast",
   "storyboard_edit": "Edit",
   "storyboard_preview": "Preview",
-  "storyboard_record": "Record",
+  "storyboard_playlist": "Playlist",
   "story_nothing": "No Storycast",
   "story_publishing": "Your story is publishing...",
   "story_success": "Your board is published!",

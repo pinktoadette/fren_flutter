@@ -18,7 +18,7 @@ import 'package:machi_app/screens/notifications_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/widgets/app_logo.dart';
-import 'package:machi_app/tabs/voice_chat_tab.dart';
+import 'package:machi_app/tabs/playlist.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/button/action_button.dart';
 import 'package:machi_app/widgets/button/expandable_fab.dart';
@@ -184,9 +184,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _showCurrentNavBar() {
     List<Widget> options = <Widget>[
       const ActivityTab(),
-      ConversationsTab(),
+      const PlaylistTab(),
       const Storyboard(),
-      const VoiceRecordTab(),
+      ConversationsTab(),
       const ProfileTab()
     ];
 
@@ -250,21 +250,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   Iconsax.activity,
                 )),
 
+            /// Discover story
+            BottomNavigationBarItem(
+                label: _i18n.translate("story"),
+                icon: const Icon(Iconsax.music_playlist)),
+
+            /// Discover new machi
+            BottomNavigationBarItem(
+                label: _i18n.translate("storycast_board"),
+                icon: const Icon(Iconsax.book)),
+
             /// Conversations Tab
             BottomNavigationBarItem(
               label: _i18n.translate("chat"),
               icon: _getConversationCounter(),
             ),
-
-            /// Discover new machi
-            BottomNavigationBarItem(
-                label: _i18n.translate("story"),
-                icon: const Icon(Iconsax.book)),
-
-            /// Discover new machi
-            BottomNavigationBarItem(
-                label: _i18n.translate("storyboard_record"),
-                icon: const Icon(Iconsax.microphone)),
 
             /// Profile Tab
             BottomNavigationBarItem(

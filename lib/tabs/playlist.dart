@@ -3,14 +3,14 @@ import 'package:machi_app/helpers/app_localizations.dart';
 
 /// Record voice, follows same class as types.Message
 /// But will be stored as Voice
-class VoiceRecordTab extends StatefulWidget {
-  const VoiceRecordTab({Key? key}) : super(key: key);
+class PlaylistTab extends StatefulWidget {
+  const PlaylistTab({Key? key}) : super(key: key);
 
   @override
-  _VoiceRecordState createState() => _VoiceRecordState();
+  _PlaylistTabState createState() => _PlaylistTabState();
 }
 
-class _VoiceRecordState extends State<VoiceRecordTab> {
+class _PlaylistTabState extends State<PlaylistTab> {
   late AppLocalizations _i18n;
 
   @override
