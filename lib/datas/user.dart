@@ -94,15 +94,15 @@ class User {
         userLevel: doc[USER_LEVEL] ?? 'user',
         isDarkMode: doc[USER_DARK_MODE] ?? false,
         isSubscribed: doc[USER_IS_SUBSCRIBED] ?? false,
-        userRegDate: doc[CREATED_AT] is int
+        userRegDate: doc.containsKey(CREATED_AT)
             ? DateTime.fromMillisecondsSinceEpoch(doc[CREATED_AT])
-            : doc[CREATED_AT].toDate(), // Firestore Timestamp vs mongo
-        userLastLogin: doc[USER_LAST_LOGIN] is int
+            : DateTime.now(), // Firestore Timestamp vs mongo
+        userLastLogin: doc.containsKey(USER_LAST_LOGIN)
             ? DateTime.fromMillisecondsSinceEpoch(doc[USER_LAST_LOGIN])
-            : doc[USER_LAST_LOGIN].toDate(),
-        userLastUpdate: doc[UPDATED_AT] is int
+            : DateTime.now(),
+        userLastUpdate: doc.containsKey(UPDATED_AT)
             ? DateTime.fromMillisecondsSinceEpoch(doc[UPDATED_AT])
-            : doc[UPDATED_AT].toDate(),
+            : DateTime.now(),
         userDeviceToken: doc[USER_DEVICE_TOKEN] ?? '');
   }
 }

@@ -104,13 +104,13 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                     return !value;
                   },
                   bubblesColor: BubblesColor(
-                    dotPrimaryColor: APP_ACCENT_COLOR,
+                    dotPrimaryColor: APP_LIKE_COLOR,
                     dotSecondaryColor: Theme.of(context).primaryColor,
                   ),
                   likeBuilder: (bool isLiked) {
                     return Icon(
                       isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? APP_ACCENT_COLOR : Colors.grey,
+                      color: isLiked ? APP_LIKE_COLOR : Colors.grey,
                     );
                   },
                   likeCount: widget.item.likes,
