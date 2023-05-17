@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -59,10 +60,6 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    TimelineHeader(
-                        showAvatar: true,
-                        showName: true,
-                        user: widget.item.createdBy),
                     InkWell(
                       onTap: () async {
                         _onStoryClick();
@@ -79,11 +76,19 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                                 fontWeight: FontWeight.bold),
                             overflow: TextOverflow.ellipsis,
                           ),
-                          Text(
-                            widget.item.summary ??
-                                "No summary tkhse mlbm ekfbm apebn peabms;dlfbmsdl;fkb dlfknb sonb eobh aehbpeoibj aifjb odfbjsodfib oidfb jsodib ob sodgbn sbons ;odfbn ;i s;in ;;dnb;sn",
-                            style: Theme.of(context).textTheme.bodySmall,
-                            overflow: TextOverflow.ellipsis,
+                          SizedBox(
+                            height: 40,
+                            child: Text(
+                              widget.item.summary ?? "No summary",
+                              style: Theme.of(context).textTheme.bodySmall,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ),
+                          TextButton.icon(
+                            onPressed: null,
+                            icon: const Icon(Iconsax.menu_1),
+                            label: Text("${widget.item.story?.length} series",
+                                style: const TextStyle(fontSize: 12)),
                           ),
                         ],
                       ),

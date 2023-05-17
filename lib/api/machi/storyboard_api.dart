@@ -8,14 +8,14 @@ import 'package:get/get.dart';
 
 class StoryboardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = "${PY_API}storyboard/";
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<Storyboard> getStoryboardById(String storyboardId) async {
     try {
-      String url = '${baseUri}storyboard/board?storyId=$storyboardId';
+      String url = '${baseUri}board?storyboardId=$storyboardId';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
@@ -32,7 +32,7 @@ class StoryboardApi {
       String title, String category, String messageId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}storyboard/board';
+      String url = '${baseUri}board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {
@@ -53,7 +53,7 @@ class StoryboardApi {
       String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}storyboard/board';
+      String url = '${baseUri}board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response =
@@ -72,7 +72,7 @@ class StoryboardApi {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}storyboard/my_storyboards';
+      String url = '${baseUri}my_storyboards';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
@@ -84,61 +84,6 @@ class StoryboardApi {
       }
       storyController.myStories(stories);
       return stories;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
-
-  /// Move this to comments
-  Future<Storyboard> updateStoryboard(
-      String storyboardId, Map<String, dynamic> titleCatUpdate) async {
-    StoryboardController storyController = Get.find(tag: 'storyboard');
-
-    try {
-      String url = '${baseUri}storyboard/board';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response =
-          await dio.put(url, data: {...titleCatUpdate, STORY_ID: storyboardId});
-      Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(story);
-      return story;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
-
-  Future<String> postComment(String storyId, String comment) async {
-    try {
-      String url = '${baseUri}storyboard/comment';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio
-          .post(url, data: {STORY_ID: storyId, STORY_COMMENT: comment});
-
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
-
-  Future<List<StoryComment>> getComments(
-      int page, int limit, String storyId) async {
-    try {
-      String url = '${baseUri}storyboard/comment?storyId=$storyId';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url, data: {LIMIT: limit, "offset": page});
-
-      List<StoryComment> comments = [];
-      for (var res in response.data) {
-        StoryComment c = StoryComment.fromDocument(res);
-        comments.add(c);
-      }
-      return comments;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

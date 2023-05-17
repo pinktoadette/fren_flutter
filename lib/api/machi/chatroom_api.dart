@@ -15,7 +15,6 @@ class ChatroomMachiApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  ///////////// ROOM ///////////////
   // a room is created when user loads app.
   // if none exists, create one.
   // creates a new room with empty messages in quick chat
@@ -25,7 +24,7 @@ class ChatroomMachiApi {
     final BotController botController = Get.find(tag: 'bot');
 
     /// creates a new room
-    String url = '${baseUri}chatroom/create_chatroom';
+    String url = '${baseUri}chatroom/room';
     debugPrint("Requesting URL $url {botId: ${botController.bot.botId} }");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.post(url,
@@ -48,7 +47,7 @@ class ChatroomMachiApi {
 
   Future<List<Chatroom>> getAllMyRooms() async {
     final ChatController chatController = Get.find(tag: 'chatroom');
-    String url = '${baseUri}chatroom/users_chatrooms';
+    String url = '${baseUri}chatroom/rooms';
     debugPrint("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.get(url);
@@ -71,7 +70,7 @@ class ChatroomMachiApi {
 
   Future<void> updateRoom(int index, Chatroom room) async {
     final ChatController chatController = Get.find(tag: 'chatroom');
-    String url = '${baseUri}chatroom/update_room';
+    String url = '${baseUri}chatroom/room';
     debugPrint("Requesting URL $url");
     final updateRoom = room.toJSON();
     final dioRequest = await auth.getDio();

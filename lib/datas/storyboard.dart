@@ -155,7 +155,9 @@ class Storyboard {
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt(),
         photoUrl: doc[STORYBOARD_PHOTO_URL] ?? "",
-        likes: doc[ITEM_LIKES],
-        mylikes: doc[ITEM_MY_LIKES]);
+        likes: doc.containsKey(ITEM_LIKES) ? doc[ITEM_LIKES][ITEM_LIKES] : 0,
+        mylikes: doc.containsKey(ITEM_MY_LIKES)
+            ? doc[ITEM_MY_LIKES][ITEM_LIKES]
+            : 0);
   }
 }
