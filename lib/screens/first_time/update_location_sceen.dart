@@ -13,8 +13,6 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:iconsax/iconsax.dart';
 
-import 'package:machi_app/widgets/rounded_top.dart';
-
 class UpdateLocationScreen extends StatefulWidget {
   final bool isSignUpProcess;
   const UpdateLocationScreen({Key? key, this.isSignUpProcess = true})

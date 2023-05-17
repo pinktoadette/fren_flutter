@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -21,6 +22,7 @@ class StoryboardView extends StatefulWidget {
 class _StoryboardViewState extends State<StoryboardView> {
   late AppLocalizations _i18n;
   final _storyApi = StoryApi();
+  final _commentApi = CommentApi();
   final _commentController = TextEditingController();
 
   @override
@@ -114,7 +116,7 @@ class _StoryboardViewState extends State<StoryboardView> {
   void _postComment() async {
     String comment = _commentController.text;
     try {
-      await _storyApi.postComment(widget.story.storyboardId, comment);
+      await _commentApi.postComment(widget.story.storyboardId, comment);
       Get.snackbar(
         _i18n.translate("posted"),
         _i18n.translate("story_comment_sucess"),

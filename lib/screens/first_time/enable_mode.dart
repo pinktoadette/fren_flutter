@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/rounded_top.dart';
 import 'package:iconsax/iconsax.dart';
 
 class EnableMode extends StatefulWidget {

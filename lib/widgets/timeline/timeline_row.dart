@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:machi_app/api/machi/bot_api.dart';
-import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/timeline.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -28,8 +25,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   late AppLocalizations _i18n;
-  final _botApi = BotApi();
-  final _storyApi = StoryApi();
+  final _storyboardApi = StoryboardApi();
   final _timelineApi = TimelineApi();
 
   @override
@@ -120,8 +116,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                 ),
                 InkWell(
                   onTap: () async {
-                    Storyboard story =
-                        await _storyApi.getStoryById(widget.item.storyboardId);
+                    Storyboard story = await _storyboardApi
+                        .getStoryboardById(widget.item.storyboardId);
                     storyboardController.currentStory = story;
                   },
                   child: MiniAudioWidget(post: widget.item),
@@ -133,7 +129,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
   }
 
   Future<void> _onStoryClick() async {
-    Storyboard story = await _storyApi.getStoryById(widget.item.storyboardId);
+    Storyboard story =
+        await _storyboardApi.getStoryboardById(widget.item.storyboardId);
     storyboardController.currentStory = story;
     Get.to(() => ViewStory());
   }
@@ -141,55 +138,5 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
   Future<String> _onLikePressed(Storyboard item, bool value) async {
     return await _timelineApi.likeStoryMachi(
         "storyboard", item.storyboardId, value == true ? 1 : 0);
-  }
-
-  Widget _showTitle(Timeline post) {
-    double width = MediaQuery.of(context).size.width;
-    double itemHeight = 150;
-    dynamic firstText;
-    dynamic firstImage;
-
-    for (var sub in post.subText) {
-      if (sub["messages"]["type"] == "text" && firstText == null) {
-        firstText = sub["messages"];
-      }
-      if (sub["messages"]["type"] == "image" && firstImage == null) {
-        firstImage = sub["messages"];
-      }
-    }
-    double imageHeight = width * 0.3 - 50;
-
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                width: firstImage != null ? width * 0.65 - 30 : width - 50,
-                height: itemHeight - 50,
-                child: Text(firstText["text"],
-                    style: const TextStyle(color: Colors.white, fontSize: 14)),
-              ),
-              if (firstImage != null)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: <Widget>[
-                    SizedBox(
-                        height: imageHeight,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10.0),
-                          child: Image.network(
-                            firstImage["image"]["uri"],
-                            width: width * 0.3,
-                            fit: BoxFit.cover,
-                          ),
-                        ))
-                  ],
-                )
-            ],
-          ),
-        ]);
   }
 }

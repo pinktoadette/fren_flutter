@@ -1,4 +1,4 @@
-import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +15,7 @@ class ListComments extends StatefulWidget {
 
 class _ListCommentsState extends State<ListComments> {
   late AppLocalizations _i18n;
-  final _storyApi = StoryApi();
+  final _commentApi = CommentApi();
   static const _pageSize = 20;
 
   final PagingController<int, dynamic> _pagingController =
@@ -37,8 +37,8 @@ class _ListCommentsState extends State<ListComments> {
 
   Future<void> _fetchPage(int pageKey) async {
     try {
-      List<StoryComment> newItems =
-          await _storyApi.getComments(pageKey, _pageSize, widget.storyboardId);
+      List<StoryComment> newItems = await _commentApi.getComments(
+          pageKey, _pageSize, widget.storyboardId);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);

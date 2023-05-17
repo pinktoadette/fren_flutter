@@ -14,6 +14,8 @@ class TimelineApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
+  ////
+  /// TIMELINE is now STORYBOARD class, to make things less complicated / less features
   Future<List<Storyboard>> getTimeline() async {
     final TimelineController timelineController = Get.find(tag: 'timeline');
     int limit = timelineController.limit;
