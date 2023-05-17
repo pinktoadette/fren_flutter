@@ -138,12 +138,13 @@ class Storyboard {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
 
     List<Story> listScene = [];
-    doc[STORY].forEach((sto) {
-      Story s =
-          Story.fromJson({...sto, STORY_CREATED_BY: doc[STORY_CREATED_BY]});
-      listScene.add(s);
-    });
-
+    if (doc[STORY].isNotEmpty) {
+      doc[STORY].forEach((sto) {
+        Story s =
+            Story.fromJson({...sto, STORY_CREATED_BY: doc[STORY_CREATED_BY]});
+        listScene.add(s);
+      });
+    }
     return Storyboard(
         storyboardId: doc[STORYBOARD_ID],
         title: doc[STORYBOARD_TITLE],

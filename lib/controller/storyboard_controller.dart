@@ -1,4 +1,5 @@
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -39,8 +40,8 @@ class StoryboardController extends GetxController {
   }
 
   Future<void> fetchMyStories() async {
-    final storyApi = StoryApi();
-    final List<Storyboard> stories = await storyApi.getMyStories();
+    final storyboardApi = StoryboardApi();
+    final List<Storyboard> stories = await storyboardApi.getMyStoryboards();
     _stories = stories.obs;
     _stories.refresh();
   }
