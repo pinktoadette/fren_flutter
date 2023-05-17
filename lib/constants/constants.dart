@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 const String APP_NAME = "machi";
 const Color APP_PRIMARY_COLOR = Colors.black;
 const Color APP_MUTED_COLOR = Colors.black12;
-const Color APP_ACCENT_COLOR = Color.fromARGB(255, 236, 85, 136);
+const Color APP_ACCENT_COLOR = Color.fromARGB(255, 51, 223, 157);
+const Color APP_LIKE_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
 const Color APP_TERTIARY = Color.fromARGB(255, 49, 49, 49);
 const Color APP_SUCCESS = Color.fromARGB(255, 96, 185, 34);
@@ -38,7 +39,7 @@ const double AD_HEIGHT = 80;
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
 // const PY_API = "https://api.mymachi.app/api/";
-const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/";
+const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/api/";
 const PY_API = PY_DEV;
 const SOCKET_WS = "wss://api.mymachi.app/";
 
@@ -229,32 +230,55 @@ const String TIMESTAMP = "timestamp";
 const String UPDATED_AT = "updatedAt";
 const String CREATED_AT = "createdAt";
 const String LIMIT = "limit";
+const String OFFSET = "offset";
+
+/// storyboard
+const String STORYBOARD_ID = "storyboardId";
+const String STORYBOARD_STATUS = "status";
+const String STORYBOARD_TITLE = "title";
+const String STORYBOARD_SUBTITLE = "subtitle";
+const String STORYBOARD_CATEGORY = "category";
+const String STORYBOARD_SUMMARY = "summary";
+const String STORYBOARD_CREATED_BY = "createdBy";
+const String STORYBOARD_PHOTO_URL = "photoUrl";
 
 /// story
-const String STORY_ID = "storyboardId";
+const String STORY = "story";
 const String STORY_TITLE = "title";
-const String STORY_CATEGORY = "category";
-const String STORY_MESSAGE_ID = "messageId";
-const String STORY_MESSAGES = "messages";
-const String STORY_MESSAGE_TYPE = "type";
-const String STORY_MESSAGE_TEXT = "text";
-const String STORY_MESSAGE_IMAGE = "image";
-const String STORY_MESSAGE_URI = "uri";
-const String STORY_MESSAGE_VIDEO = "video";
+const String STORY_SUBTITLE = "subtitle";
+const String STORY_SUMMARY = "summary";
+const String STORY_ID = "storyId";
 const String STORY_CREATED_BY = "createdBy";
 const String STORY_STATUS = "status";
-const String STORY_SCENE = "scene";
-const String STORY_SCENE_SEQ = "seq";
-const String STORY_SCENE_ID = "sceneId";
-const String STORY = "story";
-const String STORY_COMMENT = "comment";
-const String STORY_POST_TYPE = "postType";
-const String STORY_POST_TEXT = "text";
-const String STORY_POST_SUB_TEXT = "subText";
-const String STORY_SHOW_NAMES = "showNames";
-const String SCENE_CUSTOM_FLAG = "CUSTOM_";
-const String TIMELINE_ID = "id";
+const String STORY_PHOTO_URL = "photoUrl";
+const String STORY_CATEGORY = "category";
 
+/// Script
+const String SCRIPTS = "scripts";
+const String SCRIPT_ID = "scriptId";
+const String SCRIPT_TYPE = "type";
+const String SCRIPT_TEXT = "text";
+const String SCRIPT_IMAGE = "image";
+const String SCRIPT_IMAGE_WIDTH = "width";
+const String SCRIPT_IMAGE_HEIGHT = "height";
+const String SCRIPT_IMAGE_SIZE = "size";
+const String SCRIPT_IMAGE_URI = "uri";
+const String SCRIPT_STATUS = "status";
+const String SCRIPT_SPEAKER_NAME = "character";
+const String SCRIPT_CREATED_BY = "createdBy";
+const String SCRIPT_VOICE_INFO = "speaker";
+const String SCRIPT_SEQUENCE_NUM = "seqNum";
+
+/// Voiceover
+const String VOICE_OVER_ID = "voiceId";
+const String VOICE_PROVIDER = "provider";
+const String VOICE_JSON = "jsonData";
+const String VOICE_NAME = "voiceName";
+
+//// Replies
+const String STORY_COMMENT = "comment";
+
+/// Likes
 const String ITEM_MY_LIKES = "mylikes";
 const String ITEM_LIKES = "likes";
 

@@ -11,8 +11,9 @@ import 'package:iconsax/iconsax.dart';
 
 // View details of each message
 class StoryViewDetails extends StatefulWidget {
-  final Storyboard story;
-  const StoryViewDetails({Key? key, required this.story}) : super(key: key);
+  final Storyboard storyboard;
+  const StoryViewDetails({Key? key, required this.storyboard})
+      : super(key: key);
 
   @override
   _StoryViewState createState() => _StoryViewState();
@@ -35,29 +36,19 @@ class _StoryViewState extends State<StoryViewDetails> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        itemCount: widget.story.scene!.length,
+        itemCount: widget.storyboard.story!.length,
         itemBuilder: (BuildContext ctx, index) {
-          final message = widget.story.scene![index].messages;
-
           return ListTile(
             isThreeLine: true,
-            title: widget.story.showNames == true
-                ? Text(
-                    widget.story.scene![index].messages.author.firstName!,
-                    style: const TextStyle(
-                        color: APP_ACCENT_COLOR,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16),
-                  )
-                : const SizedBox.shrink(),
-            subtitle: _showMessage(context, message),
+            title: Text(widget.storyboard.story![index].title),
+            subtitle: Text(widget.storyboard.story![index].subtitle),
           );
         });
   }
 
   Widget _showMessage(BuildContext context, dynamic message) {
     final firstMessage = message;
-
+    return Text("hi");
     switch (firstMessage.type) {
       case (types.MessageType.text):
         return Text(firstMessage.text);

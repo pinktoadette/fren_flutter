@@ -78,7 +78,6 @@ class _EnableModeState extends State<EnableMode> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const RoundedTop(),
               Center(
                   child: Column(children: [
                 Padding(

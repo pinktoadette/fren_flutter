@@ -20,13 +20,12 @@ class StoryApi {
       String title, String category, String messageId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}storyboard/create';
+      String url = '${baseUri}storyboard/board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {
         STORY_TITLE: title,
         STORY_CATEGORY: category,
-        STORY_MESSAGE_ID: messageId
       });
 
       Storyboard story = Storyboard.fromJson(response.data);
@@ -42,11 +41,10 @@ class StoryApi {
       int messageIndex, String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}storyboard/add';
+      String url = '${baseUri}story/story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.post(url,
-          data: {STORY_MESSAGE_ID: messageId, STORY_ID: storyboardId});
+      final response = await dio.post(url, data: {STORY_ID: storyboardId});
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(story);
@@ -60,11 +58,10 @@ class StoryApi {
   Future<Storyboard> removeStory(String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}storyboard/remove';
+      String url = '${baseUri}storyboard/board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.delete(url,
-          data: {STORY_MESSAGE_ID: messageId, STORY_ID: storyboardId});
+      final response = await dio.delete(url, data: {STORY_ID: storyboardId});
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(story);
@@ -79,7 +76,7 @@ class StoryApi {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}storyboard/my_stories';
+      String url = '${baseUri}storyboard/my_storyboards';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
@@ -99,7 +96,7 @@ class StoryApi {
 
   Future<Storyboard> getStoryById(String storyboardId) async {
     try {
-      String url = '${baseUri}storyboard/story?storyId=$storyboardId';
+      String url = '${baseUri}story/story?storyId=$storyboardId';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
@@ -116,7 +113,7 @@ class StoryApi {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}storyboard/update_seq';
+      String url = '${baseUri}story/update_seq';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       log(stories.toString());
@@ -135,11 +132,11 @@ class StoryApi {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}storyboard/update_title';
+      String url = '${baseUri}storyboard/board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio
-          .post(url, data: {...titleCatUpdate, STORY_ID: storyboardId});
+      final response =
+          await dio.put(url, data: {...titleCatUpdate, STORY_ID: storyboardId});
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(story);
       return story;
@@ -152,7 +149,7 @@ class StoryApi {
   Future<String> publishStory(String storyId) async {
     final _timelineApi = TimelineApi();
     try {
-      String url = '${baseUri}storyboard/publish';
+      String url = '${baseUri}story/publish';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyId});
@@ -193,21 +190,6 @@ class StoryApi {
         comments.add(c);
       }
       return comments;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
-  }
-
-  Future<String> updateShowNames(String storyId, bool showNames) async {
-    try {
-      String url = '${baseUri}storyboard/show_names';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio
-          .post(url, data: {STORY_ID: storyId, STORY_SHOW_NAMES: showNames});
-
-      return response.data;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

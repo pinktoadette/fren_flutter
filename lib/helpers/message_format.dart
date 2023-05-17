@@ -83,53 +83,53 @@ types.Message messageFromJson(Map<String, dynamic> message) {
   return types.Message.fromJson(message);
 }
 
-Future<Map<String, dynamic>> formatStoryboard(Scene customMessage) async {
-  String localFlag = 'LOCAL';
+// Future<Map<String, dynamic>> formatStoryboard(Scene customMessage) async {
+//   String localFlag = 'LOCAL';
 
-  Map<String, dynamic> mapScene = customMessage.toJSON();
-  var additional = mapScene["message"];
+//   Map<String, dynamic> mapScene = customMessage.toJSON();
+//   var additional = mapScene["message"];
 
-  if (customMessage.messages.id.contains(localFlag) == true) {
-    switch (customMessage.messages.type) {
-      case (types.MessageType.text):
-        additional = {
-          STORY_MESSAGE_TEXT: mapScene["message"]["text"],
-          STORY_MESSAGE_TYPE: STORY_MESSAGE_TEXT
-        };
-        break;
-      case (types.MessageType.image):
-        String uuid = const Uuid().v4();
-        String photoUrl = await uploadFile(
-          file: mapScene["message"]["uri"],
-          category: 'board',
-          categoryId: uuid.replaceAll(RegExp(r'-'), ''),
-        );
+//   if (customMessage.messages.id.contains(localFlag) == true) {
+//     switch (customMessage.messages.type) {
+//       case (types.MessageType.text):
+//         additional = {
+//           STORY_MESSAGE_TEXT: mapScene["message"]["text"],
+//           STORY_MESSAGE_TYPE: STORY_MESSAGE_TEXT
+//         };
+//         break;
+//       case (types.MessageType.image):
+//         String uuid = const Uuid().v4();
+//         String photoUrl = await uploadFile(
+//           file: mapScene["message"]["uri"],
+//           category: 'board',
+//           categoryId: uuid.replaceAll(RegExp(r'-'), ''),
+//         );
 
-        additional = {
-          'size': 19345,
-          'height': 512,
-          'width': 512,
-          STORY_MESSAGE_TYPE: STORY_MESSAGE_IMAGE,
-          STORY_MESSAGE_URI: photoUrl,
-        };
-        break;
-      // @todo
-      case types.MessageType.audio:
-      case types.MessageType.custom:
-      case types.MessageType.file:
-      case types.MessageType.system:
-      case types.MessageType.unsupported:
-      case types.MessageType.video:
-        break;
-    }
-  }
+//         additional = {
+//           'size': 19345,
+//           'height': 512,
+//           'width': 512,
+//           STORY_MESSAGE_TYPE: STORY_MESSAGE_IMAGE,
+//           STORY_MESSAGE_URI: photoUrl,
+//         };
+//         break;
+//       // @todo
+//       case types.MessageType.audio:
+//       case types.MessageType.custom:
+//       case types.MessageType.file:
+//       case types.MessageType.system:
+//       case types.MessageType.unsupported:
+//       case types.MessageType.video:
+//         break;
+//     }
+//   }
 
-  return {
-    STORY_SCENE_SEQ: customMessage.seq,
-    STORY_SCENE_ID: customMessage.sceneId,
-    STORY_MESSAGES: {
-      ...additional,
-      CHAT_USER_NAME: customMessage.messages.author.firstName,
-    }
-  };
-}
+//   return {
+//     STORY_SCENE_SEQ: customMessage.seq,
+//     STORY_SCENE_ID: customMessage.sceneId,
+//     STORY_MESSAGES: {
+//       ...additional,
+//       CHAT_USER_NAME: customMessage.messages.author.firstName,
+//     }
+//   };
+// }

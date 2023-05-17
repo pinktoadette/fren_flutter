@@ -167,7 +167,6 @@ class _UpdateLocationScreenState extends State<UpdateLocationScreen> {
         child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              const RoundedTop(),
               Center(
                 child: Column(
                   children: [

@@ -3,6 +3,7 @@ import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/timeline.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class TimelineApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<List<Timeline>> getTimeline() async {
+  Future<List<Storyboard>> getTimeline() async {
     final TimelineController timelineController = Get.find(tag: 'timeline');
     int limit = timelineController.limit;
     int offset = timelineController.offset;
@@ -23,36 +24,36 @@ class TimelineApi {
     final dio = await auth.getDio();
     final response = await dio.get(url);
 
-    List<Timeline> timeline = [];
+    List<Storyboard> timeline = [];
     for (var data in response.data) {
-      Timeline time = Timeline.fromJson(data);
+      Storyboard time = Storyboard.fromJson(data);
       timelineController.fetchMyTimeline(time);
       timeline.add(time);
     }
     return timeline;
   }
 
-  Future<List<Timeline>> getTimelineByPageUserId(String userId) async {
+  Future<List<Storyboard>> getTimelineByPageUserId(String userId) async {
     String url = '${baseUri}timeline/user_timeline?userId=$userId';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
 
-    List<Timeline> timeline = [];
+    List<Storyboard> timeline = [];
     for (var data in response.data) {
-      Timeline time = Timeline.fromJson(data);
+      Storyboard time = Storyboard.fromJson(data);
       timeline.add(time);
     }
     return timeline;
   }
 
   Future<String> likeStoryMachi(
-      String item, String itemId, int actionValue) async {
+      String itemType, String itemId, int actionValue) async {
     String url = '${baseUri}storyboard/like';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.post(url,
-        data: {'itemType': item, 'itemId': itemId, 'value': actionValue});
+        data: {'itemType': itemType, 'itemId': itemId, 'value': actionValue});
     return response.data;
   }
 }

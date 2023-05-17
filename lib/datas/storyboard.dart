@@ -1,5 +1,7 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/script.dart';
+import 'package:machi_app/datas/story.dart';
 
 enum StoryStatus { UNPUBLISHED, PUBLISHED, BLOCKED }
 
@@ -59,74 +61,61 @@ class StoryComment {
   }
 }
 
-/// Sequence, SceneId, types.Message
-class Scene {
-  final int seq;
-  final String sceneId;
-  final types.Message messages;
-
-  Scene({required this.seq, required this.sceneId, required this.messages});
-
-  Scene copyWith({int? seq, String? sceneId, types.Message? messages}) {
-    return Scene(
-        seq: seq ?? this.seq,
-        sceneId: sceneId ?? this.sceneId,
-        messages: messages ?? this.messages);
-  }
-
-  Map<String, dynamic> toJSON() {
-    Map<String, dynamic> message = messages.toJson();
-    return <String, dynamic>{
-      'seq': seq,
-      'sceneId': sceneId,
-      'message': message
-    };
-  }
-}
-
 class Storyboard {
   /// Using types and Chatroom together
   final String title;
   final String storyboardId;
+  final String? summary;
   final String category;
-  final List<Scene>? scene;
+  final String? photoUrl;
+  final List<Story>? story;
   final StoryUser createdBy;
   final int createdAt;
   final int updatedAt;
   final StoryStatus status;
-  final bool? showNames;
+  final int? likes;
+  final int? mylikes;
 
   Storyboard(
       {required this.title,
-      required this.scene,
+      required this.story,
       required this.storyboardId,
+      required this.summary,
       required this.category,
       required this.createdBy,
       required this.status,
       required this.createdAt,
       required this.updatedAt,
-      required this.showNames});
+      this.photoUrl,
+      this.likes,
+      this.mylikes});
 
   Storyboard copyWith(
       {String? title,
-      List<Scene>? scene,
+      List<Story>? story,
       StoryUser? createdBy,
       String? storyboardId,
+      String? summary,
       String? category,
       StoryStatus? status,
       int? createdAt,
       int? updatedAt,
-      bool? showNames}) {
+      String? photoUrl,
+      int? likes,
+      int? mylikes}) {
     return Storyboard(
         title: title ?? this.title,
-        scene: scene ?? this.scene,
+        story: story ?? this.story,
         storyboardId: storyboardId ?? this.storyboardId,
+        summary: summary ?? this.summary,
         category: category ?? this.category,
         createdBy: createdBy ?? this.createdBy,
         status: status ?? this.status,
-        showNames: showNames ?? this.showNames,
         createdAt: createdAt ?? this.createdAt,
-        updatedAt: updatedAt ?? this.updatedAt);
+        updatedAt: updatedAt ?? this.updatedAt,
+        photoUrl: photoUrl ?? this.photoUrl,
+        likes: likes ?? this.likes,
+        mylikes: mylikes ?? this.mylikes);
   }
 
   Map<String, dynamic> toJSON() {
@@ -135,62 +124,38 @@ class Storyboard {
       'category': category,
       'createdAt': createdAt,
       'updatedAt': updatedAt,
-      'scene': scene,
+      'story': story,
       'status': status,
       'storyboardId': storyboardId,
       'createdBy': createdBy,
-      'showNames': showNames
+      'photoUrl': photoUrl,
+      'likes': likes,
+      'mylikes': mylikes
     };
   }
 
   factory Storyboard.fromJson(Map<String, dynamic> doc) {
-    /// get Bot
-
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
 
-    /// convert messages to scene with types.Messages as messages
-    List<Scene> listScene = [];
-    if (doc[STORY_SCENE][0][STORY_MESSAGES].isNotEmpty) {
-      late Scene detailScene;
-      doc[STORY_SCENE].forEach((scene) {
-        var message = scene[STORY_MESSAGES];
-        types.Message finalMessage;
-        final author = types.User(
-            id: message[CHAT_AUTHOR_ID] as String,
-            firstName: message[CHAT_USER_NAME] ?? "Frankie",
-            metadata: message[CHAT_AUTHOR_ID].contains("Machi_")
-                ? {"showMeta": true}
-                : null);
-        message[CHAT_AUTHOR] = author.toJson();
-        message[FLUTTER_UI_ID] = message[CHAT_MESSAGE_ID];
-        message[CREATED_AT] = message[CREATED_AT]?.toInt();
-
-        if (message[CHAT_TYPE] == CHAT_IMAGE) {
-          message['size'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_SIZE];
-          message['height'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_HEIGHT];
-          message['width'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_WIDTH];
-          message['uri'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_URI];
-          finalMessage = types.ImageMessage.fromJson(message);
-        } else {
-          finalMessage = types.Message.fromJson(message);
-        }
-        detailScene = Scene(
-            seq: scene[STORY_SCENE_SEQ],
-            sceneId: scene[STORY_SCENE_ID],
-            messages: finalMessage);
-        listScene.add(detailScene);
-      });
-    }
+    List<Story> listScene = [];
+    doc[STORY].forEach((sto) {
+      Story s =
+          Story.fromJson({...sto, STORY_CREATED_BY: doc[STORY_CREATED_BY]});
+      listScene.add(s);
+    });
 
     return Storyboard(
-        title: doc[STORY_TITLE],
+        storyboardId: doc[STORYBOARD_ID],
+        title: doc[STORYBOARD_TITLE],
         createdBy: user,
-        category: doc[STORY_CATEGORY] ?? "Other",
-        scene: listScene,
-        storyboardId: doc[STORY_ID],
+        category: doc[STORYBOARD_CATEGORY] ?? "Other",
+        summary: doc[STORYBOARD_SUMMARY],
+        story: listScene,
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
-        showNames: doc[STORY_SHOW_NAMES] ?? false,
         createdAt: doc[CREATED_AT].toInt(),
-        updatedAt: doc[UPDATED_AT].toInt());
+        updatedAt: doc[UPDATED_AT].toInt(),
+        photoUrl: doc[STORYBOARD_PHOTO_URL] ?? "",
+        likes: doc[ITEM_LIKES],
+        mylikes: doc[ITEM_MY_LIKES]);
   }
 }

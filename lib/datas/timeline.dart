@@ -3,7 +3,6 @@ import 'package:machi_app/datas/storyboard.dart';
 
 class Timeline {
   final String id;
-  final String postType;
   final String text;
   final dynamic subText;
   final int createdAt;
@@ -16,7 +15,6 @@ class Timeline {
 
   Timeline(
       {required this.id,
-      required this.postType,
       required this.text,
       required this.subText,
       required this.createdAt,
@@ -31,10 +29,9 @@ class Timeline {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
 
     return Timeline(
-        id: doc[TIMELINE_ID],
-        postType: doc[STORY_POST_TYPE],
-        text: doc[STORY_POST_TEXT],
-        subText: doc[STORY_POST_SUB_TEXT],
+        id: doc[STORYBOARD_ID],
+        text: doc[STORYBOARD_TITLE],
+        subText: doc[STORYBOARD_SUBTITLE],
         user: user,
         photoUrl: doc[BOT_PROFILE_PHOTO] ?? "",
         createdAt: doc[CREATED_AT],

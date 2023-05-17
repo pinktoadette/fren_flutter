@@ -12,7 +12,7 @@ class UserApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<User> getUser() async {
-    String url = '${baseUri}user/get_user';
+    String url = '${baseUri}user/user';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
@@ -33,7 +33,7 @@ class UserApi {
 
   Future<void> saveUser(Map<String, dynamic> data) async {
     try {
-      String url = '${baseUri}user/create_user';
+      String url = '${baseUri}user/user';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       await dio.post(url, data: data);
@@ -44,14 +44,9 @@ class UserApi {
 
   Future<void> updateUser(Map<String, dynamic> data) async {
     try {
-      String url = '${baseUri}user/update_user';
+      String url = '${baseUri}user/user';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-
-      // data[CREATED_AT] = data[CREATED_AT]?.millisecondsSinceEpoch;
-      // data[UPDATED_AT] = data[UPDATED_AT]?.millisecondsSinceEpoch;
-      // data[USER_LAST_LOGIN] = data[USER_LAST_LOGIN]?.millisecondsSinceEpoch;
-      // data[USER_GEO_POINT] = null;
       await dio.put(url, data: data);
     } catch (error) {
       debugPrint(error.toString());

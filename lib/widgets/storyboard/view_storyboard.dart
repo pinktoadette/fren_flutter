@@ -82,7 +82,7 @@ class _PreviewStoryState extends State<ViewStory> {
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Obx(() => StoryViewDetails(
-                                  story: storyboardController.currentStory,
+                                  storyboard: storyboardController.currentStory,
                                 )),
                             const SizedBox(
                               height: 250,

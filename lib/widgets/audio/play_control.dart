@@ -42,12 +42,13 @@ class _AudioWidgetState extends State<AudioWidget> {
 
   void _getPlayer() async {
     String token = await _streamApi.getAuthToken();
-    String text = storyboardController.currentStory.scene!.map((s) {
-      dynamic message = s.messages;
-      if (s.messages.type == types.MessageType.text) {
-        return message.text;
-      }
-    }).join(" ");
+    String text = "hello world";
+    //  storyboardController.currentStory.story!.map((s) {
+    //   dynamic message = s.messages;
+    //   if (s.messages.type == types.MessageType.text) {
+    //     return message.text;
+    //   }
+    // }).join(" ");
     http.StreamedResponse streamedResponse =
         await _streamApi.streamAudio(token, text, 'eastus');
     Uint8List data = await streamedResponse.stream.toBytes();

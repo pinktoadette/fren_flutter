@@ -78,7 +78,7 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
       ),
       body: TabBarView(
         controller: _tabController.tabController,
-        children: const <Widget>[ListMyStories(), ListMyPublishedStories()],
+        children: const <Widget>[ListMyStories()],
       ),
     );
   }

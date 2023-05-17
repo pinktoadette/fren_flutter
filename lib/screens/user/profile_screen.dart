@@ -51,9 +51,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.dispose();
   }
 
-  Future<List<Timeline>> _getUserBoard() async {
+  Future<List<Storyboard>> _getUserBoard() async {
     /// @todo need infinite
-    List<Timeline> newItems =
+    List<Storyboard> newItems =
         await _timelineApi.getTimelineByPageUserId(widget.user.userId);
     return newItems;
   }
@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             return ListView.builder(
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                Timeline item = snapshot.data![index];
+                Storyboard item = snapshot.data![index];
                 return TimelineRowWidget(item: item);
               },
             );

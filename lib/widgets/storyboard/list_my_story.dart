@@ -135,20 +135,43 @@ class _MyStoriesState extends State<ListMyStories> {
     if (story.isEmpty) {
       return const SizedBox.shrink();
     }
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // if (firstText != null)
-        //   SizedBox(
-        //     width: firstImage != null ? width * 0.65 - 20 : width - 40,
-        //     height: itemHeight - 60,
-        //     child: Text(
-        //       story.title,
-        //       style: Theme.of(context).textTheme.bodySmall,
-        //       // overflow: TextOverflow.ellipsis,
-        //     ),
-        //   ),
-      ],
-    );
+    return const SizedBox.shrink();
+    // final firstText = story.firstWhereOrNull(
+    //     (ele) => ele.type == "text") as dynamic;
+    // final firstImage = story.firstWhereOrNull(
+    //     (ele) => ele.type == types.MessageType.image) as dynamic;
+    // double width = MediaQuery.of(context).size.width;
+    // double imageHeight = width * 0.2;
+    // return Row(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     if (firstText != null)
+    //       SizedBox(
+    //         width: firstImage != null ? width * 0.65 - 20 : width - 40,
+    //         height: itemHeight - 60,
+    //         child: Text(
+    //           firstText.messages.text,
+    //           style: Theme.of(context).textTheme.bodySmall,
+    //           // overflow: TextOverflow.ellipsis,
+    //         ),
+    //       ),
+    //     if (firstImage != null)
+    //       Column(
+    //         crossAxisAlignment: CrossAxisAlignment.start,
+    //         children: <Widget>[
+    //           SizedBox(
+    //               height: imageHeight,
+    //               child: ClipRRect(
+    //                 borderRadius: BorderRadius.circular(10.0),
+    //                 child: Image.network(
+    //                   firstImage.messages.uri,
+    //                   width: firstText != null ? width * 0.3 : width - 40,
+    //                   fit: BoxFit.cover,
+    //                 ),
+    //               ))
+    //         ],
+    //       )
+    //   ],
+    // );
   }
 }

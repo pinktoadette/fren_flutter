@@ -24,27 +24,18 @@ class TimelineHeader extends StatelessWidget {
         },
         child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               if (showAvatar == true)
                 AvatarInitials(
-                    radius: 20,
+                    radius: 10,
                     photoUrl: user.photoUrl,
                     username: user.username),
               const SizedBox(width: 5),
               if (showName == true)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Text(user.username,
-                        overflow: TextOverflow.ellipsis,
-                        style:
-                            const TextStyle(color: Colors.white, fontSize: 14))
-                  ],
-                )
+                Text(user.username,
+                    overflow: TextOverflow.ellipsis,
+                    style: Theme.of(context).textTheme.labelSmall)
             ]));
   }
 }

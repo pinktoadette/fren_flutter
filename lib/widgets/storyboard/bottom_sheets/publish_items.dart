@@ -6,7 +6,6 @@ import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/uploader.dart';
-import 'package:machi_app/widgets/storyboard/edit_storyboard.dart';
 import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -87,7 +86,7 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
                       style: const TextStyle(fontSize: 16)),
                   onPressed: () async {
                     Navigator.pop(context);
-                    Get.to(const EditStory());
+                    // Get.to(const EditStory());
                   },
                 ),
               ),
@@ -147,14 +146,8 @@ class _PublishItemsWidgetState extends State<PublishItemsWidget> {
       path: '',
       query: encodeQueryParameters(<String, String>{
         'subject': widget.story.title,
-        'body': widget.story.scene!.map((s) {
-          var obj = ((s.messages) as dynamic);
-          switch (s.messages.type) {
-            case (types.MessageType.text):
-              return obj.text;
-            default:
-              break;
-          }
+        'body': widget.story.story!.map((s) {
+          s.title;
         }).join(" ")
       }),
     );

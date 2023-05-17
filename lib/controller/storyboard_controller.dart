@@ -6,20 +6,20 @@ import 'package:get/get.dart';
 
 Storyboard initial = Storyboard(
     storyboardId: '',
-    showNames: true,
     title: '',
     category: '',
+    summary: '',
     createdBy: StoryUser(
         photoUrl: UserModel().user.userProfilePhoto,
         userId: UserModel().user.userId,
         username: UserModel().user.username),
-    scene: [],
+    story: [],
     status: StoryStatus.UNPUBLISHED,
     createdAt: getDateTimeEpoch(),
     updatedAt: getDateTimeEpoch());
 
 class StoryboardController extends GetxController {
-  RxList<Storyboard> _stories = [initial].obs;
+  RxList<Storyboard> _stories = <Storyboard>[].obs;
   // ignore: prefer_final_fields
   Rx<Storyboard> _currentStory = initial.obs;
 
