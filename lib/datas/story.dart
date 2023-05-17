@@ -65,7 +65,7 @@ class Story {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
     List<Script> scripts = [];
 
-    if (doc[SCRIPTS].isNotEmpty) {
+    if (doc.containsKey(SCRIPTS) & doc[SCRIPTS].isNotEmpty) {
       doc[SCRIPTS].forEach((script) {
         Script s = Script.fromJson(script);
         scripts.add(s);
