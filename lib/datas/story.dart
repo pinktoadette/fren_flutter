@@ -1,7 +1,25 @@
-import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
+
+class StoryPages {
+  final List<Script>? scripts;
+  final int? pageNum;
+  StoryPages({this.scripts, this.pageNum});
+
+  factory StoryPages.fromJson(Map<String, dynamic> doc) {
+    List<Script> scripts = [];
+
+    if (doc[SCRIPTS].isNotEmpty) {
+      doc[SCRIPTS].forEach((page) {
+        Script s = Script.fromJson(page);
+        scripts.add(s);
+      });
+    }
+
+    return StoryPages(pageNum: doc[SCRIPT_PAGE_NUM], scripts: scripts);
+  }
+}
 
 class Story {
   final String storyId;
@@ -11,7 +29,7 @@ class Story {
   final StoryStatus status;
   final String? photoUrl;
   final String category;
-  final List<Script>? scripts;
+  final List<StoryPages>? pages;
   final int? createdAt;
   final int? updatedAt;
 
@@ -23,7 +41,7 @@ class Story {
       required this.status,
       this.photoUrl,
       required this.category,
-      this.scripts,
+      this.pages,
       this.createdAt,
       this.updatedAt});
 
@@ -33,7 +51,7 @@ class Story {
     String? subtitle,
     StoryUser? createdBy,
     StoryStatus? status,
-    List<Script>? scripts,
+    List<StoryPages>? pages,
     String? photoUrl,
     String? category,
   }) {
@@ -43,7 +61,7 @@ class Story {
         subtitle: subtitle ?? this.subtitle,
         createdBy: createdBy ?? this.createdBy,
         status: status ?? this.status,
-        scripts: scripts ?? this.scripts,
+        pages: pages ?? this.pages,
         photoUrl: photoUrl ?? this.photoUrl,
         category: category ?? this.category);
   }
@@ -64,12 +82,12 @@ class Story {
 
   factory Story.fromJson(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
-    List<Script> scripts = [];
+    List<StoryPages> pages = [];
 
-    if (doc[SCRIPTS]!.isNotEmpty) {
-      doc[SCRIPTS].forEach((script) {
-        Script s = Script.fromJson(script);
-        scripts.add(s);
+    if (doc[STORY_SCRIPT_PAGES]!.isNotEmpty) {
+      doc[STORY_SCRIPT_PAGES].forEach((page) {
+        StoryPages s = StoryPages.fromJson(page);
+        pages.add(s);
       });
     }
 
@@ -80,7 +98,7 @@ class Story {
         photoUrl: doc[STORY_PHOTO_URL],
         createdBy: user,
         category: doc[STORY_CATEGORY] ?? "Other",
-        scripts: scripts,
+        pages: pages,
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());

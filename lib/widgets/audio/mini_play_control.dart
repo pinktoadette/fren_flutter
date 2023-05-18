@@ -43,7 +43,7 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
   void _getPlayer() async {
     String token = await _streamApi.getAuthToken();
     String text = "test world";
-    // storyboardController.currentStory.story!.map((s) {
+    // storyboardController.currentStoryboardboard.story!.map((s) {
     //   dynamic message = s.messages;
     //   if (s.messages.type == types.MessageType.text) {
     //     return message.text;
@@ -54,7 +54,7 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
     Uint8List data = await streamedResponse.stream.toBytes();
     await _player.setAudioSource(BytesSource(data));
 
-    if (storyboardController.currentStory.storyboardId !=
+    if (storyboardController.currentStoryboard.storyboardId !=
         widget.post.storyboardId) {
       _player.pause();
     }

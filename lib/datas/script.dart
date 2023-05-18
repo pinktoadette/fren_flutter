@@ -1,16 +1,23 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
-class Image {
+class ScriptImage {
   int size;
   int height;
   int width;
   String uri;
-  Image(
+  ScriptImage(
       {required this.size,
       required this.height,
       required this.width,
       required this.uri});
+  factory ScriptImage.fromDocumnet(Map<String, dynamic> doc) {
+    return ScriptImage(
+        size: doc[SCRIPT_IMAGE_SIZE],
+        height: doc[SCRIPT_IMAGE_HEIGHT],
+        width: doc[SCRIPT_IMAGE_WIDTH],
+        uri: doc[SCRIPT_IMAGE_URI]);
+  }
 }
 
 class Voiceover {
@@ -33,12 +40,12 @@ class Voiceover {
 }
 
 class Script {
-  final String scriptId;
-  final String characterName;
-  final StoryUser createdBy;
-  final String type;
-  final int seqNum;
-  final Image? image;
+  final String? scriptId;
+  final String? characterName;
+  final StoryUser? createdBy;
+  final String? type;
+  final int? seqNum;
+  final ScriptImage? image;
   final String? text;
   final Voiceover? voiceover;
   final String? status;
@@ -46,15 +53,15 @@ class Script {
   final int? updatedAt;
 
   Script(
-      {required this.scriptId,
-      required this.characterName,
-      required this.createdBy,
-      required this.type,
-      required this.seqNum,
+      {this.scriptId,
+      this.characterName,
+      this.createdBy,
+      this.type,
+      this.seqNum,
       this.image,
       this.text,
       this.voiceover,
-      required this.status,
+      this.status,
       this.createdAt,
       this.updatedAt});
 
@@ -64,7 +71,7 @@ class Script {
       String? characterName,
       String? type,
       int? seqNum,
-      Image? image,
+      ScriptImage? image,
       String? text,
       Voiceover? voiceover,
       String? status}) {
@@ -96,13 +103,26 @@ class Script {
   }
 
   factory Script.fromJson(Map<String, dynamic> doc) {
-    StoryUser user = StoryUser.fromDocument(doc[SCRIPT_CREATED_BY]);
-    Voiceover voiceover = Voiceover.fromDocumnet(doc[SCRIPT_VOICE_INFO]);
+    StoryUser? user;
+    Voiceover? voiceover;
+    ScriptImage? image;
+    if (doc[SCRIPT_CREATED_BY] != null) {
+      user = StoryUser.fromDocument(doc[SCRIPT_CREATED_BY]);
+    }
+
+    if (doc[SCRIPT_VOICE_INFO] != null) {
+      voiceover = Voiceover.fromDocumnet(doc[SCRIPT_VOICE_INFO]);
+    }
+
+    if (doc[SCRIPT_IMAGE] != null) {
+      image = ScriptImage.fromDocumnet(doc[SCRIPT_IMAGE]);
+    }
+
     return Script(
-        scriptId: doc[STORY_ID],
-        type: doc[STORY_TITLE],
-        text: doc[STORY_SUBTITLE],
-        image: doc[STORY_PHOTO_URL],
+        scriptId: doc[SCRIPT_ID],
+        type: doc[SCRIPT_TYPE],
+        text: doc[SCRIPT_TEXT],
+        image: image,
         createdBy: user,
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt(),

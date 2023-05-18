@@ -39,7 +39,7 @@
 
 //   @override
 //   void initState() {
-//     _copyStory = storyboardController.currentStory.copyWith();
+//     _copyStory = storyboardController.currentStoryboardboard.copyWith();
 //     setState(() {
 //       // _showName = _copyStory.showNames ?? false;
 //       _selectedCategory = _copyStory.category;

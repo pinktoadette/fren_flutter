@@ -256,6 +256,7 @@ const String STORY_PHOTO_URL = "photoUrl";
 const String STORY_CATEGORY = "category";
 
 /// Script
+const String STORY_SCRIPT_PAGES = "pages";
 const String SCRIPTS = "scripts";
 const String SCRIPT_ID = "scriptId";
 const String SCRIPT_TYPE = "type";
@@ -270,6 +271,7 @@ const String SCRIPT_SPEAKER_NAME = "character";
 const String SCRIPT_CREATED_BY = "createdBy";
 const String SCRIPT_VOICE_INFO = "speaker";
 const String SCRIPT_SEQUENCE_NUM = "seqNum";
+const String SCRIPT_PAGE_NUM = "pageNum";
 
 /// Voiceover
 const String VOICE_OVER_ID = "voiceId";

@@ -1,5 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -21,6 +22,7 @@ class ListMyStories extends StatefulWidget {
 class _MyStoriesState extends State<ListMyStories> {
   late AppLocalizations _i18n;
   double itemHeight = 120;
+  final _storyboardApi = StoryboardApi();
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
@@ -36,7 +38,8 @@ class _MyStoriesState extends State<ListMyStories> {
     return RefreshIndicator(
         onRefresh: () async {
           // Refresh Functionality
-          await _storyApi.getMyStories();
+          await _storyboardApi.getMyStoryboards(
+              statusFilter: StoryStatus.UNPUBLISHED.name);
         },
         child: storyboardController.stories.isEmpty
             ? Align(
@@ -95,8 +98,11 @@ class _MyStoriesState extends State<ListMyStories> {
         : _setCurrentStory(story);
   }
 
-  void _setCurrentStory(Storyboard story) {
-    storyboardController.currentStory = story;
+  void _setCurrentStory(Storyboard storyboard) {
+    storyboardController.currentStoryboard = storyboard;
+    if ((storyboard.story != null) & storyboard.story!.isNotEmpty) {
+      storyboardController.currentStory = storyboard.story![0];
+    }
     Get.to(() => ViewStoryboard());
   }
 }

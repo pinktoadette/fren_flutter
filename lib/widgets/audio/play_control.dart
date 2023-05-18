@@ -42,7 +42,7 @@ class _AudioWidgetState extends State<AudioWidget> {
   void _getPlayer() async {
     String token = await _streamApi.getAuthToken();
     String text = "hello world";
-    //  storyboardController.currentStory.story!.map((s) {
+    //  storyboardController.currentStoryboardboard.story!.map((s) {
     //   dynamic message = s.messages;
     //   if (s.messages.type == types.MessageType.text) {
     //     return message.text;

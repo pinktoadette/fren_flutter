@@ -5,13 +5,14 @@ import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:get/get.dart';
 
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = "${PY_API}story/";
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
@@ -20,7 +21,7 @@ class StoryApi {
       String title, String category, String messageId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}story/story';
+      String url = '${baseUri}story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {
@@ -41,7 +42,7 @@ class StoryApi {
       int messageIndex, String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}story/story';
+      String url = '${baseUri}story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyboardId});
@@ -58,7 +59,7 @@ class StoryApi {
   Future<Storyboard> removeStory(String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
-      String url = '${baseUri}story/story';
+      String url = '${baseUri}story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.delete(url, data: {STORY_ID: storyboardId});
@@ -72,22 +73,18 @@ class StoryApi {
     }
   }
 
-  Future<List<Storyboard>> getMyStories() async {
+  Future<Story> getMyStories(String storyId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}story/story';
+      String url = '${baseUri}story?storyId=$storyId';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
 
-      List<Storyboard> stories = [];
-      for (var story in response.data) {
-        Storyboard s = Storyboard.fromJson(story);
-        stories.add(s);
-      }
-      storyController.myStories(stories);
-      return stories;
+      Story story = Story.fromJson(response.data);
+      storyController.currentStory = story;
+      return story;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();
@@ -118,7 +115,7 @@ class StoryApi {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}story/story';
+      String url = '${baseUri}story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response =
@@ -135,7 +132,7 @@ class StoryApi {
   Future<String> publishStory(String storyId) async {
     final _timelineApi = TimelineApi();
     try {
-      String url = '${baseUri}story/publish';
+      String url = '${baseUri}publish';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyId});

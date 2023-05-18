@@ -1,10 +1,11 @@
 import 'package:machi_app/api/machi/storyboard_api.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 
-Storyboard initial = Storyboard(
+Storyboard initialStoryboard = Storyboard(
     storyboardId: '',
     title: '',
     category: '',
@@ -18,16 +19,31 @@ Storyboard initial = Storyboard(
     createdAt: getDateTimeEpoch(),
     updatedAt: getDateTimeEpoch());
 
+Story intialStory = Story(
+    storyId: '',
+    title: '',
+    subtitle: '',
+    createdBy: StoryUser(
+        photoUrl: UserModel().user.userProfilePhoto,
+        userId: UserModel().user.userId,
+        username: UserModel().user.username),
+    status: StoryStatus.UNPUBLISHED,
+    category: '');
+
 class StoryboardController extends GetxController {
   RxList<Storyboard> _stories = <Storyboard>[].obs;
   // ignore: prefer_final_fields
-  Rx<Storyboard> _currentStory = initial.obs;
+  Rx<Storyboard> _currentStoryboard = initialStoryboard.obs;
+  Rx<Story> _currentStory = intialStory.obs;
 
-  Storyboard get currentStory => _currentStory.value;
-  set currentStory(Storyboard value) => _currentStory.value = value;
+  Storyboard get currentStoryboard => _currentStoryboard.value;
+  set currentStoryboard(Storyboard value) => _currentStoryboard.value = value;
 
   List<Storyboard> get stories => _stories;
   set stories(List<Storyboard> value) => _stories.value = value;
+
+  Story get currentStory => _currentStory.value;
+  set currentStory(Story value) => _currentStory.value = value;
 
   RxList<Storyboard> unpublished = <Storyboard>[].obs;
   RxList<Storyboard> published = <Storyboard>[].obs;
@@ -64,7 +80,7 @@ class StoryboardController extends GetxController {
   }
 
   void setCurrentBoard(Storyboard story) async {
-    currentStory = story;
+    currentStoryboard = story;
   }
 
   getUnpublised() {

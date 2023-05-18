@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
@@ -24,7 +26,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   late AppLocalizations _i18n;
-  final _storyboardApi = StoryboardApi();
+  final _storyApi = StoryApi();
   final _timelineApi = TimelineApi();
 
   @override
@@ -138,9 +140,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   Future<void> _onStoryClick() async {
-    Storyboard story =
-        await _storyboardApi.getStoryboardById(widget.item.storyboardId);
-    storyboardController.currentStory = story;
+    storyboardController.currentStoryboard = widget.item;
+    if (widget.item.story!.isNotEmpty) {
+      /// Load the first story if any
+      Story story = await _storyApi.getMyStories(widget.item.story![0].storyId);
+      storyboardController.currentStory = story;
+    }
+
     Get.to(() => ViewStoryboard());
   }
 

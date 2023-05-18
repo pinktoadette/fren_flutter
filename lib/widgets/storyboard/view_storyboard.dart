@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -17,22 +19,27 @@ class ViewStoryboard extends StatefulWidget {
   ViewStoryboard({Key? key, this.showName}) : super(key: key);
 
   @override
-  _PreviewStoryboardState createState() => _PreviewStoryboardState();
+  _ViewStoryboardState createState() => _ViewStoryboardState();
 }
 
-class _PreviewStoryboardState extends State<ViewStoryboard> {
+class _ViewStoryboardState extends State<ViewStoryboard> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final _storyApi = StoryApi();
   Uint8List? bytes;
+  late Story story;
 
   @override
   void initState() {
     super.initState();
+    _getScriptByStoryId();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
+  void _getScriptByStoryId() async {
+    Story current = storyboardController.currentStory;
+
+    /// Getting scripts
+    Story details = await _storyApi.getMyStories(current.storyId);
   }
 
   @override
@@ -44,7 +51,7 @@ class _PreviewStoryboardState extends State<ViewStoryboard> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            storyboardController.currentStory.title,
+            storyboardController.currentStoryboard.title,
             style: Theme.of(context).textTheme.headlineMedium,
             overflow: TextOverflow.fade,
           ),
@@ -55,9 +62,9 @@ class _PreviewStoryboardState extends State<ViewStoryboard> {
             },
           ),
           actions: [
-            if (storyboardController.currentStory.status ==
+            if (storyboardController.currentStoryboard.status ==
                     StoryStatus.UNPUBLISHED &&
-                storyboardController.currentStory.createdBy.userId ==
+                storyboardController.currentStoryboard.createdBy.userId ==
                     UserModel().user.userId)
               InkWell(
                   child: const Padding(
@@ -87,15 +94,16 @@ class _PreviewStoryboardState extends State<ViewStoryboard> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            if (storyboardController.currentStory.photoUrl !=
+                            if (storyboardController
+                                    .currentStoryboard.photoUrl !=
                                 "")
                               StoryCover(
                                   width: width * 0.7,
                                   height: width * 0.7,
                                   photoUrl: storyboardController
-                                      .currentStory.photoUrl,
-                                  title:
-                                      storyboardController.currentStory.title),
+                                      .currentStoryboard.photoUrl,
+                                  title: storyboardController
+                                      .currentStoryboard.title),
                             Container(
                               width: width,
                               height: 120,
@@ -122,7 +130,7 @@ class _PreviewStoryboardState extends State<ViewStoryboard> {
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => PublishItemsWidget(
-            story: storyboardController.currentStory,
+            story: storyboardController.currentStoryboard,
             onCaptureImage: (isCapture) async {}));
   }
 
@@ -130,7 +138,7 @@ class _PreviewStoryboardState extends State<ViewStoryboard> {
     showModalBottomSheet(
         context: context,
         builder: (context) => ViewStory(
-              storyboard: storyboardController.currentStory,
+              storyboard: storyboardController.currentStoryboard,
             ));
   }
 }

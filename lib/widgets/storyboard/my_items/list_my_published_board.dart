@@ -1,5 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -22,7 +23,7 @@ class ListMyPublishedStories extends StatefulWidget {
 class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
   late AppLocalizations _i18n;
   double itemHeight = 150;
-  final _storyApi = StoryApi();
+  final _storyboardApi = StoryboardApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
@@ -37,7 +38,8 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
     return RefreshIndicator(
         onRefresh: () async {
           // Refresh Functionality
-          await _storyApi.getMyStories();
+          await _storyboardApi.getMyStoryboards(
+              statusFilter: StoryStatus.PUBLISHED.name);
         },
         child: storyboardController.published.isEmpty
             ? Align(
@@ -69,7 +71,7 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
   }
 
   void _onStoryClick(int index, Storyboard story) {
-    storyboardController.currentStory = story;
+    storyboardController.currentStoryboard = story;
     Get.to(() => ViewStoryboard());
   }
 

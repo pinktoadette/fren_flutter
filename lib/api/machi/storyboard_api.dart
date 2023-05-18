@@ -68,11 +68,12 @@ class StoryboardApi {
     }
   }
 
-  Future<List<Storyboard>> getMyStoryboards() async {
+  Future<List<Storyboard>> getMyStoryboards({String? statusFilter}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
-      String url = '${baseUri}my_storyboards';
+      String url =
+          '${baseUri}my_storyboards${statusFilter != null ? "?status=$statusFilter" : ""}';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
