@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -7,22 +6,19 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 import 'package:onboarding/onboarding.dart';
 
-class StoryItemWidget extends StatefulWidget {
+class PageItemWidget extends StatefulWidget {
   final Story item;
-  const StoryItemWidget({Key? key, required this.item}) : super(key: key);
+  const PageItemWidget({Key? key, required this.item}) : super(key: key);
 
   @override
-  _StoryItemWidgettState createState() => _StoryItemWidgettState();
+  _PageItemWidgetState createState() => _PageItemWidgetState();
 }
 
-class _StoryItemWidgettState extends State<StoryItemWidget> {
+class _PageItemWidgetState extends State<PageItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   late AppLocalizations _i18n;

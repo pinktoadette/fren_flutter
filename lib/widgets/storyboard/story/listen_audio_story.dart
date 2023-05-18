@@ -8,15 +8,15 @@ import 'package:machi_app/widgets/audio/mini_play_control.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
 // View details of each message
-class ViewStory extends StatefulWidget {
+class ViewAudioStory extends StatefulWidget {
   final Storyboard storyboard;
-  const ViewStory({Key? key, required this.storyboard}) : super(key: key);
+  const ViewAudioStory({Key? key, required this.storyboard}) : super(key: key);
 
   @override
-  _ViewStoryState createState() => _ViewStoryState();
+  _ViewAudioStoryState createState() => _ViewAudioStoryState();
 }
 
-class _ViewStoryState extends State<ViewStory> {
+class _ViewAudioStoryState extends State<ViewAudioStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
