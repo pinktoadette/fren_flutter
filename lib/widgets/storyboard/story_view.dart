@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -48,7 +47,7 @@ class _StoryViewState extends State<StoryViewDetails> {
 
   Widget _showMessage(BuildContext context, dynamic message) {
     final firstMessage = message;
-    return Text("hi");
+    return const Text("hi");
     switch (firstMessage.type) {
       case (types.MessageType.text):
         return Text(firstMessage.text);

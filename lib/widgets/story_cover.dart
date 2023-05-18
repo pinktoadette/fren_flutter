@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/datas/user.dart';
-import 'package:machi_app/screens/user/profile_screen.dart';
-import 'package:get/get.dart';
 
 /// Storyboard or story photoUrl cover
 class StoryCover extends StatelessWidget {

@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
@@ -13,13 +12,10 @@ import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/tabs/conversations_tab.dart';
-import 'package:machi_app/screens/notifications_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
-import 'package:machi_app/widgets/app_logo.dart';
-import 'package:machi_app/tabs/playlist.dart';
+import 'package:machi_app/tabs/playlist_tab.dart';
 import 'package:machi_app/widgets/audio/main_play.dart';
-import 'package:machi_app/widgets/frosted_app_bar.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -198,33 +194,6 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      // appBar: AppBar(
-      //   backgroundColor: Colors.transparent,
-      //   elevation: 0.0,
-      //   title: const Row(
-      //     children: [
-      //       AppLogo(),
-      //       SizedBox(width: 10),
-      //     ],
-      //   ),
-      //   actions: [
-      //     Padding(
-      //         padding: const EdgeInsets.only(right: 10),
-      //         child: Row(
-      //           mainAxisAlignment: MainAxisAlignment.start,
-      //           crossAxisAlignment: CrossAxisAlignment.end,
-      //           children: [
-      //             IconButton(
-      //                 icon: _getNotificationCounter(),
-      //                 onPressed: () async {
-      //                   // Go to Notifications Screen
-      //                   Navigator.of(context).push(MaterialPageRoute(
-      //                       builder: (context) => NotificationsScreen()));
-      //                 }),
-      //           ],
-      //         )),
-      //   ],
-      // ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           elevation: Platform.isIOS ? 0 : 8,
@@ -264,29 +233,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Iconsax.user)),
           ]),
       body: _showCurrentNavBar(),
-      // CustomScrollView(
-      //   slivers: [
-      //     FrostedAppBar(title: "m", showLeading: true, actions: [
-      //       Padding(
-      //           padding: const EdgeInsets.only(right: 10),
-      //           child: Row(
-      //             mainAxisAlignment: MainAxisAlignment.start,
-      //             crossAxisAlignment: CrossAxisAlignment.end,
-      //             children: [
-      //               IconButton(
-      //                   icon: _getNotificationCounter(),
-      //                   onPressed: () async {
-      //                     // Go to Notifications Screen
-      //                     Navigator.of(context).push(MaterialPageRoute(
-      //                         builder: (context) => NotificationsScreen()));
-      //                   }),
-      //             ],
-      //           ))
-      //     ]),
-      //     SliverToBoxAdapter(child: _showCurrentNavBar())
-      //   ],
-      // )
-
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: const Row(
           crossAxisAlignment: CrossAxisAlignment.center,

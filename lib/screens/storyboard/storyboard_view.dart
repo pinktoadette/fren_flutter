@@ -6,7 +6,6 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/list_comments.dart';
 import 'package:machi_app/widgets/storyboard/story_stats_action.dart';
-import 'package:machi_app/widgets/storyboard/story_view.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';

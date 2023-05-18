@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_helper.dart';
-import 'package:machi_app/widgets/app_logo.dart';
+import 'package:machi_app/widgets/common/app_logo.dart';
 
 class UpdateAppScreen extends StatelessWidget {
   // Variables

@@ -15,7 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:machi_app/widgets/default_card_border.dart';
+import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';

@@ -1,4 +1,3 @@
-import 'dart:ui';
 
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
@@ -16,7 +15,7 @@ import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
-import 'package:machi_app/widgets/frosted_app_bar.dart';
+import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 
 import '../datas/user.dart';
 import 'explore_bot_tabs.dart';
@@ -32,7 +31,6 @@ class ConversationsTab extends StatelessWidget {
     ChatController chatController = Get.find(tag: 'chatroom');
     User self = UserModel().user;
 
-    /// Initialization
     final _i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
 

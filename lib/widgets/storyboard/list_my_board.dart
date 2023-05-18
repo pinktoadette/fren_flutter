@@ -135,7 +135,7 @@ class _MyStoriesState extends State<ListMyStories> {
     if (story.isEmpty) {
       return const SizedBox.shrink();
     }
-    return Row(
+    return const Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // if (firstText != null)

@@ -29,56 +29,76 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        leadingWidth: width,
-        leading: TabBar(
-          indicatorWeight: 10,
-          indicatorPadding:
-              const EdgeInsets.only(bottom: 8, top: 2, right: 5, left: 5),
-          indicator: BoxDecoration(
-            borderRadius: BorderRadius.circular(
-              10.0,
+      body: Container(
+        padding: const EdgeInsets.only(left: 20, top: 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 30,
             ),
-            color: Theme.of(context).colorScheme.background,
-            boxShadow: [
-              BoxShadow(
-                color: Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
-                spreadRadius: 1,
-                blurRadius: 2,
-                offset: const Offset(0, 3), // changes position of shadow
-              ),
-            ],
-          ),
-          controller: _tabController.tabController,
-          tabs: <Widget>[
-            Tab(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _i18n.translate("storyboard"),
-                    style: Theme.of(context).textTheme.labelMedium,
+            Text(
+              _i18n.translate("storycast_board"),
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TabBar(
+              indicatorWeight: 10,
+              indicatorPadding: const EdgeInsets.only(bottom: 8, top: 2),
+              indicator: BoxDecoration(
+                borderRadius: BorderRadius.circular(
+                  10.0,
+                ),
+                color: Theme.of(context).colorScheme.background,
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
+                    spreadRadius: 1,
+                    blurRadius: 2,
+                    offset: const Offset(0, 3), // changes position of shadow
                   ),
                 ],
               ),
-            ),
-            Tab(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    _i18n.translate("story_published"),
-                    style: Theme.of(context).textTheme.labelMedium,
+              controller: _tabController.tabController,
+              tabs: <Widget>[
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _i18n.translate("storyboard"),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    ],
                   ),
-                ],
-              ),
+                ),
+                Tab(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _i18n.translate("story_published"),
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
             ),
+            Expanded(
+                child: TabBarView(
+              controller: _tabController.tabController,
+              children: const <Widget>[
+                ListMyStories(),
+                ListMyPublishedStories()
+              ],
+            ))
           ],
         ),
-      ),
-      body: TabBarView(
-        controller: _tabController.tabController,
-        children: const <Widget>[ListMyStories()],
       ),
     );
   }

@@ -3,7 +3,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/widgets/app_logo.dart';
+import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 

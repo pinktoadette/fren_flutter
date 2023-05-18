@@ -10,7 +10,6 @@ import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class PublishItemsWidget extends StatefulWidget {
   final Storyboard story;

@@ -3,7 +3,7 @@ import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
-import 'package:machi_app/widgets/avatar_initials.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:get/get.dart';
 
 class TimelineHeader extends StatelessWidget {

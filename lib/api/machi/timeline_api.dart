@@ -4,7 +4,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/datas/timeline.dart';
 import 'package:get/get.dart';
 
 class TimelineApi {

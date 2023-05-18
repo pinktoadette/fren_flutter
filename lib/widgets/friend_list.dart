@@ -7,7 +7,7 @@ import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
-import 'package:machi_app/widgets/avatar_initials.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:get/get.dart';
 
 class FriendListWidget extends StatefulWidget {

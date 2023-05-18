@@ -1,18 +1,14 @@
 import 'dart:typed_data';
 
 import 'package:machi_app/api/machi/stream_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:just_audio/just_audio.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:http/http.dart' as http;
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/datas/timeline.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // view story board as the creator
 // ignore: must_be_immutable

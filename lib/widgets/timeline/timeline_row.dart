@@ -5,14 +5,12 @@ import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/datas/timeline.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/audio/mini_play_control.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 class TimelineRowWidget extends StatefulWidget {
   final Storyboard item;

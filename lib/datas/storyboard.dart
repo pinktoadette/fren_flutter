@@ -1,6 +1,4 @@
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 
 enum StoryStatus { UNPUBLISHED, PUBLISHED, BLOCKED }

@@ -3,7 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:machi_app/api/machi/search_api.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/avatar_initials.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:iconsax/iconsax.dart';
 

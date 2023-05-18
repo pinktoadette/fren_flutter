@@ -2,8 +2,8 @@ import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/default_card_border.dart';
-import 'package:machi_app/widgets/image_source_sheet.dart';
+import 'package:machi_app/widgets/common/default_card_border.dart';
+import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/dialogs/subscribe_dialog.dart';
 import 'package:flutter/material.dart';
 

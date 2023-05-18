@@ -15,7 +15,7 @@ import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/chat/double_tap_message.dart';
 import 'package:machi_app/widgets/chat/header_input.dart';
 import 'package:machi_app/widgets/friend_list.dart';
-import 'package:machi_app/widgets/image_source_sheet.dart';
+import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';

@@ -1,4 +1,3 @@
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
