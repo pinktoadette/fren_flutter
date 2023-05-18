@@ -1,6 +1,7 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
 
+// ignore: constant_identifier_names
 enum StoryStatus { UNPUBLISHED, PUBLISHED, BLOCKED }
 
 class ShortStoryboard {
@@ -60,7 +61,6 @@ class StoryComment {
 }
 
 class Storyboard {
-  /// Using types and Chatroom together
   final String title;
   final String storyboardId;
   final String? summary;
@@ -154,9 +154,7 @@ class Storyboard {
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt(),
         photoUrl: doc[STORYBOARD_PHOTO_URL] ?? "",
-        likes: doc.containsKey(ITEM_LIKES) ? doc[ITEM_LIKES][ITEM_LIKES] : 0,
-        mylikes: doc.containsKey(ITEM_MY_LIKES)
-            ? doc[ITEM_MY_LIKES][ITEM_LIKES]
-            : 0);
+        likes: doc[ITEM_LIKES],
+        mylikes: doc[ITEM_MY_LIKES]);
   }
 }

@@ -21,12 +21,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
 
   @override
   void initState() {
-    _getTimeline();
     super.initState();
-  }
-
-  void _getTimeline() async {
-    await _timelineApi.getTimeline();
   }
 
   @override

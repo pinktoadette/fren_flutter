@@ -6,6 +6,7 @@ import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
@@ -38,6 +39,8 @@ class _HomeScreenState extends State<HomeScreen> {
   final ChatController chatController = Get.find(tag: 'chatroom');
   final BotController botController = Get.find(tag: 'bot');
   final StoryboardController storyController = Get.find(tag: 'storyboard');
+  final TimelineController timelineController = Get.find(tag: 'timeline');
+
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();
@@ -94,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     chatController.initUser();
     chatController.onChatLoad();
     storyController.fetchMyStories();
+    timelineController.getNewTimelineItems();
   }
 
   /// get or create chatroom

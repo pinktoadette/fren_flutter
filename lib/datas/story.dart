@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -65,7 +66,7 @@ class Story {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
     List<Script> scripts = [];
 
-    if (doc.containsKey(SCRIPTS)) {
+    if (doc[SCRIPTS]!.isNotEmpty) {
       doc[SCRIPTS].forEach((script) {
         Script s = Script.fromJson(script);
         scripts.add(s);

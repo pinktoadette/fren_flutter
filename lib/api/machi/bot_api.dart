@@ -10,7 +10,7 @@ import 'package:uuid/uuid.dart';
 
 class BotApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = "${PY_API}bot/";
   final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
 
@@ -27,7 +27,7 @@ class BotApi {
       photoUrl,
       required modelType,
       required about}) async {
-    String url = '${baseUri}bot/create_machi';
+    String url = '${baseUri}machi';
     String uuid = const Uuid().v4().replaceAll("[\\s\\-()]", "");
 
     var data = {
@@ -56,7 +56,7 @@ class BotApi {
   Future<Bot> getBot({
     required botId,
   }) async {
-    String url = '${baseUri}bot/get_machi?botId=$botId';
+    String url = '${baseUri}machi?botId=$botId';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
@@ -70,7 +70,7 @@ class BotApi {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    String url = '${baseUri}bot/update_bot';
+    String url = '${baseUri}machi';
     final dio = await auth.getDio();
     final response = await dio.put(url, data: {...data, botId: botId});
     final getData = response.data;
@@ -94,7 +94,7 @@ class BotApi {
   }
 
   Future<List<Bot>> getMyCreatedBots() async {
-    String url = '${baseUri}bot/my_creation';
+    String url = '${baseUri}get_my_creation';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
@@ -103,7 +103,7 @@ class BotApi {
   }
 
   Future<List<Bot>> addBottoList(String botId) async {
-    String url = '${baseUri}bot/add_machi';
+    String url = '${baseUri}add_machi';
     final dio = await auth.getDio();
     final response = await dio.post(url, data: {BOT_ID: botId});
     final getData = response.data;
@@ -112,7 +112,7 @@ class BotApi {
   }
 
   Future<List<Bot>> myAddedMachi() async {
-    String url = '${baseUri}bot/user_added_machi';
+    String url = '${baseUri}user_added_machi';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
