@@ -94,4 +94,8 @@ class StoryboardController extends GetxController {
         .where((element) => element.status == StoryStatus.PUBLISHED)
         .toList());
   }
+
+  clearStory() {
+    _currentStory = intialStory.obs;
+  }
 }

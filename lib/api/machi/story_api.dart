@@ -38,8 +38,7 @@ class StoryApi {
     }
   }
 
-  Future<Storyboard> addStory(
-      int messageIndex, String messageId, String storyboardId) async {
+  Future<Storyboard> addStory(String messageId, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}story';

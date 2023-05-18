@@ -23,7 +23,6 @@ class _MyStoriesState extends State<ListMyStories> {
   late AppLocalizations _i18n;
   double itemHeight = 120;
   final _storyboardApi = StoryboardApi();
-  final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
@@ -61,48 +60,10 @@ class _MyStoriesState extends State<ListMyStories> {
                         return NoData(
                             text: _i18n.translate("storycast_board_nothing"));
                       }
-                      return InkWell(
-                          onTap: () {
-                            _onStoryClick(index, story);
-                          },
-                          child: StoryboardItemWidget(
-                              item: storyboardController.unpublished[index]));
+                      return StoryboardItemWidget(
+                          message: widget.message,
+                          item: storyboardController.unpublished[index]);
                     }),
               ));
-  }
-
-  void _addMessage(int index, Storyboard story) async {
-    try {
-      await _storyApi.addStory(index, widget.message!.id, story.storyboardId);
-      Navigator.of(context).pop();
-      Get.snackbar(
-        _i18n.translate("story_added"),
-        _i18n.translate("story_added_info"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
-    } catch (err) {
-      debugPrint(err.toString());
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
-  }
-
-  void _onStoryClick(int index, Storyboard story) {
-    widget.message != null
-        ? _addMessage(index, story)
-        : _setCurrentStory(story);
-  }
-
-  void _setCurrentStory(Storyboard storyboard) {
-    storyboardController.currentStoryboard = storyboard;
-    if ((storyboard.story != null) & storyboard.story!.isNotEmpty) {
-      storyboardController.currentStory = storyboard.story![0];
-    }
-    Get.to(() => ViewStoryboard());
   }
 }

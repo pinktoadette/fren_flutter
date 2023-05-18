@@ -13,10 +13,13 @@ import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class StoryboardItemWidget extends StatefulWidget {
   final Storyboard item;
-  const StoryboardItemWidget({Key? key, required this.item}) : super(key: key);
+  final types.Message? message;
+  const StoryboardItemWidget({Key? key, required this.item, this.message})
+      : super(key: key);
 
   @override
   _StoryboardItemWidgettState createState() => _StoryboardItemWidgettState();
@@ -140,18 +143,46 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   Future<void> _onStoryClick() async {
-    storyboardController.currentStoryboard = widget.item;
-    if (widget.item.story!.isNotEmpty) {
-      /// Load the first story if any
-      Story story = await _storyApi.getMyStories(widget.item.story![0].storyId);
-      storyboardController.currentStory = story;
-    }
+    if (widget.message != null) {
+      _addMessage();
+    } else {
+      storyboardController.currentStoryboard = widget.item;
+      if (widget.item.story!.isNotEmpty) {
+        /// Load the first story if any
+        Story story =
+            await _storyApi.getMyStories(widget.item.story![0].storyId);
+        storyboardController.currentStory = story;
+      } else {
+        storyboardController.currentStory = storyboardController.clearStory();
+      }
 
-    Get.to(() => ViewStoryboard());
+      Get.to(() => ViewStoryboard());
+    }
   }
 
   Future<String> _onLikePressed(Storyboard item, bool value) async {
     return await _timelineApi.likeStoryMachi(
         "storyboard", item.storyboardId, value == true ? 1 : 0);
+  }
+
+  void _addMessage() async {
+    try {
+      await _storyApi.addStory(widget.message!.id, widget.item.storyboardId);
+      Navigator.of(context).pop();
+      Get.snackbar(
+        _i18n.translate("story_added"),
+        _i18n.translate("story_added_info"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 }
