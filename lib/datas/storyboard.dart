@@ -138,7 +138,7 @@ class Storyboard {
     StoryUser user = StoryUser.fromDocument(doc[STORY_CREATED_BY]);
 
     List<Story> listScene = [];
-    if (doc.containsKey(STORY) & doc[STORY].isNotEmpty) {
+    if (doc.containsKey(STORY)) {
       doc[STORY].forEach((sto) {
         Story s =
             Story.fromJson({...sto, STORY_CREATED_BY: doc[STORY_CREATED_BY]});

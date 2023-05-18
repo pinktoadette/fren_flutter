@@ -194,18 +194,12 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    final width = MediaQuery.of(context).size.width;
+    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
-        flexibleSpace: ClipRect(
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 1, sigmaY: 10),
-            child: Container(
-              color: Colors.transparent,
-            ),
-          ),
-        ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
         title: const Row(
           children: [
             AppLogo(),

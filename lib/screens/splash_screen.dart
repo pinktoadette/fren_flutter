@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/services.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
 import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
@@ -72,18 +73,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
-        child: Container(
-          color: Colors.white,
-          child: Center(
-            child: SingleChildScrollView(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [Frankloader()],
-              ),
-            ),
-          ),
-        ),
+      appBar: AppBar(
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.white),
+      ),
+      body: Center(
+        child: Frankloader(),
       ),
     );
   }

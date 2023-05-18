@@ -60,7 +60,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Image.asset("assets/images/machi.png"),
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
-                  style: const TextStyle(fontSize: 18, color: Colors.black)),
+                  style: Theme.of(context).textTheme.headlineMedium),
               const SizedBox(
                 height: 20,
               ),
