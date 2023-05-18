@@ -6,7 +6,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
-import 'package:machi_app/widgets/storyboard/list_my_board.dart';
+import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: must_be_immutable

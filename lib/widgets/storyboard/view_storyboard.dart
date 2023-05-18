@@ -5,8 +5,6 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/audio/play_control.dart';
-import 'package:machi_app/widgets/decoration/fade_effect.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:machi_app/widgets/storyboard/view_story.dart';

@@ -4,7 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
-import 'package:machi_app/widgets/timeline/timeline_row.dart';
+import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
 class TimelineWidget extends StatefulWidget {
@@ -63,7 +63,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 },
                 itemCount: timelineController.feedList.length,
                 itemBuilder: ((context, index) {
-                  return TimelineRowWidget(
+                  return StoryboardItemWidget(
                       item: timelineController.feedList[index]);
                 })))));
   }

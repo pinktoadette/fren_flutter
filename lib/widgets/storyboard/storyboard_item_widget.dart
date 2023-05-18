@@ -6,21 +6,21 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/audio/mini_play_control.dart';
+import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
 
-class TimelineRowWidget extends StatefulWidget {
+class StoryboardItemWidget extends StatefulWidget {
   final Storyboard item;
-  const TimelineRowWidget({Key? key, required this.item}) : super(key: key);
+  const StoryboardItemWidget({Key? key, required this.item}) : super(key: key);
 
   @override
-  _TimelineRowWidgetState createState() => _TimelineRowWidgetState();
+  _StoryboardItemWidgettState createState() => _StoryboardItemWidgettState();
 }
 
-class _TimelineRowWidgetState extends State<TimelineRowWidget> {
+class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   late AppLocalizations _i18n;
@@ -37,7 +37,9 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     double storyCoverWidth = 120;
-    double padding = 20;
+    double padding = 15;
+    double playWidth =
+        widget.item.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
     return Card(
         elevation: 1,
         semanticContainer: true,
@@ -63,8 +65,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                     _onStoryClick();
                   },
                   child: SizedBox(
-                      width: width -
-                          (storyCoverWidth + PLAY_BUTTON_WIDTH + padding * 3.2),
+                      width:
+                          width - (storyCoverWidth + playWidth + padding * 3.2),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -85,40 +87,52 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                               overflow: TextOverflow.fade,
                             ),
                           ),
-                          TextButton.icon(
-                            onPressed: null,
-                            icon: const Icon(Iconsax.menu_1),
-                            label: Text("${widget.item.story?.length} series",
-                                style: const TextStyle(fontSize: 12)),
-                          ),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              TextButton.icon(
+                                onPressed: null,
+                                icon: const Icon(Iconsax.menu_1),
+                                label: Text(
+                                    "${widget.item.story?.length} series",
+                                    style: const TextStyle(fontSize: 12)),
+                              ),
+                              if (widget.item.status != StoryStatus.PUBLISHED)
+                                Text(
+                                    "update ${formatDate(widget.item.updatedAt)}",
+                                    style: const TextStyle(fontSize: 10))
+                            ],
+                          )
                         ],
                       )),
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                LikeButton(
-                  isLiked: widget.item.mylikes == 1 ? true : false,
-                  onTap: (value) async {
-                    await _onLikePressed(widget.item, !value);
-                    return !value;
-                  },
-                  bubblesColor: BubblesColor(
-                    dotPrimaryColor: APP_LIKE_COLOR,
-                    dotSecondaryColor: Theme.of(context).primaryColor,
+            if (widget.item.status == StoryStatus.PUBLISHED)
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  LikeButton(
+                    isLiked: widget.item.mylikes == 1 ? true : false,
+                    onTap: (value) async {
+                      await _onLikePressed(widget.item, !value);
+                      return !value;
+                    },
+                    bubblesColor: BubblesColor(
+                      dotPrimaryColor: APP_LIKE_COLOR,
+                      dotSecondaryColor: Theme.of(context).primaryColor,
+                    ),
+                    likeBuilder: (bool isLiked) {
+                      return Icon(
+                        isLiked ? Icons.favorite : Icons.favorite_border,
+                        color: isLiked ? APP_LIKE_COLOR : Colors.grey,
+                      );
+                    },
+                    likeCount: widget.item.likes,
                   ),
-                  likeBuilder: (bool isLiked) {
-                    return Icon(
-                      isLiked ? Icons.favorite : Icons.favorite_border,
-                      color: isLiked ? APP_LIKE_COLOR : Colors.grey,
-                    );
-                  },
-                  likeCount: widget.item.likes,
-                ),
-              ],
-            )
+                ],
+              )
           ],
         ));
   }

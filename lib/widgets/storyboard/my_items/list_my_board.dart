@@ -8,6 +8,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 
@@ -63,38 +64,8 @@ class _MyStoriesState extends State<ListMyStories> {
                           onTap: () {
                             _onStoryClick(index, story);
                           },
-                          child: Card(
-                              child: Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(5),
-                            height: itemHeight,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(story.title,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall),
-                                      const Spacer(),
-                                      Text(_i18n.translate("story_created_at"),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall),
-                                      const Text(" ∙ "),
-                                      Text(formatDate(story.createdAt),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall)
-                                    ],
-                                  ),
-                                  if (story.story != null)
-                                    _showMessage(context, story.story!),
-                                ]),
-                          )));
+                          child: StoryboardItemWidget(
+                              item: storyboardController.unpublished[index]));
                     }),
               ));
   }

@@ -9,7 +9,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/no_data.dart';
-import 'package:machi_app/widgets/timeline/timeline_row.dart';
+import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -189,7 +189,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 Storyboard item = snapshot.data![index];
-                return TimelineRowWidget(item: item);
+                return StoryboardItemWidget(item: item);
               },
             );
           },
