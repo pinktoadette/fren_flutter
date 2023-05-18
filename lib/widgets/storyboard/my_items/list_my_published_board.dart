@@ -7,6 +7,8 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 
 class ListMyPublishedStories extends StatefulWidget {
@@ -52,51 +54,16 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
                     itemCount: storyboardController.published.length,
                     itemBuilder: (BuildContext ctx, index) {
                       Storyboard story = storyboardController.published[index];
-                      if (story.title.isEmpty) {
-                        return Align(
-                          alignment: Alignment.center,
-                          child: Text(
-                            _i18n.translate("story_nothing"),
-                            textAlign: TextAlign.center,
-                          ),
-                        );
+                      if (story.title == '') {
+                        return NoData(
+                            text: _i18n.translate("storycast_board_nothing"));
                       }
                       return InkWell(
                           onTap: () {
                             _onStoryClick(index, story);
                           },
-                          child: Card(
-                              child: Container(
-                            margin: const EdgeInsets.all(10),
-                            padding: const EdgeInsets.all(5),
-                            height: itemHeight,
-                            child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    children: [
-                                      Text(story.title,
-                                          overflow: TextOverflow.ellipsis,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .headlineSmall),
-                                      const Spacer(),
-                                      Text(story.status.name,
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall),
-                                      const Text(" ∙ "),
-                                      Text(formatDate(story.createdAt),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall)
-                                    ],
-                                  ),
-                                  if (story.story != null)
-                                    _showMessage(context, story.story!),
-                                ]),
-                          )));
+                          child: StoryboardItemWidget(
+                              item: storyboardController.published[index]));
                     }),
               ));
   }

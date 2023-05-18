@@ -2,11 +2,9 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/widgets/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
@@ -100,26 +98,5 @@ class _MyStoriesState extends State<ListMyStories> {
   void _setCurrentStory(Storyboard story) {
     storyboardController.currentStory = story;
     Get.to(() => ViewStoryboard());
-  }
-
-  Widget _showMessage(BuildContext context, List<Story> story) {
-    if (story.isEmpty) {
-      return const SizedBox.shrink();
-    }
-    return const Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        // if (firstText != null)
-        //   SizedBox(
-        //     width: firstImage != null ? width * 0.65 - 20 : width - 40,
-        //     height: itemHeight - 60,
-        //     child: Text(
-        //       story.title,
-        //       style: Theme.of(context).textTheme.bodySmall,
-        //       // overflow: TextOverflow.ellipsis,
-        //     ),
-        //   ),
-      ],
-    );
   }
 }
