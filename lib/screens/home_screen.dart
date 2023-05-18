@@ -19,6 +19,7 @@ import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/widgets/app_logo.dart';
 import 'package:machi_app/tabs/playlist.dart';
 import 'package:machi_app/widgets/audio/main_play.dart';
+import 'package:machi_app/widgets/frosted_app_bar.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -197,39 +198,39 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0.0,
-        title: const Row(
-          children: [
-            AppLogo(),
-            SizedBox(width: 10),
-          ],
-        ),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 10),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  IconButton(
-                      icon: _getNotificationCounter(),
-                      onPressed: () async {
-                        // Go to Notifications Screen
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => NotificationsScreen()));
-                      }),
-                ],
-              )),
-        ],
-      ),
+      // appBar: AppBar(
+      //   backgroundColor: Colors.transparent,
+      //   elevation: 0.0,
+      //   title: const Row(
+      //     children: [
+      //       AppLogo(),
+      //       SizedBox(width: 10),
+      //     ],
+      //   ),
+      //   actions: [
+      //     Padding(
+      //         padding: const EdgeInsets.only(right: 10),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.start,
+      //           crossAxisAlignment: CrossAxisAlignment.end,
+      //           children: [
+      //             IconButton(
+      //                 icon: _getNotificationCounter(),
+      //                 onPressed: () async {
+      //                   // Go to Notifications Screen
+      //                   Navigator.of(context).push(MaterialPageRoute(
+      //                       builder: (context) => NotificationsScreen()));
+      //                 }),
+      //           ],
+      //         )),
+      //   ],
+      // ),
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
           elevation: Platform.isIOS ? 0 : 8,
           currentIndex: _selectedIndex,
           backgroundColor: Theme.of(context).colorScheme.background,
-          selectedItemColor: Theme.of(context).colorScheme.primary,
+          selectedItemColor: APP_ACCENT_COLOR,
           unselectedItemColor:
               Theme.of(context).colorScheme.primary.withAlpha(155),
           onTap: _onTappedNavBar,
@@ -263,63 +264,36 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: const Icon(Iconsax.user)),
           ]),
       body: _showCurrentNavBar(),
+      // CustomScrollView(
+      //   slivers: [
+      //     FrostedAppBar(title: "m", showLeading: true, actions: [
+      //       Padding(
+      //           padding: const EdgeInsets.only(right: 10),
+      //           child: Row(
+      //             mainAxisAlignment: MainAxisAlignment.start,
+      //             crossAxisAlignment: CrossAxisAlignment.end,
+      //             children: [
+      //               IconButton(
+      //                   icon: _getNotificationCounter(),
+      //                   onPressed: () async {
+      //                     // Go to Notifications Screen
+      //                     Navigator.of(context).push(MaterialPageRoute(
+      //                         builder: (context) => NotificationsScreen()));
+      //                   }),
+      //             ],
+      //           ))
+      //     ]),
+      //     SliverToBoxAdapter(child: _showCurrentNavBar())
+      //   ],
+      // )
+
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: const Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             MainControlWidget(),
-          ])
-
-      // ExpandableFab(
-      //     isOpen: isFabOpen,
-      //     distance: 80.0,
-      //     children: [
-      //       ActionButton(
-      //         onPressed: () => {
-      //           showModalBottomSheet<void>(
-      //               context: context,
-      //               isScrollControlled: true,
-      //               builder: (context) => FractionallySizedBox(
-      //                   heightFactor: 0.9,
-      //                   child: DraggableScrollableSheet(
-      //                     snap: true,
-      //                     initialChildSize: 1,
-      //                     minChildSize: 1,
-      //                     builder: (context, scrollController) =>
-      //                         SingleChildScrollView(
-      //                       controller: scrollController,
-      //                       child: const CreateMachiWidget(),
-      //                     ),
-      //                   ))),
-      //           setState(() {
-      //             isFabOpen = false;
-      //           })
-      //         },
-      //         icon: const Icon(Iconsax.pen_add),
-      //       ),
-      //       ActionButton(
-      //         onPressed: () => {
-      //           showModalBottomSheet<void>(
-      //             context: context,
-      //             enableDrag: true,
-      //             isScrollControlled: true,
-      //             builder: (context) {
-      //               return const FractionallySizedBox(
-      //                   heightFactor: 0.9, child: ExploreBotTab()
-      //                   //  ListMyBot()
-      //                   );
-      //             },
-      //           ),
-      //           setState(() {
-      //             isFabOpen = false;
-      //           })
-      //         },
-      //         icon: const Icon(Iconsax.note),
-      //       ),
-      //     ],
-      //   )
-      ,
+          ]),
     );
   }
 

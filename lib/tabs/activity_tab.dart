@@ -1,10 +1,17 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/bot_api.dart';
+import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/notifications_screen.dart';
+import 'package:machi_app/widgets/app_logo.dart';
 import 'package:machi_app/widgets/discover_card.dart';
+import 'package:machi_app/widgets/frosted_app_bar.dart';
+import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:machi_app/widgets/search_user.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
@@ -20,6 +27,7 @@ class ActivityTab extends StatefulWidget {
 
 class _ActivityTabState extends State<ActivityTab> {
   final TimelineController timelineController = Get.find(tag: 'timeline');
+  final _notificationsApi = NotificationsApi();
 
   final _botApi = BotApi();
   List _listFeatures = [];
@@ -47,32 +55,80 @@ class _ActivityTabState extends State<ActivityTab> {
   @override
   Widget build(BuildContext context) {
     if (_isInitiatedFrank == true) {
-      return SingleChildScrollView(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SearchBarWidget(),
-          const SubscriptionCard(),
-          TipWidget(),
-          const TimelineWidget(),
-          const SizedBox(
-            height: 100,
-          )
-        ],
-      ));
-    }
-    return Scaffold(
-        body: Column(children: [
-      SingleChildScrollView(
-        child: Column(
+      return Scaffold(
+          body: CustomScrollView(slivers: [
+        FrostedAppBar(
+            title: const AppLogo(),
+            actions: [
+              Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      IconButton(
+                          icon: _getNotificationCounter(),
+                          onPressed: () async {
+                            // Go to Notifications Screen
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => NotificationsScreen()));
+                          }),
+                    ],
+                  )),
+            ],
+            showLeading: true),
+        SliverToBoxAdapter(
+            child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // ActivityWidget()
-            if (_currentStep < _listFeatures.length) _onCardClick(),
+            const SearchBarWidget(),
+            const SubscriptionCard(),
+            TipWidget(),
+            const TimelineWidget(),
+            const SizedBox(
+              height: 100,
+            )
           ],
-        ),
-      ),
-      const Spacer(),
+        ))
+      ]));
+    }
+    // AppLogo()
+    return Scaffold(
+        body: CustomScrollView(slivers: [
+      FrostedAppBar(
+          title: const AppLogo(),
+          actions: [
+            Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    IconButton(
+                        icon: _getNotificationCounter(),
+                        onPressed: () async {
+                          // Go to Notifications Screen
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => NotificationsScreen()));
+                        }),
+                  ],
+                )),
+          ],
+          showLeading: true),
+      Column(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // ActivityWidget()
+                if (_currentStep < _listFeatures.length) _onCardClick(),
+              ],
+            ),
+          ),
+          const Spacer(),
+        ],
+      )
     ]));
   }
 
@@ -125,5 +181,30 @@ class _ActivityTabState extends State<ActivityTab> {
     setState(() {
       _isInitiatedFrank = true;
     });
+  }
+
+  /// Count unread notifications
+  Widget _getNotificationCounter() {
+    const icon = Icon(Iconsax.notification);
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _notificationsApi.getNotifications(),
+        builder: (context, snapshot) {
+          // Check result
+          if (!snapshot.hasData) {
+            return icon;
+          } else {
+            /// Get total counter to alert user
+            final total = snapshot.data!.docs
+                .where((doc) => doc.data()[NOTIF_READ] == false)
+                .toList()
+                .length;
+            if (total == 0) return icon;
+            return NotificationCounter(
+              icon: icon,
+              counter: total,
+              iconPadding: 10,
+            );
+          }
+        });
   }
 }
