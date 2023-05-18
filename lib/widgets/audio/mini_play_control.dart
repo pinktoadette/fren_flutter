@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:machi_app/api/machi/stream_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -86,8 +87,8 @@ class _MiniAudioWidgetState extends State<MiniAudioWidget> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 45,
-      width: 45,
+      height: PLAY_BUTTON_WIDTH,
+      width: PLAY_BUTTON_WIDTH,
       child: _playButton(),
     );
   }

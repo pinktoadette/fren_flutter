@@ -128,7 +128,7 @@ class _MyStoriesState extends State<ListMyStories> {
 
   void _setCurrentStory(Storyboard story) {
     storyboardController.currentStory = story;
-    Get.to(() => ViewStory());
+    Get.to(() => ViewStoryboard());
   }
 
   Widget _showMessage(BuildContext context, List<Story> story) {

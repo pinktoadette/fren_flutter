@@ -43,6 +43,8 @@ const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/api/";
 const PY_API = PY_DEV;
 const SOCKET_WS = "wss://api.mymachi.app/";
 
+const double PLAY_BUTTON_WIDTH = 45;
+
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.
 ///

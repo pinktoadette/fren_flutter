@@ -36,7 +36,8 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
-
+    double storyCoverWidth = 120;
+    double padding = 20;
     return Card(
         elevation: 1,
         semanticContainer: true,
@@ -45,23 +46,25 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Padding(
-                padding: const EdgeInsets.all(10),
+                padding: EdgeInsets.all(padding),
                 child: InkWell(
                     onTap: () async {
                       _onStoryClick();
                     },
                     child: StoryCover(
+                        width: storyCoverWidth,
                         photoUrl: widget.item.photoUrl,
                         title: widget.item.title))),
-            SizedBox(
-                width: width - 190,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        _onStoryClick();
-                      },
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                InkWell(
+                  onTap: () async {
+                    _onStoryClick();
+                  },
+                  child: SizedBox(
+                      width: width -
+                          (storyCoverWidth + PLAY_BUTTON_WIDTH + padding * 3.2),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -89,10 +92,10 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                                 style: const TextStyle(fontSize: 12)),
                           ),
                         ],
-                      ),
-                    ),
-                  ],
-                )),
+                      )),
+                ),
+              ],
+            ),
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
@@ -114,17 +117,6 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
                   },
                   likeCount: widget.item.likes,
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
-                InkWell(
-                  onTap: () async {
-                    Storyboard story = await _storyboardApi
-                        .getStoryboardById(widget.item.storyboardId);
-                    storyboardController.currentStory = story;
-                  },
-                  child: MiniAudioWidget(post: widget.item),
-                ),
               ],
             )
           ],
@@ -135,7 +127,7 @@ class _TimelineRowWidgetState extends State<TimelineRowWidget> {
     Storyboard story =
         await _storyboardApi.getStoryboardById(widget.item.storyboardId);
     storyboardController.currentStory = story;
-    Get.to(() => ViewStory());
+    Get.to(() => ViewStoryboard());
   }
 
   Future<String> _onLikePressed(Storyboard item, bool value) async {

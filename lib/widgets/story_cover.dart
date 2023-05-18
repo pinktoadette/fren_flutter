@@ -5,9 +5,16 @@ import 'package:machi_app/constants/constants.dart';
 class StoryCover extends StatelessWidget {
   final String? photoUrl;
   final String title;
+  final double? width;
+  final double? height;
   final double? radius;
   const StoryCover(
-      {Key? key, this.radius, required this.photoUrl, required this.title})
+      {Key? key,
+      this.radius,
+      required this.photoUrl,
+      required this.title,
+      this.width,
+      this.height})
       : super(key: key);
 
   @override
@@ -24,14 +31,14 @@ class StoryCover extends StatelessWidget {
                   spreadRadius: -9)
             ]),
         child: SizedBox(
-            height: 120,
-            width: 100,
+            height: height ?? 120,
+            width: width ?? 100,
             child: (photoUrl == null)
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(10.0),
                     child: Image.network(
                       photoUrl!,
-                      width: 150,
+                      width: width ?? 120,
                       fit: BoxFit.cover,
                     ),
                   )

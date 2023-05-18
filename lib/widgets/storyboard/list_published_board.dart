@@ -6,8 +6,8 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 
 class ListMyPublishedStories extends StatefulWidget {
   final types.Message? message;
@@ -103,7 +103,7 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
 
   void _onStoryClick(int index, Storyboard story) {
     storyboardController.currentStory = story;
-    Get.to(() => ViewStory());
+    Get.to(() => ViewStoryboard());
   }
 
   Widget _showMessage(BuildContext context, List<Story> message) {
