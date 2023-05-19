@@ -6,7 +6,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:get/get.dart';
 
 class ManageBotScreen extends StatefulWidget {

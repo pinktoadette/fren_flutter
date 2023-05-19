@@ -528,11 +528,10 @@ class UserModel extends Model {
     required VoidCallback onSuccess,
     required VoidCallback onFail,
   }) async {
-    // Variables
-    String country = '';
-    String locality = '';
+    // String country = '';
+    // String locality = '';
 
-    GeoFirePoint geoPoint;
+    // GeoFirePoint geoPoint;
   }
 
   /// Validate the user's maximum distance to

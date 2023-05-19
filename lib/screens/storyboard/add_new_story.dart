@@ -1,23 +1,16 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dotted_border/dotted_border.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
-import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
-import 'package:machi_app/widgets/no_data.dart';
 import 'package:machi_app/widgets/story_cover.dart';
-import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/widgets/storyboard/story/storyboard_header.dart';
 
 class AddNewStory extends StatefulWidget {
   final Storyboard storyboard;
@@ -49,7 +42,6 @@ class _AddNewStoryState extends State<AddNewStory> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,

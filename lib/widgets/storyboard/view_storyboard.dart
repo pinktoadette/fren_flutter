@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';

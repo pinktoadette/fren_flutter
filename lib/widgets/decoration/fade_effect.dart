@@ -20,5 +20,5 @@ class FadingEffect extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(FadingEffect linePainter) => false;
+  bool shouldRepaint(FadingEffect oldDelegate) => false;
 }

@@ -20,6 +20,5 @@ class TimelineController extends GetxController {
 
   void getNewTimelineItems() async {
     await _timelineApi.getTimeline();
-    ;
   }
 }

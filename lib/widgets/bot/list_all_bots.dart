@@ -4,7 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
-import 'package:machi_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 
 import 'row_bot_info.dart';
 

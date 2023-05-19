@@ -1,11 +1,10 @@
 import 'package:machi_app/api/machi/story_api.dart';
-import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/widgets/decoration/fade_effect.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 
 /// Need to call pages since storyboard
@@ -44,57 +43,44 @@ class _StoryPageViewState extends State<StoryPageView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     double headerHeight = 170;
+    if (story == null) {
+      return NoData(text: _i18n.translate("loading"));
+    }
     return Scaffold(
         appBar: AppBar(
           title: Text(_i18n.translate("story_collection")),
         ),
-        body: Stack(children: [
-          Column(
-            children: [
-              StoryHeaderWidget(story: widget.story),
-              if (story != null)
-                SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(
-                      children: story!.pages!.map((e) {
-                        return Container(
-                            height: height - headerHeight,
-                            padding: const EdgeInsets.all(2),
-                            width: width * 0.9,
-                            child: SingleChildScrollView(
-                              scrollDirection: Axis.vertical,
-                              child: Card(
-                                child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: e.scripts!.map((script) {
-                                        return Text(
-                                          script.text ?? "",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        );
-                                      }).toList()),
-                                ),
-                              ),
-                            ));
-                      }).toList(),
-                    ))
-            ],
-          ),
-          Positioned(
-              bottom: 0,
-              child: Container(
-                color: Colors.white,
-                child: CustomPaint(
-                  foregroundPainter: FadingEffect(),
-                  //child gets the fading effect
-                  child:
-                      Text('Test text', style: TextStyle(color: Colors.black)),
-                ),
-              ))
-        ]));
+        body: Column(
+          children: [
+            StoryHeaderWidget(story: story!),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: story!.pages!.map((e) {
+                    return Container(
+                        height: height - headerHeight,
+                        padding: const EdgeInsets.all(2),
+                        width: width * 0.9,
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.vertical,
+                          child: Card(
+                            child: Container(
+                              padding: const EdgeInsets.all(20),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: e.scripts!.map((script) {
+                                    return Text(
+                                      script.text ?? "",
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    );
+                                  }).toList()),
+                            ),
+                          ),
+                        ));
+                  }).toList(),
+                )),
+          ],
+        ));
   }
 }

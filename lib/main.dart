@@ -280,7 +280,7 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: Color.fromARGB(241, 58, 57, 57),
+          color: const Color.fromARGB(241, 58, 57, 57),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           shape: defaultCardBorder()),

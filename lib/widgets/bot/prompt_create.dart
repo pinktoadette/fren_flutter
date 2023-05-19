@@ -11,7 +11,7 @@ import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
-import 'package:machi_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:get/get.dart';
 
 class CreateMachiWidget extends StatefulWidget {

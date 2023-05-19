@@ -31,7 +31,6 @@ class AuthApi {
   }
 
   Future<Dio> getAzure() async {
-    String url = 'https://eastus.tts.speech.microsoft.com/cognitiveservices/v1';
     String token = await getFirebaseUser!.getIdToken();
     log(token);
     final dio = Dio();

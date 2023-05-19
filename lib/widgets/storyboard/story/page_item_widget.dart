@@ -42,7 +42,7 @@ class _PageItemWidgetState extends State<PageItemWidget> {
         widget.item.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
     return Onboarding(
       startPageIndex: 0,
-      pages: [],
+      pages: const [],
     );
   }
 

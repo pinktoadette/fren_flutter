@@ -27,19 +27,16 @@ class NoData extends StatelessWidget {
     }
 
     final height = MediaQuery.of(context).size.height;
-
-    return SizedBox(
-      height: height - 100,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          // Show icon
-          _icon,
-          Text(text,
-              style: const TextStyle(fontSize: 18),
-              textAlign: TextAlign.center),
-        ],
-      ),
-    );
+    return Center(
+        child: Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        // Show icon
+        _icon,
+        Text(text,
+            style: Theme.of(context).textTheme.bodySmall,
+            textAlign: TextAlign.center),
+      ],
+    ));
   }
 }

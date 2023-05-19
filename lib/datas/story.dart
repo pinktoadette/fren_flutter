@@ -26,6 +26,7 @@ class Story {
   final String storyId;
   final String title;
   final String subtitle;
+  final String? summary;
   final StoryUser createdBy;
   final StoryStatus status;
   final String? photoUrl;
@@ -41,21 +42,22 @@ class Story {
       required this.createdBy,
       required this.status,
       this.photoUrl,
+      this.summary,
       required this.category,
       this.pages,
       this.createdAt,
       this.updatedAt});
 
-  Story copyWith({
-    String? storyId,
-    String? title,
-    String? subtitle,
-    StoryUser? createdBy,
-    StoryStatus? status,
-    List<StoryPages>? pages,
-    String? photoUrl,
-    String? category,
-  }) {
+  Story copyWith(
+      {String? storyId,
+      String? title,
+      String? subtitle,
+      StoryUser? createdBy,
+      StoryStatus? status,
+      List<StoryPages>? pages,
+      String? photoUrl,
+      String? category,
+      String? summary}) {
     return Story(
         storyId: storyId ?? this.storyId,
         title: title ?? this.title,
@@ -63,6 +65,7 @@ class Story {
         createdBy: createdBy ?? this.createdBy,
         status: status ?? this.status,
         pages: pages ?? this.pages,
+        summary: summary ?? this.summary,
         photoUrl: photoUrl ?? this.photoUrl,
         category: category ?? this.category);
   }
@@ -75,6 +78,7 @@ class Story {
       STORY_CATEGORY: category,
       STORY_STATUS: status,
       STORY_PHOTO_URL: photoUrl,
+      STORY_SUMMARY: summary,
       BOT_CREATED_BY: createdBy,
       CREATED_AT: createdAt,
       UPDATED_AT: updatedAt,
