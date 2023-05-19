@@ -5,13 +5,13 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:onboarding/onboarding.dart';
 
-// Story book Onboarding swipe -> child : story_widget
 class StoryItemWidget extends StatefulWidget {
-  Story story;
-  StoryItemWidget({Key? key, required this.story}) : super(key: key);
+  final Story story;
+  const StoryItemWidget({Key? key, required this.story}) : super(key: key);
 
   @override
   _StoryItemWidgetState createState() => _StoryItemWidgetState();
@@ -36,24 +36,24 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
     double playWidth =
         widget.story.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
 
-    return Card(
-      elevation: 1,
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Padding(
-            padding: EdgeInsets.all(padding),
-            child: InkWell(
-                onTap: () async {},
+    return InkWell(
+        onTap: () {
+          Get.to(() => StoryPageView(story: widget.story));
+        },
+        child: Card(
+          elevation: 1,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(padding),
                 child: StoryCover(
                     width: storyCoverWidth,
                     photoUrl: widget.story.photoUrl ?? "",
-                    title: widget.story.title)),
-          ),
-          Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            InkWell(
-                onTap: () async {},
-                child: SizedBox(
+                    title: widget.story.title),
+              ),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                SizedBox(
                     width:
                         width - (storyCoverWidth + playWidth + padding * 3.2),
                     child: Column(
@@ -64,10 +64,10 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                         Text(widget.story.subtitle,
                             style: Theme.of(context).textTheme.displaySmall),
                       ],
-                    )))
-          ])
-        ],
-      ),
-    );
+                    ))
+              ])
+            ],
+          ),
+        ));
   }
 }

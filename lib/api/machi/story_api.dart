@@ -92,7 +92,7 @@ class StoryApi {
       final response = await dio.get(url);
 
       Story story = Story.fromJson(response.data);
-      storyController.currentStory = story;
+      storyController.setCurrentStory(story);
       return story;
     } catch (error) {
       debugPrint(error.toString());

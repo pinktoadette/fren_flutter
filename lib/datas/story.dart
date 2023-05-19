@@ -16,8 +16,9 @@ class StoryPages {
         scripts.add(s);
       });
     }
-
-    return StoryPages(pageNum: doc[SCRIPT_PAGE_NUM], scripts: scripts);
+    StoryPages pages =
+        StoryPages(pageNum: doc[SCRIPT_PAGE_NUM], scripts: scripts);
+    return pages;
   }
 }
 

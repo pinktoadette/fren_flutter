@@ -24,28 +24,18 @@ class ViewStoryboard extends StatefulWidget {
 class _ViewStoryboardState extends State<ViewStoryboard> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  final _storyApi = StoryApi();
   Uint8List? bytes;
   late Story story;
 
   @override
   void initState() {
     super.initState();
-    _getScriptByStoryId();
-  }
-
-  void _getScriptByStoryId() async {
-    Story current = storyboardController.currentStory;
-
-    /// Getting scripts
-    Story details = await _storyApi.getMyStories(current.storyId);
   }
 
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
