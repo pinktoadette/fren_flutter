@@ -1,4 +1,3 @@
-import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
@@ -7,7 +6,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
-import 'package:iconsax/iconsax.dart';
 
 // ignore: must_be_immutable
 class AddChatMessageToBoard extends StatefulWidget {

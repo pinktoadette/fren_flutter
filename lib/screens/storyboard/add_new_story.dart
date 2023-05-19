@@ -194,9 +194,7 @@ class _AddNewStoryState extends State<AddNewStory> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_SUCCESS,
       );
-      Timer.periodic(const Duration(seconds: 2), (Timer t) async {
-        Get.back();
-      });
+      Navigator.of(context).pop();
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
