@@ -1,16 +1,12 @@
-import 'dart:math';
-
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/api/machi/story_api.dart';
+import 'package:dotted_border/dotted_border.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
-import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/screens/storyboard/add_new_story.dart';
 import 'package:machi_app/widgets/no_data.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_header.dart';
@@ -36,6 +32,8 @@ class _StoriesViewState extends State<StoriesView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double width = MediaQuery.of(context).size.width;
+
     return Scaffold(
         appBar: AppBar(
           title: Text(_i18n.translate("storyboard")),
@@ -46,6 +44,30 @@ class _StoriesViewState extends State<StoriesView> {
             StoryboardHeaderWidget(
               storyboard: storyboardController.currentStoryboard,
             ),
+            Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: DottedBorder(
+                  dashPattern: const [4],
+                  strokeWidth: 2,
+                  borderType: BorderType.RRect,
+                  radius: const Radius.circular(10),
+                  padding: const EdgeInsets.all(6),
+                  child: ClipRRect(
+                    borderRadius: const BorderRadius.all(Radius.circular(10)),
+                    child: SizedBox(
+                        height: 100,
+                        width: width,
+                        child: TextButton.icon(
+                            onPressed: () {
+                              Get.to(() => AddNewStory(
+                                  storyboard:
+                                      storyboardController.currentStoryboard));
+                            },
+                            icon: const Icon(Iconsax.add),
+                            label:
+                                Text(_i18n.translate("add_story_collection")))),
+                  ),
+                )),
             Obx(
               () => ListView.builder(
                   shrinkWrap: true,
@@ -65,31 +87,5 @@ class _StoriesViewState extends State<StoriesView> {
             ),
           ],
         ));
-  }
-
-  Widget _showHeader() {
-    Storyboard storyboard = storyboardController.currentStoryboard;
-    double width = MediaQuery.of(context).size.width;
-    return Container(
-      padding: const EdgeInsets.all(20),
-      width: width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          StoryCover(
-              width: width * 0.7,
-              height: width * 0.7,
-              photoUrl: storyboard.photoUrl ?? "",
-              title: storyboard.title),
-          const SizedBox(
-            height: 10,
-          ),
-          Text(storyboard.category),
-          Text(storyboard.title,
-              style: Theme.of(context).textTheme.headlineMedium),
-        ],
-      ),
-    );
   }
 }

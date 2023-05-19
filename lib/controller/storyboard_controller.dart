@@ -61,6 +61,7 @@ class StoryboardController extends GetxController {
     _storyboards.refresh();
   }
 
+  /// Storyboard
   Future<void> myStories(List<Storyboard> stories) async {
     _storyboards = stories.obs;
     _storyboards.refresh();
@@ -95,7 +96,12 @@ class StoryboardController extends GetxController {
         .toList());
   }
 
+  /// Story
   clearStory() {
     _currentStory = intialStory.obs;
+  }
+
+  void addNewStory(Story story) async {
+    _storyboards.refresh();
   }
 }

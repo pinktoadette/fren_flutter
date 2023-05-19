@@ -10,15 +10,15 @@ import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: must_be_immutable
-class DoubleTapChatMessage extends StatefulWidget {
+class AddChatMessageToBoard extends StatefulWidget {
   types.Message message;
-  DoubleTapChatMessage({Key? key, required this.message}) : super(key: key);
+  AddChatMessageToBoard({Key? key, required this.message}) : super(key: key);
 
   @override
-  _DoubleTapChatMessageState createState() => _DoubleTapChatMessageState();
+  _AddChatMessageToBoardState createState() => _AddChatMessageToBoardState();
 }
 
-class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
+class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
   late AppLocalizations _i18n;
   String errorMessage = '';
   final _storyApi = StoryApi();

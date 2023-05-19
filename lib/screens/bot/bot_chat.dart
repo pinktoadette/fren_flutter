@@ -12,7 +12,7 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
-import 'package:machi_app/widgets/chat/double_tap_message.dart';
+import 'package:machi_app/widgets/chat/add_message_to_storyboard.dart';
 import 'package:machi_app/widgets/chat/header_input.dart';
 import 'package:machi_app/widgets/friend_list.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
@@ -287,7 +287,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               minChildSize: 0.9,
               builder: (context, scrollController) => SingleChildScrollView(
                 controller: scrollController,
-                child: DoubleTapChatMessage(
+                child: AddChatMessageToBoard(
                   message: message,
                 ),
               ),

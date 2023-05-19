@@ -353,14 +353,16 @@
   "story_add_double_tap": "Double Tap Message to Add Storycast",
   "story_comment": "Reply to Storycast",
   "story_comment_sucess": "Reply sent",
-  "story_enter_title": "Enter a story title",
+  "story_enter_title": "Enter a title",
+  "story_enter_subtitle": "Enter a subtitle",
   "add_to_new_storyboard": "New Storycast",
   "add_to_exist_storyboard": "Add to existing Storycast",
+
   "storyboard_edit": "Edit",
   "storyboard_preview": "Preview",
   "storyboard_playlist": "Playlist",
   "story_nothing": "No Storycast",
-  "story_publishing": "Your story is publishing...",
+  "story_publishing": "Your storycast is publishing...",
   "story_success": "Your board is published!",
   "story_published": "Published",
   "story_sure_delete": "Are you sure you want to delete from the board?",
@@ -373,6 +375,12 @@
   "story_voice_assign_info": "Assign voice to your speaker / narrator. \nOnly speaks first text for each user. Text will be cut off at 200 charaters.",
   "story_voice_read_text": "Sample Text",
 
+
+  "add_story_collection": "Add a new collection",
+  "story_collection": "Collection",
+  "story_collection_title": "Title",
+  "story_collection_subtitle": "Subitle",
+  "story_collection_summary": "Summary",
 
   "tips_1": "Tip: Have suggestions? Chat with machi Alice",
   "tips_2": "Learn a new language by listening and reading",
