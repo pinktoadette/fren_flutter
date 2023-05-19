@@ -7,12 +7,10 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/publish_items.dart';
 import 'package:machi_app/widgets/storyboard/story/listen_audio_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:machi_app/widgets/storyboard/story/view_story.dart';
 
 // view story board as the creator
 class ViewStoryboard extends StatefulWidget {
@@ -94,7 +92,7 @@ class _ViewStoryboardState extends State<ViewStoryboard> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.center,
                           mainAxisSize: MainAxisSize.min,
-                          children: [StoryItemWidget()])
+                          children: [Text("list stories")])
                     ])),
               ],
             )));

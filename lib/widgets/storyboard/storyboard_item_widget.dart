@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
-import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -10,6 +9,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/screens/storyboard/story_view.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 import 'package:like_button/like_button.dart';
@@ -100,7 +100,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                 onPressed: null,
                                 icon: const Icon(Iconsax.menu_1),
                                 label: Text(
-                                    "${widget.item.story?.length} series",
+                                    "${widget.item.story?.length} collection",
                                     style: const TextStyle(fontSize: 12)),
                               ),
                               if (widget.item.status != StoryStatus.PUBLISHED)
@@ -144,19 +144,19 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   Future<void> _onStoryClick() async {
     if (widget.message != null) {
-      _addMessage();
+      _showStories();
     } else {
       storyboardController.currentStoryboard = widget.item;
-      if (widget.item.story!.isNotEmpty) {
-        /// Load the first story if any
-        Story story =
-            await _storyApi.getMyStories(widget.item.story![0].storyId);
-        storyboardController.currentStory = story;
-      } else {
-        storyboardController.currentStory = storyboardController.clearStory();
-      }
+      // if (widget.item.story!.isNotEmpty) {
+      //   /// Load the first story if any
+      //   Story story =
+      //       await _storyApi.getMyStories(widget.item.story![0].storyId);
+      //   storyboardController.currentStory = story;
+      // } else {
+      //   storyboardController.currentStory = storyboardController.clearStory();
+      // }
 
-      Get.to(() => ViewStoryboard());
+      Get.to(() => const StoriesView());
     }
   }
 
@@ -165,9 +165,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         "storyboard", item.storyboardId, value == true ? 1 : 0);
   }
 
+  void _showStories() {
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const StoriesView()));
+  }
+
   void _addMessage() async {
     try {
-      await _storyApi.addStory(widget.message!.id, widget.item.storyboardId);
+      await _storyApi.addItemToStory(widget.message!, widget.item.storyboardId);
       Navigator.of(context).pop();
       Get.snackbar(
         _i18n.translate("story_added"),

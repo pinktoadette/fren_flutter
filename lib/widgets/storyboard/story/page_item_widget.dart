@@ -46,6 +46,32 @@ class _PageItemWidgetState extends State<PageItemWidget> {
     );
   }
 
+// return SingleChildScrollView(
+//         scrollDirection: Axis.horizontal,
+//         child: Row(
+//           children: widget.story.pages!.map((e) {
+//             return Container(
+//                 height: height - 80,
+//                 padding: const EdgeInsets.all(2),
+//                 width: width * 0.9,
+//                 child: SingleChildScrollView(
+//                   scrollDirection: Axis.vertical,
+//                   child: Card(
+//                     child: Container(
+//                       padding: const EdgeInsets.all(20),
+//                       child: Column(
+//                           crossAxisAlignment: CrossAxisAlignment.start,
+//                           children: e.scripts!.map((script) {
+//                             return Text(
+//                               script.text ?? "",
+//                               style: Theme.of(context).textTheme.bodySmall,
+//                             );
+//                           }).toList()),
+//                     ),
+//                   ),
+//                 ));
+//           }).toList(),
+//         ));
   PageModel _storyText() {
     return PageModel(
         widget: Container(

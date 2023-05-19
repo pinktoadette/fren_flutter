@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -20,7 +19,6 @@ class StoryboardView extends StatefulWidget {
 
 class _StoryboardViewState extends State<StoryboardView> {
   late AppLocalizations _i18n;
-  final _storyApi = StoryApi();
   final _commentApi = CommentApi();
   final _commentController = TextEditingController();
 

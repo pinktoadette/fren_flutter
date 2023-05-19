@@ -9,6 +9,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:get/get.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -38,7 +39,8 @@ class StoryApi {
     }
   }
 
-  Future<Storyboard> addStory(String messageId, String storyboardId) async {
+  Future<Storyboard> addItemToStory(
+      types.Message message, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}story';

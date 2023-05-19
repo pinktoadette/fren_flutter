@@ -82,7 +82,7 @@ class _DoubleTapChatMessageState extends State<DoubleTapChatMessage> {
             children: <Widget>[
               SizedBox(
                 height: height - 345,
-                child: ListMyStories(message: widget.message),
+                child: ListMyStoryboard(message: widget.message),
               )
             ],
           ),

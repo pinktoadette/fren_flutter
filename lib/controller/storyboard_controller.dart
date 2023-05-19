@@ -31,18 +31,18 @@ Story intialStory = Story(
     category: '');
 
 class StoryboardController extends GetxController {
-  RxList<Storyboard> _stories = <Storyboard>[].obs;
+  RxList<Storyboard> _storyboards = <Storyboard>[].obs;
   // ignore: prefer_final_fields
   Rx<Storyboard> _currentStoryboard = initialStoryboard.obs;
-  Rx<Story> _currentStory = intialStory.obs;
+  Rx<Story?> _currentStory = (null).obs;
 
   Storyboard get currentStoryboard => _currentStoryboard.value;
   set currentStoryboard(Storyboard value) => _currentStoryboard.value = value;
 
-  List<Storyboard> get stories => _stories;
-  set stories(List<Storyboard> value) => _stories.value = value;
+  List<Storyboard> get storyboards => _storyboards;
+  set storyboards(List<Storyboard> value) => _storyboards.value = value;
 
-  Story get currentStory => _currentStory.value;
+  Story get currentStory => _currentStory.value ?? intialStory;
   set currentStory(Story value) => _currentStory.value = value;
 
   RxList<Storyboard> unpublished = <Storyboard>[].obs;
@@ -57,26 +57,26 @@ class StoryboardController extends GetxController {
   Future<void> fetchMyStories() async {
     final storyboardApi = StoryboardApi();
     final List<Storyboard> stories = await storyboardApi.getMyStoryboards();
-    _stories = stories.obs;
-    _stories.refresh();
+    _storyboards = stories.obs;
+    _storyboards.refresh();
   }
 
   Future<void> myStories(List<Storyboard> stories) async {
-    _stories = stories.obs;
-    _stories.refresh();
+    _storyboards = stories.obs;
+    _storyboards.refresh();
   }
 
   void addNewStoryboard(Storyboard story) async {
-    _stories.insert(0, story);
-    _stories.refresh();
+    _storyboards.insert(0, story);
+    _storyboards.refresh();
   }
 
   void updateStoryboard(Storyboard story) async {
     // find story index
-    int index = _stories
+    int index = _storyboards
         .indexWhere((element) => element.storyboardId == story.storyboardId);
-    _stories[index] = story;
-    _stories.refresh();
+    _storyboards[index] = story;
+    _storyboards.refresh();
   }
 
   void setCurrentBoard(Storyboard story) async {
@@ -84,13 +84,13 @@ class StoryboardController extends GetxController {
   }
 
   getUnpublised() {
-    unpublished.assignAll(_stories
+    unpublished.assignAll(_storyboards
         .where((element) => element.status == StoryStatus.UNPUBLISHED)
         .toList());
   }
 
   getPublished() {
-    published.assignAll(_stories
+    published.assignAll(_storyboards
         .where((element) => element.status == StoryStatus.PUBLISHED)
         .toList());
   }

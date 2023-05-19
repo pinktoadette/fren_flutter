@@ -1,25 +1,22 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
-import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 import 'package:get/get.dart';
 
-class ListMyStories extends StatefulWidget {
+class ListMyStoryboard extends StatefulWidget {
   final types.Message? message;
-  const ListMyStories({Key? key, this.message}) : super(key: key);
+  const ListMyStoryboard({Key? key, this.message}) : super(key: key);
 
   @override
-  _MyStoriesState createState() => _MyStoriesState();
+  _MyStoryboardState createState() => _MyStoryboardState();
 }
 
-class _MyStoriesState extends State<ListMyStories> {
+class _MyStoryboardState extends State<ListMyStoryboard> {
   late AppLocalizations _i18n;
   double itemHeight = 120;
   final _storyboardApi = StoryboardApi();
@@ -40,7 +37,7 @@ class _MyStoriesState extends State<ListMyStories> {
           await _storyboardApi.getMyStoryboards(
               statusFilter: StoryStatus.UNPUBLISHED.name);
         },
-        child: storyboardController.stories.isEmpty
+        child: storyboardController.storyboards.isEmpty
             ? Align(
                 alignment: Alignment.center,
                 child: Text(
