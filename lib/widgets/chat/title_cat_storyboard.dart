@@ -5,11 +5,11 @@ import 'package:machi_app/widgets/forms/category_dropdown.dart';
 /// Create or update title and category
 /// requires callback to parent to either create or update
 class StoryboardTitleCategory extends StatefulWidget {
-  String? title;
-  String? category;
+  final String? title;
+  final String? category;
   final Function(dynamic data) onUpdate;
 
-  StoryboardTitleCategory(
+  const StoryboardTitleCategory(
       {Key? key, required this.onUpdate, this.title, this.category})
       : super(key: key);
 

@@ -39,7 +39,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         Padding(
           padding: const EdgeInsets.only(left: 10, top: 10),
           child: Text(
-            _i18n.translate("storyboard"),
+            _i18n.translate("storycast_board"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
@@ -49,27 +49,11 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
               _i18n.translate("story_added_info"),
               style: Theme.of(context).textTheme.labelSmall,
             )),
-        Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: DottedBorder(
-              dashPattern: const [4],
-              strokeWidth: 2,
-              borderType: BorderType.RRect,
-              radius: const Radius.circular(10),
-              padding: const EdgeInsets.all(6),
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: SizedBox(
-                    height: 100,
-                    width: width,
-                    child: InkWell(
-                      onTap: () {
-                        _showBottomSheet(widget.message);
-                      },
-                      child: const Icon(Iconsax.add),
-                    )),
-              ),
-            )),
+        StoryboardTitleCategory(
+          onUpdate: (e) {
+            _updateTitleCategory(e);
+          },
+        ),
         const SizedBox(
           height: 5,
         ),
@@ -89,36 +73,6 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         )
       ],
     );
-  }
-
-  void _showBottomSheet(types.Message message) {
-    Navigator.of(context).pop();
-
-    showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => Padding(
-              padding: MediaQuery.of(context).viewInsets,
-              child: Container(
-                  padding: const EdgeInsets.all(20),
-                  height: 280,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                          padding: const EdgeInsets.all(10),
-                          child: Text(
-                            _i18n.translate("add_to_new_storyboard"),
-                            style: Theme.of(context).textTheme.displayMedium,
-                          )),
-                      StoryboardTitleCategory(
-                        onUpdate: (e) {
-                          _updateTitleCategory(e);
-                        },
-                      )
-                    ],
-                  )),
-            ));
   }
 
   void _updateTitleCategory(Map<String, String> values) async {
