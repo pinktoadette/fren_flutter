@@ -148,6 +148,7 @@ class MyApp extends StatelessWidget {
           errorStyle: const TextStyle(fontSize: 14),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: APP_ACCENT_COLOR, width: 2.0),
           )),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
@@ -273,12 +274,13 @@ class MyApp extends StatelessWidget {
           errorStyle: const TextStyle(fontSize: 16),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(10),
+            borderSide: const BorderSide(color: APP_ACCENT_COLOR, width: 2.0),
           )),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: const Color.fromRGBO(31, 31, 31, 0.95),
+          color: Color.fromARGB(241, 58, 57, 57),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           shape: defaultCardBorder()),

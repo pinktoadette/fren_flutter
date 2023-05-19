@@ -148,6 +148,7 @@ class _AddNewStoryState extends State<AddNewStory> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_SUCCESS,
       );
+      Get.back();
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
