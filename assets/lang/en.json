@@ -379,8 +379,9 @@
   "add_story_collection": "Add a new collection",
   "story_collection": "Collection",
   "story_collection_title": "Title",
-  "story_collection_subtitle": "Subitle",
+  "story_collection_subtitle": "Subtitle",
   "story_collection_summary": "Summary",
+  "story_collection_summary_info": "Leave blank for AI summary. Summary is created when there are content",
 
   "tips_1": "Tip: Have suggestions? Chat with machi Alice",
   "tips_2": "Learn a new language by listening and reading",

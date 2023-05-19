@@ -1,7 +1,7 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -21,7 +21,7 @@ class AddChatMessageToBoard extends StatefulWidget {
 class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
   late AppLocalizations _i18n;
   String errorMessage = '';
-  final _storyApi = StoryApi();
+  final _storyboardApi = StoryboardApi();
 
   @override
   void initState() {
@@ -123,7 +123,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
 
   void _updateTitleCategory(Map<String, String> values) async {
     try {
-      await _storyApi.createStory(
+      await _storyboardApi.createStoryboard(
           values['title']!, values['category']!, widget.message.id);
       Get.snackbar(
         _i18n.translate("success"),

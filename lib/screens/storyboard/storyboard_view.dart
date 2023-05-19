@@ -118,7 +118,7 @@ class _StoryboardViewState extends State<StoryboardView> {
         _i18n.translate("posted"),
         _i18n.translate("story_comment_sucess"),
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
+        backgroundColor: APP_SUCCESS,
       );
     } catch (err) {
       debugPrint(err.toString());

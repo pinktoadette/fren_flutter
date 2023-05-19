@@ -102,6 +102,13 @@ class StoryboardController extends GetxController {
   }
 
   void addNewStory(Story story) async {
+    List<Story> stories = currentStoryboard.story!;
+    stories.insert(0, story);
+    Storyboard newCurrenyStoryboard = currentStoryboard.copyWith(
+      story: stories,
+    );
+    updateStoryboard(newCurrenyStoryboard);
+
     _storyboards.refresh();
   }
 }
