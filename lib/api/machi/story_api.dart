@@ -21,6 +21,7 @@ class StoryApi {
   /// Creates a new STORY collection. Returns the entire storyboard
   Future<Story> createStory(
       {required String storyboardId,
+      required String photoUrl,
       required String title,
       required String subtitle,
       String? summary}) async {
@@ -32,6 +33,7 @@ class StoryApi {
       final response = await dio.post(url, data: {
         STORYBOARD_ID: storyboardId,
         STORY_TITLE: title,
+        STORY_PHOTO_URL: photoUrl,
         STORY_SUBTITLE: subtitle,
         STORY_SUMMARY: summary ?? ""
       });

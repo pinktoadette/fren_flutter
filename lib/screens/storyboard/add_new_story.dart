@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:io';
+
 import 'package:dotted_border/dotted_border.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
@@ -8,7 +11,10 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/no_data.dart';
+import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_header.dart';
@@ -29,6 +35,8 @@ class _AddNewStoryState extends State<AddNewStory> {
   final _titleController = TextEditingController();
   final _subtitleController = TextEditingController();
   final _summaryController = TextEditingController();
+  File? _uploadPath;
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -44,17 +52,52 @@ class _AddNewStoryState extends State<AddNewStory> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(_i18n.translate("story_collection")),
+          title: Text(_i18n.translate("add_story_collection")),
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(_i18n.translate("add_story_collection")),
+              GestureDetector(
+                child: Stack(
+                  children: [
+                    StoryCover(
+                      width: 100,
+                      height: 100,
+                      photoUrl: '',
+                      file: _uploadPath,
+                      title: "Cover",
+                    ),
+                    Positioned(
+                      child: CircleAvatar(
+                        radius: 12,
+                        backgroundColor:
+                            Theme.of(context).colorScheme.background,
+                        child: Icon(
+                          Icons.edit,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 12,
+                        ),
+                      ),
+                      right: 0,
+                      bottom: 0,
+                    ),
+                  ],
+                ),
+                onTap: () async {
+                  /// Update story image
+                  _selectImage(path: 'collection');
+                },
+              ),
+              const SizedBox(
+                height: 20,
+              ),
               TextFormField(
                 controller: _titleController,
+                maxLength: 80,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -75,6 +118,7 @@ class _AddNewStoryState extends State<AddNewStory> {
               ),
               TextFormField(
                 controller: _subtitleController,
+                maxLength: 80,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -95,6 +139,7 @@ class _AddNewStoryState extends State<AddNewStory> {
               ),
               TextFormField(
                 controller: _summaryController,
+                maxLength: 250,
                 maxLines: 4,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
@@ -135,20 +180,31 @@ class _AddNewStoryState extends State<AddNewStory> {
     String title = _titleController.text;
     String subtitle = _subtitleController.text;
     String summary = _summaryController.text;
-
+    setState(() {
+      isLoading = true;
+    });
+    _validateFields();
     try {
-      Story story = await _storyApi.createStory(
+      String photoUrl = await uploadFile(
+          file: _uploadPath!,
+          category: 'collection',
+          categoryId: "${widget.storyboard.storyboardId}_$title");
+      await _storyApi.createStory(
           storyboardId: widget.storyboard.storyboardId,
           title: title,
+          photoUrl: photoUrl,
           subtitle: subtitle,
           summary: summary);
+
       Get.snackbar(
         _i18n.translate("posted"),
         _i18n.translate("story_comment_sucess"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_SUCCESS,
       );
-      Get.back();
+      Timer.periodic(const Duration(seconds: 2), (Timer t) async {
+        Get.back();
+      });
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
@@ -158,5 +214,22 @@ class _AddNewStoryState extends State<AddNewStory> {
         backgroundColor: APP_ERROR,
       );
     }
+  }
+
+  void _validateFields() {}
+
+  void _selectImage({required String path}) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) => ImageSourceSheet(
+              onImageSelected: (image) async {
+                if (image != null) {
+                  setState(() {
+                    _uploadPath = image;
+                  });
+                  Navigator.of(context).pop();
+                }
+              },
+            ));
   }
 }
