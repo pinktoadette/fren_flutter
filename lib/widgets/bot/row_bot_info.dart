@@ -6,28 +6,28 @@ import 'package:iconsax/iconsax.dart';
 
 class RowMachiInfo extends StatelessWidget {
   final Bot bot;
-  bool? showChat = false;
-  RowMachiInfo({Key? key, required this.bot, this.showChat}) : super(key: key);
+  final bool showChat;
+  const RowMachiInfo({Key? key, required this.bot, this.showChat = false})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    double widthPercent = 0.2;
-
-    // Note: timeline widget row is saw under 'machi' case
+    double padding = 10;
+    double imageWidth = width * 0.2 + 5;
+    double textWidth = width - (padding * 2 + imageWidth + 30);
     return Container(
-        padding: const EdgeInsets.all(10),
-        width: width,
+        padding: EdgeInsets.all(padding),
+        width: width - padding * 2,
         child: InkWell(
           onTap: () {
             SetCurrentRoom().setNewBotRoom(bot, true);
-            // _showBotInfo(context);
           },
           child: Row(
             children: [
               RoundedImage(
-                  width: (width * widthPercent) + 5,
-                  height: (width * widthPercent) + 5,
+                  width: imageWidth,
+                  height: imageWidth,
                   icon: const Icon(Iconsax.box_add),
                   photoUrl: bot.profilePhoto ?? ""),
               const SizedBox(width: 5),
@@ -42,8 +42,8 @@ class RowMachiInfo extends StatelessWidget {
                   ),
                   const SizedBox(width: 5),
                   SizedBox(
-                      height: width * widthPercent,
-                      width: width * (1 - widthPercent) - 30,
+                      height: 80,
+                      width: textWidth,
                       child: Text(
                         bot.about,
                         style: Theme.of(context).textTheme.bodySmall,

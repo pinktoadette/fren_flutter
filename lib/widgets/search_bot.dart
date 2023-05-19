@@ -31,6 +31,7 @@ class _SearchMachiState extends State<SearchMachiWidget> {
             minCharsForSuggestions: 3,
             textFieldConfiguration: TextFieldConfiguration(
               autofocus: false,
+              style: Theme.of(context).textTheme.bodyLarge,
               decoration: InputDecoration(
                   icon: const Icon(Iconsax.search_normal),
                   border: InputBorder.none,

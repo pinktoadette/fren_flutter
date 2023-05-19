@@ -72,46 +72,4 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
     storyboardController.currentStoryboard = story;
     Get.to(() => ViewStoryboard());
   }
-
-  Widget _showMessage(BuildContext context, List<Story> message) {
-    if (message.isEmpty) {
-      return const SizedBox.shrink();
-    }
-    return const Text("hi");
-    // final firstText = message.firstWhereOrNull(
-    //     (ele) => ele.messages.type == types.MessageType.text) as dynamic;
-    // final firstImage = message.firstWhereOrNull(
-    //     (ele) => ele.messages.type == types.MessageType.image) as dynamic;
-    // double width = MediaQuery.of(context).size.width;
-    // double imageHeight = width * 0.3 - 20;
-    // return Row(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     SizedBox(
-    //       width: firstImage != null ? width * 0.65 - 20 : width - 40,
-    //       height: itemHeight - 50,
-    //       child: Text(
-    //         firstText.messages.text,
-    //         style: Theme.of(context).textTheme.bodySmall,
-    //       ),
-    //     ),
-    //     if (firstImage != null)
-    //       Column(
-    //         crossAxisAlignment: CrossAxisAlignment.start,
-    //         children: <Widget>[
-    //           SizedBox(
-    //               height: imageHeight,
-    //               child: ClipRRect(
-    //                 borderRadius: BorderRadius.circular(10.0),
-    //                 child: Image.network(
-    //                   firstImage.messages.uri,
-    //                   width: width * 0.3,
-    //                   fit: BoxFit.cover,
-    //                 ),
-    //               ))
-    //         ],
-    //       )
-    //   ],
-    // );
-  }
 }

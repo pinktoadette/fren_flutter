@@ -70,7 +70,7 @@ class BotApi {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    String url = '${baseUri}machi';
+    String url = '${baseUri}bot';
     final dio = await auth.getDio();
     final response = await dio.put(url, data: {...data, botId: botId});
     final getData = response.data;
@@ -80,7 +80,7 @@ class BotApi {
   Future<List<Bot>> getAllBots(
       int limit, int offset, BotModelType modelType) async {
     String url =
-        '${baseUri}bot/get_all?limit=$limit&offset=$offset&model=${modelType.toString().split('.').last}';
+        '${baseUri}get_all?limit=$limit&offset=$offset&model=${modelType.toString().split('.').last}';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;

@@ -1,4 +1,5 @@
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -31,10 +32,19 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   void _getStoryContent() async {
-    Story details = await _storyApi.getMyStories(widget.story.storyId);
-    setState(() {
-      story = details;
-    });
+    try {
+      Story details = await _storyApi.getMyStories(widget.story.storyId);
+      setState(() {
+        story = details;
+      });
+    } catch (error) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 
   @override
@@ -44,7 +54,11 @@ class _StoryPageViewState extends State<StoryPageView> {
     double height = MediaQuery.of(context).size.height;
     double headerHeight = 170;
     if (story == null) {
-      return NoData(text: _i18n.translate("loading"));
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(_i18n.translate("story_collection")),
+          ),
+          body: NoData(text: _i18n.translate("loading")));
     }
     return Scaffold(
         appBar: AppBar(

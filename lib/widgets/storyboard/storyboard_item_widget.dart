@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -28,7 +29,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   late AppLocalizations _i18n;
-  final _storyApi = StoryApi();
   final _timelineApi = TimelineApi();
 
   @override
@@ -142,11 +142,10 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   Future<void> _onStoryClick() async {
+    storyboardController.currentStoryboard = widget.item;
     if (widget.message != null) {
-      _showStories();
+      Get.to(() => StoriesView(message: widget.message!));
     } else {
-      storyboardController.currentStoryboard = widget.item;
-
       Get.to(() => const StoriesView());
     }
   }
@@ -154,31 +153,5 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   Future<String> _onLikePressed(Storyboard item, bool value) async {
     return await _timelineApi.likeStoryMachi(
         "storyboard", item.storyboardId, value == true ? 1 : 0);
-  }
-
-  void _showStories() {
-    Navigator.of(context)
-        .push(MaterialPageRoute(builder: (context) => const StoriesView()));
-  }
-
-  void _addMessage() async {
-    try {
-      await _storyApi.addItemToStory(widget.message!, widget.item.storyboardId);
-      Navigator.of(context).pop();
-      Get.snackbar(
-        _i18n.translate("story_added"),
-        _i18n.translate("story_added_info"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
-    } catch (err) {
-      debugPrint(err.toString());
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -14,11 +13,11 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 
 import '../datas/user.dart';
-import 'explore_bot_tabs.dart';
 
 class ConversationsTab extends StatelessWidget {
   final _chatroomApi = ChatroomMachiApi();
@@ -193,10 +192,7 @@ class ConversationsTab extends StatelessWidget {
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {
-        return const FractionallySizedBox(
-            heightFactor: 0.9, child: ExploreBotTab()
-            //  ListMyBot()
-            );
+        return FractionallySizedBox(heightFactor: 0.9, child: ExploreMachi());
       },
     );
   }

@@ -1,6 +1,5 @@
 import 'package:dotted_border/dotted_border.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -10,18 +9,26 @@ import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_header.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
+/// StoryboardItemWidget -> StoriesView (List of stories / Add ) -> StoryItemWidget -> PageView
+/// message input is when the user wants to add the message to the collection.
+/// user cannot create a new collection here
 class StoriesView extends StatefulWidget {
-  const StoriesView({Key? key}) : super(key: key);
+  /// passed from chat messages to be added to story collection
+  /// This is a very deep pass.
+  /// Chat -> storyboard_item -> story_view -> story_item
+  final types.Message? message;
 
+  const StoriesView({Key? key, this.message}) : super(key: key);
   @override
   _StoriesViewState createState() => _StoriesViewState();
 }
 
 class _StoriesViewState extends State<StoriesView> {
   late AppLocalizations _i18n;
+
   double itemHeight = 120;
-  final _storyboardApi = StoryboardApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
@@ -36,7 +43,16 @@ class _StoriesViewState extends State<StoriesView> {
 
     return Scaffold(
         appBar: AppBar(
-          title: Text(_i18n.translate("storyboard")),
+          title: widget.message == null
+              ? Text(_i18n.translate("storyboard"))
+              : Text(_i18n.translate("add_message_collection")),
+          leading: BackButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () async {
+              storyboardController.clearStory();
+              Get.back();
+            },
+          ),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -44,30 +60,31 @@ class _StoriesViewState extends State<StoriesView> {
             StoryboardHeaderWidget(
               storyboard: storyboardController.currentStoryboard,
             ),
-            Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: DottedBorder(
-                  dashPattern: const [4],
-                  strokeWidth: 2,
-                  borderType: BorderType.RRect,
-                  radius: const Radius.circular(10),
-                  padding: const EdgeInsets.all(6),
-                  child: ClipRRect(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: SizedBox(
-                        height: 100,
-                        width: width,
-                        child: TextButton.icon(
-                            onPressed: () {
-                              Get.to(() => AddNewStory(
-                                  storyboard:
-                                      storyboardController.currentStoryboard));
-                            },
-                            icon: const Icon(Iconsax.add),
-                            label:
-                                Text(_i18n.translate("add_story_collection")))),
-                  ),
-                )),
+            if (widget.message == null)
+              Padding(
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: DottedBorder(
+                    dashPattern: const [4],
+                    strokeWidth: 2,
+                    borderType: BorderType.RRect,
+                    radius: const Radius.circular(10),
+                    padding: const EdgeInsets.all(6),
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      child: SizedBox(
+                          height: 100,
+                          width: width,
+                          child: TextButton.icon(
+                              onPressed: () {
+                                Get.to(() => AddNewStory(
+                                    storyboard: storyboardController
+                                        .currentStoryboard));
+                              },
+                              icon: const Icon(Iconsax.add),
+                              label: Text(
+                                  _i18n.translate("add_story_collection")))),
+                    ),
+                  )),
             Obx(
               () => ListView.builder(
                   shrinkWrap: true,
@@ -82,7 +99,8 @@ class _StoriesViewState extends State<StoriesView> {
                     Story story =
                         storyboardController.currentStoryboard.story![index];
 
-                    return StoryItemWidget(story: story);
+                    return StoryItemWidget(
+                        story: story, message: widget.message);
                   }),
             ),
           ],

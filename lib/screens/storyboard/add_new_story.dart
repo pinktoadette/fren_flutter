@@ -190,7 +190,7 @@ class _AddNewStoryState extends State<AddNewStory> {
 
       Get.snackbar(
         _i18n.translate("posted"),
-        _i18n.translate("story_comment_sucess"),
+        _i18n.translate("story_added"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_SUCCESS,
       );

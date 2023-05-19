@@ -6,6 +6,8 @@ import 'dart:typed_data';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/controller/countdown.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
@@ -51,6 +53,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final BotController botController = Get.find(tag: 'bot');
   final ChatController chatController = Get.find(tag: 'chatroom');
   final MessageController messageController = Get.find(tag: 'message');
+
   final TimerController timerController =
       Get.put(TimerController(), tag: 'timer');
 

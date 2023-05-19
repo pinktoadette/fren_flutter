@@ -1,4 +1,5 @@
 import 'package:machi_app/api/machi/storyboard_api.dart';
+import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
@@ -73,7 +74,7 @@ class StoryboardController extends GetxController {
   }
 
   void updateStoryboard(Storyboard story) async {
-    // find story index
+    // find storyboard index
     int index = _storyboards
         .indexWhere((element) => element.storyboardId == story.storyboardId);
     _storyboards[index] = story;
@@ -108,11 +109,22 @@ class StoryboardController extends GetxController {
       story: stories,
     );
     updateStoryboard(newCurrenyStoryboard);
-
-    _storyboards.refresh();
   }
 
   void setCurrentStory(Story story) {
     _currentStory = story.obs;
+  }
+
+  /// Script
+  void addNewScriptToStory(StoryPages page) {
+    List<Story> stories = currentStoryboard.story!;
+
+    /// update the story
+    int index = stories
+        .indexWhere((element) => element.storyId == currentStory.storyId);
+    currentStoryboard.story![index].pages!.add(page);
+
+    /// update the storyboard
+    updateStoryboard(currentStoryboard);
   }
 }
