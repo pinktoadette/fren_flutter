@@ -29,15 +29,19 @@ class StoryboardApi {
   }
 
   Future<Storyboard> createStoryboard(
-      String title, String category, String messageId) async {
+      {String? text,
+      String? image,
+      String? category,
+      String? messageId}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {
-        STORY_TITLE: title,
-        STORY_CATEGORY: category,
+        CHAT_TEXT: text ?? "",
+        CHAT_IMAGE: image ?? "",
+        STORY_CATEGORY: category ?? "",
       });
 
       Storyboard story = Storyboard.fromJson(response.data);

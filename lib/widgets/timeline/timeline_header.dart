@@ -12,7 +12,8 @@ class TimelineHeader extends StatelessWidget {
   final bool? showAvatar;
   final bool? showName;
 
-  TimelineHeader({Key? key, required this.user, this.showAvatar, this.showName})
+  TimelineHeader(
+      {Key? key, required this.user, this.showAvatar = true, this.showName})
       : super(key: key);
 
   @override

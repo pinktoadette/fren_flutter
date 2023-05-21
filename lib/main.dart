@@ -203,8 +203,11 @@ class MyApp extends StatelessWidget {
         bodySmall: GoogleFonts.poppins(fontSize: 14),
         labelLarge:
             GoogleFonts.poppins(fontSize: 16, wordSpacing: 0, letterSpacing: 0),
-        labelMedium:
-            GoogleFonts.poppins(fontSize: 14, wordSpacing: 0, letterSpacing: 0),
+        labelMedium: GoogleFonts.poppins(
+            fontSize: 14,
+            wordSpacing: 0,
+            letterSpacing: 0,
+            textStyle: TextStyle(color: APP_ACCENT_COLOR)),
         labelSmall: GoogleFonts.poppins(
             fontSize: 12,
             wordSpacing: 0,
@@ -325,8 +328,8 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w700),
         displayMedium:
             GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600),
-        displaySmall:
-            GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w500),
+        displaySmall: GoogleFonts.poppins(
+            fontSize: 18, fontWeight: FontWeight.w500, color: APP_ACCENT_COLOR),
         headlineLarge:
             GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
         headlineMedium:
@@ -348,9 +351,7 @@ class MyApp extends StatelessWidget {
         labelLarge: GoogleFonts.poppins(
           fontSize: 16,
         ),
-        labelMedium: GoogleFonts.poppins(
-          fontSize: 14,
-        ),
+        labelMedium: GoogleFonts.poppins(fontSize: 14, color: APP_ACCENT_COLOR),
         labelSmall: GoogleFonts.poppins(
           fontSize: 12,
         ),

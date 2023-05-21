@@ -91,37 +91,39 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
       padding: const EdgeInsets.only(left: 0.0),
       child: Container(
           alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                currentLength.toString() + "/" + maxLength.toString(),
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              const Spacer(),
-              ElevatedButton(
-                  onPressed: () async {
-                    if (_titleController.text.length < 3) {
-                      setState(() {
-                        errorMessage =
-                            _i18n.translate("validation_3_characters");
-                      });
-                    } else {
-                      widget.onUpdate({
-                        'title': _titleController.text,
-                        'category': _selectedCategory,
-                      });
-                      _titleController.clear();
-                      FocusScope.of(context).unfocus();
-                    }
-                  },
-                  child: Text(
-                    _i18n.translate("SAVE"),
-                    style: const TextStyle(fontSize: 14),
-                  )),
-              Text(errorMessage),
-            ],
-          )),
+          child: Column(children: [
+            Text(errorMessage),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  currentLength.toString() + "/" + maxLength.toString(),
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                const Spacer(),
+                ElevatedButton(
+                    onPressed: () async {
+                      if (_titleController.text.length < 3) {
+                        setState(() {
+                          errorMessage =
+                              _i18n.translate("validation_3_characters");
+                        });
+                      } else {
+                        widget.onUpdate({
+                          'title': _titleController.text,
+                          'category': _selectedCategory,
+                        });
+                        _titleController.clear();
+                        FocusScope.of(context).unfocus();
+                      }
+                    },
+                    child: Text(
+                      _i18n.translate("SAVE"),
+                      style: const TextStyle(fontSize: 14),
+                    )),
+              ],
+            )
+          ])),
     );
   }
 }

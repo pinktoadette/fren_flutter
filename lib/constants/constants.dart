@@ -8,6 +8,7 @@ const String APP_NAME = "machi";
 const Color APP_PRIMARY_COLOR = Colors.black;
 const Color APP_MUTED_COLOR = Colors.black12;
 const Color APP_ACCENT_COLOR = Color.fromARGB(255, 51, 223, 157);
+const Color APP_SECONDARY_ACCENT_COLOR = Color.fromARGB(255, 223, 51, 117);
 const Color APP_LIKE_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
 const Color APP_TERTIARY = Color.fromARGB(255, 49, 49, 49);

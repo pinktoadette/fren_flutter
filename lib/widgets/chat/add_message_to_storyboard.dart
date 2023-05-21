@@ -35,7 +35,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
-          padding: const EdgeInsets.only(left: 10, top: 10),
+          padding: const EdgeInsets.only(left: 10, top: 20),
           child: Text(
             _i18n.translate("storycast_board"),
             style: Theme.of(context).textTheme.headlineMedium,
@@ -47,11 +47,26 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
               _i18n.translate("story_added_info"),
               style: Theme.of(context).textTheme.labelSmall,
             )),
-        StoryboardTitleCategory(
-          onUpdate: (e) {
-            _updateTitleCategory(e);
-          },
-        ),
+        Align(
+            alignment: Alignment.center,
+            child: ElevatedButton(
+              child: Text(_i18n.translate("add_to_new_storyboard")),
+              onPressed: () async {
+                dynamic message = widget.message;
+                if (widget.message.type == types.MessageType.text) {
+                  await _storyboardApi.createStoryboard(text: message.text);
+                }
+                if (widget.message.type == types.MessageType.image) {
+                  await _storyboardApi.createStoryboard(image: message.uri);
+                }
+              },
+            )),
+
+        // StoryboardTitleCategory(
+        //   onUpdate: (e) {
+        //     _updateTitleCategory(e);
+        //   },
+        // ),
         const SizedBox(
           height: 5,
         ),
@@ -73,23 +88,23 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
     );
   }
 
-  void _updateTitleCategory(Map<String, String> values) async {
-    try {
-      await _storyboardApi.createStoryboard(
-          values['title']!, values['category']!, widget.message.id);
-      Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("story_added"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
-    } catch (error) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("error_launch_url"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
-  }
+  // void _updateTitleCategory(Map<String, String> values) async {
+  //   try {
+  //     await _storyboardApi.createStoryboard(
+  //         values['title']!, values['category']!, widget.message.id);
+  //     Get.snackbar(
+  //       _i18n.translate("success"),
+  //       _i18n.translate("story_added"),
+  //       snackPosition: SnackPosition.BOTTOM,
+  //       backgroundColor: APP_SUCCESS,
+  //     );
+  //   } catch (error) {
+  //     Get.snackbar(
+  //       _i18n.translate("error"),
+  //       _i18n.translate("error_launch_url"),
+  //       snackPosition: SnackPosition.BOTTOM,
+  //       backgroundColor: APP_ERROR,
+  //     );
+  //   }
+  // }
 }
