@@ -17,6 +17,10 @@ import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/tabs/playlist_tab.dart';
 import 'package:machi_app/widgets/audio/main_play.dart';
+import 'package:machi_app/widgets/bot/explore_bot.dart';
+import 'package:machi_app/widgets/bot/prompt_create.dart';
+import 'package:machi_app/widgets/button/action_button.dart';
+import 'package:machi_app/widgets/button/expandable_fab.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -198,78 +202,92 @@ class _HomeScreenState extends State<HomeScreen> {
     double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          elevation: Platform.isIOS ? 0 : 8,
-          currentIndex: _selectedIndex,
-          backgroundColor: Theme.of(context).colorScheme.background,
-          selectedItemColor: APP_ACCENT_COLOR,
-          unselectedItemColor:
-              Theme.of(context).colorScheme.primary.withAlpha(155),
-          onTap: _onTappedNavBar,
-          items: [
-            /// Discover Tab
-            BottomNavigationBarItem(
-                label: _i18n.translate("discover"),
-                icon: const Icon(
-                  Iconsax.activity,
-                )),
+        bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            elevation: Platform.isIOS ? 0 : 8,
+            currentIndex: _selectedIndex,
+            backgroundColor: Theme.of(context).colorScheme.background,
+            selectedItemColor: APP_ACCENT_COLOR,
+            unselectedItemColor:
+                Theme.of(context).colorScheme.primary.withAlpha(155),
+            onTap: _onTappedNavBar,
+            items: [
+              /// Discover Tab
+              BottomNavigationBarItem(
+                  label: _i18n.translate("discover"),
+                  icon: const Icon(
+                    Iconsax.activity,
+                  )),
 
-            /// Discover story
-            BottomNavigationBarItem(
-                label: _i18n.translate("story"),
-                icon: const Icon(Iconsax.music_playlist)),
+              /// Discover story
+              BottomNavigationBarItem(
+                  label: _i18n.translate("story"),
+                  icon: const Icon(Iconsax.music_playlist)),
 
-            /// Discover new machi
-            BottomNavigationBarItem(
-                label: _i18n.translate("storycast_board"),
-                icon: const Icon(Iconsax.bookmark)),
+              /// Discover new machi
+              BottomNavigationBarItem(
+                  label: _i18n.translate("storycast_board"),
+                  icon: const Icon(Iconsax.bookmark)),
 
-            /// Conversations Tab
-            BottomNavigationBarItem(
-              label: _i18n.translate("chat"),
-              icon: _getConversationCounter(),
-            ),
+              /// Conversations Tab
+              BottomNavigationBarItem(
+                label: _i18n.translate("chat"),
+                icon: _getConversationCounter(),
+              ),
 
-            /// Profile Tab
-            BottomNavigationBarItem(
-                label: _i18n.translate("profile"),
-                icon: const Icon(Iconsax.user)),
-          ]),
-      body: _showCurrentNavBar(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: const Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
+              /// Profile Tab
+              BottomNavigationBarItem(
+                  label: _i18n.translate("profile"),
+                  icon: const Icon(Iconsax.user)),
+            ]),
+        body: _showCurrentNavBar(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: ExpandableFab(
+          isOpen: isFabOpen,
+          distance: 80.0,
           children: [
-            MainControlWidget(),
-          ]),
-    );
-  }
-
-  /// Count unread notifications
-  Widget _getNotificationCounter() {
-    const icon = Icon(Iconsax.notification);
-    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: _notificationsApi.getNotifications(),
-        builder: (context, snapshot) {
-          // Check result
-          if (!snapshot.hasData) {
-            return icon;
-          } else {
-            /// Get total counter to alert user
-            final total = snapshot.data!.docs
-                .where((doc) => doc.data()[NOTIF_READ] == false)
-                .toList()
-                .length;
-            if (total == 0) return icon;
-            return NotificationCounter(
-              icon: icon,
-              counter: total,
-              iconPadding: 10,
-            );
-          }
-        });
+            ActionButton(
+              onPressed: () => {
+                showModalBottomSheet<void>(
+                    context: context,
+                    isScrollControlled: true,
+                    builder: (context) => FractionallySizedBox(
+                        heightFactor: 0.9,
+                        child: DraggableScrollableSheet(
+                          snap: true,
+                          initialChildSize: 1,
+                          minChildSize: 1,
+                          builder: (context, scrollController) =>
+                              SingleChildScrollView(
+                            controller: scrollController,
+                            child: const CreateMachiWidget(),
+                          ),
+                        ))),
+                setState(() {
+                  isFabOpen = false;
+                })
+              },
+              icon: const Icon(Iconsax.pen_add),
+            ),
+            ActionButton(
+              onPressed: () => {
+                showModalBottomSheet<void>(
+                  context: context,
+                  enableDrag: true,
+                  isScrollControlled: true,
+                  builder: (context) {
+                    return const FractionallySizedBox(
+                        heightFactor: 0.9, child: ExploreMachi());
+                  },
+                ),
+                setState(() {
+                  isFabOpen = false;
+                })
+              },
+              icon: const Icon(Iconsax.note),
+            ),
+          ],
+        ));
   }
 
   /// Count unread conversations
