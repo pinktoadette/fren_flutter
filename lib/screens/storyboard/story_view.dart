@@ -53,6 +53,19 @@ class _StoriesViewState extends State<StoriesView> {
               Get.back();
             },
           ),
+          actions: [
+            if (widget.message == null)
+              TextButton.icon(
+                  onPressed: () {
+                    Get.to(() => AddNewStory(
+                        storyboard: storyboardController.currentStoryboard));
+                  },
+                  icon: const Icon(Iconsax.add),
+                  label: Text(
+                    _i18n.translate("new_story_collection"),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ))
+          ],
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,31 +73,6 @@ class _StoriesViewState extends State<StoriesView> {
             StoryboardHeaderWidget(
               storyboard: storyboardController.currentStoryboard,
             ),
-            if (widget.message == null)
-              Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: DottedBorder(
-                    dashPattern: const [4],
-                    strokeWidth: 2,
-                    borderType: BorderType.RRect,
-                    radius: const Radius.circular(10),
-                    padding: const EdgeInsets.all(6),
-                    child: ClipRRect(
-                      borderRadius: const BorderRadius.all(Radius.circular(10)),
-                      child: SizedBox(
-                          height: 100,
-                          width: width,
-                          child: TextButton.icon(
-                              onPressed: () {
-                                Get.to(() => AddNewStory(
-                                    storyboard: storyboardController
-                                        .currentStoryboard));
-                              },
-                              icon: const Icon(Iconsax.add),
-                              label: Text(
-                                  _i18n.translate("add_story_collection")))),
-                    ),
-                  )),
             Obx(
               () => ListView.builder(
                   shrinkWrap: true,
