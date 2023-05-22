@@ -1,3 +1,4 @@
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/story_cover.dart';
@@ -31,11 +32,18 @@ class StoryboardHeaderWidget extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(storyboard.title,
-                  overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.labelMedium),
               Text(storyboard.category,
-                  style: Theme.of(context).textTheme.displaySmall),
+                  style: const TextStyle(
+                      fontSize: 10,
+                      color: APP_SECONDARY_ACCENT_COLOR,
+                      fontWeight: FontWeight.bold)),
+              SizedBox(
+                width: width - (padding * 2 + storyCoverWidth + 10),
+                height: 50,
+                child: Text(storyboard.title,
+                    overflow: TextOverflow.fade,
+                    style: Theme.of(context).textTheme.labelMedium),
+              ),
               Text("${storyboard.story?.length ?? 0} collection",
                   style: Theme.of(context).textTheme.labelSmall)
             ],

@@ -27,7 +27,6 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       body: Column(
@@ -47,24 +46,9 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
             height: 10,
           ),
           TabBar(
-            indicatorWeight: 10,
+            indicatorWeight: 2,
             indicatorPadding: const EdgeInsets.only(bottom: 8, top: 2),
             labelColor: Colors.white,
-            indicator: BoxDecoration(
-              borderRadius: BorderRadius.circular(
-                10.0,
-              ),
-              color: APP_ACCENT_COLOR,
-              boxShadow: [
-                BoxShadow(
-                  color:
-                      Theme.of(context).colorScheme.tertiary.withOpacity(0.3),
-                  spreadRadius: 1,
-                  blurRadius: 2,
-                  offset: const Offset(0, 3), // changes position of shadow
-                ),
-              ],
-            ),
             controller: _tabController.tabController,
             tabs: <Widget>[
               Tab(

@@ -6,8 +6,6 @@ import 'dart:typed_data';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/controller/countdown.dart';
-import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
@@ -246,6 +244,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 showDoubleTap: _room.users.length == 1,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
+                inputTextCursorColor: Colors.white,
                 inputTextStyle: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,
@@ -597,11 +596,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       chatController.removeEmptyRoomfromList();
     }
     if (_hasNewMessages == true) {
-      chatController.sortRoomExit(_roomIdx);
-
       /// mark as read when clicked when exit
-      chatController.updateRoom(_roomIdx, chatController.currentRoom);
       await _chatroomApi.markAsRead(chatController.currentRoom.chatroomId);
+      Chatroom room = chatController.currentRoom.copyWith(read: true);
+      chatController.updateRoom(_roomIdx, room);
+
+      chatController.sortRoomExit(_roomIdx);
     }
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);

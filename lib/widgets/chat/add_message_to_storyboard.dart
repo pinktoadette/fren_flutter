@@ -52,13 +52,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
             child: ElevatedButton(
               child: Text(_i18n.translate("add_to_new_storyboard")),
               onPressed: () async {
-                dynamic message = widget.message;
-                if (widget.message.type == types.MessageType.text) {
-                  await _storyboardApi.createStoryboard(text: message.text);
-                }
-                if (widget.message.type == types.MessageType.image) {
-                  await _storyboardApi.createStoryboard(image: message.uri);
-                }
+                _addMessage();
               },
             )),
 
@@ -88,23 +82,22 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
     );
   }
 
-  // void _updateTitleCategory(Map<String, String> values) async {
-  //   try {
-  //     await _storyboardApi.createStoryboard(
-  //         values['title']!, values['category']!, widget.message.id);
-  //     Get.snackbar(
-  //       _i18n.translate("success"),
-  //       _i18n.translate("story_added"),
-  //       snackPosition: SnackPosition.BOTTOM,
-  //       backgroundColor: APP_SUCCESS,
-  //     );
-  //   } catch (error) {
-  //     Get.snackbar(
-  //       _i18n.translate("error"),
-  //       _i18n.translate("error_launch_url"),
-  //       snackPosition: SnackPosition.BOTTOM,
-  //       backgroundColor: APP_ERROR,
-  //     );
-  //   }
-  // }
+  void _addMessage() async {
+    try {
+      dynamic message = widget.message;
+      if (widget.message.type == types.MessageType.text) {
+        await _storyboardApi.createStoryboard(text: message.text);
+      }
+      if (widget.message.type == types.MessageType.image) {
+        await _storyboardApi.createStoryboard(image: message.uri);
+      }
+    } catch (error) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("error_launch_url"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
+  }
 }

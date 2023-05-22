@@ -10,7 +10,6 @@ import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/screens/storyboard/story_view.dart';
 import 'package:get/get.dart';
-import 'package:like_button/like_button.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
