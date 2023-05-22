@@ -94,7 +94,7 @@ class _EditPageState extends State<EditPage> {
                     alignment: Alignment.bottomCenter,
                     child: SmoothPageIndicator(
                       controller: controller,
-                      count: widget.story.pages!.length,
+                      count: widget.story.pages?.length ?? 0,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 14,
                           dotWidth: 14,

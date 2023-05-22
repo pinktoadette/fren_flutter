@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
+import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_scene.dart';
@@ -24,14 +30,20 @@ class EditPageReorder extends StatefulWidget {
 }
 
 class _EditPageReorderState extends State<EditPageReorder> {
+  // ignore: constant_identifier_names
+  static const LOCAL_FLAG = "LOCAL_";
+  final _scriptApi = ScriptApi();
   List<Script> scripts = [];
+  late Story story;
   late AppLocalizations _i18n;
+  StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
   void initState() {
     super.initState();
     setState(() {
       scripts = widget.scriptList;
+      story = storyboardController.currentStory;
     });
   }
 
@@ -45,7 +57,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         ReorderableListView(
             children: [
-              for (int index = 0; index < scripts!.length; index += 1)
+              for (int index = 0; index < scripts.length; index += 1)
                 Container(
                     key: ValueKey(scripts[index].scriptId),
                     decoration: const BoxDecoration(
@@ -53,18 +65,30 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         bottom: BorderSide(width: 1, color: Colors.grey),
                       ),
                     ),
-                    child: ListTile(
-                      isThreeLine: true,
-                      title: const SizedBox.shrink(),
-                      subtitle: _showScript(scripts[index]),
-                      trailing: const Icon(Iconsax.menu_1),
-                    ))
+                    child: Dismissible(
+                        key: Key(scripts[index].scriptId!),
+                        onDismissed: (direction) async {
+                          if (direction == DismissDirection.endToStart) {
+                            _deleteMessage(scripts[index]);
+                            setState(() {
+                              scripts.removeAt(index);
+                            });
+                          }
+                        },
+                        child: ListTile(
+                          isThreeLine: true,
+                          title: const SizedBox.shrink(),
+                          subtitle: _showScript(scripts[index]),
+                          trailing: const Icon(Iconsax.menu_1),
+                        )))
             ],
             onReorder: (int oldIndex, int newIndex) {
               setState(() {
                 if (oldIndex < newIndex) {
                   newIndex -= 1;
                 }
+                Script item = scripts.removeAt(oldIndex);
+                scripts.insert(newIndex, item);
               });
             }),
         Positioned(
@@ -81,25 +105,25 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.gallery_add),
                         onPressed: () {
-                          // _addImage();
+                          _addImage();
                         },
                       ),
                       IconButton(
                         icon: const Icon(Iconsax.text),
                         onPressed: () {
-                          // _addText();
+                          _addText();
                         },
                       ),
-                      IconButton(
-                        icon: const Icon(Iconsax.music),
-                        onPressed: () {},
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.voice_square),
-                        onPressed: () {
-                          // _changeVoice();
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: const Icon(Iconsax.music),
+                      //   onPressed: () {},
+                      // ),
+                      // IconButton(
+                      //   icon: const Icon(Iconsax.voice_square),
+                      //   onPressed: () {
+                      //     // _changeVoice();
+                      //   },
+                      // ),
                       const Spacer(),
                       OutlinedButton(
                         onPressed: () {
@@ -110,9 +134,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     ]),
               )
             ])),
-        const SizedBox(
-          height: 30,
-        )
       ],
     );
   }
@@ -121,22 +142,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
     double width = MediaQuery.of(context).size.width;
 
     Widget icons = Row(
-      mainAxisAlignment: MainAxisAlignment.end,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
             onPressed: () {},
             icon: const Icon(
               Iconsax.edit,
-              size: 20,
+              size: 16,
             )),
-        IconButton(
-            onPressed: () {
-              _deleteMessage(script.scriptId);
-            },
-            icon: const Icon(
-              Iconsax.trash,
-              size: 20,
-            ))
       ],
     );
 
@@ -167,6 +180,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _addImage() async {
+    String uuid = createUUID();
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -177,22 +191,18 @@ class _EditPageReorderState extends State<EditPageReorder> {
             Navigator.pop(context);
 
             try {
-              var newMessage = {
-                // ...author,
-                'size': 19345,
-                'height': 512,
-                'width': 512,
-                'type': 'image',
-                'uri': image.path
-              };
-              // types.Message message = types.ImageMessage.fromJson(newMessage);
-              // Scene newScene = Scene(
-              //     seq: _copyStory.scene!.length - 1,
-              //     sceneId: const Uuid().v4(),
-              //     messages: message);
-              // setState(() {
-              //   _copyStory.scene!.add(newScene);
-              // });
+              ScriptImage scriptImage = ScriptImage(
+                  size: 19345, height: 512, width: 512, uri: image.path);
+              Script script = Script(
+                  characterName: UserModel().user.username,
+                  image: scriptImage,
+                  type: 'image',
+                  scriptId: uuid,
+                  status: ScriptStatus.ACTIVE.name,
+                  seqNum: scripts.length);
+              setState(() {
+                scripts.add(script);
+              });
               Get.snackbar(
                 _i18n.translate("story_added"),
                 _i18n.translate("story_added_info"),
@@ -214,8 +224,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _addText() async {
-    String uuid = const Uuid().v4();
-
+    String uuid = createUUID();
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -224,21 +233,22 @@ class _EditPageReorderState extends State<EditPageReorder> {
               try {
                 if (text != null) {
                   Navigator.pop(context);
-                  var newMessage = {
-                    // ...author,
-                    'type': 'text',
-                    'text': text,
-                  };
-                  // types.Message message =
-                  //     types.TextMessage.fromJson(newMessage);
-                  // Scene newScene = Scene(
-                  //     seq: _copyStory.scene!.length - 1,
-                  //     sceneId:
-                  //         SCENE_CUSTOM_FLAG + uuid.replaceAll(RegExp(r'-'), ''),
-                  //     messages: message);
-                  // setState(() {
-                  //   _copyStory.scene!.add(newScene);
-                  // });
+                  Script script = Script(
+                      text: text,
+                      type: 'text',
+                      characterName: UserModel().user.username,
+                      scriptId: uuid,
+                      status: ScriptStatus.ACTIVE.name,
+                      seqNum: scripts.length);
+                  await _scriptApi.addScriptToStory(
+                    character: UserModel().user.username,
+                    type: "text",
+                    storyId: story.storyId,
+                    text: text,
+                  );
+                  setState(() {
+                    scripts.add(script);
+                  });
                 }
                 Get.snackbar(
                   _i18n.translate("story_added"),
@@ -261,41 +271,37 @@ class _EditPageReorderState extends State<EditPageReorder> {
     List<Script> script = scripts;
     List<Map<String, dynamic>> newSequence = [];
     int i = 1;
-    // for (Scene scene in scenes) {
-    //   Scene updateSeq = scene.copyWith(seq: i);
-    //   Map<String, dynamic> s = await formatStoryboard(updateSeq);
-    //   newSequence.add({...s, STORY_ID: _copyStory.storyboardId});
-    //   i++;
-    // }
-    // try {
-    //   await _storyApi.updateSequence(newSequence);
-    //   Get.back();
-    // } catch (_) {
-    //   Get.snackbar(
-    //     _i18n.translate("error"),
-    //     _i18n.translate("an_error_has_occurred"),
-    //     snackPosition: SnackPosition.BOTTOM,
-    //     backgroundColor: APP_ERROR,
-    //   );
-    // }
+
+    for (Script script in scripts) {
+      Script updateSeq = script.copyWith(seqNum: i);
+      Map<String, dynamic> newSeq = updateSeq.toJSON();
+      newSequence.add({...newSeq, STORY_ID: story.storyId});
+      i++;
+    }
+    try {
+      await _scriptApi.updateSequence(scripts: newSequence);
+      Get.back();
+    } catch (_) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+      // }
+    }
   }
 
-  void _deleteMessage(dynamic scene) async {
-    var message = scene.messages;
+  void _deleteMessage(Script script) async {
     confirmDialog(context,
         positiveText: _i18n.translate("OK"),
         message: _i18n.translate("story_sure_delete"),
         negativeAction: () => Navigator.of(context).pop(),
         positiveAction: () async {
           try {
-            // if (message.id.contains(LOCAL_FLAG) == false) {
-            //   await _storyApi.removeStory(message.id, _copyStory.storyboardId);
-            // }
-            // setState(() {
-            //   _copyStory.scene!.remove(scene);
-            // });
-
-            Navigator.of(context).pop();
+            if (script.scriptId?.contains(LOCAL_FLAG) == false) {
+              await _scriptApi.deleteScript(script: script);
+            }
           } catch (err) {
             Get.snackbar(
               _i18n.translate("error"),

@@ -28,13 +28,13 @@ class ImageSourceSheet extends StatelessWidget {
       CroppedFile? croppedFile = await ImageCropper().cropImage(
           sourcePath: image.path,
           aspectRatioPresets: [CropAspectRatioPreset.square],
-          maxWidth: 400,
-          maxHeight: 400,
+          maxWidth: 512,
+          maxHeight: 512,
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: i18n.translate("edit_crop_image"),
-                toolbarColor: Theme.of(context).primaryColor,
-                toolbarWidgetColor: Colors.white,
+                toolbarColor: Theme.of(context).colorScheme.background,
+                toolbarWidgetColor: Theme.of(context).colorScheme.primary,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
             IOSUiSettings(
@@ -59,12 +59,11 @@ class ImageSourceSheet extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.background,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(10.0),
           topRight: Radius.circular(10.0),
         ),
-        border: Border.all(width: 1.0, color: const Color(0xff707070)),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -88,7 +87,7 @@ class ImageSourceSheet extends StatelessWidget {
               ),
               IconButton(
                   onPressed: () => Navigator.pop(context),
-                  icon: const Icon(Iconsax.image, color: Colors.grey))
+                  icon: const Icon(Iconsax.image))
             ],
           ),
 
@@ -98,7 +97,7 @@ class ImageSourceSheet extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: TextButton.icon(
-              icon: const Icon(Iconsax.gallery, color: Colors.grey, size: 27),
+              icon: const Icon(Iconsax.gallery),
               label: Text(i18n.translate("gallery"),
                   style: const TextStyle(fontSize: 16)),
               onPressed: () async {
@@ -116,9 +115,8 @@ class ImageSourceSheet extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10.0),
             child: TextButton.icon(
-              icon: const Icon(Iconsax.camera, color: Colors.grey),
-              label: Text(i18n.translate("camera"),
-                  style: const TextStyle(fontSize: 16)),
+              icon: const Icon(Iconsax.camera),
+              label: Text(i18n.translate("camera")),
               onPressed: () async {
                 // Capture image from camera
                 final pickedFile = await picker.pickImage(
@@ -135,18 +133,16 @@ class ImageSourceSheet extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextButton.icon(
-                  icon: const Icon(Iconsax.folder_open, color: Colors.grey),
-                  label: Text(i18n.translate("file"),
-                      style: const TextStyle(fontSize: 16)),
+                  icon: const Icon(Iconsax.folder_open),
+                  label: Text(i18n.translate("file")),
                   onPressed: null,
                 )),
           if (useAIGenerator == true)
             Padding(
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextButton.icon(
-                  icon: const Icon(Iconsax.pen_add, color: Colors.grey),
-                  label: Text(i18n.translate("bot_generator"),
-                      style: const TextStyle(fontSize: 16)),
+                  icon: const Icon(Iconsax.pen_add),
+                  label: Text(i18n.translate("bot_generator")),
                   onPressed: null,
                 )),
           const SizedBox(height: 30),

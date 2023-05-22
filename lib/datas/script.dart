@@ -1,6 +1,8 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
+enum ScriptStatus { ACTIVE, INACTIVE, BLOCKED }
+
 class ScriptImage {
   int size;
   int height;
