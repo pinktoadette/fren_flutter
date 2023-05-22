@@ -44,7 +44,10 @@ class _StoriesViewState extends State<StoriesView> {
     return Scaffold(
         appBar: AppBar(
           title: widget.message == null
-              ? Text(_i18n.translate("storyboard"))
+              ? Text(
+                  _i18n.translate("story_collection"),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                )
               : Text(
                   _i18n.translate("add_message_collection"),
                   style: Theme.of(context).textTheme.bodyMedium,

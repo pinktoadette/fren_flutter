@@ -5,17 +5,14 @@
 // import 'package:machi_app/constants/constants.dart';
 // import 'package:machi_app/controller/chatroom_controller.dart';
 // import 'package:machi_app/controller/storyboard_controller.dart';
+// import 'package:machi_app/datas/story.dart';
 // import 'package:machi_app/datas/storyboard.dart';
 // import 'package:machi_app/dialogs/common_dialogs.dart';
 // import 'package:machi_app/helpers/app_localizations.dart';
 // import 'package:flutter/material.dart';
-// import 'package:machi_app/helpers/message_format.dart';
 // import 'package:machi_app/models/user_model.dart';
 // import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
-// import 'package:machi_app/widgets/image_source_sheet.dart';
 // import 'package:machi_app/widgets/storyboard/bottom_sheets/add_scene.dart';
-// import 'package:machi_app/widgets/storyboard/edit_story_voice.dart';
-// import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 // import 'package:get/get.dart';
 // import 'package:iconsax/iconsax.dart';
 // import 'package:uuid/uuid.dart';
@@ -32,14 +29,13 @@
 //   late AppLocalizations _i18n;
 //   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 //   ChatController chatController = Get.find(tag: 'chatroom');
-//   bool _showName = false;
 //   final _storyApi = StoryApi();
-//   late Storyboard _copyStory;
+//   late Story _copyStory;
 //   String? _selectedCategory;
 
 //   @override
 //   void initState() {
-//     _copyStory = storyboardController.currentStoryboardboard.copyWith();
+//     _copyStory = storyboardController.currentStory.copyWith();
 //     setState(() {
 //       // _showName = _copyStory.showNames ?? false;
 //       _selectedCategory = _copyStory.category;
@@ -92,7 +88,7 @@
 //         ),
 //         body: Padding(
 //             padding: const EdgeInsets.only(left: 8.0, right: 8.0),
-//             child: _copyStory.story == null
+//             child: _copyStory.pages == null
 //                 ? const Text("No stories")
 //                 : Stack(
 //                     children: [
@@ -124,11 +120,11 @@
 //                             child: ReorderableListView(
 //                               children: <Widget>[
 //                                 for (int index = 0;
-//                                     index < _copyStory.scene!.length;
+//                                     index < _copyStory.pages!.length;
 //                                     index += 1)
 //                                   Container(
 //                                       key: ValueKey(
-//                                           _copyStory.story![index].storyId),
+//                                           _copyStory.pages![index].scripts),
 //                                       decoration: const BoxDecoration(
 //                                         border: Border(
 //                                           bottom: BorderSide(

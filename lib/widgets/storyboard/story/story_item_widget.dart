@@ -1,3 +1,4 @@
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -9,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -37,7 +39,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
-    double storyCoverWidth = 120;
+    double storyCoverWidth = 80;
     double padding = 15;
     double playWidth =
         widget.story.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
@@ -52,51 +54,70 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
           }
         },
         child: Card(
-          elevation: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(padding),
-                child: StoryCover(
-                    width: storyCoverWidth,
-                    photoUrl: widget.story.photoUrl ?? "",
-                    title: widget.story.title),
-              ),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        width:
-                            width - (storyCoverWidth + playWidth + padding * 3),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Text(widget.story.title,
-                                style: Theme.of(context).textTheme.labelMedium),
-                            Text(widget.story.subtitle,
-                                style:
-                                    Theme.of(context).textTheme.displaySmall),
-                            Text(widget.story.summary ?? "",
-                                style:
-                                    Theme.of(context).textTheme.displaySmall),
-                            Row(
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              mainAxisAlignment: MainAxisAlignment.end,
+            elevation: 1,
+            semanticContainer: true,
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Column(children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(padding),
+                    child: StoryCover(
+                        width: storyCoverWidth,
+                        photoUrl: widget.story.photoUrl ?? "",
+                        title: widget.story.title),
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                            width: width -
+                                (storyCoverWidth + playWidth + padding * 3),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
+                                const SizedBox(
+                                  height: 15,
+                                ),
                                 Text(
                                     "update ${formatDate(widget.story.updatedAt!)}",
-                                    style: const TextStyle(fontSize: 10))
+                                    style: const TextStyle(fontSize: 10)),
+                                Text(
+                                  widget.story.title,
+                                  style: TextStyle(
+                                      color:
+                                          Theme.of(context).colorScheme.primary,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(widget.story.summary ?? "No summary",
+                                    style:
+                                        Theme.of(context).textTheme.bodySmall),
                               ],
-                            )
-                          ],
-                        ))
-                  ])
-            ],
-          ),
-        ));
+                            ))
+                      ]),
+                ],
+              ),
+              Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      TimelineHeader(user: widget.story.createdBy),
+                      TextButton.icon(
+                        onPressed: null,
+                        icon: const Icon(Iconsax.square, size: 16),
+                        label: Text(
+                            "${widget.story.pages?.length ?? 0} modules",
+                            style: const TextStyle(fontSize: 12)),
+                      ),
+                    ],
+                  )),
+            ])));
   }
 
   void _addMessage() async {

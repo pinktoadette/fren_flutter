@@ -1,12 +1,16 @@
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/edit_storyboard.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 /// Need to call pages since storyboard
 /// did not query this in order to increase speed
@@ -19,11 +23,14 @@ class StoryPageView extends StatefulWidget {
 }
 
 class _StoryPageViewState extends State<StoryPageView> {
+  final controller = PageController(viewportFraction: 0.8, keepPage: true);
+
   late AppLocalizations _i18n;
   double itemHeight = 120;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Story? story;
+  var pages = [];
 
   @override
   void initState() {
@@ -34,6 +41,8 @@ class _StoryPageViewState extends State<StoryPageView> {
   void _getStoryContent() async {
     try {
       Story details = await _storyApi.getMyStories(widget.story.storyId);
+      pages = _getPages(details);
+
       setState(() {
         story = details;
       });
@@ -50,51 +59,85 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+
     double headerHeight = 170;
-    if (story == null) {
+    if (story == null && pages.isEmpty) {
       return Scaffold(
           appBar: AppBar(
-            title: Text(_i18n.translate("story_collection")),
+            title: Text(
+              _i18n.translate("storybits"),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
           ),
           body: NoData(text: _i18n.translate("loading")));
     }
     return Scaffold(
         appBar: AppBar(
-          title: Text(_i18n.translate("story_collection")),
+          title: Text(
+            _i18n.translate("storybits"),
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          actions: [
+            if (story?.status != StoryStatus.PUBLISHED)
+              IconButton(
+                  onPressed: () {
+                    // Get.to(() => const EditStory());
+                  },
+                  icon: const Icon(
+                    Iconsax.edit,
+                    size: 20,
+                  )),
+          ],
         ),
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             StoryHeaderWidget(story: story!),
-            SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: story!.pages!.map((e) {
-                    return Container(
-                        height: height - headerHeight,
-                        padding: const EdgeInsets.all(2),
-                        width: width * 0.9,
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.vertical,
-                          child: Card(
-                            child: Container(
-                              padding: const EdgeInsets.all(20),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: e.scripts!.map((script) {
-                                    return Text(
-                                      script.text ?? "",
-                                      style:
-                                          Theme.of(context).textTheme.bodySmall,
-                                    );
-                                  }).toList()),
-                            ),
-                          ),
-                        ));
-                  }).toList(),
+            SizedBox(
+                height: height - headerHeight - 20,
+                width: width,
+                child: PageView.builder(
+                  controller: controller,
+                  itemCount: pages.length,
+                  itemBuilder: (_, index) {
+                    return pages[index];
+                  },
                 )),
+            SmoothPageIndicator(
+              controller: controller,
+              count: story!.pages!.length,
+              effect: const ExpandingDotsEffect(
+                  dotHeight: 14,
+                  dotWidth: 14,
+                  // type: WormType.thinUnderground,
+                  activeDotColor: APP_ACCENT_COLOR),
+            ),
+            const SizedBox(
+              height: 10,
+            )
           ],
-        ));
+        )));
+  }
+
+  List _getPages(Story story) {
+    return story.pages!.map((e) {
+      return SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: Container(
+            padding: const EdgeInsets.only(left: 0, right: 40),
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: e.scripts!.map((script) {
+                  return Text(
+                    script.text ?? "",
+                    style: Theme.of(context).textTheme.bodySmall,
+                  );
+                }).toList()),
+          ));
+    }).toList();
   }
 }
