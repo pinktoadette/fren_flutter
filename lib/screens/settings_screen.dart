@@ -49,7 +49,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("settings"),
-            style: Theme.of(context).textTheme.labelMedium,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         body: Container(

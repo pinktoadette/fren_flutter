@@ -31,7 +31,10 @@ class StoryCover extends StatelessWidget {
               BoxShadow(
                   blurRadius: 8,
                   offset: const Offset(5, 15),
-                  color: Theme.of(context).colorScheme.tertiary.withOpacity(.6),
+                  color: Theme.of(context)
+                      .colorScheme
+                      .tertiaryContainer
+                      .withOpacity(.6),
                   spreadRadius: -9)
             ]),
         child: SizedBox(

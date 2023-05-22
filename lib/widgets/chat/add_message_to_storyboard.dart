@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -34,23 +35,27 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.only(left: 10, top: 20),
-          child: Text(
-            _i18n.translate("storycast_board"),
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-        ),
-        Padding(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            child: Text(
+        Container(
+          padding: const EdgeInsets.only(left: 15, top: 15),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Text(
+              _i18n.translate("storycast_board"),
+              style: Theme.of(context).textTheme.headlineMedium,
+            ),
+            Text(
               _i18n.translate("story_added_info"),
               style: Theme.of(context).textTheme.labelSmall,
-            )),
+            )
+          ]),
+        ),
         Align(
             alignment: Alignment.center,
-            child: ElevatedButton(
-              child: Text(_i18n.translate("add_to_new_storyboard")),
+            child: ElevatedButton.icon(
+              icon: const Icon(Iconsax.add),
+              label: Text(
+                _i18n.translate("add_to_new_storyboard"),
+              ),
               onPressed: () async {
                 _addMessage();
               },
@@ -66,7 +71,10 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         ),
         Padding(
             padding: const EdgeInsets.all(10),
-            child: Text(_i18n.translate("add_to_exist_storyboard"))),
+            child: Text(
+              _i18n.translate("add_to_exist_storyboard"),
+              style: Theme.of(context).textTheme.labelSmall,
+            )),
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(

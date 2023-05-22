@@ -122,6 +122,7 @@ class MyApp extends StatelessWidget {
         primary: APP_PRIMARY_COLOR,
         secondary: APP_ACCENT_COLOR,
         tertiary: APP_TERTIARY,
+        tertiaryContainer: APP_TERTIARY, // drop shadow
         background: APP_PRIMARY_BACKGROUND,
       ),
       tabBarTheme: TabBarTheme(
@@ -191,7 +192,7 @@ class MyApp extends StatelessWidget {
         headlineLarge:
             GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
         headlineMedium:
-            GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
+            GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.bold),
         headlineSmall:
             GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
         titleLarge: GoogleFonts.poppins(fontSize: 16),
@@ -207,7 +208,7 @@ class MyApp extends StatelessWidget {
             fontSize: 14,
             wordSpacing: 0,
             letterSpacing: 0,
-            textStyle: TextStyle(color: APP_ACCENT_COLOR)),
+            textStyle: const TextStyle(color: APP_ACCENT_COLOR)),
         labelSmall: GoogleFonts.poppins(
             fontSize: 12,
             wordSpacing: 0,
@@ -244,7 +245,7 @@ class MyApp extends StatelessWidget {
   ThemeData _darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     const APP_PRIMARY_DARK_COLOR = Colors.white;
-    const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 15, 15, 15);
+    const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 29, 29, 33);
 
     return darkTheme.copyWith(
       primaryColor: APP_PRIMARY_DARK_COLOR,
@@ -252,6 +253,7 @@ class MyApp extends StatelessWidget {
           primary: APP_PRIMARY_DARK_COLOR,
           secondary: APP_ACCENT_COLOR,
           tertiary: APP_TERTIARY,
+          tertiaryContainer: Colors.black,
           background: APP_PRIMARY_DARK_BACKGROUND),
       scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
       tabBarTheme: TabBarTheme(
@@ -283,7 +285,7 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: const Color.fromARGB(241, 58, 57, 57),
+          color: const Color.fromARGB(239, 52, 53, 61),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           shape: defaultCardBorder()),

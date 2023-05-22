@@ -78,6 +78,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
+                              const SizedBox(
+                                height: 15,
+                              ),
                               Text(
                                   "${widget.item.status.name} ${formatDate(widget.item.updatedAt)}",
                                   style: const TextStyle(fontSize: 10)),
