@@ -38,33 +38,83 @@ class _EditPageReorderState extends State<EditPageReorder> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
+    double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    return ReorderableListView(
-        children: [
-          for (int index = 0; index < scripts!.length; index += 1)
-            Container(
-                key: ValueKey(scripts[index].scriptId),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1, color: Colors.grey),
-                  ),
-                ),
-                child: ListTile(
-                  isThreeLine: true,
-                  title: const SizedBox.shrink(),
-                  subtitle: _showScript(scripts[index]),
-                  trailing: const Icon(Iconsax.menu_1),
-                ))
-        ],
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-          });
-        });
+    return Stack(
+      children: [
+        ReorderableListView(
+            children: [
+              for (int index = 0; index < scripts!.length; index += 1)
+                Container(
+                    key: ValueKey(scripts[index].scriptId),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.grey),
+                      ),
+                    ),
+                    child: ListTile(
+                      isThreeLine: true,
+                      title: const SizedBox.shrink(),
+                      subtitle: _showScript(scripts[index]),
+                      trailing: const Icon(Iconsax.menu_1),
+                    ))
+            ],
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+              });
+            }),
+        Positioned(
+            width: width,
+            bottom: 0,
+            child: Column(children: [
+              Container(
+                color: Theme.of(context).colorScheme.background,
+                width: width,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Iconsax.gallery_add),
+                        onPressed: () {
+                          // _addImage();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.text),
+                        onPressed: () {
+                          // _addText();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.music),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.voice_square),
+                        onPressed: () {
+                          // _changeVoice();
+                        },
+                      ),
+                      const Spacer(),
+                      OutlinedButton(
+                        onPressed: () {
+                          // Get.to(() => ViewStory(showName: _showName));
+                        },
+                        child: Text(_i18n.translate("storyboard_preview")),
+                      )
+                    ]),
+              )
+            ])),
+        const SizedBox(
+          height: 30,
+        )
+      ],
+    );
   }
 
   Widget _showScript(Script script) {

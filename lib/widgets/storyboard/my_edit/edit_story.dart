@@ -79,7 +79,7 @@ class _EditPageState extends State<EditPage> {
             Stack(
               children: [
                 SizedBox(
-                    height: height - 90,
+                    height: height - 100,
                     width: width,
                     child: PageView.builder(
                       controller: controller,
@@ -88,61 +88,23 @@ class _EditPageState extends State<EditPage> {
                         return pages[index];
                       },
                     )),
-                Positioned(
-                    width: width,
-                    bottom: 0,
-                    child: Column(children: [
-                      SmoothPageIndicator(
-                        controller: controller,
-                        count: widget.story.pages!.length,
-                        effect: const ExpandingDotsEffect(
-                            dotHeight: 14,
-                            dotWidth: 14,
-                            // type: WormType.thinUnderground,
-                            activeDotColor: APP_ACCENT_COLOR),
-                      ),
-                      Container(
-                        color: Theme.of(context).colorScheme.background,
-                        width: width,
-                        child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              IconButton(
-                                icon: const Icon(Iconsax.gallery_add),
-                                onPressed: () {
-                                  // _addImage();
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Iconsax.text),
-                                onPressed: () {
-                                  // _addText();
-                                },
-                              ),
-                              IconButton(
-                                icon: const Icon(Iconsax.music),
-                                onPressed: () {},
-                              ),
-                              IconButton(
-                                icon: const Icon(Iconsax.voice_square),
-                                onPressed: () {
-                                  // _changeVoice();
-                                },
-                              ),
-                              const Spacer(),
-                              OutlinedButton(
-                                onPressed: () {
-                                  // Get.to(() => ViewStory(showName: _showName));
-                                },
-                                child:
-                                    Text(_i18n.translate("storyboard_preview")),
-                              )
-                            ]),
-                      )
-                    ]))
+                Positioned.fill(
+                  bottom: 50,
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: SmoothPageIndicator(
+                      controller: controller,
+                      count: widget.story.pages!.length,
+                      effect: const ExpandingDotsEffect(
+                          dotHeight: 14,
+                          dotWidth: 14,
+                          // type: WormType.thinUnderground,
+                          activeDotColor: APP_ACCENT_COLOR),
+                    ),
+                  ),
+                )
               ],
-            )
+            ),
           ],
         ));
   }
