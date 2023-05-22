@@ -3,18 +3,31 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddTextScene extends StatefulWidget {
+class AddEditText extends StatefulWidget {
+  final String? text;
   final Function(String?) onTextComplete;
-  const AddTextScene({Key? key, required this.onTextComplete})
+  const AddEditText({Key? key, required this.onTextComplete, this.text})
       : super(key: key);
 
   @override
-  _AddTextSceneState createState() => _AddTextSceneState();
+  _AddEditTextState createState() => _AddEditTextState();
 }
 
-class _AddTextSceneState extends State<AddTextScene> {
+class _AddEditTextState extends State<AddEditText> {
   late AppLocalizations _i18n;
-  final _textController = TextEditingController();
+  late TextEditingController _textController = TextEditingController();
+  @override
+  void initState() {
+    if (widget.text != null) {
+      _textController = TextEditingController(text: widget.text);
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _textController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

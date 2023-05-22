@@ -14,7 +14,7 @@ import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
-import 'package:machi_app/widgets/storyboard/bottom_sheets/add_scene.dart';
+import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
 import 'package:uuid/uuid.dart';
 
 class EditPageReorder extends StatefulWidget {
@@ -111,7 +111,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.text),
                         onPressed: () {
-                          _addText();
+                          _addEditText();
                         },
                       ),
                       // IconButton(
@@ -145,7 +145,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _addEditText(text: script.text);
+            },
             icon: const Icon(
               Iconsax.edit,
               size: 16,
@@ -223,13 +225,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
     );
   }
 
-  void _addText() async {
+  void _addEditText({String? text}) async {
     String uuid = createUUID();
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         enableDrag: true,
-        builder: (context) => AddTextScene(onTextComplete: (text) async {
+        builder: (context) => AddEditText(
+            text: text,
+            onTextComplete: (text) async {
               try {
                 if (text != null) {
                   Navigator.pop(context);
