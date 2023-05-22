@@ -111,8 +111,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                       TextButton.icon(
                         onPressed: null,
                         icon: const Icon(Iconsax.square, size: 16),
-                        label: Text(
-                            "${widget.story.pages?.length ?? 0} modules",
+                        label: Text("${widget.story.pages?.length ?? 0} sets",
                             style: const TextStyle(fontSize: 12)),
                       ),
                     ],

@@ -113,6 +113,12 @@ class StoryboardController extends GetxController {
 
   void setCurrentStory(Story story) {
     _currentStory = story.obs;
+
+    List<Story> stories = currentStoryboard.story!;
+    int index =
+        stories.indexWhere((element) => element.storyId == story.storyId);
+    currentStoryboard.story![index] = story;
+    updateStoryboard(currentStoryboard);
   }
 
   /// Script
@@ -125,6 +131,23 @@ class StoryboardController extends GetxController {
     currentStoryboard.story![index].pages!.add(page);
 
     /// update the storyboard
+    updateStoryboard(currentStoryboard);
+  }
+
+  void updateScriptsToStory(
+      {required Story story,
+      required StoryPages page,
+      required List<Script> scripts}) {
+    List<Story> stories = currentStoryboard.story!;
+    int storyIndex = stories
+        .indexWhere((element) => element.storyId == currentStory.storyId);
+
+    int pageNum = currentStoryboard.story![storyIndex].pages!
+        .indexWhere((element) => element.pageNum == page.pageNum);
+
+    // update the details of page
+    currentStoryboard.story![storyIndex].pages![pageNum] =
+        StoryPages(scripts: scripts, pageNum: pageNum);
     updateStoryboard(currentStoryboard);
   }
 }

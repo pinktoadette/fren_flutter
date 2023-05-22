@@ -2,6 +2,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,8 @@ class _EditPageState extends State<EditPage> {
             // )
           ],
         ),
-        body: Column(
+        body: SingleChildScrollView(
+            child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -106,22 +108,24 @@ class _EditPageState extends State<EditPage> {
               ],
             ),
           ],
-        ));
+        )));
   }
 
   List _getPages() {
     /// Separate out the reorder to have its own state
-    return widget.story.pages!.map((pages) {
-      var scripts = pages.scripts ?? [];
+    return widget.story.pages!.map((page) {
+      var scripts = page.scripts ?? [];
       return EditPageReorder(
           scriptList: scripts,
           onUpdate: (data) {
-            _updateSequence(data);
+            _updateSequence(page, data);
           });
     }).toList();
   }
 
-  void _updateSequence(var data) {
-    debugPrint(data);
+  /// update / delete sequence
+  void _updateSequence(StoryPages page, List<Script> scripts) {
+    storyboardController.updateScriptsToStory(
+        story: widget.story, page: page, scripts: scripts);
   }
 }

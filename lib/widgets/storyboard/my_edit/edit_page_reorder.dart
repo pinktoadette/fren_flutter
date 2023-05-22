@@ -15,7 +15,6 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
-import 'package:uuid/uuid.dart';
 
 class EditPageReorder extends StatefulWidget {
   final List<Script> scriptList;
@@ -66,19 +65,36 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       ),
                     ),
                     child: Dismissible(
-                        key: Key(scripts[index].scriptId!),
-                        onDismissed: (direction) async {
-                          if (direction == DismissDirection.endToStart) {
-                            _deleteMessage(scripts[index]);
-                            setState(() {
-                              scripts.removeAt(index);
-                            });
-                          }
+                        confirmDismiss: (DismissDirection direction) async {
+                          return await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                    _i18n.translate("storybit_sure_delete")),
+                                content: Text(
+                                    _i18n.translate("storybit_sure_delete")),
+                                actions: <Widget>[
+                                  OutlinedButton(
+                                      onPressed: () => {
+                                            _deleteMessage(index),
+                                            Navigator.of(context).pop(true),
+                                          },
+                                      child: Text(_i18n.translate("DELETE"))),
+                                  ElevatedButton(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(false),
+                                      child: Text(_i18n.translate("CANCEL"))),
+                                ],
+                              );
+                            },
+                          );
                         },
+                        key: Key(scripts[index].scriptId!),
                         child: ListTile(
                           isThreeLine: true,
                           title: const SizedBox.shrink(),
-                          subtitle: _showScript(scripts[index]),
+                          subtitle: _showScript(index),
                           trailing: const Icon(Iconsax.menu_1),
                         )))
             ],
@@ -114,16 +130,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           _addEditText();
                         },
                       ),
-                      // IconButton(
-                      //   icon: const Icon(Iconsax.music),
-                      //   onPressed: () {},
-                      // ),
-                      // IconButton(
-                      //   icon: const Icon(Iconsax.voice_square),
-                      //   onPressed: () {
-                      //     // _changeVoice();
-                      //   },
-                      // ),
                       const Spacer(),
                       OutlinedButton(
                         onPressed: () {
@@ -138,28 +144,48 @@ class _EditPageReorderState extends State<EditPageReorder> {
     );
   }
 
-  Widget _showScript(Script script) {
+  Widget _showScript(int index) {
     double width = MediaQuery.of(context).size.width;
 
     Widget icons = Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      mainAxisAlignment: MainAxisAlignment.start,
       children: [
         IconButton(
             onPressed: () {
-              _addEditText(text: script.text);
+              _addEditText(index: index);
             },
             icon: const Icon(
               Iconsax.edit,
               size: 16,
             )),
+        PopupMenuButton<String>(
+          icon: const Icon(Iconsax.forward_square, size: 16),
+          initialValue: "1",
+          // Callback that sets the selected popup menu item.
+          onSelected: (item) {},
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            const PopupMenuItem<String>(
+              value: "1",
+              child: Text('Item 1'),
+            ),
+            const PopupMenuItem<String>(
+              value: "2",
+              child: Text('Item 2'),
+            ),
+            const PopupMenuItem<String>(
+              value: "3",
+              child: Text('Item 3'),
+            ),
+          ],
+        ),
       ],
     );
 
-    switch (script.type) {
+    switch (scripts[index].type) {
       case "text":
         return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(
-            script.text ?? "",
+            scripts[index].text ?? "",
             textAlign: TextAlign.left,
             style: Theme.of(context).textTheme.bodySmall,
           ),
@@ -173,7 +199,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   width: width * 0.75,
                   height: width * 0.75,
                   icon: const Icon(Iconsax.image),
-                  photoUrl: script.image?.uri ?? ""),
+                  photoUrl: scripts[index].image?.uri ?? ""),
               icons
             ]);
       default:
@@ -207,7 +233,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
               });
               Get.snackbar(
                 _i18n.translate("story_added"),
-                _i18n.translate("story_added_info"),
+                _i18n.translate("story_edits_added"),
                 snackPosition: SnackPosition.BOTTOM,
                 backgroundColor: APP_SUCCESS,
               );
@@ -225,20 +251,20 @@ class _EditPageReorderState extends State<EditPageReorder> {
     );
   }
 
-  void _addEditText({String? text}) async {
+  void _addEditText({int? index}) async {
     String uuid = createUUID();
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => AddEditText(
-            text: text,
-            onTextComplete: (text) async {
+            text: index != null ? scripts[index].text : null,
+            onTextComplete: (newText) async {
               try {
-                if (text != null) {
+                if (index == null) {
                   Navigator.pop(context);
                   Script script = Script(
-                      text: text,
+                      text: newText,
                       type: 'text',
                       characterName: UserModel().user.username,
                       scriptId: uuid,
@@ -248,12 +274,31 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     character: UserModel().user.username,
                     type: "text",
                     storyId: story.storyId,
-                    text: text,
+                    text: newText,
                   );
                   setState(() {
                     scripts.add(script);
                   });
                 }
+
+                if (index != null) {
+                  Navigator.pop(context);
+                  Script script = Script(
+                      text: newText,
+                      type: 'text',
+                      characterName: UserModel().user.username,
+                      scriptId: scripts[index].scriptId,
+                      status: ScriptStatus.ACTIVE.name,
+                      seqNum: scripts[index].seqNum);
+                  await _scriptApi.updateScript(script: script);
+
+                  setState(() {
+                    scripts[index] = script;
+                  });
+                  // update parent
+                  widget.onUpdate(scripts);
+                }
+
                 Get.snackbar(
                   _i18n.translate("story_added"),
                   _i18n.translate("story_added_info"),
@@ -283,8 +328,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
       i++;
     }
     try {
-      await _scriptApi.updateSequence(scripts: newSequence);
-      Get.back();
+      // update parent
+      widget.onUpdate(newSequence);
     } catch (_) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -292,28 +337,27 @@ class _EditPageReorderState extends State<EditPageReorder> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );
-      // }
     }
   }
 
-  void _deleteMessage(Script script) async {
-    confirmDialog(context,
-        positiveText: _i18n.translate("OK"),
-        message: _i18n.translate("story_sure_delete"),
-        negativeAction: () => Navigator.of(context).pop(),
-        positiveAction: () async {
-          try {
-            if (script.scriptId?.contains(LOCAL_FLAG) == false) {
-              await _scriptApi.deleteScript(script: script);
-            }
-          } catch (err) {
-            Get.snackbar(
-              _i18n.translate("error"),
-              _i18n.translate("an_error_has_occurred"),
-              snackPosition: SnackPosition.BOTTOM,
-              backgroundColor: APP_ERROR,
-            );
-          }
-        });
+  _deleteMessage(int index) async {
+    try {
+      if (scripts[index].scriptId?.contains(LOCAL_FLAG) == false) {
+        await _scriptApi.deleteScript(script: scripts[index]);
+      }
+      // seq is not right after remove
+      setState(() {
+        scripts.removeAt(index);
+      });
+      // update parent
+      widget.onUpdate(scripts);
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 }

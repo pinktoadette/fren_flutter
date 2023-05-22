@@ -18,6 +18,7 @@ class _AddEditTextState extends State<AddEditText> {
   late TextEditingController _textController = TextEditingController();
   @override
   void initState() {
+    super.initState();
     if (widget.text != null) {
       _textController = TextEditingController(text: widget.text);
     }
@@ -42,55 +43,43 @@ class _AddEditTextState extends State<AddEditText> {
             left: 10,
             right: 10,
             bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const SizedBox(
-                height: 10,
-              ),
-              Row(
+        child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  Text(_i18n.translate("story_add_text_scene"),
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      )),
-                  ElevatedButton(
-                      onPressed: () {
-                        _onComplete(_textController.text);
-                      },
-                      child: Text(_i18n.translate("add")))
-                ],
-              ),
-              SizedBox(
-                  width: width,
-                  child: TextFormField(
-                    maxLength: 500,
-                    maxLines: 10,
-                    buildCounter: (_,
-                            {required currentLength,
-                            maxLength,
-                            required isFocused}) =>
-                        _counter(context, currentLength, maxLength),
-                    controller: _textController,
-                  ))
-            ]));
-  }
-
-  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0.0),
-      child: Container(
-          alignment: Alignment.topLeft,
-          child: Text(
-            currentLength.toString() + "/" + maxLength.toString(),
-            style: Theme.of(context).textTheme.labelSmall,
-          )),
-    );
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(_i18n.translate("story_add_text_scene"),
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          )),
+                      ElevatedButton(
+                          onPressed: () {
+                            _onComplete(_textController.text);
+                          },
+                          child: widget.text == null
+                              ? Text(_i18n.translate("add"))
+                              : Text(_i18n.translate("UPDATE")))
+                    ],
+                  ),
+                  SizedBox(
+                      width: width,
+                      child: TextFormField(
+                        maxLines: 29,
+                        controller: _textController,
+                        scrollPadding: EdgeInsets.only(
+                            bottom: MediaQuery.of(context).viewInsets.bottom),
+                      ))
+                ])));
   }
 
   void _onComplete(String text) {

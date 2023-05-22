@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -43,6 +42,11 @@ class _StoryPageViewState extends State<StoryPageView> {
   void _getStoryContent() async {
     try {
       Story details = await _storyApi.getMyStories(widget.story.storyId);
+
+      /// Update state
+      storyboardController.setCurrentStory(details);
+
+      /// paint ui
       pages = _getPages(details);
 
       setState(() {
@@ -70,7 +74,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           appBar: AppBar(
             title: Text(
               _i18n.translate("storybits"),
-              style: Theme.of(context).textTheme.bodyMedium,
+              style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
           body: NoData(text: _i18n.translate("loading")));
@@ -79,7 +83,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         appBar: AppBar(
           title: Text(
             _i18n.translate("storybits"),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.bodySmall,
           ),
           actions: [
             if (story?.status != StoryStatus.PUBLISHED)
