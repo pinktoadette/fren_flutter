@@ -8,7 +8,9 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
-import 'package:machi_app/widgets/storyboard/my_edit/edit_storyboard.dart';
+import 'package:machi_app/widgets/image/image_rounded.dart';
+import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -23,7 +25,7 @@ class StoryPageView extends StatefulWidget {
 }
 
 class _StoryPageViewState extends State<StoryPageView> {
-  final controller = PageController(viewportFraction: 0.8, keepPage: true);
+  final controller = PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
   double itemHeight = 120;
@@ -83,7 +85,9 @@ class _StoryPageViewState extends State<StoryPageView> {
             if (story?.status != StoryStatus.PUBLISHED)
               IconButton(
                   onPressed: () {
-                    // Get.to(() => const EditStory());
+                    Get.to(() => EditPage(
+                          story: story ?? widget.story,
+                        ));
                   },
                   icon: const Icon(
                     Iconsax.edit,
@@ -127,17 +131,28 @@ class _StoryPageViewState extends State<StoryPageView> {
     return story.pages!.map((e) {
       return SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: Container(
-            padding: const EdgeInsets.only(left: 0, right: 40),
+          child: Card(
+              child: Container(
+            padding: const EdgeInsets.all(20),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: e.scripts!.map((script) {
-                  return Text(
-                    script.text ?? "",
-                    style: Theme.of(context).textTheme.bodySmall,
-                  );
+                  if (script.type == "text") {
+                    return Text(
+                      script.text ?? "",
+                      style: Theme.of(context).textTheme.bodySmall,
+                    );
+                  } else if (script.type == "image") {
+                    return RoundedImage(
+                      width: 516,
+                      height: 516,
+                      photoUrl: script.image?.uri ?? "",
+                      icon: const Icon(Iconsax.image),
+                    );
+                  }
+                  return const SizedBox.shrink();
                 }).toList()),
-          ));
+          )));
     }).toList();
   }
 }
