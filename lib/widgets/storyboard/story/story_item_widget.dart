@@ -1,4 +1,3 @@
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -8,7 +7,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:onboarding/onboarding.dart';

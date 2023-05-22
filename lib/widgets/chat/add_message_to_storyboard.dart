@@ -60,12 +60,6 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
                 _addMessage();
               },
             )),
-
-        // StoryboardTitleCategory(
-        //   onUpdate: (e) {
-        //     _updateTitleCategory(e);
-        //   },
-        // ),
         const SizedBox(
           height: 5,
         ),

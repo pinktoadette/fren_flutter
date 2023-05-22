@@ -39,7 +39,7 @@ class StoryboardHeaderWidget extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
               SizedBox(
                 width: width - (padding * 2 + storyCoverWidth + 10),
-                height: 50,
+                height: 45,
                 child: Text(storyboard.title,
                     overflow: TextOverflow.fade,
                     style: Theme.of(context).textTheme.labelMedium),

@@ -45,7 +45,10 @@ class _StoriesViewState extends State<StoriesView> {
         appBar: AppBar(
           title: widget.message == null
               ? Text(_i18n.translate("storyboard"))
-              : Text(_i18n.translate("add_message_collection")),
+              : Text(
+                  _i18n.translate("add_message_collection"),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {

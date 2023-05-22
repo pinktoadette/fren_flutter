@@ -36,8 +36,10 @@ class ScriptApi {
         "storyId": storyId
       });
       final data = response.data;
-      StoryPages pages =
-          StoryPages(pageNum: data[SCRIPT_PAGE_NUM], scripts: [data[SCRIPTS]]);
+      StoryPages pages = StoryPages.fromJson({
+        "pageNum": data[SCRIPT_PAGE_NUM],
+        "scripts": [data[SCRIPTS]]
+      });
       storyController.addNewScriptToStory(pages);
       return pages;
     } catch (error) {
