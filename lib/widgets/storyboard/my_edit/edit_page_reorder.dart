@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
-import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/models/user_model.dart';

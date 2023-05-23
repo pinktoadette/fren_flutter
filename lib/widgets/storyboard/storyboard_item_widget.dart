@@ -7,6 +7,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/screens/storyboard/story_view.dart';
@@ -146,7 +147,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
-      Get.to(() => const StoriesView());
+      if ((widget.item.story!.isNotEmpty) & (widget.item.story!.length == 1)) {
+        storyboardController.currentStory = widget.item.story![0];
+        Get.to(() => StoryPageView(story: widget.item.story![0]));
+      } else {
+        Get.to(() => const StoriesView());
+      }
     }
   }
 
