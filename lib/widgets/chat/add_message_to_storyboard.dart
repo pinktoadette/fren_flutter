@@ -93,6 +93,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       if (widget.message.type == types.MessageType.image) {
         await _storyboardApi.createStoryboard(image: message.uri);
       }
+      Navigator.of(context).pop();
     } catch (error) {
       Get.snackbar(
         _i18n.translate("error"),

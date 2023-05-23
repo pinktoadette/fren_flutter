@@ -15,9 +15,9 @@ class ScriptImage {
       required this.uri});
   factory ScriptImage.fromDocumnet(Map<String, dynamic> doc) {
     return ScriptImage(
-        size: doc[SCRIPT_IMAGE_SIZE],
-        height: doc[SCRIPT_IMAGE_HEIGHT],
-        width: doc[SCRIPT_IMAGE_WIDTH],
+        size: doc[SCRIPT_IMAGE_SIZE].toInt(),
+        height: doc[SCRIPT_IMAGE_HEIGHT].toInt(),
+        width: doc[SCRIPT_IMAGE_WIDTH].toInt(),
         uri: doc[SCRIPT_IMAGE_URI]);
   }
 }

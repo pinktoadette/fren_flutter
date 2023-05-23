@@ -126,7 +126,14 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
           type: messageMap["type"],
           character: messageMap["author"]["firstName"],
           text: messageMap["text"],
-          image: messageMap["image"],
+          image: messageMap["uri"] != null
+              ? {
+                  "uri": messageMap["uri"],
+                  "size": messageMap["size"],
+                  "height": messageMap["height"],
+                  "width": messageMap["width"]
+                }
+              : null,
           storyId: widget.story.storyId);
       Navigator.of(context).pop();
       Get.snackbar(
