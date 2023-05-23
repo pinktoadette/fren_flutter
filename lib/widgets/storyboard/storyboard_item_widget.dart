@@ -143,6 +143,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   Future<void> _onStoryClick() async {
+    /// if there is only one story, then go to the story bits
+    /// if theres more than one, then show entire collection
+    /// @todo if it has a collection index, then go to that index
     storyboardController.currentStoryboard = widget.item;
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));

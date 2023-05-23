@@ -7,6 +7,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/screens/storyboard/add_new_story.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
@@ -85,19 +86,7 @@ class _StoryPageViewState extends State<StoryPageView> {
             _i18n.translate("storybits"),
             style: Theme.of(context).textTheme.bodySmall,
           ),
-          actions: [
-            if (story?.status != StoryStatus.PUBLISHED)
-              IconButton(
-                  onPressed: () {
-                    Get.to(() => EditPage(
-                          story: story ?? widget.story,
-                        ));
-                  },
-                  icon: const Icon(
-                    Iconsax.edit,
-                    size: 20,
-                  )),
-          ],
+          actions: [_unpublishedTools()],
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -129,6 +118,37 @@ class _StoryPageViewState extends State<StoryPageView> {
             )
           ],
         )));
+  }
+
+  Widget _unpublishedTools() {
+    Storyboard storyboard = storyboardController.currentStoryboard;
+    return Row(
+      children: [
+        if ((story?.status != StoryStatus.PUBLISHED) &
+            (storyboard.story!.length == 1))
+          TextButton.icon(
+              onPressed: () {
+                Get.to(() => AddNewStory(
+                    storyboard: storyboardController.currentStoryboard));
+              },
+              icon: const Icon(Iconsax.add),
+              label: Text(
+                _i18n.translate("new_story_collection"),
+                style: Theme.of(context).textTheme.labelSmall,
+              )),
+        if (story?.status != StoryStatus.PUBLISHED)
+          IconButton(
+              onPressed: () {
+                Get.to(() => EditPage(
+                      story: story ?? widget.story,
+                    ));
+              },
+              icon: const Icon(
+                Iconsax.edit,
+                size: 20,
+              ))
+      ],
+    );
   }
 
   List _getPages(Story story) {
