@@ -31,7 +31,7 @@ class Story {
   final StoryStatus status;
   final String? photoUrl;
   final String category;
-  final List<StoryPages>? pages;
+  List<StoryPages>? pages;
   final int? createdAt;
   final int? updatedAt;
 

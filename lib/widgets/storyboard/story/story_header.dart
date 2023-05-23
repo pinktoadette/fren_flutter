@@ -34,7 +34,7 @@ class StoryHeaderWidget extends StatelessWidget {
                   style: Theme.of(context).textTheme.labelMedium),
               Text(story.subtitle,
                   style: Theme.of(context).textTheme.displaySmall),
-              Text("${story.pages?.length ?? 0} sets",
+              Text("${story.pages?.length ?? 0} mods",
                   style: Theme.of(context).textTheme.labelSmall)
             ],
           )

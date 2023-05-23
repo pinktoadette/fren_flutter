@@ -82,14 +82,21 @@ class ScriptApi {
     }
   }
 
-  Future<String> deleteScript({required Script script}) async {
+  Future<List<StoryPages>> deleteScript({required Script script}) async {
     try {
       String url = '${baseUri}script';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response =
           await dio.delete(url, data: {"scriptId": script.scriptId});
-      return response.data;
+
+      List<StoryPages> newScripts = [];
+      for (var script in response.data) {
+        StoryPages s = StoryPages.fromJson(script);
+        newScripts.add(s);
+      }
+
+      return newScripts;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

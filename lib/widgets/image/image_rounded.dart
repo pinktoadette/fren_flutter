@@ -29,7 +29,7 @@ class RoundedImage extends StatelessWidget {
         child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: photoUrl != ""
-                ? photoUrl.startsWith('http') == true
+                ? photoUrl.startsWith('https') == true
                     ? Image.network(
                         photoUrl,
                         fit: BoxFit.cover,

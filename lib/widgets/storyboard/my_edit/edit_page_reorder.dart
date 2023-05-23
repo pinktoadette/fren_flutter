@@ -15,10 +15,14 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.d
 
 class EditPageReorder extends StatefulWidget {
   final List<Script> scriptList;
-  final Function(dynamic data) onUpdate;
+  final Function(List<StoryPages> data) onUpdate;
+  final Function(dynamic data) onMoveInsertPages;
 
   const EditPageReorder(
-      {Key? key, required this.scriptList, required this.onUpdate})
+      {Key? key,
+      required this.scriptList,
+      required this.onUpdate,
+      required this.onMoveInsertPages})
       : super(key: key);
 
   @override
@@ -87,7 +91,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             },
                           );
                         },
-                        key: Key(scripts[index].scriptId!),
+                        key: Key(scripts[index].scriptId ?? ""),
                         child: ListTile(
                           isThreeLine: true,
                           title: const SizedBox.shrink(),
@@ -127,6 +131,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           _addEditText();
                         },
                       ),
+                      IconButton(
+                        icon: const Icon(Iconsax.add),
+                        onPressed: () {
+                          widget.onMoveInsertPages({"action": "add"});
+                        },
+                      ),
                       const Spacer(),
                       OutlinedButton(
                         onPressed: () {
@@ -156,25 +166,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
               size: 16,
             )),
         PopupMenuButton<String>(
-          icon: const Icon(Iconsax.forward_square, size: 16),
-          initialValue: "1",
-          // Callback that sets the selected popup menu item.
-          onSelected: (item) {},
-          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
-            const PopupMenuItem<String>(
-              value: "1",
-              child: Text('Item 1'),
-            ),
-            const PopupMenuItem<String>(
-              value: "2",
-              child: Text('Item 2'),
-            ),
-            const PopupMenuItem<String>(
-              value: "3",
-              child: Text('Item 3'),
-            ),
-          ],
-        ),
+            icon: const Icon(Iconsax.forward_square, size: 16),
+            initialValue: "1",
+            // Callback that sets the selected popup menu item.
+            onSelected: (item) {
+              _moveBit(page: item, index: index);
+            },
+            itemBuilder: (BuildContext context) {
+              return _showPages();
+            }),
       ],
     );
 
@@ -202,6 +202,20 @@ class _EditPageReorderState extends State<EditPageReorder> {
       default:
         return const Icon(Iconsax.activity);
     }
+  }
+
+  List<PopupMenuItem<String>> _showPages() {
+    return story.pages!.map((page) {
+      return PopupMenuItem<String>(
+        value: page.pageNum.toString(),
+        child: Text(
+            "${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
+      );
+    }).toList();
+  }
+
+  void _moveBit({required String page, required int index}) {
+    widget.onMoveInsertPages({"page": page, "script": scripts[index]});
   }
 
   void _addImage() async {
@@ -293,7 +307,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     scripts[index] = script;
                   });
                   // update parent
-                  widget.onUpdate(scripts);
+                  // StoryPages page = story.pages[]
+                  // widget.onUpdate(scripts);
                 }
 
                 Get.snackbar(
@@ -326,7 +341,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
     try {
       // update parent
-      widget.onUpdate(newSequence);
+      // widget.onUpdate(newSequence);
     } catch (_) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -337,17 +352,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
-  _deleteMessage(int index) async {
+  void _deleteMessage(int index) async {
     try {
-      if (scripts[index].scriptId?.contains(LOCAL_FLAG) == false) {
-        await _scriptApi.deleteScript(script: scripts[index]);
-      }
+      List<StoryPages> updatedScripts =
+          await _scriptApi.deleteScript(script: scripts[index]);
       // seq is not right after remove
       setState(() {
         scripts.removeAt(index);
       });
       // update parent
-      widget.onUpdate(scripts);
+      widget.onUpdate(updatedScripts);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),

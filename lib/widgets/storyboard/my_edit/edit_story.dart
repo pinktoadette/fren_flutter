@@ -14,8 +14,8 @@ import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 /// Need to call pages since storyboard
 /// did not query this in order to increase speed
 class EditPage extends StatefulWidget {
-  final Story story;
-  const EditPage({Key? key, required this.story}) : super(key: key);
+  final Story passStory;
+  const EditPage({Key? key, required this.passStory}) : super(key: key);
 
   @override
   _EditPageState createState() => _EditPageState();
@@ -28,6 +28,7 @@ class _EditPageState extends State<EditPage> {
   double itemHeight = 120;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  late Story story;
   var pages = [];
 
   get onUpdate => null;
@@ -39,6 +40,9 @@ class _EditPageState extends State<EditPage> {
   }
 
   void _setupPages() {
+    setState(() {
+      story = widget.passStory;
+    });
     pages = _getPages();
   }
 
@@ -64,14 +68,6 @@ class _EditPageState extends State<EditPage> {
             "Edit " + _i18n.translate("storybits"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
-          actions: [
-            // OutlinedButton(
-            //   child: Text(_i18n.translate("SAVE")),
-            //   onPressed: () {
-            //     FocusScope.of(context).requestFocus(FocusNode());
-            //   },
-            // )
-          ],
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -85,7 +81,7 @@ class _EditPageState extends State<EditPage> {
                     width: width,
                     child: PageView.builder(
                       controller: controller,
-                      itemCount: pages.length,
+                      itemCount: story.pages?.length ?? 0,
                       itemBuilder: (_, index) {
                         return pages[index];
                       },
@@ -96,7 +92,7 @@ class _EditPageState extends State<EditPage> {
                     alignment: Alignment.bottomCenter,
                     child: SmoothPageIndicator(
                       controller: controller,
-                      count: widget.story.pages?.length ?? 0,
+                      count: story.pages?.length ?? 0,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 14,
                           dotWidth: 14,
@@ -112,20 +108,38 @@ class _EditPageState extends State<EditPage> {
   }
 
   List _getPages() {
-    /// Separate out the reorder to have its own state
-    return widget.story.pages!.map((page) {
-      var scripts = page.scripts ?? [];
-      return EditPageReorder(
+    /// Separate out the reorder to have its own state\
+    List<EditPageReorder> pages = [];
+    for (var i = 0; i < story.pages!.length; i++) {
+      var scripts = story.pages![i].scripts ?? [];
+      EditPageReorder page = EditPageReorder(
           scriptList: scripts,
+          onMoveInsertPages: (data) {
+            _moveInsertPages(data);
+          },
           onUpdate: (data) {
-            _updateSequence(page, data);
+            _updateSequence(data);
           });
-    }).toList();
+      pages.add(page);
+    }
+    return pages;
   }
 
   /// update / delete sequence
-  void _updateSequence(StoryPages page, List<Script> scripts) {
-    storyboardController.updateScriptsToStory(
-        story: widget.story, page: page, scripts: scripts);
+  void _moveInsertPages(Map<String, dynamic> data) {
+    if (data["action"] == "add") {
+      Script script = Script();
+      StoryPages page =
+          StoryPages(pageNum: story.pages?.length ?? 1, scripts: null);
+      if (story.pages![story.pages!.length - 1].scripts != null) {
+        story.pages!.add(page);
+      }
+    }
+  }
+
+  /// update / delete sequence
+  /// StoryPage includes scripts from backend in all request
+  void _updateSequence(List<StoryPages> page) {
+    storyboardController.updateScriptsToStory(story: story, pages: page);
   }
 }

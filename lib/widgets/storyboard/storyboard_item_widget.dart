@@ -151,7 +151,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
       if ((widget.item.story!.isNotEmpty) & (widget.item.story!.length == 1)) {
-        storyboardController.currentStory = widget.item.story![0];
+        storyboardController.setCurrentStory(widget.item.story![0]);
         Get.to(() => StoryPageView(story: widget.item.story![0]));
       } else {
         Get.to(() => const StoriesView());

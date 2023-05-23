@@ -140,7 +140,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           IconButton(
               onPressed: () {
                 Get.to(() => EditPage(
-                      story: story ?? widget.story,
+                      passStory: story ?? widget.story,
                     ));
               },
               icon: const Icon(
