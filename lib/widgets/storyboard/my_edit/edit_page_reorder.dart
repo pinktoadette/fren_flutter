@@ -15,6 +15,7 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.d
 
 class EditPageReorder extends StatefulWidget {
   final List<Script> scriptList;
+  final int? pageIndex;
   final Function(List<StoryPages> data) onUpdate;
   final Function(dynamic data) onMoveInsertPages;
 
@@ -22,7 +23,8 @@ class EditPageReorder extends StatefulWidget {
       {Key? key,
       required this.scriptList,
       required this.onUpdate,
-      required this.onMoveInsertPages})
+      required this.onMoveInsertPages,
+      this.pageIndex = 0})
       : super(key: key);
 
   @override
@@ -132,7 +134,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Iconsax.add),
+                        icon: const Icon(Iconsax.element_plus),
                         onPressed: () {
                           widget.onMoveInsertPages({"action": "add"});
                         },

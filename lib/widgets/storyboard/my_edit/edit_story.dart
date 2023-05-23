@@ -1,4 +1,3 @@
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -22,13 +21,14 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final controller = PageController(viewportFraction: 1, keepPage: true);
+  final _controller = PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
   double itemHeight = 120;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
+  int pageIndex = 0;
   var pages = [];
 
   get onUpdate => null;
@@ -80,9 +80,11 @@ class _EditPageState extends State<EditPage> {
                     height: height - 100,
                     width: width,
                     child: PageView.builder(
-                      controller: controller,
+                      controller: _controller,
                       itemCount: story.pages?.length ?? 0,
                       itemBuilder: (_, index) {
+                        /// EditPage for child, story for parent state
+                        /// Tried using pages, error
                         return pages[index];
                       },
                     )),
@@ -91,7 +93,7 @@ class _EditPageState extends State<EditPage> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SmoothPageIndicator(
-                      controller: controller,
+                      controller: _controller,
                       count: story.pages?.length ?? 0,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 14,
@@ -114,6 +116,7 @@ class _EditPageState extends State<EditPage> {
       var scripts = story.pages![i].scripts ?? [];
       EditPageReorder page = EditPageReorder(
           scriptList: scripts,
+          pageIndex: pageIndex,
           onMoveInsertPages: (data) {
             _moveInsertPages(data);
           },
@@ -126,14 +129,30 @@ class _EditPageState extends State<EditPage> {
   }
 
   /// update / delete sequence
+  /// EditPage for child, story for parent state
   void _moveInsertPages(Map<String, dynamic> data) {
     if (data["action"] == "add") {
-      Script script = Script();
-      StoryPages page =
-          StoryPages(pageNum: story.pages?.length ?? 1, scripts: null);
-      if (story.pages![story.pages!.length - 1].scripts != null) {
-        story.pages!.add(page);
+      int pageNum = story.pages!.length;
+      EditPageReorder page = EditPageReorder(
+          scriptList: [],
+          pageIndex: pageNum,
+          onMoveInsertPages: (data) {
+            _moveInsertPages(data);
+          },
+          onUpdate: (data) {
+            _updateSequence(data);
+          });
+      if (story.pages![pageNum - 1].scripts != null) {
+        pages.add(page);
+        StoryPages storyPage =
+            StoryPages(pageNum: story.pages?.length ?? 1, scripts: null);
+        story.pages!.add(storyPage);
       }
+
+      setState(() {
+        pages = pages;
+      });
+      _controller.jumpToPage(pageNum);
     }
   }
 
