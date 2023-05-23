@@ -39,6 +39,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
+import 'package:machi_app/helpers/create_uuid.dart';
 
 class BotChatScreen extends StatefulWidget {
   const BotChatScreen({Key? key}) : super(key: key);
@@ -458,7 +459,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
       dynamic response = {
         CHAT_AUTHOR_ID: _room.bot.botId,
         CHAT_AUTHOR: _room.bot.name,
+        BOT_ID: _room.bot.botId,
+        CHAT_MESSAGE_ID: createUUID(),
         CHAT_TEXT: "Sorry, I encountered an error 😕",
+        CHAT_TYPE: "text",
         CREATED_AT: getDateTimeEpoch()
       };
       _channel.sink.add(json.encode({"message": response}));
