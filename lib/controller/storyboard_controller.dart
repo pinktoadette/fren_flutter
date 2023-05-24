@@ -119,6 +119,7 @@ class StoryboardController extends GetxController {
         stories.indexWhere((element) => element.storyId == story.storyId);
     currentStoryboard.story![index] = story;
     updateStoryboard(currentStoryboard);
+    _currentStory.refresh();
   }
 
   /// Script
@@ -144,6 +145,7 @@ class StoryboardController extends GetxController {
     // update the details of page
     currentStoryboard.story![storyIndex].pages = pages;
     updateStoryboard(currentStoryboard);
-    _currentStoryboard.refresh();
+    _currentStory = stories[storyIndex].obs;
+    _currentStory.refresh();
   }
 }

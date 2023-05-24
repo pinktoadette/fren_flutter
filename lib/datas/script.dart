@@ -56,6 +56,7 @@ class Script {
   final StoryUser? createdBy;
   final String? type;
   final int? seqNum;
+  final int? pageNum;
   final ScriptImage? image;
   final String? text;
   final Voiceover? voiceover;
@@ -69,6 +70,7 @@ class Script {
       this.createdBy,
       this.type,
       this.seqNum,
+      this.pageNum,
       this.image,
       this.text,
       this.voiceover,
@@ -82,6 +84,7 @@ class Script {
       String? characterName,
       String? type,
       int? seqNum,
+      int? pageNum,
       ScriptImage? image,
       String? text,
       Voiceover? voiceover,
@@ -92,6 +95,7 @@ class Script {
         characterName: characterName ?? this.characterName,
         type: type ?? this.type,
         seqNum: seqNum ?? this.seqNum,
+        pageNum: pageNum ?? this.pageNum,
         image: image ?? this.image,
         text: text ?? this.text,
         voiceover: voiceover ?? this.voiceover,
@@ -103,6 +107,7 @@ class Script {
       SCRIPT_ID: scriptId,
       SCRIPT_TYPE: type,
       SCRIPT_TEXT: text,
+      SCRIPT_PAGE_NUM: pageNum,
       SCRIPT_IMAGE: image != null ? image!.toJSON() : null,
       SCRIPT_SPEAKER_NAME: characterName,
       SCRIPT_VOICE_INFO: voiceover,
@@ -140,6 +145,7 @@ class Script {
         voiceover: voiceover,
         characterName: doc[SCRIPT_SPEAKER_NAME],
         seqNum: doc[SCRIPT_SEQUENCE_NUM],
+        pageNum: doc[SCRIPT_PAGE_NUM],
         status: doc[SCRIPT_STATUS]);
   }
 }

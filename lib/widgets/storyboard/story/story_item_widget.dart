@@ -27,6 +27,7 @@ class StoryItemWidget extends StatefulWidget {
 class _StoryItemWidgetState extends State<StoryItemWidget> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   List<PageModel>? pageList;
   final _scriptApi = ScriptApi();
 
@@ -122,7 +123,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
   void _addMessage() async {
     try {
       Map<String, dynamic> messageMap = widget.message!.toJson();
-      await _scriptApi.addScriptToStory(
+      StoryPages pages = await _scriptApi.addScriptToStory(
           type: messageMap["type"],
           character: messageMap["author"]["firstName"],
           text: messageMap["text"],
@@ -135,6 +136,8 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                 }
               : null,
           storyId: widget.story.storyId);
+      storyboardController.addNewScriptToStory(pages);
+
       Navigator.of(context).pop();
       Get.snackbar(
         _i18n.translate("story_added"),

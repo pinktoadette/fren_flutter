@@ -45,11 +45,11 @@ class _StoryPageViewState extends State<StoryPageView> {
         story = widget.story;
       });
     } else {
-      _getStoryContent();
+      getStoryContent();
     }
   }
 
-  void _getStoryContent() async {
+  void getStoryContent() async {
     try {
       Story details = await _storyApi.getMyStories(widget.story.storyId);
 
@@ -179,10 +179,19 @@ class _StoryPageViewState extends State<StoryPageView> {
               )),
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
-              onPressed: () {
-                Get.to(() => EditPage(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditPage(
                       passStory: story ?? widget.story,
-                    ));
+                    ),
+                  ),
+                ).then((val) {
+                  setState(() {
+                    story = val;
+                  });
+                });
               },
               icon: const Icon(
                 Iconsax.edit,

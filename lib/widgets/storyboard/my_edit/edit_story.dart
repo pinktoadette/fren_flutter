@@ -25,7 +25,6 @@ class _EditPageState extends State<EditPage> {
 
   late AppLocalizations _i18n;
   double itemHeight = 120;
-  final _scriptApi = ScriptApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
   int pageIndex = 0;
@@ -59,8 +58,7 @@ class _EditPageState extends State<EditPage> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              // await _saveSequence();
-              Get.back();
+              Navigator.pop(context, story);
             },
           ),
           actions: [
@@ -93,9 +91,6 @@ class _EditPageState extends State<EditPage> {
                         return EditPageReorder(
                             scriptList: scripts,
                             pageIndex: pageIndex,
-                            onSave: (isClicked) {
-                              _saveSequence();
-                            },
                             onMoveInsertPages: (data) {
                               _moveInsertPages(data);
                             },
@@ -177,33 +172,6 @@ class _EditPageState extends State<EditPage> {
     StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
     story.pages![pageIndex] = newPages;
     _updateDelUpdateSequence(story.pages!);
-  }
-
-  void _saveSequence() async {
-    try {
-      List<Map<String, dynamic>> listScripts = [];
-      for (int i = 0; i < story.pages!.length; i++) {
-        List<Script> scripts = story.pages![i].scripts!;
-        for (int j = 0; j < scripts.length; j++) {
-          Script script = scripts[j];
-          listScripts.add({
-            SCRIPT_ID: script.scriptId,
-            SCRIPT_PAGE_NUM: i,
-            SCRIPT_SEQUENCE_NUM: j
-          });
-        }
-      }
-
-      await _scriptApi.updateSequence(scripts: listScripts);
-    } catch (err) {
-      debugPrint(err.toString());
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
   }
 
   void _onPageChange(int index) {

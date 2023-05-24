@@ -7,7 +7,6 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
@@ -19,7 +18,6 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(List<StoryPages> data) onUpdateDelete;
   final Function(dynamic data) onMoveInsertPages;
-  final Function(bool isClicked) onSave;
 
   const EditPageReorder(
       {Key? key,
@@ -27,7 +25,6 @@ class EditPageReorder extends StatefulWidget {
       required this.onUpdateDelete,
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
-      required this.onSave,
       this.pageIndex = 0})
       : super(key: key);
 
@@ -145,15 +142,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         },
                       ),
                       const Spacer(),
-                      OutlinedButton(
-                        onPressed: () {
-                          widget.onSave(true);
-                        },
-                        child: Text(_i18n.translate("SAVE")),
-                      ),
-                      const SizedBox(
-                        width: 10,
-                      ),
                     ]),
               )
             ])),
@@ -180,7 +168,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             initialValue: 1,
             // Callback that sets the selected popup menu item.
             onSelected: (item) {
-              _moveBit(page: item, index: index);
+              _moveBit(pageNum: item, scriptIndex: index);
             },
             itemBuilder: (BuildContext context) {
               return _showPages();
@@ -216,7 +204,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   List<PopupMenuItem<int>> _showPages() {
     return story.pages!.map((page) {
-      if ((page.pageNum! - 1) != widget.pageIndex) {
+      if (page.pageNum != (widget.pageIndex + 1)) {
         return PopupMenuItem<int>(
           value: page.pageNum,
           child: Text(
@@ -230,17 +218,19 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }).toList();
   }
 
-  void _moveBit({required int page, required int index}) {
+  void _moveBit({required int pageNum, required int scriptIndex}) async {
     try {
-      widget.onMoveInsertPages(
-          {"action": "move", "page": page, "script": scripts[index]});
+      Script script = scripts[scriptIndex].copyWith(pageNum: pageNum);
+      await _scriptApi.updateScript(script: script);
+
       // update child state, scripts
-      scripts
-          .removeWhere((script) => script.scriptId == scripts[index].scriptId);
+      scripts.removeWhere(
+          (script) => script.scriptId == scripts[scriptIndex].scriptId);
       setState(() {
         scripts = scripts;
       });
-      _updateSequence();
+      widget.onMoveInsertPages(
+          {"action": "move", "page": pageNum, "script": scripts[scriptIndex]});
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -272,7 +262,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     "width": 512,
                     "uri": image.path
                   },
-                  pageNum: widget.pageIndex);
+                  pageNum: widget.pageIndex + 1);
 
               Get.snackbar(
                 _i18n.translate("story_added"),
@@ -305,13 +295,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
               try {
                 if (index == null) {
                   Navigator.pop(context);
-
-                  await _scriptApi.addScriptToStory(
+                  StoryPages pages = await _scriptApi.addScriptToStory(
                       character: UserModel().user.username,
                       type: "text",
                       storyId: story.storyId,
                       text: newText,
-                      pageNum: widget.pageIndex);
+                      pageNum: widget.pageIndex + 1);
+                  setState(() {
+                    scripts.add(pages.scripts![0]);
+                  });
                 }
 
                 if (index != null) {
@@ -349,23 +341,39 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   void _updateSequence() async {
     List<Script> newSequence = [];
+    List<Map<String, dynamic>> saveSequence = [];
     int i = 1;
 
     for (Script script in scripts) {
       Script updateSeq = script.copyWith(seqNum: i);
       newSequence.add(updateSeq);
+      saveSequence.add({"seqNum": i, "scriptId": updateSeq.scriptId});
       i++;
     }
     // update parent
     widget.onUpdateSeq(newSequence);
+
+    try {
+      await _scriptApi.updateSequence(scripts: saveSequence);
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 
   void _deleteMessage(int index) async {
     try {
       List<StoryPages> updatedScripts =
           await _scriptApi.deleteScript(script: scripts[index]);
+
+      scripts
+          .removeWhere((script) => script.scriptId == scripts[index].scriptId);
       setState(() {
-        scripts.removeAt(index);
+        scripts = scripts;
       });
       // update parent
       widget.onUpdateDelete(updatedScripts);

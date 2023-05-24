@@ -23,7 +23,6 @@ class ScriptApi {
       Map<String, dynamic>? image,
       String? voiceId,
       int? pageNum}) async {
-    StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}script';
       debugPrint("Requesting URL $url");
@@ -41,7 +40,6 @@ class ScriptApi {
         "pageNum": data[SCRIPT_PAGE_NUM],
         "scripts": [data[SCRIPTS]]
       });
-      storyController.addNewScriptToStory(pages);
       return pages;
     } catch (error) {
       debugPrint(error.toString());
@@ -49,20 +47,14 @@ class ScriptApi {
     }
   }
 
-  Future<List<Script>> updateSequence(
+  Future<List> updateSequence(
       {required List<Map<String, dynamic>> scripts}) async {
     try {
       String url = '${baseUri}update_sequence';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: scripts);
-      List<Script> newScripts = [];
-      for (var script in response.data) {
-        Script s = Script.fromJson(script);
-        newScripts.add(s);
-      }
-
-      return newScripts;
+      return response.data;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();
