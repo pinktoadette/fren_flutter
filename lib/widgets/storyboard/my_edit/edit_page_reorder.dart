@@ -36,8 +36,6 @@ class EditPageReorder extends StatefulWidget {
 }
 
 class _EditPageReorderState extends State<EditPageReorder> {
-  // ignore: constant_identifier_names
-  static const LOCAL_FLAG = "LOCAL_";
   final _scriptApi = ScriptApi();
   List<Script> scripts = [];
   late Story story;
@@ -57,7 +55,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
 
     return Stack(
       children: [
@@ -237,6 +234,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
     try {
       widget.onMoveInsertPages(
           {"action": "move", "page": page, "script": scripts[index]});
+      // update child state, scripts
+      scripts
+          .removeWhere((script) => script.scriptId == scripts[index].scriptId);
+      setState(() {
+        scripts = scripts;
+      });
+      _updateSequence();
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -291,7 +295,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _addEditText({int? index}) async {
-    String uuid = createUUID();
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
