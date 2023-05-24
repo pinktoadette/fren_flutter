@@ -16,7 +16,6 @@ import 'package:machi_app/tabs/conversations_tab.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
 import 'package:machi_app/tabs/playlist_tab.dart';
-import 'package:machi_app/widgets/audio/main_play.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/button/action_button.dart';
@@ -186,7 +185,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _showCurrentNavBar() {
     List<Widget> options = <Widget>[
       const ActivityTab(),
-      const PlaylistTab(),
+      // const PlaylistTab(),
       const Storyboard(),
       ConversationsTab(),
       const ProfileTab()
@@ -220,9 +219,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   )),
 
               /// Discover story
-              BottomNavigationBarItem(
-                  label: _i18n.translate("story"),
-                  icon: const Icon(Iconsax.music_playlist)),
+              // BottomNavigationBarItem(
+              //     label: _i18n.translate("story"),
+              //     icon: const Icon(Iconsax.music_playlist)),
 
               /// Discover new machi
               BottomNavigationBarItem(

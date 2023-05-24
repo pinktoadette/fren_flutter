@@ -16,15 +16,19 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.d
 class EditPageReorder extends StatefulWidget {
   final List<Script> scriptList;
   final int? pageIndex;
-  final Function(List<StoryPages> data) onUpdate;
+  final int? numPages;
+  final Function(List<Script> data) onUpdateSeq;
+  final Function(List<StoryPages> data) onUpdateDelete;
   final Function(dynamic data) onMoveInsertPages;
 
   const EditPageReorder(
       {Key? key,
       required this.scriptList,
-      required this.onUpdate,
+      required this.onUpdateDelete,
       required this.onMoveInsertPages,
-      this.pageIndex = 0})
+      required this.onUpdateSeq,
+      this.pageIndex = 0,
+      this.numPages = 1})
       : super(key: key);
 
   @override
@@ -108,6 +112,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 }
                 Script item = scripts.removeAt(oldIndex);
                 scripts.insert(newIndex, item);
+                _updateSequence();
               });
             }),
         Positioned(
@@ -330,40 +335,28 @@ class _EditPageReorderState extends State<EditPageReorder> {
             }));
   }
 
-  void _saveStory() async {
-    List<Script> script = scripts;
-    List<Map<String, dynamic>> newSequence = [];
+  void _updateSequence() async {
+    List<Script> newSequence = [];
     int i = 1;
 
     for (Script script in scripts) {
       Script updateSeq = script.copyWith(seqNum: i);
-      Map<String, dynamic> newSeq = updateSeq.toJSON();
-      newSequence.add({...newSeq, STORY_ID: story.storyId});
+      newSequence.add(updateSeq);
       i++;
     }
-    try {
-      // update parent
-      // widget.onUpdate(newSequence);
-    } catch (_) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
+    // update parent
+    widget.onUpdateSeq(newSequence);
   }
 
   void _deleteMessage(int index) async {
     try {
       List<StoryPages> updatedScripts =
           await _scriptApi.deleteScript(script: scripts[index]);
-      // seq is not right after remove
       setState(() {
         scripts.removeAt(index);
       });
       // update parent
-      widget.onUpdate(updatedScripts);
+      widget.onUpdateDelete(updatedScripts);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),

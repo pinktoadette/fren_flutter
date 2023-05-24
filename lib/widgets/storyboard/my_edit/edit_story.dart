@@ -1,3 +1,4 @@
+import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -21,15 +22,14 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _controller = PageController(viewportFraction: 1, keepPage: true);
+  final _pageController = PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
   double itemHeight = 120;
-  final _storyApi = StoryApi();
+  final _scriptApi = ScriptApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
   int pageIndex = 0;
-  var pages = [];
 
   get onUpdate => null;
 
@@ -43,7 +43,6 @@ class _EditPageState extends State<EditPage> {
     setState(() {
       story = widget.passStory;
     });
-    pages = _getPages();
   }
 
   @override
@@ -52,21 +51,18 @@ class _EditPageState extends State<EditPage> {
     double height = MediaQuery.of(context).size.height;
     double width = MediaQuery.of(context).size.width;
 
-    if (pages.isEmpty) {
-      return Scaffold(
-          appBar: AppBar(
-            title: Text(
-              _i18n.translate("storybits"),
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-          ),
-          body: NoData(text: _i18n.translate("loading")));
-    }
     return Scaffold(
         appBar: AppBar(
           title: Text(
             "Edit " + _i18n.translate("storybits"),
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          leading: BackButton(
+            color: Theme.of(context).primaryColor,
+            onPressed: () async {
+              // await _saveSequence();
+              Get.back();
+            },
           ),
         ),
         body: SingleChildScrollView(
@@ -80,12 +76,23 @@ class _EditPageState extends State<EditPage> {
                     height: height - 100,
                     width: width,
                     child: PageView.builder(
-                      controller: _controller,
+                      onPageChanged: _onPageChange,
+                      controller: _pageController,
                       itemCount: story.pages?.length ?? 0,
                       itemBuilder: (_, index) {
-                        /// EditPage for child, story for parent state
-                        /// Tried using pages, error
-                        return pages[index];
+                        var scripts = story.pages![index].scripts ?? [];
+                        return EditPageReorder(
+                            scriptList: scripts,
+                            pageIndex: pageIndex,
+                            onMoveInsertPages: (data) {
+                              _moveInsertPages(data);
+                            },
+                            onUpdateSeq: (update) {
+                              _updateSequence(update);
+                            },
+                            onUpdateDelete: (data) {
+                              _updateDelUpdateSequence(data);
+                            });
                       },
                     )),
                 Positioned.fill(
@@ -93,7 +100,7 @@ class _EditPageState extends State<EditPage> {
                   child: Align(
                     alignment: Alignment.bottomCenter,
                     child: SmoothPageIndicator(
-                      controller: _controller,
+                      controller: _pageController,
                       count: story.pages?.length ?? 0,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 14,
@@ -109,56 +116,45 @@ class _EditPageState extends State<EditPage> {
         )));
   }
 
-  List _getPages() {
-    /// Separate out the reorder to have its own state\
-    List<EditPageReorder> pages = [];
-    for (var i = 0; i < story.pages!.length; i++) {
-      var scripts = story.pages![i].scripts ?? [];
-      EditPageReorder page = EditPageReorder(
-          scriptList: scripts,
-          pageIndex: pageIndex,
-          onMoveInsertPages: (data) {
-            _moveInsertPages(data);
-          },
-          onUpdate: (data) {
-            _updateSequence(data);
-          });
-      pages.add(page);
-    }
-    return pages;
-  }
-
   /// update / delete sequence
   /// EditPage for child, story for parent state
   void _moveInsertPages(Map<String, dynamic> data) {
     if (data["action"] == "add") {
       int pageNum = story.pages!.length;
-      EditPageReorder page = EditPageReorder(
-          scriptList: [],
-          pageIndex: pageNum,
-          onMoveInsertPages: (data) {
-            _moveInsertPages(data);
-          },
-          onUpdate: (data) {
-            _updateSequence(data);
-          });
-      if (story.pages![pageNum - 1].scripts != null) {
-        pages.add(page);
+      if (story.pages![pageNum - 1].scripts!.isNotEmpty) {
         StoryPages storyPage =
-            StoryPages(pageNum: story.pages?.length ?? 1, scripts: null);
+            StoryPages(pageNum: story.pages?.length ?? 1, scripts: []);
         story.pages!.add(storyPage);
+        setState(() {
+          story = story;
+        });
       }
 
-      setState(() {
-        pages = pages;
-      });
-      _controller.jumpToPage(pageNum);
+      _pageController.animateToPage(pageNum,
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.fastOutSlowIn);
     }
   }
 
-  /// update / delete sequence
+  /// Delete sequence
+  /// Delete is immediately saved in child component.
+  /// Update is saved here in parent.
   /// StoryPage includes scripts from backend in all request
-  void _updateSequence(List<StoryPages> page) {
+  void _updateDelUpdateSequence(List<StoryPages> page) {
     storyboardController.updateScriptsToStory(story: story, pages: page);
+  }
+
+  void _updateSequence(List<Script> scripts) async {
+    StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
+    story.pages![pageIndex] = newPages;
+    _updateDelUpdateSequence(story.pages!);
+  }
+
+  void _saveSequence() async {}
+
+  void _onPageChange(int index) {
+    setState(() {
+      pageIndex = index;
+    });
   }
 }

@@ -15,7 +15,6 @@ import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:machi_app/widgets/search_user.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
-import 'package:machi_app/widgets/tips/tips_widget.dart';
 import 'package:get/get.dart';
 
 class ActivityTab extends StatefulWidget {
@@ -77,15 +76,14 @@ class _ActivityTabState extends State<ActivityTab> {
                   )),
             ],
             showLeading: true),
-        SliverToBoxAdapter(
+        const SliverToBoxAdapter(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SearchBarWidget(),
-            const SubscriptionCard(),
-            TipWidget(),
-            const TimelineWidget(),
-            const SizedBox(
+            SearchBarWidget(),
+            SubscriptionCard(),
+            TimelineWidget(),
+            SizedBox(
               height: 100,
             )
           ],

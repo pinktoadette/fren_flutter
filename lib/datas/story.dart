@@ -20,6 +20,11 @@ class StoryPages {
         StoryPages(pageNum: doc[SCRIPT_PAGE_NUM], scripts: scripts);
     return pages;
   }
+
+  StoryPages copyWith({List<Script>? scripts, int? pageNum}) {
+    return StoryPages(
+        pageNum: pageNum ?? this.pageNum, scripts: scripts ?? this.scripts);
+  }
 }
 
 class Story {

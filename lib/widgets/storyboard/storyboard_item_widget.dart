@@ -3,7 +3,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
@@ -53,64 +52,53 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                    padding: EdgeInsets.all(padding),
-                    child: InkWell(
-                        onTap: () async {
-                          _onStoryClick();
-                        },
+            InkWell(
+                onTap: () async {
+                  _onStoryClick();
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                        padding: EdgeInsets.all(padding),
                         child: StoryCover(
                             width: storyCoverWidth,
                             photoUrl: widget.item.photoUrl,
-                            title: widget.item.title))),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InkWell(
-                      onTap: () async {
-                        _onStoryClick();
-                      },
-                      child: SizedBox(
-                          width: width -
-                              (storyCoverWidth + playWidth + padding * 3.2),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Text(
-                                  "${widget.item.status.name} ${formatDate(widget.item.updatedAt)}",
-                                  style: const TextStyle(fontSize: 10)),
-                              Text(widget.item.category,
-                                  style: const TextStyle(
-                                      fontSize: 10,
-                                      color: APP_SECONDARY_ACCENT_COLOR,
-                                      fontWeight: FontWeight.bold)),
-                              SizedBox(
-                                  child: Text(
-                                widget.item.title,
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                              Text(
-                                widget.item.summary ?? "No summary",
-                                style: Theme.of(context).textTheme.bodySmall,
-                                overflow: TextOverflow.fade,
-                              ),
-                            ],
-                          )),
-                    ),
+                            title: widget.item.title)),
+                    SizedBox(
+                        width: width -
+                            (storyCoverWidth + playWidth + padding * 3.2),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                                "${widget.item.status.name} ${formatDate(widget.item.updatedAt)}",
+                                style: const TextStyle(fontSize: 10)),
+                            Text(widget.item.category,
+                                style: const TextStyle(
+                                    fontSize: 10,
+                                    color: APP_SECONDARY_ACCENT_COLOR,
+                                    fontWeight: FontWeight.bold)),
+                            SizedBox(
+                                child: Text(
+                              widget.item.title,
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.bold),
+                            )),
+                            Text(
+                              widget.item.summary ?? "No summary",
+                              style: Theme.of(context).textTheme.bodySmall,
+                              overflow: TextOverflow.fade,
+                            ),
+                          ],
+                        ))
                   ],
-                ),
-              ],
-            ),
+                )),
             Padding(
                 padding: const EdgeInsets.only(left: 20, right: 20),
                 child: Row(
