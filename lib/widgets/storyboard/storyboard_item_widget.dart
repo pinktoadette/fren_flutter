@@ -27,13 +27,16 @@ class StoryboardItemWidget extends StatefulWidget {
 
 class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-
+  late Storyboard storyboard;
   late AppLocalizations _i18n;
   final _timelineApi = TimelineApi();
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      storyboard = widget.item;
+    });
   }
 
   @override
@@ -43,7 +46,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     double storyCoverWidth = 80;
     double padding = 15;
     double playWidth =
-        widget.item.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
+        storyboard.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
     return Card(
         elevation: 1,
         semanticContainer: true,
@@ -64,8 +67,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                         padding: EdgeInsets.all(padding),
                         child: StoryCover(
                             width: storyCoverWidth,
-                            photoUrl: widget.item.photoUrl,
-                            title: widget.item.title)),
+                            photoUrl: storyboard.photoUrl,
+                            title: storyboard.title)),
                     SizedBox(
                         width: width -
                             (storyCoverWidth + playWidth + padding * 3.2),
@@ -76,22 +79,22 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               height: 15,
                             ),
                             Text(
-                                "${widget.item.status.name} ${formatDate(widget.item.updatedAt)}",
+                                "${storyboard.status.name} ${formatDate(storyboard.updatedAt)}",
                                 style: const TextStyle(fontSize: 10)),
-                            Text(widget.item.category,
+                            Text(storyboard.category,
                                 style: const TextStyle(
                                     fontSize: 10,
                                     color: APP_SECONDARY_ACCENT_COLOR,
                                     fontWeight: FontWeight.bold)),
                             SizedBox(
                                 child: Text(
-                              widget.item.title,
+                              storyboard.title,
                               style: TextStyle(
                                   color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold),
                             )),
                             Text(
-                              widget.item.summary ?? "No summary",
+                              storyboard.summary ?? "No summary",
                               style: Theme.of(context).textTheme.bodySmall,
                               overflow: TextOverflow.fade,
                             ),
@@ -105,25 +108,25 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TimelineHeader(user: widget.item.createdBy),
+                    TimelineHeader(user: storyboard.createdBy),
                     TextButton.icon(
                       onPressed: null,
                       icon: const Icon(Iconsax.menu_1, size: 16),
-                      label: Text("${widget.item.story?.length} collection",
+                      label: Text("${storyboard.story?.length} collection",
                           style: const TextStyle(fontSize: 12)),
                     ),
                     TextButton.icon(
                       onPressed: null,
                       icon: const Icon(Iconsax.message_text_1, size: 16),
-                      label: Text("${widget.item.story?.length} comment",
+                      label: Text("${storyboard.story?.length} comment",
                           style: const TextStyle(fontSize: 12)),
                     ),
                     LikeItemWidget(
                         onLike: (val) {
                           _onLikePressed(widget.item, val);
                         },
-                        likes: widget.item.likes ?? 0,
-                        mylikes: widget.item.mylikes ?? 0)
+                        likes: storyboard.likes ?? 0,
+                        mylikes: storyboard.mylikes ?? 0)
                   ],
                 ))
           ],
@@ -134,15 +137,24 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     /// if there is only one story, then go to the story bits
     /// if theres more than one, then show entire collection
     /// @todo if it has a collection index, then go to that index
-    storyboardController.currentStoryboard = widget.item;
+    storyboardController.setCurrentBoard(widget.item);
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
-      if ((widget.item.story!.isNotEmpty) & (widget.item.story!.length == 1)) {
-        storyboardController.setCurrentStory(widget.item.story![0]);
-        Get.to(() => StoryPageView(story: widget.item.story![0]));
+      if ((storyboard.story!.isNotEmpty) & (storyboard.story!.length == 1)) {
+        storyboardController.setCurrentStory(storyboard.story![0]);
+        Get.to(() => StoryPageView(story: storyboard.story![0]));
       } else {
-        Get.to(() => const StoriesView());
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const StoriesView(),
+          ),
+        ).then((_) {
+          setState(() {
+            storyboard = storyboardController.currentStoryboard;
+          });
+        });
       }
     }
   }

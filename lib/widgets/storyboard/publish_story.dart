@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/home_screen.dart';
@@ -12,7 +12,7 @@ import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:get/get.dart';
 
 class PublishStory extends StatefulWidget {
-  final Storyboard story;
+  final Story story;
   const PublishStory({Key? key, required this.story}) : super(key: key);
 
   @override
@@ -38,7 +38,7 @@ class _PublishStoryState extends State<PublishStory> {
       setState(() {
         _isLoading = true;
       });
-      await _storyApi.publishStory(widget.story.storyboardId);
+      await _storyApi.publishStory(widget.story.storyId);
 
       setState(() {
         _isLoading = false;

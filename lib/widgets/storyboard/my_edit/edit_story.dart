@@ -85,9 +85,10 @@ class _EditPageState extends State<EditPage> {
                     child: PageView.builder(
                       onPageChanged: _onPageChange,
                       controller: _pageController,
-                      itemCount: story.pages?.length ?? 0,
+                      itemCount: story.pages?.length ?? 1,
                       itemBuilder: (_, index) {
-                        var scripts = story.pages![index].scripts ?? [];
+                        List<Script> scripts =
+                            story.pages![index].scripts ?? [];
                         return EditPageReorder(
                             scriptList: scripts,
                             pageIndex: pageIndex,
@@ -108,7 +109,7 @@ class _EditPageState extends State<EditPage> {
                     alignment: Alignment.bottomCenter,
                     child: SmoothPageIndicator(
                       controller: _pageController,
-                      count: story.pages?.length ?? 0,
+                      count: story.pages?.length ?? 1,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 14,
                           dotWidth: 14,

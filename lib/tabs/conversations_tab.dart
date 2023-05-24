@@ -16,6 +16,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/common/frosted_app_bar.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 
 import '../datas/user.dart';
 
@@ -32,6 +33,7 @@ class ConversationsTab extends StatelessWidget {
 
     final _i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
+    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
         body: CustomScrollView(
@@ -67,13 +69,10 @@ class ConversationsTab extends StatelessWidget {
                 return _chatroomApi.getAllMyRooms();
               },
               child: chatController.roomlist.isEmpty
-                  ? Align(
+                  ? Container(
+                      height: height - 100,
                       alignment: Alignment.center,
-                      child: Text(
-                        _i18n.translate("no_conversation"),
-                        textAlign: TextAlign.center,
-                      ),
-                    )
+                      child: NoData(text: _i18n.translate("no_conversation")))
                   : Obx(() => ListView.separated(
                       cacheExtent: 1000,
                       shrinkWrap: true,

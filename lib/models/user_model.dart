@@ -106,6 +106,7 @@ class UserModel extends Model {
     // Update user data
     _firestore.collection(C_USERS).doc(userId).update(data);
 
+    notifyListeners();
     // external api
     final mApi = UserApi();
     await mApi.updateUser(data);
@@ -695,7 +696,7 @@ class UserModel extends Model {
 
       notifyListeners();
       debugPrint("signOut() -> success");
-      Get.reset();
+      Get.deleteAll();
       ThemeHelper().delete();
 
       /// Need to reassign

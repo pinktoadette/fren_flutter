@@ -59,9 +59,7 @@ class _ViewStoryboardState extends State<ViewStoryboard> {
                     padding: EdgeInsets.all(20),
                     child: Icon(Iconsax.menu),
                   ),
-                  onTap: () {
-                    _publish();
-                  })
+                  onTap: () {})
             else
               IconButton(
                   onPressed: () {
@@ -85,16 +83,6 @@ class _ViewStoryboardState extends State<ViewStoryboard> {
                     ])),
               ],
             )));
-  }
-
-  void _publish() async {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        enableDrag: true,
-        builder: (context) => PublishItemsWidget(
-            story: storyboardController.currentStoryboard,
-            onCaptureImage: (isCapture) async {}));
   }
 
   void _showAudioList() {

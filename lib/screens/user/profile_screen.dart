@@ -103,9 +103,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
       body: ScopedModelDescendant<UserModel>(
           builder: (context, child, userModel) {
-        if (widget.user.userStatus == "hidden") {
-          return NoData(text: _i18n.translate("profile_nothing"));
-        }
         return Stack(
           children: [
             SingleChildScrollView(
@@ -113,6 +110,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  if (UserModel().user.userStatus == "hidden")
+                    const Text("Your profile is hidden"),
                   Container(
                     padding: const EdgeInsets.all(10.0),
                     child: Row(
@@ -176,9 +175,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     double itemHeight = 200;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
+    if ((widget.user.userStatus == "hidden") &
+        (widget.user.userId != UserModel().user.userId)) {
+      return NoData(text: _i18n.translate("profile_nothing"));
+    }
 
     return SizedBox(
-        height: height * 0.7,
+        height: height * 0.8,
         width: width,
         child: FutureBuilder(
           builder: (context, snapshot) {

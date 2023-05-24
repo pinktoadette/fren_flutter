@@ -54,7 +54,7 @@ class _StoriesViewState extends State<StoriesView> {
             color: Theme.of(context).primaryColor,
             onPressed: () async {
               storyboardController.clearStory();
-              Get.back();
+              Navigator.pop(context);
             },
           ),
           actions: [

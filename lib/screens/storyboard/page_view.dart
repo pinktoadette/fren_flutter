@@ -12,6 +12,7 @@ import 'package:machi_app/screens/storyboard/add_new_story.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
+import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -100,7 +101,9 @@ class _StoryPageViewState extends State<StoryPageView> {
               Container(
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => PublishStory(story: story!));
+                      },
                       child: Text(_i18n.translate("publish"))))
           ],
         ),

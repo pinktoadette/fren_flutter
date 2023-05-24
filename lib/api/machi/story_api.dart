@@ -138,7 +138,7 @@ class StoryApi {
     }
   }
 
-  Future<String> publishStory(String storyId) async {
+  Future<Map<String, dynamic>> publishStory(String storyId) async {
     final _timelineApi = TimelineApi();
     try {
       String url = '${baseUri}publish';
