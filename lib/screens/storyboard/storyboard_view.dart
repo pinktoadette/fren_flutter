@@ -10,8 +10,8 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 class StoryboardView extends StatefulWidget {
-  final Storyboard story;
-  const StoryboardView({Key? key, required this.story}) : super(key: key);
+  final Storyboard storyboard;
+  const StoryboardView({Key? key, required this.storyboard}) : super(key: key);
 
   @override
   _StoryboardViewState createState() => _StoryboardViewState();
@@ -64,10 +64,11 @@ class _StoryboardViewState extends State<StoryboardView> {
                               padding: const EdgeInsets.only(left: 15),
                               child: TimelineHeader(
                                   showAvatar: true,
-                                  user: widget.story.createdBy)),
+                                  user: widget.storyboard.createdBy)),
                           // StoryViewDetails(story: widget.story),
-                          StoryStatsAction(story: widget.story),
-                          ListComments(storyboardId: widget.story.storyboardId),
+                          StoryStatsAction(story: widget.storyboard),
+                          ListComments(
+                              storyboardId: widget.storyboard.storyboardId),
                         ])),
                 Positioned(
                   bottom: 0,
@@ -113,7 +114,7 @@ class _StoryboardViewState extends State<StoryboardView> {
   void _postComment() async {
     String comment = _commentController.text;
     try {
-      await _commentApi.postComment(widget.story.storyboardId, comment);
+      await _commentApi.postComment(widget.storyboard.storyboardId, comment);
       Get.snackbar(
         _i18n.translate("posted"),
         _i18n.translate("story_comment_sucess"),

@@ -4,9 +4,13 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/screens/storyboard/page_view.dart';
+import 'package:machi_app/screens/storyboard/story_view.dart';
+import 'package:machi_app/screens/storyboard/storyboard_view.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -84,6 +88,10 @@ class _EditPageState extends State<EditPage> {
                         return EditPageReorder(
                             scriptList: scripts,
                             pageIndex: pageIndex,
+                            onPreview: (isClicked) {
+                              Get.to(() =>
+                                  StoryPageView(story: story, isPreview: true));
+                            },
                             onMoveInsertPages: (data) {
                               _moveInsertPages(data);
                             },

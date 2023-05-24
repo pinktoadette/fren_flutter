@@ -20,6 +20,7 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(List<StoryPages> data) onUpdateDelete;
   final Function(dynamic data) onMoveInsertPages;
+  final Function(bool isClicked) onPreview;
 
   const EditPageReorder(
       {Key? key,
@@ -27,6 +28,7 @@ class EditPageReorder extends StatefulWidget {
       required this.onUpdateDelete,
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
+      required this.onPreview,
       this.pageIndex = 0,
       this.numPages = 1})
       : super(key: key);
@@ -102,7 +104,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           isThreeLine: true,
                           title: const SizedBox.shrink(),
                           subtitle: _showScript(index),
-                          trailing: const Icon(Iconsax.menu_1),
+                          // trailing: const Icon(Iconsax.menu_1),
                         )))
             ],
             onReorder: (int oldIndex, int newIndex) {
@@ -147,10 +149,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       const Spacer(),
                       OutlinedButton(
                         onPressed: () {
-                          // Get.to(() => ViewStory(showName: _showName));
+                          widget.onPreview(true);
                         },
                         child: Text(_i18n.translate("storyboard_preview")),
-                      )
+                      ),
+                      const SizedBox(
+                        width: 10,
+                      ),
                     ]),
               )
             ])),
@@ -197,7 +202,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         ]);
       case "image":
         return Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               RoundedImage(
                   width: width * 0.75,
