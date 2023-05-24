@@ -272,7 +272,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     "width": 512,
                     "uri": image.path
                   },
-                  pageNum: widget.pageIndex + 1);
+                  pageNum: widget.pageIndex);
 
               Get.snackbar(
                 _i18n.translate("story_added"),
@@ -311,7 +311,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       type: "text",
                       storyId: story.storyId,
                       text: newText,
-                      pageNum: widget.pageIndex + 1);
+                      pageNum: widget.pageIndex);
                 }
 
                 if (index != null) {
