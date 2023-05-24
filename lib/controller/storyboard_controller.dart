@@ -128,7 +128,8 @@ class StoryboardController extends GetxController {
     /// update the story
     int index = stories
         .indexWhere((element) => element.storyId == currentStory.storyId);
-    currentStoryboard.story![index].pages!.add(page);
+    currentStoryboard.story![index].pages![page.pageNum!].scripts!
+        .add(page.scripts![0]);
 
     /// update the storyboard
     updateStoryboard(currentStoryboard);

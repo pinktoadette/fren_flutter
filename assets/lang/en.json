@@ -378,6 +378,7 @@
   "story_voice_assign_info": "Assign voice to your speaker / narrator. \nOnly speaks first text for each user. Text will be cut off at 200 charaters.",
   "story_voice_read_text": "Sample Text",
   "story_bit_move_page": "Move to mod",
+  "story_bit_on_current_page": "On current mod",
   "story_bit_move_new_page": "Move to new mode",
 
   "new_story_collection": "New collection",

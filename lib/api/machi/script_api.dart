@@ -22,7 +22,7 @@ class ScriptApi {
       String? text,
       Map<String, dynamic>? image,
       String? voiceId,
-      int? seqNum}) async {
+      int? pageNum}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}script';
@@ -33,7 +33,8 @@ class ScriptApi {
         "character": character,
         "type": type,
         "image": image,
-        "storyId": storyId
+        "storyId": storyId,
+        "pageNum": pageNum,
       });
       final data = response.data;
       StoryPages pages = StoryPages.fromJson({

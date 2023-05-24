@@ -15,12 +15,11 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.d
 
 class EditPageReorder extends StatefulWidget {
   final List<Script> scriptList;
-  final int? pageIndex;
-  final int? numPages;
+  final int pageIndex;
   final Function(List<Script> data) onUpdateSeq;
   final Function(List<StoryPages> data) onUpdateDelete;
   final Function(dynamic data) onMoveInsertPages;
-  final Function(bool isClicked) onPreview;
+  final Function(bool isClicked) onSave;
 
   const EditPageReorder(
       {Key? key,
@@ -28,9 +27,8 @@ class EditPageReorder extends StatefulWidget {
       required this.onUpdateDelete,
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
-      required this.onPreview,
-      this.pageIndex = 0,
-      this.numPages = 1})
+      required this.onSave,
+      this.pageIndex = 0})
       : super(key: key);
 
   @override
@@ -79,21 +77,24 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             context: context,
                             builder: (BuildContext context) {
                               return AlertDialog(
-                                title: Text(
-                                    _i18n.translate("storybit_sure_delete")),
+                                title: Text(_i18n.translate("DELETE")),
                                 content: Text(
                                     _i18n.translate("storybit_sure_delete")),
                                 actions: <Widget>[
                                   OutlinedButton(
                                       onPressed: () => {
+                                            Navigator.of(context).pop(false),
+                                          },
+                                      child: Text(_i18n.translate("CANCEL"))),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () => {
                                             _deleteMessage(index),
                                             Navigator.of(context).pop(true),
                                           },
                                       child: Text(_i18n.translate("DELETE"))),
-                                  ElevatedButton(
-                                      onPressed: () =>
-                                          Navigator.of(context).pop(false),
-                                      child: Text(_i18n.translate("CANCEL"))),
                                 ],
                               );
                             },
@@ -149,9 +150,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       const Spacer(),
                       OutlinedButton(
                         onPressed: () {
-                          widget.onPreview(true);
+                          widget.onSave(true);
                         },
-                        child: Text(_i18n.translate("storyboard_preview")),
+                        child: Text(_i18n.translate("SAVE")),
                       ),
                       const SizedBox(
                         width: 10,
@@ -177,9 +178,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
               Iconsax.edit,
               size: 16,
             )),
-        PopupMenuButton<String>(
+        PopupMenuButton<int>(
             icon: const Icon(Iconsax.forward_square, size: 16),
-            initialValue: "1",
+            initialValue: 1,
             // Callback that sets the selected popup menu item.
             onSelected: (item) {
               _moveBit(page: item, index: index);
@@ -216,22 +217,37 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
-  List<PopupMenuItem<String>> _showPages() {
+  List<PopupMenuItem<int>> _showPages() {
     return story.pages!.map((page) {
-      return PopupMenuItem<String>(
-        value: page.pageNum.toString(),
-        child: Text(
-            "${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
+      if ((page.pageNum! - 1) != widget.pageIndex) {
+        return PopupMenuItem<int>(
+          value: page.pageNum,
+          child: Text(
+              "${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
+        );
+      }
+      return PopupMenuItem<int>(
+        value: null,
+        child: Text(_i18n.translate("story_bit_on_current_page")),
       );
     }).toList();
   }
 
-  void _moveBit({required String page, required int index}) {
-    widget.onMoveInsertPages({"page": page, "script": scripts[index]});
+  void _moveBit({required int page, required int index}) {
+    try {
+      widget.onMoveInsertPages(
+          {"action": "move", "page": page, "script": scripts[index]});
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 
   void _addImage() async {
-    String uuid = createUUID();
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -242,18 +258,18 @@ class _EditPageReorderState extends State<EditPageReorder> {
             Navigator.pop(context);
 
             try {
-              ScriptImage scriptImage = ScriptImage(
-                  size: 19345, height: 512, width: 512, uri: image.path);
-              Script script = Script(
-                  characterName: UserModel().user.username,
-                  image: scriptImage,
-                  type: 'image',
-                  scriptId: uuid,
-                  status: ScriptStatus.ACTIVE.name,
-                  seqNum: scripts.length);
-              setState(() {
-                scripts.add(script);
-              });
+              await _scriptApi.addScriptToStory(
+                  character: UserModel().user.username,
+                  type: "image",
+                  storyId: story.storyId,
+                  image: {
+                    "size": 19345,
+                    "height": 512,
+                    "width": 512,
+                    "uri": image.path
+                  },
+                  pageNum: widget.pageIndex + 1);
+
               Get.snackbar(
                 _i18n.translate("story_added"),
                 _i18n.translate("story_edits_added"),
@@ -286,22 +302,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
               try {
                 if (index == null) {
                   Navigator.pop(context);
-                  Script script = Script(
-                      text: newText,
-                      type: 'text',
-                      characterName: UserModel().user.username,
-                      scriptId: uuid,
-                      status: ScriptStatus.ACTIVE.name,
-                      seqNum: scripts.length);
+
                   await _scriptApi.addScriptToStory(
-                    character: UserModel().user.username,
-                    type: "text",
-                    storyId: story.storyId,
-                    text: newText,
-                  );
-                  setState(() {
-                    scripts.add(script);
-                  });
+                      character: UserModel().user.username,
+                      type: "text",
+                      storyId: story.storyId,
+                      text: newText,
+                      pageNum: widget.pageIndex + 1);
                 }
 
                 if (index != null) {
@@ -318,9 +325,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   setState(() {
                     scripts[index] = script;
                   });
-                  // update parent
-                  // StoryPages page = story.pages[]
-                  // widget.onUpdate(scripts);
                 }
 
                 Get.snackbar(

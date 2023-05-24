@@ -53,9 +53,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     try {
       Story details = await _storyApi.getMyStories(widget.story.storyId);
 
-      /// Update state
       storyboardController.setCurrentStory(details);
-
       setState(() {
         story = details;
       });
@@ -82,7 +80,7 @@ class _StoryPageViewState extends State<StoryPageView> {
             title: Text(
               widget.isPreview == true
                   ? _i18n.translate("storyboard_preview")
-                  : _i18n.translate("storybits"),
+                  : _i18n.translate("story_collection"),
               style: Theme.of(context).textTheme.bodySmall,
             ),
           ),
@@ -93,7 +91,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           title: Text(
             widget.isPreview == true
                 ? _i18n.translate("storyboard_preview")
-                : _i18n.translate("storybits"),
+                : _i18n.translate("story_collection"),
             style: Theme.of(context).textTheme.bodySmall,
           ),
           actions: [

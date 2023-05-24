@@ -1,17 +1,12 @@
 import 'package:machi_app/api/machi/script_api.dart';
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
-import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
-import 'package:machi_app/screens/storyboard/story_view.dart';
-import 'package:machi_app/screens/storyboard/storyboard_view.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -68,6 +63,16 @@ class _EditPageState extends State<EditPage> {
               Get.back();
             },
           ),
+          actions: [
+            Container(
+                padding: const EdgeInsets.all(10.0),
+                child: OutlinedButton(
+                    onPressed: () {
+                      Get.to(
+                          () => StoryPageView(story: story, isPreview: true));
+                    },
+                    child: Text(_i18n.translate("storyboard_preview"))))
+          ],
         ),
         body: SingleChildScrollView(
             child: Column(
@@ -88,9 +93,8 @@ class _EditPageState extends State<EditPage> {
                         return EditPageReorder(
                             scriptList: scripts,
                             pageIndex: pageIndex,
-                            onPreview: (isClicked) {
-                              Get.to(() =>
-                                  StoryPageView(story: story, isPreview: true));
+                            onSave: (isClicked) {
+                              _saveSequence();
                             },
                             onMoveInsertPages: (data) {
                               _moveInsertPages(data);
@@ -127,20 +131,37 @@ class _EditPageState extends State<EditPage> {
   /// update / delete sequence
   /// EditPage for child, story for parent state
   void _moveInsertPages(Map<String, dynamic> data) {
-    if (data["action"] == "add") {
-      int pageNum = story.pages!.length;
-      if (story.pages![pageNum - 1].scripts!.isNotEmpty) {
-        StoryPages storyPage =
-            StoryPages(pageNum: story.pages?.length ?? 1, scripts: []);
-        story.pages!.add(storyPage);
-        setState(() {
-          story = story;
-        });
-      }
+    switch (data["action"]) {
+      case ("add"):
+        int pageNum = story.pages!.length;
+        if (story.pages![pageNum - 1].scripts!.isNotEmpty) {
+          StoryPages storyPage =
+              StoryPages(pageNum: story.pages?.length ?? 1, scripts: []);
+          story.pages!.add(storyPage);
+          setState(() {
+            story = story;
+          });
+        }
 
-      _pageController.animateToPage(pageNum,
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.fastOutSlowIn);
+        _pageController.animateToPage(pageNum,
+            duration: const Duration(milliseconds: 500),
+            curve: Curves.fastOutSlowIn);
+        break;
+      case ("move"):
+        int moveToPage = data["page"];
+        Script moveScript = data["script"];
+
+        for (int i = 0; i < story.pages!.length; i++) {
+          story.pages![i].scripts!
+              .removeWhere((script) => script.scriptId == moveScript.scriptId);
+        }
+        story.pages![moveToPage - 1].scripts!.add(moveScript);
+
+        storyboardController.updateScriptsToStory(
+            story: story, pages: story.pages!);
+        break;
+      default:
+        break;
     }
   }
 
@@ -158,7 +179,32 @@ class _EditPageState extends State<EditPage> {
     _updateDelUpdateSequence(story.pages!);
   }
 
-  void _saveSequence() async {}
+  void _saveSequence() async {
+    try {
+      List<Map<String, dynamic>> listScripts = [];
+      for (int i = 0; i < story.pages!.length; i++) {
+        List<Script> scripts = story.pages![i].scripts!;
+        for (int j = 0; j < scripts.length; j++) {
+          Script script = scripts[j];
+          listScripts.add({
+            SCRIPT_ID: script.scriptId,
+            SCRIPT_PAGE_NUM: i,
+            SCRIPT_SEQUENCE_NUM: j
+          });
+        }
+      }
+
+      await _scriptApi.updateSequence(scripts: listScripts);
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
+  }
 
   void _onPageChange(int index) {
     setState(() {

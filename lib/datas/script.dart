@@ -20,6 +20,15 @@ class ScriptImage {
         width: doc[SCRIPT_IMAGE_WIDTH].toInt(),
         uri: doc[SCRIPT_IMAGE_URI]);
   }
+
+  Map<String, dynamic> toJSON() {
+    return <String, dynamic>{
+      SCRIPT_IMAGE_SIZE: size,
+      SCRIPT_IMAGE_HEIGHT: height,
+      SCRIPT_IMAGE_WIDTH: width,
+      SCRIPT_IMAGE_URI: uri
+    };
+  }
 }
 
 class Voiceover {
@@ -94,7 +103,7 @@ class Script {
       SCRIPT_ID: scriptId,
       SCRIPT_TYPE: type,
       SCRIPT_TEXT: text,
-      SCRIPT_IMAGE: image,
+      SCRIPT_IMAGE: image != null ? image!.toJSON() : null,
       SCRIPT_SPEAKER_NAME: characterName,
       SCRIPT_VOICE_INFO: voiceover,
       SCRIPT_CREATED_BY: createdBy,
