@@ -16,8 +16,10 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class StoryItemWidget extends StatefulWidget {
   final Story story;
+  final bool disablePress;
   final types.Message? message;
-  const StoryItemWidget({Key? key, required this.story, this.message})
+  const StoryItemWidget(
+      {Key? key, required this.story, this.message, this.disablePress = false})
       : super(key: key);
 
   @override
@@ -47,11 +49,15 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
 
     return InkWell(
         onTap: () {
-          storyboardController.setCurrentStory(widget.story);
-          if (widget.message != null) {
-            _addMessage();
+          if (widget.disablePress == true) {
+            null;
           } else {
-            Get.to(() => StoryPageView(story: widget.story));
+            storyboardController.setCurrentStory(widget.story);
+            if (widget.message != null) {
+              _addMessage();
+            } else {
+              Get.to(() => StoryPageView(story: widget.story));
+            }
           }
         },
         child: Card(

@@ -197,7 +197,10 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.bold),
         headlineSmall:
             GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-        titleLarge: GoogleFonts.poppins(fontSize: 16),
+        titleLarge: GoogleFonts.poppins(
+          fontSize: 24,
+          fontWeight: FontWeight.bold,
+        ),
         titleMedium: GoogleFonts.poppins(fontSize: 14),
         titleSmall: GoogleFonts.poppins(fontSize: 12),
         bodyLarge:
@@ -340,8 +343,10 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
             GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
-        titleLarge:
-            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
+        titleLarge: GoogleFonts.poppins(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: APP_PRIMARY_DARK_COLOR),
         titleMedium:
             GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         titleSmall:

@@ -63,34 +63,34 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               builder: (context, child, userModel) {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 /// Profile photo
                 GestureDetector(
-                  child: Center(
-                    child: Stack(
-                      children: <Widget>[
-                        AvatarInitials(
-                          userId: userModel.user.userId,
-                          photoUrl: userModel.user.userProfilePhoto,
-                          username: userModel.user.username,
-                        ),
+                  child: Stack(
+                    children: <Widget>[
+                      AvatarInitials(
+                        radius: 80,
+                        userId: userModel.user.userId,
+                        photoUrl: userModel.user.userProfilePhoto,
+                        username: userModel.user.username,
+                      ),
 
-                        /// Edit icon
-                        Positioned(
-                          child: CircleAvatar(
-                            radius: 12,
-                            backgroundColor: Theme.of(context).primaryColor,
-                            child: Icon(
-                              Icons.edit,
-                              color: Theme.of(context).colorScheme.background,
-                              size: 12,
-                            ),
+                      /// Edit icon
+                      Positioned(
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(
+                            Icons.edit,
+                            color: Theme.of(context).colorScheme.background,
+                            size: 12,
                           ),
-                          right: 0,
-                          bottom: 0,
                         ),
-                      ],
-                    ),
+                        right: 0,
+                        bottom: 0,
+                      ),
+                    ],
                   ),
                   onTap: () async {
                     /// Update profile image
@@ -107,6 +107,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     textCapitalization: TextCapitalization.sentences,
                     controller: _bioController,
                     maxLines: 10,
+                    maxLength: 200,
                     decoration: InputDecoration(
                       labelText: _i18n.translate("bio"),
                       hintText: _i18n.translate("write_about_you"),

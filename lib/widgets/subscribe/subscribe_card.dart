@@ -43,7 +43,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                             const SizedBox(
                               width: 50,
                               height: 50,
-                              child: Icon(Iconsax.element_plus),
+                              child: Icon(Iconsax.buy_crypto),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,

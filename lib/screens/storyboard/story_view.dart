@@ -67,7 +67,13 @@ class _StoriesViewState extends State<StoriesView> {
                   label: Text(
                     _i18n.translate("new_story_collection"),
                     style: Theme.of(context).textTheme.labelSmall,
-                  ))
+                  )),
+            IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Iconsax.trash,
+                  size: 18,
+                ))
           ],
         ),
         body: Column(

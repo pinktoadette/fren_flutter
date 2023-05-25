@@ -2,11 +2,14 @@ import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
+import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 
 /// Edit and delete storyboard, including title and images
 /// Swipe to delete individual stories
@@ -46,76 +49,84 @@ class _StoryboardEditState extends State<StoryboardEdit> {
 
     return Container(
       padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          top: 20,
-          left: 20,
-          right: 20),
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            storyboard.title,
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          const SizedBox(
-            height: 10,
-          ),
-          GestureDetector(
-            child: Stack(
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
               children: [
-                StoryCover(
-                  width: size.width * 0.75,
-                  height: size.width * 0.75,
-                  photoUrl: storyboard.photoUrl ?? "",
-                  file: _uploadPath,
-                  title: storyboard.title,
+                Text(
+                  storyboard.title,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                Positioned(
-                  child: CircleAvatar(
-                    radius: 12,
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    child: Icon(
-                      Icons.edit,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 12,
-                    ),
+                const SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  child: Stack(
+                    children: [
+                      StoryCover(
+                        width: size.width * 0.75,
+                        height: size.width * 0.75,
+                        photoUrl: storyboard.photoUrl ?? "",
+                        file: _uploadPath,
+                        title: storyboard.title,
+                      ),
+                      Positioned(
+                        child: CircleAvatar(
+                          radius: 12,
+                          backgroundColor:
+                              Theme.of(context).colorScheme.background,
+                          child: Icon(
+                            Icons.edit,
+                            color: Theme.of(context).colorScheme.primary,
+                            size: 12,
+                          ),
+                        ),
+                        right: 0,
+                        bottom: 0,
+                      ),
+                    ],
                   ),
-                  right: 0,
-                  bottom: 0,
+                  onTap: () async {
+                    /// Update story image
+                    _selectImage(path: 'collection');
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  controller: _titleController,
+                  maxLength: 80,
+                  buildCounter: (_,
+                          {required currentLength,
+                          maxLength,
+                          required isFocused}) =>
+                      _counter(context, currentLength, maxLength),
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      hintText: _i18n.translate("story_collection_title"),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.secondary),
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                  validator: (reason) {
+                    if (reason?.isEmpty ?? false) {
+                      return _i18n.translate("story_enter_title");
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(
+                  height: 80,
                 ),
               ],
             ),
-            onTap: () async {
-              /// Update story image
-              _selectImage(path: 'collection');
-            },
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          TextFormField(
-            controller: _titleController,
-            maxLength: 80,
-            buildCounter: (_,
-                    {required currentLength, maxLength, required isFocused}) =>
-                _counter(context, currentLength, maxLength),
-            decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                hintText: _i18n.translate("story_collection_title"),
-                hintStyle:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
-                floatingLabelBehavior: FloatingLabelBehavior.always),
-            validator: (reason) {
-              if (reason?.isEmpty ?? false) {
-                return _i18n.translate("story_enter_title");
-              }
-              return null;
-            },
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).viewInsets.bottom,
           ),
         ],
       ),

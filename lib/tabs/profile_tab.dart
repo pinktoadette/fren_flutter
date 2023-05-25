@@ -4,9 +4,9 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/settings_screen.dart';
 import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:machi_app/widgets/profile_basic_info_card.dart';
-import 'package:machi_app/widgets/vip_account_card.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class ProfileTab extends StatelessWidget {
@@ -17,7 +17,7 @@ class ProfileTab extends StatelessWidget {
     final AppHelper _appHelper = AppHelper();
     final _i18n = AppLocalizations.of(context);
 
-    return SingleChildScrollView(
+    return Container(
       padding: const EdgeInsets.all(8.0),
       child: ScopedModelDescendant<UserModel>(
           builder: (context, child, userModel) {
@@ -30,19 +30,20 @@ class ProfileTab extends StatelessWidget {
             /// Basic profile info
             const ProfileBasicInfoCard(),
 
-            const SizedBox(height: 10),
-
-            /// Profile Statistics Card
-            // const ProfileStatisticsCard(),
-            //
-            // const SizedBox(height: 10),
-
             /// Show subscription dialog
-            const VipAccountCard(),
-            const SizedBox(height: 10),
-
-            /// add bot
-            // const CreateBotCard(),
+            Card(
+              child: ListTile(
+                leading: const Icon(Iconsax.buy_crypto),
+                title: Text(
+                  _i18n.translate("subscription"),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                onTap: () async {
+                  _showSubscription(context);
+                },
+              ),
+            ),
+            const Spacer(),
 
             /// enable dark mode
             Card(
@@ -85,5 +86,13 @@ class ProfileTab extends StatelessWidget {
         );
       }),
     );
+  }
+
+  void _showSubscription(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const FractionallySizedBox(
+            heightFactor: 0.9, child: SubscriptionProduct()));
   }
 }

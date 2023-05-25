@@ -20,20 +20,22 @@ class StoryInfo extends StatelessWidget {
           right: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             storyboardController.currentStory.title,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(
             height: 10,
           ),
-          StoryCover(
+          Center(
+              child: StoryCover(
             width: size.width * 0.75,
             height: size.width * 0.75,
             photoUrl: storyboardController.currentStory.photoUrl ?? "",
             title: storyboardController.currentStory.title,
-          ),
+          )),
           const SizedBox(
             height: 20,
           ),

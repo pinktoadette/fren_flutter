@@ -19,20 +19,22 @@ class StoryboardInfo extends StatelessWidget {
           right: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             storyboardController.currentStoryboard.title,
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.titleLarge,
           ),
           const SizedBox(
             height: 10,
           ),
-          StoryCover(
+          Center(
+              child: StoryCover(
             width: size.width * 0.75,
             height: size.width * 0.75,
             photoUrl: storyboardController.currentStoryboard.photoUrl ?? "",
             title: storyboardController.currentStoryboard.title,
-          ),
+          )),
           const SizedBox(
             height: 20,
           ),

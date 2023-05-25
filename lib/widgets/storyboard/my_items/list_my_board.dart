@@ -58,8 +58,7 @@ class _MyStoryboardState extends State<ListMyStoryboard> {
                             text: _i18n.translate("storycast_board_nothing"));
                       }
                       return StoryboardItemWidget(
-                          message: widget.message,
-                          item: storyboardController.unpublished[index]);
+                          message: widget.message, item: story);
                     }),
               ));
   }

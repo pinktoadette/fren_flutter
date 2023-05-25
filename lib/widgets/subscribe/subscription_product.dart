@@ -95,6 +95,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
             children: tiers.map((e) {
               return _individualTier(e);
             }).toList()),
+        const Spacer(),
         ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -102,9 +103,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 borderRadius: BorderRadius.circular(20.0),
               ),
               elevation: 4,
-              backgroundColor: Theme.of(context).colorScheme.primary,
             ),
-            child: Text(_i18n.translate("subscribe_start_button")))
+            child: Text(_i18n.translate("subscribe_start_button"))),
+        const SizedBox(
+          height: 50,
+        )
       ],
     );
   }
