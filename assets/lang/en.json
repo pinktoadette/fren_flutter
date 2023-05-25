@@ -46,6 +46,7 @@
   "fullname": "Username",
   "enter_your_fullname": "Enter username",
   "name_hint": "This will be publicly displayed",
+  "profile_protected": "Your profile is protected",
   "bio": "Bio",
   "write_about_you": "Describe your super powers/domain knowledge",
   "select_three_interest": "Please select 3 interests",
