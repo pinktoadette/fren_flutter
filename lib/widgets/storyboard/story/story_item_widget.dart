@@ -135,6 +135,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                   "width": messageMap["width"]
                 }
               : null,
+          pageNum: 1,
           storyId: widget.story.storyId);
       storyboardController.addNewScriptToStory(pages);
 

@@ -203,6 +203,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   List<PopupMenuItem<int>> _showPages() {
+    story = storyboardController.currentStory;
+
     return story.pages!.map((page) {
       if (page.pageNum != (widget.pageIndex + 1)) {
         return PopupMenuItem<int>(
@@ -230,7 +232,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         scripts = scripts;
       });
       widget.onMoveInsertPages(
-          {"action": "move", "page": pageNum, "script": scripts[scriptIndex]});
+          {"action": "move", "page": pageNum, "script": script});
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),

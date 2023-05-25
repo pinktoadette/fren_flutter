@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machi_app/constants/constants.dart';
 
 Widget loadingButton({required double size, Color? color}) {
   return Container(
@@ -6,7 +7,7 @@ Widget loadingButton({required double size, Color? color}) {
     height: size,
     padding: const EdgeInsets.all(2.0),
     child: CircularProgressIndicator(
-      color: color ?? Colors.white,
+      color: color ?? APP_ACCENT_COLOR,
       strokeWidth: 2,
     ),
   );

@@ -387,7 +387,7 @@
   "story_collection_title": "Title",
   "story_collection_subtitle": "Subtitle",
   "story_collection_summary": "Summary",
-  "story_collection_summary_info": "Leave blank for AI summary. Summary is created when there are content",
+  "story_collection_create": "Create a new collection",
 
   "tips_1": "Tip: Have suggestions? Chat with machi Alice",
   "tips_2": "Learn a new language by listening and reading",

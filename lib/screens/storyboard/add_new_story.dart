@@ -26,8 +26,6 @@ class _AddNewStoryState extends State<AddNewStory> {
   final _storyApi = StoryApi();
 
   final _titleController = TextEditingController();
-  final _subtitleController = TextEditingController();
-  final _summaryController = TextEditingController();
   File? _uploadPath;
   bool isLoading = false;
 
@@ -35,30 +33,36 @@ class _AddNewStoryState extends State<AddNewStory> {
   void dispose() {
     super.dispose();
     _titleController.dispose();
-    _subtitleController.dispose();
-    _summaryController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(_i18n.translate("add_story_collection")),
+          title: Text(_i18n.translate("story_collection")),
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
+              Text(
+                _i18n.translate("story_collection_summary_info"),
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              const SizedBox(
+                height: 10,
+              ),
               GestureDetector(
                 child: Stack(
                   children: [
                     StoryCover(
-                      width: 100,
-                      height: 100,
+                      width: width * 0.8,
+                      height: width * 0.8,
                       photoUrl: '',
                       file: _uploadPath,
                       title: "Cover",
@@ -105,53 +109,6 @@ class _AddNewStoryState extends State<AddNewStory> {
                   return null;
                 },
               ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _subtitleController,
-                maxLength: 80,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    hintText: _i18n.translate("story_collection_subtitle"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                    floatingLabelBehavior: FloatingLabelBehavior.always),
-                validator: (reason) {
-                  if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("story_enter_subtitle");
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextFormField(
-                controller: _summaryController,
-                maxLength: 250,
-                maxLines: 4,
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    hintText: _i18n.translate("story_collection_summary"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                    floatingLabelBehavior: FloatingLabelBehavior.always),
-                validator: (reason) {
-                  if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("story_enter_subtitle");
-                  }
-                  return null;
-                },
-              ),
-              Text(
-                _i18n.translate("story_collection_summary_info"),
-                style: const TextStyle(fontSize: 12),
-              ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
@@ -170,8 +127,6 @@ class _AddNewStoryState extends State<AddNewStory> {
 
   void _addNewStory() async {
     String title = _titleController.text;
-    String subtitle = _subtitleController.text;
-    String summary = _summaryController.text;
     setState(() {
       isLoading = true;
     });
@@ -184,9 +139,7 @@ class _AddNewStoryState extends State<AddNewStory> {
       await _storyApi.createStory(
           storyboardId: widget.storyboard.storyboardId,
           title: title,
-          photoUrl: photoUrl,
-          subtitle: subtitle,
-          summary: summary);
+          photoUrl: photoUrl);
 
       Get.snackbar(
         _i18n.translate("posted"),

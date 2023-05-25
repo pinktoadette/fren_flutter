@@ -33,8 +33,8 @@ class ImageSourceSheet extends StatelessWidget {
           uiSettings: [
             AndroidUiSettings(
                 toolbarTitle: i18n.translate("edit_crop_image"),
-                toolbarColor: Theme.of(context).colorScheme.background,
-                toolbarWidgetColor: Theme.of(context).colorScheme.primary,
+                toolbarColor: Colors.black,
+                toolbarWidgetColor: Colors.white,
                 initAspectRatio: CropAspectRatioPreset.original,
                 lockAspectRatio: false),
             IOSUiSettings(

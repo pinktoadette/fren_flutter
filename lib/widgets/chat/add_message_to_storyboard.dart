@@ -3,9 +3,11 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/widgets/chat/title_cat_storyboard.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 
 // ignore: must_be_immutable
@@ -20,6 +22,7 @@ class AddChatMessageToBoard extends StatefulWidget {
 class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
   late AppLocalizations _i18n;
   String errorMessage = '';
+  bool isLoading = false;
   final _storyboardApi = StoryboardApi();
 
   @override
@@ -52,7 +55,9 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         Align(
             alignment: Alignment.center,
             child: ElevatedButton.icon(
-              icon: const Icon(Iconsax.add),
+              icon: isLoading == true
+                  ? loadingButton(size: 16)
+                  : const Icon(Iconsax.add),
               label: Text(
                 _i18n.translate("add_to_new_storyboard"),
               ),
@@ -85,22 +90,38 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
   }
 
   void _addMessage() async {
+    setState(() {
+      isLoading = true;
+    });
+    StoryboardController storyboardController = Get.find(tag: 'storyboard');
     try {
       dynamic message = widget.message;
+      Storyboard storyboard = initialStoryboard;
       if (widget.message.type == types.MessageType.text) {
-        await _storyboardApi.createStoryboard(text: message.text);
+        storyboard = await _storyboardApi.createStoryboard(text: message.text);
       }
       if (widget.message.type == types.MessageType.image) {
-        await _storyboardApi.createStoryboard(image: message.uri);
+        storyboard = await _storyboardApi.createStoryboard(image: message.uri);
       }
+      storyboardController.addNewStoryboard(storyboard);
       Navigator.of(context).pop();
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("story_edits_added"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
     } catch (error) {
       Get.snackbar(
         _i18n.translate("error"),
-        _i18n.translate("error_launch_url"),
+        _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

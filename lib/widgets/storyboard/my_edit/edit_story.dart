@@ -1,4 +1,3 @@
-import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
@@ -131,8 +130,7 @@ class _EditPageState extends State<EditPage> {
       case ("add"):
         int pageNum = story.pages!.length;
         if (story.pages![pageNum - 1].scripts!.isNotEmpty) {
-          StoryPages storyPage =
-              StoryPages(pageNum: story.pages?.length ?? 1, scripts: []);
+          StoryPages storyPage = StoryPages(pageNum: pageNum + 1, scripts: []);
           story.pages!.add(storyPage);
           setState(() {
             story = story;

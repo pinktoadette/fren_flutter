@@ -1,5 +1,4 @@
 import 'package:machi_app/api/machi/storyboard_api.dart';
-import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
@@ -129,7 +128,7 @@ class StoryboardController extends GetxController {
     /// update the story
     int index = stories
         .indexWhere((element) => element.storyId == currentStory.storyId);
-    currentStoryboard.story![index].pages![page.pageNum!].scripts!
+    currentStoryboard.story![index].pages![page.pageNum! - 1].scripts!
         .add(page.scripts![0]);
 
     /// update the storyboard

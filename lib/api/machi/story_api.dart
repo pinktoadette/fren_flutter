@@ -22,9 +22,7 @@ class StoryApi {
   Future<Story> createStory(
       {required String storyboardId,
       required String photoUrl,
-      required String title,
-      required String subtitle,
-      String? summary}) async {
+      required String title}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}story';
@@ -33,9 +31,7 @@ class StoryApi {
       final response = await dio.post(url, data: {
         STORYBOARD_ID: storyboardId,
         STORY_TITLE: title,
-        STORY_PHOTO_URL: photoUrl,
-        STORY_SUBTITLE: subtitle,
-        STORY_SUMMARY: summary ?? ""
+        STORY_PHOTO_URL: photoUrl
       });
 
       Story story = Story.fromJson(response.data);
