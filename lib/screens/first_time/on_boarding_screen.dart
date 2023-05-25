@@ -77,8 +77,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             controller: ScrollController(),
             child: Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
+                const Padding(
+                  padding: EdgeInsets.symmetric(
                     horizontal: 45.0,
                     vertical: 10.0,
                   ),

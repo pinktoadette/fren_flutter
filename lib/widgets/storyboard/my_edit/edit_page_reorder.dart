@@ -20,7 +20,7 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
 
-  EditPageReorder(
+  const EditPageReorder(
       {Key? key,
       required this.scriptList,
       required this.onMoveInsertPages,

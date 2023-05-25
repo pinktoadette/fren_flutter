@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -11,8 +9,6 @@ import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_pic
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-import 'package:flutter/services.dart' show rootBundle;
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({Key? key}) : super(key: key);
@@ -35,24 +31,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
       DateTime.now().subtract(const Duration(days: 7300));
   String? _birthday;
   bool _agreeTerms = true;
-  String? _selectedIndustry;
-  final List<String> _selectedInterest = ['Animals and Pets'];
-  late List<String> _interestList = [];
   late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
-    getJson();
-  }
-
-  Future<void> getJson() async {
-    String _inter = await rootBundle.loadString('assets/json/interest.json');
-    List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
-
-    setState(() {
-      _interestList = interestList;
-    });
   }
 
   /// Set terms

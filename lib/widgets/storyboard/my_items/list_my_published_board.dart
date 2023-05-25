@@ -1,7 +1,6 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -70,6 +69,6 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
 
   void _onStoryClick(int index, Storyboard story) {
     storyboardController.currentStoryboard = story;
-    Get.to(() => ViewStoryboard());
+    Get.to(() => const ViewStoryboard());
   }
 }

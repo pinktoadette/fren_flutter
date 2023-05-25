@@ -1,6 +1,3 @@
-import 'dart:convert';
-
-import 'package:flutter/services.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -25,28 +22,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _bioController = TextEditingController(text: UserModel().user.userBio);
 
-  late List<String> _selectedInterest;
-  late List<String> _interestList = [];
-
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
 
   @override
   void initState() {
     super.initState();
-    getJson();
-    setState(() {
-      _selectedInterest = UserModel().user.userInterest;
-    });
-  }
-
-  Future<void> getJson() async {
-    String _inter = await rootBundle.loadString('assets/json/interest.json');
-    List<String> interestList = List.from(jsonDecode(_inter) as List<dynamic>);
-
-    setState(() {
-      _interestList = interestList;
-    });
   }
 
   @override

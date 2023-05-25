@@ -1,5 +1,3 @@
-import 'package:machi_app/api/machi/bot_api.dart';
-import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/set_room_bot.dart';
@@ -35,8 +33,6 @@ class _BotProfileCardState extends State<BotProfileCard> {
   final _botPrompt = TextEditingController(text: "");
   ChatController chatController = Get.find(tag: 'chatroom');
   BotController botController = Get.find(tag: 'bot');
-  final _chatroomApi = ChatroomMachiApi();
-  final _botApi = BotApi();
   bool isLoading = false;
 
   bool disableTextEdit = true;
@@ -96,7 +92,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
                     ))),
           ),
           isLoading == true
-              ? Frankloader(height: 50, width: 50)
+              ? const Frankloader(height: 50, width: 50)
               : const SizedBox(height: 50),
           // if (widget.room?.chatroomId == null) _showPricing(),
           if (widget.showPurchase == true)

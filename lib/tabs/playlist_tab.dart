@@ -12,11 +12,9 @@ class PlaylistTab extends StatefulWidget {
 }
 
 class _PlaylistTabState extends State<PlaylistTab> {
-  late AppLocalizations _i18n;
-
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    AppLocalizations _i18n = AppLocalizations.of(context);
     return Scaffold(
         body: CustomScrollView(slivers: [
       FrostedAppBar(

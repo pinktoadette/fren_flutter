@@ -18,7 +18,7 @@ class ProgressDialog {
         context: context,
         barrierDismissible: isDismissible,
         builder: (BuildContext context) {
-          return SimpleDialog(
+          return const SimpleDialog(
             elevation: 8.0,
             shadowColor: Colors.transparent,
             backgroundColor: Colors.transparent,
@@ -61,47 +61,6 @@ class ProgressDialog {
       debugPrint(err.toString());
       return false;
     }
-  }
-
-  // Build progress dialog
-  Widget _dialog(String message) {
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          // Row body
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: <Widget>[
-              const SizedBox(width: 8.0),
-              // Show progress indicator
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation<Color>(
-                          Theme.of(context).primaryColor)),
-                ),
-              ),
-              const SizedBox(width: 8.0),
-              // Show text
-              Expanded(
-                child: Text(
-                  message,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.w600),
-                ),
-              ),
-              const SizedBox(width: 8.0)
-            ],
-          ),
-        ],
-      ),
-    );
   }
 
   // Hide progress dialog

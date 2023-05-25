@@ -146,7 +146,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _i18n = AppLocalizations.of(context);
 
     if (isLoading) {
-      return Frankloader();
+      return const Frankloader();
     } else {
       return Scaffold(
         appBar: AppBar(

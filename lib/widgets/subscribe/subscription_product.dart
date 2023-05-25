@@ -61,8 +61,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         backgroundColor: APP_ERROR,
       );
     } else {
-      final offer = offerings.first;
-      print(offer);
+      // final offer = offerings.first;
     }
   }
 
@@ -153,8 +152,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   Widget _showPricing(int index) {
-    double width = MediaQuery.of(context).size.width;
-    double height = MediaQuery.of(context).size.height;
     Icon icon = index == 1
         ? const Icon(Iconsax.close_circle)
         : const Icon(Iconsax.tick_circle);

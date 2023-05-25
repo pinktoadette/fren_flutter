@@ -1,6 +1,5 @@
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -14,7 +13,6 @@ class ListComments extends StatefulWidget {
 }
 
 class _ListCommentsState extends State<ListComments> {
-  late AppLocalizations _i18n;
   final _commentApi = CommentApi();
   static const _pageSize = 20;
 

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +17,6 @@ class EditStory extends StatefulWidget {
 class _EditStoryState extends State<EditStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  final _storyApi = StoryApi();
 
   File? _uploadPath;
   final _titleController = TextEditingController();

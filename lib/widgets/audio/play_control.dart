@@ -4,7 +4,6 @@ import 'dart:typed_data';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -26,7 +25,6 @@ class _AudioWidgetState extends State<AudioWidget> {
   final _player = AudioPlayer();
   bool _isPlaying = false;
   bool _isBuffering = false;
-  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -82,7 +80,6 @@ class _AudioWidgetState extends State<AudioWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
         height: 150,

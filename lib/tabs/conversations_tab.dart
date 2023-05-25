@@ -191,7 +191,7 @@ class ConversationsTab extends StatelessWidget {
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {
-        return FractionallySizedBox(heightFactor: 0.9, child: ExploreMachi());
+        return const FractionallySizedBox(heightFactor: 0.9, child: ExploreMachi());
       },
     );
   }

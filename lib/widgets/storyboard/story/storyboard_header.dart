@@ -1,10 +1,12 @@
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/datas/storyboard.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_edit.dart';
+import 'package:machi_app/widgets/storyboard/story/storyboard_info.dart';
 
 class StoryboardHeaderWidget extends StatelessWidget {
   const StoryboardHeaderWidget({Key? key}) : super(key: key);
@@ -60,6 +62,14 @@ class StoryboardHeaderWidget extends StatelessWidget {
   }
 
   void _showEditStoryboard(BuildContext context) {
+    StoryboardController storyboardController = Get.find(tag: "storyboard");
+    bool showInfo = true;
+    if ((storyboardController.currentStoryboard.createdBy.userId ==
+            UserModel().user.userId) &
+        (storyboardController.currentStoryboard.status !=
+            StoryStatus.PUBLISHED)) {
+      showInfo = false;
+    }
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -72,7 +82,9 @@ class StoryboardHeaderWidget extends StatelessWidget {
             minChildSize: 0.9,
             builder: (context, scrollController) => SingleChildScrollView(
               controller: scrollController,
-              child: const StoryboardEdit(),
+              child: showInfo == false
+                  ? const StoryboardEdit()
+                  : const StoryboardInfo(),
             ),
           )),
     );

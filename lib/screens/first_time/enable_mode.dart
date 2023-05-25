@@ -22,16 +22,6 @@ class _EnableModeState extends State<EnableMode> {
     USER_ENABLE_SERV: true,
   };
 
-  /// Navigate to next page
-  void _nextScreen(screen) {
-    // Go to next page route
-    Future(() {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const UpdateLocationScreen()),
-          (route) => false);
-    });
-  }
-
   @override
   void initState() {
     super.initState();

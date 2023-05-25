@@ -77,7 +77,7 @@ class _SplashScreenState extends State<SplashScreen> {
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.white),
       ),
-      body: Center(
+      body: const Center(
         child: Frankloader(),
       ),
     );

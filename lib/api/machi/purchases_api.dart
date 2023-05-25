@@ -1,4 +1,3 @@
-
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -9,6 +8,7 @@ class PurchasesApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final auth = AuthApi();
+  // ignore: constant_identifier_names
   static const API_KEY = '';
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

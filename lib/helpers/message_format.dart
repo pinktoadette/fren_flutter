@@ -1,6 +1,5 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
-import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:uuid/uuid.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;

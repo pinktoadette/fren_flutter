@@ -5,9 +5,9 @@ class NotificationCounter extends StatelessWidget {
   // Variables
   final Widget icon;
   final int counter;
-  double? iconPadding;
+  final double? iconPadding;
 
-  NotificationCounter(
+  const NotificationCounter(
       {Key? key, required this.icon, required this.counter, this.iconPadding})
       : super(key: key);
 

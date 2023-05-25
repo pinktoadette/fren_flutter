@@ -1,6 +1,3 @@
-
-import 'package:machi_app/api/machi/stream_api.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 // view story board as the creator
@@ -12,9 +9,6 @@ class MainControlWidget extends StatefulWidget {
 }
 
 class _MainControlWidgetState extends State<MainControlWidget> {
-  final _streamApi = StreamApi();
-  late AppLocalizations _i18n;
-
   @override
   void initState() {
     super.initState();
@@ -27,7 +21,6 @@ class _MainControlWidgetState extends State<MainControlWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
         decoration: BoxDecoration(

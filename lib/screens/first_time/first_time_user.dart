@@ -74,7 +74,7 @@ class Step1Container extends StatelessWidget {
           padding: const EdgeInsets.all(15),
           child: Column(
             children: <Widget>[
-              Frankloader(),
+              const Frankloader(),
               Text(_i18n.translate('intro_1'),
                   style: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold)),

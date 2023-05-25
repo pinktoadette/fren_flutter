@@ -1,6 +1,7 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
+// ignore: constant_identifier_names
 enum ScriptStatus { ACTIVE, INACTIVE, BLOCKED }
 
 class ScriptImage {

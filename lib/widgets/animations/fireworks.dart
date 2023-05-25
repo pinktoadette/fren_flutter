@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class FireworksAnimation extends StatelessWidget {
-  double? height;
-  double? width;
+  final double? height;
+  final double? width;
 
-  FireworksAnimation({Key? key, this.height, this.width}) : super(key: key);
+  const FireworksAnimation({Key? key, this.height, this.width})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

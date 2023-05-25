@@ -1,7 +1,12 @@
+import 'package:get/get.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/storyboard/edit_story.dart';
 import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/storyboard/story/story_info.dart';
 
 // Story book Onboarding swipe -> child : story_widget
 class StoryHeaderWidget extends StatelessWidget {
@@ -47,6 +52,14 @@ class StoryHeaderWidget extends StatelessWidget {
   }
 
   void _showEditStory(BuildContext context) {
+    StoryboardController storyboardController = Get.find(tag: "storyboard");
+    bool showInfo = true;
+    if ((storyboardController.currentStory.createdBy.userId ==
+            UserModel().user.userId) &
+        (storyboardController.currentStory.status != StoryStatus.PUBLISHED)) {
+      showInfo = false;
+    }
+
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -58,7 +71,10 @@ class StoryHeaderWidget extends StatelessWidget {
                 initialChildSize: 1,
                 minChildSize: 0.9,
                 builder: (context, scrollController) => SingleChildScrollView(
-                    controller: scrollController, child: const EditStory()),
+                    controller: scrollController,
+                    child: showInfo == false
+                        ? const EditStory()
+                        : const StoryInfo()),
               ),
             ));
   }

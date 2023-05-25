@@ -5,8 +5,8 @@ import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 import 'package:iconsax/iconsax.dart';
 
 class AddStoryBoard extends StatefulWidget {
-  types.Message message;
-  AddStoryBoard({Key? key, required this.message}) : super(key: key);
+  final types.Message message;
+  const AddStoryBoard({Key? key, required this.message}) : super(key: key);
 
   @override
   _AddStoryBoardState createState() => _AddStoryBoardState();

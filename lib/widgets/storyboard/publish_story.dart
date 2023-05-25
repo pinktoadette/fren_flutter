@@ -73,10 +73,10 @@ class _PublishStoryState extends State<PublishStory> {
                 Stack(
                   children: [
                     if (_isSuccess == true)
-                      Padding(
-                          padding: const EdgeInsets.only(bottom: 50),
+                      const Padding(
+                          padding: EdgeInsets.only(bottom: 50),
                           child: FireworksAnimation()),
-                    Frankloader(),
+                    const Frankloader(),
                   ],
                 ),
                 if (_isLoading == true)

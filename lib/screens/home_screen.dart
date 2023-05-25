@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
-import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
@@ -15,7 +14,6 @@ import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/tabs/conversations_tab.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
-import 'package:machi_app/tabs/playlist_tab.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/button/action_button.dart';
@@ -44,7 +42,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final StoryboardController storyController = Get.find(tag: 'storyboard');
   final TimelineController timelineController = Get.find(tag: 'timeline');
 
-  final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();
 
@@ -196,9 +193,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(

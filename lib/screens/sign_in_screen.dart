@@ -56,7 +56,7 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: screenHeight * 0.15),
-              Frankloader(),
+              const Frankloader(),
               Image.asset("assets/images/machi.png"),
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,

@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 
 class Frankloader extends StatelessWidget {
-  double? height;
-  double? width;
+  final double? height;
+  final double? width;
 
-  Frankloader({Key? key, this.height, this.width}) : super(key: key);
+  const Frankloader({Key? key, this.height, this.width}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

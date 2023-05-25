@@ -20,13 +20,12 @@ class NoData extends StatelessWidget {
       // Get SVG icon
       _icon = const Icon(Iconsax.briefcase);
     } else {
-      _icon = Frankloader(
+      _icon = const Frankloader(
         height: 100,
         width: 100,
       );
     }
 
-    final height = MediaQuery.of(context).size.height;
     return Center(
         child: Column(
       mainAxisAlignment: MainAxisAlignment.center,

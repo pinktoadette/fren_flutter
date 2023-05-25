@@ -4,7 +4,6 @@ import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
@@ -14,7 +13,7 @@ import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
-// StoryboardItemWidget -> StoriesView (List of stories / Add ) -> StoryItemWidget -> PageView -> PageItemWidget
+// StoryboardItemWidget -> StoriesView (List of stories / Add ) -> StoryItemWidget -> PageView
 class StoryboardItemWidget extends StatefulWidget {
   final Storyboard item;
   final types.Message? message;
@@ -28,7 +27,6 @@ class StoryboardItemWidget extends StatefulWidget {
 class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Storyboard storyboard;
-  late AppLocalizations _i18n;
   final _timelineApi = TimelineApi();
 
   @override
@@ -41,7 +39,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     double storyCoverWidth = 80;
     double padding = 15;

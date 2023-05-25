@@ -29,7 +29,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final _friendApi = FriendApi();
   final _timelineApi = TimelineApi();
   ChatController chatController = Get.find(tag: 'chatroom');
-  static const _pageSize = 20;
 
   Map<String, dynamic> friendStatus = {
     "status": "UNFRIEND",
@@ -172,7 +171,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _userPost() {
-    double itemHeight = 200;
     final width = MediaQuery.of(context).size.width;
     final height = MediaQuery.of(context).size.height;
     if ((widget.user.userStatus == "hidden") &

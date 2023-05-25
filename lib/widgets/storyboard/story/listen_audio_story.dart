@@ -1,7 +1,6 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/audio/mini_play_control.dart';
@@ -17,7 +16,6 @@ class ViewAudioStory extends StatefulWidget {
 }
 
 class _ViewAudioStoryState extends State<ViewAudioStory> {
-  late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
@@ -27,7 +25,6 @@ class _ViewAudioStoryState extends State<ViewAudioStory> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     double imageWidth = 80;
     double imageHeight = 80;
