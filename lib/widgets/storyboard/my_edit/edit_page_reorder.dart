@@ -51,7 +51,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
 
     return Stack(
       children: [
@@ -113,12 +112,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
               });
             }),
         Positioned(
-            width: width,
+            width: double.infinity,
             bottom: 0,
             child: Column(children: [
               Container(
                 color: Theme.of(context).colorScheme.background,
-                width: width,
+                width: double.infinity,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,

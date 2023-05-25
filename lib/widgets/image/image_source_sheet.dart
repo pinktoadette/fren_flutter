@@ -56,6 +56,7 @@ class ImageSourceSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     // Variables
     final i18n = AppLocalizations.of(context);
+    Size size = MediaQuery.of(context).size;
 
     return Container(
       decoration: BoxDecoration(
@@ -94,43 +95,56 @@ class ImageSourceSheet extends StatelessWidget {
           const Divider(height: 5, thickness: 1),
 
           /// Select image from gallery
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: TextButton.icon(
-              icon: const Icon(Iconsax.gallery),
-              label: Text(i18n.translate("gallery"),
-                  style: const TextStyle(fontSize: 16)),
-              onPressed: () async {
-                // Get image from device gallery
-                final pickedFile = await picker.pickImage(
-                  source: ImageSource.gallery,
-                );
-                if (pickedFile == null) return;
-                selectedImage(context, File(pickedFile.path));
-              },
-            ),
-          ),
+          SizedBox(
+              width: double.infinity,
+              child: InkWell(
+                  onTap: () async {
+                    // Get image from device gallery
+                    final pickedFile = await picker.pickImage(
+                      source: ImageSource.gallery,
+                    );
+                    if (pickedFile == null) return;
+                    selectedImage(context, File(pickedFile.path));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        const Icon(Iconsax.gallery),
+                        Text(" " + i18n.translate("gallery"),
+                            style: const TextStyle(fontSize: 16))
+                      ],
+                    ),
+                  ))),
 
           /// Capture image from camera
-          Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: TextButton.icon(
-              icon: const Icon(Iconsax.camera),
-              label: Text(i18n.translate("camera")),
-              onPressed: () async {
-                // Capture image from camera
-                final pickedFile = await picker.pickImage(
-                  source: ImageSource.camera,
-                );
-                if (pickedFile == null) return;
-                selectedImage(context, File(pickedFile.path));
-              },
-            ),
-          ),
+          SizedBox(
+              width: double.infinity,
+              child: InkWell(
+                  onTap: () async {
+                    // Capture image from camera
+                    final pickedFile = await picker.pickImage(
+                      source: ImageSource.camera,
+                    );
+                    if (pickedFile == null) return;
+                    selectedImage(context, File(pickedFile.path));
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        const Icon(Iconsax.camera),
+                        Text(" " + i18n.translate("camera"),
+                            style: const TextStyle(fontSize: 16))
+                      ],
+                    ),
+                  ))),
 
           // files for future
           if (includeFile == true)
-            Padding(
+            Container(
+                alignment: Alignment.topLeft,
+                width: size.width,
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextButton.icon(
                   icon: const Icon(Iconsax.folder_open),
@@ -138,7 +152,9 @@ class ImageSourceSheet extends StatelessWidget {
                   onPressed: null,
                 )),
           if (useAIGenerator == true)
-            Padding(
+            Container(
+                alignment: Alignment.topLeft,
+                width: size.width,
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextButton.icon(
                   icon: const Icon(Iconsax.pen_add),

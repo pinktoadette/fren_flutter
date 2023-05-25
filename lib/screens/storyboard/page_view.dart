@@ -71,10 +71,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
-    double headerHeight = 170;
     if (story == null && pages.isEmpty) {
       return Scaffold(
           appBar: AppBar(
@@ -113,55 +110,73 @@ class _StoryPageViewState extends State<StoryPageView> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             StoryHeaderWidget(story: story!),
-            SizedBox(
-                height: height - headerHeight - 20,
-                width: width,
-                child: PageView.builder(
-                  controller: controller,
-                  itemCount: story!.pages!.length,
-                  itemBuilder: (_, index) {
-                    List<Script>? scripts = story!.pages![index].scripts;
-                    return SingleChildScrollView(
-                        scrollDirection: Axis.vertical,
-                        child: Card(
-                            child: Container(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: scripts!.map((script) {
-                                if (script.type == "text") {
-                                  return Text(
-                                    script.text ?? "",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall,
-                                  );
-                                } else if (script.type == "image") {
-                                  return RoundedImage(
-                                    width: 516,
-                                    height: 516,
-                                    photoUrl: script.image?.uri ?? "",
-                                    icon: const Icon(Iconsax.image),
-                                  );
-                                }
-                                return const SizedBox.shrink();
-                              }).toList()),
-                        )));
-                  },
-                )),
-            SmoothPageIndicator(
-              controller: controller,
-              count: story!.pages!.length,
-              effect: const ExpandingDotsEffect(
-                  dotHeight: 14,
-                  dotWidth: 14,
-                  // type: WormType.thinUnderground,
-                  activeDotColor: APP_ACCENT_COLOR),
-            ),
+            ..._showPageWidget(),
             const SizedBox(
               height: 10,
             )
           ],
         )));
+  }
+
+  List<Widget> _showPageWidget() {
+    Size size = MediaQuery.of(context).size;
+    double headerHeight = 200;
+    if (story!.pages!.isEmpty) {
+      return [
+        SizedBox(
+            height: size.height - headerHeight,
+            width: size.width,
+            child: PageView.builder(
+                controller: controller,
+                itemCount: 1,
+                itemBuilder: (_, index) {
+                  return NoData(text: _i18n.translate("storybits_empty"));
+                }))
+      ];
+    }
+
+    return [
+      SizedBox(
+          height: size.height - headerHeight,
+          width: size.width,
+          child: PageView.builder(
+            controller: controller,
+            itemCount: story!.pages!.length,
+            itemBuilder: (_, index) {
+              List<Script>? scripts = story!.pages![index].scripts;
+              return SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Card(
+                      child: Container(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: scripts!.map((script) {
+                          if (script.type == "text") {
+                            return Text(
+                              script.text ?? "",
+                              style: Theme.of(context).textTheme.bodySmall,
+                            );
+                          } else if (script.type == "image") {
+                            return RoundedImage(
+                              width: 516,
+                              height: 516,
+                              photoUrl: script.image?.uri ?? "",
+                              icon: const Icon(Iconsax.image),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        }).toList()),
+                  )));
+            },
+          )),
+      SmoothPageIndicator(
+        controller: controller,
+        count: story!.pages!.length,
+        effect: const ExpandingDotsEffect(
+            dotHeight: 14, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
+      ),
+    ];
   }
 
   Widget _unpublishedTools() {

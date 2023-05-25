@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'dart:io';
 
 import 'package:machi_app/api/machi/story_api.dart';
@@ -8,6 +7,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:get/get.dart';
@@ -51,7 +51,7 @@ class _AddNewStoryState extends State<AddNewStory> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Text(
-                _i18n.translate("story_collection_summary_info"),
+                _i18n.translate("story_collection_create"),
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               const SizedBox(
@@ -117,7 +117,12 @@ class _AddNewStoryState extends State<AddNewStory> {
                       onPressed: () {
                         _addNewStory();
                       },
-                      child: Text(_i18n.translate("add")))
+                      child: Row(children: [
+                        isLoading == true
+                            ? loadingButton(size: 16)
+                            : const SizedBox.shrink(),
+                        Text(_i18n.translate("add"))
+                      ]))
                 ],
               )
             ],
@@ -156,6 +161,10 @@ class _AddNewStoryState extends State<AddNewStory> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 

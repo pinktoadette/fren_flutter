@@ -45,13 +45,11 @@ class _EditPageState extends State<EditPage> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            "Edit " + _i18n.translate("storybits"),
+            _i18n.translate("storybits_edit"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           leading: BackButton(
@@ -78,30 +76,7 @@ class _EditPageState extends State<EditPage> {
           children: [
             Stack(
               children: [
-                SizedBox(
-                    height: height - 100,
-                    width: width,
-                    child: PageView.builder(
-                      onPageChanged: _onPageChange,
-                      controller: _pageController,
-                      itemCount: story.pages?.length ?? 1,
-                      itemBuilder: (_, index) {
-                        List<Script> scripts =
-                            story.pages![index].scripts ?? [];
-                        return EditPageReorder(
-                            scriptList: scripts,
-                            pageIndex: pageIndex,
-                            onMoveInsertPages: (data) {
-                              _moveInsertPages(data);
-                            },
-                            onUpdateSeq: (update) {
-                              _updateSequence(update);
-                            },
-                            onUpdateDelete: (data) {
-                              _updateDelUpdateSequence(data);
-                            });
-                      },
-                    )),
+                _showPageWidget(),
                 Positioned.fill(
                   bottom: 50,
                   child: Align(
@@ -112,7 +87,6 @@ class _EditPageState extends State<EditPage> {
                       effect: const ExpandingDotsEffect(
                           dotHeight: 14,
                           dotWidth: 14,
-                          // type: WormType.thinUnderground,
                           activeDotColor: APP_ACCENT_COLOR),
                     ),
                   ),
@@ -121,6 +95,37 @@ class _EditPageState extends State<EditPage> {
             ),
           ],
         )));
+  }
+
+  Widget _showPageWidget() {
+    Size size = MediaQuery.of(context).size;
+    if (story.pages == null || story.pages!.isEmpty) {
+      return SizedBox(height: size.height);
+    }
+
+    return SizedBox(
+        height: size.height - 100,
+        width: double.infinity,
+        child: PageView.builder(
+          onPageChanged: _onPageChange,
+          controller: _pageController,
+          itemCount: story.pages!.length,
+          itemBuilder: (_, index) {
+            List<Script> scripts = story.pages![index].scripts ?? [];
+            return EditPageReorder(
+                scriptList: scripts,
+                pageIndex: pageIndex,
+                onMoveInsertPages: (data) {
+                  _moveInsertPages(data);
+                },
+                onUpdateSeq: (update) {
+                  _updateSequence(update);
+                },
+                onUpdateDelete: (data) {
+                  _updateDelUpdateSequence(data);
+                });
+          },
+        ));
   }
 
   /// update / delete sequence
