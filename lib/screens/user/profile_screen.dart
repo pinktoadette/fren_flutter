@@ -1,20 +1,15 @@
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
-import 'package:machi_app/dialogs/report_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class ProfileScreen extends StatefulWidget {
   final User user;
@@ -27,7 +22,6 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late AppLocalizations _i18n;
-  final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _friendApi = FriendApi();
   final _timelineApi = TimelineApi();
   ChatController chatController = Get.find(tag: 'chatroom');

@@ -74,6 +74,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    double width = MediaQuery.of(context).size.width;
 
     if (story == null && pages.isEmpty) {
       return Scaffold(
@@ -88,26 +89,73 @@ class _StoryPageViewState extends State<StoryPageView> {
           body: NoData(text: _i18n.translate("loading")));
     }
     return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            widget.isPreview == true
-                ? _i18n.translate("storyboard_preview")
-                : _i18n.translate("story_collection"),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          actions: [
-            if (widget.isPreview == false) _unpublishedTools(),
-            if (widget.isPreview == true)
-              Container(
-                  padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton(
-                      onPressed: () {
-                        Get.to(() => PublishStory(story: story!));
-                      },
-                      child: Text(_i18n.translate("publish"))))
-          ],
+        body:
+            CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
+      SliverAppBar(
+        pinned: true,
+        snap: false,
+        floating: false,
+        leading: const BackButton(),
+        expandedHeight: 180.0,
+        flexibleSpace: LayoutBuilder(builder: (context, constraints) {
+          bool isAppBarExpanded = constraints.maxHeight >
+              kToolbarHeight + MediaQuery.of(context).padding.top;
+
+          return FlexibleSpaceBar(
+              titlePadding: EdgeInsetsDirectional.only(
+                  start: isAppBarExpanded ? 0.0 : 50.0,
+                  bottom: 16.0,
+                  top: isAppBarExpanded ? 100 : 0),
+              title: isAppBarExpanded
+                  ? Row(children: [
+                      StoryHeaderWidget(story: story!),
+                    ])
+                  : Text(
+                      story!.title,
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ));
+        }),
+      ),
+      SliverToBoxAdapter(
+          child: Stack(children: [
+        SingleChildScrollView(
+            physics: const ClampingScrollPhysics(),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ..._showPageWidget(),
+                const SizedBox(
+                  height: 10,
+                )
+              ],
+            )),
+      ]))
+    ]));
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(
+          widget.isPreview == true
+              ? _i18n.translate("storyboard_preview")
+              : _i18n.translate("story_collection"),
+          style: Theme.of(context).textTheme.bodySmall,
         ),
-        body: SingleChildScrollView(
+        actions: [
+          if (widget.isPreview == false) _unpublishedTools(),
+          if (widget.isPreview == true)
+            Container(
+                padding: const EdgeInsets.all(10.0),
+                child: ElevatedButton(
+                    onPressed: () {
+                      Get.to(() => PublishStory(story: story!));
+                    },
+                    child: Text(_i18n.translate("publish"))))
+        ],
+      ),
+      body: Stack(children: [
+        SingleChildScrollView(
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
@@ -118,7 +166,17 @@ class _StoryPageViewState extends State<StoryPageView> {
               height: 10,
             )
           ],
-        )));
+        )),
+      ]),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Add your onPressed code here!
+        },
+        backgroundColor: Colors.white,
+        child: const Icon(Iconsax.arrow_down),
+      ),
+    );
   }
 
   List<Widget> _showPageWidget() {
