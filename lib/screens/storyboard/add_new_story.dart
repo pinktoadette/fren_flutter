@@ -92,6 +92,11 @@ class _AddNewStoryState extends State<AddNewStory> {
               TextFormField(
                 controller: _titleController,
                 maxLength: 80,
+                buildCounter: (_,
+                        {required currentLength,
+                        maxLength,
+                        required isFocused}) =>
+                    _counter(context, currentLength, maxLength),
                 decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
@@ -107,20 +112,6 @@ class _AddNewStoryState extends State<AddNewStory> {
                   return null;
                 },
               ),
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  const Spacer(),
-                  ElevatedButton.icon(
-                      icon: isLoading == true
-                          ? loadingButton(size: 16)
-                          : const SizedBox.shrink(),
-                      onPressed: () {
-                        _addNewStory();
-                      },
-                      label: Text(_i18n.translate("add")))
-                ],
-              )
             ],
           ),
         ));
@@ -131,7 +122,6 @@ class _AddNewStoryState extends State<AddNewStory> {
     setState(() {
       isLoading = true;
     });
-    _validateFields();
     try {
       String photoUrl = await uploadFile(
           file: _uploadPath!,
@@ -165,8 +155,6 @@ class _AddNewStoryState extends State<AddNewStory> {
     }
   }
 
-  void _validateFields() {}
-
   void _selectImage({required String path}) async {
     await showModalBottomSheet(
         context: context,
@@ -180,5 +168,33 @@ class _AddNewStoryState extends State<AddNewStory> {
                 }
               },
             ));
+  }
+
+  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 0.0),
+      child: Container(
+          alignment: Alignment.topLeft,
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  currentLength.toString() + "/" + maxLength.toString(),
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                const Spacer(),
+                ElevatedButton.icon(
+                    icon: isLoading == true
+                        ? loadingButton(size: 16)
+                        : const SizedBox.shrink(),
+                    onPressed: () {
+                      _addNewStory();
+                    },
+                    label: Text(_i18n.translate("add")))
+              ],
+            )
+          ])),
+    );
   }
 }

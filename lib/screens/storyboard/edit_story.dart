@@ -49,15 +49,18 @@ class _EditStoryState extends State<EditStory> {
           right: 20),
       child: Column(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
             storyboardController.currentStory.title,
             style: Theme.of(context).textTheme.headlineMedium,
+            textAlign: TextAlign.left,
           ),
           const SizedBox(
             height: 10,
           ),
-          GestureDetector(
+          Center(
+              child: GestureDetector(
             child: Stack(
               children: [
                 StoryCover(
@@ -86,7 +89,7 @@ class _EditStoryState extends State<EditStory> {
               /// Update story image
               _selectImage(path: 'collection');
             },
-          ),
+          )),
           const SizedBox(
             height: 20,
           ),
