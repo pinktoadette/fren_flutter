@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -15,6 +17,7 @@ import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 /// Need to call pages since storyboard
 /// did not query this in order to increase speed
@@ -194,6 +197,11 @@ class _StoryPageViewState extends State<StoryPageView> {
                 _i18n.translate("new_story_collection"),
                 style: Theme.of(context).textTheme.labelSmall,
               )),
+        IconButton(
+            onPressed: () {
+              _createEmail();
+            },
+            icon: const Icon(Iconsax.sms_edit)),
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
               onPressed: () async {
@@ -216,5 +224,36 @@ class _StoryPageViewState extends State<StoryPageView> {
               ))
       ],
     );
+  }
+
+  void _createEmail() async {
+    Story story = storyboardController.currentStory;
+    String body = story.pages!.map((page) {
+      return page.scripts!.map((script) {
+        if (script.type == "text") {
+          return script.text;
+        }
+      }).join(" ");
+    }).join(" ");
+
+    final Uri emailLaunchUri = Uri(
+      scheme: 'mailto',
+      path: '',
+      query: encodeQueryParameters(<String, String>{
+        'subject': story.title,
+        'body': body + "\n\n\n\n mymachi.app"
+      }),
+    );
+
+    if (!await launchUrl(emailLaunchUri)) {
+      throw Exception('Could not email');
+    }
+  }
+
+  String? encodeQueryParameters(Map<String, String> params) {
+    return params.entries
+        .map((MapEntry<String, String> e) =>
+            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+        .join('&');
   }
 }
