@@ -13,8 +13,7 @@ import 'package:machi_app/widgets/story_cover.dart';
 import 'package:get/get.dart';
 
 class AddNewStory extends StatefulWidget {
-  final Storyboard storyboard;
-  const AddNewStory({Key? key, required this.storyboard}) : super(key: key);
+  const AddNewStory({Key? key}) : super(key: key);
 
   @override
   _AddNewStoryState createState() => _AddNewStoryState();
@@ -43,7 +42,7 @@ class _AddNewStoryState extends State<AddNewStory> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(_i18n.translate("story_collection")),
+          title: Text(_i18n.translate("new_story_collection")),
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
@@ -113,16 +112,14 @@ class _AddNewStoryState extends State<AddNewStory> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   const Spacer(),
-                  ElevatedButton(
+                  ElevatedButton.icon(
+                      icon: isLoading == true
+                          ? loadingButton(size: 16)
+                          : const SizedBox.shrink(),
                       onPressed: () {
                         _addNewStory();
                       },
-                      child: Row(children: [
-                        isLoading == true
-                            ? loadingButton(size: 16)
-                            : const SizedBox.shrink(),
-                        Text(_i18n.translate("add"))
-                      ]))
+                      label: Text(_i18n.translate("add")))
                 ],
               )
             ],
@@ -139,10 +136,11 @@ class _AddNewStoryState extends State<AddNewStory> {
     try {
       String photoUrl = await uploadFile(
           file: _uploadPath!,
-          category: 'collection',
-          categoryId: "${widget.storyboard.storyboardId}_$title");
+          category: UPLOAD_PATH_COLLECTION,
+          categoryId:
+              "${storyboardController.currentStoryboard.storyboardId}_$title");
       await _storyApi.createStory(
-          storyboardId: widget.storyboard.storyboardId,
+          storyboardId: storyboardController.currentStoryboard.storyboardId,
           title: title,
           photoUrl: photoUrl);
 

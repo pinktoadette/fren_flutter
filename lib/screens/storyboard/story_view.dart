@@ -61,8 +61,7 @@ class _StoriesViewState extends State<StoriesView> {
             if (widget.message == null)
               TextButton.icon(
                   onPressed: () {
-                    Get.to(() => AddNewStory(
-                        storyboard: storyboardController.currentStoryboard));
+                    Get.to(() => const AddNewStory());
                   },
                   icon: const Icon(Iconsax.add),
                   label: Text(
@@ -74,9 +73,7 @@ class _StoriesViewState extends State<StoriesView> {
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            StoryboardHeaderWidget(
-              storyboard: storyboardController.currentStoryboard,
-            ),
+            const StoryboardHeaderWidget(),
             Obx(
               () => ListView.builder(
                   shrinkWrap: true,

@@ -187,8 +187,7 @@ class _StoryPageViewState extends State<StoryPageView> {
             (storyboard.story!.length == 1))
           TextButton.icon(
               onPressed: () {
-                Get.to(() => AddNewStory(
-                    storyboard: storyboardController.currentStoryboard));
+                Get.to(() => const AddNewStory());
               },
               icon: const Icon(Iconsax.add),
               label: Text(

@@ -76,43 +76,43 @@ class _EditPageState extends State<EditPage> {
           children: [
             Stack(
               children: [
-                _showPageWidget(),
-                Positioned.fill(
-                  bottom: 50,
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: SmoothPageIndicator(
-                      controller: _pageController,
-                      count: story.pages?.length ?? 1,
-                      effect: const ExpandingDotsEffect(
-                          dotHeight: 14,
-                          dotWidth: 14,
-                          activeDotColor: APP_ACCENT_COLOR),
-                    ),
-                  ),
-                )
+                ..._showPageWidget(),
               ],
             ),
           ],
         )));
   }
 
-  Widget _showPageWidget() {
+  List<Widget> _showPageWidget() {
     Size size = MediaQuery.of(context).size;
-    if (story.pages == null || story.pages!.isEmpty) {
-      return SizedBox(height: size.height);
+    if (story.pages!.isEmpty) {
+      return [
+        SizedBox(
+            height: size.height,
+            width: size.width,
+            child: EditPageReorder(
+                scriptList: const [],
+                pageIndex: pageIndex,
+                onMoveInsertPages: (data) {
+                  _moveInsertPages(data);
+                },
+                onUpdateSeq: (update) {
+                  _updateSequence(update);
+                }))
+      ];
     }
 
-    return SizedBox(
-        height: size.height - 100,
-        width: double.infinity,
-        child: PageView.builder(
-          onPageChanged: _onPageChange,
-          controller: _pageController,
-          itemCount: story.pages!.length,
-          itemBuilder: (_, index) {
-            List<Script> scripts = story.pages![index].scripts ?? [];
-            return EditPageReorder(
+    return [
+      SizedBox(
+          height: size.height,
+          width: double.infinity,
+          child: PageView.builder(
+            onPageChanged: _onPageChange,
+            controller: _pageController,
+            itemCount: story.pages!.length,
+            itemBuilder: (_, index) {
+              List<Script> scripts = story.pages![index].scripts ?? [];
+              return EditPageReorder(
                 scriptList: scripts,
                 pageIndex: pageIndex,
                 onMoveInsertPages: (data) {
@@ -121,11 +121,22 @@ class _EditPageState extends State<EditPage> {
                 onUpdateSeq: (update) {
                   _updateSequence(update);
                 },
-                onUpdateDelete: (data) {
-                  _updateDelUpdateSequence(data);
-                });
-          },
-        ));
+              );
+            },
+          )),
+      Positioned.fill(
+        bottom: 150,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: SmoothPageIndicator(
+            controller: _pageController,
+            count: story.pages?.length ?? 1,
+            effect: const ExpandingDotsEffect(
+                dotHeight: 14, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
+          ),
+        ),
+      )
+    ];
   }
 
   /// update / delete sequence
@@ -156,26 +167,17 @@ class _EditPageState extends State<EditPage> {
         }
         story.pages![moveToPage - 1].scripts!.add(moveScript);
 
-        storyboardController.updateScriptsToStory(
-            story: story, pages: story.pages!);
+        storyboardController.updateScriptsToStory(story: story);
         break;
       default:
         break;
     }
   }
 
-  /// Delete sequence
-  /// Delete is immediately saved in child component.
-  /// Update is saved here in parent.
-  /// StoryPage includes scripts from backend in all request
-  void _updateDelUpdateSequence(List<StoryPages> page) {
-    storyboardController.updateScriptsToStory(story: story, pages: page);
-  }
-
   void _updateSequence(List<Script> scripts) async {
     StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
     story.pages![pageIndex] = newPages;
-    _updateDelUpdateSequence(story.pages!);
+    storyboardController.updateScriptsToStory(story: story);
   }
 
   void _onPageChange(int index) {

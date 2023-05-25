@@ -135,14 +135,14 @@ class StoryboardController extends GetxController {
     updateStoryboard(currentStoryboard);
   }
 
-  void updateScriptsToStory(
-      {required Story story, required List<StoryPages> pages}) {
+  void updateScriptsToStory({required Story story}) {
     List<Story> stories = currentStoryboard.story!;
     int storyIndex =
         stories.indexWhere((element) => element.storyId == story.storyId);
 
     // update the details of page
-    currentStoryboard.story![storyIndex].pages = pages;
+    currentStoryboard.story![storyIndex] = story;
+    setCurrentStory(story);
     updateStoryboard(currentStoryboard);
     _currentStory = stories[storyIndex].obs;
     _currentStory.refresh();

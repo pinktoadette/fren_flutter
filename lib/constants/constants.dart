@@ -46,6 +46,13 @@ const SOCKET_WS = "wss://api.mymachi.app/";
 
 const double PLAY_BUTTON_WIDTH = 45;
 
+const UPLOAD_PATH_BOARD = "board";
+const UPLOAD_PATH_SCRIPT_IMAGE = "script";
+const UPLOAD_PATH_COLLECTION = "collection";
+const UPLOAD_PATH_MESSAGE = "message";
+const UPLOAD_PATH_USER_PROFILE = "profile";
+const UPLOAD_PATH_BOT_IMAGE = "machi";
+
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.
 ///

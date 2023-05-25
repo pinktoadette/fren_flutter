@@ -603,7 +603,7 @@ class UserModel extends Model {
 
     /// Check upload path
     if (path == 'profile') {
-      uploadPath = 'uploads/users/profiles';
+      uploadPath = UPLOAD_PATH_USER_PROFILE;
     } else {
       uploadPath = 'uploads/users/gallery';
     }

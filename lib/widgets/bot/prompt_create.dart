@@ -9,6 +9,7 @@ import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -263,7 +264,9 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     String prompt = _promptController.text;
 
     String photoUrl = await uploadFile(
-        file: _uploadPath!, category: 'machi', categoryId: name);
+        file: _uploadPath!,
+        category: UPLOAD_PATH_BOT_IMAGE,
+        categoryId: createUUID());
 
     try {
       Bot bot = await _botApi.createBot(
