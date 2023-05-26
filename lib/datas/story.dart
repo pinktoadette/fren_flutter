@@ -4,22 +4,24 @@ import 'package:machi_app/datas/storyboard.dart';
 
 class StoryComment {
   final String comment;
+  final String? commentId;
   final int createdAt;
   final int updatedAt;
   final StoryUser user;
 
-  StoryComment({
-    required this.comment,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.user,
-  });
+  StoryComment(
+      {required this.comment,
+      required this.createdAt,
+      required this.updatedAt,
+      required this.user,
+      this.commentId});
 
   factory StoryComment.fromDocument(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc["user"]);
     return StoryComment(
         comment: doc[STORY_COMMENT],
         user: user,
+        commentId: doc[COMMENT_ID],
         createdAt: doc[CREATED_AT],
         updatedAt: doc[UPDATED_AT]);
   }

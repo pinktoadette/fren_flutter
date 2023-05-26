@@ -1,7 +1,9 @@
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -76,11 +78,35 @@ class _CommentWidgetState extends State<CommentWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            TimelineHeader(showAvatar: true, user: item.user),
+            TimelineHeader(
+              showAvatar: true,
+              user: item.user,
+              showName: true,
+              radius: 15,
+              timestamp: item.createdAt,
+            ),
             Text(item.comment),
-            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                LikeItemWidget(
+                    onLike: (val) {
+                      _onLikePressed(item.commentId!, val);
+                    },
+                    likes: 0,
+                    mylikes: 0)
+              ],
+            ),
             const Divider()
           ],
         ));
+  }
+
+  void _onLikePressed(String commentId, bool like) {
+    // String response = await _timelineApi.likeStoryMachi(
+    //     "comment", commentId, like == true ? 1 : 0);
+    // if (response == "OK") {
+
+    // }
   }
 }

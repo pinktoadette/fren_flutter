@@ -22,9 +22,13 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     AppLocalizations _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
-        color: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
         width: width,
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.background,
+            border: Border.all(color: Theme.of(context).colorScheme.tertiary),
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(24), topRight: Radius.circular(24))),
         child: TextFormField(
           controller: _commentController,
           maxLines: 1,

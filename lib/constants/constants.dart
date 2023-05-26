@@ -289,6 +289,7 @@ const String VOICE_NAME = "voiceName";
 
 //// Replies
 const String STORY_COMMENT = "comment";
+const String COMMENT_ID = "commentId";
 
 /// Likes
 const String ITEM_MY_LIKES = "mylikes";

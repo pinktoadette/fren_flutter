@@ -29,10 +29,10 @@ class CommentApi {
   Future<List<StoryComment>> getComments(
       int page, int limit, String storyId) async {
     try {
-      String url = '${baseUri}comment?storyId=$storyId';
+      String url = '${baseUri}comment?storyId=$storyId&limit=$limit&page=$page';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.get(url, data: {LIMIT: limit, "offset": page});
+      final response = await dio.get(url);
 
       List<StoryComment> comments = [];
       for (var res in response.data) {
