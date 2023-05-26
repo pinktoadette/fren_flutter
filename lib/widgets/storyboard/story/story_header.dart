@@ -16,12 +16,12 @@ class StoryHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double storyCoverWidth = 50;
     double padding = 20;
-
+    double width = MediaQuery.of(context).size.width;
     return InkWell(
-        onTap: () async {
-          _showEditStory(context);
-        },
-        child: Container(
+      onTap: () async {
+        _showEditStory(context);
+      },
+      child: Container(
           padding: EdgeInsets.only(left: padding, bottom: 5, right: padding),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -32,19 +32,22 @@ class StoryHeaderWidget extends StatelessWidget {
                   photoUrl: story.photoUrl ?? "",
                   title: story.title),
               const SizedBox(width: 10),
-              Column(
+              Flexible(
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(story.title,
                       overflow: TextOverflow.fade,
+                      maxLines: 1,
+                      softWrap: false,
                       style: Theme.of(context).textTheme.labelMedium),
                   Text("${story.pages?.length ?? 0} mods",
                       style: Theme.of(context).textTheme.labelSmall)
                 ],
-              )
+              ))
             ],
-          ),
-        ));
+          )),
+    );
   }
 
   void _showEditStory(BuildContext context) {

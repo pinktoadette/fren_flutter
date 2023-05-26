@@ -114,7 +114,7 @@ class StoryApi {
     }
   }
 
-  Future<Storyboard> updateStory(
+  Future<Story> updateStory(
       {required String storyId,
       required String title,
       String? photoUrl}) async {
@@ -124,14 +124,16 @@ class StoryApi {
       String url = '${baseUri}story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.put(url, data: {
+      await dio.put(url, data: {
         STORY_ID: storyId,
         STORY_TITLE: title,
         STORY_PHOTO_URL: photoUrl
       });
-      Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(story);
-      return story;
+      Story story = storyController.currentStory;
+      Story updatedStory =
+          story.copyWith(storyId: storyId, title: title, photoUrl: photoUrl);
+      storyController.updateStory(story: updatedStory);
+      return updatedStory;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

@@ -199,6 +199,12 @@ class _StoryEditState extends State<StoryEdit> {
           storyId: story.storyId,
           title: _titleController.text,
           photoUrl: photoUrl);
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("update_successful"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(

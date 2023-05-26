@@ -167,7 +167,7 @@ class _EditPageState extends State<EditPage> {
         }
         story.pages![moveToPage - 1].scripts!.add(moveScript);
 
-        storyboardController.updateScriptsToStory(story: story);
+        storyboardController.updateStory(story: story);
         break;
       default:
         break;
@@ -177,7 +177,7 @@ class _EditPageState extends State<EditPage> {
   void _updateSequence(List<Script> scripts) async {
     StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
     story.pages![pageIndex] = newPages;
-    storyboardController.updateScriptsToStory(story: story);
+    storyboardController.updateStory(story: story);
   }
 
   void _onPageChange(int index) {

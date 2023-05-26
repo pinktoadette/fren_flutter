@@ -206,6 +206,12 @@ class _StoryboardEditState extends State<StoryboardEdit> {
           storyboardId: storyboard.storyboardId,
           title: _titleController.text,
           photoUrl: photoUrl);
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("update_successful"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
