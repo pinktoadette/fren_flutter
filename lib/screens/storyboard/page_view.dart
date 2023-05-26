@@ -35,7 +35,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.8;
-  double headerHeight = 150;
+  double headerHeight = 140;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Story? story;
