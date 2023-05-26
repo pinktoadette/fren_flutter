@@ -391,9 +391,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     String lastMessageId = "";
     if (attachmentPreview != null) {
       String uri = await uploadFile(
-          file: file!,
-          category: UPLOAD_PATH_MESSAGE,
-          categoryId: attachmentPreview!.name);
+          file: file!, category: UPLOAD_PATH_MESSAGE, categoryId: createUUID());
       Map<String, dynamic> formatImgMessage =
           formatChatMessage(attachmentPreview, uri);
 

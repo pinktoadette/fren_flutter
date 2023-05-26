@@ -179,9 +179,10 @@ class _StoryEditState extends State<StoryEdit> {
     try {
       if (_uploadPath != null) {
         photoUrl = await uploadFile(
-            file: _uploadPath!,
-            category: UPLOAD_PATH_COLLECTION,
-            categoryId: story.storyId);
+          file: _uploadPath!,
+          category: UPLOAD_PATH_COLLECTION,
+          categoryId: story.storyId,
+        );
       }
 
       if (_titleController.text.isEmpty) {

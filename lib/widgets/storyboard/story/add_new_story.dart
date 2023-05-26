@@ -128,8 +128,7 @@ class _AddNewStoryState extends State<AddNewStory> {
         photoUrl = await uploadFile(
             file: _uploadPath!,
             category: UPLOAD_PATH_COLLECTION,
-            categoryId:
-                "${storyboardController.currentStoryboard.storyboardId}_$title");
+            categoryId: storyboardController.currentStoryboard.storyboardId);
       }
       await _storyApi.createStory(
           storyboardId: storyboardController.currentStoryboard.storyboardId,

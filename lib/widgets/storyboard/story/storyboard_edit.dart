@@ -186,9 +186,10 @@ class _StoryboardEditState extends State<StoryboardEdit> {
     try {
       if (_uploadPath != null) {
         photoUrl = await uploadFile(
-            file: _uploadPath!,
-            category: UPLOAD_PATH_BOARD,
-            categoryId: storyboard.storyboardId);
+          file: _uploadPath!,
+          category: UPLOAD_PATH_BOARD,
+          categoryId: storyboard.storyboardId,
+        );
       }
 
       if (_titleController.text.isEmpty) {
