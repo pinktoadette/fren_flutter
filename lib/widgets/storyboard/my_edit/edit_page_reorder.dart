@@ -115,7 +115,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text(_i18n.translate("DELETE")),
+                            title: Text(
+                              _i18n.translate("DELETE"),
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
                             content:
                                 Text(_i18n.translate("storybit_sure_delete")),
                             actions: <Widget>[

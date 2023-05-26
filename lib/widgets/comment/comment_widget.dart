@@ -1,4 +1,3 @@
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
@@ -55,7 +54,6 @@ class _CommentWidgetState extends State<CommentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double height = MediaQuery.of(context).size.height;
     _i18n = AppLocalizations.of(context);
 
     return PagedSliverList<int, dynamic>(
@@ -67,7 +65,39 @@ class _CommentWidgetState extends State<CommentWidget> {
           children: [Text(_i18n.translate("comment_none"))],
         );
       }, itemBuilder: (context, item, index) {
-        return _rowGenerator(item);
+        return Dismissible(
+          confirmDismiss: (DismissDirection direction) async {
+            return await showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(
+                    _i18n.translate("DELETE"),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  content: Text(_i18n.translate("comment_delete")),
+                  actions: <Widget>[
+                    OutlinedButton(
+                        onPressed: () => {
+                              Navigator.of(context).pop(false),
+                            },
+                        child: Text(_i18n.translate("CANCEL"))),
+                    const SizedBox(
+                      width: 50,
+                    ),
+                    ElevatedButton(
+                        onPressed: () => {
+                              Navigator.of(context).pop(true),
+                            },
+                        child: Text(_i18n.translate("DELETE"))),
+                  ],
+                );
+              },
+            );
+          },
+          child: _rowGenerator(item),
+          key: Key(item.commentId),
+        );
       }),
     );
   }
