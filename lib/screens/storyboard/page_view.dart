@@ -117,7 +117,7 @@ class _StoryPageViewState extends State<StoryPageView> {
               ..._showPageWidget(),
             ],
           )),
-          _commentSheet()
+          if (story?.status.name == StoryStatus.PUBLISHED.name) _commentSheet()
         ]));
   }
 
@@ -174,10 +174,13 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   List<Widget> _showPageWidget() {
     Size size = MediaQuery.of(context).size;
+    double height = story?.status.name == StoryStatus.PUBLISHED.name
+        ? size.height * bodyHeightPercent - headerHeight
+        : size.height - headerHeight - 20;
     if (story!.pages!.isEmpty) {
       return [
         SizedBox(
-            height: size.height * bodyHeightPercent - headerHeight,
+            height: height,
             width: size.width,
             child: PageView.builder(
                 controller: controller,
@@ -190,7 +193,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     return [
       SizedBox(
-          height: size.height * bodyHeightPercent - headerHeight,
+          height: height,
           width: size.width,
           child: PageView.builder(
             controller: controller,

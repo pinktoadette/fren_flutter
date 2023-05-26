@@ -82,12 +82,9 @@ class _ActivityTabState extends State<ActivityTab> {
           children: [
             SearchBarWidget(),
             SubscriptionCard(),
-            TimelineWidget(),
-            SizedBox(
-              height: 100,
-            )
           ],
-        ))
+        )),
+        const TimelineWidget(),
       ]));
     }
     // AppLogo()

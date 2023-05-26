@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
-import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
@@ -135,13 +134,11 @@ class StoryApi {
   }
 
   Future<Map<String, dynamic>> publishStory(String storyId) async {
-    final _timelineApi = TimelineApi();
     try {
       String url = '${baseUri}publish';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyId});
-      await _timelineApi.getTimeline();
       return response.data;
     } catch (error) {
       debugPrint(error.toString());

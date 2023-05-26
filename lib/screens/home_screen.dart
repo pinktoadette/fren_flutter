@@ -97,7 +97,6 @@ class _HomeScreenState extends State<HomeScreen> {
     chatController.initUser();
     chatController.onChatLoad();
     storyController.fetchMyStories();
-    timelineController.getNewTimelineItems();
   }
 
   /// get or create chatroom
