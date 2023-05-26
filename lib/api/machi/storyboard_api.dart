@@ -94,4 +94,28 @@ class StoryboardApi {
       throw error.toString();
     }
   }
+
+  Future<Storyboard> updateStoryboard(
+      {required String storyboardId,
+      required String title,
+      String? photoUrl}) async {
+    StoryboardController storyController = Get.find(tag: 'storyboard');
+    try {
+      String url = '${baseUri}board';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.put(url, data: {
+        STORYBOARD_ID: storyboardId,
+        STORYBOARD_TITLE: title,
+        STORYBOARD_PHOTO_URL: photoUrl ?? "",
+      });
+
+      Storyboard story = Storyboard.fromJson(response.data);
+      storyController.updateStoryboard(story);
+      return story;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }

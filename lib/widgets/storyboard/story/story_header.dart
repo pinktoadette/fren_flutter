@@ -4,7 +4,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/storyboard/edit_story.dart';
+import 'package:machi_app/widgets/storyboard/story/story_edit.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/story_info.dart';
 
@@ -69,7 +69,7 @@ class StoryHeaderWidget extends StatelessWidget {
                 builder: (context, scrollController) => SingleChildScrollView(
                     controller: scrollController,
                     child: showInfo == false
-                        ? const EditStory()
+                        ? const StoryEdit()
                         : const StoryInfo()),
               ),
             ));

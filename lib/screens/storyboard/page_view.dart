@@ -8,7 +8,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/screens/storyboard/add_new_story.dart';
+import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';

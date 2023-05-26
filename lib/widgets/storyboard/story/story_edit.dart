@@ -1,23 +1,28 @@
 import 'dart:io';
 
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:get/get.dart';
 
-class EditStory extends StatefulWidget {
-  const EditStory({Key? key}) : super(key: key);
+class StoryEdit extends StatefulWidget {
+  const StoryEdit({Key? key}) : super(key: key);
 
   @override
-  _EditStoryState createState() => _EditStoryState();
+  _StoryEditState createState() => _StoryEditState();
 }
 
-class _EditStoryState extends State<EditStory> {
+class _StoryEditState extends State<StoryEdit> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-
+  final _storyApi = StoryApi();
   File? _uploadPath;
   final _titleController = TextEditingController();
   bool isLoading = false;
@@ -151,15 +156,60 @@ class _EditStoryState extends State<EditStory> {
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 const Spacer(),
-                ElevatedButton(
-                    onPressed: () async {},
-                    child: Text(
-                      _i18n.translate("SAVE"),
-                      style: const TextStyle(fontSize: 14),
-                    )),
+                ElevatedButton.icon(
+                    icon: isLoading == true
+                        ? loadingButton(size: 16)
+                        : const SizedBox.shrink(),
+                    onPressed: () {
+                      _saveStory();
+                    },
+                    label: Text(_i18n.translate("SAVE")))
               ],
             )
           ])),
     );
+  }
+
+  void _saveStory() async {
+    setState(() {
+      isLoading = true;
+    });
+    String photoUrl = '';
+    Story story = storyboardController.currentStory;
+    try {
+      if (_uploadPath != null) {
+        photoUrl = await uploadFile(
+            file: _uploadPath!,
+            category: UPLOAD_PATH_COLLECTION,
+            categoryId: story.storyId);
+      }
+
+      if (_titleController.text.isEmpty) {
+        Get.snackbar(
+          _i18n.translate("error"),
+          _i18n.translate("validation_1_character"),
+          snackPosition: SnackPosition.BOTTOM,
+          backgroundColor: APP_ERROR,
+        );
+        return;
+      }
+
+      await _storyApi.updateStory(
+          storyId: story.storyId,
+          title: _titleController.text,
+          photoUrl: photoUrl);
+    } catch (err) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 }

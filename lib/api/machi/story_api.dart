@@ -115,15 +115,20 @@ class StoryApi {
   }
 
   Future<Storyboard> updateStory(
-      String storyId, Map<String, dynamic> titleCatUpdate) async {
+      {required String storyId,
+      required String title,
+      String? photoUrl}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
       String url = '${baseUri}story';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response =
-          await dio.put(url, data: {...titleCatUpdate, STORY_ID: storyId});
+      final response = await dio.put(url, data: {
+        STORY_ID: storyId,
+        STORY_TITLE: title,
+        STORY_PHOTO_URL: photoUrl
+      });
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(story);
       return story;

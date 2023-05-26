@@ -3,7 +3,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/screens/storyboard/add_new_story.dart';
+import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
 import 'package:get/get.dart';

@@ -123,11 +123,14 @@ class _AddNewStoryState extends State<AddNewStory> {
       isLoading = true;
     });
     try {
-      String photoUrl = await uploadFile(
-          file: _uploadPath!,
-          category: UPLOAD_PATH_COLLECTION,
-          categoryId:
-              "${storyboardController.currentStoryboard.storyboardId}_$title");
+      String photoUrl = '';
+      if (_uploadPath != null) {
+        photoUrl = await uploadFile(
+            file: _uploadPath!,
+            category: UPLOAD_PATH_COLLECTION,
+            categoryId:
+                "${storyboardController.currentStoryboard.storyboardId}_$title");
+      }
       await _storyApi.createStory(
           storyboardId: storyboardController.currentStoryboard.storyboardId,
           title: title,
