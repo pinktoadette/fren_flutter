@@ -74,7 +74,7 @@ class _CommentWidgetState extends State<CommentWidget> {
 
   Widget _rowGenerator(StoryComment item) {
     return Padding(
-        padding: const EdgeInsets.all(15),
+        padding: const EdgeInsets.only(left: 15, right: 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -102,11 +102,5 @@ class _CommentWidgetState extends State<CommentWidget> {
         ));
   }
 
-  void _onLikePressed(String commentId, bool like) {
-    // String response = await _timelineApi.likeStoryMachi(
-    //     "comment", commentId, like == true ? 1 : 0);
-    // if (response == "OK") {
-
-    // }
-  }
+  void _onLikePressed(String commentId, bool like) {}
 }

@@ -68,13 +68,21 @@ class _StoryEditState extends State<StoryEdit> {
               child: GestureDetector(
             child: Stack(
               children: [
-                StoryCover(
-                  width: size.width * 0.75,
-                  height: size.width * 0.75,
-                  photoUrl: storyboardController.currentStory.photoUrl ?? "",
-                  file: _uploadPath,
-                  title: storyboardController.currentStory.title,
-                ),
+                if (_uploadPath != null)
+                  StoryCover(
+                    width: size.width * 0.75,
+                    height: size.width * 0.75,
+                    photoUrl: "",
+                    file: _uploadPath,
+                    title: storyboardController.currentStory.title,
+                  ),
+                if (_uploadPath == null)
+                  StoryCover(
+                    width: size.width * 0.75,
+                    height: size.width * 0.75,
+                    photoUrl: storyboardController.currentStory.photoUrl ?? "",
+                    title: storyboardController.currentStory.title,
+                  ),
                 Positioned(
                   child: CircleAvatar(
                     radius: 12,

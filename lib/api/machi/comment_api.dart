@@ -11,7 +11,8 @@ class CommentApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<String> postComment(String storyId, String comment) async {
+  Future<Map<String, dynamic>> postComment(
+      {required String storyId, required String comment}) async {
     try {
       String url = '${baseUri}comment';
       debugPrint("Requesting URL $url");

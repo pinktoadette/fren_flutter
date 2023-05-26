@@ -1,17 +1,24 @@
+import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/api/machi/comment_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class PostCommentWidget extends StatefulWidget {
-  const PostCommentWidget({Key? key}) : super(key: key);
+  final Story story;
+  const PostCommentWidget({Key? key, required this.story}) : super(key: key);
 
   @override
   _PostCommentWidgetState createState() => _PostCommentWidgetState();
 }
 
 class _PostCommentWidgetState extends State<PostCommentWidget> {
-  final _commentController = TextEditingController();
+  late AppLocalizations _i18n;
 
+  final _commentController = TextEditingController();
+  final _commentApi = CommentApi();
   @override
   void initState() {
     super.initState();
@@ -19,7 +26,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return Container(
         padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
@@ -42,7 +49,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             fillColor: Colors.green,
             suffixIcon: IconButton(
               icon: const Icon(Iconsax.send_1),
-              onPressed: () {},
+              onPressed: () {
+                _postComment();
+              },
             ),
           ),
           validator: (value) {
@@ -51,5 +60,26 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             }
           },
         ));
+  }
+
+  void _postComment() async {
+    try {
+      await _commentApi.postComment(
+          storyId: widget.story.storyId, comment: _commentController.text);
+
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("Posted"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (e) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 }

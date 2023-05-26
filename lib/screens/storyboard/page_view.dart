@@ -164,8 +164,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   )),
                                   CommentWidget(story: story!),
                                 ]),
-                            const Positioned(
-                                bottom: 0, child: PostCommentWidget())
+                            Positioned(
+                                bottom: 0,
+                                child: PostCommentWidget(story: story!))
                           ]))));
             });
       },

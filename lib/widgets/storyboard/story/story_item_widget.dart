@@ -91,7 +91,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                                   height: 15,
                                 ),
                                 Text(
-                                    "update ${formatDate(widget.story.updatedAt!)}",
+                                    "update ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
                                     style: const TextStyle(fontSize: 10)),
                                 Text(
                                   widget.story.title,
