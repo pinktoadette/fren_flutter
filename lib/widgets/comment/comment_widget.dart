@@ -60,8 +60,9 @@ class _CommentWidgetState extends State<CommentWidget> {
       pagingController: _pagingController,
       builderDelegate:
           PagedChildBuilderDelegate<dynamic>(noItemsFoundIndicatorBuilder: (_) {
-        return Center(
-          child: Text(_i18n.translate("comment_none")),
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Text(_i18n.translate("comment_none"))],
         );
       }, itemBuilder: (context, item, index) {
         return _rowGenerator(item);

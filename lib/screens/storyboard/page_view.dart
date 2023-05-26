@@ -34,7 +34,8 @@ class _StoryPageViewState extends State<StoryPageView> {
   final controller = PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
-  double bodyHeightPercent = 0.65;
+  double bodyHeightPercent = 0.8;
+  double headerHeight = 150;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Story? story;
@@ -123,8 +124,8 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   Widget _commentSheet() {
     return DraggableScrollableSheet(
-      initialChildSize: 0.2,
-      minChildSize: 0.15,
+      initialChildSize: 1 - bodyHeightPercent,
+      minChildSize: 1 - bodyHeightPercent,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
         if (controller.hasClients) {}
@@ -135,14 +136,13 @@ class _StoryPageViewState extends State<StoryPageView> {
                   decoration: BoxDecoration(
                     boxShadow: [
                       BoxShadow(
-                        color: Theme.of(context)
-                            .colorScheme
-                            .tertiary
-                            .withOpacity(0.5)
-                            .withAlpha(50),
-                        spreadRadius: 5,
-                        blurRadius: 15,
-                      ),
+                          color: Theme.of(context)
+                              .colorScheme
+                              .tertiary
+                              .withOpacity(0.5)
+                              .withAlpha(50),
+                          blurRadius: 15,
+                          offset: const Offset(0, -10)),
                     ],
                   ),
                   child: ClipRRect(
@@ -151,21 +151,23 @@ class _StoryPageViewState extends State<StoryPageView> {
                           topRight: Radius.circular(24)),
                       child: Container(
                           color: Theme.of(context).colorScheme.background,
-                          child: CustomScrollView(
-                              controller: scrollController,
-                              slivers: [
-                                SliverToBoxAdapter(
-                                    child: Padding(
-                                  padding: const EdgeInsets.all(10),
-                                  child: Text("Comment",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .headlineSmall),
-                                )),
-                                CommentWidget(story: story!),
-                                // SliverToBoxAdapter(
-                                //     child: PostCommentWidget(story: story!))
-                              ]))));
+                          child: Stack(children: [
+                            CustomScrollView(
+                                controller: scrollController,
+                                slivers: [
+                                  SliverToBoxAdapter(
+                                      child: Padding(
+                                    padding: const EdgeInsets.all(10),
+                                    child: Text(_i18n.translate("comments"),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .headlineSmall),
+                                  )),
+                                  CommentWidget(story: story!),
+                                ]),
+                            const Positioned(
+                                bottom: 0, child: PostCommentWidget())
+                          ]))));
             });
       },
     );
@@ -176,7 +178,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     if (story!.pages!.isEmpty) {
       return [
         SizedBox(
-            height: size.height * bodyHeightPercent,
+            height: size.height * bodyHeightPercent - headerHeight,
             width: size.width,
             child: PageView.builder(
                 controller: controller,
@@ -189,7 +191,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     return [
       SizedBox(
-          height: size.height * bodyHeightPercent + 40,
+          height: size.height * bodyHeightPercent - headerHeight,
           width: size.width,
           child: PageView.builder(
             controller: controller,

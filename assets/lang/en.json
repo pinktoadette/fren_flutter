@@ -337,7 +337,11 @@
   "follow": "Follow",
   "machi_made": "Machi Made",
 
+  "comments": "Comments",
   "comment_none": "No comments. \nBe the first.",
+  "comment_reply": "Reply to Storycast",
+  "comment_sent_success": "Reply sent",
+  "comment_leave": "Leave a comment",
 
   "story_share_message": "Create Storycast",
   "story": "Storycast",
@@ -356,8 +360,6 @@
   "story_added_info": "Save message bits to a board",
   "story_edits_added": "Added bits to collections",
   "story_add_double_tap": "Double Tap Message to Add Storycast",
-  "story_comment": "Reply to Storycast",
-  "story_comment_sucess": "Reply sent",
   "story_enter_title": "Enter a title",
   "story_enter_subtitle": "Enter a subtitle",
   "add_to_new_storyboard": "Add bits to new board",
