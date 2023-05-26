@@ -32,6 +32,7 @@
   "error_launch_url": "Unable to launch URL",
   "validation_warning": "Validation Error",
   "validation_3_characters": "At least 3 character is needed",
+  "validation_1_character": "At least write something",
 
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",

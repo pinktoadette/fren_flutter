@@ -33,33 +33,6 @@ class StoryUser {
   }
 }
 
-class StoryComment {
-  final String comment;
-  final int createdAt;
-  final int updatedAt;
-  final StoryUser user;
-  final ShortStoryboard shortStory;
-
-  StoryComment({
-    required this.comment,
-    required this.createdAt,
-    required this.updatedAt,
-    required this.user,
-    required this.shortStory,
-  });
-
-  factory StoryComment.fromDocument(Map<String, dynamic> doc) {
-    StoryUser user = StoryUser.fromDocument(doc["user"]);
-    ShortStoryboard story = ShortStoryboard.fromDocument(doc["storyboard"]);
-    return StoryComment(
-        comment: doc[STORY_COMMENT],
-        user: user,
-        shortStory: story,
-        createdAt: doc[CREATED_AT],
-        updatedAt: doc[UPDATED_AT]);
-  }
-}
-
 class Storyboard {
   final String title;
   final String storyboardId;

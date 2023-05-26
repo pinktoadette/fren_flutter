@@ -15,35 +15,36 @@ class StoryHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double storyCoverWidth = 50;
-    double padding = 15;
+    double padding = 20;
 
     return InkWell(
-      onTap: () async {
-        _showEditStory(context);
-      },
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          StoryCover(
-              width: storyCoverWidth,
-              height: storyCoverWidth,
-              photoUrl: story.photoUrl ?? "",
-              title: story.title),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+        onTap: () async {
+          _showEditStory(context);
+        },
+        child: Container(
+          padding: EdgeInsets.only(left: padding, bottom: 5, right: padding),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Text(story.title,
-                  overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.bodySmall),
-              Text(story.subtitle,
-                  style: Theme.of(context).textTheme.displaySmall),
-              Text("${story.pages?.length ?? 0} mods",
-                  style: Theme.of(context).textTheme.labelSmall)
+              StoryCover(
+                  width: storyCoverWidth,
+                  height: storyCoverWidth,
+                  photoUrl: story.photoUrl ?? "",
+                  title: story.title),
+              const SizedBox(width: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(story.title,
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.labelMedium),
+                  Text("${story.pages?.length ?? 0} mods",
+                      style: Theme.of(context).textTheme.labelSmall)
+                ],
+              )
             ],
-          )
-        ],
-      ),
-    );
+          ),
+        ));
   }
 
   void _showEditStory(BuildContext context) {

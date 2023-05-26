@@ -2,6 +2,29 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
+class StoryComment {
+  final String comment;
+  final int createdAt;
+  final int updatedAt;
+  final StoryUser user;
+
+  StoryComment({
+    required this.comment,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.user,
+  });
+
+  factory StoryComment.fromDocument(Map<String, dynamic> doc) {
+    StoryUser user = StoryUser.fromDocument(doc["user"]);
+    return StoryComment(
+        comment: doc[STORY_COMMENT],
+        user: user,
+        createdAt: doc[CREATED_AT],
+        updatedAt: doc[UPDATED_AT]);
+  }
+}
+
 class StoryPages {
   final List<Script>? scripts;
   final int? pageNum;

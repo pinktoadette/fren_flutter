@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -11,13 +9,14 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/screens/storyboard/add_new_story.dart';
+import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
+import 'package:machi_app/widgets/comment/comment_widget.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 /// Need to call pages since storyboard
 /// did not query this in order to increase speed
@@ -35,7 +34,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   final controller = PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
-  double itemHeight = 120;
+  double bodyHeightPercent = 0.65;
   final _storyApi = StoryApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Story? story;
@@ -74,7 +73,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     if (story == null && pages.isEmpty) {
       return Scaffold(
@@ -89,103 +88,95 @@ class _StoryPageViewState extends State<StoryPageView> {
           body: NoData(text: _i18n.translate("loading")));
     }
     return Scaffold(
-        body:
-            CustomScrollView(physics: const BouncingScrollPhysics(), slivers: [
-      SliverAppBar(
-        pinned: true,
-        snap: false,
-        floating: false,
-        leading: const BackButton(),
-        expandedHeight: 180.0,
-        flexibleSpace: LayoutBuilder(builder: (context, constraints) {
-          bool isAppBarExpanded = constraints.maxHeight >
-              kToolbarHeight + MediaQuery.of(context).padding.top;
-
-          return FlexibleSpaceBar(
-              titlePadding: EdgeInsetsDirectional.only(
-                  start: isAppBarExpanded ? 0.0 : 50.0,
-                  bottom: 16.0,
-                  top: isAppBarExpanded ? 100 : 0),
-              title: isAppBarExpanded
-                  ? Row(children: [
-                      StoryHeaderWidget(story: story!),
-                    ])
-                  : Text(
-                      story!.title,
-                      overflow: TextOverflow.fade,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ));
-        }),
-      ),
-      SliverToBoxAdapter(
-          child: Stack(children: [
-        SingleChildScrollView(
-            physics: const ClampingScrollPhysics(),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                ..._showPageWidget(),
-                const SizedBox(
-                  height: 10,
-                )
-              ],
-            )),
-      ]))
-    ]));
-
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          widget.isPreview == true
-              ? _i18n.translate("storyboard_preview")
-              : _i18n.translate("story_collection"),
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        actions: [
-          if (widget.isPreview == false) _unpublishedTools(),
-          if (widget.isPreview == true)
-            Container(
-                padding: const EdgeInsets.all(10.0),
-                child: ElevatedButton(
-                    onPressed: () {
-                      Get.to(() => PublishStory(story: story!));
-                    },
-                    child: Text(_i18n.translate("publish"))))
-        ],
-      ),
-      body: Stack(children: [
-        SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            StoryHeaderWidget(story: story!),
-            ..._showPageWidget(),
-            const SizedBox(
-              height: 10,
-            )
+        appBar: AppBar(
+          title: Text(
+            widget.isPreview == true
+                ? _i18n.translate("storyboard_preview")
+                : _i18n.translate("story_collection"),
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+          actions: [
+            if (widget.isPreview == false) _unpublishedTools(),
+            if (widget.isPreview == true)
+              Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: ElevatedButton(
+                      onPressed: () {
+                        Get.to(() => PublishStory(story: story!));
+                      },
+                      child: Text(_i18n.translate("publish"))))
           ],
-        )),
-      ]),
-      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndFloat,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Add your onPressed code here!
-        },
-        backgroundColor: Colors.white,
-        child: const Icon(Iconsax.arrow_down),
-      ),
+        ),
+        body: Stack(children: [
+          SingleChildScrollView(
+              child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              StoryHeaderWidget(story: story!),
+              ..._showPageWidget(),
+            ],
+          )),
+          _commentSheet()
+        ]));
+  }
+
+  Widget _commentSheet() {
+    return DraggableScrollableSheet(
+      initialChildSize: 0.2,
+      minChildSize: 0.15,
+      expand: true,
+      builder: (BuildContext context, ScrollController scrollController) {
+        if (controller.hasClients) {}
+        return AnimatedBuilder(
+            animation: controller,
+            builder: (context, child) {
+              return Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context)
+                            .colorScheme
+                            .tertiary
+                            .withOpacity(0.5)
+                            .withAlpha(50),
+                        spreadRadius: 5,
+                        blurRadius: 15,
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24)),
+                      child: Container(
+                          color: Theme.of(context).colorScheme.background,
+                          child: CustomScrollView(
+                              controller: scrollController,
+                              slivers: [
+                                SliverToBoxAdapter(
+                                    child: Padding(
+                                  padding: const EdgeInsets.all(10),
+                                  child: Text("Comment",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .headlineSmall),
+                                )),
+                                CommentWidget(story: story!),
+                                // SliverToBoxAdapter(
+                                //     child: PostCommentWidget(story: story!))
+                              ]))));
+            });
+      },
     );
   }
 
   List<Widget> _showPageWidget() {
     Size size = MediaQuery.of(context).size;
-    double headerHeight = 200;
     if (story!.pages!.isEmpty) {
       return [
         SizedBox(
-            height: size.height - headerHeight,
+            height: size.height * bodyHeightPercent,
             width: size.width,
             child: PageView.builder(
                 controller: controller,
@@ -198,7 +189,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     return [
       SizedBox(
-          height: size.height - headerHeight,
+          height: size.height * bodyHeightPercent + 40,
           width: size.width,
           child: PageView.builder(
             controller: controller,
@@ -255,11 +246,6 @@ class _StoryPageViewState extends State<StoryPageView> {
                 _i18n.translate("new_story_collection"),
                 style: Theme.of(context).textTheme.labelSmall,
               )),
-        IconButton(
-            onPressed: () {
-              _createEmail();
-            },
-            icon: const Icon(Iconsax.sms_edit)),
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
               onPressed: () async {
@@ -282,36 +268,5 @@ class _StoryPageViewState extends State<StoryPageView> {
               ))
       ],
     );
-  }
-
-  void _createEmail() async {
-    Story story = storyboardController.currentStory;
-    String body = story.pages!.map((page) {
-      return page.scripts!.map((script) {
-        if (script.type == "text") {
-          return script.text;
-        }
-      }).join(" ");
-    }).join(" ");
-
-    final Uri emailLaunchUri = Uri(
-      scheme: 'mailto',
-      path: '',
-      query: encodeQueryParameters(<String, String>{
-        'subject': story.title,
-        'body': body + "\n\n\n\n mymachi.app"
-      }),
-    );
-
-    if (!await launchUrl(emailLaunchUri)) {
-      throw Exception('Could not email');
-    }
-  }
-
-  String? encodeQueryParameters(Map<String, String> params) {
-    return params.entries
-        .map((MapEntry<String, String> e) =>
-            '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
-        .join('&');
   }
 }

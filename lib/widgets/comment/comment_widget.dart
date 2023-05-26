@@ -1,18 +1,18 @@
 import 'package:machi_app/api/machi/comment_api.dart';
-import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class ListComments extends StatefulWidget {
-  final String storyboardId;
-  const ListComments({Key? key, required this.storyboardId}) : super(key: key);
+class CommentWidget extends StatefulWidget {
+  final Story story;
+  const CommentWidget({Key? key, required this.story}) : super(key: key);
 
   @override
-  _ListCommentsState createState() => _ListCommentsState();
+  _CommentWidgetState createState() => _CommentWidgetState();
 }
 
-class _ListCommentsState extends State<ListComments> {
+class _CommentWidgetState extends State<CommentWidget> {
   final _commentApi = CommentApi();
   static const _pageSize = 20;
 
@@ -36,7 +36,7 @@ class _ListCommentsState extends State<ListComments> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       List<StoryComment> newItems = await _commentApi.getComments(
-          pageKey, _pageSize, widget.storyboardId);
+          pageKey, _pageSize, widget.story.storyId);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -52,20 +52,13 @@ class _ListCommentsState extends State<ListComments> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-
-    return SizedBox(
-        height: height * 0.75,
-        child: PagedListView<int, dynamic>(
-          pagingController: _pagingController,
-          builderDelegate: PagedChildBuilderDelegate<dynamic>(
-            animateTransitions: true,
-            // [transitionDuration] has a default value of 250 milliseconds.
-            transitionDuration: const Duration(milliseconds: 500),
-            itemBuilder: (context, item, index) {
-              return _rowGenerator(item);
-            },
-          ),
-        ));
+    return PagedSliverList<int, dynamic>(
+      pagingController: _pagingController,
+      builderDelegate: PagedChildBuilderDelegate<dynamic>(
+          itemBuilder: (context, item, index) {
+        return _rowGenerator(item);
+      }),
+    );
   }
 
   Widget _rowGenerator(StoryComment item) {

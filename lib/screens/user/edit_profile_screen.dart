@@ -1,3 +1,4 @@
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -6,8 +7,6 @@ import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:scoped_model/scoped_model.dart';
-
-import '../../constants/constants.dart';
 
 class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
@@ -121,29 +120,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     },
                   ),
                 ),
-
-                /// interest
-                // if (_interestList.isNotEmpty)
-                //   SizedBox(
-                //       child: SingleChildScrollView(
-                //     child: ChipsChoice<String>.multiple(
-                //       value: _selectedInterest,
-                //       onChanged: (val) => {
-                //         setState(() {
-                //           _selectedInterest = val;
-                //         })
-                //       },
-                //       choiceItems: C2Choice.listFrom<String, String>(
-                //         source: _interestList,
-                //         value: (i, v) => v,
-                //         label: (i, v) => v,
-                //         tooltip: (i, v) => v,
-                //       ),
-                //       choiceCheckmark: true,
-                //       choiceStyle: C2ChipStyle.outlined(),
-                //       wrapped: true,
-                //     ),
-                //   )),
               ],
             );
           }),
