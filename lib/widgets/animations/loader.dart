@@ -11,8 +11,8 @@ class Frankloader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Lottie.asset(
-        'assets/lottie/loader.json',
-        width: height ?? 200,
+        'assets/lottie/frankie.json',
+        width: height ?? 500,
         height: width ?? 200,
       ),
     );

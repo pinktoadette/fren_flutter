@@ -145,7 +145,7 @@ class _ExpandableFabState extends State<ExpandableFab>
             backgroundColor: Colors.white,
             onPressed: _toggle,
             child:
-                Image.asset('assets/images/frank1.png', width: 30, height: 30),
+                Image.asset('assets/images/frankie.png', width: 30, height: 30),
           ),
         ),
       ),

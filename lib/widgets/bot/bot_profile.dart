@@ -92,7 +92,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
                     ))),
           ),
           isLoading == true
-              ? const Frankloader(height: 50, width: 50)
+              ? const Frankloader(height: 150, width: 100)
               : const SizedBox(height: 50),
           // if (widget.room?.chatroomId == null) _showPricing(),
           if (widget.showPurchase == true)
