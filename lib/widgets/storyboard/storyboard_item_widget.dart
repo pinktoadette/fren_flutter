@@ -44,6 +44,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     double padding = 15;
     double playWidth =
         storyboard.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
+    String title = storyboard.title;
+    String photoUrl = storyboard.photoUrl ?? "";
+    if (storyboard.story!.length == 1) {
+      title = storyboard.story![0].title;
+      photoUrl = storyboard.story![0].photoUrl ?? "";
+    }
+
     return Card(
         elevation: 1,
         semanticContainer: true,
@@ -64,8 +71,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                         padding: EdgeInsets.all(padding),
                         child: StoryCover(
                             width: storyCoverWidth,
-                            photoUrl: storyboard.photoUrl,
-                            title: storyboard.title)),
+                            photoUrl: photoUrl,
+                            title: title)),
                     SizedBox(
                         width: width -
                             (storyCoverWidth + playWidth + padding * 3.2),
