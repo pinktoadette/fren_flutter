@@ -27,7 +27,7 @@ class DiscoverCard extends StatelessWidget {
 
     return Card(
       child: SizedBox(
-        height: screenHeight - 250,
+        height: screenHeight - 200,
         width: screenWidth,
         child: Container(
             padding: const EdgeInsets.all(40),
@@ -41,6 +41,7 @@ class DiscoverCard extends StatelessWidget {
                   Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      const SizedBox(height: 100),
                       const Frankloader(),
                       Text(
                         title,

@@ -2,6 +2,8 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:machi_app/widgets/show_scaffold_msg.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
@@ -79,10 +81,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
       pickerTheme: DateTimePickerTheme(
         showTitle: true,
         confirm: Text(_i18n.translate('DONE'),
-            style: TextStyle(
+            style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 16.0,
-                color: Theme.of(context).primaryColor)),
+                color: Colors.black)),
       ),
       minDateTime: DateTime(1920, 1, 1),
       maxDateTime: DateTime.now(),
@@ -113,60 +115,97 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       key: _scaffoldKey,
       body: ScopedModelDescendant<UserModel>(
           builder: (context, child, userModel) {
         /// Check loading status
         return SingleChildScrollView(
-          padding: const EdgeInsets.only(top: 50),
           child: Column(
             children: <Widget>[
-              const SizedBox(height: 50),
-              Text(_i18n.translate('sign_up'),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.left),
-              Padding(
-                padding: const EdgeInsets.all(25),
-
-                /// Form
+              SizedBox(
+                  height: height * 0.5,
+                  child: Center(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(_i18n.translate('sign_up'),
+                            style: Theme.of(context).textTheme.headlineMedium,
+                            textAlign: TextAlign.left),
+                        const SizedBox(height: 20),
+                        Image.asset(
+                          "assets/images/logo.png",
+                          width: 200,
+                        ),
+                      ],
+                    ),
+                  )),
+              Card(
+                  child: Container(
+                color: Colors.white,
+                height: height * 0.5,
+                padding: const EdgeInsets.all(20),
                 child: Form(
                   key: _formKey,
                   child: Column(
                     children: <Widget>[
+                      const SizedBox(height: 20),
+
                       /// FullName field
-                      TextFormField(
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                            labelText: _i18n.translate("fullname"),
-                            hintText: _i18n.translate("name_hint"),
-                            hintStyle: const TextStyle(color: Colors.grey),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            prefixIcon: const Padding(
-                              padding: EdgeInsets.all(12.0),
-                              child: Icon(Iconsax.user),
-                            )),
-                        validator: (name) {
-                          // Basic validation
-                          if (name?.isEmpty ?? false) {
-                            return _i18n.translate("enter_your_fullname");
-                          }
-                          return null;
-                        },
-                      ),
+                      Card(
+                          color: Colors.white,
+                          clipBehavior: Clip.antiAlias,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                              side: const BorderSide(color: Colors.grey)),
+                          child: TextFormField(
+                            cursorColor: Colors.black,
+                            style: const TextStyle(
+                              color: Colors.black,
+                            ),
+                            textCapitalization: TextCapitalization.sentences,
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                                labelText: _i18n.translate("fullname"),
+                                hintText: _i18n.translate("name_hint"),
+                                hintStyle: const TextStyle(color: Colors.grey),
+                                floatingLabelBehavior:
+                                    FloatingLabelBehavior.always,
+                                prefixIcon: const Padding(
+                                  padding: EdgeInsets.all(12.0),
+                                  child: Icon(
+                                    Iconsax.user,
+                                    color: Colors.grey,
+                                  ),
+                                )),
+                            validator: (name) {
+                              // Basic validation
+                              if (name?.isEmpty ?? false) {
+                                return _i18n.translate("enter_your_fullname");
+                              }
+                              return null;
+                            },
+                          )),
                       const SizedBox(height: 20),
 
                       /// Birthday card
                       Card(
+                          color: Colors.white,
                           clipBehavior: Clip.antiAlias,
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                               side: const BorderSide(color: Colors.grey)),
                           child: ListTile(
-                            leading: const Icon(Iconsax.cake),
+                            leading: const Icon(
+                              Iconsax.cake,
+                              color: Colors.grey,
+                            ),
                             title: Text(_birthday!,
-                                style: Theme.of(context).textTheme.labelMedium),
+                                style: const TextStyle(
+                                  color: Colors.grey,
+                                )),
                             trailing: const Icon(Icons.arrow_drop_down),
                             onTap: () {
                               FocusScope.of(context).unfocus();
@@ -176,9 +215,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             },
                           )),
 
-                      const SizedBox(height: 20),
-                      if (userModel.isLoading)
-                        const CircularProgressIndicator(),
+                      const Spacer(),
+                      if (userModel.isLoading) JumpingDots(color: Colors.black),
                       SizedBox(
                           width: double.maxFinite,
                           child: ElevatedButton(
@@ -199,7 +237,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ],
                   ),
                 ),
-              ),
+              )),
             ],
           ),
         );
@@ -275,7 +313,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
               GestureDetector(
                   onTap: () => _setAgreeTerms(!_agreeTerms),
                   child: Text(_i18n.translate("i_agree_with"),
-                      style: const TextStyle(fontSize: 10))),
+                      style:
+                          const TextStyle(fontSize: 10, color: Colors.black))),
               // Terms of Service and Privacy Policy
               TermsOfServiceRow(color: Colors.black),
             ],

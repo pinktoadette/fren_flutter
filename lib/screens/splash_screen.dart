@@ -72,13 +72,18 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: Colors.white),
+            const SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
-      body: const Center(
-        child: Frankloader(),
+      body: Center(
+        child: Image.asset(
+          "assets/images/logo.png",
+          width: screenWidth * 0.3,
+        ),
       ),
     );
   }

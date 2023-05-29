@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/services.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
@@ -9,7 +10,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'first_time/on_boarding_screen.dart';
@@ -46,8 +46,11 @@ class _SignInScreenState extends State<SignInScreen> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle:
+            const SystemUiOverlayStyle(statusBarColor: Colors.black),
+      ),
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
       body: Container(
         alignment: Alignment.topCenter,
         child: SizedBox(
@@ -56,14 +59,11 @@ class _SignInScreenState extends State<SignInScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               SizedBox(height: screenHeight * 0.15),
-              const Frankloader(),
-              Image.asset("assets/images/machi.png"),
+              Image.asset("assets/images/logo_machi.png"),
+              const SizedBox(height: 40),
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.displayMedium),
-              const SizedBox(
-                height: 20,
-              ),
+                  style: Theme.of(context).textTheme.labelSmall),
               const Spacer(),
               Expanded(
                 child: Align(
@@ -81,7 +81,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           SizedBox(
                             width: 50,
                             child: JumpingDots(
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                         SignInButton(Buttons.Google,
@@ -118,13 +118,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 isLoading = false;
                               }));
                         }),
-                        SignInButton(
-                          Buttons.Apple,
-                          onPressed: () {},
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20.0),
-                          ),
-                        ),
                       ],
                     ),
                   ),

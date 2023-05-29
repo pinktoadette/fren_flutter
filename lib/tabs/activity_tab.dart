@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -53,6 +55,7 @@ class _ActivityTabState extends State<ActivityTab> {
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     if (_isInitiatedFrank == true) {
       return Scaffold(
           body: CustomScrollView(slivers: [
@@ -87,11 +90,12 @@ class _ActivityTabState extends State<ActivityTab> {
         const TimelineWidget(),
       ]));
     }
-    // AppLogo()
     return Scaffold(
-        body: CustomScrollView(slivers: [
-      FrostedAppBar(
-          title: const AppLogo(),
+        appBar: AppBar(
+          title: Image.asset(
+            "assets/images/logo_white.png",
+            width: max(150, width * 0.3),
+          ),
           actions: [
             Padding(
                 padding: const EdgeInsets.only(right: 10),
@@ -109,22 +113,19 @@ class _ActivityTabState extends State<ActivityTab> {
                   ],
                 )),
           ],
-          showLeading: true),
-      Column(
-        children: [
+        ),
+        body: Column(children: [
           SingleChildScrollView(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 // ActivityWidget()
-                if (_currentStep < _listFeatures.length) _onCardClick(),
+                if (_currentStep < _listFeatures.length) _onCardClick()
               ],
             ),
           ),
           const Spacer(),
-        ],
-      )
-    ]));
+        ]));
   }
 
   Widget _onCardClick() {

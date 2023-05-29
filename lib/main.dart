@@ -6,7 +6,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/models/app_model.dart';
 import 'package:machi_app/screens/splash_screen.dart';
@@ -76,38 +75,39 @@ class MyApp extends StatelessWidget {
       child: ScopedModel<UserModel>(
         model: UserModel(),
         child: GetMaterialApp(
-            navigatorKey: navigatorKey,
-            scaffoldMessengerKey: scaffoldMessengerKey,
-            title: APP_NAME,
-            debugShowCheckedModeBanner: false,
+          navigatorKey: navigatorKey,
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          title: APP_NAME,
+          debugShowCheckedModeBanner: false,
 
-            /// Setup translations
-            localizationsDelegates: const [
-              // AppLocalizations is where the lang translations is loaded
-              AppLocalizations.delegate,
-              CountryLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-            ],
-            supportedLocales: SUPPORTED_LOCALES,
+          /// Setup translations
+          localizationsDelegates: const [
+            // AppLocalizations is where the lang translations is loaded
+            AppLocalizations.delegate,
+            CountryLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+          ],
+          supportedLocales: SUPPORTED_LOCALES,
 
-            /// Returns a locale which will be used by the app
-            localeResolutionCallback: (locale, supportedLocales) {
-              // Check if the current device locale is supported
-              for (var supportedLocale in supportedLocales) {
-                if (supportedLocale.languageCode == locale!.languageCode) {
-                  return supportedLocale;
-                }
+          /// Returns a locale which will be used by the app
+          localeResolutionCallback: (locale, supportedLocales) {
+            // Check if the current device locale is supported
+            for (var supportedLocale in supportedLocales) {
+              if (supportedLocale.languageCode == locale!.languageCode) {
+                return supportedLocale;
               }
+            }
 
-              /// If the locale of the device is not supported, use the first one
-              /// from the list (English, in this case).
-              return supportedLocales.first;
-            },
-            home: const SplashScreen(),
-            darkTheme: _darkTheme(),
-            theme: _lightTheme(),
-            themeMode: ThemeHelper().theme),
+            /// If the locale of the device is not supported, use the first one
+            /// from the list (English, in this case).
+            return supportedLocales.first;
+          },
+          home: const SplashScreen(),
+          darkTheme: _darkTheme(),
+          theme: _darkTheme(),
+          // themeMode: ThemeHelper().theme
+        ),
       ),
     );
   }
@@ -250,7 +250,7 @@ class MyApp extends StatelessWidget {
   ThemeData _darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
     const APP_PRIMARY_DARK_COLOR = Colors.white;
-    const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 29, 29, 33);
+    const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 16, 16, 16);
 
     return darkTheme.copyWith(
       primaryColor: APP_PRIMARY_DARK_COLOR,
@@ -290,7 +290,7 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: const Color.fromARGB(239, 52, 53, 61),
+          color: const Color.fromARGB(239, 29, 29, 33),
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,
           shape: defaultCardBorder()),
