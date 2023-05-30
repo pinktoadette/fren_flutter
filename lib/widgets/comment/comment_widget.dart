@@ -1,7 +1,9 @@
 import 'package:machi_app/api/machi/comment_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
@@ -59,8 +61,8 @@ class _CommentWidgetState extends State<CommentWidget> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
-    return PagedSliverList<int, dynamic>(
+    double width = MediaQuery.of(context).size.width;
+    return PagedSliverList<int, dynamic>.separated(
       pagingController: _pagingController,
       builderDelegate:
           PagedChildBuilderDelegate<dynamic>(noItemsFoundIndicatorBuilder: (_) {
@@ -71,6 +73,21 @@ class _CommentWidgetState extends State<CommentWidget> {
       }, itemBuilder: (context, item, index) {
         return CommentRowWidget(item: item);
       }),
+      separatorBuilder: (BuildContext context, int index) {
+        if ((index + 1) % 2 == 0) {
+          return Padding(
+            padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+            child: Container(
+              height: AD_HEIGHT,
+              width: width,
+              color: Theme.of(context).colorScheme.background,
+              child: const InlineAdaptiveAds(),
+            ),
+          );
+        } else {
+          return const SizedBox.shrink();
+        }
+      },
     );
   }
 }
