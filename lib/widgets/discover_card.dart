@@ -1,4 +1,3 @@
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 
 class ButtonChanged extends Notification {
@@ -9,6 +8,7 @@ class ButtonChanged extends Notification {
 class DiscoverCard extends StatelessWidget {
   final String title;
   final String subtitle;
+  final String image;
   final String btnText;
   final bool showFrankie = true;
 
@@ -16,20 +16,20 @@ class DiscoverCard extends StatelessWidget {
       {Key? key,
       required this.title,
       required this.subtitle,
+      required this.image,
       required this.btnText})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     /// Initialization
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    Size size = MediaQuery.of(context).size;
 
     return Card(
       color: Colors.black,
       child: SizedBox(
-        height: screenHeight - 200,
-        width: screenWidth,
+        height: size.height - 200,
+        width: size.width,
         child: Container(
             padding: const EdgeInsets.only(left: 40, right: 40),
             child: Column(
@@ -43,7 +43,7 @@ class DiscoverCard extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       const SizedBox(height: 50),
-                      Image.asset('assets/images/face.jpg', width: screenWidth),
+                      Image.network(image, width: size.width),
                       Text(
                         title,
                         style: Theme.of(context).textTheme.headlineSmall,

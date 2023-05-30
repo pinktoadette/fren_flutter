@@ -141,6 +141,7 @@ class _ActivityTabState extends State<ActivityTab> {
           duration: const Duration(milliseconds: 500),
           // The green box must be a child of the AnimatedOpacity widget.
           child: DiscoverCard(
+            image: _listFeatures[_currentStep]['image'],
             title: _listFeatures[_currentStep]['title'],
             subtitle: _listFeatures[_currentStep]['subtitle'],
             btnText: _listFeatures[_currentStep]['btn_text'],
