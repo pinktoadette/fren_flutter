@@ -113,6 +113,7 @@ class MyApp extends StatelessWidget {
   }
 
   // App theme
+  // ignore: unused_element
   ThemeData _lightTheme() {
     final ThemeData base = ThemeData.light();
 

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -71,9 +70,8 @@ class CommentRowWidget extends StatelessWidget {
   void _onLikePressed(String commentId, bool like) async {
     final _timelineApi = TimelineApi();
     try {
-      String response = await _timelineApi.likeStoryMachi(
+      await _timelineApi.likeStoryMachi(
           "comment", item.commentId!, like == true ? 1 : 0);
-      debugPrint(response);
     } catch (err) {
       Get.snackbar('Error', err.toString(),
           snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);

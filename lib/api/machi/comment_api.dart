@@ -49,10 +49,10 @@ class CommentApi {
 
   Future<String> deleteComment(String commentId) async {
     try {
-      String url = '${baseUri}comment?commentId=$commentId';
+      String url = '${baseUri}comment';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio.delete(url);
+      final response = await dio.delete(url, data: {COMMENT_ID: commentId});
       return response.data;
     } catch (error) {
       debugPrint(error.toString());

@@ -154,6 +154,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 ))));
   }
 
+  // ignore: unused_element
   Widget _showPricing(int index) {
     Icon icon = index == 1
         ? const Icon(Iconsax.close_circle)

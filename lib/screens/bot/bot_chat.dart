@@ -471,34 +471,34 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
-  /// @todo enable subscription
-  /// Use only in subscribed, otherwise use api calls
-  Future<void> _streamBotResponse(Map<String, dynamic> task) async {
-    setState(() {
-      isBotTyping = true;
-    });
+  /// DO NOT DELETE
+  /// tHIS IS USED ON RABBIT
+  // Future<void> _streamBotResponse(Map<String, dynamic> task) async {
+  //   setState(() {
+  //     isBotTyping = true;
+  //   });
 
-    Timer.periodic(const Duration(seconds: 1), (Timer t) async {
-      var response = await _messagesApi.getTaskResponse(task["task_id"]);
-      if (response["status"] == "Success") {
-        if (response["result"].containsKey("text")) {
-          t.cancel();
-          String strResponse = json.encode({"message": response["result"]});
-          _onSocketParse(strResponse);
-          setState(() {
-            isBotTyping = false;
-          });
-        }
-      }
-      // try 60 seconds for images
-      if (t.tick > 60) {
-        t.cancel();
-        setState(() {
-          isBotTyping = false;
-        });
-      }
-    });
-  }
+  //   Timer.periodic(const Duration(seconds: 1), (Timer t) async {
+  //     var response = await _messagesApi.getTaskResponse(task["task_id"]);
+  //     if (response["status"] == "Success") {
+  //       if (response["result"].containsKey("text")) {
+  //         t.cancel();
+  //         String strResponse = json.encode({"message": response["result"]});
+  //         _onSocketParse(strResponse);
+  //         setState(() {
+  //           isBotTyping = false;
+  //         });
+  //       }
+  //     }
+  //     // try 60 seconds for images
+  //     if (t.tick > 60) {
+  //       t.cancel();
+  //       setState(() {
+  //         isBotTyping = false;
+  //       });
+  //     }
+  //   });
+  // }
 
   Future<void> _loadMoreMessage() async {
     try {

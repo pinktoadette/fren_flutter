@@ -1,6 +1,4 @@
-import 'package:get/get.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
-import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';

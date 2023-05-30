@@ -63,6 +63,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             if ((value == null) || (value == "")) {
               return _i18n.translate("validation_1_character");
             }
+            return null;
           },
         ));
   }

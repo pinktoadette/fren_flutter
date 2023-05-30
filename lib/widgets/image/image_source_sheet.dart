@@ -8,7 +8,11 @@ import 'package:image_picker/image_picker.dart';
 
 class ImageSourceSheet extends StatelessWidget {
   // Constructor
-  ImageSourceSheet({Key? key, required this.onImageSelected, this.includeFile})
+  ImageSourceSheet(
+      {Key? key,
+      required this.onImageSelected,
+      this.includeFile,
+      this.useAIGenerator})
       : super(key: key);
 
   // Callback function to return image file
@@ -16,8 +20,8 @@ class ImageSourceSheet extends StatelessWidget {
   // ImagePicker instance
   final picker = ImagePicker();
 
-  bool? includeFile;
-  bool? useAIGenerator;
+  final bool? includeFile;
+  final bool? useAIGenerator;
 
   Future<void> selectedImage(BuildContext context, File? image) async {
     // init i18n

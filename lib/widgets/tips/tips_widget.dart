@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 
 class TipWidget extends StatelessWidget {
-  late AppLocalizations _i18n;
-
-  TipWidget({super.key});
+  const TipWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    _i18n = AppLocalizations.of(context);
+    AppLocalizations _i18n = AppLocalizations.of(context);
 
     List<String> items = [
       _i18n.translate("tips_1"),

@@ -16,7 +16,6 @@ class StoryHeaderWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     double storyCoverWidth = 50;
     double padding = 20;
-    double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () async {
         _showEditStory(context);

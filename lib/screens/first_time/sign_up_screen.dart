@@ -2,7 +2,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:machi_app/widgets/show_scaffold_msg.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';
