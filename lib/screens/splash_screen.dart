@@ -7,7 +7,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/screens/update_app_screen.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
@@ -77,7 +76,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: APP_PRIMARY_BACKGROUND),
+            const SystemUiOverlayStyle(statusBarColor: APP_TERTIARY),
       ),
       body: Center(
         child: Image.asset(

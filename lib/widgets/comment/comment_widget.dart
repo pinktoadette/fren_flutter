@@ -1,14 +1,17 @@
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/like_widget.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
+import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class CommentWidget extends StatefulWidget {
   final Story story;
-  const CommentWidget({Key? key, required this.story}) : super(key: key);
+  final StoryComment? newComment;
+  const CommentWidget({Key? key, required this.story, this.newComment})
+      : super(key: key);
 
   @override
   _CommentWidgetState createState() => _CommentWidgetState();
@@ -16,6 +19,7 @@ class CommentWidget extends StatefulWidget {
 
 class _CommentWidgetState extends State<CommentWidget> {
   final _commentApi = CommentApi();
+
   static const _pageSize = 20;
   late AppLocalizations _i18n;
 
@@ -24,10 +28,11 @@ class _CommentWidgetState extends State<CommentWidget> {
 
   @override
   void initState() {
+    super.initState();
+
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
-    super.initState();
   }
 
   @override
@@ -40,6 +45,7 @@ class _CommentWidgetState extends State<CommentWidget> {
     try {
       List<StoryComment> newItems = await _commentApi.getComments(
           pageKey, _pageSize, widget.story.storyId);
+
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -65,72 +71,8 @@ class _CommentWidgetState extends State<CommentWidget> {
           children: [Text(_i18n.translate("comment_none"))],
         );
       }, itemBuilder: (context, item, index) {
-        return Dismissible(
-          confirmDismiss: (DismissDirection direction) async {
-            return await showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(
-                    _i18n.translate("DELETE"),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                  content: Text(_i18n.translate("comment_delete")),
-                  actions: <Widget>[
-                    OutlinedButton(
-                        onPressed: () => {
-                              Navigator.of(context).pop(false),
-                            },
-                        child: Text(_i18n.translate("CANCEL"))),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    ElevatedButton(
-                        onPressed: () => {
-                              Navigator.of(context).pop(true),
-                            },
-                        child: Text(_i18n.translate("DELETE"))),
-                  ],
-                );
-              },
-            );
-          },
-          child: _rowGenerator(item),
-          key: Key(item.commentId),
-        );
+        return CommentRowWidget(item: item);
       }),
     );
   }
-
-  Widget _rowGenerator(StoryComment item) {
-    return Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            TimelineHeader(
-              showAvatar: true,
-              user: item.user,
-              showName: true,
-              radius: 15,
-              timestamp: item.createdAt,
-            ),
-            Text(item.comment),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                LikeItemWidget(
-                    onLike: (val) {
-                      _onLikePressed(item.commentId!, val);
-                    },
-                    likes: 0,
-                    mylikes: 0)
-              ],
-            ),
-            const Divider()
-          ],
-        ));
-  }
-
-  void _onLikePressed(String commentId, bool like) {}
 }

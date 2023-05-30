@@ -1,6 +1,7 @@
 import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
@@ -19,6 +20,7 @@ class MainBinding implements Bindings {
         tag: "timeline");
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
+    Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
 
     Get.put<AudioController>(AudioController(), tag: "audio");
   }

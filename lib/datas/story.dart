@@ -3,11 +3,11 @@ import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
 class StoryComment {
-  final String comment;
-  final String? commentId;
-  final int createdAt;
-  final int updatedAt;
-  final StoryUser user;
+  String comment;
+  String? commentId;
+  int createdAt;
+  int updatedAt;
+  StoryUser user;
 
   StoryComment(
       {required this.comment,

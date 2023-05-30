@@ -1,6 +1,7 @@
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
@@ -8,6 +9,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -31,18 +33,22 @@ class StoryPageView extends StatefulWidget {
 }
 
 class _StoryPageViewState extends State<StoryPageView> {
+  StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  List<Widget> newComments = [];
   final controller = PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.8;
   double headerHeight = 140;
   final _storyApi = StoryApi();
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   Story? story;
   var pages = [];
 
   @override
   void initState() {
+    Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
+
     super.initState();
     if (widget.isPreview == true) {
       setState(() {
@@ -84,6 +90,13 @@ class _StoryPageViewState extends State<StoryPageView> {
                   : _i18n.translate("story_collection"),
               style: Theme.of(context).textTheme.bodySmall,
             ),
+            leading: BackButton(onPressed: () {
+              CommentController commentController = Get.find(tag: 'comment');
+
+              commentController.comments.clear();
+
+              Get.back();
+            }),
           ),
           body: NoData(text: _i18n.translate("loading")));
     }
@@ -162,11 +175,24 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             .textTheme
                                             .headlineSmall),
                                   )),
+
+                                  /// Create a widget for new comments to reduce api calls
+                                  SliverToBoxAdapter(
+                                    child: Column(children: newComments),
+                                  ),
                                   CommentWidget(story: story!),
                                 ]),
                             Positioned(
                                 bottom: 0,
-                                child: PostCommentWidget(story: story!))
+                                child: PostCommentWidget(
+                                  story: story!,
+                                  notifyParent: (value) {
+                                    setState(() {
+                                      newComments
+                                          .add(CommentRowWidget(item: value));
+                                    });
+                                  },
+                                ))
                           ]))));
             });
       },

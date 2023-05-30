@@ -2,13 +2,17 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 
 class PostCommentWidget extends StatefulWidget {
   final Story story;
-  const PostCommentWidget({Key? key, required this.story}) : super(key: key);
+  final Function(dynamic data) notifyParent;
+  const PostCommentWidget(
+      {Key? key, required this.story, required this.notifyParent})
+      : super(key: key);
 
   @override
   _PostCommentWidgetState createState() => _PostCommentWidgetState();
@@ -16,6 +20,7 @@ class PostCommentWidget extends StatefulWidget {
 
 class _PostCommentWidgetState extends State<PostCommentWidget> {
   late AppLocalizations _i18n;
+  CommentController commentController = Get.find(tag: 'comment');
 
   final _commentController = TextEditingController();
   final _commentApi = CommentApi();
@@ -64,15 +69,16 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
 
   void _postComment() async {
     try {
-      await _commentApi.postComment(
+      StoryComment newComment = await _commentApi.postComment(
           storyId: widget.story.storyId, comment: _commentController.text);
-
+      widget.notifyParent(newComment);
       Get.snackbar(
         _i18n.translate("success"),
         _i18n.translate("Posted"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_SUCCESS,
       );
+      _commentController.clear();
     } catch (e) {
       Get.snackbar(
         _i18n.translate("error"),

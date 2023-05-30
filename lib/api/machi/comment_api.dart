@@ -11,7 +11,7 @@ class CommentApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<Map<String, dynamic>> postComment(
+  Future<StoryComment> postComment(
       {required String storyId, required String comment}) async {
     try {
       String url = '${baseUri}comment';
@@ -19,8 +19,8 @@ class CommentApi {
       final dio = await auth.getDio();
       final response = await dio
           .post(url, data: {STORY_ID: storyId, STORY_COMMENT: comment});
-
-      return response.data;
+      StoryComment storyComment = StoryComment.fromDocument(response.data);
+      return storyComment;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();
