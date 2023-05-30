@@ -30,6 +30,7 @@ class ConversationsTab extends StatelessWidget {
   Widget build(BuildContext context) {
     ChatController chatController = Get.find(tag: 'chatroom');
     User self = UserModel().user;
+    final scrollController = ScrollController();
 
     final _i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
@@ -37,6 +38,7 @@ class ConversationsTab extends StatelessWidget {
 
     return Scaffold(
         body: CustomScrollView(
+      controller: scrollController,
       slivers: [
         FrostedAppBar(
             title: Text(
@@ -74,6 +76,7 @@ class ConversationsTab extends StatelessWidget {
                       alignment: Alignment.center,
                       child: NoData(text: _i18n.translate("no_conversation")))
                   : Obx(() => ListView.separated(
+                      controller: scrollController,
                       cacheExtent: 1000,
                       shrinkWrap: true,
                       separatorBuilder: (context, index) {
@@ -191,7 +194,8 @@ class ConversationsTab extends StatelessWidget {
       enableDrag: true,
       isScrollControlled: true,
       builder: (context) {
-        return const FractionallySizedBox(heightFactor: 0.9, child: ExploreMachi());
+        return const FractionallySizedBox(
+            heightFactor: 0.9, child: ExploreMachi());
       },
     );
   }

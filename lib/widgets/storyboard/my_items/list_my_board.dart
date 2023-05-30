@@ -1,9 +1,11 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/storyboard_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
@@ -31,6 +33,8 @@ class _MyStoryboardState extends State<ListMyStoryboard> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    final width = MediaQuery.of(context).size.width;
+
     return RefreshIndicator(
         onRefresh: () async {
           // Refresh Functionality
@@ -46,7 +50,23 @@ class _MyStoryboardState extends State<ListMyStoryboard> {
                 ),
               )
             : Obx(
-                () => ListView.builder(
+                () => ListView.separated(
+                    separatorBuilder: (BuildContext context, int index) {
+                      if ((index + 1) % 2 == 0) {
+                        return Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              top: 10, bottom: 10),
+                          child: Container(
+                            height: AD_HEIGHT,
+                            width: width,
+                            color: Theme.of(context).colorScheme.background,
+                            child: const InlineAdaptiveAds(),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox.shrink();
+                      }
+                    },
                     shrinkWrap: true,
                     scrollDirection: Axis.vertical,
                     itemCount: storyboardController.unpublished.length,
