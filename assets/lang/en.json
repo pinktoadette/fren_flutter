@@ -343,7 +343,8 @@
   "comment_sent_success": "Reply sent",
   "comment_leave": "Leave a comment",
   "comment_delete": "Are you are you want to delete the comment?",
-
+  "comment_deleted": "Deleted comment",
+  
   "story_share_message": "Create Storycast",
   "story": "Storycast",
   "storycast_board": "Board",

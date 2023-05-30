@@ -46,4 +46,17 @@ class CommentApi {
       throw error.toString();
     }
   }
+
+  Future<String> deleteComment(String commentId) async {
+    try {
+      String url = '${baseUri}comment?commentId=$commentId';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.delete(url);
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }

@@ -14,6 +14,8 @@ class TimelineHeader extends StatelessWidget {
   final int? timestamp;
   final bool? showAvatar;
   final bool? showName;
+  final bool? showMenu;
+  final Function(String action)? onDeleteComment;
 
   TimelineHeader(
       {Key? key,
@@ -21,11 +23,14 @@ class TimelineHeader extends StatelessWidget {
       this.showAvatar = true,
       this.radius = 10,
       this.timestamp,
-      this.showName})
+      this.showMenu,
+      this.showName,
+      this.onDeleteComment})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    double width = MediaQuery.of(context).size.width;
     return InkWell(
         onTap: () async {
           User u = await _userApi.getUserById(user.userId);
@@ -46,9 +51,34 @@ class TimelineHeader extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(user.username,
-                        overflow: TextOverflow.ellipsis,
-                        style: Theme.of(context).textTheme.labelMedium),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: width - 120,
+                          child: Text(user.username,
+                              maxLines: 1,
+                              style: Theme.of(context).textTheme.labelMedium),
+                        ),
+                        PopupMenuButton<String>(
+                            icon: const Icon(Icons.more_horiz),
+                            itemBuilder: (context) => <PopupMenuEntry<String>>[
+                                  const PopupMenuItem(
+                                    child: Text('Delete'),
+                                    value: 'delete',
+                                  )
+                                ],
+                            onSelected: (val) {
+                              switch (val) {
+                                case 'delete':
+                                  onDeleteComment!(val);
+                                  break;
+                                default:
+                                  break;
+                              }
+                            })
+                      ],
+                    ),
                     if (timestamp != null)
                       Text(formatDate(timestamp!),
                           style: Theme.of(context).textTheme.labelSmall),

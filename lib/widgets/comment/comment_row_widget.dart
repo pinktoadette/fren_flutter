@@ -1,5 +1,11 @@
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/api/machi/comment_api.dart';
+import 'package:machi_app/api/machi/timeline_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
@@ -8,7 +14,6 @@ import 'package:machi_app/widgets/timeline/timeline_header.dart';
 /// (This is done to reduce API calls and querying.)
 class CommentRowWidget extends StatelessWidget {
   final StoryComment item;
-
   const CommentRowWidget({super.key, required this.item});
 
   @override
@@ -24,6 +29,10 @@ class CommentRowWidget extends StatelessWidget {
               showName: true,
               radius: 15,
               timestamp: item.createdAt,
+              showMenu: true,
+              onDeleteComment: (action) {
+                _onDeleteComment(context);
+              },
             ),
             Text(
               item.comment,
@@ -45,5 +54,29 @@ class CommentRowWidget extends StatelessWidget {
         ));
   }
 
-  void _onLikePressed(String commentId, bool like) {}
+  void _onDeleteComment(BuildContext context) async {
+    final _commentApi = CommentApi();
+    AppLocalizations _i18n = AppLocalizations.of(context);
+
+    try {
+      await _commentApi.deleteComment(item.commentId!);
+      Get.snackbar('DELETE', _i18n.translate("comment_deleted"),
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+    } catch (err) {
+      Get.snackbar('Error', _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+    }
+  }
+
+  void _onLikePressed(String commentId, bool like) async {
+    final _timelineApi = TimelineApi();
+    try {
+      String response = await _timelineApi.likeStoryMachi(
+          "comment", item.commentId!, like == true ? 1 : 0);
+      debugPrint(response);
+    } catch (err) {
+      Get.snackbar('Error', err.toString(),
+          snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+    }
+  }
 }
