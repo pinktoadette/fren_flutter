@@ -45,6 +45,7 @@ const PY_API = PY_DEV;
 const SOCKET_WS = "wss://api.mymachi.app/";
 
 const double PLAY_BUTTON_WIDTH = 45;
+const int PAGE_CHAT_LIMIT = 10;
 
 const UPLOAD_PATH_BOARD = "board";
 const UPLOAD_PATH_SCRIPT_IMAGE = "script";

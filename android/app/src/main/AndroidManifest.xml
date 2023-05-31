@@ -45,8 +45,6 @@
         android:label="Machi"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-
-        
         
             <!-- android:name=".MainActivity" -->
             <!--  android:name="com.ryanheise.audioservice.AudioServiceActivity"  -->

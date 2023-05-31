@@ -74,7 +74,7 @@ class _CommentWidgetState extends State<CommentWidget> {
         return CommentRowWidget(item: item);
       }),
       separatorBuilder: (BuildContext context, int index) {
-        if ((index + 1) % 2 == 0) {
+        if ((index + 1) % 5 == 0) {
           return Padding(
             padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
             child: Container(

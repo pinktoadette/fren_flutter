@@ -167,7 +167,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                 const Spacer(),
                 ElevatedButton.icon(
                     icon: isLoading == true
-                        ? loadingButton(size: 16)
+                        ? loadingButton(size: 16, color: Colors.white)
                         : const SizedBox.shrink(),
                     onPressed: () {
                       _saveStoryboard();

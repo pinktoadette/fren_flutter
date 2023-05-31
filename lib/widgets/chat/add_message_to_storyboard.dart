@@ -92,17 +92,14 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
     setState(() {
       isLoading = true;
     });
-    StoryboardController storyboardController = Get.find(tag: 'storyboard');
     try {
       dynamic message = widget.message;
-      Storyboard storyboard = initialStoryboard;
       if (widget.message.type == types.MessageType.text) {
-        storyboard = await _storyboardApi.createStoryboard(text: message.text);
+        await _storyboardApi.createStoryboard(text: message.text);
       }
       if (widget.message.type == types.MessageType.image) {
-        storyboard = await _storyboardApi.createStoryboard(image: message.uri);
+        await _storyboardApi.createStoryboard(image: message.uri);
       }
-      storyboardController.addNewStoryboard(storyboard);
       Navigator.of(context).pop();
       Get.snackbar(
         _i18n.translate("success"),

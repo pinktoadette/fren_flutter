@@ -145,7 +145,8 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
           storyId: widget.story.storyId);
       storyboardController.addNewScriptToStory(pages);
 
-      Navigator.of(context).pop();
+      int count = 0;
+      Navigator.of(context).popUntil((_) => count++ >= 2);
       Get.snackbar(
         _i18n.translate("story_added"),
         _i18n.translate("story_added_info"),

@@ -45,17 +45,22 @@ class ChatroomMachiApi {
     return {};
   }
 
-  Future<List<Chatroom>> getAllMyRooms() async {
+  Future<List<Chatroom>> getAllMyRooms(
+      {int? limit, required int page, bool? clearRooms}) async {
+    int limitNum = limit ?? PAGE_CHAT_LIMIT;
     final ChatController chatController = Get.find(tag: 'chatroom');
-    String url = '${baseUri}chatroom/rooms';
+    String url = '${baseUri}chatroom/rooms?limit=$limitNum&page=$page';
     debugPrint("Requesting URL $url");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.get(url);
     final roomData = response.data;
     List<Chatroom> myRooms = [];
-    chatController.roomlist.clear();
-    chatController.unreadCounter = 0.obs;
-    if (response.statusCode == 200) {
+
+    if (clearRooms == true) {
+      chatController.roomlist.clear();
+      chatController.unreadCounter = 0.obs;
+    }
+    if (response.statusCode == 200 && roomData.isNotEmpty) {
       roomData.forEach((room) {
         Chatroom myRoom = Chatroom.fromJson(room);
         chatController.onCreateRoomList(myRoom);
@@ -108,7 +113,7 @@ class ChatroomMachiApi {
     if (response.statusCode == 200) {
       // get all rooms, instead of removing index
       // if we remove index, the position of the rooms will not be correct
-      await getAllMyRooms();
+      await getAllMyRooms(page: 1);
     }
   }
 

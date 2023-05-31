@@ -20,109 +20,94 @@ import 'package:machi_app/widgets/common/no_data.dart';
 
 import '../datas/user.dart';
 
-class ConversationsTab extends StatelessWidget {
+class ConversationsTab extends StatefulWidget {
+  const ConversationsTab({Key? key}) : super(key: key);
+
+  @override
+  _ConversationsTabState createState() => _ConversationsTabState();
+}
+
+class _ConversationsTabState extends State<ConversationsTab> {
+  ChatController chatController = Get.find(tag: 'chatroom');
+  int pageNum = 1;
   final _chatroomApi = ChatroomMachiApi();
   final _botApi = BotApi();
+  User self = UserModel().user;
+  ScrollController scrollController = ScrollController();
 
-  ConversationsTab({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    scrollController = ScrollController()..addListener(handleScrolling);
+  }
+
+  void handleScrolling() async {
+    if (scrollController.offset >= scrollController.position.maxScrollExtent) {
+      setState(() {
+        pageNum += 1;
+      });
+      await _chatroomApi.getAllMyRooms(limit: PAGE_CHAT_LIMIT, page: pageNum);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    ChatController chatController = Get.find(tag: 'chatroom');
-    User self = UserModel().user;
-    final scrollController = ScrollController();
-
     final _i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
 
     return Scaffold(
-        body: CustomScrollView(
-      controller: scrollController,
-      slivers: [
-        FrostedAppBar(
-            title: Text(
-              _i18n.translate("chat"),
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            showLeading: true,
-            actions: <Widget>[
-              IconButton(
-                  onPressed: () {
-                    _createBot(context);
-                  },
-                  icon: const Icon(Iconsax.message_add_1)),
-              IconButton(
-                  onPressed: () {
-                    _viewBots(context);
-                  },
-                  icon: const Icon(Iconsax.messages)),
-              IconButton(
-                  onPressed: () async {
-                    Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
-                    SetCurrentRoom().setNewBotRoom(bot, true);
-                  },
-                  icon: const Icon(Iconsax.message_edit))
-            ]),
-        SliverToBoxAdapter(
-          child: RefreshIndicator(
-              onRefresh: () {
-                // Refresh Functionality
-                return _chatroomApi.getAllMyRooms();
-              },
-              child: chatController.roomlist.isEmpty
-                  ? Container(
-                      height: height - 100,
-                      alignment: Alignment.center,
-                      child: NoData(text: _i18n.translate("no_conversation")))
-                  : Obx(() => ListView.separated(
-                      controller: scrollController,
-                      cacheExtent: 1000,
-                      shrinkWrap: true,
-                      separatorBuilder: (context, index) {
-                        if ((index + 1) % 5 == 0) {
-                          return Container(
-                            height: 150,
-                            color: Theme.of(context).colorScheme.background,
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.only(
-                                  top: 10, bottom: 10),
-                              child: Container(
-                                height: AD_HEIGHT,
-                                width: width,
-                                color: Theme.of(context).colorScheme.background,
-                                child: const InlineAdaptiveAds(),
-                              ),
-                            ),
-                          );
-                        } else {
-                          return const Divider(height: 10);
-                        }
-                      },
-                      itemCount: chatController.roomlist.length,
-                      itemBuilder: ((context, index) {
-                        final Chatroom room = chatController.roomlist[index];
-                        final lastMsg = room.messages.isNotEmpty
-                            ? room.messages[0].toJson()
-                            : {
-                                'text':
-                                    'This is an error. Something went wrong',
-                                'createdAt': getDateTimeEpoch()
-                              };
-                        String allUsers = room.bot.name;
-                        for (var user in room.users) {
-                          if (user.id != self.userId) {
-                            allUsers += ", ${user.firstName!}";
-                          }
-                        }
-                        final bool isRead = room.read ?? false;
-
-                        return InkWell(
-                          onTap: () async {
-                            SetCurrentRoom()
-                                .updateRoomAsCurrentRoom(room, index);
+        body: RefreshIndicator(
+            child: CustomScrollView(
+              controller: scrollController,
+              slivers: [
+                FrostedAppBar(
+                    title: Text(
+                      _i18n.translate("chat"),
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    showLeading: true,
+                    actions: <Widget>[
+                      IconButton(
+                          onPressed: () {
+                            _createBot(context);
                           },
-                          child: Container(
+                          icon: const Icon(Iconsax.message_add_1)),
+                      IconButton(
+                          onPressed: () {
+                            _viewBots(context);
+                          },
+                          icon: const Icon(Iconsax.messages)),
+                      IconButton(
+                          onPressed: () async {
+                            Bot bot =
+                                await _botApi.getBot(botId: DEFAULT_BOT_ID);
+                            SetCurrentRoom().setNewBotRoom(bot, true);
+                          },
+                          icon: const Icon(Iconsax.message_edit))
+                    ]),
+                SliverList.separated(
+                  itemCount: chatController.roomlist.length,
+                  itemBuilder: ((context, index) {
+                    final Chatroom room = chatController.roomlist[index];
+                    final lastMsg = room.messages.isNotEmpty
+                        ? room.messages[0].toJson()
+                        : {
+                            'text': 'This is an error. Something went wrong',
+                            'createdAt': getDateTimeEpoch()
+                          };
+                    String allUsers = room.bot.name;
+                    for (var user in room.users) {
+                      if (user.id != self.userId) {
+                        allUsers += ", ${user.firstName!}";
+                      }
+                    }
+                    final bool isRead = room.read ?? false;
+
+                    return InkWell(
+                        onTap: () async {
+                          SetCurrentRoom().updateRoomAsCurrentRoom(room, index);
+                        },
+                        child: Container(
                             width: width,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 16,
@@ -162,13 +147,38 @@ class ConversationsTab extends StatelessWidget {
                                   ],
                                 ),
                               ],
-                            ),
+                            )));
+                  }),
+                  separatorBuilder: (context, index) {
+                    if ((index + 1) % 5 == 0) {
+                      return Container(
+                        height: 150,
+                        color: Theme.of(context).colorScheme.background,
+                        child: Padding(
+                          padding: const EdgeInsetsDirectional.only(
+                              top: 10, bottom: 10),
+                          child: Container(
+                            height: AD_HEIGHT,
+                            width: width,
+                            color: Theme.of(context).colorScheme.background,
+                            child: const InlineAdaptiveAds(),
                           ),
-                        );
-                      })))),
-        )
-      ],
-    ));
+                        ),
+                      );
+                    } else {
+                      return const Divider(height: 10);
+                    }
+                  },
+                )
+              ],
+            ),
+            onRefresh: () {
+              setState(() {
+                pageNum = 1;
+              });
+              return _chatroomApi.getAllMyRooms(
+                  page: pageNum, clearRooms: true);
+            }));
   }
 
   void _createBot(BuildContext context) {
