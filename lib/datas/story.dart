@@ -132,6 +132,7 @@ class Story {
         subtitle: doc[STORY_SUBTITLE] ?? "",
         photoUrl: doc[STORY_PHOTO_URL],
         createdBy: user,
+        summary: doc[STORY_SUMMARY] ?? "No summary",
         category: doc[STORY_CATEGORY] ?? "Other",
         pages: pages,
         status: StoryStatus.values.byName(doc[STORY_STATUS]),

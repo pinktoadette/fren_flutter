@@ -46,10 +46,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         storyboard.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
     String title = storyboard.title;
     String photoUrl = storyboard.photoUrl ?? "";
+    String subtitle =
+        storyboard.story!.isNotEmpty ? storyboard.story![0].summary! : "";
+
     if (storyboard.story!.length == 1) {
       title = storyboard.story![0].title;
       photoUrl = storyboard.story![0].photoUrl ?? "";
     }
+    double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
 
     return Card(
         elevation: 1,
@@ -59,6 +63,15 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            Container(
+              padding: EdgeInsets.only(left: padding, top: padding),
+              width: width,
+              child: TimelineHeader(
+                user: storyboard.createdBy,
+                showName: true,
+                showMenu: false,
+              ),
+            ),
             InkWell(
                 onTap: () async {
                   _onStoryClick();
@@ -74,8 +87,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                             photoUrl: photoUrl,
                             title: title)),
                     SizedBox(
-                        width: width -
-                            (storyCoverWidth + playWidth + padding * 3.2),
+                        width: rightBox,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -98,7 +110,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                   fontWeight: FontWeight.bold),
                             )),
                             Text(
-                              storyboard.summary ?? "No summary",
+                              subtitle,
                               style: Theme.of(context).textTheme.bodySmall,
                               overflow: TextOverflow.fade,
                             ),
@@ -106,33 +118,39 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                         ))
                   ],
                 )),
-            Padding(
-                padding: const EdgeInsets.only(left: 20, right: 20),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    TimelineHeader(user: storyboard.createdBy),
-                    TextButton.icon(
-                      onPressed: null,
-                      icon: const Icon(Iconsax.menu_1, size: 16),
-                      label: Text("${storyboard.story?.length} collection",
-                          style: const TextStyle(fontSize: 12)),
-                    ),
-                    TextButton.icon(
-                      onPressed: null,
-                      icon: const Icon(Iconsax.message_text_1, size: 16),
-                      label: Text("${storyboard.story?.length} comment",
-                          style: const TextStyle(fontSize: 12)),
-                    ),
-                    LikeItemWidget(
-                        onLike: (val) {
-                          _onLikePressed(widget.item, val);
-                        },
-                        likes: storyboard.likes ?? 0,
-                        mylikes: storyboard.mylikes ?? 0)
-                  ],
-                ))
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                    width: width - 10,
+                    padding: EdgeInsets.only(left: 20, bottom: padding),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (storyboard.story != null)
+                          ...storyboard.story!.take(10).map((sto) {
+                            return StoryCover(
+                                width: 30,
+                                height: 30,
+                                radius: 5,
+                                photoUrl: sto.photoUrl ?? "",
+                                title: sto.title);
+                          }),
+                        const Spacer(),
+                        SizedBox(
+                            width: 50,
+                            child: LikeItemWidget(
+                                onLike: (val) {
+                                  _onLikePressed(widget.item, val);
+                                },
+                                likes: storyboard.likes ?? 0,
+                                mylikes: storyboard.mylikes ?? 0))
+                      ],
+                    ))
+              ],
+            )
           ],
         ));
   }

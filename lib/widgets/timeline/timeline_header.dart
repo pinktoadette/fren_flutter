@@ -60,23 +60,25 @@ class TimelineHeader extends StatelessWidget {
                               maxLines: 1,
                               style: Theme.of(context).textTheme.labelMedium),
                         ),
-                        PopupMenuButton<String>(
-                            icon: const Icon(Icons.more_horiz),
-                            itemBuilder: (context) => <PopupMenuEntry<String>>[
-                                  const PopupMenuItem(
-                                    child: Text('Delete'),
-                                    value: 'delete',
-                                  )
-                                ],
-                            onSelected: (val) {
-                              switch (val) {
-                                case 'delete':
-                                  onDeleteComment!(val);
-                                  break;
-                                default:
-                                  break;
-                              }
-                            })
+                        if (showMenu == true)
+                          PopupMenuButton<String>(
+                              icon: const Icon(Icons.more_horiz),
+                              itemBuilder: (context) =>
+                                  <PopupMenuEntry<String>>[
+                                    const PopupMenuItem(
+                                      child: Text('Delete'),
+                                      value: 'delete',
+                                    )
+                                  ],
+                              onSelected: (val) {
+                                switch (val) {
+                                  case 'delete':
+                                    onDeleteComment!(val);
+                                    break;
+                                  default:
+                                    break;
+                                }
+                              })
                       ],
                     ),
                     if (timestamp != null)

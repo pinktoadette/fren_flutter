@@ -26,7 +26,7 @@ class StoryCover extends StatelessWidget {
     return Container(
         decoration: BoxDecoration(
             color: APP_ACCENT_COLOR,
-            borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(radius ?? 20),
             boxShadow: [
               BoxShadow(
                   blurRadius: 8,
@@ -46,7 +46,7 @@ class StoryCover extends StatelessWidget {
   Widget _showImageLocal(BuildContext context) {
     if (photoUrl != "") {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
+        borderRadius: BorderRadius.circular(radius ?? 10.0),
         child: Image.network(
           photoUrl!,
           width: width ?? 120,
