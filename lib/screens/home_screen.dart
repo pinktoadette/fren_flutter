@@ -212,15 +212,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     Iconsax.activity,
                   )),
 
-              /// Discover story
-              // BottomNavigationBarItem(
-              //     label: _i18n.translate("story"),
-              //     icon: const Icon(Iconsax.music_playlist)),
-
               /// Discover new machi
               BottomNavigationBarItem(
-                  label: _i18n.translate("storycast_board"),
-                  icon: const Icon(Iconsax.bookmark)),
+                  label: _i18n.translate("storyboard"),
+                  icon: const Icon(Iconsax.scan_barcode)),
 
               /// Conversations Tab
               BottomNavigationBarItem(

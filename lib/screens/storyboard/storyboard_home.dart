@@ -38,7 +38,7 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
           Padding(
               padding: const EdgeInsets.only(left: 20, top: 0),
               child: Text(
-                _i18n.translate("storycast_board"),
+                _i18n.translate("storyboard"),
                 style: Theme.of(context).textTheme.headlineMedium,
               )),
           const SizedBox(
@@ -55,7 +55,7 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      _i18n.translate("storyboard"),
+                      _i18n.translate("story_private"),
                       style: Theme.of(context).textTheme.labelMedium,
                     ),
                   ],

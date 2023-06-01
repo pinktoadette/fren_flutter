@@ -83,7 +83,7 @@ class _StoriesViewState extends State<StoriesView> {
                   itemBuilder: (BuildContext ctx, index) {
                     if (storyboardController.currentStoryboard.story!.isEmpty) {
                       return NoData(
-                          text: _i18n.translate("storycast_board_nothing"));
+                          text: _i18n.translate("storyboard_nothing"));
                     }
                     Story story =
                         storyboardController.currentStoryboard.story![index];

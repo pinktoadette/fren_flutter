@@ -55,7 +55,7 @@ class _MyPublishedStoriesState extends State<ListMyPublishedStories> {
                       Storyboard story = storyboardController.published[index];
                       if (story.title == '') {
                         return NoData(
-                            text: _i18n.translate("storycast_board_nothing"));
+                            text: _i18n.translate("storyboard_nothing"));
                       }
                       return InkWell(
                           onTap: () {

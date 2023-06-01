@@ -42,7 +42,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              _i18n.translate("storycast_board"),
+              _i18n.translate("storyboard"),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(

@@ -153,9 +153,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
           leading: BackButton(
             color: Theme.of(context).colorScheme.primary,
             onPressed: () async {
-              timerController.onClose();
-              // alert user if bot is typing that process will end
-              // unless subscribe to advanced
               _leaveBotTyping();
             },
           ),
@@ -169,72 +166,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
               _showBotInfo();
             },
           ),
-          actions: <Widget>[
-            if (_room.users.length > 1 && timerController.time > 0)
-              InkWell(
-                child: Obx(() {
-                  return Row(
-                    children: [
-                      const Icon(
-                        Iconsax.clock,
-                        size: 16,
-                      ),
-                      Text(
-                        "${timerController.time}",
-                        style: Theme.of(context).textTheme.labelSmall,
-                      )
-                    ],
-                  );
-                }),
-                onTap: () {
-                  infoDialog(context,
-                      icon: const Icon(Iconsax.clock),
-                      title: _i18n.translate("bot_naps"),
-                      message: _i18n.translate("bot_nap_message"),
-                      positiveText: _i18n.translate("OK"),
-                      positiveAction: () async {
-                    // Close the confirm dialog
-                    Navigator.of(context).pop();
-                  });
-                },
-              ),
-            PopupMenuButton<String>(
-              initialValue: "",
-              itemBuilder: (context) => <PopupMenuEntry<String>>[
-                /// invite_user
-                PopupMenuItem(
-                    value: "add_to_chat",
-                    child: Row(
-                      children: <Widget>[
-                        const Icon(Iconsax.add),
-                        const SizedBox(width: 5),
-                        Text(_i18n.translate("add_to_chat")),
-                      ],
-                    )),
-                if (_room.users.length > 1)
-                  PopupMenuItem(
-                      value: "leave_chat",
-                      child: Row(
-                        children: <Widget>[
-                          const Icon(Iconsax.logout),
-                          const SizedBox(width: 5),
-                          Text(_i18n.translate("leave_chatroom")),
-                        ],
-                      )),
-              ],
-              onSelected: (val) {
-                /// Control selected value
-                switch (val) {
-                  case "add_to_chat":
-                    _showFriends();
-                    break;
-                  case "leave_chat":
-                    _leaveChat(context);
-                    break;
-                }
-              },
-            ),
-          ],
         ),
         body: Chat(
             listBottomWidget: CustomHeaderInputWidget(
@@ -446,13 +377,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
       isBotTyping = true;
     });
     try {
-      if (timerController.time.value == 0) {
-        Map<String, dynamic> message = await _messagesApi.getBotResponse();
-        _channel.sink.add(json.encode({"message": message}));
-        if (_room.users.length > 1) {
-          timerController.startTimer(getDateTimeEpoch());
-        }
-      }
+      Map<String, dynamic> message = await _messagesApi.getBotResponse();
+      _channel.sink.add(json.encode({"message": message}));
     } catch (err) {
       dynamic response = {
         CHAT_AUTHOR_ID: _room.bot.botId,
@@ -600,7 +526,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (_hasNewMessages == true) {
       /// mark as read when clicked when exit
       await _chatroomApi.markAsRead(chatController.currentRoom.chatroomId);
-      Chatroom room = chatController.currentRoom.copyWith(read: true);
+      Chatroom room =
+          chatController.currentRoom.copyWith(read: true, messages: _messages);
       chatController.updateRoom(_roomIdx, room);
 
       chatController.sortRoomExit(_roomIdx);

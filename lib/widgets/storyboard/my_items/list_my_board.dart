@@ -75,7 +75,7 @@ class _MyStoryboardState extends State<ListMyStoryboard> {
                           storyboardController.unpublished[index];
                       if (story.title == '') {
                         return NoData(
-                            text: _i18n.translate("storycast_board_nothing"));
+                            text: _i18n.translate("storyboard_nothing"));
                       }
                       return StoryboardItemWidget(
                           message: widget.message, item: story);

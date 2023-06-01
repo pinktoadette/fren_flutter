@@ -16,7 +16,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/common/frosted_app_bar.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 
 import '../datas/user.dart';
 
@@ -85,91 +84,136 @@ class _ConversationsTabState extends State<ConversationsTab> {
                           },
                           icon: const Icon(Iconsax.message_edit))
                     ]),
-                SliverList.separated(
-                  itemCount: chatController.roomlist.length,
-                  itemBuilder: ((context, index) {
-                    final Chatroom room = chatController.roomlist[index];
-                    final lastMsg = room.messages.isNotEmpty
-                        ? room.messages[0].toJson()
-                        : {
-                            'text': 'This is an error. Something went wrong',
-                            'createdAt': getDateTimeEpoch()
-                          };
-                    String allUsers = room.bot.name;
-                    for (var user in room.users) {
-                      if (user.id != self.userId) {
-                        allUsers += ", ${user.firstName!}";
-                      }
-                    }
-                    final bool isRead = room.read ?? false;
+                Obx(() => SliverList.separated(
+                      itemCount: chatController.roomlist.length,
+                      itemBuilder: ((context, index) {
+                        final Chatroom room = chatController.roomlist[index];
+                        final lastMsg = room.messages.isNotEmpty
+                            ? room.messages[0].toJson()
+                            : {
+                                'text':
+                                    'This is an error. Something went wrong',
+                                'createdAt': getDateTimeEpoch()
+                              };
+                        String allUsers = room.bot.name;
+                        for (var user in room.users) {
+                          if (user.id != self.userId) {
+                            allUsers += ", ${user.firstName!}";
+                          }
+                        }
+                        final bool isRead = room.read ?? false;
 
-                    return InkWell(
-                        onTap: () async {
-                          SetCurrentRoom().updateRoomAsCurrentRoom(room, index);
-                        },
-                        child: Container(
-                            width: width,
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 16,
-                              vertical: 8,
-                            ),
-                            child: Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    Text(allUsers,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .headlineSmall),
-                                    const Spacer(),
-                                    Text(formatDate(lastMsg[CREATED_AT]),
-                                        textAlign: TextAlign.right,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .titleMedium),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 5,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    _formatMessages(context, lastMsg),
-                                    !isRead
-                                        ? const Icon(Iconsax.info_circle1,
-                                            size: 14, color: APP_ACCENT_COLOR)
-                                        : const SizedBox(
-                                            width: 5,
-                                            height: 5,
-                                          )
-                                  ],
-                                ),
-                              ],
-                            )));
-                  }),
-                  separatorBuilder: (context, index) {
-                    if ((index + 1) % 5 == 0) {
-                      return Container(
-                        height: 150,
-                        color: Theme.of(context).colorScheme.background,
-                        child: Padding(
-                          padding: const EdgeInsetsDirectional.only(
-                              top: 10, bottom: 10),
-                          child: Container(
-                            height: AD_HEIGHT,
-                            width: width,
+                        return Dismissible(
+                            key: Key(room.chatroomId),
+                            confirmDismiss: (DismissDirection direction) async {
+                              return await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: Text(
+                                      _i18n.translate("DELETE"),
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyMedium,
+                                    ),
+                                    content: Text(_i18n.translate(
+                                        "conversation_confirm_delete")),
+                                    actions: <Widget>[
+                                      OutlinedButton(
+                                          onPressed: () => {
+                                                Navigator.of(context)
+                                                    .pop(false),
+                                              },
+                                          child:
+                                              Text(_i18n.translate("CANCEL"))),
+                                      const SizedBox(
+                                        width: 50,
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () => {
+                                                Navigator.of(context).pop(true),
+                                              },
+                                          child:
+                                              Text(_i18n.translate("DELETE"))),
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                            background: Container(
+                                color: APP_ERROR,
+                                child: const Icon(Iconsax.trash)),
+                            child: InkWell(
+                                onTap: () async {
+                                  SetCurrentRoom()
+                                      .updateRoomAsCurrentRoom(room, index);
+                                },
+                                child: Container(
+                                    width: width,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 16,
+                                      vertical: 8,
+                                    ),
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          children: [
+                                            Text(allUsers,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineSmall),
+                                            const Spacer(),
+                                            Text(
+                                                formatDate(lastMsg[CREATED_AT]),
+                                                textAlign: TextAlign.right,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .titleMedium),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            _formatMessages(context, lastMsg),
+                                            !isRead
+                                                ? const Icon(
+                                                    Iconsax.info_circle1,
+                                                    size: 14,
+                                                    color: APP_ACCENT_COLOR)
+                                                : const SizedBox(
+                                                    width: 5,
+                                                    height: 5,
+                                                  )
+                                          ],
+                                        ),
+                                      ],
+                                    ))));
+                      }),
+                      separatorBuilder: (context, index) {
+                        if ((index + 1) % 5 == 0) {
+                          return Container(
+                            height: 150,
                             color: Theme.of(context).colorScheme.background,
-                            child: const InlineAdaptiveAds(),
-                          ),
-                        ),
-                      );
-                    } else {
-                      return const Divider(height: 10);
-                    }
-                  },
-                )
+                            child: Padding(
+                              padding: const EdgeInsetsDirectional.only(
+                                  top: 10, bottom: 10),
+                              child: Container(
+                                height: AD_HEIGHT,
+                                width: width,
+                                color: Theme.of(context).colorScheme.background,
+                                child: const InlineAdaptiveAds(),
+                              ),
+                            ),
+                          );
+                        } else {
+                          return const Divider(height: 10);
+                        }
+                      },
+                    ))
               ],
             ),
             onRefresh: () {
