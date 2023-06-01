@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -131,12 +130,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       children: [
                         if (storyboard.story != null)
                           ...storyboard.story!.take(10).map((sto) {
-                            return StoryCover(
-                                width: 30,
-                                height: 30,
-                                radius: 5,
-                                photoUrl: sto.photoUrl ?? "",
-                                title: sto.title);
+                            return Padding(
+                                padding: const EdgeInsets.only(right: 5),
+                                child: StoryCover(
+                                    width: 30,
+                                    height: 30,
+                                    radius: 5,
+                                    photoUrl: sto.photoUrl ?? "",
+                                    title: sto.title));
                           }),
                         const Spacer(),
                         SizedBox(

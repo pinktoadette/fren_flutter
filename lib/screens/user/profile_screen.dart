@@ -209,7 +209,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               return Container();
             }
             return ListView.builder(
-              physics: const ClampingScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
