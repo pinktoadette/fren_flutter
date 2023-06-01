@@ -21,6 +21,7 @@ class AuthApi {
     dio.options.headers['content-Type'] = 'application/json';
     dio.options.headers["api-key"] = myKey;
     dio.options.headers["fb-authorization"] = token;
+    dio.options.receiveTimeout = const Duration(seconds: 10);
     dio.options.followRedirects = false;
     return dio;
   }

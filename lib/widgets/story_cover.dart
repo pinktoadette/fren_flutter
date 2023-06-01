@@ -60,11 +60,19 @@ class StoryCover extends StatelessWidget {
           child: Image(
               image: FileImage(file!), width: width ?? 120, fit: BoxFit.cover));
     }
-    return ClipRRect(
-        borderRadius: BorderRadius.circular(10.0),
-        child: Center(
+    return Container(
+      height: 190.0,
+      width: MediaQuery.of(context).size.width - 100.0,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+          color: Colors.black,
+          image: const DecorationImage(
+              image: AssetImage("assets/images/chips.png"), fit: BoxFit.fill)),
+      child: Center(
           child: Text(title.substring(0, 1).toUpperCase(),
-              style: Theme.of(context).textTheme.headlineSmall),
-        ));
+              style: radius == 5
+                  ? Theme.of(context).textTheme.labelSmall
+                  : Theme.of(context).textTheme.headlineSmall)),
+    );
   }
 }

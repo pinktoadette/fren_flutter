@@ -53,9 +53,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final ChatController chatController = Get.find(tag: 'chatroom');
   final MessageController messageController = Get.find(tag: 'message');
 
-  final TimerController timerController =
-      Get.put(TimerController(), tag: 'timer');
-
   late final List<types.Message> _messages = [];
 
   late types.User _user;
@@ -116,17 +113,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
-
-    // countdown to bot typing
-    if (_messages.isNotEmpty && _room.users.length > 1) {
-      try {
-        types.Message lastMachiMessage = _messages
-            .firstWhere((message) => message.author.id.contains('Machi_'));
-        timerController.startTimer(lastMachiMessage.createdAt!.toInt());
-      } catch (_) {
-        debugPrint("no messages from machi");
-      }
-    }
 
     //initialize socket
     _listenSocket();
