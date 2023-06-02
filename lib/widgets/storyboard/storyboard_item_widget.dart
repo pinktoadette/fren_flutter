@@ -53,7 +53,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       photoUrl = storyboard.story![0].photoUrl ?? "";
     }
     double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
-
+    String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
+        ? "Published on "
+        : "Last Updated ";
     return Card(
         elevation: 1,
         semanticContainer: true,
@@ -94,7 +96,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               height: 15,
                             ),
                             Text(
-                                "${storyboard.status.name} ${formatDate(storyboard.updatedAt)}",
+                                "$timestampLabel ${formatDate(storyboard.updatedAt)}",
                                 style: const TextStyle(fontSize: 10)),
                             Text(storyboard.category,
                                 style: const TextStyle(

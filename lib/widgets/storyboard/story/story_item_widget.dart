@@ -46,7 +46,10 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
     double padding = 15;
     double playWidth =
         widget.story.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
-
+    String timestampLabel = widget.story.status == StoryStatus.PUBLISHED
+        ? "Published on "
+        : "Last Updated ";
+    double contentWidth = width - (storyCoverWidth + playWidth + padding * 3);
     return InkWell(
         onTap: () {
           if (widget.disablePress == true) {
@@ -72,6 +75,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                   Padding(
                     padding: EdgeInsets.all(padding),
                     child: StoryCover(
+                        height: storyCoverWidth,
                         width: storyCoverWidth,
                         photoUrl: widget.story.photoUrl ?? "",
                         title: widget.story.title),
@@ -81,8 +85,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         SizedBox(
-                            width: width -
-                                (storyCoverWidth + playWidth + padding * 3),
+                            width: contentWidth,
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
@@ -91,7 +94,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                                   height: 15,
                                 ),
                                 Text(
-                                    "update ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
+                                    "$timestampLabel ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
                                     style: const TextStyle(fontSize: 10)),
                                 Text(
                                   widget.story.title,
@@ -100,29 +103,30 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                                           Theme.of(context).colorScheme.primary,
                                       fontWeight: FontWeight.bold),
                                 ),
-                                Text(widget.story.summary ?? "No summary",
-                                    style:
-                                        Theme.of(context).textTheme.bodySmall),
                               ],
-                            ))
+                            )),
+                        const Spacer(),
+                        Container(
+                            width: contentWidth,
+                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                TimelineHeader(user: widget.story.createdBy),
+                                const Spacer(),
+                                TextButton.icon(
+                                  onPressed: null,
+                                  icon: const Icon(Iconsax.square, size: 16),
+                                  label: Text(
+                                      "${widget.story.pages?.length ?? 0} mods",
+                                      style: const TextStyle(fontSize: 12)),
+                                ),
+                              ],
+                            )),
                       ]),
                 ],
               ),
-              Padding(
-                  padding: const EdgeInsets.only(left: 20, right: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      TimelineHeader(user: widget.story.createdBy),
-                      TextButton.icon(
-                        onPressed: null,
-                        icon: const Icon(Iconsax.square, size: 16),
-                        label: Text("${widget.story.pages?.length ?? 0} mods",
-                            style: const TextStyle(fontSize: 12)),
-                      ),
-                    ],
-                  )),
             ])));
   }
 

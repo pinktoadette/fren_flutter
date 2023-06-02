@@ -18,7 +18,7 @@ class StoryboardHeaderWidget extends StatelessWidget {
     double storyCoverWidth = 50;
     double padding = 15;
 
-    return InkWell(
+    return Obx(() => InkWell(
         onTap: () {
           _showEditStoryboard(context);
         },
@@ -58,7 +58,7 @@ class StoryboardHeaderWidget extends StatelessWidget {
               )
             ],
           ),
-        ));
+        )));
   }
 
   void _showEditStoryboard(BuildContext context) {
