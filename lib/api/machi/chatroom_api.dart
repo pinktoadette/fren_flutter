@@ -128,27 +128,16 @@ class ChatroomMachiApi {
     return response.data;
   }
 
-  ///////// ADD BOT / Trials /////////////////
-  Future<Map<String, dynamic>> tryBot() async {
+  Future<String> deleteRoom(Chatroom room) async {
     final ChatController chatController = Get.find(tag: 'chatroom');
-    final BotController botController = Get.find(tag: 'bot');
 
-    String url = '${baseUri}trial/machi';
-    debugPrint("Requesting URL $url {botId: ${botController.bot.botId} }");
+    String url = '${baseUri}chatroom/room';
     final dio = await auth.getDio();
-    final response =
-        await dio.post(url, data: {BOT_ID: botController.bot.botId});
+    final response = await dio.delete(url, data: {ROOM_ID: room.chatroomId});
 
-    if (response.statusCode == 200) {
-      final roomData = response.data;
+    final roomData = response.data;
+    chatController.deleteRoomfromList(room);
 
-      // create a new room
-      Chatroom room = Chatroom.fromJson(roomData);
-      chatController.addSpecificBotToRoom(room);
-
-      return roomData;
-    }
-    debugPrint(response.toString());
-    return {};
+    return roomData;
   }
 }

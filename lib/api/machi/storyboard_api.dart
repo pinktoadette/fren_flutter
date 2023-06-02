@@ -53,19 +53,16 @@ class StoryboardApi {
     }
   }
 
-  Future<Storyboard> removeStoryboard(
-      String messageId, String storyboardId) async {
+  Future<String> deleteBoard(Storyboard storyboard) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}board';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response =
-          await dio.delete(url, data: {STORYBOARD_ID: storyboardId});
-
-      Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(story);
-      return story;
+          await dio.delete(url, data: {STORYBOARD_ID: storyboard.storyboardId});
+      storyController.removeStoryboardfromList(storyboard);
+      return response.data;
     } catch (error) {
       debugPrint(error.toString());
       throw error.toString();

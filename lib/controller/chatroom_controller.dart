@@ -123,6 +123,11 @@ class ChatController extends GetxController implements GetxService {
     roomlist.refresh();
   }
 
+  void deleteRoomfromList(Chatroom room) {
+    roomlist.removeWhere(((item) => item.chatroomId == room.chatroomId));
+    roomlist.refresh();
+  }
+
   /// get/create room with another bot
   void addSpecificBotToRoom(Chatroom room) {
     _currentRoom = room.obs;

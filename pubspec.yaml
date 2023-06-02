@@ -83,6 +83,7 @@ dependencies:
   dotted_border: ^2.0.0+3
   audio_service: ^0.18.9
   smooth_page_indicator: ^1.1.0
+  quill_html_editor: ^2.1.9
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

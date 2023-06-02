@@ -80,6 +80,12 @@ class StoryboardController extends GetxController {
     _storyboards.refresh();
   }
 
+  void removeStoryboardfromList(Storyboard storyboard) {
+    _storyboards
+        .removeWhere(((item) => item.storyboardId == storyboard.storyboardId));
+    _storyboards.refresh();
+  }
+
   void setCurrentBoard(Storyboard story) async {
     currentStoryboard = story;
   }
@@ -104,6 +110,15 @@ class StoryboardController extends GetxController {
   void addNewStory(Story story) async {
     List<Story> stories = currentStoryboard.story!;
     stories.insert(0, story);
+    Storyboard newCurrenyStoryboard = currentStoryboard.copyWith(
+      story: stories,
+    );
+    updateStoryboard(newCurrenyStoryboard);
+  }
+
+  void removeStory(Story story) async {
+    List<Story> stories = currentStoryboard.story!;
+    stories.removeWhere((element) => element.storyId == story.storyId);
     Storyboard newCurrenyStoryboard = currentStoryboard.copyWith(
       story: stories,
     );

@@ -82,11 +82,7 @@ class _SearchMachiState extends State<SearchMachiWidget> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 400 / height,
-            child: BotProfileCard(
-              bot: bot,
-              showPurchase: true,
-            ));
+            heightFactor: 400 / height, child: BotProfileCard(bot: bot));
       },
     );
   }

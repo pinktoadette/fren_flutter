@@ -33,39 +33,46 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
+
     return Container(
-        padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
-        width: width,
-        decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border.all(color: Theme.of(context).colorScheme.tertiary),
-            borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(24), topRight: Radius.circular(24))),
-        child: TextFormField(
-          controller: _commentController,
-          maxLines: 1,
-          maxLength: 250,
-          decoration: InputDecoration(
-            hintText: _i18n.translate("comment_leave"),
-            hintStyle: TextStyle(color: Theme.of(context).colorScheme.primary),
-            border: UnderlineInputBorder(
-                borderSide:
-                    BorderSide(color: Theme.of(context).colorScheme.tertiary)),
-            fillColor: Colors.green,
-            suffixIcon: IconButton(
-              icon: const Icon(Iconsax.send_1),
-              onPressed: () {
-                _postComment();
-              },
-            ),
+      padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+      width: width,
+      decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
+          border: Border.all(color: Theme.of(context).colorScheme.tertiary),
+          borderRadius: const BorderRadius.only(
+              topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+      child: ConstrainedBox(
+          constraints: const BoxConstraints(
+            maxHeight: 300.0,
           ),
-          validator: (value) {
-            if ((value == null) || (value == "")) {
-              return _i18n.translate("validation_1_character");
-            }
-            return null;
-          },
-        ));
+          child: TextFormField(
+            controller: _commentController,
+            maxLines: null,
+            maxLength: 250,
+            decoration: InputDecoration(
+              hintText: _i18n.translate("comment_leave"),
+              hintStyle:
+                  TextStyle(color: Theme.of(context).colorScheme.primary),
+              border: UnderlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Theme.of(context).colorScheme.tertiary)),
+              fillColor: Colors.green,
+              suffixIcon: IconButton(
+                icon: const Icon(Iconsax.send_1),
+                onPressed: () {
+                  _postComment();
+                },
+              ),
+            ),
+            validator: (value) {
+              if ((value == null) || (value == "")) {
+                return _i18n.translate("validation_1_character");
+              }
+              return null;
+            },
+          )),
+    );
   }
 
   void _postComment() async {

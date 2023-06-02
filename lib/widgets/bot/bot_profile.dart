@@ -13,17 +13,11 @@ import 'package:iconsax/iconsax.dart';
 class BotProfileCard extends StatefulWidget {
   final Bot bot;
   final bool? showStatus;
-  final bool? showPurchase;
   final Chatroom? room;
   final int? roomIdx;
 
   const BotProfileCard(
-      {Key? key,
-      required this.bot,
-      this.showStatus,
-      this.showPurchase,
-      this.room,
-      this.roomIdx})
+      {Key? key, required this.bot, this.showStatus, this.room, this.roomIdx})
       : super(key: key);
   @override
   _BotProfileCardState createState() => _BotProfileCardState();
@@ -95,51 +89,8 @@ class _BotProfileCardState extends State<BotProfileCard> {
               ? const Frankloader(height: 150, width: 100)
               : const SizedBox(height: 50),
           // if (widget.room?.chatroomId == null) _showPricing(),
-          if (widget.showPurchase == true)
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: _displayButtons(),
-              ),
-            )
         ],
       ),
     );
-  }
-
-  List<Widget> _displayButtons() {
-    if (widget.bot.isSubscribed == true) {
-      return [const Text("You have this machi")];
-    } else {
-      return [
-        ElevatedButton.icon(
-          icon: const Icon(Iconsax.message),
-          label: Text(_i18n.translate("chat")),
-          onPressed: () async {
-            _tryBot();
-          },
-        ),
-        // ElevatedButton.icon(
-        //   icon: const Icon(Iconsax.element_plus),
-        //   label: Text(_i18n.translate("add_machi")),
-        //   onPressed: () {
-        //     _addMachi();
-        //   },
-        // ),
-      ];
-    }
-  }
-
-  void _tryBot() async {
-    setState(() {
-      isLoading = true;
-    });
-    Navigator.of(context).pop();
-    SetCurrentRoom().setNewBotRoom(widget.bot, true);
-
-    setState(() {
-      isLoading = false;
-    });
   }
 }

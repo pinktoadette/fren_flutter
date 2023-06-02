@@ -71,8 +71,10 @@
   
   "chat": "Chat",
   "conversations": "Conversations",
-  "conversation_confirm_delete": "Are you sure you want to delete this conversation?",
-
+  "conversation_confirm_delete": "Are you sure you want to delete this conversation? This will delete all images and images saved to boards",
+  "conversation_delete_error":"An error occurred deleting the messages",
+  "conversation_success_delete":"Messages successfully deleted",
+  
   "_subscribe_dialog": "*** SUBSCRIBE Dialog ***",
   "subscription": "Subscription",
   "subscriptions": "Subscriptions",
@@ -328,6 +330,15 @@
   
   "story_share_message": "Create Board",
   "storyboard_nothing": "No boards saved",
+  "storyboard_confirm_delete": "Are you sure you want to delete this board? All images will be deleted",
+  "storyboard_success_delete": "Board is successfully deleted",
+  "storyboard_delete_error": "Something went wrong deleting the board",
+  
+  "story_confirm_delete": "Are you sure you want to delete this module? All images will be deleted",
+  "story_success_delete": "Module is successfully deleted",
+  "story_delete_error": "Something went wrong deleting the module",
+  
+
   "story_share": "Share",
   "storyboard": "Board",
   "story_as_text": "Text Version",

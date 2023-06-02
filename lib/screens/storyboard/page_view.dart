@@ -181,6 +181,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                                     child: Column(children: newComments),
                                   ),
                                   CommentWidget(story: story!),
+                                  const SliverToBoxAdapter(
+                                      child: SizedBox(
+                                    height: 100,
+                                  ))
                                 ]),
                             Positioned(
                                 bottom: 0,

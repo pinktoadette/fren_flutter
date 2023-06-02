@@ -29,6 +29,7 @@ class ConversationsTab extends StatefulWidget {
 class _ConversationsTabState extends State<ConversationsTab> {
   ChatController chatController = Get.find(tag: 'chatroom');
   int pageNum = 1;
+  late AppLocalizations _i18n;
   final _chatroomApi = ChatroomMachiApi();
   final _botApi = BotApi();
   User self = UserModel().user;
@@ -51,7 +52,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    _i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -105,6 +106,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
                         return Dismissible(
                             key: Key(room.chatroomId),
+                            direction: DismissDirection.endToStart,
                             confirmDismiss: (DismissDirection direction) async {
                               return await showDialog(
                                 context: context,
@@ -131,7 +133,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                       ),
                                       ElevatedButton(
                                           onPressed: () => {
-                                                Navigator.of(context).pop(true),
+                                                _onDelete(room),
                                               },
                                           child:
                                               Text(_i18n.translate("DELETE"))),
@@ -223,6 +225,26 @@ class _ConversationsTabState extends State<ConversationsTab> {
               return _chatroomApi.getAllMyRooms(
                   page: pageNum, clearRooms: true);
             }));
+  }
+
+  void _onDelete(Chatroom room) async {
+    try {
+      await _chatroomApi.deleteRoom(room);
+      Navigator.of(context).pop(true);
+      Get.snackbar(
+        _i18n.translate("DELETE"),
+        _i18n.translate("conversation_success_delete"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("DELETE"),
+        _i18n.translate("conversation_delete_error"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 
   void _createBot(BuildContext context) {
