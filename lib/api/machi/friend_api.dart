@@ -4,6 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:machi_app/datas/user.dart';
 
 enum FriendStatus { request, active, block, unfriend }
 
@@ -14,6 +15,35 @@ class FriendApi {
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
+
+  Future<User> followRequest(String friendId) async {
+    try {
+      String url = '${baseUri}follow/follow';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {USER_ID: friendId});
+      final getData = response.data;
+
+      User user = User.fromDocument(getData);
+      return user;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
+  Future<String> getFollowers(String friendId) async {
+    try {
+      String url = '${baseUri}friends/follower';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {FB_UID: friendId});
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 
   Future<List<dynamic>> getOneFriend(String friendId) async {
     try {

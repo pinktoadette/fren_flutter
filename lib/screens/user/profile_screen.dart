@@ -1,5 +1,7 @@
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
+import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
@@ -22,17 +24,15 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
   late AppLocalizations _i18n;
+  final _userApi = UserApi();
   final _friendApi = FriendApi();
   final _timelineApi = TimelineApi();
   ChatController chatController = Get.find(tag: 'chatroom');
 
-  Map<String, dynamic> friendStatus = {
-    "status": "UNFRIEND",
-    "isRequester": 0,
-    "requester": ""
-  };
   List<Storyboard> boards = [];
-  bool isFrend = false;
+  bool following = false;
+  int followings = 0;
+  int followers = 0;
 
   @override
   void initState() {
@@ -53,24 +53,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _isUserFriend() async {
-    final user = await _friendApi.getOneFriend(widget.user.userId);
-    if (user.isNotEmpty) {
-      final friend = user[0]["friends"]
-          .where((u) => u['userId'] == widget.user.userId)
-          .toList()
-          .first;
-      final requester = user[0]["friends"]
-          .where((u) => u['userId'] != widget.user.userId)
-          .toList()
-          .first;
-      setState(() {
-        friendStatus = {
-          "status": friend["fstatus"],
-          "isRequester": friend["isRequester"],
-          "requester": requester["username"]
-        };
-      });
-    }
+    final user = await _userApi.getUserById(widget.user.userId);
+    _setUserCount(user);
+  }
+
+  void _setUserCount(User user) {
+    setState(() {
+      following = user.following ?? false;
+      followings = user.followings ?? 0;
+      followers = user.followers ?? 0;
+    });
   }
 
   @override
@@ -145,15 +137,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Stack(
           children: [
             SingleChildScrollView(
+              physics: const ScrollPhysics(),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  if (UserModel().user.userStatus == "hidden")
+                  if ((UserModel().user.userStatus == "hidden") &
+                      (widget.user.userId == UserModel().user.userId))
                     Container(
                       padding: const EdgeInsets.only(left: 20),
                       width: size.width,
-                      color: Colors.red,
+                      color: APP_WARNING,
                       child: Text(
                         _i18n.translate("profile_protected"),
                         style: const TextStyle(color: Colors.white),
@@ -163,9 +157,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
                       children: [
-                        Text("123 \n" + _i18n.translate("followers")),
+                        Text("$followers \n" + _i18n.translate("followers")),
                         const SizedBox(width: 50),
-                        Text("431 \n" + _i18n.translate("following")),
+                        Text("$followings \n" + _i18n.translate("following")),
                         const Spacer(),
                         _followButton(),
                       ],
@@ -194,14 +188,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _userPost() {
     final width = MediaQuery.of(context).size.width;
-    final height = MediaQuery.of(context).size.height;
     if ((widget.user.userStatus == "hidden") &
         (widget.user.userId != UserModel().user.userId)) {
-      return NoData(text: _i18n.translate("profile_nothing"));
+      return NoData(text: _i18n.translate("profile_protected_view"));
     }
 
     return SizedBox(
-        height: height * 0.8,
         width: width,
         child: FutureBuilder(
           builder: (context, snapshot) {
@@ -223,14 +215,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _followButton() {
-    return OutlinedButton.icon(
+    return OutlinedButton(
       onPressed: () async {
-        _friendApi
-            .sendRequest(widget.user.userId)
-            .then((_) => {_isUserFriend()});
+        try {
+          User user = await _friendApi.followRequest(widget.user.userId);
+          _setUserCount(user);
+        } catch (err) {
+          Get.snackbar(_i18n.translate("error"),
+              _i18n.translate("an_error_has_occurred"),
+              snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+        }
       },
-      icon: const Icon(Icons.check),
-      label: Text(_i18n.translate("follow")),
+      child: following == true
+          ? Text(_i18n.translate("following"))
+          : Text(_i18n.translate("follow")),
     );
   }
 

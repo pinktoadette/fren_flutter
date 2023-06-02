@@ -105,10 +105,9 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                                 ),
                               ],
                             )),
-                        const Spacer(),
                         Container(
                             width: contentWidth,
-                            padding: const EdgeInsets.only(left: 5, right: 5),
+                            padding: const EdgeInsets.only(right: 5),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               crossAxisAlignment: CrossAxisAlignment.center,

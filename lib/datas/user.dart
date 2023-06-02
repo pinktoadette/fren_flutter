@@ -28,6 +28,9 @@ class User {
   final bool isSubscribed;
   final String? userBio;
   final bool? isDarkMode;
+  final bool? following;
+  final int? followers;
+  final int? followings;
   final Map<String, dynamic>? userGallery;
   final Map<String, dynamic>? userSettings;
   final Map<String, dynamic>? userEnableMode;
@@ -62,7 +65,10 @@ class User {
       required this.isSubscribed,
       required this.userInterest,
       required this.userIndustry,
-      required this.userJob});
+      required this.userJob,
+      required this.following,
+      required this.followings,
+      required this.followers});
 
   /// factory user object
   factory User.fromDocument(Map<String, dynamic> doc) {
@@ -94,6 +100,9 @@ class User {
         userLevel: doc[USER_LEVEL] ?? 'user',
         isDarkMode: doc[USER_DARK_MODE] ?? false,
         isSubscribed: doc[USER_IS_SUBSCRIBED] ?? false,
+        following: doc["following"] ?? false,
+        followers: doc["followers"] ?? 0,
+        followings: doc["followings"] ?? 0,
         userRegDate: doc[CREATED_AT] is int
             ? DateTime.fromMillisecondsSinceEpoch(doc[CREATED_AT])
             : doc.containsKey(CREATED_AT)
