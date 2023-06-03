@@ -29,7 +29,8 @@
   "validation_warning": "Validation Error",
   "validation_3_characters": "At least 3 character is needed",
   "validation_1_character": "At least write something",
-
+  "validation_username": "Username is taken",
+  
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",
   "please_enter_the_sms_code_sent": "Please enter the SMS code sent\n to your device",

@@ -52,4 +52,17 @@ class UserApi {
       debugPrint(error.toString());
     }
   }
+
+  Future<bool> checkUsername(String username) async {
+    try {
+      String url = '${baseUri}user/username_available?username=$username';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.get(url);
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+    return false;
+  }
 }

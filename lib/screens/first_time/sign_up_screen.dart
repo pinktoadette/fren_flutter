@@ -1,3 +1,4 @@
+import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -22,6 +23,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _nameController = TextEditingController();
+  final _userApi = UserApi();
 
   /// User Birthday info
   int _userBirthDay = 0;
@@ -184,6 +186,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                               if (name?.isEmpty ?? false) {
                                 return _i18n.translate("enter_your_fullname");
                               }
+                              if (name != null && name.length < 3) {
+                                return _i18n
+                                    .translate("validation_3_characters");
+                              }
                               return null;
                             },
                           )),
@@ -246,6 +252,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   /// Handle Create account
   void _createAccount() async {
+    bool isNameAvail = await _userApi.checkUsername(_nameController.text);
+
+    if (!isNameAvail) {
+      Get.snackbar(
+        _i18n.translate("validation_warning"),
+        _i18n.translate("validation_username"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+      return;
+    }
+
     if (!_agreeTerms) {
       // Show error message
       Get.snackbar(
@@ -288,14 +306,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
           // Debug error
           debugPrint(error);
 
-          showScaffoldMessage(
-              message: _i18n
-                  .translate("an_error_occurred_while_creating_your_account"),
-              bgcolor: APP_ACCENT_COLOR);
-
-          // await _errorLogged.postError(
-          //     errorMessage: error,
-          //     errorLocation: "sign up screen - creating account");
+          Get.snackbar(
+            _i18n.translate("validation_warning"),
+            _i18n.translate("an_error_occurred_while_creating_your_account"),
+            snackPosition: SnackPosition.BOTTOM,
+            backgroundColor: APP_ERROR,
+          );
         },
       );
     }
