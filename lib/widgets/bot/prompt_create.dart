@@ -187,7 +187,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                   ),
                   const SizedBox(height: 10),
                   TextFormField(
-                    maxLength: 2500,
+                    maxLength: 200,
                     buildCounter: (_,
                             {required currentLength,
                             maxLength,

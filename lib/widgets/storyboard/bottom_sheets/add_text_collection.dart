@@ -1,11 +1,15 @@
+import 'dart:io';
+
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/image/image_source_sheet.dart';
 
 class AddEditText extends StatefulWidget {
   final String? text;
-  final Function(String?) onTextComplete;
+  final Function(Map<String, dynamic>?) onTextComplete;
   const AddEditText({Key? key, required this.onTextComplete, this.text})
       : super(key: key);
 
@@ -16,6 +20,8 @@ class AddEditText extends StatefulWidget {
 class _AddEditTextState extends State<AddEditText> {
   late AppLocalizations _i18n;
   late TextEditingController _textController = TextEditingController();
+  File? attachmentPreview;
+
   @override
   void initState() {
     super.initState();
@@ -48,7 +54,7 @@ class _AddEditTextState extends State<AddEditText> {
             child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
+                // mainAxisSize: MainAxisSize.min,
                 children: [
                   const SizedBox(
                     height: 10,
@@ -71,10 +77,32 @@ class _AddEditTextState extends State<AddEditText> {
                               : Text(_i18n.translate("UPDATE")))
                     ],
                   ),
-                  SizedBox(
-                      width: width,
+                  attachmentPreview != null
+                      ? _attachmentPreview()
+                      : SizedBox(
+                          height: 80,
+                          child: IconButton(
+                              onPressed: () {
+                                _addImage();
+                              },
+                              icon: const Icon(Iconsax.image)),
+                        ),
+                  ConstrainedBox(
+                      constraints: BoxConstraints(
+                        maxHeight: height - 250,
+                      ),
                       child: TextFormField(
-                        maxLines: 29,
+                        maxLines: null,
+                        decoration: InputDecoration(
+                          hintText: _i18n.translate("story_write_edit"),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
                         controller: _textController,
                         scrollPadding: EdgeInsets.only(
                             bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -83,15 +111,68 @@ class _AddEditTextState extends State<AddEditText> {
   }
 
   void _onComplete(String text) {
-    if (text.length < 3) {
+    if (text.length < 3 || attachmentPreview == null) {
       Get.snackbar(
         _i18n.translate("validation_warning"),
-        _i18n.translate("validation_3_characters"),
+        _i18n.translate("story_content_validation"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_WARNING,
       );
     } else {
-      widget.onTextComplete(text);
+      widget.onTextComplete({"text": text, "image": attachmentPreview});
     }
+  }
+
+  void _addImage() async {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      builder: (context) => ImageSourceSheet(
+        onImageSelected: (image) async {
+          if (image != null) {
+            Navigator.pop(context);
+            setState(() {
+              attachmentPreview = image;
+            });
+          }
+        },
+      ),
+    );
+  }
+
+  Widget _attachmentPreview() {
+    return Stack(
+      children: <Widget>[
+        SizedBox(
+          height: 80,
+          child: ClipRRect(
+              borderRadius: BorderRadius.circular(20), // Image border
+              child: SizedBox.fromSize(
+                  size: const Size.fromRadius(48), // Image radius
+                  child: AspectRatio(
+                    aspectRatio: 1.5,
+                    child: Image.file(
+                      attachmentPreview!,
+                      fit: BoxFit.fitHeight,
+                      width: 80,
+                      height: 80,
+                    ),
+                  ))),
+        ),
+        Positioned(
+          top: 0,
+          right: 5,
+          child: GestureDetector(
+            onTap: () {
+              setState(() {
+                attachmentPreview = null;
+              });
+            },
+            child: const Icon(Iconsax.close_circle),
+          ),
+        ),
+      ],
+    );
   }
 }

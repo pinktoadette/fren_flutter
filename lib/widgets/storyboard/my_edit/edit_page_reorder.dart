@@ -62,18 +62,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
               Container(
                 color: Theme.of(context).colorScheme.background,
                 width: size.width,
+                height: 100,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       IconButton(
-                        icon: const Icon(Iconsax.gallery_add),
-                        onPressed: () {
-                          _addImage();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.text),
+                        icon: const Icon(Iconsax.text_block),
                         onPressed: () {
                           _addEditText();
                         },
@@ -83,6 +78,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         onPressed: () {
                           widget.onMoveInsertPages({"action": "add"});
                         },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.user_tag),
+                        onPressed: () {},
                       ),
                     ]),
               )
@@ -99,65 +98,67 @@ class _EditPageReorderState extends State<EditPageReorder> {
       );
     }
 
-    return ReorderableListView(
-        children: [
-          for (int index = 0; index < scripts.length; index += 1)
-            Container(
-                key: ValueKey(scripts[index].scriptId),
-                decoration: const BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(width: 1, color: Colors.grey),
-                  ),
-                ),
-                child: Dismissible(
-                    confirmDismiss: (DismissDirection direction) async {
-                      return await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              _i18n.translate("DELETE"),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            content:
-                                Text(_i18n.translate("storybit_sure_delete")),
-                            actions: <Widget>[
-                              OutlinedButton(
-                                  onPressed: () => {
-                                        Navigator.of(context).pop(false),
-                                      },
-                                  child: Text(_i18n.translate("CANCEL"))),
-                              const SizedBox(
-                                width: 50,
-                              ),
-                              ElevatedButton(
-                                  onPressed: () => {
-                                        _deleteMessage(index),
-                                        Navigator.of(context).pop(true),
-                                      },
-                                  child: Text(_i18n.translate("DELETE"))),
-                            ],
+    return Container(
+        margin: const EdgeInsets.only(bottom: 150),
+        child: ReorderableListView(
+            children: [
+              for (int index = 0; index < scripts.length; index += 1)
+                Container(
+                    key: ValueKey(scripts[index].scriptId),
+                    decoration: const BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(width: 1, color: Colors.grey),
+                      ),
+                    ),
+                    child: Dismissible(
+                        confirmDismiss: (DismissDirection direction) async {
+                          return await showDialog(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                title: Text(
+                                  _i18n.translate("DELETE"),
+                                  style: Theme.of(context).textTheme.bodyMedium,
+                                ),
+                                content: Text(
+                                    _i18n.translate("storybit_sure_delete")),
+                                actions: <Widget>[
+                                  OutlinedButton(
+                                      onPressed: () => {
+                                            Navigator.of(context).pop(false),
+                                          },
+                                      child: Text(_i18n.translate("CANCEL"))),
+                                  const SizedBox(
+                                    width: 50,
+                                  ),
+                                  ElevatedButton(
+                                      onPressed: () => {
+                                            _deleteMessage(index),
+                                            Navigator.of(context).pop(true),
+                                          },
+                                      child: Text(_i18n.translate("DELETE"))),
+                                ],
+                              );
+                            },
                           );
                         },
-                      );
-                    },
-                    key: Key(scripts[index].scriptId ?? ""),
-                    child: ListTile(
-                      isThreeLine: true,
-                      title: const SizedBox.shrink(),
-                      subtitle: _showScript(index),
-                    )))
-        ],
-        onReorder: (int oldIndex, int newIndex) {
-          setState(() {
-            if (oldIndex < newIndex) {
-              newIndex -= 1;
-            }
-            Script item = scripts.removeAt(oldIndex);
-            scripts.insert(newIndex, item);
-            _updateSequence();
-          });
-        });
+                        key: Key(scripts[index].scriptId ?? ""),
+                        child: ListTile(
+                          isThreeLine: true,
+                          title: const SizedBox.shrink(),
+                          subtitle: _showScript(index),
+                        )))
+            ],
+            onReorder: (int oldIndex, int newIndex) {
+              setState(() {
+                if (oldIndex < newIndex) {
+                  newIndex -= 1;
+                }
+                Script item = scripts.removeAt(oldIndex);
+                scripts.insert(newIndex, item);
+                _updateSequence();
+              });
+            }));
   }
 
   Widget _showScript(int index) {
@@ -258,57 +259,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
-  void _addImage() async {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      enableDrag: true,
-      builder: (context) => ImageSourceSheet(
-        onImageSelected: (image) async {
-          if (image != null) {
-            Navigator.pop(context);
-
-            try {
-              String uploadImage = await uploadFile(
-                  file: image,
-                  category: UPLOAD_PATH_SCRIPT_IMAGE,
-                  categoryId: createUUID());
-              StoryPages pages = await _scriptApi.addScriptToStory(
-                  character: UserModel().user.username,
-                  type: "image",
-                  storyId: story.storyId,
-                  image: {
-                    "size": 19345,
-                    "height": 512,
-                    "width": 512,
-                    "uri": uploadImage,
-                    "manual": true
-                  },
-                  pageNum: widget.pageIndex + 1);
-              setState(() {
-                scripts = [...scripts, pages.scripts![0]];
-              });
-              widget.onUpdateSeq(scripts);
-              Get.snackbar(
-                _i18n.translate("story_added"),
-                _i18n.translate("story_edits_added"),
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: APP_SUCCESS,
-              );
-            } catch (err) {
-              Get.snackbar(
-                _i18n.translate("error"),
-                _i18n.translate("an_error_has_occurred"),
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: APP_ERROR,
-              );
-            }
-          }
-        },
-      ),
-    );
-  }
-
   void _addEditText({int? index}) async {
     showModalBottomSheet<void>(
         context: context,
@@ -316,28 +266,20 @@ class _EditPageReorderState extends State<EditPageReorder> {
         enableDrag: true,
         builder: (context) => AddEditText(
             text: index != null ? scripts[index].text : null,
-            onTextComplete: (newText) async {
+            onTextComplete: (newContent) async {
               try {
-                if (index == null) {
+                if ((index == null) & (newContent != null)) {
                   Navigator.pop(context);
-                  StoryPages pages = await _scriptApi.addScriptToStory(
-                      character: UserModel().user.username,
-                      type: "text",
-                      storyId: story.storyId,
-                      text: newText,
-                      pageNum: widget.pageIndex + 1);
-                  setState(() {
-                    scripts = [...scripts, pages.scripts![0]];
-                  });
+                  _saveOrUploadTextImg(newContent!);
                 }
 
-                if (index != null) {
+                if ((index != null) & (newContent?["text"] != "")) {
                   Navigator.pop(context);
                   Script script = Script(
-                      text: newText,
+                      text: newContent?["text"] ?? "",
                       type: 'text',
                       characterName: UserModel().user.username,
-                      scriptId: scripts[index].scriptId,
+                      scriptId: scripts[index!].scriptId,
                       status: ScriptStatus.ACTIVE.name,
                       seqNum: scripts[index].seqNum);
                   await _scriptApi.updateScript(script: script);
@@ -363,6 +305,45 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 );
               }
             }));
+  }
+
+  void _saveOrUploadTextImg(Map<String, dynamic> content) async {
+    if (content["text"] != "") {
+      StoryPages pages = await _scriptApi.addScriptToStory(
+          character: UserModel().user.username,
+          type: "text",
+          storyId: story.storyId,
+          text: content["text"] ?? "",
+          pageNum: widget.pageIndex + 1);
+      setState(() {
+        scripts = [...scripts, pages.scripts![0]];
+      });
+    }
+    if (content["image"] != "") {
+      String uploadImage = await uploadFile(
+          file: content["image"],
+          category: UPLOAD_PATH_SCRIPT_IMAGE,
+          categoryId: createUUID());
+      var bytes = content["image"].readAsBytesSync();
+      var result = await decodeImageFromList(bytes);
+
+      StoryPages pages = await _scriptApi.addScriptToStory(
+          character: UserModel().user.username,
+          type: "image",
+          storyId: story.storyId,
+          image: {
+            "size": bytes.length,
+            "height": result.height.toDouble(),
+            "width": result.width.toDouble(),
+            "uri": uploadImage,
+            "manual": true
+          },
+          pageNum: widget.pageIndex + 1);
+      setState(() {
+        scripts = [...scripts, pages.scripts![0]];
+      });
+    }
+    widget.onUpdateSeq(scripts);
   }
 
   void _updateSequence() async {

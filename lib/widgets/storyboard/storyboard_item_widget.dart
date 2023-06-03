@@ -81,14 +81,19 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                        padding: EdgeInsets.all(padding),
-                        child: StoryCover(
-                            width: storyCoverWidth,
-                            photoUrl: photoUrl,
-                            title: title)),
-                    SizedBox(
-                        width: rightBox,
+                    if (photoUrl != "")
+                      Padding(
+                          padding: EdgeInsets.all(padding),
+                          child: StoryCover(
+                              width: storyCoverWidth,
+                              photoUrl: photoUrl,
+                              title: title)),
+                    Container(
+                        padding: photoUrl == ""
+                            ? EdgeInsets.only(left: padding)
+                            : const EdgeInsets.only(left: 0),
+                        width:
+                            photoUrl != "" ? rightBox : width - padding * 3.2,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [

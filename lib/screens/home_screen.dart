@@ -229,7 +229,6 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: const Icon(Iconsax.user)),
             ]),
         body: _showCurrentNavBar(),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: ExpandableFab(
           isOpen: isFabOpen,
           distance: 80.0,

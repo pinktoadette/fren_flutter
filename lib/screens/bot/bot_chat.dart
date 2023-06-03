@@ -5,7 +5,6 @@ import 'dart:typed_data';
 
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
-import 'package:machi_app/controller/countdown.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
@@ -371,7 +370,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         CHAT_AUTHOR: _room.bot.name,
         BOT_ID: _room.bot.botId,
         CHAT_MESSAGE_ID: createUUID(),
-        CHAT_TEXT: "Sorry, I encountered an error 😕",
+        CHAT_TEXT: "Sorry, got an error 😕. ${err.toString()}",
         CHAT_TYPE: "text",
         CREATED_AT: getDateTimeEpoch()
       };

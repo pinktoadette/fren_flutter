@@ -54,9 +54,11 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
               hintText: _i18n.translate("comment_leave"),
               hintStyle:
                   TextStyle(color: Theme.of(context).colorScheme.primary),
-              border: UnderlineInputBorder(
-                  borderSide: BorderSide(
-                      color: Theme.of(context).colorScheme.tertiary)),
+              border: InputBorder.none,
+              focusedBorder: InputBorder.none,
+              enabledBorder: InputBorder.none,
+              errorBorder: InputBorder.none,
+              disabledBorder: InputBorder.none,
               fillColor: Colors.green,
               suffixIcon: IconButton(
                 icon: const Icon(Iconsax.send_1),
