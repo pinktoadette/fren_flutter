@@ -1,5 +1,6 @@
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -10,6 +11,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/comment/comment_row_widget.dart';
+import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -36,6 +38,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   List<Widget> newComments = [];
   final controller = PageController(viewportFraction: 1, keepPage: true);
+  final _timelineApi = TimelineApi();
 
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.8;
@@ -132,6 +135,17 @@ class _StoryPageViewState extends State<StoryPageView> {
           )),
           if (story?.status.name == StoryStatus.PUBLISHED.name) _commentSheet()
         ]));
+  }
+
+  Future<void> _onLikePressed(Story item, bool value) async {
+    String response = await _timelineApi.likeStoryMachi(
+        "story", item.storyId, value == true ? 1 : 0);
+    if (response == "OK") {
+      // Story update = item.copyWith(
+      //     mylikes: value == true ? 1 : 0,
+      //     likes: value == true ? (item.likes! + 1) : (item.likes! - 1));
+      // storyboardController.updateStoryboard(update);
+    }
   }
 
   Widget _commentSheet() {
@@ -257,12 +271,30 @@ class _StoryPageViewState extends State<StoryPageView> {
                   )));
             },
           )),
-      SmoothPageIndicator(
-        controller: controller,
-        count: story!.pages!.length,
-        effect: const ExpandingDotsEffect(
-            dotHeight: 14, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
-      ),
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(),
+          Expanded(
+              child: SmoothPageIndicator(
+            controller: controller,
+            count: story!.pages!.length,
+            effect: const ExpandingDotsEffect(
+                dotHeight: 14, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
+          )),
+          Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: LikeItemWidget(
+                onLike: (val) {
+                  _onLikePressed(widget.story, val);
+                },
+                size: 20,
+                likes: 0,
+                mylikes: 0),
+          )
+        ],
+      )
     ];
   }
 

@@ -135,7 +135,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        if (storyboard.story != null)
+                        if (storyboard.story != null &&
+                            storyboard.story!.length > 1)
                           ...storyboard.story!.take(10).map((sto) {
                             return Padding(
                                 padding: const EdgeInsets.only(right: 5),

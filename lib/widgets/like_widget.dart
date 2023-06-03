@@ -6,19 +6,21 @@ import 'package:machi_app/constants/constants.dart';
 class LikeItemWidget extends StatelessWidget {
   final int likes;
   final int mylikes;
+  final double? size;
   final Function(dynamic data) onLike;
 
   const LikeItemWidget(
       {Key? key,
       required this.onLike,
       required this.likes,
-      required this.mylikes})
+      required this.mylikes,
+      this.size})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return LikeButton(
-      size: 20,
+      size: size ?? 20,
       isLiked: mylikes == 1 ? true : false,
       onTap: (value) async {
         onLike(!value);
