@@ -13,7 +13,9 @@ import 'package:machi_app/widgets/timeline/timeline_header.dart';
 /// (This is done to reduce API calls and querying.)
 class CommentRowWidget extends StatelessWidget {
   final StoryComment item;
-  const CommentRowWidget({super.key, required this.item});
+  final Function(StoryComment data) onDelete;
+  const CommentRowWidget(
+      {super.key, required this.item, required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -56,6 +58,7 @@ class CommentRowWidget extends StatelessWidget {
   void _onDeleteComment(BuildContext context) async {
     final _commentApi = CommentApi();
     AppLocalizations _i18n = AppLocalizations.of(context);
+    onDelete(item);
 
     try {
       await _commentApi.deleteComment(item.commentId!);

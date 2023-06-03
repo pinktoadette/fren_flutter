@@ -3,6 +3,7 @@ import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:get/get.dart';
@@ -65,14 +66,23 @@ class TimelineHeader extends StatelessWidget {
                               icon: const Icon(Icons.more_horiz),
                               itemBuilder: (context) =>
                                   <PopupMenuEntry<String>>[
+                                    if ((user.userId ==
+                                        UserModel().user.userId))
+                                      const PopupMenuItem(
+                                        child: Text('Delete'),
+                                        value: 'delete',
+                                      ),
                                     const PopupMenuItem(
-                                      child: Text('Delete'),
-                                      value: 'delete',
+                                      child: Text('Report'),
+                                      value: 'report',
                                     )
                                   ],
                               onSelected: (val) {
                                 switch (val) {
                                   case 'delete':
+                                    onDeleteComment!(val);
+                                    break;
+                                  case 'report':
                                     onDeleteComment!(val);
                                     break;
                                   default:

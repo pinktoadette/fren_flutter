@@ -58,6 +58,14 @@ class _CommentWidgetState extends State<CommentWidget> {
     }
   }
 
+  void _removeItem(StoryComment comment) async {
+    _pagingController.itemList!
+        .removeWhere((element) => element.commentId == comment.commentId);
+    // can't use refresh D:
+    // _pagingController.refresh();
+    await _fetchPage(0);
+  }
+
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
@@ -71,7 +79,11 @@ class _CommentWidgetState extends State<CommentWidget> {
           children: [Text(_i18n.translate("comment_none"))],
         );
       }, itemBuilder: (context, item, index) {
-        return CommentRowWidget(item: item);
+        return CommentRowWidget(
+            item: item,
+            onDelete: (item) {
+              _removeItem(item);
+            });
       }),
       separatorBuilder: (BuildContext context, int index) {
         if ((index + 1) % 5 == 0) {

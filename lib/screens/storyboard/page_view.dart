@@ -206,8 +206,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   story: story!,
                                   notifyParent: (value) {
                                     setState(() {
-                                      newComments
-                                          .add(CommentRowWidget(item: value));
+                                      newComments.add(CommentRowWidget(
+                                        item: value,
+                                        onDelete: (_) {},
+                                      ));
                                     });
                                   },
                                 ))
