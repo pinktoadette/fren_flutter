@@ -296,6 +296,16 @@ const String COMMENT_ID = "commentId";
 const String ITEM_MY_LIKES = "mylikes";
 const String ITEM_LIKES = "likes";
 
+/// Report
+const String REPORT = "report";
+const String REPORT_SUBMITTED_BY = "user";
+const String REPORT_REASON = "reason";
+const String REPORT_ID = "reportId";
+const String REPORT__ID = "report_id";
+const String REPORT_ITEM_ID = "itemId";
+const String REPORT_ITEM_TYPE = "itemType";
+const String REPORT_COMMENTS = "comments";
+
 /// subscription
 const String SUBSCRIBED_AT = "subscribedAt";
 const String IS_SUBSCRIBED = "subscribed";
@@ -320,4 +330,6 @@ const String CHAT_FILE = "file";
 const String CHAT_TYPE = "type";
 const String CHAT_MESSAGE_ID = "messageId";
 const String CHAT_PHOTO_URL = "uri";
-const String CHAT_LINKED_MESSAGE_ID = "linkedMessageId"; /// image link to a text
+const String CHAT_LINKED_MESSAGE_ID = "linkedMessageId";
+
+/// image link to a text

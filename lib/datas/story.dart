@@ -62,6 +62,8 @@ class Story {
   final String? photoUrl;
   final String category;
   List<StoryPages>? pages;
+  final int? likes;
+  final int? mylikes;
   final int? createdAt;
   final int? updatedAt;
 
@@ -74,6 +76,8 @@ class Story {
       this.photoUrl,
       this.summary,
       required this.category,
+      this.likes,
+      this.mylikes,
       this.pages,
       this.createdAt,
       this.updatedAt});
@@ -87,6 +91,8 @@ class Story {
       List<StoryPages>? pages,
       String? photoUrl,
       String? category,
+      int? likes,
+      int? mylikes,
       String? summary}) {
     return Story(
         storyId: storyId ?? this.storyId,
@@ -97,6 +103,8 @@ class Story {
         pages: pages ?? this.pages,
         summary: summary ?? this.summary,
         photoUrl: photoUrl ?? this.photoUrl,
+        likes: likes ?? this.likes,
+        mylikes: mylikes ?? this.mylikes,
         category: category ?? this.category);
   }
 
@@ -110,6 +118,8 @@ class Story {
       STORY_PHOTO_URL: photoUrl,
       STORY_SUMMARY: summary,
       BOT_CREATED_BY: createdBy,
+      ITEM_MY_LIKES: mylikes,
+      ITEM_LIKES: likes,
       CREATED_AT: createdAt,
       UPDATED_AT: updatedAt,
     };
@@ -136,6 +146,8 @@ class Story {
         category: doc[STORY_CATEGORY] ?? "Other",
         pages: pages,
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
+        likes: doc[ITEM_LIKES],
+        mylikes: doc[ITEM_MY_LIKES],
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());
   }

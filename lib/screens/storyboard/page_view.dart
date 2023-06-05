@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:machi_app/widgets/like_widget.dart';
+import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -120,7 +121,25 @@ class _StoryPageViewState extends State<StoryPageView> {
                       onPressed: () {
                         Get.to(() => PublishStory(story: story!));
                       },
-                      child: Text(_i18n.translate("publish"))))
+                      child: Text(_i18n.translate("publish")))),
+            if (story?.status.name == StoryStatus.PUBLISHED.name)
+              PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (context) => <PopupMenuEntry<String>>[
+                        const PopupMenuItem(
+                          child: Text('Report'),
+                          value: 'report',
+                        )
+                      ],
+                  onSelected: (val) {
+                    switch (val) {
+                      case 'report':
+                        _onReport();
+                        break;
+                      default:
+                        break;
+                    }
+                  })
           ],
         ),
         body: Stack(children: [
@@ -137,14 +156,38 @@ class _StoryPageViewState extends State<StoryPageView> {
         ]));
   }
 
+  void _onReport() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: ReportForm(
+              itemId: story!.storyId,
+              itemType: "story",
+            ));
+      },
+    );
+  }
+
   Future<void> _onLikePressed(Story item, bool value) async {
-    String response = await _timelineApi.likeStoryMachi(
-        "story", item.storyId, value == true ? 1 : 0);
-    if (response == "OK") {
-      // Story update = item.copyWith(
-      //     mylikes: value == true ? 1 : 0,
-      //     likes: value == true ? (item.likes! + 1) : (item.likes! - 1));
-      // storyboardController.updateStoryboard(update);
+    try {
+      String response = await _timelineApi.likeStoryMachi(
+          "story", item.storyId, value == true ? 1 : 0);
+      if (response == "OK") {
+        Story update = item.copyWith(
+            mylikes: value == true ? 1 : 0,
+            likes: value == true ? (item.likes! + 1) : (item.likes! - 1));
+        storyboardController.updateStory(story: update);
+      }
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("DELETE"),
+        _i18n.translate("story_delete_error"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
     }
   }
 
@@ -312,7 +355,7 @@ class _StoryPageViewState extends State<StoryPageView> {
               },
               icon: const Icon(Iconsax.add),
               label: Text(
-                _i18n.translate("new_story_collection"),
+                _i18n.translate("story_collection"),
                 style: Theme.of(context).textTheme.labelSmall,
               )),
         if (story?.status != StoryStatus.PUBLISHED)

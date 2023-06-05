@@ -7,6 +7,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/report_list.dart';
 
 class TimelineHeader extends StatelessWidget {
   final _userApi = UserApi();
@@ -56,14 +57,14 @@ class TimelineHeader extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         SizedBox(
-                          width: width - 120,
+                          width: width - 117,
                           child: Text(user.username,
                               maxLines: 1,
                               style: Theme.of(context).textTheme.labelMedium),
                         ),
                         if (showMenu == true)
                           PopupMenuButton<String>(
-                              icon: const Icon(Icons.more_horiz),
+                              icon: const Icon(Icons.more_vert),
                               itemBuilder: (context) =>
                                   <PopupMenuEntry<String>>[
                                     if ((user.userId ==
@@ -73,7 +74,7 @@ class TimelineHeader extends StatelessWidget {
                                         value: 'delete',
                                       ),
                                     const PopupMenuItem(
-                                      child: Text('Report'),
+                                      child: Text('Report User'),
                                       value: 'report',
                                     )
                                   ],
@@ -83,7 +84,7 @@ class TimelineHeader extends StatelessWidget {
                                     onDeleteComment!(val);
                                     break;
                                   case 'report':
-                                    onDeleteComment!(val);
+                                    _onReportComment(context);
                                     break;
                                   default:
                                     break;
@@ -97,5 +98,20 @@ class TimelineHeader extends StatelessWidget {
                   ],
                 )
             ]));
+  }
+
+  void _onReportComment(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: ReportForm(
+              itemId: user.userId,
+              itemType: "user",
+            ));
+      },
+    );
   }
 }

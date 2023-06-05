@@ -162,6 +162,7 @@
   "gallery": "Gallery",
   "camera": "Camera",
   "SAVE": "SAVE",
+  "submit": "Submit",
   "DELETE": "DELETE",
   "no_user": "No User",
   "no_conversation": "No Conversation",
@@ -390,6 +391,9 @@
   "story_collection_subtitle": "Subtitle",
   "story_collection_summary": "Summary",
   "story_collection_create": "Create a new collection",
+
+  "report_create": "File A Report",
+  "report_comment": "Any comments (optional)",
 
   "tips_1": "Tip: Have suggestions? Chat with machi Alice",
   "tips_2": "Learn a new language by listening and reading",

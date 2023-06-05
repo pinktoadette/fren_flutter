@@ -1,0 +1,126 @@
+import 'dart:convert';
+
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:get/get.dart';
+import 'package:get/get_navigation/src/snackbar/snackbar.dart';
+import 'package:machi_app/api/machi/report_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:flutter/material.dart';
+
+class ReportForm extends StatefulWidget {
+  final String itemId;
+  final String itemType;
+
+  const ReportForm({Key? key, required this.itemId, required this.itemType})
+      : super(key: key);
+  @override
+  _ReportFormState createState() => _ReportFormState();
+}
+
+class _ReportFormState extends State<ReportForm> {
+  late AppLocalizations _i18n;
+  final _reportApi = ReportApi();
+  final TextEditingController _commentController = TextEditingController();
+  List<String> _category = [];
+  List<String> _selectedCategory = [];
+
+  @override
+  void initState() {
+    _getCategory();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _commentController.dispose();
+  }
+
+  void _getCategory() async {
+    String _cat = await rootBundle.loadString('assets/json/report.json');
+    List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
+    setState(() {
+      _category = category;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          title: Text(
+            _i18n.translate("report_create"),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          automaticallyImplyLeading: false,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            ListView.builder(
+              scrollDirection: Axis.vertical,
+              shrinkWrap: true,
+              itemCount: _category.length,
+              itemBuilder: (BuildContext context, int index) {
+                return CheckboxListTile(
+                    value: _selectedCategory.contains(_category[index]),
+                    onChanged: (selected) {
+                      if (selected == true) {
+                        setState(() {
+                          _selectedCategory.add(_category[index]);
+                        });
+                      } else {
+                        setState(() {
+                          _selectedCategory.remove(_category[index]);
+                        });
+                      }
+                    },
+                    title: Text(_category[index]));
+              },
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            TextFormField(
+              textCapitalization: TextCapitalization.sentences,
+              controller: _commentController,
+              maxLines: 3,
+              maxLength: 200,
+              decoration: InputDecoration(
+                hintText: _i18n.translate("report_comment"),
+                labelText: _i18n.translate("report_comment"),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+              ),
+            ),
+            Align(
+                alignment: Alignment.topRight,
+                child: ElevatedButton(
+                    onPressed: () {
+                      _submitReport();
+                    },
+                    child: Text(_i18n.translate("submit"))))
+          ],
+        ));
+  }
+
+  void _submitReport() async {
+    try {
+      await _reportApi.reportContent(
+          itemId: widget.itemId,
+          itemType: widget.itemType,
+          reason: _selectedCategory.join(", "),
+          comments: _commentController);
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
+  }
+}
