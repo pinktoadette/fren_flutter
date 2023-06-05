@@ -64,7 +64,10 @@ class TimelineHeader extends StatelessWidget {
                         ),
                         if (showMenu == true)
                           PopupMenuButton<String>(
-                              icon: const Icon(Icons.more_vert),
+                              icon: const Icon(
+                                Icons.more_vert,
+                                size: 16,
+                              ),
                               itemBuilder: (context) =>
                                   <PopupMenuEntry<String>>[
                                     if ((user.userId ==

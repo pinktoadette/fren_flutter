@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -6,6 +7,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/like_widget.dart';
+import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 /// Used on comment widget that lists all comments
@@ -19,6 +21,7 @@ class CommentRowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations _i18n = AppLocalizations.of(context);
     return Padding(
         padding: const EdgeInsets.only(left: 15, right: 15),
         child: Column(
@@ -39,9 +42,29 @@ class CommentRowWidget extends StatelessWidget {
               item.comment,
               style: Theme.of(context).textTheme.bodySmall,
             ),
+            const SizedBox(
+              height: 5,
+            ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                TextButton(
+                  onPressed: () {
+                    _onReportComment(context);
+                  },
+                  child: const Text(
+                    "Report",
+                    style: TextStyle(color: Colors.grey, fontSize: 12),
+                  ),
+                ),
+
+                // TextButton(
+                //     onPressed: () {},
+                //     child: Text(_i18n.translate("comment_reply"),
+                //         style: Theme.of(context).textTheme.labelSmall)),
+                const SizedBox(
+                  width: 5,
+                ),
                 LikeItemWidget(
                     onLike: (val) {
                       _onLikePressed(item.commentId!, val);
@@ -53,6 +76,21 @@ class CommentRowWidget extends StatelessWidget {
             const Divider()
           ],
         ));
+  }
+
+  void _onReportComment(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: ReportForm(
+              itemId: item.commentId!,
+              itemType: "comment",
+            ));
+      },
+    );
   }
 
   void _onDeleteComment(BuildContext context) async {
