@@ -122,7 +122,15 @@ class _ReportFormState extends State<ReportForm> {
           itemId: widget.itemId,
           itemType: widget.itemType,
           reason: _selectedCategory.join(", "),
-          comments: _commentController);
+          comments: _commentController.text);
+
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("submitted"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+      Navigator.pop(context);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),

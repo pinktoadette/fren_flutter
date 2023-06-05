@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class ReportApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = "$PY_API/report";
+  final baseUri = "${PY_API}report";
   final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
 
