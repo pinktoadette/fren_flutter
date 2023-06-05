@@ -108,6 +108,15 @@ class _ReportFormState extends State<ReportForm> {
   }
 
   void _submitReport() async {
+    if (_selectedCategory.isEmpty) {
+      Get.snackbar(
+        _i18n.translate("validation_warning"),
+        _i18n.translate("validation_select_1"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+      return;
+    }
     try {
       await _reportApi.reportContent(
           itemId: widget.itemId,
