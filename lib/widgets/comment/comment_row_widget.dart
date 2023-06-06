@@ -33,6 +33,7 @@ class CommentRowWidget extends StatelessWidget {
               radius: 15,
               timestamp: item.createdAt,
               showMenu: true,
+              comment: item,
               onDeleteComment: (action) {
                 _onDeleteComment(context);
               },
@@ -45,22 +46,12 @@ class CommentRowWidget extends StatelessWidget {
               height: 5,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                  onPressed: () {
-                    _onReportComment(context);
-                  },
-                  child: const Text(
-                    "Report",
-                    style: TextStyle(color: Colors.grey, fontSize: 12),
-                  ),
-                ),
-
-                // TextButton(
-                //     onPressed: () {},
-                //     child: Text(_i18n.translate("comment_reply"),
-                //         style: Theme.of(context).textTheme.labelSmall)),
+                    onPressed: () {},
+                    child: Text(_i18n.translate("comment_reply"),
+                        style: Theme.of(context).textTheme.labelSmall)),
                 const SizedBox(
                   width: 5,
                 ),
@@ -75,21 +66,6 @@ class CommentRowWidget extends StatelessWidget {
             const Divider()
           ],
         ));
-  }
-
-  void _onReportComment(BuildContext context) {
-    showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-            heightFactor: 0.9,
-            child: ReportForm(
-              itemId: item.commentId!,
-              itemType: "comment",
-            ));
-      },
-    );
   }
 
   void _onDeleteComment(BuildContext context) async {

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
@@ -17,6 +19,7 @@ class TimelineHeader extends StatelessWidget {
   final bool? showAvatar;
   final bool? showName;
   final bool? showMenu;
+  final StoryComment? comment;
   final Function(String action)? onDeleteComment;
 
   TimelineHeader(
@@ -27,12 +30,14 @@ class TimelineHeader extends StatelessWidget {
       this.timestamp,
       this.showMenu,
       this.showName,
+      this.comment,
       this.onDeleteComment})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    AppLocalizations _i18n = AppLocalizations.of(context);
     return InkWell(
         onTap: () async {
           User u = await _userApi.getUserById(user.userId);
@@ -70,24 +75,35 @@ class TimelineHeader extends StatelessWidget {
                               ),
                               itemBuilder: (context) =>
                                   <PopupMenuEntry<String>>[
+                                    PopupMenuItem(
+                                      child:
+                                          Text(_i18n.translate("report_user")),
+                                      value: 'report_user',
+                                    ),
+                                    if (comment != null)
+                                      PopupMenuItem(
+                                        child: Text(
+                                            _i18n.translate("report_comment")),
+                                        value: 'report_comment',
+                                      ),
                                     if ((user.userId ==
                                         UserModel().user.userId))
-                                      const PopupMenuItem(
-                                        child: Text('Delete'),
+                                      PopupMenuItem(
+                                        child: Text(_i18n.translate("DELETE")),
                                         value: 'delete',
                                       ),
-                                    const PopupMenuItem(
-                                      child: Text('Report User'),
-                                      value: 'report',
-                                    )
                                   ],
                               onSelected: (val) {
                                 switch (val) {
                                   case 'delete':
                                     onDeleteComment!(val);
                                     break;
-                                  case 'report':
-                                    _onReportComment(context);
+                                  case 'report_user':
+                                    _onReport(context, 'user', user.userId);
+                                    break;
+                                  case 'report_comment':
+                                    _onReport(context, 'comment',
+                                        comment!.commentId!);
                                     break;
                                   default:
                                     break;
@@ -103,7 +119,7 @@ class TimelineHeader extends StatelessWidget {
             ]));
   }
 
-  void _onReportComment(BuildContext context) {
+  void _onReport(BuildContext context, String itemType, String itemId) {
     showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
@@ -111,8 +127,8 @@ class TimelineHeader extends StatelessWidget {
         return FractionallySizedBox(
             heightFactor: 0.9,
             child: ReportForm(
-              itemId: user.userId,
-              itemType: "user",
+              itemId: itemId,
+              itemType: itemType,
             ));
       },
     );

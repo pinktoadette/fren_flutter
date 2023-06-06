@@ -395,7 +395,10 @@
   "story_collection_create": "Create a new collection",
 
   "report_create": "File A Report",
-  "report_comment": "Any comments (optional)",
+  "report_comment_reason": "Any comments (optional)",
+  "report_comment": "Report comment",
+  "report_user": "Report user",
+  "report_story": "Report board",
 
   "tips_1": "Tip: Have suggestions? Chat with machi Alice",
   "tips_2": "Learn a new language by listening and reading",

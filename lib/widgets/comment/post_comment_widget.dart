@@ -59,7 +59,6 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
               enabledBorder: InputBorder.none,
               errorBorder: InputBorder.none,
               disabledBorder: InputBorder.none,
-              fillColor: Colors.green,
               suffixIcon: IconButton(
                 icon: const Icon(Iconsax.send_1),
                 onPressed: () {
@@ -84,11 +83,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
       widget.notifyParent(newComment);
       Get.snackbar(
         _i18n.translate("success"),
-        _i18n.translate("Posted"),
+        _i18n.translate("posted"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_SUCCESS,
       );
       _commentController.clear();
+      FocusManager.instance.primaryFocus?.unfocus();
     } catch (e) {
       Get.snackbar(
         _i18n.translate("error"),
