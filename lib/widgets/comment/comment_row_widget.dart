@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -69,8 +68,8 @@ class CommentRowWidget extends StatelessWidget {
                     onLike: (val) {
                       _onLikePressed(item.commentId!, val);
                     },
-                    likes: 0,
-                    mylikes: 0)
+                    likes: item.likes ?? 0,
+                    mylikes: item.mylikes ?? 0)
               ],
             ),
             const Divider()

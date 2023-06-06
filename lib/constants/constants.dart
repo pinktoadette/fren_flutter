@@ -291,6 +291,7 @@ const String VOICE_NAME = "voiceName";
 //// Replies
 const String STORY_COMMENT = "comment";
 const String COMMENT_ID = "commentId";
+const String COMMENT_COUNT = "commentCount";
 
 /// Likes
 const String ITEM_MY_LIKES = "mylikes";

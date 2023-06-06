@@ -184,7 +184,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     } catch (err) {
       Get.snackbar(
         _i18n.translate("DELETE"),
-        _i18n.translate("story_delete_error"),
+        _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );

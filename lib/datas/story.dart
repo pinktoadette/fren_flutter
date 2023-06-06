@@ -8,22 +8,29 @@ class StoryComment {
   int createdAt;
   int updatedAt;
   StoryUser user;
+  int? likes;
+  int? mylikes;
 
   StoryComment(
       {required this.comment,
       required this.createdAt,
       required this.updatedAt,
       required this.user,
-      this.commentId});
+      this.commentId,
+      this.likes,
+      this.mylikes});
 
   factory StoryComment.fromDocument(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc["user"]);
     return StoryComment(
-        comment: doc[STORY_COMMENT],
-        user: user,
-        commentId: doc[COMMENT_ID],
-        createdAt: doc[CREATED_AT],
-        updatedAt: doc[UPDATED_AT]);
+      comment: doc[STORY_COMMENT],
+      user: user,
+      commentId: doc[COMMENT_ID],
+      likes: doc[ITEM_LIKES],
+      mylikes: doc[ITEM_MY_LIKES],
+      createdAt: doc[CREATED_AT],
+      updatedAt: doc[UPDATED_AT],
+    );
   }
 }
 
@@ -66,6 +73,7 @@ class Story {
   final int? mylikes;
   final int? createdAt;
   final int? updatedAt;
+  final int? commentCount;
 
   Story(
       {required this.storyId,
@@ -78,6 +86,7 @@ class Story {
       required this.category,
       this.likes,
       this.mylikes,
+      this.commentCount,
       this.pages,
       this.createdAt,
       this.updatedAt});
@@ -93,6 +102,7 @@ class Story {
       String? category,
       int? likes,
       int? mylikes,
+      int? commentCount,
       String? summary}) {
     return Story(
         storyId: storyId ?? this.storyId,
@@ -105,6 +115,7 @@ class Story {
         photoUrl: photoUrl ?? this.photoUrl,
         likes: likes ?? this.likes,
         mylikes: mylikes ?? this.mylikes,
+        commentCount: commentCount ?? this.commentCount,
         category: category ?? this.category);
   }
 
@@ -148,6 +159,7 @@ class Story {
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
         likes: doc[ITEM_LIKES],
         mylikes: doc[ITEM_MY_LIKES],
+        commentCount: doc[COMMENT_COUNT],
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt());
   }

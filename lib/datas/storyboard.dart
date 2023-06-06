@@ -46,6 +46,7 @@ class Storyboard {
   final StoryStatus status;
   final int? likes;
   final int? mylikes;
+  final int? commentCount;
 
   Storyboard(
       {required this.title,
@@ -59,7 +60,8 @@ class Storyboard {
       required this.updatedAt,
       this.photoUrl,
       this.likes,
-      this.mylikes});
+      this.mylikes,
+      this.commentCount});
 
   Storyboard copyWith(
       {String? title,
@@ -73,7 +75,8 @@ class Storyboard {
       int? updatedAt,
       String? photoUrl,
       int? likes,
-      int? mylikes}) {
+      int? mylikes,
+      int? commentCount}) {
     return Storyboard(
         title: title ?? this.title,
         story: story ?? this.story,
@@ -86,7 +89,8 @@ class Storyboard {
         updatedAt: updatedAt ?? this.updatedAt,
         photoUrl: photoUrl ?? this.photoUrl,
         likes: likes ?? this.likes,
-        mylikes: mylikes ?? this.mylikes);
+        mylikes: mylikes ?? this.mylikes,
+        commentCount: commentCount ?? this.commentCount);
   }
 
   Map<String, dynamic> toJSON() {
@@ -101,7 +105,8 @@ class Storyboard {
       'createdBy': createdBy,
       'photoUrl': photoUrl,
       'likes': likes,
-      'mylikes': mylikes
+      'mylikes': mylikes,
+      'commentCount': commentCount
     };
   }
 
@@ -127,7 +132,8 @@ class Storyboard {
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt(),
         photoUrl: doc[STORYBOARD_PHOTO_URL] ?? "",
-        likes: doc[ITEM_LIKES],
-        mylikes: doc[ITEM_MY_LIKES]);
+        likes: doc[ITEM_LIKES] ?? 0,
+        mylikes: doc[ITEM_MY_LIKES] ?? 0,
+        commentCount: doc[COMMENT_COUNT] ?? 0);
   }
 }

@@ -3,6 +3,7 @@ import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
@@ -38,6 +39,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     double storyCoverWidth = 80;
     double padding = 15;
@@ -137,7 +139,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       children: [
                         if (storyboard.story != null &&
                             storyboard.story!.length > 1)
-                          ...storyboard.story!.take(10).map((sto) {
+                          ...storyboard.story!.take(5).map((sto) {
                             return Padding(
                                 padding: const EdgeInsets.only(right: 5),
                                 child: StoryCover(
@@ -148,6 +150,10 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                     title: sto.title));
                           }),
                         const Spacer(),
+                        if (storyboard.status == StoryStatus.PUBLISHED)
+                          Text(
+                              "${storyboard.commentCount ?? 0} ${_i18n.translate("comments")}",
+                              style: Theme.of(context).textTheme.labelSmall),
                         SizedBox(
                             width: 50,
                             child: LikeItemWidget(
