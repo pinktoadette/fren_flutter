@@ -12,13 +12,19 @@ class CommentApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<StoryComment> postComment(
-      {required String storyId, required String comment}) async {
+      {required String storyId,
+      required String comment,
+      StoryComment? replyToComment}) async {
     try {
       String url = '${baseUri}comment';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
-      final response = await dio
-          .post(url, data: {STORY_ID: storyId, STORY_COMMENT: comment});
+      final response = await dio.post(url, data: {
+        STORY_ID: storyId,
+        STORY_COMMENT: comment,
+        COMMENT_REPLY_TO_ID: replyToComment?.commentId,
+        COMMENT_REPLY_TO_USER_ID: replyToComment?.user.userId
+      });
       StoryComment storyComment = StoryComment.fromDocument(response.data);
       return storyComment;
     } catch (error) {

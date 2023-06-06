@@ -10,6 +10,7 @@ class StoryComment {
   StoryUser user;
   int? likes;
   int? mylikes;
+  List<StoryComment>? response;
 
   StoryComment(
       {required this.comment,
@@ -18,19 +19,30 @@ class StoryComment {
       required this.user,
       this.commentId,
       this.likes,
-      this.mylikes});
+      this.mylikes,
+      this.response});
 
   factory StoryComment.fromDocument(Map<String, dynamic> doc) {
     StoryUser user = StoryUser.fromDocument(doc["user"]);
+    List<StoryComment> responses = [];
+
+    if (doc[COMMENT_RESPONSES] != null) {
+      for (int i = 0; i < doc[COMMENT_RESPONSES].length; i++) {
+        StoryComment comment =
+            StoryComment.fromDocument(doc[COMMENT_RESPONSES][i]);
+        responses.add(comment);
+      }
+    }
+
     return StoryComment(
-      comment: doc[STORY_COMMENT],
-      user: user,
-      commentId: doc[COMMENT_ID],
-      likes: doc[ITEM_LIKES],
-      mylikes: doc[ITEM_MY_LIKES],
-      createdAt: doc[CREATED_AT],
-      updatedAt: doc[UPDATED_AT],
-    );
+        comment: doc[STORY_COMMENT],
+        user: user,
+        commentId: doc[COMMENT_ID],
+        likes: doc[ITEM_LIKES],
+        mylikes: doc[ITEM_MY_LIKES],
+        createdAt: doc[CREATED_AT],
+        updatedAt: doc[UPDATED_AT],
+        response: responses);
   }
 }
 

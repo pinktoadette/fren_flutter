@@ -1,6 +1,6 @@
 import 'dart:async';
-
 import 'package:audio_service/audio_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/audio/services/queue_state.dart';
 import 'package:rxdart/rxdart.dart';
@@ -32,7 +32,7 @@ class MyAudioHandler extends BaseAudioHandler {
     try {
       await _player.setAudioSource(_playlist);
     } catch (e) {
-      print("Error: $e");
+      debugPrint("Error: $e");
     }
   }
 

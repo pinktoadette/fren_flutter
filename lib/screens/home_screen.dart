@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const ActivityTab(),
       // const PlaylistTab(),
       const Storyboard(),
-      ConversationsTab(),
+      const ConversationsTab(),
       const ProfileTab()
     ];
 

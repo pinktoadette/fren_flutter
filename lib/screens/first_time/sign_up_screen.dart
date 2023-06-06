@@ -4,7 +4,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
-import 'package:machi_app/widgets/show_scaffold_msg.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';

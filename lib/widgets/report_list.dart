@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
-import 'package:get/get_navigation/src/snackbar/snackbar.dart';
 import 'package:machi_app/api/machi/report_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -23,7 +22,7 @@ class _ReportFormState extends State<ReportForm> {
   final _reportApi = ReportApi();
   final TextEditingController _commentController = TextEditingController();
   List<String> _category = [];
-  List<String> _selectedCategory = [];
+  final List<String> _selectedCategory = [];
 
   @override
   void initState() {

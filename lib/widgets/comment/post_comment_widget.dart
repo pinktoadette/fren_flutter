@@ -106,7 +106,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   void _postComment() async {
     try {
       StoryComment newComment = await _commentApi.postComment(
-          storyId: widget.story.storyId, comment: _commentController.text);
+          storyId: widget.story.storyId,
+          comment: _commentController.text,
+          replyToComment: commentController.replyToComment);
       widget.notifyParent(newComment);
       Get.snackbar(
         _i18n.translate("success"),

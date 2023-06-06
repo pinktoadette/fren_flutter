@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -19,8 +18,8 @@ StoryComment initial = StoryComment(
 class CommentController extends GetxController {
   ScrollController controller = ScrollController();
 
-  final _commentApi = CommentApi();
   RxList<StoryComment> comments = <StoryComment>[].obs;
+  // ignore: prefer_final_fields
   Rx<StoryComment> _replyToComment = initial.obs;
 
   StoryComment get replyToComment => _replyToComment.value;

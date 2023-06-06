@@ -14,16 +14,25 @@ import 'package:machi_app/widgets/timeline/timeline_header.dart';
 /// (This is done to reduce API calls and querying.)
 class CommentRowWidget extends StatelessWidget {
   final StoryComment item;
+  final bool hideReply;
   final Function(StoryComment data) onDelete;
   const CommentRowWidget(
-      {super.key, required this.item, required this.onDelete});
+      {super.key,
+      required this.item,
+      required this.onDelete,
+      this.hideReply = false});
 
   @override
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
-    return Padding(
-        padding: const EdgeInsets.only(left: 15, right: 15),
+    CommentController commentController = Get.find(tag: 'comment');
+    double width = MediaQuery.of(context).size.width;
+    return Obx(() => Container(
+        color: commentController.replyToComment.commentId == item.commentId
+            ? APP_TERTIARY.withOpacity(0.2)
+            : null,
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TimelineHeader(
@@ -34,28 +43,30 @@ class CommentRowWidget extends StatelessWidget {
               timestamp: item.createdAt,
               showMenu: true,
               comment: item,
+              isChild: true,
               onDeleteComment: (action) {
                 _onDeleteComment(context);
               },
             ),
-            Text(
-              item.comment,
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            Padding(
+                padding: const EdgeInsets.only(left: 15, right: 15),
+                child: Text(
+                  item.comment,
+                  style: Theme.of(context).textTheme.bodySmall,
+                )),
             const SizedBox(
               height: 5,
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                TextButton(
-                    onPressed: () {
-                      CommentController commentController =
-                          Get.find(tag: 'comment');
-                      commentController.replyToComment = item;
-                    },
-                    child: Text(_i18n.translate("comment_reply"),
-                        style: Theme.of(context).textTheme.labelSmall)),
+                if (hideReply == false)
+                  TextButton(
+                      onPressed: () {
+                        commentController.replyToComment = item;
+                      },
+                      child: Text(_i18n.translate("comment_reply"),
+                          style: Theme.of(context).textTheme.labelSmall)),
                 const SizedBox(
                   width: 5,
                 ),
@@ -64,12 +75,28 @@ class CommentRowWidget extends StatelessWidget {
                       _onLikePressed(item.commentId!, val);
                     },
                     likes: item.likes ?? 0,
-                    mylikes: item.mylikes ?? 0)
+                    mylikes: item.mylikes ?? 0),
+                const SizedBox(
+                  width: 20,
+                ),
               ],
             ),
-            const Divider()
+            const Divider(),
+            if (item.response != null)
+              ...item.response!
+                  .map((ele) => Container(
+                        color: Colors.black,
+                        width: width,
+                        child: CommentRowWidget(
+                            hideReply: true,
+                            item: ele,
+                            onDelete: (ele) {
+                              onDelete(ele);
+                            }),
+                      ))
+                  .toList()
           ],
-        ));
+        )));
   }
 
   void _onDeleteComment(BuildContext context) async {

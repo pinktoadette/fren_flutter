@@ -19,6 +19,7 @@ class TimelineHeader extends StatelessWidget {
   final bool? showAvatar;
   final bool? showName;
   final bool? showMenu;
+  final bool? isChild;
   final StoryComment? comment;
   final Function(String action)? onDeleteComment;
 
@@ -31,6 +32,7 @@ class TimelineHeader extends StatelessWidget {
       this.showMenu,
       this.showName,
       this.comment,
+      this.isChild = false,
       this.onDeleteComment})
       : super(key: key);
 
@@ -43,80 +45,84 @@ class TimelineHeader extends StatelessWidget {
           User u = await _userApi.getUserById(user.userId);
           Get.to(ProfileScreen(user: u));
         },
-        child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              if (showAvatar == true)
-                AvatarInitials(
-                    radius: radius,
-                    photoUrl: user.photoUrl,
-                    username: user.username),
-              const SizedBox(width: 5),
-              if (showName == true)
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          width: width - 117,
-                          child: Text(user.username,
-                              maxLines: 1,
-                              style: Theme.of(context).textTheme.labelMedium),
-                        ),
-                        if (showMenu == true)
-                          PopupMenuButton<String>(
-                              icon: const Icon(
-                                Icons.more_vert,
-                                size: 16,
-                              ),
-                              itemBuilder: (context) =>
-                                  <PopupMenuEntry<String>>[
-                                    PopupMenuItem(
-                                      child:
-                                          Text(_i18n.translate("report_user")),
-                                      value: 'report_user',
-                                    ),
-                                    if (comment != null)
+        child: Container(
+          padding: const EdgeInsets.only(left: 15, right: 15),
+          child: Row(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                if (showAvatar == true)
+                  AvatarInitials(
+                      radius: radius,
+                      photoUrl: user.photoUrl,
+                      username: user.username),
+                const SizedBox(width: 5),
+                if (showName == true)
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          /// cannot align.idk
+                          SizedBox(
+                            width: width - 120,
+                            child: Text(user.username,
+                                style: Theme.of(context).textTheme.labelMedium),
+                          ),
+                          if (showMenu == true)
+                            PopupMenuButton<String>(
+                                icon: const Icon(
+                                  Icons.more_vert,
+                                  size: 14,
+                                ),
+                                itemBuilder: (context) =>
+                                    <PopupMenuEntry<String>>[
                                       PopupMenuItem(
                                         child: Text(
-                                            _i18n.translate("report_comment")),
-                                        value: 'report_comment',
+                                            _i18n.translate("report_user")),
+                                        value: 'report_user',
                                       ),
-                                    if ((user.userId ==
-                                        UserModel().user.userId))
-                                      PopupMenuItem(
-                                        child: Text(_i18n.translate("DELETE")),
-                                        value: 'delete',
-                                      ),
-                                  ],
-                              onSelected: (val) {
-                                switch (val) {
-                                  case 'delete':
-                                    onDeleteComment!(val);
-                                    break;
-                                  case 'report_user':
-                                    _onReport(context, 'user', user.userId);
-                                    break;
-                                  case 'report_comment':
-                                    _onReport(context, 'comment',
-                                        comment!.commentId!);
-                                    break;
-                                  default:
-                                    break;
-                                }
-                              })
-                      ],
-                    ),
-                    if (timestamp != null)
-                      Text(formatDate(timestamp!),
-                          style: Theme.of(context).textTheme.labelSmall),
-                  ],
-                )
-            ]));
+                                      if (comment != null)
+                                        PopupMenuItem(
+                                          child: Text(_i18n
+                                              .translate("report_comment")),
+                                          value: 'report_comment',
+                                        ),
+                                      if ((user.userId ==
+                                          UserModel().user.userId))
+                                        PopupMenuItem(
+                                          child:
+                                              Text(_i18n.translate("DELETE")),
+                                          value: 'delete',
+                                        ),
+                                    ],
+                                onSelected: (val) {
+                                  switch (val) {
+                                    case 'delete':
+                                      onDeleteComment!(val);
+                                      break;
+                                    case 'report_user':
+                                      _onReport(context, 'user', user.userId);
+                                      break;
+                                    case 'report_comment':
+                                      _onReport(context, 'comment',
+                                          comment!.commentId!);
+                                      break;
+                                    default:
+                                      break;
+                                  }
+                                })
+                        ],
+                      ),
+                      if (timestamp != null)
+                        Text(formatDate(timestamp!),
+                            style: Theme.of(context).textTheme.labelSmall),
+                    ],
+                  )
+              ]),
+        ));
   }
 
   void _onReport(BuildContext context, String itemType, String itemId) {
