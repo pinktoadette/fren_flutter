@@ -2,11 +2,11 @@ import 'package:get/get.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/like_widget.dart';
-import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 /// Used on comment widget that lists all comments
@@ -49,7 +49,11 @@ class CommentRowWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      CommentController commentController =
+                          Get.find(tag: 'comment');
+                      commentController.replyToComment = item;
+                    },
                     child: Text(_i18n.translate("comment_reply"),
                         style: Theme.of(context).textTheme.labelSmall)),
                 const SizedBox(

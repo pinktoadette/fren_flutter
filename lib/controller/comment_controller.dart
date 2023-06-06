@@ -21,28 +21,12 @@ class CommentController extends GetxController {
 
   final _commentApi = CommentApi();
   RxList<StoryComment> comments = <StoryComment>[].obs;
-  Rx<StoryComment> newComment = initial.obs;
+  Rx<StoryComment> _replyToComment = initial.obs;
 
-  static const _pageSize = 20;
+  StoryComment get replyToComment => _replyToComment.value;
+  set replyToComment(StoryComment value) => _replyToComment.value = value;
 
-  // StoryComment? get newComment => _newComment.value;
-  // set newComment(StoryComment? value) => _newComment.value = value;
-
-  void currentNewComment(StoryComment addComment) {
-    newComment = addComment.obs;
-    newComment.refresh();
-  }
-
-  void onCurrentStoryComment(List<StoryComment> comment) {
-    comments = comment.obs;
-    comments.refresh();
-  }
-
-  Future<List<StoryComment>> fetchComments(int pageKey, String storyId) async {
-    List<StoryComment> newItems =
-        await _commentApi.getComments(pageKey, _pageSize, storyId);
-    onCurrentStoryComment(newItems);
-    comments.refresh();
-    return newItems;
+  void clearReplyTo() {
+    replyToComment = initial;
   }
 }

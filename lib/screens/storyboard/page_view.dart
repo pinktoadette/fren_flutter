@@ -94,13 +94,6 @@ class _StoryPageViewState extends State<StoryPageView> {
                   : _i18n.translate("story_collection"),
               style: Theme.of(context).textTheme.bodySmall,
             ),
-            leading: BackButton(onPressed: () {
-              CommentController commentController = Get.find(tag: 'comment');
-
-              commentController.comments.clear();
-
-              Get.back();
-            }),
           ),
           body: NoData(text: _i18n.translate("loading")));
     }
@@ -111,6 +104,13 @@ class _StoryPageViewState extends State<StoryPageView> {
                 ? _i18n.translate("storyboard_preview")
                 : _i18n.translate("story_collection"),
             style: Theme.of(context).textTheme.bodySmall,
+          ),
+          leading: BackButton(
+            onPressed: () {
+              CommentController commentController = Get.find(tag: 'comment');
+              commentController.clearReplyTo();
+              Get.back();
+            },
           ),
           actions: [
             if (widget.isPreview == false) _unpublishedTools(),
