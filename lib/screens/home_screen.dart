@@ -215,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
               /// Discover new machi
               BottomNavigationBarItem(
                   label: _i18n.translate("storyboard"),
-                  icon: const Icon(Iconsax.scan_barcode)),
+                  icon: const Icon(Iconsax.book)),
 
               /// Conversations Tab
               BottomNavigationBarItem(

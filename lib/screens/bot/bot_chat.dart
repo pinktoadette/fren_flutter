@@ -185,13 +185,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
-            onMessageFooterTap: _handleMessageDoubleTap,
+            onMessageFooterTap: _handleMessageFooterTap,
+            messageFooterIcon: const Icon(Iconsax.book, size: 14),
             user: _user),
       );
     }
   }
 
-  void _handleMessageDoubleTap(BuildContext _, types.Message message) {
+  void _handleMessageFooterTap(BuildContext _, types.Message message) {
     if (_room.users.length == 1) {
       showModalBottomSheet<void>(
         context: context,
