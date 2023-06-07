@@ -52,7 +52,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
             )
           : Obx(() => ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
-                if ((index + 1) % 2 == 0) {
+                if ((index + 1) % 4 == 0) {
                   return Padding(
                     padding:
                         const EdgeInsetsDirectional.only(top: 10, bottom: 10),

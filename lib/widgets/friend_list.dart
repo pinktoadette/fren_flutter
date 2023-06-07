@@ -68,11 +68,11 @@ class _FriendListState extends State<FriendListWidget> {
                             const Divider(height: 10),
                         itemCount: snapshot.data.length,
                         itemBuilder: ((context, index) {
-                          final isUserAdded =
-                              chatController.currentRoom.users.where(
-                            (element) =>
-                                element.id == snapshot.data[index][USER_ID],
-                          );
+                          final isUserAdded = false;
+                          //     chatController.currentRoom.users.where(
+                          //   (element) =>
+                          //       element?.["id"] == snapshot.data[index][USER_ID],
+                          // );
                           return ListTile(
                             leading: InkWell(
                                 onTap: () async {
@@ -95,7 +95,7 @@ class _FriendListState extends State<FriendListWidget> {
                               const Spacer(),
                             ]),
                             subtitle: Text(snapshot.data[index][USER_USERNAME]),
-                            trailing: isUserAdded.isNotEmpty
+                            trailing: isUserAdded == true
                                 ? OutlinedButton(
                                     onPressed: () {
                                       null;

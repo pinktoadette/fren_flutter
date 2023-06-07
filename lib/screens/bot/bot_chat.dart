@@ -158,7 +158,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   updateFromWidgets(e);
                 },
                 isBotTyping: isBotTyping,
-                showDoubleTap: _room.users.length == 1,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
                 inputTextCursorColor: Colors.white,
@@ -174,7 +173,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
             showUserAvatars: true,
             isAttachmentUploading: _isAttachmentUploading,
             messages: _messages,
-            onMessageDoubleTap: _handleMessageDoubleTap,
             onSendPressed: _handleSendPressed,
             onAvatarTap: (messageUser) async {
               if (!messageUser.id.contains("Machi_")) {
@@ -187,6 +185,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
+            onMessageFooterTap: _handleMessageDoubleTap,
             user: _user),
       );
     }

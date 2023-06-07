@@ -57,7 +57,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
         return StoryboardItemWidget(item: item);
       }),
       separatorBuilder: (BuildContext context, int index) {
-        if ((index + 1) % 2 == 0) {
+        if ((index + 1) % 4 == 0) {
           return Padding(
             padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
             child: Container(
