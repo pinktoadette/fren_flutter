@@ -14,7 +14,6 @@ import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/discover_card.dart';
 import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
-import 'package:machi_app/widgets/search_user.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 import 'package:get/get.dart';

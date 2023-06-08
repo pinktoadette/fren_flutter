@@ -10,6 +10,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:purchases_flutter/models/offering_wrapper.dart';
 import 'package:purchases_flutter/models/package_wrapper.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
@@ -21,7 +22,7 @@ class SubscriptionProduct extends StatefulWidget {
 class _SubscriptionProductState extends State<SubscriptionProduct> {
   bool isUserSubscribed = false;
   late AppLocalizations _i18n;
-  String _selectedTier = "sub_weekly";
+  late Package _selectedTier;
 
   List<Offering> offers = [];
 
@@ -64,9 +65,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       List<Offering> offerings = await PurchasesApi.fetchOffers();
       setState(() {
         offers = offerings;
-        _selectedTier = offerings[0].availablePackages[1].identifier;
+        _selectedTier = offerings[0].availablePackages[1];
       });
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("subscribe_no_offering_found"),
@@ -83,16 +84,22 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     return Column(
       children: [
         Text(offers[0].serverDescription),
+        Text(
+          _i18n.translate("subscribe_whats_different"),
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: offers[0].availablePackages.map((e) {
               return _individualTier(e);
             }).toList()),
-        const Spacer(),
         _showPricing(),
+        const Spacer(),
         ElevatedButton(
-            onPressed: () {},
+            onPressed: () {
+              _makePurchase();
+            },
             style: ElevatedButton.styleFrom(
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
@@ -113,7 +120,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     return InkWell(
         onTap: () {
           setState(() {
-            _selectedTier = info.identifier;
+            _selectedTier = info;
           });
         },
         child: Padding(
@@ -122,10 +129,10 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                    color: _selectedTier == info.identifier
+                    color: _selectedTier == info
                         ? APP_ACCENT_COLOR
                         : Theme.of(context).colorScheme.primary,
-                    width: _selectedTier == info.identifier ? 3 : 1,
+                    width: _selectedTier == info ? 3 : 1,
                   ),
                 ),
                 width: (screenWidth / numPackages) - numPackages * 3.5,
@@ -147,16 +154,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 ))));
   }
 
-  // ignore: unused_element
   Widget _showPricing() {
-    int index = offers[0]
-        .availablePackages
-        .indexWhere((element) => element.identifier == _selectedTier);
-    Icon icon = index == 1
-        ? const Icon(Iconsax.close_circle)
-        : const Icon(Iconsax.tick_circle);
     return SizedBox(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
               padding: const EdgeInsets.all(10),
@@ -169,28 +171,18 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                       _i18n.translate("subscribe_detail_plan_premium"),
                       style: Theme.of(context).textTheme.bodyMedium,
                     ),
-                    const SizedBox(height: 20),
-                    _rowFeature(
-                        const Icon(Iconsax.tick_circle),
-                        index,
-                        _i18n.translate("subscribe_detail_unlimted_request") +
-                            (index == 1 ? " of 5 Per Day" : "")),
-                    _rowFeature(icon, index,
-                        _i18n.translate("subscribe_detail_image_genator")),
-                    _rowFeature(icon, index,
-                        _i18n.translate("subscribe_detail_read_image")),
-                    _rowFeature(icon, index,
-                        _i18n.translate("subscribe_detail_add_friends")),
-                    _rowFeature(
-                        icon,
-                        index,
-                        _i18n.translate(
-                            "subscribe_detail_access_additional_models")),
-                    _rowFeature(
-                        icon,
-                        index,
-                        _i18n
-                            .translate("subscribe_get_notification_from_machi"))
+                    const SizedBox(height: 10),
+                    Text(
+                      _selectedTier.storeProduct.description,
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 10),
+                    if (!_selectedTier.storeProduct.identifier
+                        .contains(SUB_TOKEN_IDENTIFIER))
+                      ..._subFeatures(),
+                    if (_selectedTier.storeProduct.identifier
+                        .contains(SUB_TOKEN_IDENTIFIER))
+                      ..._tokenFeatures()
                   ],
                 ),
               )))
@@ -199,21 +191,67 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     );
   }
 
-  Widget _rowFeature(Icon icon, int index, String text) {
+  List<Widget> _tokenFeatures() {
+    return [
+      _rowGenerator(
+          const Icon(
+            Iconsax.tick_square,
+            color: APP_SUCCESS,
+          ),
+          _i18n.translate("subscribe_tokens_description")),
+      _rowGenerator(const Icon(Iconsax.tick_square, color: APP_SUCCESS),
+          _i18n.translate("subscribe_tokens_info")),
+      _rowGenerator(const Icon(Iconsax.tick_square, color: APP_SUCCESS),
+          _i18n.translate("subscribe_tokens_image")),
+    ];
+  }
+
+  List<Widget> _subFeatures() {
+    bool hasLimit =
+        !_selectedTier.storeProduct.identifier.contains(SUB_TOKEN_IDENTIFIER);
+    return [
+      _rowGenerator(const Icon(Iconsax.tick_circle, color: APP_SUCCESS),
+          _i18n.translate("subscribe_detail_unlimted_request")),
+      _rowGenerator(
+          const Icon(Iconsax.tick_circle, color: APP_WARNING),
+          _i18n.translate("subscribe_detail_image_genator") +
+              (hasLimit == true ? " of 2 Per Week" : "")),
+      _rowGenerator(
+          const Icon(Iconsax.tick_circle, color: APP_WARNING),
+          _i18n.translate("subscribe_detail_read_image") +
+              (hasLimit == true ? " of 2 Per Week" : "")),
+    ];
+  }
+
+  Widget _rowGenerator(Icon icon, String text) {
     return Padding(
       padding: const EdgeInsets.all(10),
       child: Row(
         children: [
-          Icon(
-            icon.icon,
-            color: icon.icon == Iconsax.tick_circle ? APP_SUCCESS : APP_ERROR,
-          ),
+          icon,
           const SizedBox(
             width: 10,
           ),
-          Text(text)
+          Flexible(child: Text(text))
         ],
       ),
     );
+  }
+
+  void _makePurchase() async {
+    try {
+      CustomerInfo purchaserInfo =
+          await Purchases.purchasePackage(_selectedTier);
+      if (purchaserInfo.entitlements.all["Premium"]!.isActive) {
+        // Unlock that great "pro" content
+      }
+    } on PlatformException catch (e) {
+      var errorCode = PurchasesErrorHelper.getErrorCode(e);
+      if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
+        Get.snackbar(
+            _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
+            snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+      }
+    }
   }
 }

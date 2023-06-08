@@ -71,6 +71,6 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
         context: context,
         isScrollControlled: true,
         builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.9, child: SubscriptionProduct()));
+            heightFactor: 0.97, child: SubscriptionProduct()));
   }
 }
