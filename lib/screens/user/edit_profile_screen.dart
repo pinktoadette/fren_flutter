@@ -147,6 +147,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   Navigator.of(context).pop();
                 }
               },
+              onGallerySelected: (imageUrl) async {
+                await UserModel().updateProfileWithAiGallery(imageUrl);
+                Navigator.of(context).pop();
+              },
             ));
   }
 

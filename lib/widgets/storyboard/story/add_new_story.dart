@@ -25,6 +25,8 @@ class _AddNewStoryState extends State<AddNewStory> {
 
   final _titleController = TextEditingController();
   File? _uploadPath;
+  String? photoUrl;
+
   bool isLoading = false;
 
   @override
@@ -123,9 +125,9 @@ class _AddNewStoryState extends State<AddNewStory> {
       isLoading = true;
     });
     try {
-      String photoUrl = '';
+      String imageUrl = photoUrl ?? "";
       if (_uploadPath != null) {
-        photoUrl = await uploadFile(
+        imageUrl = await uploadFile(
             file: _uploadPath!,
             category: UPLOAD_PATH_COLLECTION,
             categoryId: storyboardController.currentStoryboard.storyboardId);
@@ -133,7 +135,7 @@ class _AddNewStoryState extends State<AddNewStory> {
       await _storyApi.createStory(
           storyboardId: storyboardController.currentStoryboard.storyboardId,
           title: title,
-          photoUrl: photoUrl);
+          photoUrl: imageUrl);
 
       Get.snackbar(
         _i18n.translate("posted"),
@@ -165,9 +167,17 @@ class _AddNewStoryState extends State<AddNewStory> {
                 if (image != null) {
                   setState(() {
                     _uploadPath = image;
+                    photoUrl = null;
                   });
                   Navigator.of(context).pop();
                 }
+              },
+              onGallerySelected: (imageUrl) async {
+                setState(() {
+                  photoUrl = imageUrl;
+                  _uploadPath = null;
+                });
+                Navigator.of(context).pop();
               },
             ));
   }

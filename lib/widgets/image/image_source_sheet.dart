@@ -5,18 +5,25 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/profile/user_gallery.dart';
 
 class ImageSourceSheet extends StatelessWidget {
   // Constructor
   ImageSourceSheet(
       {Key? key,
       required this.onImageSelected,
+      required this.onGallerySelected,
       this.includeFile,
       this.useAIGenerator})
       : super(key: key);
 
   // Callback function to return image file
   final Function(File?) onImageSelected;
+
+  /// Callback to return url image
+  final Function(String) onGallerySelected;
+
   // ImagePicker instance
   final picker = ImagePicker();
 
@@ -144,6 +151,22 @@ class ImageSourceSheet extends StatelessWidget {
                     ),
                   ))),
 
+          SizedBox(
+              width: double.infinity,
+              child: InkWell(
+                  onTap: () async {
+                    _showGallery(context);
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Row(
+                      children: [
+                        const Icon(Iconsax.gallery_export),
+                        Text(" " + i18n.translate("generative"),
+                            style: const TextStyle(fontSize: 16))
+                      ],
+                    ),
+                  ))),
           // files for future
           if (includeFile == true)
             Container(
@@ -168,6 +191,20 @@ class ImageSourceSheet extends StatelessWidget {
           const SizedBox(height: 30),
         ],
       ),
+    );
+  }
+
+  void _showGallery(BuildContext context) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.9,
+            child: UserGallery(
+              userId: UserModel().user.userId,
+            ));
+      },
     );
   }
 }

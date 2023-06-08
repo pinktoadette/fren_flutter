@@ -27,9 +27,6 @@ class StoryHeaderWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 10,
-              ),
               TimelineHeader(
                 user: story.createdBy,
                 showAvatar: true,

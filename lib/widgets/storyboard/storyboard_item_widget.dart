@@ -5,6 +5,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/story_cover.dart';
@@ -117,11 +118,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                   color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold),
                             )),
-                            Text(
-                              subtitle,
-                              style: Theme.of(context).textTheme.bodySmall,
-                              overflow: TextOverflow.fade,
-                            ),
+                            textLinkPreview(context, subtitle)
                           ],
                         ))
                   ],

@@ -36,6 +36,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   late ProgressDialog _pr;
   late AppLocalizations _i18n;
   File? _uploadPath;
+  String? photoUrl;
 
   List<Bot> _listBot = [];
 
@@ -262,11 +263,13 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     BotModelType modelType = BotModelType.prompt;
     String about = _aboutController.text;
     String prompt = _promptController.text;
-
-    String photoUrl = await uploadFile(
-        file: _uploadPath!,
-        category: UPLOAD_PATH_BOT_IMAGE,
-        categoryId: createUUID());
+    String botImgUrl = photoUrl ?? "";
+    if (_uploadPath != null) {
+      botImgUrl = await uploadFile(
+          file: _uploadPath!,
+          category: UPLOAD_PATH_BOT_IMAGE,
+          categoryId: createUUID());
+    }
 
     try {
       Bot bot = await _botApi.createBot(
@@ -274,7 +277,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           modelType: modelType,
           about: about,
           prompt: prompt,
-          photoUrl: photoUrl);
+          photoUrl: botImgUrl);
       await _chatroomApi.createNewRoom();
       _clear();
       Navigator.of(context).pop();
@@ -317,9 +320,17 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 if (image != null) {
                   setState(() {
                     _uploadPath = image;
+                    photoUrl = null;
                   });
                   Navigator.of(context).pop();
                 }
+              },
+              onGallerySelected: (imageUrl) async {
+                setState(() {
+                  photoUrl = imageUrl;
+                  _uploadPath = null;
+                });
+                Navigator.of(context).pop();
               },
             ));
   }

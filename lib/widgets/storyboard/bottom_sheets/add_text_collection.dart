@@ -21,6 +21,7 @@ class _AddEditTextState extends State<AddEditText> {
   late AppLocalizations _i18n;
   late TextEditingController _textController = TextEditingController();
   File? attachmentPreview;
+  String? galleryImageUrl;
 
   @override
   void initState() {
@@ -111,7 +112,11 @@ class _AddEditTextState extends State<AddEditText> {
 
   void _onComplete(String text) {
     if (text.length > 3 || attachmentPreview != null) {
-      widget.onTextComplete({"text": text, "image": attachmentPreview});
+      widget.onTextComplete({
+        "text": text,
+        "image": attachmentPreview,
+        "gallery": galleryImageUrl
+      });
     } else {
       Get.snackbar(
         _i18n.translate("validation_warning"),
@@ -133,8 +138,16 @@ class _AddEditTextState extends State<AddEditText> {
             Navigator.pop(context);
             setState(() {
               attachmentPreview = image;
+              galleryImageUrl = null;
             });
           }
+        },
+        onGallerySelected: (imageUrl) async {
+          setState(() {
+            galleryImageUrl = imageUrl;
+            attachmentPreview = null;
+          });
+          Navigator.pop(context);
         },
       ),
     );

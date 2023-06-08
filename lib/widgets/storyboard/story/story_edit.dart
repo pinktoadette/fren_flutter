@@ -24,6 +24,8 @@ class _StoryEditState extends State<StoryEdit> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
   File? _uploadPath;
+  String? photoUrl;
+
   final _titleController = TextEditingController();
   bool isLoading = false;
 
@@ -68,7 +70,7 @@ class _StoryEditState extends State<StoryEdit> {
               child: GestureDetector(
             child: Stack(
               children: [
-                if (_uploadPath != null)
+                if (_uploadPath != null && photoUrl == null)
                   StoryCover(
                     width: size.width * 0.75,
                     height: size.width * 0.75,
@@ -76,7 +78,14 @@ class _StoryEditState extends State<StoryEdit> {
                     file: _uploadPath,
                     title: storyboardController.currentStory.title,
                   ),
-                if (_uploadPath == null)
+                if (_uploadPath == null && photoUrl != null)
+                  StoryCover(
+                    width: size.width * 0.75,
+                    height: size.width * 0.75,
+                    photoUrl: photoUrl,
+                    title: storyboardController.currentStory.title,
+                  ),
+                if (_uploadPath == null && photoUrl == null)
                   StoryCover(
                     width: size.width * 0.75,
                     height: size.width * 0.75,
@@ -143,9 +152,17 @@ class _StoryEditState extends State<StoryEdit> {
                 if (image != null) {
                   setState(() {
                     _uploadPath = image;
+                    photoUrl = null;
                   });
                   Navigator.of(context).pop();
                 }
+              },
+              onGallerySelected: (imageUrl) async {
+                setState(() {
+                  photoUrl = imageUrl;
+                  _uploadPath = null;
+                });
+                Navigator.of(context).pop();
               },
             ));
   }
@@ -182,11 +199,11 @@ class _StoryEditState extends State<StoryEdit> {
     setState(() {
       isLoading = true;
     });
-    String photoUrl = '';
+    String imageUrl = photoUrl ?? "";
     Story story = storyboardController.currentStory;
     try {
       if (_uploadPath != null) {
-        photoUrl = await uploadFile(
+        imageUrl = await uploadFile(
           file: _uploadPath!,
           category: UPLOAD_PATH_COLLECTION,
           categoryId: story.storyId,
@@ -206,7 +223,7 @@ class _StoryEditState extends State<StoryEdit> {
       await _storyApi.updateStory(
           storyId: story.storyId,
           title: _titleController.text,
-          photoUrl: photoUrl);
+          photoUrl: imageUrl);
       Get.snackbar(
         _i18n.translate("success"),
         _i18n.translate("update_successful"),

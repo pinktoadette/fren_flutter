@@ -1,10 +1,7 @@
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/datas/gallery.dart';
-import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/gallery_image_card.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/story_cover.dart';
-import 'package:scoped_model/scoped_model.dart';
 
 class GalleryWidget extends StatefulWidget {
   final String userId;

@@ -597,7 +597,8 @@ class UserModel extends Model {
       {required File imageFile,
       String? oldImageUrl,
       required String path,
-      int? index}) async {
+      int? index,
+      bool? upload = false}) async {
     // Variables
     String uploadPath;
 
@@ -626,6 +627,17 @@ class UserModel extends Model {
       await updateUserData(
           userId: user.userId, data: {'$USER_GALLERY.image_$index': imageLink});
     }
+  }
+
+  /// Replace profile image with gallery
+  Future<void> updateProfileWithAiGallery(String imageLink) async {
+    String profileImage = UserModel().user.userProfilePhoto;
+    if (profileImage != "" && profileImage.contains(UPLOAD_PATH_USER_PROFILE)) {
+      await FirebaseStorage.instance.refFromURL(profileImage).delete();
+    }
+
+    await updateUserData(
+        userId: user.userId, data: {USER_PROFILE_PHOTO: imageLink});
   }
 
   /// Delete image from user gallery

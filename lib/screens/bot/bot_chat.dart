@@ -339,6 +339,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   _handleImageSelection(image);
                 }
               },
+              onGallerySelected: (imageUrl) {
+                types.PartialImage message = types.PartialImage(
+                    height: 516,
+                    name: imageUrl,
+                    size: imageUrl.length,
+                    uri: imageUrl,
+                    width: 516);
+                _handleSendPressed(message as types.PartialText);
+              },
             ));
   }
 

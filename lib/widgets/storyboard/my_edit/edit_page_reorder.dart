@@ -342,6 +342,24 @@ class _EditPageReorderState extends State<EditPageReorder> {
         scripts = [...scripts, pages.scripts![0]];
       });
     }
+
+    if (content["gallery"] != "") {
+      StoryPages pages = await _scriptApi.addScriptToStory(
+          character: UserModel().user.username,
+          type: "image",
+          storyId: story.storyId,
+          image: {
+            "size": 9800,
+            "height": 516,
+            "width": 516,
+            "uri": content['gallery'],
+            "manual": true
+          },
+          pageNum: widget.pageIndex + 1);
+      setState(() {
+        scripts = [...scripts, pages.scripts![0]];
+      });
+    }
     widget.onUpdateSeq(scripts);
   }
 

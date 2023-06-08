@@ -25,6 +25,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
   late Storyboard storyboard;
   final _storyboardApi = StoryboardApi();
   File? _uploadPath;
+  String? photoUrl;
   final _titleController = TextEditingController();
   bool isLoading = false;
   late AppLocalizations _i18n;
@@ -73,7 +74,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                       StoryCover(
                         width: size.width * 0.75,
                         height: size.width * 0.75,
-                        photoUrl: storyboard.photoUrl ?? "",
+                        photoUrl: storyboard.photoUrl ?? photoUrl ?? "",
                         file: _uploadPath,
                         title: storyboard.title,
                       ),
@@ -143,9 +144,17 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                 if (image != null) {
                   setState(() {
                     _uploadPath = image;
+                    photoUrl = null;
                   });
                   Navigator.of(context).pop();
                 }
+              },
+              onGallerySelected: (imageUrl) async {
+                setState(() {
+                  photoUrl = imageUrl;
+                  _uploadPath = null;
+                });
+                Navigator.of(context).pop();
               },
             ));
   }
@@ -182,10 +191,10 @@ class _StoryboardEditState extends State<StoryboardEdit> {
     setState(() {
       isLoading = true;
     });
-    String photoUrl = '';
+    String imageUrl = photoUrl ?? "";
     try {
       if (_uploadPath != null) {
-        photoUrl = await uploadFile(
+        imageUrl = await uploadFile(
           file: _uploadPath!,
           category: UPLOAD_PATH_BOARD,
           categoryId: storyboard.storyboardId,
@@ -205,7 +214,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
       await _storyboardApi.updateStoryboard(
           storyboardId: storyboard.storyboardId,
           title: _titleController.text,
-          photoUrl: photoUrl);
+          photoUrl: imageUrl);
       Get.snackbar(
         _i18n.translate("success"),
         _i18n.translate("update_successful"),

@@ -11,6 +11,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
@@ -103,7 +104,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           title: Text(
             widget.isPreview == true
                 ? _i18n.translate("storyboard_preview")
-                : _i18n.translate("story_collection"),
+                : story?.title ?? "",
             style: Theme.of(context).textTheme.bodySmall,
           ),
           leading: BackButton(
@@ -284,8 +285,8 @@ class _StoryPageViewState extends State<StoryPageView> {
   List<Widget> _showPageWidget() {
     Size size = MediaQuery.of(context).size;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
-        ? size.height * bodyHeightPercent - headerHeight
-        : size.height - headerHeight - 20;
+        ? size.height * bodyHeightPercent - headerHeight - 20
+        : size.height - headerHeight - 40;
     if (story!.pages!.isEmpty) {
       return [
         SizedBox(
@@ -318,29 +319,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: scripts!.map((script) {
                           if (script.type == "text") {
-                            final urlRegExp = RegExp(
-                                r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
-                            final urlMatches =
-                                urlRegExp.allMatches(script.text!);
-                            List<String> urls = urlMatches
-                                .map((urlMatch) => script.text!
-                                    .substring(urlMatch.start, urlMatch.end))
-                                .toList();
-
-                            return Column(children: [
-                              Text(
-                                script.text ?? "",
-                                style: Theme.of(context).textTheme.bodySmall,
-                              ),
-                              AnyLinkPreview(
-                                displayDirection:
-                                    UIDirection.uiDirectionHorizontal,
-                                link: urls.isNotEmpty ? urls[0] : "",
-                                errorBody: 'Show my custom error body',
-                                errorTitle:
-                                    'Next one is youtube link, error title',
-                              ),
-                            ]);
+                            return textLinkPreview(context, script.text ?? "");
                           } else if (script.type == "image") {
                             return RoundedImage(
                               width: 516,

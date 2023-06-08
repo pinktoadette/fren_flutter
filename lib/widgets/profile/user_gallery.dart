@@ -60,7 +60,10 @@ class _GalleryWidgetState extends State<UserGallery> {
     AppLocalizations _i18n = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
-          title: Text(_i18n.translate("gallery")),
+          title: Text(
+            _i18n.translate("gallery"),
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
         body: PagedGridView<int, Gallery>(
           showNewPageProgressIndicatorAsGridChild: false,
