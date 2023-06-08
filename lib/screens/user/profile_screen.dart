@@ -10,6 +10,8 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
+import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
+import 'package:machi_app/widgets/profile/user_gallery.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
@@ -38,11 +40,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void initState() {
     _isUserFriend();
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   Future<List<Storyboard>> _getUserBoard() async {
@@ -139,6 +136,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SingleChildScrollView(
               physics: const ScrollPhysics(),
               child: Column(
+                // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -176,7 +174,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         style: Theme.of(context).textTheme.bodySmall),
                   ),
 
-                  _userPost()
+                  ..._postImagesBots(size),
+                  _userPost(size),
                 ],
               ),
             ),
@@ -186,15 +185,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ));
   }
 
-  Widget _userPost() {
-    final width = MediaQuery.of(context).size.width;
+  List<Widget> _postImagesBots(Size size) {
     if ((widget.user.userStatus == "hidden") &
         (widget.user.userId != UserModel().user.userId)) {
-      return NoData(text: _i18n.translate("profile_protected_view"));
+      return [NoData(text: _i18n.translate("profile_protected_view"))];
     }
+    return [
+      ..._userGallery(size),
+      _userPost(size),
+    ];
+  }
 
+  List<Widget> _userGallery(Size size) {
+    return [
+      Padding(
+          padding: const EdgeInsets.all(10),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _i18n.translate("gallery"),
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              TextButton(
+                child: Text(_i18n.translate("see_all"),
+                    style: Theme.of(context).textTheme.labelSmall),
+                onPressed: () {
+                  Get.to(() => UserGallery(userId: widget.user.userId));
+                },
+              ),
+            ],
+          )),
+      SizedBox(
+        height: size.width / 3,
+        child: GalleryWidget(userId: widget.user.userId),
+      )
+    ];
+  }
+
+  Widget _userPost(Size size) {
     return SizedBox(
-        width: width,
+        width: size.width,
         child: FutureBuilder(
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
@@ -234,83 +265,4 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ? Text(_i18n.translate("following"))
             : Text(_i18n.translate("follow")));
   }
-
-  // Widget _friendRequest(BuildContext context) {
-  //   _i18n = AppLocalizations.of(context);
-  //   double width = MediaQuery.of(context).size.width;
-
-  //   switch (friendStatus["status"]) {
-  //     case 'REQUEST':
-  //       if (friendStatus["isRequester"] == 1) {
-  //         return OutlinedButton(
-  //             onPressed: null,
-  //             child: Text(
-  //               _i18n.translate("friend_sent"),
-  //               style: Theme.of(context).textTheme.labelSmall,
-  //             ));
-  //       }
-  //       return Row(
-  //         crossAxisAlignment: CrossAxisAlignment.start,
-  //         children: [
-  //           Column(
-  //             crossAxisAlignment: CrossAxisAlignment.start,
-  //             children: [
-  //               SizedBox(
-  //                 width: width - 130,
-  //                 child: Flexible(
-  //                   fit: FlexFit.tight,
-  //                   child: Text(_i18n.translate("friend_other_sent"),
-  //                       style: Theme.of(context).textTheme.bodySmall),
-  //                 ),
-  //               ),
-  //               Row(
-  //                 crossAxisAlignment: CrossAxisAlignment.start,
-  //                 children: [
-  //                   ElevatedButton(
-  //                       onPressed: () {
-  //                         _friendApi
-  //                             .respondRequest(
-  //                                 widget.user.userId, FriendStatus.active)
-  //                             .then((_) => {_isUserFriend()});
-  //                       },
-  //                       child: Text(
-  //                         _i18n.translate("friend_accept_request"),
-  //                         style: const TextStyle(fontSize: 12),
-  //                       )),
-  //                   OutlinedButton(
-  //                       onPressed: () {
-  //                         _friendApi
-  //                             .respondRequest(
-  //                                 widget.user.userId, FriendStatus.unfriend)
-  //                             .then((_) => {_isUserFriend()});
-  //                       },
-  //                       child: Text(
-  //                         _i18n.translate("friend_reject_request"),
-  //                         style: const TextStyle(fontSize: 12),
-  //                       ),
-  //                       style: OutlinedButton.styleFrom(
-  //                           shape: RoundedRectangleBorder(
-  //                               borderRadius: BorderRadius.circular(50)))),
-  //                 ],
-  //               )
-  //             ],
-  //           )
-  //         ],
-  //       );
-  //     case 'ACTIVE':
-  //       return const SizedBox.shrink();
-  //     case 'BLOCK':
-  //       return const SizedBox.shrink();
-  //     default:
-  //       return OutlinedButton.icon(
-  //         onPressed: () async {
-  //           _friendApi
-  //               .sendRequest(widget.user.userId)
-  //               .then((_) => {_isUserFriend()});
-  //         },
-  //         icon: const Icon(Iconsax.message),
-  //         label: Text(_i18n.translate("friend_send_request")),
-  //       );
-  //   }
-  // }
 }

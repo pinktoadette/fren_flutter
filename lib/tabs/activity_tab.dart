@@ -83,7 +83,7 @@ class _ActivityTabState extends State<ActivityTab> {
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SearchBarWidget(),
+            // SearchBarWidget(),
             SubscriptionCard(),
           ],
         )),

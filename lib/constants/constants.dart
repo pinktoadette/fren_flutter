@@ -336,4 +336,7 @@ const String CHAT_MESSAGE_ID = "messageId";
 const String CHAT_PHOTO_URL = "uri";
 const String CHAT_LINKED_MESSAGE_ID = "linkedMessageId";
 
-/// image link to a text
+/// gallery
+const String GALLERY = "gallery";
+const String GALLERY_IMAGE_CAPTION = "caption";
+const String GALLERY_IMAGE_URL = "photoUrl";

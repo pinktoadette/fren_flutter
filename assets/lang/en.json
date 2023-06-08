@@ -45,7 +45,7 @@
   "fullname": "Username",
   "enter_your_fullname": "Enter username",
   "name_hint": "This will be publicly displayed",
-  "profile_protected": "Your profile is protected",
+  "profile_protected": "Your profile is protected.",
   "bio": "Bio",
   "write_about_you": "Describe your super powers/domain knowledge",
   "select_three_interest": "Please select 3 interests",
@@ -58,7 +58,7 @@
 
   "_EditProfileScreen": "*** Edit Profile Screen Translations ***",
   "edit_profile": "Edit profile",
-  "profile_protected_view": "Protected Profile",
+  "profile_protected_view": "Protected Profile" ,
   "an_error_occurred_while_updating_your_profile": "An error occurred while updating your profile.\nPlease try again later!",
   "photo_will_be_deleted": "Photo will be deleted, and this action cannot be reversed!", 
 
@@ -172,6 +172,7 @@
   "no_result": "No result",
   "new": "New",
   "photo": "Photo",
+  "see_all": "See all",
   "UPDATE": "UPDATE",
   "update_successful": "Successfully updated",
 
