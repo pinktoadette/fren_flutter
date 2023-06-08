@@ -7,6 +7,9 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
+import 'package:purchases_flutter/models/offering_wrapper.dart';
+import 'package:purchases_flutter/models/package_wrapper.dart';
 
 class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
@@ -18,7 +21,10 @@ class SubscriptionProduct extends StatefulWidget {
 class _SubscriptionProductState extends State<SubscriptionProduct> {
   bool isUserSubscribed = false;
   late AppLocalizations _i18n;
-  int _selectedTier = 2;
+  String _selectedTier = "sub_weekly";
+
+  List<Offering> offers = [];
+
   @override
   void initState() {
     super.initState();
@@ -55,13 +61,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
 
   Future fetchOffers() async {
     try {
-      final offerings = await PurchasesApi.fetchOffers();
-      if (offerings.isNotEmpty) {
-        print(offerings);
-        // offerings.map((offer) {
-        //   return offer.weekly.
-        // });
-      }
+      List<Offering> offerings = await PurchasesApi.fetchOffers();
+      setState(() {
+        offers = offerings;
+        _selectedTier = offerings[0].availablePackages[1].identifier;
+      });
     } on PlatformException catch (e) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -73,36 +77,20 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   Widget _showTiers() {
-    var tiers = [
-      {
-        "id": 1,
-        "tier": "1 \nMonth",
-        "price_week": "\$3.45 per week",
-        "price": "\$14.99 per\n Month"
-      },
-      {
-        "id": 2,
-        "tier": "1 \nWeek",
-        "price_week": "\$7.99 per week",
-        "price": "\$7.99 per\n Week"
-      },
-      {
-        "id": 3,
-        "tier": "12 \nMonth",
-        "price_week": "\$0.96 per week",
-        "price": "\$49.99 per\n Year"
-      }
-    ];
-
+    if (offers.isEmpty) {
+      return const NoData(text: "Guess we are not selling today!");
+    }
     return Column(
       children: [
+        Text(offers[0].serverDescription),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: tiers.map((e) {
+            children: offers[0].availablePackages.map((e) {
               return _individualTier(e);
             }).toList()),
         const Spacer(),
+        _showPricing(),
         ElevatedButton(
             onPressed: () {},
             style: ElevatedButton.styleFrom(
@@ -119,13 +107,13 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     );
   }
 
-  Widget _individualTier(dynamic info) {
+  Widget _individualTier(Package info) {
     double screenWidth = MediaQuery.of(context).size.width;
-
+    int numPackages = offers[0].availablePackages.length;
     return InkWell(
         onTap: () {
           setState(() {
-            _selectedTier = info["id"];
+            _selectedTier = info.identifier;
           });
         },
         child: Padding(
@@ -134,35 +122,36 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   border: Border.all(
-                    color: _selectedTier == info["id"]
+                    color: _selectedTier == info.identifier
                         ? APP_ACCENT_COLOR
                         : Theme.of(context).colorScheme.primary,
-                    width: _selectedTier == info["id"] ? 3 : 1,
+                    width: _selectedTier == info.identifier ? 3 : 1,
                   ),
                 ),
-                width: (screenWidth / 3) - 30,
+                width: (screenWidth / numPackages) - numPackages * 3.5,
+                height: 200,
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
-                    Text(info["tier"],
+                    Text(info.storeProduct.title,
                         textAlign: TextAlign.center,
                         style: Theme.of(context).textTheme.headlineSmall),
-                    const SizedBox(height: 20),
-                    Text(info["price_week"],
+                    const Spacer(),
+                    Text(info.storeProduct.priceString,
                         textAlign: TextAlign.center,
-                        style: const TextStyle(fontSize: 10)),
-                    const Divider(),
-                    const SizedBox(height: 10),
-                    Text(info["price"],
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.labelSmall),
-                    const SizedBox(height: 10),
+                        style: Theme.of(context).textTheme.labelMedium),
+                    const SizedBox(
+                      height: 25,
+                    )
                   ],
                 ))));
   }
 
   // ignore: unused_element
-  Widget _showPricing(int index) {
+  Widget _showPricing() {
+    int index = offers[0]
+        .availablePackages
+        .indexWhere((element) => element.identifier == _selectedTier);
     Icon icon = index == 1
         ? const Icon(Iconsax.close_circle)
         : const Icon(Iconsax.tick_circle);
@@ -176,23 +165,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                            child: index == 1
-                                ? Text(
-                                    _i18n.translate(
-                                        "subscribe_detail_plan_free"),
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  )
-                                : Text(
-                                    _i18n.translate(
-                                        "subscribe_detail_plan_premium"),
-                                    style:
-                                        Theme.of(context).textTheme.bodyMedium,
-                                  ))
-                      ],
+                    Text(
+                      _i18n.translate("subscribe_detail_plan_premium"),
+                      style: Theme.of(context).textTheme.bodyMedium,
                     ),
                     const SizedBox(height: 20),
                     _rowFeature(
