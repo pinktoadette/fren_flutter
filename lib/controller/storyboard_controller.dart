@@ -4,6 +4,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/plugins/geoflutterfire/src/utils/arrays.dart';
 
 Storyboard initialStoryboard = Storyboard(
     storyboardId: '',
@@ -65,6 +66,8 @@ class StoryboardController extends GetxController {
   Future<void> myStories(List<Storyboard> stories) async {
     _storyboards = stories.obs;
     _storyboards.refresh();
+    getUnpublised();
+    getPublished();
   }
 
   void addNewStoryboard(Storyboard story) async {
@@ -91,15 +94,25 @@ class StoryboardController extends GetxController {
   }
 
   getUnpublised() {
-    unpublished.assignAll(_storyboards
-        .where((element) => element.status == StoryStatus.UNPUBLISHED)
-        .toList());
+    List<Storyboard> unpub = [];
+    for (Storyboard storyboard in _storyboards) {
+      List<Story> temp = storyboard.story!
+          .where((child) => child.status == StoryStatus.UNPUBLISHED)
+          .toList();
+      unpub.add(storyboard.copyWith(story: temp));
+    }
+    unpublished = unpub.obs;
   }
 
   getPublished() {
-    published.assignAll(_storyboards
-        .where((element) => element.status == StoryStatus.PUBLISHED)
-        .toList());
+    List<Storyboard> unpub = [];
+    for (Storyboard storyboard in _storyboards) {
+      List<Story> temp = storyboard.story!
+          .where((child) => child.status == StoryStatus.PUBLISHED)
+          .toList();
+      unpub.add(storyboard.copyWith(story: temp));
+    }
+    unpublished = unpub.obs;
   }
 
   /// Story

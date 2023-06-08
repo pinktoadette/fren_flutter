@@ -2,7 +2,6 @@ import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/chatroom.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
@@ -29,7 +28,6 @@ class _BotProfileCardState extends State<BotProfileCard> {
   bool isLoading = false;
 
   bool disableTextEdit = true;
-  late AppLocalizations _i18n;
   final TextEditingController personalityController = TextEditingController();
 
   @override
@@ -46,7 +44,6 @@ class _BotProfileCardState extends State<BotProfileCard> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return Padding(
       padding: const EdgeInsets.all(20),

@@ -49,7 +49,7 @@ class _SignInScreenState extends State<SignInScreen> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: APP_TERTIARY),
+            const SystemUiOverlayStyle(statusBarColor: APP_PRIMARY_COLOR),
       ),
       key: _scaffoldKey,
       body: Container(

@@ -5,6 +5,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/story/story_item_widget.dart';
@@ -31,6 +32,7 @@ class _StoriesViewState extends State<StoriesView> {
   final _storyApi = StoryApi();
   double itemHeight = 120;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -76,6 +78,20 @@ class _StoriesViewState extends State<StoriesView> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const StoryboardHeaderWidget(),
+            if (widget.message != null)
+              Align(
+                  alignment: Alignment.center,
+                  child: ElevatedButton.icon(
+                    icon: isLoading == true
+                        ? loadingButton(size: 16)
+                        : const Icon(Iconsax.add),
+                    label: Text(
+                      _i18n.translate("add_to_new_story"),
+                    ),
+                    onPressed: () async {
+                      _addMessage();
+                    },
+                  )),
             Obx(
               () => ListView.builder(
                   shrinkWrap: true,
@@ -150,6 +166,48 @@ class _StoriesViewState extends State<StoriesView> {
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );
+    }
+  }
+
+  void _addMessage() async {
+    setState(() {
+      isLoading = true;
+    });
+    try {
+      dynamic message = widget.message;
+      if (message!.type == types.MessageType.text) {
+        await _storyApi.createStory(
+          storyboardId: storyboardController.currentStoryboard.storyboardId,
+          title: "",
+          photoUrl: "",
+          text: message.text,
+        );
+      }
+      if (message.type == types.MessageType.image) {
+        await _storyApi.createStory(
+            storyboardId: storyboardController.currentStoryboard.storyboardId,
+            title: "",
+            photoUrl: message.url,
+            text: "");
+      }
+      Navigator.of(context).pop();
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("story_edits_added"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (error) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

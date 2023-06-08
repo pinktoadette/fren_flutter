@@ -215,21 +215,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   Widget _followButton() {
-    return OutlinedButton(
-      onPressed: () async {
-        try {
-          User user = await _friendApi.followRequest(widget.user.userId);
-          _setUserCount(user);
-        } catch (err) {
-          Get.snackbar(_i18n.translate("error"),
-              _i18n.translate("an_error_has_occurred"),
-              snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
-        }
-      },
-      child: following == true
-          ? Text(_i18n.translate("following"))
-          : Text(_i18n.translate("follow")),
-    );
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor:
+                following == true ? Colors.white : APP_ACCENT_COLOR),
+        onPressed: () async {
+          try {
+            User user = await _friendApi.followRequest(widget.user.userId);
+            _setUserCount(user);
+          } catch (err) {
+            Get.snackbar(_i18n.translate("error"),
+                _i18n.translate("an_error_has_occurred"),
+                snackPosition: SnackPosition.BOTTOM,
+                backgroundColor: APP_ERROR);
+          }
+        },
+        child: following == true
+            ? Text(_i18n.translate("following"))
+            : Text(_i18n.translate("follow")));
   }
 
   // Widget _friendRequest(BuildContext context) {

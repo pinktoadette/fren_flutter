@@ -4,16 +4,18 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_info.dart';
+import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 class StoryboardHeaderWidget extends StatelessWidget {
   const StoryboardHeaderWidget({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     StoryboardController storyboardController = Get.find(tag: "storyboard");
-
+    Storyboard storyboard = storyboardController.currentStoryboard;
     double width = MediaQuery.of(context).size.width;
     double storyCoverWidth = 50;
     double padding = 15;
@@ -23,42 +25,52 @@ class StoryboardHeaderWidget extends StatelessWidget {
           _showEditStoryboard(context);
         },
         child: Card(
-          elevation: 1,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(padding),
-                child: StoryCover(
-                    width: storyCoverWidth,
-                    height: storyCoverWidth,
-                    photoUrl:
-                        storyboardController.currentStoryboard.photoUrl ?? "",
-                    title: storyboardController.currentStoryboard.title),
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(storyboardController.currentStoryboard.category,
-                      style: const TextStyle(
-                          fontSize: 10,
-                          color: APP_SECONDARY_ACCENT_COLOR,
-                          fontWeight: FontWeight.bold)),
-                  SizedBox(
-                    width: width - (padding * 2 + storyCoverWidth + 10),
-                    height: 45,
-                    child: Text(storyboardController.currentStoryboard.title,
-                        overflow: TextOverflow.fade,
-                        style: Theme.of(context).textTheme.labelMedium),
-                  ),
-                  Text(
-                      "${storyboardController.currentStoryboard.story?.length ?? 0} collection",
-                      style: Theme.of(context).textTheme.labelSmall)
-                ],
-              )
-            ],
-          ),
-        )));
+            elevation: 1,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(
+                  height: 10,
+                ),
+                TimelineHeader(
+                  user: storyboard.createdBy,
+                  showAvatar: true,
+                  showName: true,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: EdgeInsets.all(padding),
+                      child: StoryCover(
+                          width: storyCoverWidth,
+                          height: storyCoverWidth,
+                          photoUrl: storyboard.photoUrl ?? "",
+                          title: storyboard.title),
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(storyboardController.currentStoryboard.category,
+                            style: const TextStyle(
+                                fontSize: 10,
+                                color: APP_SECONDARY_ACCENT_COLOR,
+                                fontWeight: FontWeight.bold)),
+                        SizedBox(
+                          width: width - (padding * 2 + storyCoverWidth + 10),
+                          height: 25,
+                          child: Text(storyboard.title,
+                              style: Theme.of(context).textTheme.labelMedium),
+                        ),
+                        Text("${storyboard.story?.length ?? 0} collection",
+                            style: Theme.of(context).textTheme.labelSmall)
+                      ],
+                    )
+                  ],
+                ),
+              ],
+            ))));
   }
 
   void _showEditStoryboard(BuildContext context) {

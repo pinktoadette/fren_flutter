@@ -40,7 +40,6 @@ class _AddEditTextState extends State<AddEditText> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double height = MediaQuery.of(context).size.height;
-    double width = MediaQuery.of(context).size.width;
 
     return Container(
         height: height * 0.9,
@@ -111,15 +110,15 @@ class _AddEditTextState extends State<AddEditText> {
   }
 
   void _onComplete(String text) {
-    if (text.length < 3 || attachmentPreview == null) {
+    if (text.length > 3 || attachmentPreview != null) {
+      widget.onTextComplete({"text": text, "image": attachmentPreview});
+    } else {
       Get.snackbar(
         _i18n.translate("validation_warning"),
         _i18n.translate("story_content_validation"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_WARNING,
       );
-    } else {
-      widget.onTextComplete({"text": text, "image": attachmentPreview});
     }
   }
 

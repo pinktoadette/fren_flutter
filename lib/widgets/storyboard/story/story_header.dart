@@ -7,6 +7,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/storyboard/story/story_edit.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/story_info.dart';
+import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // Story book Onboarding swipe -> child : story_widget
 class StoryHeaderWidget extends StatelessWidget {
@@ -22,28 +23,42 @@ class StoryHeaderWidget extends StatelessWidget {
       },
       child: Container(
           padding: EdgeInsets.only(left: padding, bottom: 5, right: padding),
-          child: Row(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              StoryCover(
-                  width: storyCoverWidth,
-                  height: storyCoverWidth,
-                  photoUrl: story.photoUrl ?? "",
-                  title: story.title),
-              const SizedBox(width: 10),
-              Flexible(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              const SizedBox(
+                height: 10,
+              ),
+              TimelineHeader(
+                user: story.createdBy,
+                showAvatar: true,
+                showName: true,
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Text(story.title,
-                      overflow: TextOverflow.fade,
-                      maxLines: 1,
-                      softWrap: false,
-                      style: Theme.of(context).textTheme.labelMedium),
-                  Text("${story.pages?.length ?? 0} mods",
-                      style: Theme.of(context).textTheme.labelSmall)
+                  StoryCover(
+                      width: storyCoverWidth,
+                      height: storyCoverWidth,
+                      photoUrl: story.photoUrl ?? "",
+                      title: story.title),
+                  const SizedBox(width: 10),
+                  Flexible(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(story.title,
+                          overflow: TextOverflow.fade,
+                          maxLines: 1,
+                          softWrap: false,
+                          style: Theme.of(context).textTheme.labelMedium),
+                      Text("${story.pages?.length ?? 0} pages",
+                          style: Theme.of(context).textTheme.labelSmall)
+                    ],
+                  ))
                 ],
-              ))
+              )
             ],
           )),
     );

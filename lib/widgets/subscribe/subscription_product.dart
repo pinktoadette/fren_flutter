@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -21,6 +22,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   @override
   void initState() {
     super.initState();
+    fetchOffers();
     isUserSubscribed = UserModel().user.isSubscribed;
   }
 
@@ -52,16 +54,21 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   Future fetchOffers() async {
-    final offerings = await PurchasesApi.fetchOffers();
-    if (offerings.isEmpty) {
+    try {
+      final offerings = await PurchasesApi.fetchOffers();
+      if (offerings.isNotEmpty) {
+        print(offerings);
+        // offerings.map((offer) {
+        //   return offer.weekly.
+        // });
+      }
+    } on PlatformException catch (e) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("subscribe_no_offering_found"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_ERROR,
       );
-    } else {
-      // final offer = offerings.first;
     }
   }
 

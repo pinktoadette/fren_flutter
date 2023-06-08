@@ -15,6 +15,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:machi_app/widgets/common/default_card_border.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,10 @@ void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
+  /// Revenue cat for subscription and payments
+  await Purchases.setLogLevel(LogLevel.debug);
+  late PurchasesConfiguration configuration;
+
   /// ***  Initialize Firebase App *** ///
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
@@ -33,9 +38,14 @@ void main() async {
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   if (Platform.isAndroid | Platform.isIOS) {
+    /// Revenue cat
+    configuration = PurchasesConfiguration('goog_EutdJZovasmfuBudvjOKZpEkGcx');
+
+    /// firebase
     FirebaseFirestore.instance.settings =
         const Settings(persistenceEnabled: true);
   } else if (Platform.isWindows | Platform.isMacOS) {
+    /// firebase
     await FirebaseFirestore.instance
         .enablePersistence(const PersistenceSettings(synchronizeTabs: true));
   }
@@ -46,6 +56,9 @@ void main() async {
   /// heads up notifications.
   /// Check iOS device
   if (Platform.isIOS) {
+    /// Revenue cat setup
+    configuration = PurchasesConfiguration('appl_StnVJbAaVHGAiEcqkJSBLnlhgFp');
+
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
       alert: true,
@@ -53,6 +66,9 @@ void main() async {
       sound: true,
     );
   }
+
+  await Purchases.configure(configuration);
+
   // GetX all Controller
   MainBinding mainBinding = MainBinding();
   await mainBinding.dependencies();

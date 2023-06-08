@@ -39,8 +39,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
     return RefreshIndicator(
       onRefresh: () async {
         // Refresh Functionality
-        await _storyboardApi.getMyStoryboards(
-            statusFilter: StoryStatus.UNPUBLISHED.name);
+        await _storyboardApi.getMyStoryboards();
       },
       child: storyboardController.storyboards.isEmpty
           ? Align(

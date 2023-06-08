@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:iconsax/iconsax.dart';
@@ -22,8 +21,6 @@ class CustomHeaderInputWidget extends StatefulWidget {
 }
 
 class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
-  late AppLocalizations _i18n;
-
   @override
   void initState() {
     super.initState();
@@ -31,8 +28,6 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
     return Column(children: [_showHeader(context)]);
   }
 

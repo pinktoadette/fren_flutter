@@ -68,7 +68,7 @@ class _FriendListState extends State<FriendListWidget> {
                             const Divider(height: 10),
                         itemCount: snapshot.data.length,
                         itemBuilder: ((context, index) {
-                          final isUserAdded = false;
+                          const isUserAdded = false;
                           //     chatController.currentRoom.users.where(
                           //   (element) =>
                           //       element?.["id"] == snapshot.data[index][USER_ID],
