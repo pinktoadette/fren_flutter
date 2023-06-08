@@ -93,6 +93,6 @@ class ProfileTab extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.9, child: SubscriptionProduct()));
+            heightFactor: 0.98, child: SubscriptionProduct()));
   }
 }
