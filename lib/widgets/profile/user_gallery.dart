@@ -61,6 +61,7 @@ class _GalleryWidgetState extends State<UserGallery> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: Text(
@@ -74,10 +75,10 @@ class _GalleryWidgetState extends State<UserGallery> {
           showNoMoreItemsIndicatorAsGridChild: false,
           pagingController: _pagingController,
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            childAspectRatio: 100 / 150,
-            crossAxisSpacing: 10,
-            mainAxisSpacing: 10,
-            crossAxisCount: 3,
+            childAspectRatio: 1,
+            crossAxisSpacing: 1,
+            mainAxisSpacing: 1,
+            crossAxisCount: 2,
           ),
           builderDelegate: PagedChildBuilderDelegate<Gallery>(
               itemBuilder: (context, item, index) => InkWell(
