@@ -71,12 +71,10 @@ dependencies:
   get: ^4.6.5
   firebase_dynamic_links: ^5.0.17
   web_socket_channel: ^2.3.0
-  qr_flutter: ^4.0.0
   flutter_typeahead: ^4.3.7
   get_storage: ^2.1.1
   like_button: ^2.0.5
   infinite_scroll_pagination: ^3.2.0
-  uni_links: ^0.5.1
   just_audio: ^0.9.32
   purchases_flutter: ^4.12.0
   dotted_border: ^2.0.0+3
@@ -87,6 +85,7 @@ dependencies:
     git:
       url: https://github.com/pinktoadette/flutter_chat_ui.git
       ref: main
+  any_link_preview: ^3.0.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

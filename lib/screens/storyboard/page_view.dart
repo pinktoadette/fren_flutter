@@ -1,3 +1,4 @@
+import 'package:any_link_preview/any_link_preview.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
@@ -248,25 +249,36 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 child: PostCommentWidget(
                                   story: story!,
                                   notifyParent: (value) {
-                                    setState(() {
-                                      newComments.add(CommentRowWidget(
-                                        key: Key(value.commentId),
-                                        item: value,
-                                        onDelete: (_) {
-                                          setState(() {
-                                            newComments.removeWhere((element) =>
-                                                element.key ==
-                                                Key(value.commentId));
-                                          });
-                                        },
-                                      ));
-                                    });
+                                    _formatComment(value);
                                   },
                                 ))
                           ]))));
             });
       },
     );
+  }
+
+  void _formatComment(StoryComment value) {
+    CommentController commentController = Get.find(tag: 'comment');
+    StoryComment replyTo = commentController.replyToComment;
+    if (replyTo.commentId != '') {
+      // not empty means it is replying to a comment
+      return;
+    }
+
+    Widget newComment = CommentRowWidget(
+      key: Key(value.commentId!),
+      item: value,
+      onDelete: (_) {
+        setState(() {
+          newComments
+              .removeWhere((element) => element.key == Key(value.commentId!));
+        });
+      },
+    );
+    setState(() {
+      newComments.add(newComment);
+    });
   }
 
   List<Widget> _showPageWidget() {
@@ -306,10 +318,29 @@ class _StoryPageViewState extends State<StoryPageView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: scripts!.map((script) {
                           if (script.type == "text") {
-                            return Text(
-                              script.text ?? "",
-                              style: Theme.of(context).textTheme.bodySmall,
-                            );
+                            final urlRegExp = RegExp(
+                                r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
+                            final urlMatches =
+                                urlRegExp.allMatches(script.text!);
+                            List<String> urls = urlMatches
+                                .map((urlMatch) => script.text!
+                                    .substring(urlMatch.start, urlMatch.end))
+                                .toList();
+
+                            return Column(children: [
+                              Text(
+                                script.text ?? "",
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                              AnyLinkPreview(
+                                displayDirection:
+                                    UIDirection.uiDirectionHorizontal,
+                                link: urls.isNotEmpty ? urls[0] : "",
+                                errorBody: 'Show my custom error body',
+                                errorTitle:
+                                    'Next one is youtube link, error title',
+                              ),
+                            ]);
                           } else if (script.type == "image") {
                             return RoundedImage(
                               width: 516,
