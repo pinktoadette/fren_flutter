@@ -7,7 +7,10 @@ import 'package:machi_app/widgets/story_cover.dart';
 
 class UserGallery extends StatefulWidget {
   final String userId;
-  const UserGallery({Key? key, required this.userId}) : super(key: key);
+  final Function(String)? onFileTap;
+
+  const UserGallery({Key? key, required this.userId, this.onFileTap})
+      : super(key: key);
 
   @override
   _GalleryWidgetState createState() => _GalleryWidgetState();
@@ -77,8 +80,16 @@ class _GalleryWidgetState extends State<UserGallery> {
             crossAxisCount: 3,
           ),
           builderDelegate: PagedChildBuilderDelegate<Gallery>(
-              itemBuilder: (context, item, index) =>
-                  StoryCover(photoUrl: item.photoUrl, title: item.caption)),
+              itemBuilder: (context, item, index) => InkWell(
+                    onTap: () {
+                      if (widget.onFileTap != null) {
+                        widget.onFileTap!(item.photoUrl);
+                        Navigator.pop(context);
+                      }
+                    },
+                    child: StoryCover(
+                        photoUrl: item.photoUrl, title: item.caption),
+                  )),
         ));
   }
 }

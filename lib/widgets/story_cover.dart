@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 
 /// Storyboard or story photoUrl cover
 class StoryCover extends StatelessWidget {
@@ -47,8 +49,10 @@ class StoryCover extends StatelessWidget {
     if (photoUrl != "") {
       return ClipRRect(
         borderRadius: BorderRadius.circular(radius ?? 10.0),
-        child: Image.network(
-          photoUrl!,
+        child: CachedNetworkImage(
+          placeholder: (context, url) =>
+              loadingButton(size: 16, color: Colors.white),
+          imageUrl: photoUrl!,
           width: width ?? 120,
           fit: BoxFit.cover,
         ),

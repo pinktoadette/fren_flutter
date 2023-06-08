@@ -154,7 +154,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                   photoUrl = imageUrl;
                   _uploadPath = null;
                 });
-                Navigator.of(context).pop();
+                // Navigator.of(context).pop();
               },
             ));
   }

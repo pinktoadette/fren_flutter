@@ -203,6 +203,9 @@ class ImageSourceSheet extends StatelessWidget {
             heightFactor: 0.9,
             child: UserGallery(
               userId: UserModel().user.userId,
+              onFileTap: (val) {
+                onGallerySelected(val);
+              },
             ));
       },
     );

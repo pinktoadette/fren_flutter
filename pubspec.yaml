@@ -86,6 +86,7 @@ dependencies:
       url: https://github.com/pinktoadette/flutter_chat_ui.git
       ref: main
   any_link_preview: ^3.0.0
+  cached_network_image: ^3.2.3
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre
