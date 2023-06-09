@@ -140,8 +140,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                             return Padding(
                                 padding: const EdgeInsets.only(right: 5),
                                 child: StoryCover(
-                                    width: 30,
-                                    height: 30,
+                                    width: 50,
+                                    height: 50,
                                     radius: 5,
                                     photoUrl: sto.photoUrl ?? "",
                                     title: sto.title));

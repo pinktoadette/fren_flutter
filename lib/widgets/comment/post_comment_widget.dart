@@ -3,38 +3,24 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 
-class PostCommentWidget extends StatefulWidget {
-  final Story story;
-  final Function(dynamic data) notifyParent;
-  const PostCommentWidget(
-      {Key? key, required this.story, required this.notifyParent})
-      : super(key: key);
-
-  @override
-  _PostCommentWidgetState createState() => _PostCommentWidgetState();
-}
-
-class _PostCommentWidgetState extends State<PostCommentWidget> {
-  late AppLocalizations _i18n;
-  CommentController commentController = Get.find(tag: 'comment');
-
+// ignore: must_be_immutable
+class PostCommentWidget extends StatelessWidget {
+  PostCommentWidget({Key? key}) : super(key: key);
+  final CommentController commentController = Get.find(tag: 'comment');
   final _commentController = TextEditingController();
-  final _commentApi = CommentApi();
-
-  @override
-  void initState() {
-    super.initState();
-  }
+  late AppLocalizations _i18n;
 
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
+
     return Stack(
       children: [
         Container(
@@ -78,38 +64,40 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 },
               )),
         ),
-        Positioned(
-            bottom: 0,
-            left: 5,
-            child: Obx(() => Align(
+        Obx(() => commentController.replyToComment.commentId != null
+            ? Positioned(
+                bottom: 0,
+                left: 5,
+                child: Align(
                   widthFactor: 1,
                   child: TextButton.icon(
                     label: Text(
-                      commentController.replyToComment.commentId != null
-                          ? "Reply @${truncateText(30, commentController.replyToComment.user.username)}"
-                          : "",
+                      "Reply @${truncateText(30, commentController.replyToComment.user.username)}",
                       style: Theme.of(context).textTheme.labelSmall,
                       overflow: TextOverflow.fade,
                     ),
-                    icon: commentController.replyToComment.commentId != null
-                        ? const Icon(Icons.cancel, size: 14)
-                        : const SizedBox.shrink(),
+                    icon: const Icon(Icons.cancel, size: 14),
                     onPressed: () {
                       commentController.clearReplyTo();
                     },
                   ),
-                ))),
+                ))
+            : const SizedBox.shrink()),
       ],
     );
   }
 
   void _postComment() async {
+    StoryboardController storyboardController = Get.find(tag: 'storyboard');
+    final _commentApi = CommentApi();
     try {
       StoryComment newComment = await _commentApi.postComment(
-          storyId: widget.story.storyId,
+          storyId: storyboardController.currentStory.storyId,
           comment: _commentController.text,
-          replyToComment: commentController.replyToComment);
-      widget.notifyParent(newComment);
+          replyToComment: commentController.replyToComment.commentId == null
+              ? null
+              : commentController.replyToComment);
+      _formatComment(newComment);
       Get.snackbar(
         _i18n.translate("success"),
         _i18n.translate("posted"),
@@ -117,6 +105,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
         backgroundColor: APP_SUCCESS,
       );
       _commentController.clear();
+      commentController.clearReplyTo();
       FocusManager.instance.primaryFocus?.unfocus();
     } catch (e) {
       Get.snackbar(
@@ -126,5 +115,17 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
         backgroundColor: APP_ERROR,
       );
     }
+  }
+
+  void _formatComment(StoryComment value) {
+    CommentController commentController = Get.find(tag: 'comment');
+    StoryComment? replyTo = commentController.replyToComment;
+    if (replyTo.commentId != null) {
+      replyTo.response!.add(value);
+      commentController.updateItem(replyTo);
+      return;
+    }
+
+    commentController.addItem(value);
   }
 }

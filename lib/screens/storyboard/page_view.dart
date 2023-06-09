@@ -1,4 +1,3 @@
-import 'package:any_link_preview/any_link_preview.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
@@ -12,7 +11,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
-import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
@@ -39,7 +37,6 @@ class StoryPageView extends StatefulWidget {
 
 class _StoryPageViewState extends State<StoryPageView> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  List<Widget> newComments = [];
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
 
@@ -234,52 +231,17 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             .textTheme
                                             .headlineSmall),
                                   )),
-
-                                  /// Create a widget for new comments to reduce api calls
-                                  SliverToBoxAdapter(
-                                    child: Column(children: newComments),
-                                  ),
-                                  CommentWidget(story: story!),
+                                  const CommentWidget(),
                                   const SliverToBoxAdapter(
                                       child: SizedBox(
                                     height: 100,
                                   ))
                                 ]),
-                            Positioned(
-                                bottom: 0,
-                                child: PostCommentWidget(
-                                  story: story!,
-                                  notifyParent: (value) {
-                                    _formatComment(value);
-                                  },
-                                ))
+                            Positioned(bottom: 0, child: PostCommentWidget())
                           ]))));
             });
       },
     );
-  }
-
-  void _formatComment(StoryComment value) {
-    CommentController commentController = Get.find(tag: 'comment');
-    StoryComment replyTo = commentController.replyToComment;
-    if (replyTo.commentId != '') {
-      // not empty means it is replying to a comment
-      return;
-    }
-
-    Widget newComment = CommentRowWidget(
-      key: Key(value.commentId!),
-      item: value,
-      onDelete: (_) {
-        setState(() {
-          newComments
-              .removeWhere((element) => element.key == Key(value.commentId!));
-        });
-      },
-    );
-    setState(() {
-      newComments.add(newComment);
-    });
   }
 
   List<Widget> _showPageWidget() {

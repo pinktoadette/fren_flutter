@@ -51,7 +51,7 @@ class StoryCover extends StatelessWidget {
         borderRadius: BorderRadius.circular(radius ?? 10.0),
         child: CachedNetworkImage(
           placeholder: (context, url) =>
-              loadingButton(size: 16, color: Colors.white),
+              Center(child: loadingButton(size: 16, color: Colors.white)),
           imageUrl: photoUrl!,
           width: width ?? 120,
           fit: BoxFit.cover,

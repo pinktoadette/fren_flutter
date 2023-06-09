@@ -1,8 +1,11 @@
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/dialogs/common_dialogs.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
@@ -70,6 +73,23 @@ class _StoriesViewState extends State<StoriesView> {
                   icon: const Icon(Iconsax.add),
                   label: Text(
                     _i18n.translate("new_story_collection"),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  )),
+            if (widget.message == null)
+              TextButton(
+                  onPressed: () {
+                    confirmDialog(context,
+                        icon: const Icon(Iconsax.warning_2),
+                        negativeAction: () => Navigator.of(context).pop(),
+                        negativeText: _i18n.translate("CANCEL"),
+                        message: _i18n.translate("publish_confirm"),
+                        positiveText: _i18n.translate("publish"),
+                        positiveAction: () {
+                          _publishAll();
+                        });
+                  },
+                  child: Text(
+                    _i18n.translate("publish"),
                     style: Theme.of(context).textTheme.labelSmall,
                   )),
           ],
@@ -162,12 +182,40 @@ class _StoriesViewState extends State<StoriesView> {
             ])));
   }
 
+  void _publishAll() async {
+    setState(() {
+      isLoading = true;
+    });
+    String storyboardId = storyboardController.currentStoryboard.storyboardId;
+    final _storyboardApi = StoryboardApi();
+    try {
+      await _storyboardApi.publishAll(storyboardId: storyboardId);
+      Get.snackbar(
+        _i18n.translate("story_publish_time"),
+        _i18n.translate("story_publish_error"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_SUCCESS,
+      );
+    } catch (err) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("story_delete_error"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
   void _onDelete(Story story) async {
     try {
       await _storyApi.deletStory(story);
       Navigator.of(context).pop(true);
       Get.snackbar(
-        _i18n.translate("DELETE"),
+        _i18n.translate("success"),
         _i18n.translate("story_success_delete"),
         snackPosition: SnackPosition.BOTTOM,
         backgroundColor: APP_SUCCESS,
@@ -188,7 +236,7 @@ class _StoriesViewState extends State<StoriesView> {
     });
     try {
       dynamic message = widget.message;
-      if (message!.type == types.MessageType.text) {
+      if (message.type == types.MessageType.text) {
         await _storyApi.createStory(
           storyboardId: storyboardController.currentStoryboard.storyboardId,
           title: "",
@@ -200,7 +248,7 @@ class _StoriesViewState extends State<StoriesView> {
         await _storyApi.createStory(
             storyboardId: storyboardController.currentStoryboard.storyboardId,
             title: "",
-            photoUrl: message.url,
+            photoUrl: message.uri,
             text: "");
       }
       Navigator.of(context).pop();

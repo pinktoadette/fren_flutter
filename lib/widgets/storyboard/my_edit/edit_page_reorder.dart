@@ -91,7 +91,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   Widget _reorderListWidget() {
     Size size = MediaQuery.of(context).size;
-    if (scripts.isEmpty) {
+    if (scripts.isEmpty || scripts[0].scriptId == "") {
       return Container(
         width: size.width,
       );

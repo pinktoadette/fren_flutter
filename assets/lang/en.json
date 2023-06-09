@@ -352,6 +352,7 @@
   "story_title": "Board Title",
   "story_category": "Category",
   "story_publish_time": "Publish Board",
+  "story_publish_error": "Oh no, error occured when publishing",
   "story_as_email": "Email",
   "story_export_image": "Export as image",
   "story_added": "Added",

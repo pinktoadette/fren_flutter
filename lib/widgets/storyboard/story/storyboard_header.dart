@@ -23,7 +23,7 @@ class _StoryboardHeaderWidgetState extends State<StoryboardHeaderWidget> {
   Widget build(BuildContext context) {
     Storyboard storyboard = storyboardController.currentStoryboard;
     double width = MediaQuery.of(context).size.width;
-    double storyCoverWidth = 50;
+    double storyCoverWidth = 150;
     double padding = 15;
 
     return Obx(() => InkWell(
@@ -46,6 +46,7 @@ class _StoryboardHeaderWidgetState extends State<StoryboardHeaderWidget> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Padding(
                       padding: EdgeInsets.all(padding),

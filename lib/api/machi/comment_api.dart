@@ -22,8 +22,8 @@ class CommentApi {
       final response = await dio.post(url, data: {
         STORY_ID: storyId,
         STORY_COMMENT: comment,
-        COMMENT_REPLY_TO_ID: replyToComment?.commentId,
-        COMMENT_REPLY_TO_USER_ID: replyToComment?.user.userId
+        COMMENT_REPLY_TO_ID: replyToComment?.commentId ?? "",
+        COMMENT_REPLY_TO_USER_ID: replyToComment?.user.userId ?? ""
       });
       StoryComment storyComment = StoryComment.fromDocument(response.data);
       return storyComment;

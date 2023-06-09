@@ -131,7 +131,6 @@ void _buildDialog(
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          shape: defaultCardBorder(),
           title: Row(
             children: [
               _icon,

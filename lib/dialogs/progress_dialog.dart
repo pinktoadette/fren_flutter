@@ -29,27 +29,6 @@ class ProgressDialog {
             ],
           );
         },
-        // builder: (BuildContext context) {
-        //   _dismissingContext = context;
-        //   return WillPopScope(
-        //     // onWillPop: () async => isDismissible,
-        //     // child: Dialog(
-        //     //     backgroundColor: Colors.transparent,
-        //     //     child: Center(
-        //     //       child: CircularProgressIndicator(),
-        //     //     )
-        //     // ),
-        //     child: Dialog(
-        //         backgroundColor: Colors.pinkAccent,
-        //         insetAnimationCurve: Curves.easeInOut,
-        //         insetAnimationDuration: const Duration(milliseconds: 100),
-        //         elevation: 8.0,
-        //         shape: const RoundedRectangleBorder(
-        //             borderRadius: BorderRadius.all(Radius.circular(8.8))),
-        //         child: _dialog(message)
-        //     ),
-        //   );
-        // },
       );
       // Delaying the function for 200 milliseconds
       // [Default transitionDuration of DialogRoute]

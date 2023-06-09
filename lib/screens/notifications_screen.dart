@@ -121,6 +121,10 @@ class NotificationsScreen extends StatelessWidget {
                             builder: (context) => ProfileScreen(user: user)));
                       }
 
+                      //  if (notification[NOTIF_TYPE] == "COMMENT") {
+
+                      // }
+
                       /// Handle notification click
                       _appNotifications.onNotificationClick(context,
                           nType: notification.data()?[NOTIF_TYPE] ?? '',

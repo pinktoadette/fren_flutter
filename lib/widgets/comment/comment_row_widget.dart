@@ -16,17 +16,16 @@ class CommentRowWidget extends StatelessWidget {
   final StoryComment item;
   final bool hideReply;
   final Function(StoryComment data) onDelete;
-  const CommentRowWidget(
+  CommentRowWidget(
       {super.key,
       required this.item,
       required this.onDelete,
       this.hideReply = false});
+  final CommentController commentController = Get.find(tag: 'comment');
 
   @override
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
-    CommentController commentController = Get.find(tag: 'comment');
-    double width = MediaQuery.of(context).size.width;
     return Obx(() => Container(
         color: commentController.replyToComment.commentId == item.commentId
             ? APP_TERTIARY.withOpacity(0.2)
@@ -43,7 +42,7 @@ class CommentRowWidget extends StatelessWidget {
               timestamp: item.createdAt,
               showMenu: true,
               comment: item,
-              isChild: true,
+              isChild: hideReply,
               onDeleteComment: (action) {
                 _onDeleteComment(context);
               },
@@ -63,7 +62,7 @@ class CommentRowWidget extends StatelessWidget {
                 if (hideReply == false)
                   TextButton(
                       onPressed: () {
-                        commentController.replyToComment = item;
+                        commentController.replyTo(item);
                       },
                       child: Text(_i18n.translate("comment_reply"),
                           style: Theme.of(context).textTheme.labelSmall)),
@@ -85,8 +84,8 @@ class CommentRowWidget extends StatelessWidget {
             if (item.response != null)
               ...item.response!
                   .map((ele) => Container(
+                        padding: const EdgeInsets.only(left: 30),
                         color: Colors.black,
-                        width: width,
                         child: CommentRowWidget(
                             hideReply: true,
                             item: ele,
