@@ -3,7 +3,10 @@ import 'dart:convert';
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:flutter/gestures.dart';
+import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
+import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
@@ -59,6 +62,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
   late WebSocketChannel _channel;
   late Chatroom _room;
+  int? _tappedBottomIconIndex;
+
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
   final _chatroomApi = ChatroomMachiApi();
@@ -69,7 +74,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
-  types.Message? _selectedMessage;
   final _player = AudioPlayer();
   types.PartialImage? attachmentPreview;
 
@@ -88,7 +92,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       (_) {},
       onError: (error) => Get.snackbar(
           'Error', _i18n.translate("an_error_has_occurred"),
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR),
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR),
     )
         .onData((data) {
       _onSocketParse(data);
@@ -164,7 +168,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 isBotTyping: isBotTyping,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
-                inputTextCursorColor: Colors.white,
+                inputTextCursorColor: Colors.grey,
                 inputTextStyle: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,
@@ -190,68 +194,85 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
             listFooterWidget: _footerWidget(),
-            onMessageFooterTap: (_, message) {
-              print(message.author.firstName);
-              setState(() {
-                _selectedMessage = message;
-              });
-            },
+            onMessageFooterTap: _messageTap,
             user: _user),
       );
     }
   }
 
   List<Widget> _footerWidget() => [
-        GestureDetector(
-          onTap: () {
-            _handleMessageFooterTap();
-          },
-          child: const Icon(Iconsax.book, size: 20),
-        ),
+        IconButton(
+            onPressed: () {
+              setState(() {
+                _tappedBottomIconIndex = 0;
+              });
+            },
+            icon: const Icon(Iconsax.book, size: 16)),
         const SizedBox(
-          width: 10,
+          width: 20,
         ),
-        GestureDetector(
-          onTap: () {},
-          child: const Icon(Iconsax.sound, size: 20),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: const Icon(Iconsax.copy, size: 20),
-        ),
-        const SizedBox(
-          width: 10,
-        ),
-        GestureDetector(
-          onTap: () {},
-          child: const Icon(Icons.share, size: 20),
-        ),
+        IconButton(
+            onPressed: () {
+              setState(() {
+                _tappedBottomIconIndex = 1;
+              });
+            },
+            icon: const Icon(Iconsax.gallery, size: 16)),
       ];
 
-  void _handleMessageFooterTap() {
-    if (_selectedMessage != null) {
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        enableDrag: true,
-        builder: (context) => FractionallySizedBox(
-            heightFactor: 0.9,
-            child: DraggableScrollableSheet(
-              snap: true,
-              initialChildSize: 1,
-              minChildSize: 0.9,
-              builder: (context, scrollController) => SingleChildScrollView(
-                controller: scrollController,
-                child: AddChatMessageToBoard(
-                  message: _selectedMessage!,
-                ),
-              ),
-            )),
-      );
+  void _messageTap(BuildContext _, dynamic message) async {
+    switch (_tappedBottomIconIndex) {
+      case (0):
+        setState(() {
+          _tappedBottomIconIndex = null;
+        });
+        return _handleMessageFooterTap(message);
+      case (1):
+        setState(() {
+          _tappedBottomIconIndex = null;
+        });
+        if (message.type == "image") {
+          final _galleryApi = GalleryApi();
+          await _galleryApi.addUserGallery(messageId: message.messageId);
+          Get.snackbar(
+            _i18n.translate("success"),
+            _i18n.translate("added"),
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: APP_SUCCESS,
+          );
+        } else {
+          Get.snackbar(
+            _i18n.translate("error"),
+            "only images are allowed",
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: APP_ERROR,
+          );
+        }
+        return;
+      default:
+        return;
     }
+  }
+
+  void _handleMessageFooterTap(types.Message message) {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      enableDrag: true,
+      builder: (context) => FractionallySizedBox(
+          heightFactor: 0.9,
+          child: DraggableScrollableSheet(
+            snap: true,
+            initialChildSize: 1,
+            minChildSize: 0.9,
+            builder: (context, scrollController) => SingleChildScrollView(
+              controller: scrollController,
+              child: AddChatMessageToBoard(
+                message: message,
+              ),
+            ),
+          )),
+    );
   }
 
   void _handleMessageTap(BuildContext _, types.Message message) async {
@@ -399,7 +420,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       Get.snackbar(
         _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -469,7 +490,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       Get.snackbar(
         _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

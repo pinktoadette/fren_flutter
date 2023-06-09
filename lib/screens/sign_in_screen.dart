@@ -108,9 +108,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                 blockedScreen: () =>
                                     _nextScreen(const BlockedAccountScreen()));
                           }, onError: () async {
-                            setState(() {
-                              isLoading = false;
-                            });
                             // Show error message to user
                             errorDialog(context,
                                 message:

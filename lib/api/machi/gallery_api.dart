@@ -30,4 +30,17 @@ class GalleryApi {
       throw error.toString();
     }
   }
+
+  Future<String> addUserGallery({required String messageId}) async {
+    try {
+      String url = '${baseUri}gallery/gallery';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {CHAT_MESSAGE_ID: messageId});
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }

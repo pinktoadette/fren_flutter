@@ -87,6 +87,7 @@ dependencies:
       ref: main
   any_link_preview: ^3.0.0
   cached_network_image: ^3.2.3
+  screenshot: ^2.1.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

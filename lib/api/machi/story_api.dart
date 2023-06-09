@@ -32,7 +32,7 @@ class StoryApi {
         STORYBOARD_ID: storyboardId,
         STORY_TITLE: title,
         STORY_PHOTO_URL: photoUrl,
-        CHAT_TEXT: text,
+        CHAT_TEXT: text ?? "",
       });
 
       Story story = Story.fromJson(response.data);

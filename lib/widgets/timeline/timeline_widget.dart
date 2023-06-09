@@ -6,6 +6,7 @@ import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
@@ -53,9 +54,11 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     return PagedSliverList<int, Storyboard>.separated(
       pagingController: _pagingController,
       builderDelegate: PagedChildBuilderDelegate<Storyboard>(
+          firstPageProgressIndicatorBuilder: (_) => const Frankloader(),
+          newPageProgressIndicatorBuilder: (_) => const Frankloader(),
           itemBuilder: (context, item, index) {
-        return StoryboardItemWidget(item: item);
-      }),
+            return StoryboardItemWidget(item: item);
+          }),
       separatorBuilder: (BuildContext context, int index) {
         if ((index + 1) % 4 == 0) {
           return Padding(

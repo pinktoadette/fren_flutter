@@ -411,7 +411,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "3e12cfecba374e3b70efab1373ff93a00cdbe0a5"
+      resolved-ref: "37d5137c5e4f94159d12f25a3163027736d171dc"
       url: "https://github.com/pinktoadette/flutter_chat_ui.git"
     source: git
     version: "1.6.8"
@@ -1238,6 +1238,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  screenshot:
+    dependency: "direct main"
+    description:
+      name: screenshot
+      sha256: "455284ff1f5b911d94a43c25e1385485cf6b4f288293eba68f15dad711c7b81c"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.1.0"
   scroll_to_index:
     dependency: transitive
     description:

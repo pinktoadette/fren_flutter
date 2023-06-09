@@ -74,79 +74,92 @@ class _StoriesViewState extends State<StoriesView> {
                   )),
           ],
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const StoryboardHeaderWidget(),
-            if (widget.message != null)
-              Align(
-                  alignment: Alignment.center,
-                  child: ElevatedButton.icon(
-                    icon: isLoading == true
-                        ? loadingButton(size: 16)
-                        : const Icon(Iconsax.add),
-                    label: Text(
-                      _i18n.translate("add_to_new_story"),
-                    ),
-                    onPressed: () async {
-                      _addMessage();
-                    },
-                  )),
-            Obx(
-              () => ListView.builder(
-                  shrinkWrap: true,
-                  scrollDirection: Axis.vertical,
-                  itemCount:
-                      storyboardController.currentStoryboard.story!.length,
-                  itemBuilder: (BuildContext ctx, index) {
-                    if (storyboardController.currentStoryboard.story!.isEmpty) {
-                      return NoData(
-                          text: _i18n.translate("storyboard_nothing"));
-                    }
-                    Story story =
-                        storyboardController.currentStoryboard.story![index];
+        body: SingleChildScrollView(
+            physics: const ScrollPhysics(),
+            child: Column(children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const StoryboardHeaderWidget(),
+                  if (widget.message != null)
+                    Align(
+                        alignment: Alignment.center,
+                        child: ElevatedButton.icon(
+                          icon: isLoading == true
+                              ? loadingButton(size: 16)
+                              : const Icon(Iconsax.add),
+                          label: Text(
+                            _i18n.translate("add_to_new_story"),
+                          ),
+                          onPressed: () async {
+                            _addMessage();
+                          },
+                        )),
+                  Obx(
+                    () => ListView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        scrollDirection: Axis.vertical,
+                        itemCount: storyboardController
+                            .currentStoryboard.story!.length,
+                        itemBuilder: (BuildContext ctx, index) {
+                          if (storyboardController
+                              .currentStoryboard.story!.isEmpty) {
+                            return NoData(
+                                text: _i18n.translate("storyboard_nothing"));
+                          }
+                          Story story = storyboardController
+                              .currentStoryboard.story![index];
 
-                    return Dismissible(
-                        key: Key(story.storyId),
-                        direction: DismissDirection.endToStart,
-                        confirmDismiss: (DismissDirection direction) async {
-                          return await showDialog(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return AlertDialog(
-                                title: Text(
-                                  _i18n.translate("DELETE"),
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                                content: Text(
-                                    _i18n.translate("story_confirm_delete")),
-                                actions: <Widget>[
-                                  OutlinedButton(
-                                      onPressed: () => {
-                                            Navigator.of(context).pop(false),
-                                          },
-                                      child: Text(_i18n.translate("CANCEL"))),
-                                  const SizedBox(
-                                    width: 50,
-                                  ),
-                                  ElevatedButton(
-                                      onPressed: () => {
-                                            _onDelete(story),
-                                          },
-                                      child: Text(_i18n.translate("DELETE"))),
-                                ],
-                              );
-                            },
-                          );
-                        },
-                        background: Container(
-                            color: APP_ERROR, child: const Icon(Iconsax.trash)),
-                        child: StoryItemWidget(
-                            story: story, message: widget.message));
-                  }),
-            ),
-          ],
-        ));
+                          return Dismissible(
+                              key: Key(story.storyId),
+                              direction: DismissDirection.endToStart,
+                              confirmDismiss:
+                                  (DismissDirection direction) async {
+                                return await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: Text(
+                                        _i18n.translate("DELETE"),
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                      content: Text(_i18n
+                                          .translate("story_confirm_delete")),
+                                      actions: <Widget>[
+                                        OutlinedButton(
+                                            onPressed: () => {
+                                                  Navigator.of(context)
+                                                      .pop(false),
+                                                },
+                                            child: Text(
+                                                _i18n.translate("CANCEL"))),
+                                        const SizedBox(
+                                          width: 50,
+                                        ),
+                                        ElevatedButton(
+                                            onPressed: () => {
+                                                  _onDelete(story),
+                                                },
+                                            child: Text(
+                                                _i18n.translate("DELETE"))),
+                                      ],
+                                    );
+                                  },
+                                );
+                              },
+                              background: Container(
+                                  color: APP_ERROR,
+                                  child: const Icon(Iconsax.trash)),
+                              child: StoryItemWidget(
+                                  story: story, message: widget.message));
+                        }),
+                  ),
+                ],
+              )
+            ])));
   }
 
   void _onDelete(Story story) async {

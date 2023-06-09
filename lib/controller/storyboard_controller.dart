@@ -81,6 +81,7 @@ class StoryboardController extends GetxController {
         .indexWhere((element) => element.storyboardId == story.storyboardId);
     _storyboards[index] = story;
     _storyboards.refresh();
+    _currentStoryboard.refresh();
   }
 
   void removeStoryboardfromList(Storyboard storyboard) {
@@ -90,7 +91,7 @@ class StoryboardController extends GetxController {
   }
 
   void setCurrentBoard(Storyboard story) async {
-    currentStoryboard = story;
+    _currentStoryboard = story.obs;
   }
 
   getUnpublised() {

@@ -198,7 +198,7 @@ class _AddNewStoryState extends State<AddNewStory> {
                 const Spacer(),
                 ElevatedButton.icon(
                     icon: isLoading == true
-                        ? loadingButton(size: 16, color: Colors.white)
+                        ? loadingButton(size: 16)
                         : const SizedBox.shrink(),
                     onPressed: () {
                       _addNewStory();
