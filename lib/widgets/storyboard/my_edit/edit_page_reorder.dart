@@ -268,12 +268,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
             onTextComplete: (newContent) async {
               try {
                 if ((index == null) & (newContent != null)) {
+                  await _saveOrUploadTextImg(newContent!);
                   Navigator.pop(context);
-                  _saveOrUploadTextImg(newContent!);
                 }
 
                 if ((index != null) & (newContent?["text"] != "")) {
-                  Navigator.pop(context);
                   Script script = Script(
                       text: newContent?["text"] ?? "",
                       type: 'text',
@@ -286,6 +285,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   setState(() {
                     scripts[index] = script;
                   });
+                  Navigator.pop(context);
                 }
 
                 widget.onUpdateSeq(scripts);
@@ -306,7 +306,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             }));
   }
 
-  void _saveOrUploadTextImg(Map<String, dynamic> content) async {
+  Future<void> _saveOrUploadTextImg(Map<String, dynamic> content) async {
     if (content["text"] != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,

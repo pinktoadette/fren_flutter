@@ -200,40 +200,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
   }
 
-  List<Widget> _footerWidget() => [
-        IconButton(
-            onPressed: () {
-              setState(() {
-                _tappedBottomIconIndex = 0;
-              });
-            },
-            icon: const Icon(Iconsax.book, size: 16)),
-        const SizedBox(
-          width: 20,
-        ),
-        IconButton(
-            onPressed: () {
-              setState(() {
-                _tappedBottomIconIndex = 1;
-              });
-            },
-            icon: const Icon(Iconsax.gallery, size: 16)),
-      ];
-
   void _messageTap(BuildContext _, dynamic message) async {
     switch (_tappedBottomIconIndex) {
       case (0):
-        setState(() {
-          _tappedBottomIconIndex = null;
-        });
         return _handleMessageFooterTap(message);
       case (1):
-        setState(() {
-          _tappedBottomIconIndex = null;
-        });
         if (message.type == types.MessageType.image) {
           final _galleryApi = GalleryApi();
-          await _galleryApi.addUserGallery(messageId: message.messageId);
+          await _galleryApi.addUserGallery(messageId: message.id);
           Get.snackbar(
             _i18n.translate("success"),
             _i18n.translate("added"),
@@ -253,6 +227,36 @@ class _BotChatScreenState extends State<BotChatScreen> {
         return;
     }
   }
+
+  List<Widget> _footerWidget() => [
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTapUp: (TapUpDetails _) {
+            setState(() {
+              _tappedBottomIconIndex = 0;
+            });
+          },
+          child: const AbsorbPointer(
+              child: SizedBox(
+                  height: 50, width: 50, child: Icon(Iconsax.book, size: 16))),
+        ),
+        const SizedBox(
+          width: 20,
+        ),
+        GestureDetector(
+          behavior: HitTestBehavior.translucent,
+          onTapUp: (TapUpDetails _) {
+            setState(() {
+              _tappedBottomIconIndex = 1;
+            });
+          },
+          child: const AbsorbPointer(
+              child: SizedBox(
+                  height: 50,
+                  width: 50,
+                  child: Icon(Iconsax.gallery, size: 16))),
+        ),
+      ];
 
   void _handleMessageFooterTap(types.Message message) {
     showModalBottomSheet<void>(

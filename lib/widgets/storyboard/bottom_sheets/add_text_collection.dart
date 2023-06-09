@@ -1,10 +1,12 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 
 class AddEditText extends StatefulWidget {
@@ -77,7 +79,7 @@ class _AddEditTextState extends State<AddEditText> {
                               : Text(_i18n.translate("UPDATE")))
                     ],
                   ),
-                  attachmentPreview != null
+                  attachmentPreview != null || galleryImageUrl != null
                       ? _attachmentPreview()
                       : SizedBox(
                           height: 80,
@@ -111,11 +113,13 @@ class _AddEditTextState extends State<AddEditText> {
   }
 
   void _onComplete(String text) {
-    if (text.length > 3 || attachmentPreview != null) {
+    if (text.length > 3 ||
+        attachmentPreview != null ||
+        galleryImageUrl != null) {
       widget.onTextComplete({
         "text": text,
-        "image": attachmentPreview,
-        "gallery": galleryImageUrl
+        "image": attachmentPreview ?? "",
+        "gallery": galleryImageUrl ?? ""
       });
     } else {
       Get.snackbar(
@@ -164,12 +168,21 @@ class _AddEditTextState extends State<AddEditText> {
                   size: const Size.fromRadius(48), // Image radius
                   child: AspectRatio(
                     aspectRatio: 1.5,
-                    child: Image.file(
-                      attachmentPreview!,
-                      fit: BoxFit.fitHeight,
-                      width: 80,
-                      height: 80,
-                    ),
+                    child: galleryImageUrl != null
+                        ? CachedNetworkImage(
+                            placeholder: (context, url) =>
+                                loadingButton(size: 16, color: Colors.white),
+                            imageUrl: galleryImageUrl!,
+                            width: 80,
+                            height: 80,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            attachmentPreview!,
+                            fit: BoxFit.fitHeight,
+                            width: 80,
+                            height: 80,
+                          ),
                   ))),
         ),
         Positioned(

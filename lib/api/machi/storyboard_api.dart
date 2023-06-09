@@ -109,6 +109,7 @@ class StoryboardApi {
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.updateStoryboard(story);
+      storyController.setCurrentBoard(story);
       return story;
     } catch (error) {
       debugPrint(error.toString());

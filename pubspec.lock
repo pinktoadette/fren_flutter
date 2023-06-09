@@ -411,7 +411,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "37d5137c5e4f94159d12f25a3163027736d171dc"
+      resolved-ref: "27c2b6733015b127c2361b48546b4df8694682b3"
       url: "https://github.com/pinktoadette/flutter_chat_ui.git"
     source: git
     version: "1.6.8"

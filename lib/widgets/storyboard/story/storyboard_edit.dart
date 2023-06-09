@@ -49,7 +49,6 @@ class _StoryboardEditState extends State<StoryboardEdit> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _i18n = AppLocalizations.of(context);
-
     return Container(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -74,7 +73,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                       StoryCover(
                         width: size.width * 0.75,
                         height: size.width * 0.75,
-                        photoUrl: storyboard.photoUrl ?? photoUrl ?? "",
+                        photoUrl: photoUrl ?? storyboard.photoUrl ?? "",
                         file: _uploadPath,
                         title: storyboard.title,
                       ),
@@ -235,6 +234,4 @@ class _StoryboardEditState extends State<StoryboardEdit> {
       });
     }
   }
-
-  void _deleteMessage() {}
 }

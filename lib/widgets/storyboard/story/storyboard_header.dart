@@ -4,17 +4,23 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/storyboard_info.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
-class StoryboardHeaderWidget extends StatelessWidget {
+class StoryboardHeaderWidget extends StatefulWidget {
   const StoryboardHeaderWidget({Key? key}) : super(key: key);
+
+  @override
+  _StoryboardHeaderWidgetState createState() => _StoryboardHeaderWidgetState();
+}
+
+class _StoryboardHeaderWidgetState extends State<StoryboardHeaderWidget> {
+  StoryboardController storyboardController = Get.find(tag: "storyboard");
+
   @override
   Widget build(BuildContext context) {
-    StoryboardController storyboardController = Get.find(tag: "storyboard");
     Storyboard storyboard = storyboardController.currentStoryboard;
     double width = MediaQuery.of(context).size.width;
     double storyCoverWidth = 50;
@@ -46,7 +52,9 @@ class StoryboardHeaderWidget extends StatelessWidget {
                       child: StoryCover(
                           width: storyCoverWidth,
                           height: storyCoverWidth,
-                          photoUrl: storyboard.photoUrl ?? "",
+                          photoUrl:
+                              storyboardController.currentStoryboard.photoUrl ??
+                                  "",
                           title: storyboard.title),
                     ),
                     Column(
