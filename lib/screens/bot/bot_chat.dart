@@ -231,7 +231,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         setState(() {
           _tappedBottomIconIndex = null;
         });
-        if (message.type == "image") {
+        if (message.type == types.MessageType.image) {
           final _galleryApi = GalleryApi();
           await _galleryApi.addUserGallery(messageId: message.messageId);
           Get.snackbar(
