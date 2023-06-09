@@ -9,6 +9,7 @@ import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/chat/add_message_to_storyboard.dart';
@@ -68,6 +69,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
+  types.Message? _selectedMessage;
   final _player = AudioPlayer();
   types.PartialImage? attachmentPreview;
 
@@ -135,23 +137,25 @@ class _BotChatScreenState extends State<BotChatScreen> {
     } else {
       return Scaffold(
         appBar: AppBar(
-          leading: BackButton(
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () async {
-              _leaveBotTyping();
-            },
-          ),
-          // Show User profile info
-          title: GestureDetector(
-            child: Text(chatController.botController.bot.name,
-                overflow: TextOverflow.fade,
-                style: Theme.of(context).textTheme.displayMedium),
-            onTap: () {
-              /// Show bot info
-              _showBotInfo();
-            },
-          ),
-        ),
+            leading: BackButton(
+              color: Theme.of(context).colorScheme.primary,
+              onPressed: () async {
+                _leaveBotTyping();
+              },
+            ),
+            // Show User profile info
+            title: GestureDetector(
+              child: Text(chatController.botController.bot.name,
+                  overflow: TextOverflow.fade,
+                  style: Theme.of(context).textTheme.displayMedium),
+              onTap: () {
+                /// Show bot info
+                _showBotInfo();
+              },
+            ),
+            actions: [
+              IconButton(icon: const Icon(Iconsax.camera), onPressed: () {})
+            ]),
         body: Chat(
             listBottomWidget: CustomHeaderInputWidget(
                 notifyParent: (e) {
@@ -185,15 +189,50 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
-            onMessageFooterTap: _handleMessageFooterTap,
-            messageFooterIcon: const Icon(Iconsax.book, size: 14),
+            listFooterWidget: _footerWidget(),
+            onMessageFooterTap: (_, message) {
+              print(message.author.firstName);
+              setState(() {
+                _selectedMessage = message;
+              });
+            },
             user: _user),
       );
     }
   }
 
-  void _handleMessageFooterTap(BuildContext _, types.Message message) {
-    if (_room.users.length == 1) {
+  List<Widget> _footerWidget() => [
+        GestureDetector(
+          onTap: () {
+            _handleMessageFooterTap();
+          },
+          child: const Icon(Iconsax.book, size: 20),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: const Icon(Iconsax.sound, size: 20),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: const Icon(Iconsax.copy, size: 20),
+        ),
+        const SizedBox(
+          width: 10,
+        ),
+        GestureDetector(
+          onTap: () {},
+          child: const Icon(Icons.share, size: 20),
+        ),
+      ];
+
+  void _handleMessageFooterTap() {
+    if (_selectedMessage != null) {
       showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
@@ -207,7 +246,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               builder: (context, scrollController) => SingleChildScrollView(
                 controller: scrollController,
                 child: AddChatMessageToBoard(
-                  message: message,
+                  message: _selectedMessage!,
                 ),
               ),
             )),

@@ -31,6 +31,7 @@ class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
             _i18n.translate("storyboard"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
+          automaticallyImplyLeading: false,
           actions: [
             Container(
                 padding: const EdgeInsets.all(10.0),
