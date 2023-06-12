@@ -37,19 +37,21 @@ class _PublishStoryState extends State<PublishStory> {
     try {
       setState(() {
         _isLoading = true;
+        _isSuccess = false;
       });
       await _storyApi.publishStory(widget.story.storyId);
 
-      setState(() {
-        _isLoading = false;
-        _isSuccess = true;
-      });
       _goToNextStep(3);
     } catch (err) {
       Get.snackbar(
           _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
       _goToNextStep(1);
+    } finally {
+      setState(() {
+        _isLoading = false;
+        _isSuccess = true;
+      });
     }
   }
 

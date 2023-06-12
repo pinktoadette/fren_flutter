@@ -20,7 +20,8 @@ class LikeItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LikeButton(
-      size: size ?? 20,
+      padding: const EdgeInsets.only(bottom: 10),
+      size: size ?? 30,
       isLiked: mylikes == 1 ? true : false,
       onTap: (value) async {
         onLike(!value);

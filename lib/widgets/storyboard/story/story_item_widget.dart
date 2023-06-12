@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/story_cover.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
@@ -105,24 +104,14 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
                                 ),
                               ],
                             )),
-                        Container(
-                            width: contentWidth,
-                            padding: const EdgeInsets.only(right: 5),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                TimelineHeader(user: widget.story.createdBy),
-                                const Spacer(),
-                                TextButton.icon(
-                                  onPressed: null,
-                                  icon: const Icon(Iconsax.square, size: 16),
-                                  label: Text(
-                                      "${widget.story.pages?.length ?? 0} pages",
-                                      style: const TextStyle(fontSize: 12)),
-                                ),
-                              ],
-                            )),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (widget.story.status == StoryStatus.UNPUBLISHED)
+                          const Icon(
+                            Iconsax.lock,
+                            size: 16,
+                          ),
                       ]),
                 ],
               ),

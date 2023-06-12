@@ -41,7 +41,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   final _timelineApi = TimelineApi();
 
   late AppLocalizations _i18n;
-  double bodyHeightPercent = 0.8;
+  double bodyHeightPercent = 0.825;
   double headerHeight = 140;
   final _storyApi = StoryApi();
 
@@ -144,11 +144,11 @@ class _StoryPageViewState extends State<StoryPageView> {
         body: Stack(children: [
           SingleChildScrollView(
               child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               StoryHeaderWidget(story: story!),
-              ..._showPageWidget(),
+              _showPageWidget(),
             ],
           )),
           if (story?.status.name == StoryStatus.PUBLISHED.name) _commentSheet()
@@ -225,11 +225,12 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 slivers: [
                                   SliverToBoxAdapter(
                                       child: Padding(
-                                    padding: const EdgeInsets.all(10),
+                                    padding: const EdgeInsets.only(
+                                        left: 20, top: 10),
                                     child: Text(_i18n.translate("comments"),
                                         style: Theme.of(context)
                                             .textTheme
-                                            .headlineSmall),
+                                            .bodySmall),
                                   )),
                                   const CommentWidget(),
                                   const SliverToBoxAdapter(
@@ -244,26 +245,24 @@ class _StoryPageViewState extends State<StoryPageView> {
     );
   }
 
-  List<Widget> _showPageWidget() {
+  Widget _showPageWidget() {
     Size size = MediaQuery.of(context).size;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
-        ? size.height * bodyHeightPercent - headerHeight - 20
-        : size.height - headerHeight - 40;
+        ? size.height * bodyHeightPercent - headerHeight
+        : size.height - headerHeight - 10;
     if (story!.pages!.isEmpty) {
-      return [
-        SizedBox(
-            height: height,
-            width: size.width,
-            child: PageView.builder(
-                controller: controller,
-                itemCount: 1,
-                itemBuilder: (_, index) {
-                  return NoData(text: _i18n.translate("storybits_empty"));
-                }))
-      ];
+      return SizedBox(
+          height: height,
+          width: size.width,
+          child: PageView.builder(
+              controller: controller,
+              itemCount: 1,
+              itemBuilder: (_, index) {
+                return NoData(text: _i18n.translate("storybits_empty"));
+              }));
     }
 
-    return [
+    return Stack(alignment: Alignment.bottomCenter, children: [
       SizedBox(
           height: height,
           width: size.width,
@@ -295,31 +294,43 @@ class _StoryPageViewState extends State<StoryPageView> {
                   )));
             },
           )),
-      Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Spacer(),
-          Expanded(
-              child: SmoothPageIndicator(
-            controller: controller,
-            count: story!.pages!.length,
-            effect: const ExpandingDotsEffect(
-                dotHeight: 14, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
-          )),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: LikeItemWidget(
-                onLike: (val) {
-                  _onLikePressed(widget.story, val);
-                },
-                size: 20,
-                likes: 0,
-                mylikes: 0),
-          )
-        ],
-      )
-    ];
+      Positioned(
+          bottom: 0,
+          child: SizedBox(
+            height: 50,
+            width: size.width,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                const Spacer(),
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: SmoothPageIndicator(
+                      controller: controller,
+                      count: story!.pages!.length,
+                      effect: const ExpandingDotsEffect(
+                          dotHeight: 8,
+                          dotWidth: 14,
+                          activeDotColor: APP_ACCENT_COLOR),
+                    )),
+                const SizedBox(
+                  width: 20,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: LikeItemWidget(
+                      onLike: (val) {
+                        _onLikePressed(widget.story, val);
+                      },
+                      size: 20,
+                      likes: widget.story.likes ?? 0,
+                      mylikes: widget.story.mylikes ?? 0),
+                ),
+              ],
+            ),
+          ))
+    ]);
   }
 
   Widget _unpublishedTools() {

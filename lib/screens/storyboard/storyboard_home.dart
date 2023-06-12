@@ -5,14 +5,15 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_published_board.dart';
 
-class Storyboard extends StatefulWidget {
-  const Storyboard({Key? key}) : super(key: key);
+class StoryboardHome extends StatefulWidget {
+  const StoryboardHome({Key? key}) : super(key: key);
 
   @override
   _StoryboardState createState() => _StoryboardState();
 }
 
-class _StoryboardState extends State<Storyboard> with TickerProviderStateMixin {
+class _StoryboardState extends State<StoryboardHome>
+    with TickerProviderStateMixin {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 

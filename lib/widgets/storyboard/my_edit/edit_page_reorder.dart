@@ -12,6 +12,7 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
 class EditPageReorder extends StatefulWidget {
   final List<Script> scriptList;
@@ -79,8 +80,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Iconsax.user_tag),
-                        onPressed: () {},
+                        icon: const Icon(Iconsax.grid_3),
+                        onPressed: () {
+                          _showLayOutSelection(context);
+                        },
                       ),
                     ]),
               )
@@ -179,10 +182,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
               size: 16,
             )),
         PopupMenuButton<int>(
-            icon: const Icon(Iconsax.forward_square, size: 16),
+            icon: const Icon(Iconsax.document_forward, size: 16),
             initialValue: 1,
             // Callback that sets the selected popup menu item.
-            onSelected: (item) {
+            onSelected: (item) async {
+              if (item == story.pages!.length) {
+                widget.onMoveInsertPages({"action": "add"});
+              }
               _moveBit(pageNum: item, scriptIndex: index);
             },
             itemBuilder: (BuildContext context) {
@@ -220,7 +226,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   List<PopupMenuItem<int>> _showPages() {
     story = storyboardController.currentStory;
 
-    return story.pages!.map((page) {
+    List<PopupMenuItem<int>> pagesMenu = story.pages!.map((page) {
       if (page.pageNum != (widget.pageIndex + 1)) {
         return PopupMenuItem<int>(
           value: page.pageNum,
@@ -233,6 +239,25 @@ class _EditPageReorderState extends State<EditPageReorder> {
         child: Text(_i18n.translate("story_bit_on_current_page")),
       );
     }).toList();
+    pagesMenu.add(PopupMenuItem<int>(
+        value: story.pages!.length,
+        child: Text(_i18n.translate("story_bit_add_to_new_page"))));
+    return pagesMenu;
+  }
+
+  void _showLayOutSelection(BuildContext context) {
+    // double height = MediaQuery.of(context).size.height;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.25,
+            child: StoryLayout(
+              onSelection: (value) {},
+            ));
+      },
+    );
   }
 
   void _moveBit({required int pageNum, required int scriptIndex}) async {

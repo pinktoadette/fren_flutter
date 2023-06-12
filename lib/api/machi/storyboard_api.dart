@@ -70,8 +70,6 @@ class StoryboardApi {
   }
 
   Future<List<Storyboard>> getMyStoryboards({String? statusFilter}) async {
-    StoryboardController storyController = Get.find(tag: 'storyboard');
-
     try {
       String url =
           '${baseUri}my_storyboards${statusFilter != null ? "?status=$statusFilter" : ""}';
@@ -84,7 +82,6 @@ class StoryboardApi {
         Storyboard s = Storyboard.fromJson(story);
         stories.add(s);
       }
-      storyController.myStories(stories);
       return stories;
     } catch (error) {
       debugPrint(error.toString());

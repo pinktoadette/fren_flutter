@@ -175,7 +175,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
 
                   ..._postImagesBots(size),
-                  _userPost(size),
                 ],
               ),
             ),
@@ -225,23 +224,33 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   Widget _userPost(Size size) {
     return SizedBox(
-        width: size.width,
-        child: FutureBuilder(
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return Container();
-            }
-            return ListView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                Storyboard item = snapshot.data![index];
-                return StoryboardItemWidget(item: item);
+        width: size.width - 250,
+        height: 500,
+        child: Column(
+          // mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Text(
+              _i18n.translate("board"),
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            FutureBuilder(
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return Container();
+                }
+                return ListView.builder(
+                  physics: const NeverScrollableScrollPhysics(),
+                  shrinkWrap: true,
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    Storyboard item = snapshot.data![index];
+                    return StoryboardItemWidget(item: item);
+                  },
+                );
               },
-            );
-          },
-          future: _getUserBoard(),
+              future: _getUserBoard(),
+            )
+          ],
         ));
   }
 

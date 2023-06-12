@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -42,10 +43,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
-    double storyCoverWidth = 80;
+    double storyCoverWidth = width;
     double padding = 15;
-    double playWidth =
-        storyboard.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
     String title = storyboard.title;
     String photoUrl = storyboard.photoUrl ?? "";
     String subtitle =
@@ -55,7 +54,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       title = storyboard.story![0].title;
       photoUrl = storyboard.story![0].photoUrl ?? "";
     }
-    double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
+    // double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";
@@ -68,7 +67,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.only(left: padding, top: padding),
+              padding: EdgeInsets.only(top: padding),
               width: width,
               child: TimelineHeader(
                 user: storyboard.createdBy,
@@ -80,52 +79,47 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                 onTap: () async {
                   _onStoryClick();
                 },
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    if (photoUrl != "")
-                      Padding(
-                          padding: EdgeInsets.all(padding),
-                          child: StoryCover(
-                              width: storyCoverWidth,
-                              photoUrl: photoUrl,
-                              title: title)),
-                    Container(
-                        padding: photoUrl == ""
-                            ? EdgeInsets.only(left: padding)
-                            : const EdgeInsets.only(left: 0),
-                        width:
-                            photoUrl != "" ? rightBox : width - padding * 3.2,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                                "$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                                style: const TextStyle(fontSize: 10)),
-                            Text(storyboard.category,
-                                style: const TextStyle(
-                                    fontSize: 10,
-                                    color: APP_SECONDARY_ACCENT_COLOR,
-                                    fontWeight: FontWeight.bold)),
-                            SizedBox(
-                                child: Text(
-                              storyboard.title,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold),
-                            )),
-                            textLinkPreview(context, subtitle)
-                          ],
-                        ))
-                  ],
-                )),
+                child: Container(
+                    padding: EdgeInsets.only(left: padding),
+                    width: width - padding * 3.2,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Text(
+                            "$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                            style: const TextStyle(fontSize: 10)),
+                        Text(storyboard.category,
+                            style: const TextStyle(
+                                fontSize: 10,
+                                color: APP_SECONDARY_ACCENT_COLOR,
+                                fontWeight: FontWeight.bold)),
+                        SizedBox(
+                            child: Text(
+                          storyboard.title,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold),
+                        )),
+                        textLinkPreview(context, subtitle)
+                      ],
+                    ))),
+            if (photoUrl != "")
+              InkWell(
+                  onTap: () async {
+                    _onStoryClick();
+                  },
+                  child: Padding(
+                      padding: EdgeInsets.all(padding),
+                      child: StoryCover(
+                          width: storyCoverWidth,
+                          height: storyCoverWidth,
+                          photoUrl: photoUrl,
+                          title: title))),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Container(
                     width: width - 10,
@@ -136,33 +130,45 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       children: [
                         if (storyboard.story != null &&
                             storyboard.story!.length > 1)
-                          ...storyboard.story!.take(5).map((sto) {
+                          ...storyboard.story!.take(8).map((sto) {
                             return Padding(
                                 padding: const EdgeInsets.only(right: 5),
                                 child: StoryCover(
+                                    icon: sto.status == StoryStatus.UNPUBLISHED
+                                        ? const Icon(
+                                            Iconsax.lock,
+                                            size: 16,
+                                          )
+                                        : null,
                                     width: 50,
                                     height: 50,
                                     radius: 5,
                                     photoUrl: sto.photoUrl ?? "",
                                     title: sto.title));
                           }),
-                        const Spacer(),
-                        if (storyboard.status == StoryStatus.PUBLISHED)
-                          Text(
-                              "${storyboard.commentCount ?? 0} ${_i18n.translate("comments")}",
-                              style: Theme.of(context).textTheme.labelSmall),
-                        SizedBox(
-                            width: 50,
-                            child: LikeItemWidget(
-                                onLike: (val) {
-                                  _onLikePressed(widget.item, val);
-                                },
-                                likes: storyboard.likes ?? 0,
-                                mylikes: storyboard.mylikes ?? 0))
                       ],
-                    ))
+                    )),
               ],
-            )
+            ),
+            Padding(
+                padding: const EdgeInsets.only(bottom: 10, right: 10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if (storyboard.status == StoryStatus.PUBLISHED)
+                      Text(
+                          "${storyboard.commentCount ?? 0} ${_i18n.translate("comments")}",
+                          style: Theme.of(context).textTheme.labelSmall),
+                    SizedBox(
+                        width: 50,
+                        child: LikeItemWidget(
+                            onLike: (val) {
+                              _onLikePressed(widget.item, val);
+                            },
+                            likes: storyboard.likes ?? 0,
+                            mylikes: storyboard.mylikes ?? 0))
+                  ],
+                ))
           ],
         ));
   }

@@ -31,6 +31,8 @@ Story intialStory = Story(
     status: StoryStatus.UNPUBLISHED,
     category: '');
 
+/// Unpublish will be _storyboards, that way you can add/edit
+/// Publish variable is publish, cannot add/edit child
 class StoryboardController extends GetxController {
   RxList<Storyboard> _storyboards = <Storyboard>[].obs;
   // ignore: prefer_final_fields
@@ -46,28 +48,16 @@ class StoryboardController extends GetxController {
   Story get currentStory => _currentStory.value ?? intialStory;
   set currentStory(Story value) => _currentStory.value = value;
 
-  RxList<Storyboard> unpublished = <Storyboard>[].obs;
   RxList<Storyboard> published = <Storyboard>[].obs;
 
-  @override
-  void onInit() async {
-    // fetchMyStories();
-    super.onInit();
-  }
-
-  Future<void> fetchMyStories() async {
+  Future<void> getBoards({StoryStatus? filter}) async {
     final storyboardApi = StoryboardApi();
-    final List<Storyboard> stories = await storyboardApi.getMyStoryboards();
+    final List<Storyboard> stories =
+        await storyboardApi.getMyStoryboards(statusFilter: filter?.name);
+    if (filter == StoryStatus.PUBLISHED) {
+      published = stories.obs;
+    }
     _storyboards = stories.obs;
-    _storyboards.refresh();
-  }
-
-  /// Storyboard
-  Future<void> myStories(List<Storyboard> stories) async {
-    _storyboards = stories.obs;
-    _storyboards.refresh();
-    getUnpublised();
-    getPublished();
   }
 
   void addNewStoryboard(Storyboard story) async {
@@ -92,28 +82,6 @@ class StoryboardController extends GetxController {
 
   void setCurrentBoard(Storyboard story) async {
     _currentStoryboard = story.obs;
-  }
-
-  getUnpublised() {
-    List<Storyboard> unpub = [];
-    for (Storyboard storyboard in _storyboards) {
-      List<Story> temp = storyboard.story!
-          .where((child) => child.status == StoryStatus.UNPUBLISHED)
-          .toList();
-      unpub.add(storyboard.copyWith(story: temp));
-    }
-    unpublished = unpub.obs;
-  }
-
-  getPublished() {
-    List<Storyboard> unpub = [];
-    for (Storyboard storyboard in _storyboards) {
-      List<Story> temp = storyboard.story!
-          .where((child) => child.status == StoryStatus.PUBLISHED)
-          .toList();
-      unpub.add(storyboard.copyWith(story: temp));
-    }
-    unpublished = unpub.obs;
   }
 
   /// Story

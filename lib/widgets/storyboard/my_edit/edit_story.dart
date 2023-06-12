@@ -152,10 +152,6 @@ class _EditPageState extends State<EditPage> {
             story = story;
           });
         }
-
-        _pageController.animateToPage(pageNum,
-            duration: const Duration(milliseconds: 500),
-            curve: Curves.fastOutSlowIn);
         break;
       case ("move"):
         int moveToPage = data["page"];
@@ -169,6 +165,7 @@ class _EditPageState extends State<EditPage> {
 
         storyboardController.updateStory(story: story);
         break;
+
       default:
         break;
     }

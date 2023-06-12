@@ -7,7 +7,6 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
@@ -27,8 +26,12 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
 
   @override
   void initState() {
-    storyboardController.getUnpublised();
     super.initState();
+    _getMyBoards();
+  }
+
+  void _getMyBoards() async {
+    await storyboardController.getBoards();
   }
 
   @override
@@ -38,8 +41,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
 
     return RefreshIndicator(
       onRefresh: () async {
-        // Refresh Functionality
-        await _storyboardApi.getMyStoryboards();
+        _getMyBoards();
       },
       child: storyboardController.storyboards.isEmpty
           ? Align(
@@ -68,11 +70,11 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
               },
               shrinkWrap: true,
               scrollDirection: Axis.vertical,
-              itemCount: storyboardController.unpublished.length,
+              itemCount: storyboardController.storyboards.length,
               itemBuilder: (BuildContext ctx, index) {
-                Storyboard storyboard = storyboardController.unpublished[index];
-                if (storyboard.title == '') {
-                  return NoData(text: _i18n.translate("storyboard_nothing"));
+                Storyboard storyboard = storyboardController.storyboards[index];
+                if (storyboard.story!.isEmpty) {
+                  return const SizedBox.shrink();
                 }
                 return Dismissible(
                     key: Key(storyboard.storyboardId),

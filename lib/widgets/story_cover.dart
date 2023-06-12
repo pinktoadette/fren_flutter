@@ -13,6 +13,7 @@ class StoryCover extends StatelessWidget {
   final double? height;
   final double? radius;
   final File? file;
+  final Icon? icon;
   const StoryCover(
       {Key? key,
       this.radius,
@@ -20,11 +21,36 @@ class StoryCover extends StatelessWidget {
       required this.title,
       this.file,
       this.width,
-      this.height})
+      this.height,
+      this.icon})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    if (icon != null) {
+      return Container(
+          decoration: BoxDecoration(
+              color: APP_ACCENT_COLOR,
+              borderRadius: BorderRadius.circular(radius ?? 20),
+              boxShadow: [
+                BoxShadow(
+                    blurRadius: 8,
+                    offset: const Offset(5, 15),
+                    color: Theme.of(context)
+                        .colorScheme
+                        .tertiaryContainer
+                        .withOpacity(.6),
+                    spreadRadius: -9)
+              ]),
+          child: SizedBox(
+              height: height ?? 120,
+              width: width ?? 100,
+              child: Stack(children: [
+                _showImageLocal(context),
+                Positioned(bottom: 0, right: 0, child: icon!)
+              ])));
+    }
+
     return Container(
         decoration: BoxDecoration(
             color: APP_ACCENT_COLOR,
@@ -40,9 +66,10 @@ class StoryCover extends StatelessWidget {
                   spreadRadius: -9)
             ]),
         child: SizedBox(
-            height: height ?? 120,
-            width: width ?? 100,
-            child: _showImageLocal(context)));
+          height: height ?? 120,
+          width: width ?? 100,
+          child: _showImageLocal(context),
+        ));
   }
 
   Widget _showImageLocal(BuildContext context) {

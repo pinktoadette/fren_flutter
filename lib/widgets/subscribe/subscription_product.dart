@@ -8,8 +8,6 @@ import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
-import 'package:purchases_flutter/models/offering_wrapper.dart';
-import 'package:purchases_flutter/models/package_wrapper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SubscriptionProduct extends StatefulWidget {

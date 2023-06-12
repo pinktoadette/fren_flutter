@@ -6,6 +6,7 @@ import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
@@ -96,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
     chatController.initUser();
     chatController.onChatLoad();
-    storyController.fetchMyStories();
+    storyController.getBoards(filter: StoryStatus.PUBLISHED);
   }
 
   /// get or create chatroom
@@ -182,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
     List<Widget> options = <Widget>[
       const ActivityTab(),
       // const PlaylistTab(),
-      const Storyboard(),
+      const StoryboardHome(),
       const ConversationsTab(),
       const ProfileTab()
     ];

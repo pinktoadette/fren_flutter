@@ -25,7 +25,7 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
 
   @override
   void initState() {
-    storyboardController.getPublished();
+    storyboardController.getBoards(filter: StoryStatus.PUBLISHED);
     super.initState();
   }
 
