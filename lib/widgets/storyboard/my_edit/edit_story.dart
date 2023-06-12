@@ -1,3 +1,4 @@
+import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
@@ -27,7 +28,7 @@ class _EditPageState extends State<EditPage> {
   double itemHeight = 120;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
-  Layouts selectedLayout = Layouts.PUBLICATION;
+  Layout selectedLayout = Layout.CONVO;
   int pageIndex = 0;
 
   get onUpdate => null;
@@ -132,6 +133,7 @@ class _EditPageState extends State<EditPage> {
                   },
                   onLayoutSelection: (layout) {
                     selectedLayout = layout;
+                    _updateLayout(layout);
                   });
             },
           )),
@@ -186,6 +188,17 @@ class _EditPageState extends State<EditPage> {
     StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
     story.pages![pageIndex] = newPages;
     storyboardController.updateStory(story: story);
+  }
+
+  void _updateLayout(Layout layout) async {
+    final _storyApi = StoryApi();
+    Story updateStory = story.copyWith(layout: layout);
+
+    await _storyApi.updateStory(
+        storyId: updateStory.storyId, layout: layout.name);
+    setState(() {
+      story = updateStory;
+    });
   }
 
   void _onPageChange(int index) {

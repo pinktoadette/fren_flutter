@@ -97,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
     chatController.initUser();
     chatController.onChatLoad();
-    storyController.getBoards(filter: StoryStatus.PUBLISHED);
+    storyController.getBoards();
   }
 
   /// get or create chatroom

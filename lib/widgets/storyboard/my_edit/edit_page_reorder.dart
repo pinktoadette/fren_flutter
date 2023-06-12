@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
@@ -11,7 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/common/chat_bubble.dart';
+import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
@@ -23,8 +22,8 @@ class EditPageReorder extends StatefulWidget {
   final int pageIndex;
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
-  final Function(Layouts data) onLayoutSelection;
-  Layouts? layout;
+  final Function(Layout data) onLayoutSelection;
+  Layout? layout;
 
   EditPageReorder(
       {Key? key,
@@ -47,7 +46,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late Story story;
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  Layouts? layout;
+  Layout? layout;
 
   @override
   void initState() {
@@ -176,7 +175,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
-    CrossAxisAlignment alignment = layout == Layouts.CONVO
+    CrossAxisAlignment alignment = layout == Layout.CONVO
         ? story.createdBy.username == scripts[index].characterName
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start
@@ -213,7 +212,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     );
 
     // layout
-    Widget lay = (layout == Layouts.CONVO)
+    Widget lay = (layout == Layout.CONVO)
         ? Row(
             mainAxisAlignment: alignment == CrossAxisAlignment.end
                 ? MainAxisAlignment.end
@@ -234,7 +233,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
               Text(
                 scripts[index].text ?? "",
                 textAlign: TextAlign.left,
-                style: const TextStyle(color: Colors.black, fontSize: 16),
+                style: TextStyle(
+                    color: layout == Layout.CONVO ? Colors.black : Colors.white,
+                    fontSize: 16),
               ),
               size,
               alignment),
@@ -263,17 +264,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   Widget _bubbleOrNot(Widget widget, Size size, CrossAxisAlignment align) {
-    return layout == Layouts.CONVO
-        ? CustomPaint(
-            painter: Bubble(align == CrossAxisAlignment.end),
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-              constraints: BoxConstraints(maxWidth: size.width * 0.85),
-              child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
-                  child: widget),
-            ),
+    return layout == Layout.CONVO
+        ? StoryBubble(
+            isRight: align == CrossAxisAlignment.end,
+            widget: widget,
+            size: size,
           )
         : widget;
   }

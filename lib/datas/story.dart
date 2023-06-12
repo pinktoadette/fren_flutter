@@ -1,6 +1,7 @@
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
 class StoryComment {
   String comment;
@@ -81,6 +82,7 @@ class Story {
   final String? photoUrl;
   final String category;
   List<StoryPages>? pages;
+  Layout? layout;
   final int? likes;
   final int? mylikes;
   final int? createdAt;
@@ -96,6 +98,7 @@ class Story {
       this.photoUrl,
       this.summary,
       required this.category,
+      this.layout,
       this.likes,
       this.mylikes,
       this.commentCount,
@@ -115,6 +118,7 @@ class Story {
       int? likes,
       int? mylikes,
       int? commentCount,
+      Layout? layout,
       String? summary}) {
     return Story(
         storyId: storyId ?? this.storyId,
@@ -128,6 +132,7 @@ class Story {
         likes: likes ?? this.likes,
         mylikes: mylikes ?? this.mylikes,
         commentCount: commentCount ?? this.commentCount,
+        layout: layout ?? this.layout,
         category: category ?? this.category);
   }
 
@@ -140,11 +145,12 @@ class Story {
       STORY_STATUS: status,
       STORY_PHOTO_URL: photoUrl,
       STORY_SUMMARY: summary,
+      STORY_LAYOUT: layout,
       BOT_CREATED_BY: createdBy,
       ITEM_MY_LIKES: mylikes,
       ITEM_LIKES: likes,
       CREATED_AT: createdAt,
-      UPDATED_AT: updatedAt,
+      UPDATED_AT: updatedAt
     };
   }
 
@@ -167,6 +173,9 @@ class Story {
         createdBy: user,
         summary: doc[STORY_SUMMARY] ?? "No summary",
         category: doc[STORY_CATEGORY] ?? "Other",
+        layout: doc[STORY_LAYOUT] != null
+            ? Layout.values.byName(doc[STORY_LAYOUT])
+            : Layout.CONVO,
         pages: pages,
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
         likes: doc[ITEM_LIKES],

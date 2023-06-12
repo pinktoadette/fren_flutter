@@ -103,7 +103,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold),
                         )),
-                        textLinkPreview(context, subtitle)
+                        textLinkPreview(context: context, text: subtitle)
                       ],
                     ))),
             if (photoUrl != "")

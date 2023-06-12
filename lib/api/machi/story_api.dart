@@ -116,8 +116,9 @@ class StoryApi {
 
   Future<Story> updateStory(
       {required String storyId,
-      required String title,
-      String? photoUrl}) async {
+      String? title,
+      String? photoUrl,
+      String? layout}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
     try {
@@ -127,7 +128,8 @@ class StoryApi {
       await dio.put(url, data: {
         STORY_ID: storyId,
         STORY_TITLE: title,
-        STORY_PHOTO_URL: photoUrl
+        STORY_PHOTO_URL: photoUrl,
+        STORY_LAYOUT: layout
       });
       Story story = storyController.currentStory;
       Story updatedStory =

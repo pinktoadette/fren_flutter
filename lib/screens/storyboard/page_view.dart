@@ -11,8 +11,10 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
+import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -37,6 +39,7 @@ class StoryPageView extends StatefulWidget {
 
 class _StoryPageViewState extends State<StoryPageView> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
 
@@ -50,8 +53,6 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   @override
   void initState() {
-    Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
-
     super.initState();
     if (widget.isPreview == true) {
       setState(() {
@@ -82,6 +83,8 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   @override
   Widget build(BuildContext context) {
+    Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
+
     _i18n = AppLocalizations.of(context);
 
     if (story == null && pages.isEmpty) {
@@ -250,6 +253,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     double height = story?.status.name == StoryStatus.PUBLISHED.name
         ? size.height * bodyHeightPercent - headerHeight
         : size.height - headerHeight - 10;
+
     if (story!.pages!.isEmpty) {
       return SizedBox(
           height: height,
@@ -275,21 +279,27 @@ class _StoryPageViewState extends State<StoryPageView> {
                   scrollDirection: Axis.vertical,
                   child: Card(
                       child: Container(
+                    width: size.width,
                     padding: const EdgeInsets.all(20),
                     child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                        crossAxisAlignment: story!.layout == Layout.CONVO
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
                         children: scripts!.map((script) {
-                          if (script.type == "text") {
-                            return textLinkPreview(context, script.text ?? "");
-                          } else if (script.type == "image") {
-                            return RoundedImage(
-                              width: 516,
-                              height: 516,
-                              photoUrl: script.image?.uri ?? "",
-                              icon: const Icon(Iconsax.image),
-                            );
-                          }
-                          return const SizedBox.shrink();
+                          CrossAxisAlignment alignment =
+                              story!.layout == Layout.CONVO
+                                  ? story!.createdBy.username.trim() ==
+                                          script.characterName!.trim()
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start
+                                  : CrossAxisAlignment.start;
+                          return Column(
+                              crossAxisAlignment: alignment,
+                              children: [
+                                _displayScript(script, size),
+                                if (story!.layout == Layout.CONVO)
+                                  Text(script.characterName ?? ""),
+                              ]);
                         }).toList()),
                   )));
             },
@@ -331,6 +341,32 @@ class _StoryPageViewState extends State<StoryPageView> {
             ),
           ))
     ]);
+  }
+
+  Widget _displayScript(Script script, Size size) {
+    Widget widget = const SizedBox.shrink();
+    if (script.type == "text") {
+      widget = textLinkPreview(
+          context: context,
+          text: script.text ?? "",
+          style: TextStyle(
+              color:
+                  story!.layout == Layout.CONVO ? Colors.black : Colors.white));
+    } else if (script.type == "image") {
+      widget = RoundedImage(
+        width: 516,
+        height: 516,
+        photoUrl: script.image?.uri ?? "",
+        icon: const Icon(Iconsax.image),
+      );
+    }
+    Widget widgetScript = story!.layout == Layout.CONVO
+        ? StoryBubble(
+            isRight: story!.createdBy.username == script.characterName,
+            widget: widget,
+            size: size)
+        : widget;
+    return widgetScript;
   }
 
   Widget _unpublishedTools() {

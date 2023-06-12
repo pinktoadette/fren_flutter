@@ -1,7 +1,8 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 
-Widget textLinkPreview(BuildContext context, String text) {
+Widget textLinkPreview(
+    {required BuildContext context, required String text, TextStyle? style}) {
   final urlRegExp = RegExp(
       r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
   final urlMatches = urlRegExp.allMatches(text);
@@ -14,14 +15,14 @@ Widget textLinkPreview(BuildContext context, String text) {
     children: [
       Text(
         text,
-        style: Theme.of(context).textTheme.bodySmall,
+        style: style ?? Theme.of(context).textTheme.bodySmall,
       ),
       if (urls.isNotEmpty)
         AnyLinkPreview(
           displayDirection: UIDirection.uiDirectionHorizontal,
           link: urls[0],
-          errorBody: 'Show my custom error body',
-          errorTitle: 'Next one is youtube link, error title',
+          errorBody: 'Hmm... cant get link',
+          errorTitle: 'Error title',
         ),
     ],
   ));

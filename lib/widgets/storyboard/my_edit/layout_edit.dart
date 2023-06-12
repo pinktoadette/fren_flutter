@@ -2,10 +2,10 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
-enum Layouts { PUBLICATION, CONVO, FLASHCARD }
+enum Layout { PUBLICATION, CONVO, FLASHCARD }
 
 class StoryLayout extends StatelessWidget {
-  final Function(Layouts) onSelection;
+  final Function(Layout) onSelection;
   const StoryLayout({
     Key? key,
     required this.onSelection,
@@ -45,20 +45,15 @@ class StoryLayout extends StatelessWidget {
                 ],
               ),
               const Divider(height: 5, thickness: 1),
-              _createRow(
-                  context,
-                  const Icon(Iconsax.book),
-                  i18n.translate("story_layout_plaintext"),
-                  Layouts.PUBLICATION),
+              _createRow(context, const Icon(Iconsax.book),
+                  i18n.translate("story_layout_plaintext"), Layout.PUBLICATION),
               _createRow(context, const Icon(Iconsax.messages_1),
-                  i18n.translate("story_layout_conversation"), Layouts.CONVO),
-              _createRow(context, const Icon(Iconsax.microphone),
-                  i18n.translate("story_layout_flashcard"), Layouts.FLASHCARD)
+                  i18n.translate("story_layout_conversation"), Layout.CONVO),
             ]));
   }
 
   Widget _createRow(
-      BuildContext context, Icon icon, String item, Layouts layout) {
+      BuildContext context, Icon icon, String item, Layout layout) {
     return SizedBox(
         width: double.infinity,
         child: InkWell(
