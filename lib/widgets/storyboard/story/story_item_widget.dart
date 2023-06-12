@@ -125,6 +125,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
           type: messageMap["type"],
           character: messageMap["author"]["firstName"],
           text: messageMap["text"],
+          characterId: messageMap["author"]["id"],
           image: messageMap["uri"] != null
               ? {
                   "uri": messageMap["uri"],

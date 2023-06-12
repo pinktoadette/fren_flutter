@@ -353,13 +353,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 }
 
                 if ((index != null) & (newContent?["text"] != "")) {
-                  Script script = Script(
-                      text: newContent?["text"] ?? "",
-                      type: 'text',
-                      characterName: UserModel().user.username,
-                      scriptId: scripts[index!].scriptId,
-                      status: ScriptStatus.ACTIVE.name,
-                      seqNum: scripts[index].seqNum);
+                  Script script = scripts[index!].copyWith(
+                    text: newContent?["text"] ?? "",
+                  );
+
                   await _scriptApi.updateScript(script: script);
 
                   setState(() {

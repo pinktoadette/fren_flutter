@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -20,6 +21,7 @@ class ScriptApi {
       String? text,
       Map<String, dynamic>? image,
       String? voiceId,
+      String? characterId,
       int? pageNum}) async {
     try {
       String url = '${baseUri}script';
@@ -28,6 +30,7 @@ class ScriptApi {
       final response = await dio.post(url, data: {
         "text": text,
         "character": character,
+        "characterId": characterId,
         "type": type,
         "image": image,
         "storyId": storyId,

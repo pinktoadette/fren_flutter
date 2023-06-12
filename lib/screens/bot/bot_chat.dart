@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:typed_data';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
@@ -12,7 +10,6 @@ import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/chat/add_message_to_storyboard.dart';
@@ -224,7 +221,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         }
         return;
       default:
-        return;
+        return _handleMessageFooterTap(message);
     }
   }
 
