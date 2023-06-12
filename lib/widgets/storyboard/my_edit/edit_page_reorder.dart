@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
@@ -10,22 +11,30 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/common/chat_bubble.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
+// ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
+  Story story;
   final List<Script> scriptList;
   final int pageIndex;
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
+  final Function(Layouts data) onLayoutSelection;
+  Layouts? layout;
 
-  const EditPageReorder(
+  EditPageReorder(
       {Key? key,
+      required this.story,
       required this.scriptList,
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
-      this.pageIndex = 0})
+      required this.onLayoutSelection,
+      this.pageIndex = 0,
+      this.layout})
       : super(key: key);
 
   @override
@@ -38,6 +47,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late Story story;
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  Layouts? layout;
 
   @override
   void initState() {
@@ -45,6 +55,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     setState(() {
       scripts = widget.scriptList;
       story = storyboardController.currentStory;
+      layout = widget.layout;
     });
   }
 
@@ -109,7 +120,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     key: ValueKey(scripts[index].scriptId),
                     decoration: const BoxDecoration(
                       border: Border(
-                        bottom: BorderSide(width: 1, color: Colors.grey),
+                        bottom: BorderSide(width: 1, color: APP_TERTIARY),
                       ),
                     ),
                     child: Dismissible(
@@ -164,8 +175,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   Widget _showScript(int index) {
-    double width = MediaQuery.of(context).size.width;
-
+    Size size = MediaQuery.of(context).size;
+    CrossAxisAlignment alignment = layout == Layouts.CONVO
+        ? story.createdBy.username == scripts[index].characterName
+            ? CrossAxisAlignment.end
+            : CrossAxisAlignment.start
+        : CrossAxisAlignment.start;
     Widget icons = Row(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
@@ -197,30 +212,70 @@ class _EditPageReorderState extends State<EditPageReorder> {
       ],
     );
 
+    // layout
+    Widget lay = (layout == Layouts.CONVO)
+        ? Row(
+            mainAxisAlignment: alignment == CrossAxisAlignment.end
+                ? MainAxisAlignment.end
+                : MainAxisAlignment.start,
+            children: [
+              Text(scripts[index].characterName ?? ""),
+            ],
+          )
+        : const SizedBox.shrink();
+
     switch (scripts[index].type) {
       case "text":
-        return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            scripts[index].text ?? "",
-            textAlign: TextAlign.left,
-            style: Theme.of(context).textTheme.bodySmall,
+        return Column(crossAxisAlignment: alignment, children: [
+          const SizedBox(
+            height: 30,
           ),
+          _bubbleOrNot(
+              Text(
+                scripts[index].text ?? "",
+                textAlign: TextAlign.left,
+                style: const TextStyle(color: Colors.black, fontSize: 16),
+              ),
+              size,
+              alignment),
+          lay,
           icons
         ]);
       case "image":
-        return Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
+        return Column(crossAxisAlignment: alignment, children: <Widget>[
+          const SizedBox(
+            height: 30,
+          ),
+          _bubbleOrNot(
               RoundedImage(
-                  width: width * 0.75,
-                  height: width * 0.75,
+                  width: size.width * 0.75,
+                  height: size.width * 0.75,
                   icon: const Icon(Iconsax.image),
                   photoUrl: scripts[index].image?.uri ?? ""),
-              icons
-            ]);
+              size,
+              alignment),
+          lay,
+          icons
+        ]);
       default:
         return const Icon(Iconsax.activity);
     }
+  }
+
+  Widget _bubbleOrNot(Widget widget, Size size, CrossAxisAlignment align) {
+    return layout == Layouts.CONVO
+        ? CustomPaint(
+            painter: Bubble(align == CrossAxisAlignment.end),
+            child: Container(
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+              constraints: BoxConstraints(maxWidth: size.width * 0.85),
+              child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                  child: widget),
+            ),
+          )
+        : widget;
   }
 
   List<PopupMenuItem<int>> _showPages() {
@@ -254,7 +309,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return FractionallySizedBox(
             heightFactor: 0.25,
             child: StoryLayout(
-              onSelection: (value) {},
+              onSelection: (value) {
+                setState(() {
+                  layout = value;
+                });
+                widget.onLayoutSelection(value);
+              },
             ));
       },
     );

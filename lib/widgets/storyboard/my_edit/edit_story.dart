@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 /// Need to call pages since storyboard
@@ -26,6 +27,7 @@ class _EditPageState extends State<EditPage> {
   double itemHeight = 120;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
+  Layouts selectedLayout = Layouts.PUBLICATION;
   int pageIndex = 0;
 
   get onUpdate => null;
@@ -91,13 +93,18 @@ class _EditPageState extends State<EditPage> {
             height: size.height,
             width: size.width,
             child: EditPageReorder(
+                story: story,
                 scriptList: const [],
                 pageIndex: pageIndex,
+                layout: selectedLayout,
                 onMoveInsertPages: (data) {
                   _moveInsertPages(data);
                 },
                 onUpdateSeq: (update) {
                   _updateSequence(update);
+                },
+                onLayoutSelection: (layout) {
+                  selectedLayout = layout;
                 }))
       ];
     }
@@ -113,15 +120,19 @@ class _EditPageState extends State<EditPage> {
             itemBuilder: (_, index) {
               List<Script> scripts = story.pages![index].scripts ?? [];
               return EditPageReorder(
-                scriptList: scripts,
-                pageIndex: pageIndex,
-                onMoveInsertPages: (data) {
-                  _moveInsertPages(data);
-                },
-                onUpdateSeq: (update) {
-                  _updateSequence(update);
-                },
-              );
+                  story: story,
+                  scriptList: scripts,
+                  pageIndex: pageIndex,
+                  layout: selectedLayout,
+                  onMoveInsertPages: (data) {
+                    _moveInsertPages(data);
+                  },
+                  onUpdateSeq: (update) {
+                    _updateSequence(update);
+                  },
+                  onLayoutSelection: (layout) {
+                    selectedLayout = layout;
+                  });
             },
           )),
       Positioned.fill(
