@@ -12,37 +12,52 @@ import 'package:machi_app/widgets/timeline/timeline_header.dart';
 /// Used on comment widget that lists all comments
 /// Used on page widget to create an illusion that new comments are posted
 /// (This is done to reduce API calls and querying.)
-class CommentRowWidget extends StatelessWidget {
+
+class CommentRowWidget extends StatefulWidget {
   final StoryComment item;
   final bool hideReply;
   final Function(StoryComment data) onDelete;
-  CommentRowWidget(
-      {super.key,
+  const CommentRowWidget(
+      {Key? key,
       required this.item,
       required this.onDelete,
-      this.hideReply = false});
+      this.hideReply = false})
+      : super(key: key);
+
+  @override
+  _CommentRowWidgetState createState() => _CommentRowWidgetState();
+}
+
+class _CommentRowWidgetState extends State<CommentRowWidget> {
   final CommentController commentController = Get.find(tag: 'comment');
+  bool toggleReplies = false;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
     return Obx(() => Container(
-        color: commentController.replyToComment.commentId == item.commentId
-            ? APP_TERTIARY.withOpacity(0.2)
-            : null,
+        color:
+            commentController.replyToComment.commentId == widget.item.commentId
+                ? APP_TERTIARY.withOpacity(0.2)
+                : null,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TimelineHeader(
               showAvatar: true,
-              user: item.user,
+              user: widget.item.user,
               showName: true,
               radius: 15,
-              timestamp: item.createdAt,
+              timestamp: widget.item.createdAt,
               showMenu: true,
-              comment: item,
-              isChild: hideReply,
+              comment: widget.item,
+              isChild: widget.hideReply,
               onDeleteComment: (action) {
                 _onDeleteComment(context);
               },
@@ -50,7 +65,7 @@ class CommentRowWidget extends StatelessWidget {
             Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: Text(
-                  item.comment,
+                  widget.item.comment,
                   style: Theme.of(context).textTheme.bodySmall,
                 )),
             const SizedBox(
@@ -59,10 +74,17 @@ class CommentRowWidget extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (hideReply == false)
+                if (widget.item.response != null)
+                  TextButton(
+                      onPressed: () => setState(() {
+                            toggleReplies = !toggleReplies;
+                          }),
+                      child: Text("${widget.item.response!.length} replies ",
+                          style: Theme.of(context).textTheme.labelSmall)),
+                if (widget.hideReply == false)
                   TextButton(
                       onPressed: () {
-                        commentController.replyTo(item);
+                        commentController.replyTo(widget.item);
                       },
                       child: Text(_i18n.translate("comment_reply"),
                           style: Theme.of(context).textTheme.labelSmall)),
@@ -71,18 +93,18 @@ class CommentRowWidget extends StatelessWidget {
                 ),
                 LikeItemWidget(
                     onLike: (val) {
-                      _onLikePressed(item.commentId!, val);
+                      _onLikePressed(widget.item.commentId!, val);
                     },
-                    likes: item.likes ?? 0,
-                    mylikes: item.mylikes ?? 0),
+                    likes: widget.item.likes ?? 0,
+                    mylikes: widget.item.mylikes ?? 0),
                 const SizedBox(
                   width: 20,
                 ),
               ],
             ),
             const Divider(),
-            if (item.response != null)
-              ...item.response!
+            if (widget.item.response != null && (toggleReplies == true))
+              ...widget.item.response!
                   .map((ele) => Container(
                         padding: const EdgeInsets.only(left: 30),
                         color: Colors.black,
@@ -90,7 +112,7 @@ class CommentRowWidget extends StatelessWidget {
                             hideReply: true,
                             item: ele,
                             onDelete: (ele) {
-                              onDelete(ele);
+                              widget.onDelete(ele);
                             }),
                       ))
                   .toList()
@@ -101,10 +123,10 @@ class CommentRowWidget extends StatelessWidget {
   void _onDeleteComment(BuildContext context) async {
     final _commentApi = CommentApi();
     AppLocalizations _i18n = AppLocalizations.of(context);
-    onDelete(item);
+    widget.onDelete(widget.item);
 
     try {
-      await _commentApi.deleteComment(item.commentId!);
+      await _commentApi.deleteComment(widget.item.commentId!);
       Get.snackbar('DELETE', _i18n.translate("comment_deleted"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
     } catch (err) {
@@ -117,7 +139,7 @@ class CommentRowWidget extends StatelessWidget {
     final _timelineApi = TimelineApi();
     try {
       await _timelineApi.likeStoryMachi(
-          "comment", item.commentId!, like == true ? 1 : 0);
+          "comment", widget.item.commentId!, like == true ? 1 : 0);
     } catch (err) {
       Get.snackbar('Error', err.toString(),
           snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
