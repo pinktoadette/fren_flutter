@@ -55,7 +55,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
             )
           ]),
         ),
-        body: _showTiers());
+        body: SingleChildScrollView(
+            padding: const EdgeInsets.all(20), child: _showTiers()));
   }
 
   Future fetchOffers() async {
@@ -81,10 +82,15 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     }
     return Column(
       children: [
-        Text(offers[0].serverDescription),
+        Text(
+          offers[0].serverDescription,
+        ),
+        const SizedBox(
+          height: 5,
+        ),
         Text(
           _i18n.translate("subscribe_whats_different"),
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodySmall,
         ),
         Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -93,7 +99,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
               return _individualTier(e);
             }).toList()),
         _showPricing(),
-        const Spacer(),
         ElevatedButton(
             onPressed: () {
               _makePurchase();
@@ -115,6 +120,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget _individualTier(Package info) {
     double screenWidth = MediaQuery.of(context).size.width;
     int numPackages = offers[0].availablePackages.length;
+    double padding = 5;
     return InkWell(
         onTap: () {
           setState(() {
@@ -122,7 +128,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           });
         },
         child: Padding(
-            padding: const EdgeInsets.all(5),
+            padding: EdgeInsets.all(padding),
             child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
@@ -133,7 +139,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     width: _selectedTier == info ? 3 : 1,
                   ),
                 ),
-                width: (screenWidth / numPackages) - numPackages * 3.5,
+                width:
+                    (screenWidth / numPackages) - numPackages - (padding * 6),
                 height: 200,
                 child: Column(
                   children: [
@@ -153,40 +160,30 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   Widget _showPricing() {
-    return SizedBox(
+    return Card(
+        child: Padding(
+      padding: const EdgeInsets.all(20),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-              padding: const EdgeInsets.all(10),
-              child: Card(
-                  child: Padding(
-                padding: const EdgeInsets.all(10),
-                child: Column(
-                  children: [
-                    Text(
-                      _i18n.translate("subscribe_detail_plan_premium"),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      _selectedTier.storeProduct.description,
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                    const SizedBox(height: 10),
-                    if (!_selectedTier.storeProduct.identifier
-                        .contains(SUB_TOKEN_IDENTIFIER))
-                      ..._subFeatures(),
-                    if (_selectedTier.storeProduct.identifier
-                        .contains(SUB_TOKEN_IDENTIFIER))
-                      ..._tokenFeatures()
-                  ],
-                ),
-              )))
+          Text(
+            _i18n.translate("subscribe_detail_plan_premium"),
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 10),
+          Text(
+            _selectedTier.storeProduct.description,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          const SizedBox(height: 10),
+          if (!_selectedTier.storeProduct.identifier
+              .contains(SUB_TOKEN_IDENTIFIER))
+            ..._subFeatures(),
+          if (_selectedTier.storeProduct.identifier
+              .contains(SUB_TOKEN_IDENTIFIER))
+            ..._tokenFeatures()
         ],
       ),
-    );
+    ));
   }
 
   List<Widget> _tokenFeatures() {
