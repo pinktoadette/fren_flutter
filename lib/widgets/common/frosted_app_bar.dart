@@ -29,7 +29,7 @@ class FrostedAppBar extends StatelessWidget {
       actions: actions,
       flexibleSpace: ClipRect(
         child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 10, sigmaY: 5),
+            filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
             child: Row(
               children: [
                 Padding(

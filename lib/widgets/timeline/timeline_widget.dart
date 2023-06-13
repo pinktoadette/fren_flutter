@@ -21,7 +21,8 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
   final _timelineApi = TimelineApi();
-  static const int _pageSize = 30;
+  static const int _pageSize = ALL_PAGE_SIZE;
+
   final PagingController<int, Storyboard> _pagingController =
       PagingController(firstPageKey: 0);
 
@@ -60,7 +61,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
             return StoryboardItemWidget(item: item);
           }),
       separatorBuilder: (BuildContext context, int index) {
-        if ((index + 1) % 4 == 0) {
+        if ((index + 1) % 3 == 0) {
           return Padding(
             padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
             child: Container(

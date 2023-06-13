@@ -38,17 +38,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   File? _uploadPath;
   String? photoUrl;
 
-  List<Bot> _listBot = [];
-
-  Future<void> _fetchAllBots() async {
-    List<Bot> result = await _botApi.getAllBots(5, 0, BotModelType.prompt);
-    setState(() => _listBot = result);
-  }
-
   @override
   void initState() {
-    _fetchAllBots();
-
     super.initState();
   }
 
@@ -66,192 +57,186 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     double width = MediaQuery.of(context).size.width;
     _pr = ProgressDialog(context, isDismissible: false);
 
-    if (_listBot.isEmpty) {
-      return NoData(text: _i18n.translate("no_match"));
-    } else {
-      return Padding(
-          padding: const EdgeInsets.all(10),
-          child:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _i18n.translate("my_machi"),
+                style: Theme.of(context).textTheme.headlineMedium,
+                textAlign: TextAlign.left,
+              )
+            ],
+          ),
+          const SizedBox(height: 10),
+          SizedBox(
+            width: width,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Text(
-                  _i18n.translate("my_machi"),
-                  style: Theme.of(context).textTheme.headlineMedium,
-                  textAlign: TextAlign.left,
-                )
-              ],
-            ),
-            const SizedBox(height: 10),
-            SizedBox(
-              width: width,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        width: width * 0.7,
-                        height: 80,
-                        child: TextFormField(
-                          maxLength: 40,
-                          buildCounter: (_,
-                                  {required currentLength,
-                                  maxLength,
-                                  required isFocused}) =>
-                              _counter(context, currentLength, maxLength),
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                            labelText: _i18n.translate("bot_name"),
-                            hintText: _i18n.translate("bot_name_hint"),
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                          ),
-                          validator: (name) {
-                            // Basic validation
-                            if (name?.isEmpty ?? false) {
-                              return _i18n.translate("required_field");
-                            }
-                            if (name?.isNotEmpty == true && name!.length < 2) {
-                              return _i18n.translate("required_2_char");
-                            }
-                            return null;
-                          },
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      width: width * 0.7,
+                      height: 80,
+                      child: TextFormField(
+                        maxLength: 40,
+                        buildCounter: (_,
+                                {required currentLength,
+                                maxLength,
+                                required isFocused}) =>
+                            _counter(context, currentLength, maxLength),
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                          labelText: _i18n.translate("bot_name"),
+                          hintText: _i18n.translate("bot_name_hint"),
+                          floatingLabelBehavior: FloatingLabelBehavior.always,
+                        ),
+                        validator: (name) {
+                          // Basic validation
+                          if (name?.isEmpty ?? false) {
+                            return _i18n.translate("required_field");
+                          }
+                          if (name?.isNotEmpty == true && name!.length < 2) {
+                            return _i18n.translate("required_2_char");
+                          }
+                          return null;
+                        },
+                      ),
+                    ),
+                    GestureDetector(
+                      child: Center(
+                        child: Stack(
+                          children: <Widget>[
+                            CircleAvatar(
+                              radius: 40,
+                              foregroundImage: _uploadPath != null
+                                  ? FileImage(_uploadPath!)
+                                  : null,
+                              backgroundColor:
+                                  Theme.of(context).colorScheme.primary,
+                              child: Text(_nameController.text.length > 1
+                                  ? _nameController.text.substring(0, 1)
+                                  : "MA"),
+                            ),
+
+                            /// Edit icon
+                            Positioned(
+                              child: CircleAvatar(
+                                radius: 12,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.background,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Theme.of(context).colorScheme.primary,
+                                  size: 12,
+                                ),
+                              ),
+                              right: 0,
+                              bottom: 0,
+                            ),
+                          ],
                         ),
                       ),
-                      GestureDetector(
-                        child: Center(
-                          child: Stack(
-                            children: <Widget>[
-                              CircleAvatar(
-                                radius: 40,
-                                foregroundImage: _uploadPath != null
-                                    ? FileImage(_uploadPath!)
-                                    : null,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                child: Text(_nameController.text.length > 1
-                                    ? _nameController.text.substring(0, 1)
-                                    : "MA"),
-                              ),
-
-                              /// Edit icon
-                              Positioned(
-                                child: CircleAvatar(
-                                  radius: 12,
-                                  backgroundColor:
-                                      Theme.of(context).colorScheme.background,
-                                  child: Icon(
-                                    Icons.edit,
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    size: 12,
-                                  ),
-                                ),
-                                right: 0,
-                                bottom: 0,
-                              ),
-                            ],
-                          ),
-                        ),
-                        onTap: () async {
-                          /// Update profile image
-                          _selectImage(path: 'machi');
-                        },
-                      )
-                    ],
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    maxLength: 200,
-                    buildCounter: (_,
-                            {required currentLength,
-                            maxLength,
-                            required isFocused}) =>
-                        _counter(context, currentLength, maxLength),
-                    controller: _aboutController,
-                    decoration: InputDecoration(
-                        labelText: _i18n.translate("about"),
-                        hintText: _i18n.translate("bot_about_hint"),
-                        floatingLabelBehavior: FloatingLabelBehavior.always,
-                        hintStyle: TextStyle(
-                            color: Theme.of(context).colorScheme.tertiary)),
-                    maxLines: 2,
-                    validator: (bio) {
-                      if (bio?.isEmpty ?? false) {
-                        return _i18n.translate("required_field");
-                      }
-                      return null;
-                    },
-                  ),
-                  const SizedBox(height: 10),
-                  TextFormField(
-                    maxLength: 200,
-                    buildCounter: (_,
-                            {required currentLength,
-                            maxLength,
-                            required isFocused}) =>
-                        _counter(context, currentLength, maxLength),
-                    controller: _promptController,
-                    decoration: InputDecoration(
-                      labelText: _i18n.translate("bot_prompt"),
-                      hintText: _i18n.translate("bot_prompt_hint"),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary),
+                      onTap: () async {
+                        /// Update profile image
+                        _selectImage(path: 'machi');
+                      },
+                    )
+                  ],
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  maxLength: 200,
+                  buildCounter: (_,
+                          {required currentLength,
+                          maxLength,
+                          required isFocused}) =>
+                      _counter(context, currentLength, maxLength),
+                  controller: _aboutController,
+                  decoration: InputDecoration(
+                      labelText: _i18n.translate("about"),
+                      hintText: _i18n.translate("bot_about_hint"),
                       floatingLabelBehavior: FloatingLabelBehavior.always,
-                    ),
-                    maxLines: 8,
-                    validator: (name) {
-                      // Basic validation
-                      if (name?.isEmpty ?? false) {
-                        return _i18n.translate("required_field");
-                      }
-                      return null;
-                    },
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary)),
+                  maxLines: 2,
+                  validator: (bio) {
+                    if (bio?.isEmpty ?? false) {
+                      return _i18n.translate("required_field");
+                    }
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 10),
+                TextFormField(
+                  maxLength: 200,
+                  buildCounter: (_,
+                          {required currentLength,
+                          maxLength,
+                          required isFocused}) =>
+                      _counter(context, currentLength, maxLength),
+                  controller: _promptController,
+                  decoration: InputDecoration(
+                    labelText: _i18n.translate("bot_prompt"),
+                    hintText: _i18n.translate("bot_prompt_hint"),
+                    hintStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.tertiary),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(_i18n.translate("bot_is_private")),
-                Switch(
-                  activeColor: Theme.of(context).colorScheme.secondary,
-                  value: _isPrivate,
-                  onChanged: (newValue) {
-                    setState(() {
-                      _isPrivate = newValue;
-                    });
+                  maxLines: 8,
+                  validator: (name) {
+                    // Basic validation
+                    if (name?.isEmpty ?? false) {
+                      return _i18n.translate("required_field");
+                    }
+                    return null;
                   },
                 ),
               ],
             ),
-            errorMessage != ''
-                ? Text(
-                    errorMessage,
-                    style: Theme.of(context).textTheme.labelSmall,
-                    selectionColor: APP_ERROR,
-                  )
-                : const SizedBox(height: 50),
-            Center(
-              child: ElevatedButton(
-                  onPressed: () {
-                    _onHandleSubmitBot(context);
-                  },
-                  child: Text(_i18n.translate("publish"))),
-            ),
-            const SizedBox(
-              height: 30,
-            ),
-            Text(
-              _i18n.translate("bot_test_warning"),
-              style: Theme.of(context).textTheme.labelSmall,
-            )
-          ]));
-    }
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(_i18n.translate("bot_is_private")),
+              Switch(
+                activeColor: Theme.of(context).colorScheme.secondary,
+                value: _isPrivate,
+                onChanged: (newValue) {
+                  setState(() {
+                    _isPrivate = newValue;
+                  });
+                },
+              ),
+            ],
+          ),
+          errorMessage != ''
+              ? Text(
+                  errorMessage,
+                  style: Theme.of(context).textTheme.labelSmall,
+                  selectionColor: APP_ERROR,
+                )
+              : const SizedBox(height: 50),
+          Center(
+            child: ElevatedButton(
+                onPressed: () {
+                  _onHandleSubmitBot(context);
+                },
+                child: Text(_i18n.translate("publish"))),
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Text(
+            _i18n.translate("bot_test_warning"),
+            style: Theme.of(context).textTheme.labelSmall,
+          )
+        ]));
   }
 
   void _onHandleSubmitBot(BuildContext context) async {

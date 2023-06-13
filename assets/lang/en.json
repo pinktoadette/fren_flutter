@@ -293,6 +293,7 @@
   "bot_text_to_image": "Text-to-image",
   "bot_image_to_text": "Image-to-text",
   "bot_prepub_headline": "is Ready",
+  "bots_not_found": "Well, that defeats the purpose. \nNo machi found.",
   "bot_prepublish": "is ready to be publish. You can test the chat first on the next page before you publish.",
   "chat_with": "Chat with",
   "start_chat_with": "Start a chat with",

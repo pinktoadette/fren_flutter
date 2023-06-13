@@ -1,5 +1,6 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +23,7 @@ class _GalleryWidgetState extends State<UserGallery> {
       PagingController(firstPageKey: 0);
 
   List<Gallery> galleries = [];
-  static const int _pageSize = 30;
+  static const int _pageSize = ALL_PAGE_SIZE;
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
     childAspectRatio: 100 / 150,
@@ -48,14 +49,12 @@ class _GalleryWidgetState extends State<UserGallery> {
         final nextPageKey = pageKey + newItems.length;
         _pagingController.appendPage(newItems, nextPageKey);
       }
+      setState(() {
+        galleries = newItems;
+      });
     } catch (error) {
       _pagingController.error = error;
     }
-    List<Gallery> gal =
-        await _galleryApi.getUserGallery(userId: widget.userId, page: 0);
-    setState(() {
-      galleries = gal;
-    });
   }
 
   @override

@@ -1,5 +1,6 @@
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:get/get.dart';
@@ -20,7 +21,7 @@ StoryComment initial = StoryComment(
 /// tracks replies to who
 /// listens for list of comment widget for pagination
 class CommentController extends GetxController {
-  static const _pageSize = 20;
+  static const int _pageSize = ALL_PAGE_SIZE;
   final _commentApi = CommentApi();
 
   final PagingController<int, dynamic> pagingController =
@@ -78,8 +79,10 @@ class CommentController extends GetxController {
   }
 
   void addItem(StoryComment comment) async {
-    pagingController.appendLastPage([comment]);
-    pagingController.refresh();
+    if (comment.commentId != null) {
+      pagingController.appendLastPage([comment]);
+      pagingController.refresh();
+    }
   }
 
   void updateItem(StoryComment comment) async {

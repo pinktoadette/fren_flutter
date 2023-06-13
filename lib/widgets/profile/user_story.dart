@@ -22,8 +22,7 @@ class _UserStoryState extends State<UserStory> {
       PagingController(firstPageKey: 0);
 
   List<Storyboard> storyboards = [];
-  static const int _pageSize = 30;
-
+  static const int _pageSize = ALL_PAGE_SIZE;
   @override
   void initState() {
     super.initState();
@@ -60,7 +59,7 @@ class _UserStoryState extends State<UserStory> {
             return StoryboardItemWidget(item: item);
           }),
       separatorBuilder: (BuildContext context, int index) {
-        if ((index + 1) % 4 == 0) {
+        if ((index + 1) % 3 == 0) {
           return Padding(
             padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
             child: Container(

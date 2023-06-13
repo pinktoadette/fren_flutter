@@ -74,9 +74,9 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                if (widget.item.response != null)
-                  TextButton(
-                      onPressed: () => setState(() {
+                if (widget.item.response != null && widget.hideReply != true)
+                  InkWell(
+                      onTap: () => setState(() {
                             toggleReplies = !toggleReplies;
                           }),
                       child: Text("${widget.item.response!.length} replies ",

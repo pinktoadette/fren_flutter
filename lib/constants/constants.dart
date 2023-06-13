@@ -49,6 +49,7 @@ const SOCKET_WS = "wss://api.mymachi.app/";
 
 const double PLAY_BUTTON_WIDTH = 45;
 const int PAGE_CHAT_LIMIT = 10;
+const int ALL_PAGE_SIZE = 20;
 
 const UPLOAD_PATH_BOARD = "board";
 const UPLOAD_PATH_SCRIPT_IMAGE = "script";

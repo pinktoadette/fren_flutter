@@ -196,7 +196,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                     ))));
                       }),
                       separatorBuilder: (context, index) {
-                        if ((index + 1) % 5 == 0) {
+                        if ((index + 1) % 3 == 0) {
                           return Container(
                             height: 150,
                             color: Theme.of(context).colorScheme.background,

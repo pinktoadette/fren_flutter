@@ -47,7 +47,7 @@ class _ListMyBotWidget extends State<ListMyBot> {
           ),
           body: ListView.separated(
               separatorBuilder: (context, index) {
-                if ((index + 1) % 5 == 0) {
+                if ((index + 1) % 3 == 0) {
                   return Container(
                     height: 200,
                     color: Theme.of(context).colorScheme.background,
