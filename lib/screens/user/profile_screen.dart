@@ -12,6 +12,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
 import 'package:machi_app/widgets/profile/user_gallery.dart';
+import 'package:machi_app/widgets/profile/user_story.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
@@ -136,7 +137,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             SingleChildScrollView(
               physics: const ScrollPhysics(),
               child: Column(
-                // mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -173,8 +173,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         overflow: TextOverflow.fade,
                         style: Theme.of(context).textTheme.bodySmall),
                   ),
-
                   ..._postImagesBots(size),
+                  SizedBox(
+                      width: size.width,
+                      child: UserStory(userId: widget.user.userId))
                 ],
               ),
             ),
@@ -189,10 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         (widget.user.userId != UserModel().user.userId)) {
       return [NoData(text: _i18n.translate("profile_protected_view"))];
     }
-    return [
-      ..._userGallery(size),
-      _userPost(size),
-    ];
+    return [..._userGallery(size)];
   }
 
   List<Widget> _userGallery(Size size) {
@@ -220,38 +219,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
         child: GalleryWidget(userId: widget.user.userId),
       )
     ];
-  }
-
-  Widget _userPost(Size size) {
-    return SizedBox(
-        width: size.width - 250,
-        height: 500,
-        child: Column(
-          // mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Text(
-              _i18n.translate("board"),
-              style: Theme.of(context).textTheme.labelSmall,
-            ),
-            FutureBuilder(
-              builder: (context, snapshot) {
-                if (!snapshot.hasData) {
-                  return Container();
-                }
-                return ListView.builder(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  itemCount: snapshot.data!.length,
-                  itemBuilder: (context, index) {
-                    Storyboard item = snapshot.data![index];
-                    return StoryboardItemWidget(item: item);
-                  },
-                );
-              },
-              future: _getUserBoard(),
-            )
-          ],
-        ));
   }
 
   Widget _followButton() {

@@ -4,7 +4,6 @@ import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/sign_out_button_card.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:scoped_model/scoped_model.dart';
 
 class SettingsScreen extends StatefulWidget {

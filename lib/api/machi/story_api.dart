@@ -9,6 +9,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -115,7 +116,7 @@ class StoryApi {
   }
 
   Future<Story> updateStory(
-      {required String storyId,
+      {required Story story,
       String? title,
       String? photoUrl,
       String? layout}) async {
@@ -126,14 +127,15 @@ class StoryApi {
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       await dio.put(url, data: {
-        STORY_ID: storyId,
-        STORY_TITLE: title,
-        STORY_PHOTO_URL: photoUrl,
-        STORY_LAYOUT: layout
+        STORY_ID: story.storyId,
+        STORY_TITLE: title ?? story.title,
+        STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
+        STORY_LAYOUT: layout ?? story.layout
       });
-      Story story = storyController.currentStory;
-      Story updatedStory =
-          story.copyWith(storyId: storyId, title: title, photoUrl: photoUrl);
+      Story updatedStory = story.copyWith(
+          layout: Layout.values.byName(layout ?? ""),
+          title: title ?? story.title,
+          photoUrl: photoUrl ?? story.photoUrl);
       storyController.updateStory(story: updatedStory);
       return updatedStory;
     } catch (error) {

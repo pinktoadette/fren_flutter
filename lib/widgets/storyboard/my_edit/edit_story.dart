@@ -194,8 +194,7 @@ class _EditPageState extends State<EditPage> {
     final _storyApi = StoryApi();
     Story updateStory = story.copyWith(layout: layout);
 
-    await _storyApi.updateStory(
-        storyId: updateStory.storyId, layout: layout.name);
+    await _storyApi.updateStory(story: updateStory, layout: layout.name);
     setState(() {
       story = updateStory;
     });

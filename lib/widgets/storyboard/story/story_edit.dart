@@ -221,9 +221,7 @@ class _StoryEditState extends State<StoryEdit> {
       }
 
       await _storyApi.updateStory(
-          storyId: story.storyId,
-          title: _titleController.text,
-          photoUrl: imageUrl);
+          story: story, title: _titleController.text, photoUrl: imageUrl);
       Get.snackbar(
         _i18n.translate("success"),
         _i18n.translate("update_successful"),

@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 
 class Bubble extends CustomPainter {
   bool isRight;
-  double _radius = 15.0;
-  double _x = 10.0;
+  final double _radius = 15.0;
+  final double _x = 10.0;
   Bubble(this.isRight);
 
   @override

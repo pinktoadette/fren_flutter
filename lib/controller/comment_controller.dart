@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -30,7 +29,7 @@ class CommentController extends GetxController {
   RxList<StoryComment> comments = <StoryComment>[].obs;
   // ignore: prefer_final_fields
   // can't make it null!. idk
-  Rx<StoryComment> _replyToComment = initial.obs;
+  final Rx<StoryComment> _replyToComment = initial.obs;
 
   // sets who the user is posting comment to.
   StoryComment get replyToComment => _replyToComment.value;

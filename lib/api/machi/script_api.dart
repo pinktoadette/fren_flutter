@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;

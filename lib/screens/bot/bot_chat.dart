@@ -59,7 +59,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
   late WebSocketChannel _channel;
   late Chatroom _room;
-  int? _tappedBottomIconIndex;
+  types.Message? _tappedMessage;
 
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
@@ -196,72 +196,64 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
-            listFooterWidget: _footerWidget(),
-            onMessageFooterTap: _messageTap,
+            listFooterWidget: _listWidget(),
+            onMessageFooterTap: (context, p1) {
+              setState(() {
+                _tappedMessage = p1;
+              });
+            },
             user: _user),
       );
     }
   }
 
-  void _messageTap(BuildContext _, dynamic message) async {
-    switch (_tappedBottomIconIndex) {
-      case (0):
-        return _handleMessageFooterTap(message);
-      case (1):
-        if (message.type == types.MessageType.image) {
-          final _galleryApi = GalleryApi();
-          await _galleryApi.addUserGallery(messageId: message.id);
-          Get.snackbar(
-            _i18n.translate("success"),
-            _i18n.translate("added"),
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: APP_SUCCESS,
-          );
-        } else {
-          Get.snackbar(
-            _i18n.translate("error"),
-            "only images are allowed",
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: APP_ERROR,
-          );
-        }
-        return;
-      default:
-        return _handleMessageFooterTap(message);
-    }
-  }
-
-  List<Widget> _footerWidget() => [
+  List<GestureDetector> gestures() => [
         GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTapUp: (TapUpDetails _) {
-            setState(() {
-              _tappedBottomIconIndex = 0;
-            });
+          onTap: () {
+            if (_tappedMessage != null) {
+              _handleMessageFooterTap(_tappedMessage!);
+            }
           },
-          child: const AbsorbPointer(
-              child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Icon(Iconsax.archive_book, size: 16))),
-        ),
-        const SizedBox(
-          width: 20,
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: const Icon(Iconsax.book, size: 14),
+          ),
         ),
         GestureDetector(
-          behavior: HitTestBehavior.translucent,
-          onTapUp: (TapUpDetails _) {
-            setState(() {
-              _tappedBottomIconIndex = 1;
-            });
+          onTap: () async {
+            if (_tappedMessage!.type == types.MessageType.image) {
+              final _galleryApi = GalleryApi();
+              await _galleryApi.addUserGallery(messageId: _tappedMessage!.id);
+              Get.snackbar(
+                _i18n.translate("success"),
+                _i18n.translate("story_added"),
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: APP_SUCCESS,
+              );
+            } else {
+              Get.snackbar(
+                _i18n.translate("error"),
+                "only images are allowed",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: APP_ERROR,
+              );
+            }
           },
-          child: const AbsorbPointer(
-              child: SizedBox(
-                  height: 50,
-                  width: 50,
-                  child: Icon(Iconsax.gallery, size: 16))),
+          child: Container(
+            padding: const EdgeInsets.all(8),
+            child: const Icon(Iconsax.gallery_add, size: 14),
+          ),
         ),
       ];
+
+  List<Widget> _listWidget() => gestures()
+      .map((gesture) => TextButton(
+            onPressed: () {
+              gesture.onTap!();
+            },
+            child: gesture.child!,
+          ))
+      .toList();
 
   void _handleMessageFooterTap(types.Message message) {
     showModalBottomSheet<void>(
@@ -370,6 +362,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isAttachmentUploading = true;
       _hasNewMessages = true;
+      _setTags = null;
     });
 
     Map<String, dynamic> formatMessage =
@@ -397,7 +390,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     setState(() {
       _isAttachmentUploading = false;
-      _setTags = null;
     });
   }
 

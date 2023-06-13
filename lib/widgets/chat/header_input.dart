@@ -42,7 +42,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
         children: [
           IconButton(
               onPressed: () {
-                widget.onImageSelect('#imagine');
+                widget.onImageSelect(SLASH_IMAGINE);
                 _setStateColor('imagine');
               },
               icon: Icon(
@@ -52,14 +52,14 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               )),
           IconButton(
               onPressed: () {
-                widget.onImageSelect('#reimagine');
+                widget.onImageSelect(SLASH_REIMAGINE);
                 _setStateColor('reimagine');
               },
               icon: Icon(Icons.lightbulb_outlined,
                   size: 14, color: _selectedIconColor("reimagine"))),
           IconButton(
               onPressed: () {
-                widget.onImageSelect('#board');
+                widget.onImageSelect(SLASH_BOARD);
                 _setStateColor('board');
               },
               icon: Icon(Iconsax.book,

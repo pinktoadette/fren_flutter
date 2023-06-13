@@ -4,7 +4,6 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/plugins/geoflutterfire/src/utils/arrays.dart';
 
 Storyboard initialStoryboard = Storyboard(
     storyboardId: '',
