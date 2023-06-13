@@ -339,6 +339,7 @@ const String CHAT_TYPE = "type";
 const String CHAT_MESSAGE_ID = "messageId";
 const String CHAT_PHOTO_URL = "uri";
 const String CHAT_LINKED_MESSAGE_ID = "linkedMessageId";
+const String CHAT_MESSAGE_TAGS = "tags";
 
 /// gallery
 const String GALLERY = "gallery";

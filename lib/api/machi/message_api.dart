@@ -22,11 +22,13 @@ class MessageMachiApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   /// saves the user response
-  Future<String> saveUserResponse(Map<String, dynamic> messageMap) async {
+  Future<String> saveUserResponse(
+      {required Map<String, dynamic> messageMap, String? tags}) async {
     String url = '${baseUri}chat/user_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: {...messageMap});
+    final response =
+        await dio.post(url, data: {...messageMap, CHAT_MESSAGE_TAGS: tags});
     // returns messageId
     return response.data;
   }

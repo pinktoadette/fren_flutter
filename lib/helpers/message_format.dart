@@ -7,7 +7,8 @@ import 'package:get/get.dart';
 
 /// formats partial messages to map string dynamic to pass to api
 /// This is used in chat and when added to story collection
-Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
+Map<String, dynamic> formatChatMessage(
+    {required dynamic partialMessage, String? uri}) {
   final ChatController chatController = Get.find(tag: 'chatroom');
   // save will always be user, because backend will already save bot;
   late types.Message message;
@@ -50,7 +51,6 @@ Map<String, dynamic> formatChatMessage(dynamic partialMessage, [uri]) {
         key == 'uri' ||
         key == 'name');
   }
-
   messageMap[CHAT_AUTHOR_ID] = user.id;
   messageMap[CREATED_AT] = getDateTimeEpoch();
   messageMap[CHAT_USER_NAME] = user.firstName;

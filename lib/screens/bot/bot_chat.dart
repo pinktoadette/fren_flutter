@@ -72,6 +72,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   File? file;
   bool _hasNewMessages = false;
   final _player = AudioPlayer();
+  String? _setTags;
   types.PartialImage? attachmentPreview;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
@@ -159,8 +160,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
             ]),
         body: Chat(
             listBottomWidget: CustomHeaderInputWidget(
-                notifyParent: (e) {
+                onUpdateWidget: (e) {
                   updateFromWidgets(e);
+                },
+                onImageSelect: (value) {
+                  setState(() {
+                    _setTags = value;
+                  });
                 },
                 isBotTyping: isBotTyping,
                 attachmentPreview: attachmentPreview),
@@ -235,7 +241,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
           },
           child: const AbsorbPointer(
               child: SizedBox(
-                  height: 50, width: 50, child: Icon(Iconsax.book, size: 16))),
+                  height: 50,
+                  width: 50,
+                  child: Icon(Iconsax.archive_book, size: 16))),
         ),
         const SizedBox(
           width: 20,
@@ -363,18 +371,21 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _isAttachmentUploading = true;
       _hasNewMessages = true;
     });
-    Map<String, dynamic> formatMessage = formatChatMessage(message);
+
+    Map<String, dynamic> formatMessage =
+        formatChatMessage(partialMessage: message);
     _channel.sink.add(json.encode({"message": formatMessage}));
     String lastMessageId = "";
     if (attachmentPreview != null) {
       String uri = await uploadFile(
           file: file!, category: UPLOAD_PATH_MESSAGE, categoryId: createUUID());
       Map<String, dynamic> formatImgMessage =
-          formatChatMessage(attachmentPreview, uri);
+          formatChatMessage(partialMessage: attachmentPreview, uri: uri);
 
       _channel.sink.add(json.encode({"message": formatImgMessage}));
 
-      lastMessageId = await _messagesApi.saveUserResponse(formatImgMessage);
+      lastMessageId =
+          await _messagesApi.saveUserResponse(messageMap: formatImgMessage);
     }
     setState(() {
       attachmentPreview = null;
@@ -386,6 +397,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     setState(() {
       _isAttachmentUploading = false;
+      _setTags = null;
     });
   }
 
@@ -415,7 +427,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   /// saves user reponse. Backend handles all bot response / timing.
   Future<void> _saveResponseAndGetBot(Map<String, dynamic> messageMap) async {
     try {
-      await _messagesApi.saveUserResponse(messageMap);
+      await _messagesApi.saveUserResponse(
+          messageMap: messageMap, tags: _setTags);
       _getMachiResponse();
     } catch (err) {
       Get.snackbar(
