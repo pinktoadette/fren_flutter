@@ -132,4 +132,17 @@ class StoryboardApi {
       throw error.toString();
     }
   }
+
+  Future<List<dynamic>> getContributors({required String storyboardId}) async {
+    try {
+      String url = '${baseUri}contributors?storyboardId=$storyboardId';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.get(url);
+      return response.data['characters'];
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }
