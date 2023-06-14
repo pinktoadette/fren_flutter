@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -10,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
@@ -59,13 +61,14 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: screenHeight * 0.15),
+              SizedBox(height: min(80, screenHeight * 0.1)),
               Image.asset("assets/images/logo_machi.png"),
               const SizedBox(height: 40),
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelSmall),
-              const Spacer(),
+              if (isLoading == true) const Frankloader(),
+              if (isLoading == false) const Spacer(),
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
@@ -78,13 +81,6 @@ class _SignInScreenState extends State<SignInScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
-                        if (isLoading == true)
-                          SizedBox(
-                            width: 50,
-                            child: JumpingDots(
-                              color: Colors.white,
-                            ),
-                          ),
                         SignInButton(Buttons.Google,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
@@ -121,7 +117,6 @@ class _SignInScreenState extends State<SignInScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 15),
             ],
           ),
         ),

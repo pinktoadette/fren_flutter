@@ -141,13 +141,13 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                 ),
                 width:
                     (screenWidth / numPackages) - numPackages - (padding * 6),
-                height: 200,
+                height: 250,
                 child: Column(
                   children: [
                     const SizedBox(height: 20),
                     Text(info.storeProduct.title,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.headlineSmall),
+                        style: Theme.of(context).textTheme.titleMedium),
                     const Spacer(),
                     Text(info.storeProduct.priceString,
                         textAlign: TextAlign.center,
@@ -234,11 +234,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   void _makePurchase() async {
+    final _purchaseApi = PurchasesApi();
     try {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all["Premium"]!.isActive) {
-        // Unlock that great "pro" content
+        await _purchaseApi.saveUserPurchase(purchaserInfo);
       }
     } on PlatformException catch (e) {
       var errorCode = PurchasesErrorHelper.getErrorCode(e);

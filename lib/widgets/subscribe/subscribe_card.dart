@@ -1,8 +1,12 @@
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SubscriptionCard extends StatefulWidget {
   const SubscriptionCard({Key? key}) : super(key: key);
@@ -14,11 +18,29 @@ class SubscriptionCard extends StatefulWidget {
 class _SubscriptionCardState extends State<SubscriptionCard> {
   bool isUserSubscribed = false;
   late AppLocalizations _i18n;
-
+  CustomerInfo? customer;
   @override
   void initState() {
     super.initState();
+    _fetchSubscription();
     isUserSubscribed = UserModel().user.isSubscribed;
+  }
+
+  void _fetchSubscription() async {
+    try {
+      CustomerInfo customerInfo = await Purchases.getCustomerInfo();
+      setState(() {
+        customer = customerInfo;
+      });
+    } on PlatformException catch (e) {
+      // Error fetching purchaser info
+      Get.snackbar(
+        _i18n.translate("Error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+    }
   }
 
   @override
@@ -26,6 +48,10 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
     _i18n = AppLocalizations.of(context);
 
     double screenWidth = MediaQuery.of(context).size.width;
+
+    // if (purchaserInfo.entitlements.all["your_entitlement_id"].isActive) {
+    //   // user has access to "your_entitlement_id"
+    // }
 
     if (!isUserSubscribed) {
       return Card(
@@ -50,8 +76,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                               children: [
                                 Text(
                                   _i18n.translate("subscription"),
-                                  style:
-                                      Theme.of(context).textTheme.headlineSmall,
+                                  style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                                 Text(
                                   _i18n.translate(

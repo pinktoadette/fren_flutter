@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -8,15 +9,8 @@ class PurchasesApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final auth = AuthApi();
-  // ignore: constant_identifier_names
-  static const API_KEY = '';
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
-
-  static Future init() async {
-    await Purchases.setLogLevel(LogLevel.debug);
-    PurchasesConfiguration(API_KEY);
-  }
 
   static Future<List<Offering>> fetchOffers() async {
     try {
@@ -24,7 +18,15 @@ class PurchasesApi {
       final current = offerings.current;
       return current == null ? [] : [current];
     } on PlatformException {
-      return [];
+      rethrow;
     }
+  }
+
+  Future<String> saveUserPurchase(CustomerInfo purchase) async {
+    String url = '${baseUri}purchases/purchase';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: purchase.toJson());
+    return response.data;
   }
 }
