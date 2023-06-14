@@ -362,7 +362,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isAttachmentUploading = true;
       _hasNewMessages = true;
-      _setTags = null;
     });
 
     Map<String, dynamic> formatMessage =
@@ -390,6 +389,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     setState(() {
       _isAttachmentUploading = false;
+      _setTags = null;
     });
   }
 

@@ -2,6 +2,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
+// ignore: constant_identifier_names
 enum Layout { PUBLICATION, CONVO, FLASHCARD }
 
 class StoryLayout extends StatelessWidget {

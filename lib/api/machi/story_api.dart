@@ -130,10 +130,10 @@ class StoryApi {
         STORY_ID: story.storyId,
         STORY_TITLE: title ?? story.title,
         STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
-        STORY_LAYOUT: layout ?? story.layout
+        STORY_LAYOUT: layout ?? story.layout!.name
       });
       Story updatedStory = story.copyWith(
-          layout: Layout.values.byName(layout ?? ""),
+          layout: Layout.values.byName(layout ?? story.layout!.name),
           title: title ?? story.title,
           photoUrl: photoUrl ?? story.photoUrl);
       storyController.updateStory(story: updatedStory);

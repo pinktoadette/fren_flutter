@@ -57,13 +57,6 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               },
               icon: Icon(Icons.lightbulb_outlined,
                   size: 14, color: _selectedIconColor("reimagine"))),
-          IconButton(
-              onPressed: () {
-                widget.onImageSelect(SLASH_BOARD);
-                _setStateColor('board');
-              },
-              icon: Icon(Iconsax.book,
-                  size: 14, color: _selectedIconColor("board"))),
           const Spacer(),
           _displayHint(_i18n),
         ],
@@ -81,11 +74,6 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
       case "reimagine":
         return Text(
           _i18n.translate("story_header_I_create"),
-          style: const TextStyle(fontSize: 12),
-        );
-      case "board":
-        return Text(
-          _i18n.translate("story_header_auto_add_responses_to_board"),
           style: const TextStyle(fontSize: 12),
         );
       default:
