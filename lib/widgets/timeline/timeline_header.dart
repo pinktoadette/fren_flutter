@@ -65,11 +65,21 @@ class TimelineHeader extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          /// cannot align.idk
-                          SizedBox(
-                            width: isChild == true ? width - 150 : width - 120,
-                            child: Text(user.username,
-                                style: Theme.of(context).textTheme.labelMedium),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                width:
+                                    isChild == true ? width - 150 : width - 120,
+                                child: Text(user.username,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .labelMedium),
+                              ),
+                              if (timestamp != null)
+                                Text(formatDate(timestamp!),
+                                    style: const TextStyle(fontSize: 10)),
+                            ],
                           ),
                           if (showMenu == true)
                             PopupMenuButton<String>(
@@ -116,9 +126,6 @@ class TimelineHeader extends StatelessWidget {
                                 })
                         ],
                       ),
-                      if (timestamp != null)
-                        Text(formatDate(timestamp!),
-                            style: Theme.of(context).textTheme.labelSmall),
                     ],
                   )
               ]),

@@ -232,10 +232,7 @@ class MyApp extends StatelessWidget {
             letterSpacing: 0,
             textStyle: const TextStyle(color: APP_ACCENT_COLOR)),
         labelSmall: GoogleFonts.poppins(
-            fontSize: 12,
-            wordSpacing: 0,
-            letterSpacing: 1.0,
-            color: Colors.grey),
+            fontSize: 12, wordSpacing: 0, letterSpacing: 0, color: Colors.grey),
       ).apply(
         bodyColor: APP_PRIMARY_COLOR,
         displayColor: APP_PRIMARY_COLOR,
@@ -359,28 +356,34 @@ class MyApp extends StatelessWidget {
         headlineMedium:
             GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
         headlineSmall:
-            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+            GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
         titleLarge: GoogleFonts.poppins(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             color: APP_PRIMARY_DARK_COLOR),
-        titleMedium:
-            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
-        titleSmall:
-            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
+        titleMedium: GoogleFonts.poppins(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+            color: APP_PRIMARY_DARK_COLOR),
+        titleSmall: GoogleFonts.poppins(
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+            color: APP_PRIMARY_DARK_COLOR),
         bodyLarge:
             GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
         bodyMedium:
             GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         bodySmall:
             GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
-        labelLarge: GoogleFonts.poppins(
-          fontSize: 16,
-        ),
-        labelMedium: GoogleFonts.poppins(fontSize: 14, color: APP_ACCENT_COLOR),
-        labelSmall: GoogleFonts.poppins(
-          fontSize: 12,
-        ),
+        labelLarge:
+            GoogleFonts.poppins(fontSize: 16, wordSpacing: 0, letterSpacing: 0),
+        labelMedium: GoogleFonts.poppins(
+            fontSize: 14,
+            wordSpacing: 0,
+            letterSpacing: 0,
+            textStyle: const TextStyle(color: APP_ACCENT_COLOR)),
+        labelSmall:
+            GoogleFonts.poppins(fontSize: 12, wordSpacing: 0, letterSpacing: 0),
       ),
       popupMenuTheme: PopupMenuThemeData(
           shape:

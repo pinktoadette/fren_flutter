@@ -112,8 +112,10 @@ class StoryboardController extends GetxController {
     List<Story> stories = currentStoryboard.story!;
     int index =
         stories.indexWhere((element) => element.storyId == story.storyId);
-    currentStoryboard.story![index] = story;
-    updateStoryboard(currentStoryboard);
+    if (currentStoryboard.storyboardId != "") {
+      currentStoryboard.story![index] = story;
+      updateStoryboard(currentStoryboard);
+    }
     _currentStory.refresh();
   }
 

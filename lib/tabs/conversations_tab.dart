@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 
 import '../datas/user.dart';
@@ -160,17 +161,25 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                       children: [
                                         Row(
                                           children: [
+                                            AvatarInitials(
+                                                radius: 15,
+                                                photoUrl:
+                                                    room.bot.profilePhoto ?? "",
+                                                username: room.bot.name),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
                                             Text(allUsers,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .headlineSmall),
+                                                    .bodyMedium),
                                             const Spacer(),
                                             Text(
                                                 formatDate(lastMsg[CREATED_AT]),
                                                 textAlign: TextAlign.right,
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .titleMedium),
+                                                    .labelSmall),
                                           ],
                                         ),
                                         const SizedBox(
@@ -281,7 +290,11 @@ class _ConversationsTabState extends State<ConversationsTab> {
     switch (message["type"]) {
       case 'text':
         String text = message['text'];
-        return Flexible(child: Text(truncateText(100, text)));
+        return Flexible(
+            child: Text(
+          truncateText(100, text),
+          style: Theme.of(context).textTheme.bodyMedium,
+        ));
       case 'image':
         return SizedBox(
           child: Row(children: [

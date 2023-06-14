@@ -381,6 +381,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     }
     setState(() {
       attachmentPreview = null;
+      _setTags = null;
     });
 
     // saves the text after the image, the text is linked to the image with lastMessageId
@@ -389,7 +390,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     setState(() {
       _isAttachmentUploading = false;
-      _setTags = null;
     });
   }
 

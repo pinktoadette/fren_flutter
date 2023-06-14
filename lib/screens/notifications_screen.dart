@@ -1,12 +1,15 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
@@ -26,37 +29,11 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Initialization
     final i18n = AppLocalizations.of(context);
-    final pr = ProgressDialog(context);
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(i18n.translate("notifications")),
-        actions: [
-          IconButton(
-              icon: const Icon(Iconsax.trash),
-              onPressed: () async {
-                /// Delete all Notifications
-                ///
-                /// Show confirm dialog
-                confirmDialog(context,
-                    message:
-                        i18n.translate("all_notifications_will_be_deleted"),
-                    negativeAction: () => Navigator.of(context).pop(),
-                    positiveText: i18n.translate("DELETE"),
-                    positiveAction: () async {
-                      // Show processing dialog
-                      pr.show(i18n.translate("processing"));
-
-                      /// Delete
-                      await _notificationsApi.deleteUserNotifications();
-
-                      // Hide progress dialog
-                      pr.hide();
-                      // Hide confirm dialog
-                      Navigator.of(context).pop();
-                    });
-              })
-        ],
+        title: Text(i18n.translate("notifications"),
+            style: Theme.of(context).textTheme.bodyMedium),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: _notificationsApi.getNotifications(),
@@ -121,9 +98,13 @@ class NotificationsScreen extends StatelessWidget {
                             builder: (context) => ProfileScreen(user: user)));
                       }
 
-                      //  if (notification[NOTIF_TYPE] == "COMMENT") {
-
-                      // }
+                      if (notification[NOTIF_TYPE] == "COMMENT") {
+                        final _storyApi = StoryApi();
+                        Story story = await _storyApi
+                            .getMyStories(notification["itemId"]);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => StoryPageView(story: story)));
+                      }
 
                       /// Handle notification click
                       _appNotifications.onNotificationClick(context,

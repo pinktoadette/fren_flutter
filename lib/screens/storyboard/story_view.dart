@@ -7,6 +7,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -47,52 +48,23 @@ class _StoriesViewState extends State<StoriesView> {
 
     return Scaffold(
         appBar: AppBar(
-          title: widget.message == null
-              ? Text(
-                  _i18n.translate("story_collection"),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                )
-              : Text(
-                  _i18n.translate("add_message_collection"),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-          leading: BackButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () async {
-              storyboardController.clearStory();
-              Navigator.pop(context);
-            },
-          ),
-          actions: [
-            if (widget.message == null)
-              TextButton.icon(
-                  onPressed: () {
-                    Get.to(() => const AddNewStory());
-                  },
-                  icon: const Icon(Iconsax.add),
-                  label: Text(
-                    _i18n.translate("new_story_collection"),
-                    style: Theme.of(context).textTheme.labelSmall,
-                  )),
-            if (widget.message == null)
-              TextButton(
-                  onPressed: () {
-                    confirmDialog(context,
-                        icon: const Icon(Iconsax.warning_2),
-                        negativeAction: () => Navigator.of(context).pop(),
-                        negativeText: _i18n.translate("CANCEL"),
-                        message: _i18n.translate("publish_confirm"),
-                        positiveText: _i18n.translate("publish"),
-                        positiveAction: () {
-                          _publishAll();
-                        });
-                  },
-                  child: Text(
-                    _i18n.translate("publish"),
-                    style: Theme.of(context).textTheme.labelSmall,
-                  )),
-          ],
-        ),
+            title: widget.message == null
+                ? Text(
+                    _i18n.translate("story_collection"),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )
+                : Text(
+                    _i18n.translate("add_message_collection"),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+            leading: BackButton(
+              color: Theme.of(context).primaryColor,
+              onPressed: () async {
+                storyboardController.clearStory();
+                Navigator.pop(context);
+              },
+            ),
+            actions: _listOfActions()),
         body: SingleChildScrollView(
             physics: const ScrollPhysics(),
             child: Column(children: <Widget>[
@@ -179,6 +151,42 @@ class _StoriesViewState extends State<StoriesView> {
                 ],
               )
             ])));
+  }
+
+  List<Widget> _listOfActions() {
+    if ((storyboardController.currentStoryboard.createdBy.userId !=
+        UserModel().user.userId)) {
+      return [const SizedBox.shrink()];
+    }
+    return [
+      if (widget.message == null)
+        TextButton.icon(
+            onPressed: () {
+              Get.to(() => const AddNewStory());
+            },
+            icon: const Icon(Iconsax.add),
+            label: Text(
+              _i18n.translate("new_story_collection"),
+              style: Theme.of(context).textTheme.labelSmall,
+            )),
+      if (widget.message == null)
+        TextButton(
+            onPressed: () {
+              confirmDialog(context,
+                  icon: const Icon(Iconsax.warning_2),
+                  negativeAction: () => Navigator.of(context).pop(),
+                  negativeText: _i18n.translate("CANCEL"),
+                  message: _i18n.translate("publish_confirm"),
+                  positiveText: _i18n.translate("publish"),
+                  positiveAction: () {
+                    _publishAll();
+                  });
+            },
+            child: Text(
+              _i18n.translate("publish"),
+              style: Theme.of(context).textTheme.labelSmall,
+            ))
+    ];
   }
 
   void _publishAll() async {
