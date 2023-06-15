@@ -27,6 +27,7 @@ import 'package:iconsax/iconsax.dart';
 
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -57,8 +58,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
 
-    /// Restore VIP Subscription
-    AppHelper().restoreVipAccount();
+    /// Revenue Cat
+    _fetchUserPlans();
 
     /// Init streams
     _getCurrentUserUpdates();
@@ -95,6 +96,16 @@ class _HomeScreenState extends State<HomeScreen> {
     chatController.initUser();
     chatController.onChatLoad();
     storyController.getBoards();
+  }
+
+  void _fetchUserPlans() async {
+    try {
+      String userId = UserModel().user.userId;
+      LogInResult result = await Purchases.logIn(userId);
+      debugPrint(result.toString());
+    } catch (err) {
+      debugPrint(err.toString());
+    }
   }
 
   /// get or create chatroom

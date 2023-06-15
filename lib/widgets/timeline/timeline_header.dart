@@ -91,20 +91,29 @@ class TimelineHeader extends StatelessWidget {
                                     <PopupMenuEntry<String>>[
                                       PopupMenuItem(
                                         child: Text(
-                                            _i18n.translate("report_user")),
+                                          _i18n.translate("report_user"),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall,
+                                        ),
                                         value: 'report_user',
                                       ),
                                       if (comment != null)
                                         PopupMenuItem(
-                                          child: Text(_i18n
-                                              .translate("report_comment")),
+                                          child: Text(
+                                              _i18n.translate("report_comment"),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall),
                                           value: 'report_comment',
                                         ),
                                       if ((user.userId ==
                                           UserModel().user.userId))
                                         PopupMenuItem(
-                                          child:
-                                              Text(_i18n.translate("DELETE")),
+                                          child: Text(_i18n.translate("DELETE"),
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodySmall),
                                           value: 'delete',
                                         ),
                                     ],

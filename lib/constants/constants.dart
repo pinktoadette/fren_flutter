@@ -114,15 +114,6 @@ const BOT_TEMPERATURE = "temperature";
 const BOT_IS_PRIVATE = "isPrivate";
 const BOT_CREATED_BY = "createdBy";
 
-/// trials
-const BOT_TRIAL_BOT_ID = BOT_ID;
-const BOT_TRIAL_OWNER_ID = "bot_trial_user_id";
-const BOT_TRIAL_TIMES =
-    "bot_trial_times"; // counter for how many times user tried
-
-/// upload pathings
-const C_AI_IMAGE_PATH = "AiImage";
-
 /// DATABASE COLLECTION NAMES USED IN APP
 ///
 const String C_APP_INFO = "AppInfo";

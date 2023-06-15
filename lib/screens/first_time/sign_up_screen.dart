@@ -298,7 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onSuccess: () async {
           Future(() {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const RegisterScreen()),
+                MaterialPageRoute(builder: (context) => const InterestScreen()),
                 (route) => false);
           });
         },

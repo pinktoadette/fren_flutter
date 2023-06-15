@@ -27,17 +27,17 @@ void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 
-  /// Revenue cat for subscription and payments
-  await Purchases.setLogLevel(LogLevel.debug);
-  late PurchasesConfiguration configuration;
-
   /// ***  Initialize Firebase App *** ///
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  late PurchasesConfiguration configuration;
   if (Platform.isAndroid | Platform.isIOS) {
+    /// Revenue cat for subscription and payments
+    await Purchases.setLogLevel(LogLevel.debug);
+
     /// Revenue cat
     configuration = PurchasesConfiguration('goog_EutdJZovasmfuBudvjOKZpEkGcx');
 
@@ -66,7 +66,7 @@ void main() async {
       sound: true,
     );
   }
-
+  // revenue cate
   await Purchases.configure(configuration);
 
   // GetX all Controller
@@ -352,23 +352,17 @@ class MyApp extends StatelessWidget {
         displaySmall: GoogleFonts.poppins(
             fontSize: 18, fontWeight: FontWeight.w500, color: APP_ACCENT_COLOR),
         headlineLarge:
-            GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
+            GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700),
         headlineMedium:
-            GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.w500),
+            GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500),
         headlineSmall:
-            GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.bold),
-        titleLarge: GoogleFonts.poppins(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: APP_PRIMARY_DARK_COLOR),
-        titleMedium: GoogleFonts.poppins(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            color: APP_PRIMARY_DARK_COLOR),
-        titleSmall: GoogleFonts.poppins(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: APP_PRIMARY_DARK_COLOR),
+            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+        titleLarge:
+            GoogleFonts.poppins(fontSize: 24, color: APP_PRIMARY_DARK_COLOR),
+        titleMedium:
+            GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
+        titleSmall:
+            GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         bodyLarge:
             GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
         bodyMedium:

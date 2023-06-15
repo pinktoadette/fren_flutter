@@ -2,8 +2,10 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:flutter/services.dart';
+import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/first_time/first_time_user.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/screens/first_time/update_location_sceen.dart';
@@ -46,7 +48,6 @@ class _SignInScreenState extends State<SignInScreen> {
     /// Initialization
     _i18n = AppLocalizations.of(context);
     double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
       appBar: AppBar(
@@ -61,13 +62,13 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              const SizedBox(height: 100),
               Image.asset("assets/images/logo_machi.png"),
               const SizedBox(height: 40),
               Text(_i18n.translate("app_short_description"),
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.labelSmall),
-              if (isLoading == true) const Frankloader(),
-              if (isLoading == false) const Spacer(),
+              const Spacer(),
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
@@ -77,6 +78,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: <Widget>[
+                        if (isLoading == true)
+                          Lottie.asset(
+                            'assets/lottie/loader.json',
+                          ),
                         SignInButton(Buttons.Google,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20.0),
@@ -93,6 +98,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                     _nextScreen(const SignInScreen()),
                                 signUpScreen: () =>
                                     _nextScreen(const SignUpScreen()),
+                                interestScreen: () =>
+                                    _nextScreen(const InterestScreen()),
                                 onboardScreen: () =>
                                     _nextScreen(const OnboardingScreen()),
                                 homeScreen: () =>

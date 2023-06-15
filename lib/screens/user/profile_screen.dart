@@ -13,7 +13,6 @@ import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
 import 'package:machi_app/widgets/profile/user_gallery.dart';
 import 'package:machi_app/widgets/profile/user_story.dart';
-import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
 class ProfileScreen extends StatefulWidget {

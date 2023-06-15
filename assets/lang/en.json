@@ -251,7 +251,6 @@
   "sign_in_with_apple": "Continue with Apple",
   "sign_in_with_github": "Continue with GitHub",
 
-  "add_machi": "Add Machi",
   "add_to_chat": "Add Friend",
   "added_to_chat": "Added",
   "leave_chat_bot_tying": "Machi is still typing. If you leave, it may terminate response.",
@@ -310,7 +309,8 @@
   "search_user": "Search user",
   "search_not_found": "Nothing found",
   "select_industry": "Select your major or industry",
-  "select_interest": "Select your interest",
+  "select_interest": "Let's find some topics that may interest you",
+  "select_up_to_three": "Select up to 3",
   "resricted_to_creator": "Only creator/admin can edit",
   "required_field": "Please input required field",
   "required_2_char": "Requires 2 characters",

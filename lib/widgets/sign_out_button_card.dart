@@ -3,6 +3,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
 import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:flutter/material.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 
 class SignOutButtonCard extends StatelessWidget {
   const SignOutButtonCard({Key? key}) : super(key: key);
@@ -19,7 +20,9 @@ class SignOutButtonCard extends StatelessWidget {
         title: Text(i18n.translate("sign_out"),
             style: Theme.of(context).textTheme.bodyMedium),
         trailing: const Icon(Icons.arrow_forward),
-        onTap: () {
+        onTap: () async {
+          String userId = UserModel().user.userId;
+          await Purchases.logIn(userId);
           // Log out button
           UserModel().signOut().then((_) {
             /// Go to login screen

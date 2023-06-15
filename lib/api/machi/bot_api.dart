@@ -18,12 +18,9 @@ class BotApi {
 
   Future<Bot> createBot(
       {required name,
-      domain,
-      subdomain,
       prompt,
       temperature,
       isPrivate,
-      model,
       photoUrl,
       required modelType,
       required about}) async {
@@ -34,16 +31,12 @@ class BotApi {
       BOT_ID: "Machi_${uuid.substring(0, 10)}", // external botId
       BOT_ABOUT: about,
       BOT_NAME: name,
-      BOT_MODEL: model,
       BOT_MODEL_TYPE: modelType.toString().split(".")[1],
-      BOT_DOMAIN: domain,
-      BOT_SUBDOMAIN: subdomain,
       BOT_PROMPT: prompt,
       BOT_TEMPERATURE: temperature,
       BOT_IS_PRIVATE: isPrivate ?? true,
-      BOT_ACTIVE: false,
+      BOT_ACTIVE: true,
       BOT_PROFILE_PHOTO: photoUrl,
-      BOT_ADMIN_STATUS: 'pending',
       CREATED_AT: getDateTimeEpoch(),
       UPDATED_AT: getDateTimeEpoch(),
     };
@@ -78,8 +71,7 @@ class BotApi {
   }
 
   Future<List<Bot>> getAllBots(int page, BotModelType modelType) async {
-    String url =
-        '${baseUri}get_all?page=$page&model=${modelType.toString().split('.').last}';
+    String url = '${baseUri}get_all?page=$page';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
@@ -96,15 +88,6 @@ class BotApi {
     String url = '${baseUri}get_my_creation';
     final dio = await auth.getDio();
     final response = await dio.get(url);
-    final getData = response.data;
-
-    return getData.toJson();
-  }
-
-  Future<List<Bot>> addBottoList(String botId) async {
-    String url = '${baseUri}add_machi';
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: {BOT_ID: botId});
     final getData = response.data;
 
     return getData.toJson();

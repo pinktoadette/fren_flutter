@@ -177,6 +177,7 @@ class UserModel extends Model {
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
     required VoidCallback updateLocationScreen,
+    VoidCallback? interestScreen,
     // Optional functions called on app start
     VoidCallback? onboardScreen,
     VoidCallback? signInScreen,
@@ -207,8 +208,13 @@ class UserModel extends Model {
 
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
-              debugPrint("profile incomplete");
               signUpScreen();
+              return;
+            }
+
+            if (!(userDoc.data() as Map<String, dynamic>)
+                .containsKey(USER_INTERESTS)) {
+              interestScreen!();
               return;
             }
 

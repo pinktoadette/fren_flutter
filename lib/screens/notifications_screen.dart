@@ -4,8 +4,6 @@ import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/user.dart';
-import 'package:machi_app/dialogs/common_dialogs.dart';
-import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/helpers/date_format.dart';

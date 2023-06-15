@@ -72,26 +72,5 @@ class _AddBotState extends State<AddBotScreen> {
                 ]))));
   }
 
-  void onClickGitHubLoginButton() async {
-    Uri url = Uri(
-        scheme: 'https',
-        host: 'github.com',
-        path: '/login/oauth/authorize',
-        queryParameters: {
-          'client_id': GITHUB_CLIENT_ID,
-          'scope': 'public_repo'
-        });
-    if (await canLaunchUrl(url)) {
-      await launchUrl(
-        url,
-      );
-    } else {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("error_launch_url"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-    }
-  }
+  void onClickGitHubLoginButton() async {}
 }

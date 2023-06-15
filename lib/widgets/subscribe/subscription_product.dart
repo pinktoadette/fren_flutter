@@ -246,7 +246,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
         Get.snackbar(
             _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
-            snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+            snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
       }
     }
   }

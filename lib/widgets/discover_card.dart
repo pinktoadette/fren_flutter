@@ -28,7 +28,6 @@ class DiscoverCard extends StatelessWidget {
     return Card(
       color: Colors.black,
       child: SizedBox(
-        height: size.height - 200,
         width: size.width,
         child: Container(
             padding: const EdgeInsets.only(left: 40, right: 40),
@@ -51,7 +50,7 @@ class DiscoverCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       Text(subtitle),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 30),
                       ElevatedButton(
                           onPressed: () {
                             ButtonChanged(true).dispatch(context);

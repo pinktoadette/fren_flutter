@@ -33,7 +33,7 @@ class _ActivityTabState extends State<ActivityTab> {
   List _listFeatures = [];
   int _currentStep = 0;
   bool _visible = true;
-  bool _isInitiatedFrank = false;
+  bool _isInitiatedFrank = true;
 
   Future<void> _fetchInitialFrankie() async {
     List steps = await _botApi.getInitialFrankie();
@@ -44,12 +44,12 @@ class _ActivityTabState extends State<ActivityTab> {
   void initState() {
     super.initState();
     User user = UserModel().user;
-    if (user.isFrankInitiated == false) {
-      _fetchInitialFrankie();
-    }
-    setState(() {
-      _isInitiatedFrank = user.isFrankInitiated;
-    });
+    // if (user.isFrankInitiated == false) {
+    //   _fetchInitialFrankie();
+    // }
+    // setState(() {
+    //   _isInitiatedFrank = user.isFrankInitiated;
+    // });
   }
 
   @override
@@ -90,41 +90,40 @@ class _ActivityTabState extends State<ActivityTab> {
       ]));
     }
     return Scaffold(
-        appBar: AppBar(
-          title: Image.asset(
-            "assets/images/logo_white.png",
-            width: max(150, width * 0.3),
-          ),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    IconButton(
-                        icon: _getNotificationCounter(),
-                        onPressed: () async {
-                          // Go to Notifications Screen
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => NotificationsScreen()));
-                        }),
-                  ],
-                )),
+      appBar: AppBar(
+        title: Image.asset(
+          "assets/images/logo_white.png",
+          width: max(150, width * 0.3),
+        ),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  IconButton(
+                      icon: _getNotificationCounter(),
+                      onPressed: () async {
+                        // Go to Notifications Screen
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => NotificationsScreen()));
+                      }),
+                ],
+              )),
+        ],
+      ),
+      body: SingleChildScrollView(
+        controller: ScrollController(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // ActivityWidget()
+            if (_currentStep < _listFeatures.length) _onCardClick()
           ],
         ),
-        body: Column(children: [
-          SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                // ActivityWidget()
-                if (_currentStep < _listFeatures.length) _onCardClick()
-              ],
-            ),
-          ),
-          const Spacer(),
-        ]));
+      ),
+    );
   }
 
   Widget _onCardClick() {

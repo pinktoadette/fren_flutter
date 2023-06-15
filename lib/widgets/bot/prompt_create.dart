@@ -12,7 +12,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:get/get.dart';
 
 class CreateMachiWidget extends StatefulWidget {
@@ -117,10 +116,15 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                               foregroundImage: _uploadPath != null
                                   ? FileImage(_uploadPath!)
                                   : null,
+                              backgroundImage: photoUrl != null
+                                  ? NetworkImage(photoUrl!)
+                                  : null,
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
                               child: Text(_nameController.text.length > 1
-                                  ? _nameController.text.substring(0, 1)
+                                  ? photoUrl == null
+                                      ? _nameController.text.substring(0, 1)
+                                      : ""
                                   : "MA"),
                             ),
 

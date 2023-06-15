@@ -162,7 +162,11 @@ class ImageSourceSheet extends StatelessWidget {
                     child: Row(
                       children: [
                         const Icon(Iconsax.gallery_export),
-                        Text(" " + i18n.translate("generative"),
+                        Text(
+                            " " +
+                                i18n.translate("generative") +
+                                " " +
+                                i18n.translate("gallery"),
                             style: const TextStyle(fontSize: 16))
                       ],
                     ),

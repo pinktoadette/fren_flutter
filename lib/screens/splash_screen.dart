@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/services.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
+import 'package:machi_app/screens/first_time/first_time_user.dart';
 import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -62,6 +63,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 _nextScreen(const UpdateLocationScreen()),
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
+            interestScreen: () => _nextScreen(const InterestScreen()),
             onboardScreen: () => _nextScreen(const OnboardingScreen()),
             homeScreen: () => _nextScreen(const HomeScreen()),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));

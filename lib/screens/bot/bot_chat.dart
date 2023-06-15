@@ -37,6 +37,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
 import 'package:machi_app/helpers/create_uuid.dart';
@@ -139,25 +140,23 @@ class _BotChatScreenState extends State<BotChatScreen> {
     } else {
       return Scaffold(
         appBar: AppBar(
-            leading: BackButton(
-              color: Theme.of(context).colorScheme.primary,
-              onPressed: () async {
-                _leaveBotTyping();
-              },
-            ),
-            // Show User profile info
-            title: GestureDetector(
-              child: Text(chatController.botController.bot.name,
-                  overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.displayMedium),
-              onTap: () {
-                /// Show bot info
-                _showBotInfo();
-              },
-            ),
-            actions: [
-              IconButton(icon: const Icon(Iconsax.camera), onPressed: () {})
-            ]),
+          leading: BackButton(
+            color: Theme.of(context).colorScheme.primary,
+            onPressed: () async {
+              _leaveBotTyping();
+            },
+          ),
+          // Show User profile info
+          title: GestureDetector(
+            child: Text(chatController.botController.bot.name,
+                overflow: TextOverflow.fade,
+                style: Theme.of(context).textTheme.displayMedium),
+            onTap: () {
+              /// Show bot info
+              _showBotInfo();
+            },
+          ),
+        ),
         body: Chat(
             listBottomWidget: CustomHeaderInputWidget(
                 onUpdateWidget: (e) {
@@ -215,7 +214,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             }
           },
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(5),
             child: const Icon(Iconsax.book, size: 14),
           ),
         ),
@@ -240,8 +239,37 @@ class _BotChatScreenState extends State<BotChatScreen> {
             }
           },
           child: Container(
-            padding: const EdgeInsets.all(8),
+            padding: const EdgeInsets.all(5),
             child: const Icon(Iconsax.gallery_add, size: 14),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            String? encodeQueryParameters(Map<String, String> params) {
+              return params.entries
+                  .map((MapEntry<String, String> e) =>
+                      '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                  .join('&');
+            }
+
+            dynamic message = _tappedMessage;
+
+            final Uri emailLaunchUri = Uri(
+              scheme: 'mailto',
+              path: '',
+              query: encodeQueryParameters(<String, String>{
+                'subject': "${message?.author.firstName} @ Machi",
+                'body': _tappedMessage!.type == types.MessageType.text
+                    ? message?.text
+                    : "Not a text"
+              }),
+            );
+
+            launchUrl(emailLaunchUri);
+          },
+          child: Container(
+            padding: const EdgeInsets.all(5),
+            child: const Icon(Icons.email_outlined, size: 14),
           ),
         ),
       ];
