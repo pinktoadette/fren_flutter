@@ -13,6 +13,7 @@ import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 
 import '../models/user_model.dart';
 
@@ -38,7 +39,7 @@ class NotificationsScreen extends StatelessWidget {
           builder: (context, snapshot) {
             /// Check data
             if (!snapshot.hasData) {
-              return const Frankloader();
+              return NoData(text: i18n.translate("no_notification"));
             } else {
               return ListView.separated(
                 shrinkWrap: true,

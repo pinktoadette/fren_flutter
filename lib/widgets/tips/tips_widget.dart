@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 
 class TipWidget extends StatelessWidget {
@@ -19,15 +20,19 @@ class TipWidget extends StatelessWidget {
 
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
-        child: Row(
-          children: items.map((e) {
-            return Container(
-              padding: const EdgeInsets.all(2),
+        child: Row(children: [
+          const Card(
+            child: Icon(
+              Icons.lightbulb,
+              color: APP_ACCENT_COLOR,
+            ),
+          ),
+          ...items.map((e) {
+            return SizedBox(
               width: width * 0.9,
-              // height: 40,
               child: Card(
                 child: Padding(
-                    padding: const EdgeInsets.only(left: 15),
+                    padding: const EdgeInsets.all(15),
                     child: Text(
                       e,
                       style: Theme.of(context).textTheme.bodySmall,
@@ -35,6 +40,6 @@ class TipWidget extends StatelessWidget {
               ),
             );
           }).toList(),
-        ));
+        ]));
   }
 }
