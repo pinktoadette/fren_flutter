@@ -12,8 +12,14 @@ class PurchasesApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
+  static Future init() async {
+    await Purchases.setLogLevel(LogLevel.debug);
+    PurchasesConfiguration('goog_EutdJZovasmfuBudvjOKZpEkGcx');
+  }
+
   static Future<List<Offering>> fetchOffers() async {
     try {
+      init();
       final offerings = await Purchases.getOfferings();
       final current = offerings.current;
       return current == null ? [] : [current];

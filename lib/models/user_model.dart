@@ -205,13 +205,6 @@ class UserModel extends Model {
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();
 
-            // Check location data
-            // if (latitude == 0.0 && longitude == 0.0) {
-            //   // Show Update your current location message
-            //   updateLocationScreen();
-            //   return;
-            // }
-
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               debugPrint("profile incomplete");
@@ -219,6 +212,12 @@ class UserModel extends Model {
               return;
             }
 
+            // Check location data
+            // if (latitude == 0.0 && longitude == 0.0) {
+            //   // Show Update your current location message
+            //   updateLocationScreen();
+            //   return;
+            // }
             // Go to home screen
             homeScreen();
           }

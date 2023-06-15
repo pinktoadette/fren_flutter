@@ -49,10 +49,6 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
 
     double screenWidth = MediaQuery.of(context).size.width;
 
-    // if (purchaserInfo.entitlements.all["your_entitlement_id"].isActive) {
-    //   // user has access to "your_entitlement_id"
-    // }
-
     if (!isUserSubscribed) {
       return Card(
           child: SizedBox(

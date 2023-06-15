@@ -379,10 +379,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
       lastMessageId =
           await _messagesApi.saveUserResponse(messageMap: formatImgMessage);
     }
-    setState(() {
-      attachmentPreview = null;
-      _setTags = null;
-    });
 
     // saves the text after the image, the text is linked to the image with lastMessageId
     await _saveResponseAndGetBot(

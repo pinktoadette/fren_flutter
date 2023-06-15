@@ -1,8 +1,10 @@
+import 'package:google_fonts/google_fonts.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/home_screen.dart';
+import 'package:machi_app/screens/first_time/first_time_user.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +36,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   String? _birthday;
   bool _agreeTerms = true;
   late AppLocalizations _i18n;
-
+  TextStyle textStyle = GoogleFonts.poppins(
+      fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal);
+  TextStyle dimmedStyle = GoogleFonts.poppins(
+      fontSize: 16, color: Colors.grey, fontWeight: FontWeight.normal);
   @override
   void initState() {
     super.initState();
@@ -80,11 +85,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       onMonthChangeStartWithFirstDate: true,
       pickerTheme: DateTimePickerTheme(
         showTitle: true,
-        confirm: Text(_i18n.translate('DONE'),
-            style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 16.0,
-                color: Colors.black)),
+        confirm: Text(_i18n.translate('DONE'), style: textStyle),
       ),
       minDateTime: DateTime(1920, 1, 1),
       maxDateTime: DateTime.now(),
@@ -116,6 +117,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
+
     return Scaffold(
       key: _scaffoldKey,
       body: ScopedModelDescendant<UserModel>(
@@ -154,62 +156,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       const SizedBox(height: 20),
 
                       /// FullName field
-                      Card(
-                          color: Colors.white,
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(color: Colors.grey)),
-                          child: TextFormField(
-                            cursorColor: Colors.black,
-                            style: const TextStyle(
-                              color: Colors.black,
+                      TextFormField(
+                        cursorColor: Colors.black,
+                        style: textStyle,
+                        textCapitalization: TextCapitalization.sentences,
+                        controller: _nameController,
+                        decoration: InputDecoration(
+                            errorBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 0.0),
                             ),
-                            textCapitalization: TextCapitalization.sentences,
-                            controller: _nameController,
-                            decoration: InputDecoration(
-                                labelText: _i18n.translate("fullname"),
-                                hintText: _i18n.translate("name_hint"),
-                                hintStyle: const TextStyle(color: Colors.grey),
-                                floatingLabelBehavior:
-                                    FloatingLabelBehavior.always,
-                                prefixIcon: const Padding(
-                                  padding: EdgeInsets.all(12.0),
-                                  child: Icon(
-                                    Iconsax.user,
-                                    color: Colors.grey,
-                                  ),
-                                )),
-                            validator: (name) {
-                              // Basic validation
-                              if (name?.isEmpty ?? false) {
-                                return _i18n.translate("enter_your_fullname");
-                              }
-                              if (name != null && name.length < 3) {
-                                return _i18n
-                                    .translate("validation_3_characters");
-                              }
-                              return null;
-                            },
-                          )),
+                            focusedErrorBorder: const OutlineInputBorder(
+                              borderSide:
+                                  BorderSide(color: Colors.white, width: 0.0),
+                            ),
+                            labelText: _i18n.translate("username"),
+                            labelStyle: const TextStyle(
+                                color: Color.fromARGB(255, 26, 25, 25)),
+                            hintText: _i18n.translate("name_hint"),
+                            hintStyle: dimmedStyle,
+                            floatingLabelBehavior: FloatingLabelBehavior.always,
+                            prefixIcon: const Padding(
+                              padding: EdgeInsets.only(left: 20.0, right: 30),
+                              child: Icon(
+                                Iconsax.user,
+                                color: Colors.grey,
+                              ),
+                            )),
+                        validator: (name) {
+                          // Basic validation
+                          if (name?.isEmpty ?? false) {
+                            return _i18n.translate("enter_your_fullname");
+                          }
+                          if (name != null && name.length < 3) {
+                            return _i18n.translate("validation_3_characters");
+                          }
+                          return null;
+                        },
+                      ),
                       const SizedBox(height: 20),
 
                       /// Birthday card
-                      Card(
+                      Container(
                           color: Colors.white,
-                          clipBehavior: Clip.antiAlias,
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              side: const BorderSide(color: Colors.grey)),
                           child: ListTile(
                             leading: const Icon(
-                              Iconsax.cake,
+                              Iconsax.gift,
                               color: Colors.grey,
                             ),
                             title: Text(_birthday!,
-                                style: const TextStyle(
-                                  color: Colors.grey,
-                                )),
+                                style: _userBirthMonth != 0
+                                    ? textStyle
+                                    : dimmedStyle),
                             trailing: const Icon(Icons.arrow_drop_down),
                             onTap: () {
                               FocusScope.of(context).unfocus();
@@ -220,18 +218,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           )),
 
                       const Spacer(),
-                      if (userModel.isLoading) JumpingDots(color: Colors.black),
+                      if (userModel.isLoading)
+                        const Center(child: Frankloader()),
                       SizedBox(
                           width: double.maxFinite,
                           child: ElevatedButton(
-                            child: Container(
-                                color: Theme.of(context).colorScheme.primary,
-                                child: Text(_i18n.translate("register"),
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .background))),
+                            style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.black),
+                            child: Text(
+                              _i18n.translate("register"),
+                              style: const TextStyle(color: Colors.white),
+                            ),
                             onPressed: () {
                               _createAccount();
                             },
@@ -251,9 +248,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   /// Handle Create account
   void _createAccount() async {
-    bool isNameAvail = await _userApi.checkUsername(_nameController.text);
+    bool isNameAvail = await _userApi
+        .checkUsername(_nameController.text.toLowerCase().replaceAll(' ', ''));
 
-    if (!isNameAvail) {
+    if (!_agreeTerms) {
+      // Show error message
+      Get.snackbar(
+        _i18n.translate("terms_condition"),
+        _i18n.translate("you_must_agree_to_our_privacy_policy"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_ERROR,
+      );
+    }
+
+    if (!_formKey.currentState!.validate()) {
+      Get.snackbar(
+        _i18n.translate('validation_warning'),
+        _i18n.translate("validation_3_characters"),
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: APP_WARNING,
+      );
+    } else if (!isNameAvail) {
       Get.snackbar(
         _i18n.translate("validation_warning"),
         _i18n.translate("validation_username"),
@@ -261,28 +276,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: APP_ERROR,
       );
       return;
-    }
-
-    if (!_agreeTerms) {
-      // Show error message
+    } else if (UserModel().calculateUserAge(_initialDateTime) < 12) {
       Get.snackbar(
-        'Terms and Condition',
-        _i18n.translate("you_must_agree_to_our_privacy_policy"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
-      );
-
-      /// Validate form
-    } else if (UserModel().calculateUserAge(_initialDateTime) < 18) {
-      // Show error message
-      Get.snackbar(
-        'Must be 18+',
+        'Must be 12+',
         _i18n.translate(
-            "only_18_years_old_and_above_are_allowed_to_create_an_account"),
+            "only_12_years_old_and_above_are_allowed_to_create_an_account"),
         snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_ERROR,
+        backgroundColor: APP_WARNING,
       );
-    } else if (!_formKey.currentState!.validate()) {
     } else {
       /// Call all input onSaved method
       _formKey.currentState!.save();
@@ -297,7 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onSuccess: () async {
           Future(() {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const HomeScreen()),
+                MaterialPageRoute(builder: (context) => const RegisterScreen()),
                 (route) => false);
           });
         },

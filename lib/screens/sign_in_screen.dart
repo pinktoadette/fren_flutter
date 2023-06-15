@@ -61,7 +61,6 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              SizedBox(height: min(80, screenHeight * 0.1)),
               Image.asset("assets/images/logo_machi.png"),
               const SizedBox(height: 40),
               Text(_i18n.translate("app_short_description"),
@@ -72,10 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
               Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
-                  child:
-
-                      /// Sign in
-                      Padding(
+                  child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
