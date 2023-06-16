@@ -66,13 +66,13 @@ class _ActivityTabState extends State<ActivityTab> {
                 )),
           ],
           showLeading: true),
-      const SliverToBoxAdapter(
+      SliverToBoxAdapter(
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           // SearchBarWidget(),
-          SubscriptionCard(),
-          TipWidget(),
+          const SubscriptionCard(),
+          if (_isInitiatedFrank == false) const TipWidget(),
         ],
       )),
       const TimelineWidget(),

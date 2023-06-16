@@ -72,9 +72,8 @@ class TimelineHeader extends StatelessWidget {
                                 width:
                                     isChild == true ? width - 150 : width - 120,
                                 child: Text(user.username,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .labelMedium),
+                                    style:
+                                        Theme.of(context).textTheme.labelLarge),
                               ),
                               if (timestamp != null)
                                 Text(formatDate(timestamp!),

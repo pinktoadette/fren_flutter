@@ -31,7 +31,8 @@ class TipWidget extends StatelessWidget {
             return SizedBox(
               width: width * 0.9,
               child: Card(
-                child: Padding(
+                child: Container(
+                    height: 80,
                     padding: const EdgeInsets.all(15),
                     child: Text(
                       e,

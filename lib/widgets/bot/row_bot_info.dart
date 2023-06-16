@@ -21,7 +21,9 @@ class RowMachiInfo extends StatelessWidget {
         width: width - padding * 2,
         child: InkWell(
           onTap: () {
-            SetCurrentRoom().setNewBotRoom(bot, true);
+            Future(() {
+              SetCurrentRoom().setNewBotRoom(bot, true);
+            });
             Navigator.pop(context);
           },
           child: Row(

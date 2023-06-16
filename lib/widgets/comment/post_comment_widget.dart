@@ -33,10 +33,11 @@ class PostCommentWidget extends StatelessWidget {
                   topLeft: Radius.circular(24), topRight: Radius.circular(24))),
           child: ConstrainedBox(
               constraints: const BoxConstraints(
-                minHeight: 80,
-                maxHeight: 300.0,
+                minHeight: 60,
+                maxHeight: 350.0,
               ),
               child: TextFormField(
+                style: Theme.of(context).textTheme.bodyMedium,
                 controller: _commentController,
                 maxLines: null,
                 // maxLength: 250,

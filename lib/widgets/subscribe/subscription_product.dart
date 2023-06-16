@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/app_info.dart';
+import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -56,12 +58,13 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           ]),
         ),
         body: SingleChildScrollView(
-            padding: const EdgeInsets.all(20), child: _showTiers()));
+            padding: const EdgeInsets.all(20), child: _showTiers(context)));
   }
 
   Future fetchOffers() async {
     try {
       List<Offering> offerings = await PurchasesApi.fetchOffers();
+
       setState(() {
         offers = offerings;
         _selectedTier = offerings[0].availablePackages[1];
@@ -76,9 +79,53 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     }
   }
 
-  Widget _showTiers() {
+  Widget _showTiers(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     if (offers.isEmpty) {
-      return const NoData(text: "Guess we are not selling today!");
+      // return const NoData(text: "Guess we are not selling today!");
+      return Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              width: size.width,
+              child: Image.asset(
+                'assets/images/imaginfy.jpg',
+                height: size.height * 0.25,
+              ),
+            ),
+            Text("Imagnify Your Vision",
+                style: Theme.of(context).textTheme.headlineLarge),
+            const SizedBox(
+              height: 20,
+            ),
+            Card(
+                elevation: 5,
+                shadowColor: Colors.black,
+                color: Colors.black,
+                child: Container(
+                    padding: const EdgeInsets.all(30),
+                    width: size.width,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text("1 Week",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium),
+                              Text("\$1 /Week",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineSmall),
+                            ],
+                          ),
+                          Text("I am a description describing this sub",
+                              style: Theme.of(context).textTheme.bodyMedium),
+                        ]))),
+          ]);
     }
     return Column(
       children: [
@@ -235,10 +282,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
 
   void _makePurchase() async {
     final _purchaseApi = PurchasesApi();
+    String info = await AppHelper().getRevenueCat();
     try {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
-      if (purchaserInfo.entitlements.all["Premium"]!.isActive) {
+      if (purchaserInfo.entitlements.all[info]!.isActive) {
         await _purchaseApi.saveUserPurchase(purchaserInfo);
       }
     } on PlatformException catch (e) {

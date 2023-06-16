@@ -51,6 +51,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
 
     if (!isUserSubscribed) {
       return Card(
+          color: APP_ACCENT_COLOR,
           child: SizedBox(
               width: screenWidth,
               child: InkWell(

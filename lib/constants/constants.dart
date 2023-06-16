@@ -145,6 +145,8 @@ const String FIREBASE_SERVER_KEY = "firebase_server_key";
 const String STORE_SUBSCRIPTION_IDS = "store_subscription_ids";
 const String FREE_ACCOUNT_MAX_DISTANCE = "free_account_max_distance";
 const String VIP_ACCOUNT_MAX_DISTANCE = "vip_account_max_distance";
+const String REVENUE_CAT_ANDROID_IDENTIFIER = "sub_android_identifier";
+
 // Admob variables
 const String ADMOB_APP_ID = "admob_app_id";
 const String ADMOB_INTERSTITIAL_AD_ID = "admob_interstitial_ad_id";

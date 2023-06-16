@@ -156,6 +156,21 @@ class AppHelper {
     return url;
   }
 
+  Future<String> getRevenueCat() async {
+    final DocumentSnapshot<Map<String, dynamic>> appInfo =
+        await _firestore.collection(C_APP_INFO).doc('settings').get();
+
+    // Update AppInfo object
+    AppModel().setAppInfo(appInfo.data() ?? {});
+    // Check Platform
+    if (Platform.isAndroid) {
+      return appInfo.data()?[REVENUE_CAT_ANDROID_IDENTIFIER] ?? "Imagine";
+    } else if (Platform.isIOS) {
+      return appInfo.data()?[REVENUE_CAT_ANDROID_IDENTIFIER] ?? "Imagine";
+    }
+    return "Imagine";
+  }
+
   /// Get app current version from Cloud Firestore Database,
   /// that is the same with Google Play Store / Apple Store app version
   Future<int> getAppStoreVersion() async {

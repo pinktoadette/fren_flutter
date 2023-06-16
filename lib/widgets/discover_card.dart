@@ -55,7 +55,10 @@ class DiscoverCard extends StatelessWidget {
                           onPressed: () {
                             ButtonChanged(true).dispatch(context);
                           },
-                          child: Text(btnText))
+                          child: Text(btnText)),
+                      const SizedBox(
+                        height: 80,
+                      ),
                     ],
                   ),
                 ])),

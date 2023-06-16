@@ -230,10 +230,21 @@ class _StoryPageViewState extends State<StoryPageView> {
                                       child: Padding(
                                     padding: const EdgeInsets.only(
                                         left: 20, top: 10),
-                                    child: Text(_i18n.translate("comments"),
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Iconsax.arrow_up_2,
+                                          size: 14,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(_i18n.translate("comments"),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall)
+                                      ],
+                                    ),
                                   )),
                                   const CommentWidget(),
                                   const SliverToBoxAdapter(

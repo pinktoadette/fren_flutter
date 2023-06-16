@@ -148,9 +148,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
           // Show User profile info
           title: GestureDetector(
-            child: Text(chatController.botController.bot.name,
+            child: Obx(() => Text(chatController.botController.bot.name,
                 overflow: TextOverflow.fade,
-                style: Theme.of(context).textTheme.displayMedium),
+                style: Theme.of(context).textTheme.displayMedium)),
             onTap: () {
               /// Show bot info
               _showBotInfo();

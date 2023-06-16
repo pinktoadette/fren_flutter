@@ -7,6 +7,7 @@ class AppInfo {
   final String androidPackageName;
   final String iOsAppId;
   final String appEmail;
+  final String revenueCatAndriodIdentifier;
   final String privacyPolicyUrl;
   final String termsOfServicesUrl;
   final String firebaseServerKey;
@@ -21,6 +22,7 @@ class AppInfo {
     required this.androidAppCurrentVersion,
     required this.iosAppCurrentVersion,
     required this.androidPackageName,
+    required this.revenueCatAndriodIdentifier,
     required this.iOsAppId,
     required this.appEmail,
     required this.privacyPolicyUrl,
@@ -38,9 +40,11 @@ class AppInfo {
     return AppInfo(
       androidAppCurrentVersion: doc[ANDROID_APP_CURRENT_VERSION] ?? 1,
       iosAppCurrentVersion: doc[IOS_APP_CURRENT_VERSION] ?? 1,
-      androidPackageName: doc[ANDROID_PACKAGE_NAME] ?? '',
+      androidPackageName: doc[ANDROID_PACKAGE_NAME] ?? 'machi',
+      revenueCatAndriodIdentifier:
+          doc[REVENUE_CAT_ANDROID_IDENTIFIER] ?? 'Imagine',
       iOsAppId: doc[IOS_APP_ID] ?? '',
-      appEmail: doc[APP_EMAIL] ?? '',
+      appEmail: doc[APP_EMAIL] ?? 'frankie@mymachi.app',
       privacyPolicyUrl: doc[PRIVACY_POLICY_URL] ?? '',
       termsOfServicesUrl: doc[TERMS_OF_SERVICE_URL] ?? '',
       firebaseServerKey: doc[FIREBASE_SERVER_KEY] ?? '',

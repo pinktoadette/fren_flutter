@@ -92,39 +92,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   ),
                 ),
 
-                /// dark mode
-                // const SizedBox(height: 15),
-                // ListTile(
-                //   leading: _isDarkMode
-                //       ? Icon(Iconsax.sun,
-                //           color: Theme.of(context).primaryColor, size: 30)
-                //       : Icon(Iconsax.moon,
-                //           color: Theme.of(context).primaryColor, size: 30),
-                //   title: Text(_i18n.translate('dark_mode'),
-                //       style: const TextStyle(fontSize: 18)),
-                //   subtitle: Text(_i18n.translate('enable_mode')),
-                //   trailing: Switch(
-                //     activeColor: Theme.of(context).colorScheme.secondary,
-                //     value: _isDarkMode,
-                //     onChanged: (newValue) async {
-                //       // Update UI
-                //       setState(() {
-                //         _isDarkMode = newValue;
-                //       });
-
-                //       /// GetX storage
-                //       ThemeHelper().switchTheme();
-
-                //       // Update profile status
-                //       UserModel().updateUserData(
-                //           userId: UserModel().user.userId,
-                //           data: {USER_DARK_MODE: newValue}).then((_) {
-                //         debugPrint('dark mode: $newValue');
-                //       });
-                //     },
-                //   ),
-                // ),
-
                 const Spacer(),
 
                 /// sign out
