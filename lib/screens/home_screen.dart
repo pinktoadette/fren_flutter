@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
@@ -41,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final BotController botController = Get.find(tag: 'bot');
   final StoryboardController storyController = Get.find(tag: 'storyboard');
   final TimelineController timelineController = Get.find(tag: 'timeline');
+  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
 
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();
@@ -100,8 +102,8 @@ class _HomeScreenState extends State<HomeScreen> {
   void _fetchUserPlans() async {
     try {
       String userId = UserModel().user.userId;
-      LogInResult result = await Purchases.logIn(userId);
-      debugPrint(result.toString());
+      await Purchases.logIn(userId);
+      subscribeController.initUser();
     } catch (err) {
       debugPrint(err.toString());
     }
@@ -114,8 +116,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _chatroomApi.getAllMyRooms(page: 1, clearRooms: true)
     ]).then((_) {}).whenComplete(() {
       debugPrint("Loaded new and all chatrooms");
-    }).catchError((onError) {
-      debugPrint(onError);
     });
   }
 

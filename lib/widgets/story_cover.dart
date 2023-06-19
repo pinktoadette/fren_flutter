@@ -1,8 +1,8 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
 /// Storyboard or story photoUrl cover
@@ -77,9 +77,10 @@ class StoryCover extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(radius ?? 10.0),
         child: CachedNetworkImage(
-          placeholder: (context, url) =>
-              Center(child: loadingButton(size: 16, color: Colors.white)),
+          progressIndicatorBuilder: (context, url, progress) =>
+              loadingButton(size: 16, color: Colors.white),
           imageUrl: photoUrl!,
+          fadeInDuration: const Duration(seconds: 1),
           width: width ?? 120,
           fit: BoxFit.cover,
         ),

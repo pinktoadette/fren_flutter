@@ -45,7 +45,7 @@ class _PublishStoryState extends State<PublishStory> {
     } catch (err) {
       Get.snackbar(
           _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
-          snackPosition: SnackPosition.BOTTOM, backgroundColor: APP_ERROR);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
       _goToNextStep(1);
     } finally {
       setState(() {

@@ -111,7 +111,7 @@ class _ReportFormState extends State<ReportForm> {
       Get.snackbar(
         _i18n.translate("validation_warning"),
         _i18n.translate("validation_select_1"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
       return;
@@ -123,18 +123,16 @@ class _ReportFormState extends State<ReportForm> {
           reason: _selectedCategory.join(", "),
           comments: _commentController.text);
 
-      Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("submitted"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar(_i18n.translate("success"), _i18n.translate("submitted"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
       Navigator.pop(context);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

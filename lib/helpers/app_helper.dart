@@ -3,9 +3,7 @@ import 'dart:io';
 
 import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:share/share.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,22 +14,6 @@ import 'package:machi_app/models/app_model.dart';
 class AppHelper {
   /// Local variables
   final _firestore = FirebaseFirestore.instance;
-
-  /// Restore VIP Account Subscription
-  Future<void> restoreVipAccount({
-    bool showMsg = false,
-  }) async {
-    try {
-      await InAppPurchase.instance.restorePurchases();
-      // Check
-      if (showMsg) {
-        UserModel().updateRestoreVipMsg(true);
-      }
-    } catch (e) {
-      // Debug
-      debugPrint('restoreVipAccount() -> error: $e');
-    }
-  }
 
   /// Check and request location permission
   Future<void> checkLocationPermission(
@@ -117,13 +99,6 @@ class AppHelper {
       USER_COUNTRY: country,
       USER_LOCALITY: locality
     });
-  }
-
-  /// Get User location from formatted address
-  Future<Placemark> getUserAddress(double latitude, double longitude) async {
-    // Get Placemark to retrieve user formatted location address info
-    // and returns the first place
-    return (await placemarkFromCoordinates(latitude, longitude)).first;
   }
 
   /// Get distance between current user and another user

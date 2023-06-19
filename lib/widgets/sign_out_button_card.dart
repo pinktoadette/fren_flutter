@@ -21,8 +21,7 @@ class SignOutButtonCard extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium),
         trailing: const Icon(Icons.arrow_forward),
         onTap: () async {
-          String userId = UserModel().user.userId;
-          await Purchases.logIn(userId);
+          await Purchases.logOut();
           // Log out button
           UserModel().signOut().then((_) {
             /// Go to login screen

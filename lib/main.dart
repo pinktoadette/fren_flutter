@@ -33,6 +33,7 @@ void main() async {
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  /// Revenue CAt
   late PurchasesConfiguration configuration;
   if (Platform.isAndroid | Platform.isIOS) {
     /// Revenue cat for subscription and payments

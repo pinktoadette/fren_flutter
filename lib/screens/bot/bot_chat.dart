@@ -19,6 +19,7 @@ import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -37,6 +38,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -625,5 +627,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
         })
         .then((_) => messageController.offset = 10)
         .then((_) => Get.back());
+  }
+
+  void _showSubscription(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const FractionallySizedBox(
+            heightFactor: 0.98, child: SubscriptionProduct()));
   }
 }

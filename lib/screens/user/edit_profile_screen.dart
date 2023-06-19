@@ -162,11 +162,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         onSuccess: () async {
           /// Show success message
           Get.snackbar(
-            _i18n.translate("success"),
-            _i18n.translate("update_successful"),
-            snackPosition: SnackPosition.BOTTOM,
-            backgroundColor: APP_SUCCESS,
-          );
+              _i18n.translate("success"), _i18n.translate("update_successful"),
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_SUCCESS,
+              colorText: Colors.black);
         },
         onFail: (error) {
           // Debug error
@@ -175,7 +174,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           Get.snackbar(
             'Error',
             _i18n.translate("an_error_occurred_while_updating_your_profile"),
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
             backgroundColor: APP_ERROR,
           );
         });

@@ -214,7 +214,7 @@ class _StoryEditState extends State<StoryEdit> {
         Get.snackbar(
           _i18n.translate("error"),
           _i18n.translate("validation_1_character"),
-          snackPosition: SnackPosition.BOTTOM,
+          snackPosition: SnackPosition.TOP,
           backgroundColor: APP_ERROR,
         );
         return;
@@ -223,17 +223,16 @@ class _StoryEditState extends State<StoryEdit> {
       await _storyApi.updateStory(
           story: story, title: _titleController.text, photoUrl: imageUrl);
       Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("update_successful"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+          _i18n.translate("success"), _i18n.translate("update_successful"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     } finally {

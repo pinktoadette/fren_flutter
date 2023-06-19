@@ -256,7 +256,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Get.snackbar(
         _i18n.translate("terms_condition"),
         _i18n.translate("you_must_agree_to_our_privacy_policy"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -265,14 +265,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
       Get.snackbar(
         _i18n.translate('validation_warning'),
         _i18n.translate("validation_3_characters"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_WARNING,
       );
     } else if (!isNameAvail) {
       Get.snackbar(
         _i18n.translate("validation_warning"),
         _i18n.translate("validation_username"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
       return;
@@ -281,7 +281,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         'Must be 12+',
         _i18n.translate(
             "only_12_years_old_and_above_are_allowed_to_create_an_account"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_WARNING,
       );
     } else {
@@ -309,7 +309,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
           Get.snackbar(
             _i18n.translate("validation_warning"),
             _i18n.translate("an_error_occurred_while_creating_your_account"),
-            snackPosition: SnackPosition.BOTTOM,
+            snackPosition: SnackPosition.TOP,
             backgroundColor: APP_ERROR,
           );
         },

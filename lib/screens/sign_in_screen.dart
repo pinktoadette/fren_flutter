@@ -92,8 +92,6 @@ class _SignInScreenState extends State<SignInScreen> {
                           UserModel().signInWithGoogle(checkUserAccount: () {
                             /// Authenticate User Account
                             UserModel().authUserAccount(
-                                updateLocationScreen: () =>
-                                    _nextScreen(const UpdateLocationScreen()),
                                 signInScreen: () =>
                                     _nextScreen(const SignInScreen()),
                                 signUpScreen: () =>

@@ -99,12 +99,10 @@ class PostCommentWidget extends StatelessWidget {
               ? null
               : commentController.replyToComment);
       _formatComment(newComment);
-      Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("posted"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar(_i18n.translate("success"), _i18n.translate("posted"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
       _commentController.clear();
       commentController.clearReplyTo();
       FocusManager.instance.primaryFocus?.unfocus();
@@ -112,7 +110,7 @@ class PostCommentWidget extends StatelessWidget {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

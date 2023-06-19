@@ -37,9 +37,9 @@ class _EnableModeState extends State<EnableMode> {
     String userId = UserModel().user.userId;
     Map<String, Map<String, bool>> data = {USER_ENABLE_MODE: values};
     await UserModel().updateUserData(userId: userId, data: data);
-    Navigator.of(context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (context) => const UpdateLocationScreen()),
-        (route) => false);
+    // Navigator.of(context).pushAndRemoveUntil(
+    //     MaterialPageRoute(builder: (context) => const UpdateLocationScreen()),
+    //     (route) => false);
   }
 
   @override

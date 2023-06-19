@@ -4,6 +4,7 @@ import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:get/get.dart';
@@ -21,7 +22,8 @@ class MainBinding implements Bindings {
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
     Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
-
+    Get.lazyPut<SubscribeController>(() => SubscribeController(),
+        tag: "subscribe");
     Get.put<AudioController>(AudioController(), tag: "audio");
   }
 }

@@ -275,7 +275,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     } finally {

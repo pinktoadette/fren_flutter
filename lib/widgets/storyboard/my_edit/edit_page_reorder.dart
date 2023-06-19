@@ -332,7 +332,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -366,17 +366,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 }
 
                 widget.onUpdateSeq(scripts);
-                Get.snackbar(
-                  _i18n.translate("story_added"),
-                  _i18n.translate("story_added_info"),
-                  snackPosition: SnackPosition.BOTTOM,
-                  backgroundColor: APP_SUCCESS,
-                );
+                Get.snackbar(_i18n.translate("story_added"),
+                    _i18n.translate("story_added_info"),
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: APP_SUCCESS,
+                    colorText: Colors.black);
               } catch (err) {
                 Get.snackbar(
                   _i18n.translate("error"),
                   _i18n.translate("an_error_has_occurred"),
-                  snackPosition: SnackPosition.BOTTOM,
+                  snackPosition: SnackPosition.TOP,
                   backgroundColor: APP_ERROR,
                 );
               }
@@ -460,7 +459,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -479,7 +478,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

@@ -125,7 +125,7 @@ class _AddEditTextState extends State<AddEditText> {
       Get.snackbar(
         _i18n.translate("validation_warning"),
         _i18n.translate("story_content_validation"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_WARNING,
       );
     }
@@ -170,9 +170,11 @@ class _AddEditTextState extends State<AddEditText> {
                     aspectRatio: 1.5,
                     child: galleryImageUrl != null
                         ? CachedNetworkImage(
-                            placeholder: (context, url) =>
+                            progressIndicatorBuilder: (context, url,
+                                    progress) =>
                                 loadingButton(size: 16, color: Colors.white),
                             imageUrl: galleryImageUrl!,
+                            fadeInDuration: const Duration(seconds: 1),
                             width: 80,
                             height: 80,
                             fit: BoxFit.cover,

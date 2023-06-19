@@ -121,17 +121,16 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
     try {
       await _storyboardApi.deleteBoard(storyboard);
       Navigator.of(context).pop(true);
-      Get.snackbar(
-        _i18n.translate("DELETE"),
-        _i18n.translate("storyboard_success_delete"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar(_i18n.translate("DELETE"),
+          _i18n.translate("storyboard_success_delete"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("DELETE"),
         _i18n.translate("storyboard_delete_error"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

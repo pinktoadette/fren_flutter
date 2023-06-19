@@ -240,17 +240,16 @@ class _ConversationsTabState extends State<ConversationsTab> {
     try {
       await _chatroomApi.deleteRoom(room);
       Navigator.of(context).pop(true);
-      Get.snackbar(
-        _i18n.translate("DELETE"),
-        _i18n.translate("conversation_success_delete"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar(_i18n.translate("DELETE"),
+          _i18n.translate("conversation_success_delete"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("DELETE"),
         _i18n.translate("conversation_delete_error"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

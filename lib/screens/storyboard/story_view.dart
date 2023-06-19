@@ -197,17 +197,16 @@ class _StoriesViewState extends State<StoriesView> {
     final _storyboardApi = StoryboardApi();
     try {
       await _storyboardApi.publishAll(storyboardId: storyboardId);
-      Get.snackbar(
-        _i18n.translate("story_publish_time"),
-        _i18n.translate("story_publish_error"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar(_i18n.translate("story_publish_time"),
+          _i18n.translate("story_publish_error"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("story_delete_error"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     } finally {
@@ -222,16 +221,15 @@ class _StoriesViewState extends State<StoriesView> {
       await _storyApi.deletStory(story);
       Navigator.of(context).pop(true);
       Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("story_success_delete"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+          _i18n.translate("success"), _i18n.translate("story_success_delete"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("DELETE"),
         _i18n.translate("story_delete_error"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -260,16 +258,15 @@ class _StoriesViewState extends State<StoriesView> {
       }
       Navigator.of(context).pop();
       Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("story_edits_added"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+          _i18n.translate("success"), _i18n.translate("story_edits_added"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (error) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     } finally {

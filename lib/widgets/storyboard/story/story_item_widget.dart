@@ -141,17 +141,16 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
       int count = 0;
       Navigator.of(context).popUntil((_) => count++ >= 2);
       Get.snackbar(
-        _i18n.translate("story_added"),
-        _i18n.translate("story_added_info"),
-        snackPosition: SnackPosition.BOTTOM,
-        backgroundColor: APP_SUCCESS,
-      );
+          _i18n.translate("story_added"), _i18n.translate("story_added_info"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       debugPrint(err.toString());
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }

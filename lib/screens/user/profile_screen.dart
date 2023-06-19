@@ -232,8 +232,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           } catch (err) {
             Get.snackbar(_i18n.translate("error"),
                 _i18n.translate("an_error_has_occurred"),
-                snackPosition: SnackPosition.BOTTOM,
-                backgroundColor: APP_ERROR);
+                snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
           }
         },
         child: following == true

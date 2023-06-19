@@ -66,20 +66,25 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                             const SizedBox(
                               width: 50,
                               height: 50,
-                              child: Icon(Iconsax.buy_crypto),
+                              child: Icon(
+                                Iconsax.buy_crypto,
+                                color: Colors.black,
+                              ),
                             ),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   _i18n.translate("subscription"),
-                                  style: Theme.of(context).textTheme.bodyLarge,
+                                  style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
                                 ),
                                 Text(
-                                  _i18n.translate(
-                                      "become_a_subscription_member"),
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                ),
+                                    _i18n.translate(
+                                        "become_a_subscription_member"),
+                                    style:
+                                        const TextStyle(color: Colors.black)),
                               ],
                             )
                           ])))));

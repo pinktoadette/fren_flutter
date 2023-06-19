@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.0+12
+version: 1.0.0+13
 
 environment:
   sdk: ">=2.19.2 <3.0.0"
@@ -42,10 +42,9 @@ dependencies:
   cloud_firestore: ^4.4.5
   firebase_messaging: ^14.3.0
   firebase_storage: ^11.0.16  
-  google_mobile_ads: 2.0.0 
+  google_mobile_ads: 2.0.0 #no web
   # END 
 
-  in_app_purchase: 3.1.1
   flutter_native_splash: 2.2.16 # Used to generate the app splash screen for both platforms android and iOS 
   country_code_picker: 2.0.2 # Used to Select User Country Code
   scoped_model: 2.0.0 # Used to Manage Application State
@@ -53,11 +52,10 @@ dependencies:
   image_cropper: 3.0.3 # Used to Crop/Rotate Selected images from user's device
   url_launcher: 6.1.11 # Used to open link schemes in application or browser
   geolocator: 9.0.2 # Used to get User location by GPS 
-  geocoding: 2.0.5 # Used to translate User latitude and longitude coordinates into a readable address
+  # geocoding: 2.0.5 # no web Used to translate User latitude and longitude coordinates into a readable address
   rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
-  place_picker: 0.10.0 # This plugin help us to create Passport feature
   google_fonts: ^4.0.3
   google_sign_in: ^6.0.1
   iconsax: ^0.0.8
@@ -65,18 +63,15 @@ dependencies:
   onboarding: ^3.1.0
   lottie: ^2.2.0
   uuid: ^3.0.7
-  dio: ^5.0.1
-  open_filex: ^4.3.2
+  dio: ^5.0.1 
+  open_filex: ^4.3.2 # no web
   get: ^4.6.5
-  firebase_dynamic_links: ^5.0.17
   web_socket_channel: ^2.3.0
   flutter_typeahead: ^4.3.7
   get_storage: ^2.1.1
   like_button: ^2.0.5
   infinite_scroll_pagination: ^3.2.0
   just_audio: ^0.9.32
-  purchases_flutter: ^4.12.0
-  dotted_border: ^2.0.0+3
   audio_service: ^0.18.9
   smooth_page_indicator: ^1.1.0
 
@@ -85,9 +80,10 @@ dependencies:
       url: https://github.com/pinktoadette/flutter_chat_ui.git
       ref: main
   any_link_preview: ^3.0.0
-  cached_network_image: ^3.2.3
-  screenshot: ^2.1.0
   chips_choice: ^3.0.0
+  cached_network_image: ^3.2.3
+  purchases_flutter: ^5.0.0
+  card_swiper: ^2.0.4
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

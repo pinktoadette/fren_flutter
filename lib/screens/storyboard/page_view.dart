@@ -44,7 +44,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   final _timelineApi = TimelineApi();
 
   late AppLocalizations _i18n;
-  double bodyHeightPercent = 0.825;
+  double bodyHeightPercent = 0.86;
   double headerHeight = 140;
   final _storyApi = StoryApi();
 
@@ -75,7 +75,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -187,7 +187,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       Get.snackbar(
         _i18n.translate("DELETE"),
         _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
     }
@@ -233,7 +233,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                     child: Row(
                                       children: [
                                         const Icon(
-                                          Iconsax.arrow_up_2,
+                                          Icons.keyboard_double_arrow_up,
                                           size: 14,
                                         ),
                                         const SizedBox(

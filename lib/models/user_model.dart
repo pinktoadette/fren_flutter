@@ -17,7 +17,7 @@ import 'package:machi_app/plugins/geoflutterfire/geoflutterfire.dart';
 import 'package:machi_app/widgets/third_party_signin/github_signin.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:place_picker/place_picker.dart';
+
 import 'package:scoped_model/scoped_model.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -176,7 +176,7 @@ class UserModel extends Model {
     // Callback functions for route
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
-    required VoidCallback updateLocationScreen,
+    VoidCallback? updateLocationScreen,
     VoidCallback? interestScreen,
     // Optional functions called on app start
     VoidCallback? onboardScreen,
@@ -529,7 +529,6 @@ class UserModel extends Model {
   /// Update User location info
   Future<void> updateUserLocation({
     required bool isPassport,
-    LocationResult? locationResult,
     // Callback functions
     required VoidCallback onSuccess,
     required VoidCallback onFail,
