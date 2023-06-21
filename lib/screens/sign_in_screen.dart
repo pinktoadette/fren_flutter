@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
@@ -8,13 +7,10 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/first_time_user.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
-import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'first_time/on_boarding_screen.dart';

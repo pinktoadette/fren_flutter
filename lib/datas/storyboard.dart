@@ -39,7 +39,7 @@ class Storyboard {
   final String? summary;
   final String category;
   final String? photoUrl;
-  final List<Story>? story;
+  late List<Story>? story;
   final StoryUser createdBy;
   final int createdAt;
   final int updatedAt;

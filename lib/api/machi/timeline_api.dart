@@ -2,9 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:get/get.dart';
 
 class TimelineApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -16,8 +14,6 @@ class TimelineApi {
   ////
   /// TIMELINE is now STORYBOARD class, to make things less complicated / less features
   Future<List<Storyboard>> getTimeline(int limit, int page) async {
-    final TimelineController timelineController = Get.find(tag: 'timeline');
-
     String url = '${baseUri}timeline/user_feed?limit=$limit&page=$page';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
@@ -26,7 +22,6 @@ class TimelineApi {
     List<Storyboard> timeline = [];
     for (var data in response.data) {
       Storyboard time = Storyboard.fromJson(data);
-      timelineController.fetchMyTimeline(time);
       timeline.add(time);
     }
     return timeline;

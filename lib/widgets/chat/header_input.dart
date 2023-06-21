@@ -1,11 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 class CustomHeaderInputWidget extends StatefulWidget {
   final Function(dynamic data) onUpdateWidget;
@@ -27,6 +30,8 @@ class CustomHeaderInputWidget extends StatefulWidget {
 
 class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
   String? _selectedIcon;
+  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+
   @override
   void initState() {
     super.initState();
@@ -42,8 +47,12 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
         children: [
           IconButton(
               onPressed: () {
-                widget.onImageSelect(SLASH_IMAGINE);
-                _setStateColor('imagine');
+                if (subscribeController.credits.value == 0) {
+                  _showSubscription(context);
+                } else {
+                  widget.onImageSelect(SLASH_IMAGINE);
+                  _setStateColor('imagine');
+                }
               },
               icon: Icon(
                 Iconsax.image,
@@ -52,8 +61,12 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               )),
           IconButton(
               onPressed: () {
-                widget.onImageSelect(SLASH_REIMAGINE);
-                _setStateColor('reimagine');
+                if (subscribeController.credits.value == 0) {
+                  _showSubscription(context);
+                } else {
+                  widget.onImageSelect(SLASH_REIMAGINE);
+                  _setStateColor('reimagine');
+                }
               },
               icon: Icon(Icons.lightbulb_outlined,
                   size: 14, color: _selectedIconColor("reimagine"))),
@@ -139,5 +152,13 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
     }
 
     return const SizedBox.shrink();
+  }
+
+  void _showSubscription(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => const FractionallySizedBox(
+            heightFactor: 0.98, child: SubscriptionProduct()));
   }
 }

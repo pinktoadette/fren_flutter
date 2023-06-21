@@ -28,7 +28,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   BotController botController = Get.find(tag: 'bot');
 
   final _nameController = TextEditingController();
-  final _aboutController = TextEditingController();
   final _promptController = TextEditingController();
   bool _isPrivate = false;
 
@@ -46,7 +45,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   void dispose() {
     super.dispose();
     _nameController.dispose();
-    _aboutController.dispose();
     _promptController.dispose();
   }
 
@@ -161,29 +159,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                           maxLength,
                           required isFocused}) =>
                       _counter(context, currentLength, maxLength),
-                  controller: _aboutController,
-                  decoration: InputDecoration(
-                      labelText: _i18n.translate("about"),
-                      hintText: _i18n.translate("bot_about_hint"),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.tertiary)),
-                  maxLines: 2,
-                  validator: (bio) {
-                    if (bio?.isEmpty ?? false) {
-                      return _i18n.translate("required_field");
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  maxLength: 200,
-                  buildCounter: (_,
-                          {required currentLength,
-                          maxLength,
-                          required isFocused}) =>
-                      _counter(context, currentLength, maxLength),
                   controller: _promptController,
                   decoration: InputDecoration(
                     labelText: _i18n.translate("bot_prompt"),
@@ -250,7 +225,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     _pr.show(_i18n.translate("processing"));
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;
-    String about = _aboutController.text;
     String prompt = _promptController.text;
     String botImgUrl = photoUrl ?? "";
     if (_uploadPath != null) {
@@ -264,7 +238,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       Bot bot = await _botApi.createBot(
           name: name,
           modelType: modelType,
-          about: about,
           prompt: prompt,
           photoUrl: botImgUrl);
       await _chatroomApi.createNewRoom();
@@ -286,7 +259,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   void _clear() {
     _promptController.clear();
     _nameController.clear();
-    _aboutController.clear();
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {

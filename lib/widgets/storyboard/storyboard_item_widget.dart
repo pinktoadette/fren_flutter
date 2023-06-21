@@ -3,6 +3,8 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
@@ -28,7 +30,10 @@ class StoryboardItemWidget extends StatefulWidget {
 
 class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  TimelineController timelineController = Get.find(tag: 'timeline');
+
   late Storyboard storyboard;
+  late AppLocalizations _i18n;
   final _timelineApi = TimelineApi();
 
   @override
@@ -41,7 +46,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     double storyCoverWidth = width;
     double padding = 15;
@@ -58,6 +63,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";
+    bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
     return Card(
         elevation: 1,
         semanticContainer: true,
@@ -115,60 +121,93 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       padding: EdgeInsets.all(padding),
                       child: StoryCover(
                           width: storyCoverWidth,
-                          height: storyCoverWidth,
+                          height: storyCoverWidth * 0.5,
                           photoUrl: photoUrl,
                           title: title))),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                    width: width - 10,
-                    padding: EdgeInsets.only(left: 20, bottom: padding),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (storyboard.story != null &&
-                            storyboard.story!.length > 1)
-                          ...storyboard.story!.take(8).map((sto) {
-                            return Padding(
-                                padding: const EdgeInsets.only(right: 5),
-                                child: StoryCover(
-                                    icon: sto.status == StoryStatus.UNPUBLISHED
-                                        ? const Icon(
-                                            Iconsax.lock,
-                                            size: 16,
-                                          )
-                                        : null,
-                                    width: 50,
-                                    height: 50,
-                                    radius: 5,
-                                    photoUrl: sto.photoUrl ?? "",
-                                    title: sto.title));
-                          }),
-                      ],
-                    )),
-              ],
-            ),
-            Padding(
-                padding: const EdgeInsets.only(bottom: 10, right: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    if (storyboard.status == StoryStatus.PUBLISHED)
-                      Text(
-                          "${storyboard.commentCount ?? 0} ${_i18n.translate("comments")}",
-                          style: Theme.of(context).textTheme.labelSmall),
-                    SizedBox(
-                        width: 50,
-                        child: LikeItemWidget(
-                            onLike: (val) {
-                              _onLikePressed(widget.item, val);
-                            },
-                            likes: storyboard.likes ?? 0,
-                            mylikes: storyboard.mylikes ?? 0))
-                  ],
-                ))
+            if (hasSeries) const Divider(),
+            if (hasSeries)
+              SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: [
+                    ...storyboard.story!.asMap().entries.take(8).map((ele) {
+                      return InkWell(
+                          onTap: () {
+                            storyboardController.setCurrentBoard(storyboard);
+                            timelineController
+                                .setStoryTimelineControllerCurrent(ele.value);
+                            Get.to(() => StoryPageView(story: ele.value));
+                          },
+                          child: Padding(
+                              padding:
+                                  EdgeInsets.only(left: ele.key == 0 ? 15 : 5),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      "Collection ${ele.key + 1}",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelSmall,
+                                    ),
+                                    Text(
+                                      ele.value.title,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .labelMedium,
+                                    ),
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            StoryCover(
+                                              icon: ele.value.status ==
+                                                      StoryStatus.UNPUBLISHED
+                                                  ? const Icon(
+                                                      Iconsax.lock,
+                                                      size: 16,
+                                                    )
+                                                  : null,
+                                              width: width * 0.3,
+                                              height: width * 0.3,
+                                              radius: 5,
+                                              photoUrl:
+                                                  ele.value.photoUrl ?? "",
+                                              title: ele.value.title,
+                                            )
+                                          ],
+                                        ),
+                                        SizedBox(
+                                            width: width * 0.6,
+                                            height: width * 0.3,
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(10),
+                                              child: Text(
+                                                ele.value.pages?[0].scripts?[0]
+                                                        .text ??
+                                                    "",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall,
+                                                overflow: TextOverflow.fade,
+                                              ),
+                                            )),
+                                      ],
+                                    ),
+                                    SizedBox(
+                                      width: width * 0.9,
+                                      child: Align(
+                                        alignment: Alignment.bottomRight,
+                                        child: _likeItemWidget(ele.value),
+                                      ),
+                                    )
+                                  ])));
+                    }),
+                  ])),
+            if (hasSeries == false) _likeItemWidget(storyboard.story![0])
           ],
         ));
   }
@@ -177,12 +216,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     /// if there is only one story, then go to the story bits
     /// if theres more than one, then show entire collection
     /// @todo if it has a collection index, then go to that index
-    storyboardController.setCurrentBoard(widget.item);
+    storyboardController.setCurrentBoard(storyboard);
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
       if ((storyboard.story!.isNotEmpty) & (storyboard.story!.length == 1)) {
-        storyboardController.setCurrentStory(storyboard.story![0]);
+        timelineController
+            .setStoryTimelineControllerCurrent(storyboard.story![0]);
         Get.to(() => StoryPageView(story: storyboard.story![0]));
       } else {
         await Navigator.push(
@@ -199,14 +239,43 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     }
   }
 
-  Future<void> _onLikePressed(Storyboard item, bool value) async {
+  /// likes should be on timeline. You dont like your own stuff
+  Future<void> _onLikePressed(Story item, bool value) async {
+    storyboardController.setCurrentBoard(storyboard);
+
     String response = await _timelineApi.likeStoryMachi(
-        "storyboard", item.storyboardId, value == true ? 1 : 0);
+        "story", item.storyId, value == true ? 1 : 0);
     if (response == "OK") {
-      Storyboard update = item.copyWith(
+      Story update = item.copyWith(
           mylikes: value == true ? 1 : 0,
           likes: value == true ? (item.likes! + 1) : (item.likes! - 1));
-      storyboardController.updateStoryboard(update);
+      timelineController.updateStoryboard(
+          storyboard: storyboard, updateStory: update);
     }
+  }
+
+  Widget _likeItemWidget(Story item) {
+    return Padding(
+        padding: const EdgeInsets.only(bottom: 10, right: 10),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            if (item.status == StoryStatus.PUBLISHED)
+              SizedBox(
+                  height: 25,
+                  child: Text(
+                      "${item.commentCount ?? 0} ${_i18n.translate("comments")}",
+                      style: Theme.of(context).textTheme.labelSmall)),
+            SizedBox(
+                width: 50,
+                child: LikeItemWidget(
+                    onLike: (val) {
+                      _onLikePressed(item, val);
+                    },
+                    likes: item.likes ?? 0,
+                    mylikes: item.mylikes ?? 0))
+          ],
+        ));
   }
 }

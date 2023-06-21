@@ -26,6 +26,7 @@ class ActivityTab extends StatefulWidget {
 
 class _ActivityTabState extends State<ActivityTab> {
   bool _isInitiatedFrank = false;
+  ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
@@ -39,7 +40,7 @@ class _ActivityTabState extends State<ActivityTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: CustomScrollView(slivers: [
+        body: CustomScrollView(controller: scrollController, slivers: [
       FrostedAppBar(
           title: const AppLogo(),
           actions: [

@@ -10,8 +10,8 @@ class SubscribesApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
-  Future<String> getUserSubscription() async {
-    String url = '${baseUri}subscribe/customer';
+  Future<Map<String, dynamic>> getUserSubscription() async {
+    String url = '${baseUri}subscriber/customer';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);

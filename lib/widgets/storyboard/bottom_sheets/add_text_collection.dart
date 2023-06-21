@@ -172,7 +172,7 @@ class _AddEditTextState extends State<AddEditText> {
                         ? CachedNetworkImage(
                             progressIndicatorBuilder: (context, url,
                                     progress) =>
-                                loadingButton(size: 16, color: Colors.white),
+                                loadingButton(size: 16, color: Colors.black),
                             imageUrl: galleryImageUrl!,
                             fadeInDuration: const Duration(seconds: 1),
                             width: 80,

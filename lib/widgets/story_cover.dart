@@ -14,6 +14,7 @@ class StoryCover extends StatelessWidget {
   final double? radius;
   final File? file;
   final Icon? icon;
+  final bool? hasOverlay;
   const StoryCover(
       {Key? key,
       this.radius,
@@ -22,7 +23,8 @@ class StoryCover extends StatelessWidget {
       this.file,
       this.width,
       this.height,
-      this.icon})
+      this.icon,
+      this.hasOverlay = false})
       : super(key: key);
 
   @override
@@ -65,23 +67,36 @@ class StoryCover extends StatelessWidget {
                       .withOpacity(.6),
                   spreadRadius: -9)
             ]),
-        child: SizedBox(
-          height: height ?? 120,
-          width: width ?? 100,
-          child: _showImageLocal(context),
-        ));
+        child: Stack(children: [
+          SizedBox(
+            height: height ?? 120,
+            width: width ?? 100,
+            child: _showImageLocal(context),
+          ),
+          if (hasOverlay == true)
+            Positioned(
+                top: 0,
+                left: 0,
+                child: Badge(
+                  label: Text(title),
+                  backgroundColor: APP_ACCENT_COLOR,
+                )),
+        ]));
   }
 
   Widget _showImageLocal(BuildContext context) {
+    double w = width ?? 120;
     if (photoUrl != "") {
       return ClipRRect(
         borderRadius: BorderRadius.circular(radius ?? 10.0),
         child: CachedNetworkImage(
-          progressIndicatorBuilder: (context, url, progress) =>
-              loadingButton(size: 16, color: Colors.white),
+          progressIndicatorBuilder: (context, url, progress) => SizedBox(
+              width: w * 0.5,
+              height: w * 0.5,
+              child: loadingButton(size: 16, color: Colors.black)),
           imageUrl: photoUrl!,
           fadeInDuration: const Duration(seconds: 1),
-          width: width ?? 120,
+          width: w,
           fit: BoxFit.cover,
         ),
       );

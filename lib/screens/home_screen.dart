@@ -97,6 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     chatController.initUser();
     chatController.onChatLoad();
     storyController.getBoards();
+    timelineController.fetchPage(0);
   }
 
   void _fetchUserPlans() async {

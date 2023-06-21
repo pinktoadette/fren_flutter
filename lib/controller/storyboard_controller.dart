@@ -49,6 +49,7 @@ class StoryboardController extends GetxController {
 
   RxList<Storyboard> published = <Storyboard>[].obs;
 
+  /// this is your own boards not timeline. Timeline has its own api call
   Future<void> getBoards({StoryStatus? filter}) async {
     final storyboardApi = StoryboardApi();
     final List<Storyboard> stories =
@@ -65,12 +66,11 @@ class StoryboardController extends GetxController {
   }
 
   void updateStoryboard(Storyboard story) async {
-    // find storyboard index
+    // find storyboard index when there are changes
     int index = _storyboards
         .indexWhere((element) => element.storyboardId == story.storyboardId);
     _storyboards[index] = story;
     _storyboards.refresh();
-    _currentStoryboard.refresh();
   }
 
   void removeStoryboardfromList(Storyboard storyboard) {
@@ -106,15 +106,15 @@ class StoryboardController extends GetxController {
     updateStoryboard(newCurrenyStoryboard);
   }
 
+  /// the current story you are looking at
   void setCurrentStory(Story story) {
     _currentStory = story.obs;
 
     List<Story> stories = currentStoryboard.story!;
     int index =
         stories.indexWhere((element) => element.storyId == story.storyId);
-    if (currentStoryboard.storyboardId != "") {
+    if (currentStoryboard.storyboardId != "" && index != -1) {
       currentStoryboard.story![index] = story;
-      updateStoryboard(currentStoryboard);
     }
     _currentStory.refresh();
   }

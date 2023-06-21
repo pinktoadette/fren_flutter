@@ -104,6 +104,15 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                         offers!.serverDescription,
                         style: const TextStyle(color: Colors.white),
                       ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Text(
+                        _i18n.translate("plans_include_gpt"),
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 122, 122, 122),
+                            fontSize: 12),
+                      ),
                     ],
                   ))),
           const SizedBox(
@@ -124,6 +133,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     final package = packages[index];
                     String period = _formatPeriod(
                         package.storeProduct.subscriptionPeriod ?? '');
+                    List<String> id =
+                        package.storeProduct.identifier.split(":");
                     return Card(
                         elevation: 5,
                         shadowColor: Colors.black,
@@ -140,19 +151,46 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
+                                  if (id[1] == UPSELL_AFFORDABLE ||
+                                      id[1] == UPSELL_BULK)
+                                    Badge(
+                                      label: Text(
+                                        _i18n.translate(
+                                            "plans_${id[1]}_subtitle"),
+                                        style: const TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ),
                                   const SizedBox(
-                                    height: 20,
+                                    height: 50,
                                   ),
-                                  Text(
-                                      "${package.storeProduct.priceString} / $period",
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold)),
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                          "${package.storeProduct.priceString} per $period",
+                                          style: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold))),
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        _i18n.translate("plans_${id[1]}"),
+                                        style: const TextStyle(
+                                            fontSize: 24, color: Colors.black),
+                                      )),
+                                  Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        _i18n.translate("plans_${id[1]}_unit"),
+                                        style: const TextStyle(
+                                            fontSize: 12, color: Colors.black),
+                                      )),
                                   const SizedBox(
-                                    height: 20,
+                                    height: 50,
                                   ),
-                                  Text(package.storeProduct.description,
+                                  Text(_i18n.translate("plans_${id[1]}_des"),
                                       style:
                                           const TextStyle(color: Colors.black)),
                                 ])));

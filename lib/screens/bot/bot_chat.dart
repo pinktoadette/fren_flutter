@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
@@ -55,7 +56,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final BotController botController = Get.find(tag: 'bot');
   final ChatController chatController = Get.find(tag: 'chatroom');
   final MessageController messageController = Get.find(tag: 'message');
-
+  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
   late final List<types.Message> _messages = [];
 
   late types.User _user;
@@ -122,6 +123,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     //initialize socket
     _listenSocket();
+
     super.initState();
   }
 
@@ -158,11 +160,22 @@ class _BotChatScreenState extends State<BotChatScreen> {
               _showBotInfo();
             },
           ),
+          actions: [
+            TextButton.icon(
+                onPressed: () {
+                  _showSubscription(context);
+                },
+                icon: const Icon(Iconsax.coin),
+                label: Obx(
+                    () => Text(subscribeController.credits.value.toString())))
+          ],
         ),
         body: Chat(
             listBottomWidget: CustomHeaderInputWidget(
                 onUpdateWidget: (e) {
-                  updateFromWidgets(e);
+                  setState(() {
+                    attachmentPreview = e['image'];
+                  });
                 },
                 onImageSelect: (value) {
                   setState(() {
@@ -526,12 +539,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
         backgroundColor: APP_ERROR,
       );
     }
-  }
-
-  void updateFromWidgets(element) {
-    setState(() {
-      attachmentPreview = element['image'];
-    });
   }
 
   void _showBotInfo() {

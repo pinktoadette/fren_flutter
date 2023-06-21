@@ -15,25 +15,12 @@ class Bubble extends CustomPainter {
           0,
           size.width,
           size.height - _x,
-          bottomLeft: Radius.circular(_radius),
-          bottomRight: Radius.circular(_radius),
+          bottomLeft:
+              isRight ? Radius.circular(_radius) : const Radius.circular(0),
+          bottomRight:
+              isRight ? const Radius.circular(0) : Radius.circular(_radius),
           topRight: Radius.circular(_radius),
           topLeft: Radius.circular(_radius),
-        ),
-        Paint()
-          ..color = isRight ? APP_ACCENT_COLOR : Colors.white
-          ..style = PaintingStyle.fill);
-    var path = Path();
-    path.moveTo(isRight ? size.width - 20 : 20, size.height - 12);
-    path.lineTo(isRight ? size.width - 30 : 30, size.height);
-    path.lineTo(isRight ? size.width - 40 : 40, size.height - 10);
-    canvas.clipPath(path);
-    canvas.drawRRect(
-        RRect.fromLTRBAndCorners(
-          0,
-          0.0,
-          size.width,
-          size.height,
         ),
         Paint()
           ..color = isRight ? APP_ACCENT_COLOR : Colors.white

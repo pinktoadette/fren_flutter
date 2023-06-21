@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:machi_app/api/machi/subscribe_api.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 //@todo remove scope model to getX
@@ -21,9 +22,16 @@ class SubscribeController extends GetxController {
     _customer = customer.obs;
   }
 
+  void _getCredits() async {
+    final _subscribeApi = SubscribesApi();
+    Map<String, dynamic> result = await _subscribeApi.getUserSubscription();
+    credits = result["credits"] ?? 0;
+  }
+
   void _listenPurchases() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
       _customer = customerInfo.obs;
+      _getCredits();
     });
   }
 }

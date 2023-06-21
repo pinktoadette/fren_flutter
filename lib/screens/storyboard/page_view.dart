@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -39,6 +42,7 @@ class StoryPageView extends StatefulWidget {
 
 class _StoryPageViewState extends State<StoryPageView> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  TimelineController timelineController = Get.find(tag: 'timeline');
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
@@ -66,8 +70,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   void getStoryContent() async {
     try {
       Story details = await _storyApi.getMyStories(widget.story.storyId);
-
-      storyboardController.setCurrentStory(details);
+      timelineController.setStoryTimelineControllerCurrent(details);
       setState(() {
         story = details;
       });
@@ -180,12 +183,15 @@ class _StoryPageViewState extends State<StoryPageView> {
       if (response == "OK") {
         Story update = item.copyWith(
             mylikes: value == true ? 1 : 0,
-            likes: value == true ? (item.likes! + 1) : (item.likes! - 1));
-        storyboardController.updateStory(story: update);
+            likes:
+                value == true ? (item.likes! + 1) : max(0, (item.likes! - 1)));
+        timelineController.updateStoryboard(
+            storyboard: storyboardController.currentStoryboard,
+            updateStory: update);
       }
     } catch (err) {
       Get.snackbar(
-        _i18n.translate("DELETE"),
+        _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
@@ -310,6 +316,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 _displayScript(script, size),
                                 if (story!.layout == Layout.CONVO)
                                   Text(script.characterName ?? ""),
+                                const SizedBox(
+                                  height: 20,
+                                )
                               ]);
                         }).toList()),
                   )));
@@ -339,15 +348,17 @@ class _StoryPageViewState extends State<StoryPageView> {
                   width: 20,
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: LikeItemWidget(
-                      onLike: (val) {
-                        _onLikePressed(widget.story, val);
-                      },
-                      size: 20,
-                      likes: widget.story.likes ?? 0,
-                      mylikes: widget.story.mylikes ?? 0),
-                ),
+                    padding: const EdgeInsets.only(right: 10),
+                    child: Obx(
+                      () => LikeItemWidget(
+                          onLike: (val) {
+                            _onLikePressed(widget.story, val);
+                          },
+                          size: 20,
+                          likes: timelineController.currentStory.likes ?? 0,
+                          mylikes:
+                              timelineController.currentStory.mylikes ?? 0),
+                    )),
               ],
             ),
           ))

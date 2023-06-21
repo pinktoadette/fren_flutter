@@ -183,7 +183,7 @@ class _StoryEditState extends State<StoryEdit> {
                 const Spacer(),
                 ElevatedButton.icon(
                     icon: isLoading == true
-                        ? loadingButton(size: 16, color: Colors.white)
+                        ? loadingButton(size: 16, color: Colors.black)
                         : const SizedBox.shrink(),
                     onPressed: () {
                       _saveStory();

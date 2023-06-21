@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
@@ -20,32 +19,10 @@ class TimelineWidget extends StatefulWidget {
 class _TimelineWidgetState extends State<TimelineWidget> {
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
-  final _timelineApi = TimelineApi();
-  static const int _pageSize = ALL_PAGE_SIZE;
-
-  final PagingController<int, Storyboard> _pagingController =
-      PagingController(firstPageKey: 0);
 
   @override
   void initState() {
     super.initState();
-    _fetchPage(0);
-  }
-
-  Future<void> _fetchPage(int pageKey) async {
-    try {
-      List<Storyboard> newItems =
-          await _timelineApi.getTimeline(_pageSize, pageKey);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
   }
 
   @override
@@ -53,7 +30,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     final width = MediaQuery.of(context).size.width;
 
     return PagedSliverList<int, Storyboard>.separated(
-      pagingController: _pagingController,
+      pagingController: timelineController.pagingController,
       builderDelegate: PagedChildBuilderDelegate<Storyboard>(
           firstPageProgressIndicatorBuilder: (_) => const Frankloader(),
           newPageProgressIndicatorBuilder: (_) => const Frankloader(),

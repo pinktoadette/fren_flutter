@@ -53,7 +53,11 @@ class PostCommentWidget extends StatelessWidget {
                   suffixIcon: IconButton(
                     icon: const Icon(Iconsax.send_1),
                     onPressed: () {
-                      _postComment();
+                      if (_commentController.text.isEmpty) {
+                        return;
+                      } else {
+                        _postComment();
+                      }
                     },
                   ),
                 ),

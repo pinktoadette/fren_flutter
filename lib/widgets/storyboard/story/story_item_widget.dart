@@ -2,6 +2,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -28,6 +29,7 @@ class StoryItemWidget extends StatefulWidget {
 class _StoryItemWidgetState extends State<StoryItemWidget> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  TimelineController timelineController = Get.find(tag: 'timeline');
 
   List<PageModel>? pageList;
   final _scriptApi = ScriptApi();
@@ -54,7 +56,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
           if (widget.disablePress == true) {
             null;
           } else {
-            storyboardController.setCurrentStory(widget.story);
+            timelineController.setStoryTimelineControllerCurrent(widget.story);
             if (widget.message != null) {
               _addMessage();
             } else {

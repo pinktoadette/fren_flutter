@@ -22,14 +22,12 @@ class BotApi {
       temperature,
       isPrivate,
       photoUrl,
-      required modelType,
-      required about}) async {
+      required modelType}) async {
     String url = '${baseUri}machi';
     String uuid = const Uuid().v4().replaceAll("[\\s\\-()]", "");
 
     var data = {
       BOT_ID: "Machi_${uuid.substring(0, 10)}", // external botId
-      BOT_ABOUT: about,
       BOT_NAME: name,
       BOT_MODEL_TYPE: modelType.toString().split(".")[1],
       BOT_PROMPT: prompt,
