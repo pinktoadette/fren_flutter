@@ -14,7 +14,6 @@ class StoryCover extends StatelessWidget {
   final double? radius;
   final File? file;
   final Icon? icon;
-  final bool? hasOverlay;
   const StoryCover(
       {Key? key,
       this.radius,
@@ -23,8 +22,7 @@ class StoryCover extends StatelessWidget {
       this.file,
       this.width,
       this.height,
-      this.icon,
-      this.hasOverlay = false})
+      this.icon})
       : super(key: key);
 
   @override
@@ -46,7 +44,7 @@ class StoryCover extends StatelessWidget {
               ]),
           child: SizedBox(
               height: height ?? 120,
-              width: width ?? 100,
+              width: width ?? 120,
               child: Stack(children: [
                 _showImageLocal(context),
                 Positioned(bottom: 0, right: 0, child: icon!)
@@ -55,7 +53,7 @@ class StoryCover extends StatelessWidget {
 
     return Container(
         decoration: BoxDecoration(
-            color: APP_ACCENT_COLOR,
+            color: APP_TERTIARY,
             borderRadius: BorderRadius.circular(radius ?? 20),
             boxShadow: [
               BoxShadow(
@@ -67,21 +65,11 @@ class StoryCover extends StatelessWidget {
                       .withOpacity(.6),
                   spreadRadius: -9)
             ]),
-        child: Stack(children: [
-          SizedBox(
-            height: height ?? 120,
-            width: width ?? 100,
-            child: _showImageLocal(context),
-          ),
-          if (hasOverlay == true)
-            Positioned(
-                top: 0,
-                left: 0,
-                child: Badge(
-                  label: Text(title),
-                  backgroundColor: APP_ACCENT_COLOR,
-                )),
-        ]));
+        child: SizedBox(
+          height: height ?? 120,
+          width: width ?? 120,
+          child: _showImageLocal(context),
+        ));
   }
 
   Widget _showImageLocal(BuildContext context) {
@@ -90,13 +78,12 @@ class StoryCover extends StatelessWidget {
       return ClipRRect(
         borderRadius: BorderRadius.circular(radius ?? 10.0),
         child: CachedNetworkImage(
-          progressIndicatorBuilder: (context, url, progress) => SizedBox(
-              width: w * 0.5,
-              height: w * 0.5,
-              child: loadingButton(size: 16, color: Colors.black)),
+          progressIndicatorBuilder: (context, url, progress) =>
+              loadingButton(size: 16, color: Colors.black),
           imageUrl: photoUrl!,
           fadeInDuration: const Duration(seconds: 1),
           width: w,
+          height: w,
           fit: BoxFit.cover,
         ),
       );
