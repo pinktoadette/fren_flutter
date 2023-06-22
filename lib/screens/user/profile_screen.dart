@@ -42,13 +42,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
-  Future<List<Storyboard>> _getUserBoard() async {
-    /// @todo need infinite
-    List<Storyboard> newItems =
-        await _timelineApi.getTimelineByPageUserId(widget.user.userId);
-    return newItems;
-  }
-
   void _isUserFriend() async {
     final user = await _userApi.getUserById(widget.user.userId);
     _setUserCount(user);

@@ -305,7 +305,7 @@ class MyApp extends StatelessWidget {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: Color.fromARGB(255, 0, 0, 0),
+          color: const Color.fromARGB(255, 0, 0, 0),
           shadowColor: Colors.black,
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,

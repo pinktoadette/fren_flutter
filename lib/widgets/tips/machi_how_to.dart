@@ -2,10 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:machi_app/api/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/discover_card.dart';
 

@@ -39,7 +39,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -491,6 +490,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _channel.sink.add(json.encode({"message": response}));
     }
 
+    subscribeController.getCredits();
     setState(() {
       isBotTyping = false;
     });

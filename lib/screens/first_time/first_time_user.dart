@@ -21,7 +21,7 @@ class _InterestScreenState extends State<InterestScreen> {
   List<String> _category = [];
   List<String> _selectedInterest = [];
   final usersMemoizer = C2ChoiceMemoizer<String>();
-  int _numSelection = 3;
+  final int _numSelection = 3;
   @override
   void initState() {
     super.initState();

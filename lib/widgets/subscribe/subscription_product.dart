@@ -246,7 +246,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
-        await _purchaseApi.saveUserPurchase(purchaserInfo);
+        await _purchaseApi.userCredits();
       }
       Navigator.of(context).pop();
 

@@ -28,11 +28,11 @@ class PurchasesApi {
     }
   }
 
-  Future<String> saveUserPurchase(CustomerInfo purchase) async {
-    String url = '${baseUri}purchases/purchase';
+  Future<Map<String, dynamic>> userCredits() async {
+    String url = '${baseUri}purchases/credits';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: purchase.toJson());
+    final response = await dio.post(url);
     return response.data;
   }
 }

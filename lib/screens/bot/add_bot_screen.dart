@@ -1,12 +1,8 @@
 import 'package:flutter_signin_button/button_list.dart';
 import 'package:flutter_signin_button/button_view.dart';
-import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/constants/secrets.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/desktop.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class AddBotScreen extends StatefulWidget {
   const AddBotScreen({Key? key}) : super(key: key);
