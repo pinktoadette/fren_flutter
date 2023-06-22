@@ -4,6 +4,7 @@ import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -87,9 +88,11 @@ class _StoriesViewState extends State<StoriesView> {
                           },
                         )),
                   Obx(
-                    () => ListView.builder(
+                    () => ListView.separated(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
+                        separatorBuilder: (context, index) =>
+                            const Divider(height: 10),
                         scrollDirection: Axis.vertical,
                         itemCount: storyboardController
                             .currentStoryboard.story!.length,
@@ -101,10 +104,14 @@ class _StoriesViewState extends State<StoriesView> {
                           }
                           Story story = storyboardController
                               .currentStoryboard.story![index];
-
+                          bool _isOwnerUnpub = (story.createdBy.userId ==
+                                  UserModel().user.userId) &&
+                              (story.status != StoryStatus.PUBLISHED);
                           return Dismissible(
                               key: Key(story.storyId),
-                              direction: DismissDirection.endToStart,
+                              direction: _isOwnerUnpub
+                                  ? DismissDirection.endToStart
+                                  : DismissDirection.none,
                               confirmDismiss:
                                   (DismissDirection direction) async {
                                 return await showDialog(

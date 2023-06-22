@@ -65,7 +65,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                     ),
                   );
                 } else {
-                  return const SizedBox.shrink();
+                  return const Divider();
                 }
               },
               shrinkWrap: true,
@@ -112,7 +112,9 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                     background: Container(
                         color: APP_ERROR, child: const Icon(Iconsax.trash)),
                     child: StoryboardItemWidget(
-                        message: widget.message, item: storyboard));
+                        message: widget.message,
+                        item: storyboard,
+                        hideCollection: true));
               })),
     );
   }

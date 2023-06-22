@@ -125,7 +125,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                   outer: true,
                   itemWidth: size.width * 0.7,
                   itemHeight: size.width,
-                  layout: SwiperLayout.STACK,
                   fade: 0.8,
                   viewportFraction: 0.7,
                   scale: 0.8,
@@ -198,7 +197,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                   indicatorLayout: PageIndicatorLayout.COLOR,
                   autoplay: false,
                   itemCount: packages.length,
-                  pagination: const SwiperPagination(),
+                  pagination: const SwiperPagination(
+                      builder: DotSwiperPaginationBuilder(
+                          size: 8,
+                          space: 5,
+                          activeColor: APP_ACCENT_COLOR,
+                          color: Colors.grey)),
                   onIndexChanged: (value) {
                     setState(() {
                       _selectedTier = packages[value];
@@ -244,6 +248,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         await _purchaseApi.saveUserPurchase(purchaserInfo);
       }
+      Navigator.of(context).pop();
+
       Get.snackbar(_i18n.translate("success"),
           _i18n.translate("subscribed_successfully"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);

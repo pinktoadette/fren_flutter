@@ -7,6 +7,7 @@ import 'package:machi_app/datas/bot.dart';
 class BotController extends GetxController {
   Rx<Bot> _currentBot = Bot(
           botId: DEFAULT_BOT_ID,
+          category: '',
           profilePhoto: '',
           about: '',
           name: '',

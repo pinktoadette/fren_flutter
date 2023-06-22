@@ -76,6 +76,7 @@ class ChatController extends GetxController implements GetxService {
     _currentRoom = Chatroom(
             chatroomId: '',
             bot: Bot(
+                category: "General",
                 botId: "",
                 profilePhoto: "",
                 name: "",

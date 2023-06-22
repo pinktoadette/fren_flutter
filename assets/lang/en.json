@@ -29,6 +29,7 @@
   "validation_warning": "Validation Error",
   "validation_3_characters": "At least 3 character is needed",
   "validation_1_character": "At least write something",
+  "validation_insufficient_caharacter":"Write something sufficient at least 50 characters for prompt and 3 for name",
   "validation_select_1": "Select at least one",
   "validation_username": "Username is taken",
   
@@ -287,7 +288,7 @@
   "bot_subdomain": "Subdomain",
   "bot_pricing": "Price",
   "bot_public":"Publish machi to public",
-  "bot_test_warning": "You agree to abide to the Terms and Condition on publish.",
+  "bot_test_warning": "By publishing you agree to abide to the Terms and Condition.",
   "bot_test": "Test",
   "bot_try": "Try for Free",
   "bot_prompt_models": "Prompt models",

@@ -1,5 +1,5 @@
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -21,7 +21,9 @@ import 'package:machi_app/widgets/timeline/timeline_header.dart';
 class StoryboardItemWidget extends StatefulWidget {
   final Storyboard item;
   final types.Message? message;
-  const StoryboardItemWidget({Key? key, required this.item, this.message})
+  final bool? hideCollection;
+  const StoryboardItemWidget(
+      {Key? key, required this.item, this.message, this.hideCollection = false})
       : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   late Storyboard storyboard;
   late AppLocalizations _i18n;
+  late double width;
   final _timelineApi = TimelineApi();
 
   @override
@@ -47,8 +50,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-    double storyCoverWidth = width;
+    width = MediaQuery.of(context).size.width;
     double padding = 15;
     String title = storyboard.title;
     String photoUrl = storyboard.photoUrl ?? "";
@@ -63,153 +65,162 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";
-    bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
-    return Card(
-        elevation: 1,
-        semanticContainer: true,
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: padding),
-              width: width,
-              child: TimelineHeader(
-                user: storyboard.createdBy,
-                showName: true,
-                showMenu: false,
-              ),
-            ),
-            InkWell(
-                onTap: () async {
-                  _onStoryClick();
-                },
-                child: Container(
-                    padding: EdgeInsets.only(left: padding),
-                    width: width - padding * 3.2,
-                    child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: padding),
+          width: width,
+          child: TimelineHeader(
+            user: storyboard.createdBy,
+            showName: true,
+            showMenu: false,
+          ),
+        ),
+        InkWell(
+            onTap: () async {
+              _onStoryClick();
+            },
+            child: Container(
+                padding: EdgeInsets.only(left: padding),
+                width: width - padding,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                        style: const TextStyle(fontSize: 10)),
+                    Text(storyboard.category,
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: APP_SECONDARY_ACCENT_COLOR,
+                            fontWeight: FontWeight.bold)),
+                    Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Text(
-                            "$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                            style: const TextStyle(fontSize: 10)),
-                        Text(storyboard.category,
-                            style: const TextStyle(
-                                fontSize: 10,
-                                color: APP_SECONDARY_ACCENT_COLOR,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                            child: Text(
-                          storyboard.title,
-                          style: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontWeight: FontWeight.bold),
-                        )),
-                        textLinkPreview(context: context, text: subtitle)
+                        if (photoUrl != "")
+                          StoryCover(
+                              width: width * 0.2,
+                              height: width * 0.2,
+                              photoUrl: photoUrl,
+                              title: title),
+                        Container(
+                          padding: photoUrl != ""
+                              ? const EdgeInsets.only(left: 10)
+                              : const EdgeInsets.only(left: 0),
+                          width: (photoUrl != "" ? width * 0.8 : width) -
+                              padding * 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                  child: Text(
+                                storyboard.title,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.bold),
+                              )),
+                              textLinkPreview(context: context, text: subtitle)
+                            ],
+                          ),
+                        )
                       ],
-                    ))),
-            if (photoUrl != "")
-              InkWell(
-                  onTap: () async {
-                    _onStoryClick();
-                  },
-                  child: Padding(
-                      padding: EdgeInsets.all(padding),
-                      child: StoryCover(
-                          width: storyCoverWidth,
-                          height: storyCoverWidth * 0.5,
-                          photoUrl: photoUrl,
-                          title: title))),
-            if (hasSeries) const Divider(),
-            if (hasSeries)
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(children: [
-                    ...storyboard.story!.asMap().entries.take(8).map((ele) {
-                      return InkWell(
-                          onTap: () {
-                            storyboardController.setCurrentBoard(storyboard);
-                            timelineController
-                                .setStoryTimelineControllerCurrent(ele.value);
-                            Get.to(() => StoryPageView(story: ele.value));
-                          },
+                    )
+                  ],
+                ))),
+        if (widget.hideCollection == false) ..._showCollectionFooter()
+      ],
+    );
+  }
+
+  List<Widget> _showCollectionFooter() {
+    bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
+    return [
+      if (hasSeries)
+        Swiper(
+            itemWidth: width,
+            itemHeight: 250,
+            layout: SwiperLayout.TINDER,
+            fade: 0.8,
+            viewportFraction: 0.7,
+            scale: 0.8,
+            itemCount: storyboard.story!.length,
+            itemBuilder: (context, index) {
+              if (storyboard.story![index].status == StoryStatus.PUBLISHED) {
+                return _collectionCards(
+                    index: index, story: storyboard.story![index]);
+              }
+              return const SizedBox.shrink();
+            },
+            outer: false,
+            indicatorLayout: PageIndicatorLayout.COLOR,
+            autoplay: false,
+            pagination: const SwiperPagination(
+                alignment: Alignment.bottomCenter,
+                builder: DotSwiperPaginationBuilder(
+                    size: 5,
+                    space: 3,
+                    activeColor: APP_ACCENT_COLOR,
+                    color: Colors.grey))),
+      if (hasSeries == false) _likeItemWidget(storyboard.story![0])
+    ];
+  }
+
+  Widget _collectionCards({required index, required Story story}) {
+    return InkWell(
+        onTap: () {
+          storyboardController.setCurrentBoard(storyboard);
+          timelineController.setStoryTimelineControllerCurrent(story);
+          Get.to(() => StoryPageView(story: story));
+        },
+        child: Card(
+            child: Container(
+                decoration: story.photoUrl != null && story.photoUrl != ""
+                    ? BoxDecoration(
+                        image: DecorationImage(
+                          image: NetworkImage(story.photoUrl!),
+                          fit: BoxFit.fitWidth,
+                          alignment: Alignment.topCenter,
+                          colorFilter: ColorFilter.mode(
+                              Colors.black.withOpacity(0.9), BlendMode.darken),
+                        ),
+                      )
+                    : const BoxDecoration(shape: BoxShape.rectangle),
+                padding: const EdgeInsets.all(15),
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Collection ${index + 1}",
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                      Text(
+                        story.title,
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
+                      SizedBox(
+                          width: width - 40,
+                          height: width * 0.3,
                           child: Padding(
-                              padding:
-                                  EdgeInsets.only(left: ele.key == 0 ? 15 : 5),
-                              child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Collection ${ele.key + 1}",
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelSmall,
-                                    ),
-                                    Text(
-                                      ele.value.title,
-                                      style: Theme.of(context)
-                                          .textTheme
-                                          .labelMedium,
-                                    ),
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            StoryCover(
-                                              icon: ele.value.status ==
-                                                      StoryStatus.UNPUBLISHED
-                                                  ? const Icon(
-                                                      Iconsax.lock,
-                                                      size: 16,
-                                                    )
-                                                  : null,
-                                              width: width * 0.3,
-                                              height: width * 0.3,
-                                              radius: 5,
-                                              photoUrl:
-                                                  ele.value.photoUrl ?? "",
-                                              title: ele.value.title,
-                                            )
-                                          ],
-                                        ),
-                                        SizedBox(
-                                            width: width * 0.6,
-                                            height: width * 0.3,
-                                            child: Padding(
-                                              padding: const EdgeInsets.all(10),
-                                              child: Text(
-                                                ele.value.pages?[0].scripts?[0]
-                                                        .text ??
-                                                    "",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall,
-                                                overflow: TextOverflow.fade,
-                                              ),
-                                            )),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      width: width * 0.9,
-                                      child: Align(
-                                        alignment: Alignment.bottomRight,
-                                        child: _likeItemWidget(ele.value),
-                                      ),
-                                    )
-                                  ])));
-                    }),
-                  ])),
-            if (hasSeries == false) _likeItemWidget(storyboard.story![0])
-          ],
-        ));
+                            padding: const EdgeInsets.all(0),
+                            child: Text(
+                              story.pages?[0].scripts?[0].text ?? "",
+                              style: Theme.of(context).textTheme.bodySmall,
+                              overflow: TextOverflow.fade,
+                            ),
+                          )),
+                      SizedBox(
+                        width: width * 0.9,
+                        child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: _likeItemWidget(story),
+                        ),
+                      )
+                    ]))));
   }
 
   Future<void> _onStoryClick() async {
@@ -256,7 +267,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   Widget _likeItemWidget(Story item) {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 10, right: 10),
+        padding: const EdgeInsets.only(bottom: 0, right: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.end,

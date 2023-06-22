@@ -309,7 +309,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                                           script.characterName!.trim()
                                       ? CrossAxisAlignment.end
                                       : CrossAxisAlignment.start
-                                  : CrossAxisAlignment.start;
+                                  : script.type == 'image'
+                                      ? CrossAxisAlignment.center
+                                      : CrossAxisAlignment.start;
                           return Column(
                               crossAxisAlignment: alignment,
                               children: [
@@ -376,8 +378,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                   story!.layout == Layout.CONVO ? Colors.black : Colors.white));
     } else if (script.type == "image") {
       widget = RoundedImage(
-        width: 516,
-        height: 516,
+        width: size.width * 0.75,
+        height: size.width * 0.75,
         photoUrl: script.image?.uri ?? "",
         icon: const Icon(Iconsax.image),
       );

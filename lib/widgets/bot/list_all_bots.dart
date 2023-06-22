@@ -78,34 +78,5 @@ class _ListPromptBotState extends State<ListPromptBots> {
         }
       },
     );
-
-    // return Container(
-    //     margin: const EdgeInsets.symmetric(vertical: 5.0),
-    //     child: ListView.separated(
-    //         physics: const ClampingScrollPhysics(),
-    //         shrinkWrap: true,
-    //         scrollDirection: Axis.vertical,
-    //         separatorBuilder: (context, index) {
-    //           if ((index + 1) % 5 == 0) {
-    //             return Container(
-    //               height: itemHeight,
-    //               color: Theme.of(context).colorScheme.background,
-    //               child: Padding(
-    //                 padding: const EdgeInsets.only(top: 10, bottom: 10),
-    //                 child: Container(
-    //                   height: AD_HEIGHT,
-    //                   width: width,
-    //                   color: Theme.of(context).colorScheme.background,
-    //                   child: const InlineAdaptiveAds(),
-    //                 ),
-    //               ),
-    //             );
-    //           } else {
-    //             return const Divider();
-    //           }
-    //         },
-    //         itemCount: _listBot.length,
-    //         itemBuilder: (context, index) =>
-    //             RowMachiInfo(bot: _listBot[index])));
   }
 }

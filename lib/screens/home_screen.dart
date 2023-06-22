@@ -208,7 +208,7 @@ class _HomeScreenState extends State<HomeScreen> {
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
             currentIndex: _selectedIndex,
-            backgroundColor: Theme.of(context).colorScheme.background,
+            backgroundColor: Colors.black,
             selectedItemColor: APP_ACCENT_COLOR,
             unselectedItemColor:
                 Theme.of(context).colorScheme.primary.withAlpha(155),

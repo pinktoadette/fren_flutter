@@ -5,7 +5,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/first_time_user.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_cupertino_datetime_picker/flutter_cupertino_datetime_picker.dart';
@@ -29,10 +28,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
   /// User Birthday info
   int _userBirthDay = 0;
   int _userBirthMonth = 0;
-  int _userBirthYear = DateTime.now().subtract(const Duration(days: 7300)).year;
+  int _userBirthYear = DateTime.now().subtract(const Duration(days: 4745)).year;
   // End
   DateTime _initialDateTime =
-      DateTime.now().subtract(const Duration(days: 7300));
+      DateTime.now().subtract(const Duration(days: 4745));
   String? _birthday;
   bool _agreeTerms = true;
   late AppLocalizations _i18n;

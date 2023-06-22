@@ -8,6 +8,7 @@ import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
@@ -35,6 +36,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   late AppLocalizations _i18n;
   File? _uploadPath;
   String? photoUrl;
+  final _appHelper = AppHelper();
 
   @override
   void initState() {
@@ -153,7 +155,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  maxLength: 200,
+                  maxLength: 400,
                   buildCounter: (_,
                           {required currentLength,
                           maxLength,
@@ -167,7 +169,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                         color: Theme.of(context).colorScheme.tertiary),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
-                  maxLines: 8,
+                  maxLines: 10,
                   validator: (name) {
                     // Basic validation
                     if (name?.isEmpty ?? false) {
@@ -201,6 +203,9 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                   selectionColor: APP_ERROR,
                 )
               : const SizedBox(height: 50),
+          const SizedBox(
+            height: 30,
+          ),
           Center(
             child: ElevatedButton(
                 onPressed: () {
@@ -209,12 +214,18 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 child: Text(_i18n.translate("publish"))),
           ),
           const SizedBox(
-            height: 30,
+            height: 80,
           ),
-          Text(
-            _i18n.translate("bot_test_warning"),
-            style: Theme.of(context).textTheme.labelSmall,
-          )
+          GestureDetector(
+            child: Text(
+              _i18n.translate("bot_test_warning"),
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            onTap: () {
+              // Open terms of service page in browser
+              _appHelper.openTermsPage();
+            },
+          ),
         ]));
   }
 
@@ -222,6 +233,16 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     setState(() {
       errorMessage = '';
     });
+
+    if (_promptController.text.length < 50 || _nameController.text.length < 3) {
+      Get.snackbar(
+        _i18n.translate("validation_warning"),
+        _i18n.translate("validation_insufficient_caharacter"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_WARNING,
+      );
+      return;
+    }
     _pr.show(_i18n.translate("processing"));
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;

@@ -15,11 +15,16 @@ import 'package:onboarding/onboarding.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 class StoryItemWidget extends StatefulWidget {
+  final Storyboard? storyboard;
   final Story story;
   final bool disablePress;
   final types.Message? message;
   const StoryItemWidget(
-      {Key? key, required this.story, this.message, this.disablePress = false})
+      {Key? key,
+      required this.story,
+      this.message,
+      this.disablePress = false,
+      this.storyboard})
       : super(key: key);
 
   @override
@@ -57,6 +62,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
             null;
           } else {
             timelineController.setStoryTimelineControllerCurrent(widget.story);
+
             if (widget.message != null) {
               _addMessage();
             } else {
@@ -64,60 +70,55 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
             }
           }
         },
-        child: Card(
-            elevation: 1,
-            semanticContainer: true,
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.all(padding),
-                    child: StoryCover(
-                        height: storyCoverWidth,
-                        width: storyCoverWidth,
-                        photoUrl: widget.story.photoUrl ?? "",
-                        title: widget.story.title),
-                  ),
-                  Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        SizedBox(
-                            width: contentWidth,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                const SizedBox(
-                                  height: 15,
-                                ),
-                                Text(
-                                    "$timestampLabel ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
-                                    style: const TextStyle(fontSize: 10)),
-                                Text(
-                                  widget.story.title,
-                                  style: TextStyle(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            )),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        if (widget.story.status == StoryStatus.UNPUBLISHED)
-                          const Icon(
-                            Iconsax.lock,
-                            size: 16,
-                          ),
-                      ]),
-                ],
+        child: Column(children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.all(padding),
+                child: StoryCover(
+                    height: storyCoverWidth,
+                    width: storyCoverWidth,
+                    photoUrl: widget.story.photoUrl ?? "",
+                    title: widget.story.title),
               ),
-            ])));
+              Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                        width: contentWidth,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            const SizedBox(
+                              height: 15,
+                            ),
+                            Text(
+                                "$timestampLabel ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
+                                style: const TextStyle(fontSize: 10)),
+                            Text(
+                              widget.story.title,
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        )),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    if (widget.story.status == StoryStatus.UNPUBLISHED)
+                      const Icon(
+                        Iconsax.lock,
+                        size: 16,
+                      ),
+                  ]),
+            ],
+          ),
+        ]));
   }
 
   void _addMessage() async {

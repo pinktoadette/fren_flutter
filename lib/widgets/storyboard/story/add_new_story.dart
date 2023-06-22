@@ -43,7 +43,10 @@ class _AddNewStoryState extends State<AddNewStory> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          title: Text(_i18n.translate("new_story_collection")),
+          title: Text(
+            _i18n.translate("new_story_collection"),
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
         ),
         body: Container(
           padding: const EdgeInsets.all(20),
