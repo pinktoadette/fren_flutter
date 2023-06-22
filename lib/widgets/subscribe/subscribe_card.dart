@@ -32,7 +32,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
       setState(() {
         customer = customerInfo;
       });
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       // Error fetching purchaser info
       Get.snackbar(
         _i18n.translate("Error"),

@@ -70,7 +70,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         packages = offerings[0].availablePackages;
         _selectedTier = offerings[0].availablePackages[0];
       });
-    } on PlatformException catch (e) {
+    } on PlatformException catch (_) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("subscribe_no_offering_found"),

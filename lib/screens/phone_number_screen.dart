@@ -5,7 +5,6 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
-import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:machi_app/screens/verification_code_screen.dart';
 import 'package:machi_app/widgets/button/default_button.dart';
 import 'package:machi_app/widgets/show_scaffold_msg.dart';

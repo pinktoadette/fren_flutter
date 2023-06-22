@@ -1,5 +1,4 @@
 import 'package:machi_app/api/machi/friend_api.dart';
-import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
@@ -28,7 +27,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late AppLocalizations _i18n;
   final _userApi = UserApi();
   final _friendApi = FriendApi();
-  final _timelineApi = TimelineApi();
   ChatController chatController = Get.find(tag: 'chatroom');
 
   List<Storyboard> boards = [];

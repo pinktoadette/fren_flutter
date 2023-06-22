@@ -60,7 +60,6 @@ class _GalleryWidgetState extends State<UserGallery> {
   @override
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
     return Scaffold(
         appBar: AppBar(
           title: Text(

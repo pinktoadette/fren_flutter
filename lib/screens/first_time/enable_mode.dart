@@ -1,4 +1,3 @@
-import 'package:machi_app/screens/first_time/update_location_sceen.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
