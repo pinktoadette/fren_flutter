@@ -93,12 +93,9 @@ class _StoryPageViewState extends State<StoryPageView> {
     if (story == null && pages.isEmpty) {
       return Scaffold(
           appBar: AppBar(
-            title: Text(
-              widget.isPreview == true
-                  ? _i18n.translate("storyboard_preview")
-                  : _i18n.translate("story_collection"),
-              style: Theme.of(context).textTheme.bodySmall,
-            ),
+            title: Text(widget.isPreview == true
+                ? _i18n.translate("storyboard_preview")
+                : _i18n.translate("story_collection")),
           ),
           body: NoData(text: _i18n.translate("loading")));
     }

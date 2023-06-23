@@ -275,6 +275,7 @@ const String SCRIPT_IMAGE_SIZE = "size";
 const String SCRIPT_IMAGE_URI = "uri";
 const String SCRIPT_STATUS = "status";
 const String SCRIPT_SPEAKER_NAME = "character";
+const String SCRIPT_SPEAKER_USER_ID = "characterId";
 const String SCRIPT_CREATED_BY = "createdBy";
 const String SCRIPT_VOICE_INFO = "speaker";
 const String SCRIPT_SEQUENCE_NUM = "seqNum";

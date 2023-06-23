@@ -81,17 +81,27 @@ class _AddEditTextState extends State<AddEditText> {
                   ),
                   attachmentPreview != null || galleryImageUrl != null
                       ? _attachmentPreview()
-                      : SizedBox(
-                          height: 80,
+                      : Container(
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey,
+                                  strokeAlign: BorderSide.strokeAlignCenter)),
+                          height: 50,
                           child: IconButton(
                               onPressed: () {
                                 _addImage();
                               },
                               icon: const Icon(Iconsax.image)),
                         ),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   ConstrainedBox(
                       constraints: BoxConstraints(
-                        maxHeight: height - 250,
+                        maxHeight: height - 200,
                       ),
                       child: TextFormField(
                         maxLines: null,
@@ -99,11 +109,6 @@ class _AddEditTextState extends State<AddEditText> {
                           hintText: _i18n.translate("story_write_edit"),
                           hintStyle: TextStyle(
                               color: Theme.of(context).colorScheme.primary),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
                         ),
                         controller: _textController,
                         scrollPadding: EdgeInsets.only(

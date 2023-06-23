@@ -386,6 +386,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     if (content["text"] != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
+          characterId: UserModel().user.userId,
           type: "text",
           storyId: story.storyId,
           text: content["text"] ?? "",
@@ -404,6 +405,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
+          characterId: UserModel().user.userId,
           type: "image",
           storyId: story.storyId,
           image: {

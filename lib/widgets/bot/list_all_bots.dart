@@ -107,7 +107,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
                   _pagingController.refresh();
                 }
               },
-              style: const TextStyle(color: Colors.black),
+              style: const TextStyle(color: Colors.white),
               decoration: InputDecoration(
                   filled: true,
                   prefixIcon: const Icon(

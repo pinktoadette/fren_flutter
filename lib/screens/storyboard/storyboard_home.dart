@@ -37,6 +37,9 @@ class _StoryboardState extends State<StoryboardHome>
             Container(
                 padding: const EdgeInsets.all(10.0),
                 child: TextButton(
+                    style: TextButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.transparent),
                     onPressed: () {
                       Get.to(() => const ListPublishBoard());
                     },

@@ -18,6 +18,7 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Storyboard storyboard;
   List<dynamic> contributors = [];
+
   @override
   void initState() {
     Storyboard storyboard = storyboardController.currentStoryboard;
@@ -53,10 +54,6 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            storyboard.title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
           const SizedBox(
             height: 10,
           ),
@@ -70,12 +67,23 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
           const SizedBox(
             height: 20,
           ),
-          Text(_i18n.translate("story_contributors")),
+          Text(
+            storyboard.title,
+            style: Theme.of(context).textTheme.titleLarge,
+          ),
           Row(children: [
-            ...contributors
-                .map((contribute) => Text("${contribute['character']} "))
+            Text(
+              "${_i18n.translate("story_contributors")}: ",
+              style: Theme.of(context).textTheme.labelSmall,
+            ),
+            ...contributors.map((contribute) => Text(
+                "${contribute['character']} ",
+                style: Theme.of(context).textTheme.labelSmall))
           ]),
-          Text(storyboard.summary ?? ""),
+          const SizedBox(
+            height: 20,
+          ),
+          Text(storyboard.summary ?? "Summary not provided"),
           SizedBox(
             height: MediaQuery.of(context).viewInsets.bottom,
           ),

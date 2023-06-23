@@ -325,9 +325,9 @@ class MyApp extends StatelessWidget {
           elevation: 4.0,
           shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: APP_PRIMARY_DARK_COLOR,
-            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
+        style: TextButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            foregroundColor: APP_PRIMARY_DARK_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
@@ -339,9 +339,9 @@ class MyApp extends StatelessWidget {
                 borderRadius: BorderRadius.circular(50))),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: APP_PRIMARY_DARK_COLOR,
-            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
+        style: OutlinedButton.styleFrom(
+            backgroundColor: Colors.transparent,
+            foregroundColor: APP_PRIMARY_DARK_COLOR,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),

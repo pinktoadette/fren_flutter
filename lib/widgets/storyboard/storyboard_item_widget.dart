@@ -9,6 +9,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
+import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/story_cover.dart';
@@ -55,7 +56,16 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     String title = storyboard.title;
     String photoUrl = storyboard.photoUrl ?? "";
     String subtitle =
-        storyboard.story!.isNotEmpty ? storyboard.story![0].summary! : "";
+        storyboard.story!.isNotEmpty && storyboard.story!.length == 1
+            ? storyboard.story![0].summary!
+            : "";
+    if (storyboard.story!.isNotEmpty && storyboard.story!.length == 1) {
+      var page = storyboard.story![0].pages!
+          .firstWhereOrNull((element) => element.scripts!.first.type == "text");
+      if (page != null) {
+        subtitle = truncateText(250, page.scripts![0].text!);
+      }
+    }
 
     if (storyboard.story!.length == 1) {
       title = storyboard.story![0].title;
@@ -124,7 +134,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                         Theme.of(context).colorScheme.primary,
                                     fontWeight: FontWeight.bold),
                               )),
-                              textLinkPreview(context: context, text: subtitle)
+                              if (subtitle != "")
+                                textLinkPreview(
+                                    context: context, text: subtitle)
                             ],
                           ),
                         )

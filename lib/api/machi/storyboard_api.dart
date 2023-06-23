@@ -32,6 +32,7 @@ class StoryboardApi {
       {String? text,
       String? image,
       String? category,
+      String? characterId,
       String? messageId}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
@@ -42,6 +43,7 @@ class StoryboardApi {
         CHAT_TEXT: text ?? "",
         CHAT_IMAGE: image ?? "",
         STORY_CATEGORY: category ?? "",
+        SCRIPT_SPEAKER_USER_ID: characterId
       });
 
       Storyboard story = Storyboard.fromJson(response.data);

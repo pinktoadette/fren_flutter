@@ -41,6 +41,9 @@ class _PublishStoryState extends State<PublishStory> {
       });
       await _storyApi.publishStory(widget.story.storyId);
 
+      /// update storyboard controller
+      storyboardController.updateStory(story: widget.story);
+
       _goToNextStep(3);
     } catch (err) {
       Get.snackbar(

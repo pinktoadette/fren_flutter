@@ -122,9 +122,6 @@ class _StoryEditState extends State<StoryEdit> {
                     {required currentLength, maxLength, required isFocused}) =>
                 _counter(context, currentLength, maxLength),
             decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
                 hintText: _i18n.translate("story_collection_title"),
                 hintStyle:
                     TextStyle(color: Theme.of(context).colorScheme.secondary),

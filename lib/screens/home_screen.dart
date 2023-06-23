@@ -290,7 +290,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _getConversationCounter() {
     // Set icon
     final icon = Icon(Iconsax.message,
-        color: _selectedIndex == 1 ? Theme.of(context).primaryColor : null);
+        color: _selectedIndex == 2 ? APP_ACCENT_COLOR : null);
 
     return Obx(() {
       return chatController.unreadCounter.value == 0
