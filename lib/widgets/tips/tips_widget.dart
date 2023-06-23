@@ -21,22 +21,28 @@ class TipWidget extends StatelessWidget {
     return SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(children: [
-          const Card(
-            child: Icon(
-              Icons.lightbulb,
-              color: APP_ACCENT_COLOR,
-            ),
-          ),
-          ...items.map((e) {
+          ...items.asMap().entries.map((e) {
             return SizedBox(
               width: width * 0.9,
               child: Card(
                 child: Container(
                     height: 80,
                     padding: const EdgeInsets.all(15),
-                    child: Text(
-                      e,
-                      style: Theme.of(context).textTheme.bodySmall,
+                    child: Row(
+                      children: [
+                        if (e.key == 0)
+                          const Card(
+                            child: Icon(
+                              Icons.lightbulb,
+                              color: APP_ACCENT_COLOR,
+                            ),
+                          ),
+                        Flexible(
+                            child: Text(
+                          e.value,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ))
+                      ],
                     )),
               ),
             );

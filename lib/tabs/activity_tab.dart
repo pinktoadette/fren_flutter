@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/notifications_screen.dart';
@@ -26,6 +27,7 @@ class ActivityTab extends StatefulWidget {
 
 class _ActivityTabState extends State<ActivityTab> {
   bool _isInitiatedFrank = false;
+  SubscribeController subscriptionController = Get.find(tag: 'subscribe');
   ScrollController scrollController = ScrollController();
 
   @override
@@ -45,11 +47,16 @@ class _ActivityTabState extends State<ActivityTab> {
           title: const AppLogo(),
           actions: [
             if (_isInitiatedFrank == false)
-              IconButton(
-                  onPressed: () {
-                    Get.to(() => const HowToMachi());
-                  },
-                  icon: const Icon(Iconsax.info_circle)),
+              Padding(
+                  padding: const EdgeInsets.only(top: 8),
+                  child: IconButton(
+                      onPressed: () {
+                        Get.to(() => const HowToMachi());
+                      },
+                      icon: const Icon(
+                        Iconsax.info_circle,
+                        color: APP_ACCENT_COLOR,
+                      ))),
             Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Row(
@@ -71,8 +78,8 @@ class _ActivityTabState extends State<ActivityTab> {
           child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          // SearchBarWidget(),
-          const SubscriptionCard(),
+          if (subscriptionController.customer.allPurchaseDates.isEmpty)
+            const SubscriptionCard(),
           if (_isInitiatedFrank == false) const TipWidget(),
         ],
       )),
