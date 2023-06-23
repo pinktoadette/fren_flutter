@@ -48,7 +48,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   final _timelineApi = TimelineApi();
 
   late AppLocalizations _i18n;
-  double bodyHeightPercent = 0.86;
+  double bodyHeightPercent = 0.83;
   double headerHeight = 140;
   final _storyApi = StoryApi();
 
@@ -164,7 +164,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.9,
+            heightFactor: 0.85,
             child: ReportForm(
               itemId: story!.storyId,
               itemType: "story",
@@ -224,7 +224,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                           topLeft: Radius.circular(24),
                           topRight: Radius.circular(24)),
                       child: Container(
-                          color: Theme.of(context).colorScheme.background,
+                          color: const Color.fromARGB(255, 20, 20, 20),
                           child: Stack(children: [
                             CustomScrollView(
                                 controller: scrollController,
@@ -252,7 +252,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   const CommentWidget(),
                                   const SliverToBoxAdapter(
                                       child: SizedBox(
-                                    height: 100,
+                                    height: 120,
                                   ))
                                 ]),
                             Positioned(bottom: 0, child: PostCommentWidget())
@@ -371,8 +371,9 @@ class _StoryPageViewState extends State<StoryPageView> {
           context: context,
           text: script.text ?? "",
           style: TextStyle(
-              color:
-                  story!.layout == Layout.CONVO ? Colors.black : Colors.white));
+              color: story!.layout == Layout.CONVO
+                  ? Colors.black
+                  : Theme.of(context).colorScheme.primary));
     } else if (script.type == "image") {
       widget = RoundedImage(
         width: size.width * 0.75,

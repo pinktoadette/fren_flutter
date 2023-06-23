@@ -38,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextStyle textStyle = GoogleFonts.poppins(
       fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal);
   TextStyle dimmedStyle = GoogleFonts.poppins(
-      fontSize: 16, color: Colors.grey, fontWeight: FontWeight.normal);
+      fontSize: 16, color: APP_MUTED_COLOR, fontWeight: FontWeight.normal);
   @override
   void initState() {
     super.initState();
@@ -144,100 +144,98 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
                   )),
               Card(
+                  shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(60),
+                          topRight: Radius.circular(60))),
                   child: Container(
-                color: Colors.white,
-                height: height * 0.5,
-                padding: const EdgeInsets.all(20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    children: <Widget>[
-                      const SizedBox(height: 20),
+                    color: Colors.white,
+                    height: height * 0.5,
+                    padding: const EdgeInsets.all(20),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        children: <Widget>[
+                          const SizedBox(height: 50),
 
-                      /// FullName field
-                      TextFormField(
-                        cursorColor: Colors.black,
-                        style: textStyle,
-                        textCapitalization: TextCapitalization.sentences,
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                            errorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 0.0),
-                            ),
-                            focusedErrorBorder: const OutlineInputBorder(
-                              borderSide:
-                                  BorderSide(color: Colors.white, width: 0.0),
-                            ),
-                            labelText: _i18n.translate("username"),
-                            labelStyle: const TextStyle(
-                                color: Color.fromARGB(255, 26, 25, 25)),
-                            hintText: _i18n.translate("name_hint"),
-                            hintStyle: dimmedStyle,
-                            floatingLabelBehavior: FloatingLabelBehavior.always,
-                            prefixIcon: const Padding(
-                              padding: EdgeInsets.only(left: 20.0, right: 30),
-                              child: Icon(
-                                Iconsax.user,
-                                color: Colors.grey,
-                              ),
-                            )),
-                        validator: (name) {
-                          // Basic validation
-                          if (name?.isEmpty ?? false) {
-                            return _i18n.translate("enter_your_fullname");
-                          }
-                          if (name != null && name.length < 3) {
-                            return _i18n.translate("validation_3_characters");
-                          }
-                          return null;
-                        },
+                          /// FullName field
+                          TextFormField(
+                            cursorColor: Colors.black,
+                            style: textStyle,
+                            textCapitalization: TextCapitalization.sentences,
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                                filled: true,
+                                fillColor: Colors.transparent,
+                                labelText: _i18n.translate("username"),
+                                hintText: _i18n.translate("name_hint"),
+                                hintStyle: dimmedStyle,
+                                prefixIcon: const Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 20.0, right: 30),
+                                  child: Icon(
+                                    Iconsax.user,
+                                    color: Colors.grey,
+                                  ),
+                                )),
+                            validator: (name) {
+                              // Basic validation
+                              if (name?.isEmpty ?? false) {
+                                return _i18n.translate("enter_your_fullname");
+                              }
+                              if (name != null && name.length < 3) {
+                                return _i18n
+                                    .translate("validation_3_characters");
+                              }
+                              return null;
+                            },
+                          ),
+                          const SizedBox(height: 20),
+
+                          /// Birthday card
+                          Container(
+                              color: Colors.white,
+                              child: ListTile(
+                                leading: const Icon(
+                                  Iconsax.gift,
+                                  color: Colors.grey,
+                                ),
+                                title: Text(_birthday!,
+                                    style: _userBirthMonth != 0
+                                        ? textStyle
+                                        : dimmedStyle),
+                                trailing: const Icon(Icons.arrow_drop_down),
+                                onTap: () {
+                                  FocusScope.of(context).unfocus();
+
+                                  /// Select birthday
+                                  _showDatePicker();
+                                },
+                              )),
+
+                          const Spacer(),
+                          if (userModel.isLoading)
+                            const Center(child: Frankloader()),
+                          if (!userModel.isLoading)
+                            SizedBox(
+                                width: double.maxFinite,
+                                child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      backgroundColor: Colors.black),
+                                  child: Text(
+                                    _i18n.translate("register"),
+                                    style: const TextStyle(color: Colors.white),
+                                  ),
+                                  onPressed: () {
+                                    _createAccount();
+                                  },
+                                )),
+                          const SizedBox(height: 20),
+                          _agreePrivacy(),
+                        ],
                       ),
-                      const SizedBox(height: 20),
-
-                      /// Birthday card
-                      Container(
-                          color: Colors.white,
-                          child: ListTile(
-                            leading: const Icon(
-                              Iconsax.gift,
-                              color: Colors.grey,
-                            ),
-                            title: Text(_birthday!,
-                                style: _userBirthMonth != 0
-                                    ? textStyle
-                                    : dimmedStyle),
-                            trailing: const Icon(Icons.arrow_drop_down),
-                            onTap: () {
-                              FocusScope.of(context).unfocus();
-
-                              /// Select birthday
-                              _showDatePicker();
-                            },
-                          )),
-
-                      const Spacer(),
-                      if (userModel.isLoading)
-                        const Center(child: Frankloader()),
-                      SizedBox(
-                          width: double.maxFinite,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.black),
-                            child: Text(
-                              _i18n.translate("register"),
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                            onPressed: () {
-                              _createAccount();
-                            },
-                          )),
-                      const SizedBox(height: 20),
-                      _agreePrivacy(),
-                    ],
-                  ),
-                ),
-              )),
+                    ),
+                  )),
             ],
           ),
         );
@@ -277,9 +275,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
       return;
     } else if (UserModel().calculateUserAge(_initialDateTime) < 12) {
       Get.snackbar(
-        'Must be 12+',
+        'Must be 13+',
         _i18n.translate(
-            "only_12_years_old_and_above_are_allowed_to_create_an_account"),
+            "only_13_years_old_and_above_are_allowed_to_create_an_account"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_WARNING,
       );

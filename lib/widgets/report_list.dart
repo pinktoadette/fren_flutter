@@ -91,8 +91,6 @@ class _ReportFormState extends State<ReportForm> {
               maxLength: 200,
               decoration: InputDecoration(
                 hintText: _i18n.translate("report_comment"),
-                labelText: _i18n.translate("report_comment"),
-                floatingLabelBehavior: FloatingLabelBehavior.always,
               ),
             ),
             Align(

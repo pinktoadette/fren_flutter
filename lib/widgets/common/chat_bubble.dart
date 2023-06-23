@@ -23,7 +23,7 @@ class Bubble extends CustomPainter {
           topLeft: Radius.circular(_radius),
         ),
         Paint()
-          ..color = isRight ? APP_ACCENT_COLOR : Colors.white
+          ..color = isRight ? APP_ACCENT_COLOR : APP_INVERSE_PRIMARY_COLOR
           ..style = PaintingStyle.fill);
   }
 

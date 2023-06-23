@@ -24,16 +24,16 @@ class PostCommentWidget extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          padding: const EdgeInsets.only(bottom: 10, left: 20, right: 20),
+          padding:
+              const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
           width: width,
           decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.background,
-              border: Border.all(color: Theme.of(context).colorScheme.tertiary),
+              color: Theme.of(context).colorScheme.tertiary,
               borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(24), topRight: Radius.circular(24))),
           child: ConstrainedBox(
               constraints: const BoxConstraints(
-                minHeight: 60,
+                minHeight: 80,
                 maxHeight: 350.0,
               ),
               child: TextFormField(
@@ -42,9 +42,11 @@ class PostCommentWidget extends StatelessWidget {
                 maxLines: null,
                 // maxLength: 250,
                 decoration: InputDecoration(
+                  fillColor: Colors.transparent,
                   hintText: _i18n.translate("comment_leave"),
-                  hintStyle:
-                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                  hintStyle: TextStyle(
+                      color: Theme.of(context).colorScheme.primary,
+                      fontSize: 14),
                   border: InputBorder.none,
                   focusedBorder: InputBorder.none,
                   enabledBorder: InputBorder.none,

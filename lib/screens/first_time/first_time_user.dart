@@ -76,6 +76,7 @@ class _InterestScreenState extends State<InterestScreen> {
                     tooltip: (i, v) => v,
                   ),
                   choiceStyle: C2ChipStyle.filled(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
                     selectedStyle: const C2ChipStyle(
                       backgroundColor: APP_ACCENT_COLOR,
                     ),
@@ -89,7 +90,7 @@ class _InterestScreenState extends State<InterestScreen> {
               _i18n.translate("DONE"),
             ),
             onPressed: () {
-              if (_selectedInterest.length > _numSelection) {
+              if (_selectedInterest.length != _numSelection) {
                 Get.snackbar(
                   _i18n.translate("validation_warning"),
                   _i18n.translate("select_up_to_three"),

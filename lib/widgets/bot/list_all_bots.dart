@@ -107,14 +107,13 @@ class _ListPromptBotState extends State<ListPromptBots> {
                   _pagingController.refresh();
                 }
               },
-              style: const TextStyle(color: Colors.white),
+              style: TextStyle(color: Theme.of(context).colorScheme.primary),
               decoration: InputDecoration(
                   filled: true,
                   prefixIcon: const Icon(
                     Icons.search,
-                    color: Colors.grey,
                   ),
-                  hintText: _i18n.translate("search_machi")),
+                  hintText: _i18n.translate("search")),
             ),
           )),
     ]);

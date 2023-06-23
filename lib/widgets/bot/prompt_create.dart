@@ -91,9 +91,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                             _counter(context, currentLength, maxLength),
                         controller: _nameController,
                         decoration: InputDecoration(
-                          labelText: _i18n.translate("bot_name"),
                           hintText: _i18n.translate("bot_name_hint"),
-                          floatingLabelBehavior: FloatingLabelBehavior.always,
                         ),
                         validator: (name) {
                           // Basic validation
@@ -155,7 +153,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
-                  maxLength: 400,
+                  maxLength: 500,
                   buildCounter: (_,
                           {required currentLength,
                           maxLength,
@@ -163,11 +161,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       _counter(context, currentLength, maxLength),
                   controller: _promptController,
                   decoration: InputDecoration(
-                    labelText: _i18n.translate("bot_prompt"),
                     hintText: _i18n.translate("bot_prompt_hint"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   maxLines: 10,
                   validator: (name) {

@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -270,7 +269,7 @@ class MyApp extends StatelessWidget {
   // dark
   ThemeData _darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
-    const APP_PRIMARY_DARK_COLOR = Colors.white;
+    const APP_PRIMARY_DARK_COLOR = Color.fromARGB(255, 196, 196, 196);
     const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 16, 16, 16);
 
     return darkTheme.copyWith(
@@ -280,7 +279,9 @@ class MyApp extends StatelessWidget {
           secondary: APP_ACCENT_COLOR,
           tertiary: APP_TERTIARY,
           tertiaryContainer: Colors.black,
-          background: APP_PRIMARY_DARK_BACKGROUND),
+          background: APP_PRIMARY_DARK_BACKGROUND,
+          inversePrimary: APP_PRIMARY_DARK_BACKGROUND,
+          inverseSurface: APP_PRIMARY_DARK_COLOR),
       scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
       tabBarTheme: TabBarTheme(
         indicatorColor: APP_PRIMARY_DARK_COLOR,
@@ -312,12 +313,19 @@ class MyApp extends StatelessWidget {
         floatingLabelStyle:
             GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
         hintStyle: GoogleFonts.poppins(
-            fontSize: 16, fontWeight: FontWeight.normal, color: APP_TERTIARY),
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+            color: APP_INVERSE_PRIMARY_COLOR),
         errorStyle: const TextStyle(fontSize: 16),
       ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
       ),
+      dialogTheme: const DialogTheme(
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          contentTextStyle: TextStyle(fontSize: 16, fontFamily: 'poppins'),
+          backgroundColor: APP_PRIMARY_DARK_BACKGROUND),
       cardTheme: CardTheme(
           color: const Color.fromARGB(255, 0, 0, 0),
           shadowColor: Colors.black,
@@ -348,7 +356,7 @@ class MyApp extends StatelessWidget {
       bottomSheetTheme: const BottomSheetThemeData(
         modalBackgroundColor:
             APP_PRIMARY_DARK_BACKGROUND, //Color.fromRGBO(31, 31, 31, 1),
-        backgroundColor: Color.fromARGB(255, 10, 10, 10),
+        backgroundColor: Color.fromARGB(255, 29, 29, 29),
         clipBehavior: Clip.antiAlias,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(
@@ -386,8 +394,11 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_DARK_COLOR),
         bodySmall:
             GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
-        labelLarge:
-            GoogleFonts.poppins(fontSize: 16, wordSpacing: 0, letterSpacing: 0),
+        labelLarge: GoogleFonts.poppins(
+            fontSize: 16,
+            color: APP_PRIMARY_DARK_COLOR,
+            wordSpacing: 0,
+            letterSpacing: 0),
         labelMedium: GoogleFonts.poppins(
             fontSize: 14,
             wordSpacing: 0,
