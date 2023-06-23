@@ -29,7 +29,17 @@ class AvatarInitials extends StatelessWidget {
       },
       child: Container(
         padding: const EdgeInsets.all(2.0),
-        decoration: const BoxDecoration(shape: BoxShape.circle),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+              spreadRadius: 1,
+              blurRadius: 6,
+              offset: const Offset(2, 4),
+            ),
+          ],
+        ),
         child: CircleAvatar(
           radius: radius ?? 50,
           child: (photoUrl == '')

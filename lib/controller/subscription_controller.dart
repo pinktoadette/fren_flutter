@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -25,7 +26,8 @@ class SubscribeController extends GetxController {
   void getCredits() async {
     final _purchaseApi = PurchasesApi();
     Map<String, dynamic> result = await _purchaseApi.userCredits();
-    credits = result["credits"] ?? 0;
+    credits.value = result["credit"] ?? 0;
+    debugPrint(credits.value.toString());
   }
 
   void _listenPurchases() {

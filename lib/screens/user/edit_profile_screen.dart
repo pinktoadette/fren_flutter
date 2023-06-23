@@ -61,42 +61,54 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           child: ScopedModelDescendant<UserModel>(
               builder: (context, child, userModel) {
             return Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                /// Profile photo
-                GestureDetector(
-                  child: Stack(
-                    children: <Widget>[
-                      AvatarInitials(
-                        radius: 80,
-                        userId: userModel.user.userId,
-                        photoUrl: userModel.user.userProfilePhoto,
-                        username: userModel.user.username,
-                      ),
-
-                      /// Edit icon
-                      Positioned(
-                        child: CircleAvatar(
-                          radius: 12,
-                          backgroundColor: Theme.of(context).primaryColor,
-                          child: Icon(
-                            Icons.edit,
-                            color: Theme.of(context).colorScheme.background,
-                            size: 12,
+                Row(
+                  children: [
+                    /// Profile photo
+                    GestureDetector(
+                      child: Stack(
+                        children: <Widget>[
+                          AvatarInitials(
+                            userId: userModel.user.userId,
+                            photoUrl: userModel.user.userProfilePhoto,
+                            username: userModel.user.username,
                           ),
-                        ),
-                        right: 0,
-                        bottom: 0,
+
+                          /// Edit icon
+                          Positioned(
+                            child: CircleAvatar(
+                              radius: 12,
+                              backgroundColor: Theme.of(context).primaryColor,
+                              child: Icon(
+                                Icons.edit,
+                                color: Theme.of(context).colorScheme.background,
+                                size: 12,
+                              ),
+                            ),
+                            right: 0,
+                            bottom: 0,
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
-                  onTap: () async {
-                    /// Update profile image
-                    _selectImage(
-                        imageUrl: userModel.user.userProfilePhoto,
-                        path: 'profile');
-                  },
+                      onTap: () async {
+                        /// Update profile image
+                        _selectImage(
+                            imageUrl: userModel.user.userProfilePhoto,
+                            path: 'profile');
+                      },
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+
+                    /// username
+                    Text(
+                      UserModel().user.username,
+                      style: Theme.of(context).textTheme.headlineLarge,
+                    ),
+                  ],
                 ),
 
                 /// Bio field
@@ -108,16 +120,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                     maxLines: 10,
                     maxLength: 200,
                     decoration: InputDecoration(
-                      labelText: _i18n.translate("bio"),
-                      hintText: _i18n.translate("write_about_you"),
-                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                      hintText: _i18n.translate("write_your_bio"),
                     ),
-                    validator: (bio) {
-                      if (bio == null) {
-                        return _i18n.translate("please_write_your_bio");
-                      }
-                      return null;
-                    },
                   ),
                 ),
               ],

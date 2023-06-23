@@ -184,7 +184,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 isBotTyping: isBotTyping,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
-                inputTextCursorColor: Colors.grey,
                 inputTextStyle: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,

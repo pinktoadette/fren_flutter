@@ -103,6 +103,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             photoUrl: widget.user.userProfilePhoto,
                           ),
                         ),
+                        const SizedBox(
+                          width: 10,
+                        ),
                         Flexible(
                             child: SizedBox(
                                 width: size.width - avatar,
@@ -145,9 +148,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
                       children: [
-                        Text("$followers \n" + _i18n.translate("followers")),
+                        Text(
+                          "$followers \n" + _i18n.translate("followers"),
+                          textAlign: TextAlign.center,
+                        ),
                         const SizedBox(width: 50),
-                        Text("$followings \n" + _i18n.translate("following")),
+                        Text(
+                          "$followings \n" + _i18n.translate("following"),
+                          textAlign: TextAlign.center,
+                        ),
                         const Spacer(),
                         _followButton(),
                       ],

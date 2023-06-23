@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -205,6 +206,11 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: APP_ACCENT_COLOR,
+        selectionColor: Colors.green,
+        selectionHandleColor: Colors.black,
+      ),
       textTheme: TextTheme(
         displayLarge: GoogleFonts.poppins(fontSize: 25),
         displayMedium: GoogleFonts.poppins(fontSize: 22),
@@ -286,21 +292,29 @@ class MyApp extends StatelessWidget {
         unselectedLabelStyle: GoogleFonts.poppins(
             fontSize: 12, fontWeight: FontWeight.normal, color: APP_TERTIARY),
       ),
+      textSelectionTheme: const TextSelectionThemeData(
+        cursorColor: APP_ACCENT_COLOR,
+        selectionColor: Color.fromARGB(255, 33, 202, 165),
+        selectionHandleColor: Colors.black,
+      ),
       inputDecorationTheme: InputDecorationTheme(
-          isDense: true,
-          labelStyle: GoogleFonts.poppins(
-              fontSize: 14,
-              fontWeight: FontWeight.normal,
-              color: APP_PRIMARY_DARK_COLOR),
-          floatingLabelStyle:
-              GoogleFonts.poppins(fontSize: 14, color: APP_PRIMARY_DARK_COLOR),
-          hintStyle: GoogleFonts.poppins(
-              fontSize: 16, fontWeight: FontWeight.normal, color: APP_TERTIARY),
-          errorStyle: const TextStyle(fontSize: 16),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: const BorderSide(color: APP_ACCENT_COLOR, width: 2.0),
-          )),
+        border: OutlineInputBorder(
+            borderSide: BorderSide.none,
+            borderRadius: BorderRadius.circular(17)),
+        isDense: true,
+        fillColor: const Color.fromARGB(255, 26, 26, 26),
+        filled: true,
+        labelStyle: GoogleFonts.poppins(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: APP_PRIMARY_DARK_COLOR),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        floatingLabelStyle:
+            GoogleFonts.poppins(fontSize: 18, color: APP_PRIMARY_DARK_COLOR),
+        hintStyle: GoogleFonts.poppins(
+            fontSize: 16, fontWeight: FontWeight.normal, color: APP_TERTIARY),
+        errorStyle: const TextStyle(fontSize: 16),
+      ),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
       ),
@@ -312,7 +326,8 @@ class MyApp extends StatelessWidget {
           shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
         style: ElevatedButton.styleFrom(
-            foregroundColor: APP_PRIMARY_DARK_COLOR,
+            backgroundColor: APP_PRIMARY_DARK_COLOR,
+            foregroundColor: APP_PRIMARY_DARK_BACKGROUND,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
       ),
@@ -394,7 +409,8 @@ class MyApp extends StatelessWidget {
             statusBarIconBrightness:
                 Brightness.light, // Only honored in Android M and above
             statusBarBrightness: Brightness.dark),
-        titleTextStyle: TextStyle(color: APP_PRIMARY_COLOR, fontSize: 18),
+        titleTextStyle:
+            TextStyle(fontFamily: 'poppins', color: Colors.white, fontSize: 16),
       ),
     );
   }

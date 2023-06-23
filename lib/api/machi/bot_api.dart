@@ -68,8 +68,12 @@ class BotApi {
     return Bot.fromDocument(getData);
   }
 
-  Future<List<Bot>> getAllBots(int page, BotModelType modelType) async {
-    String url = '${baseUri}get_all?page=$page';
+  Future<List<Bot>> getAllBots(
+      {required int page,
+      required BotModelType modelType,
+      String? search}) async {
+    String url =
+        '${baseUri}get_all?page=$page${search != null ? "&search=$search" : ""}';
     final dio = await auth.getDio();
     final response = await dio.get(url);
     final getData = response.data;
