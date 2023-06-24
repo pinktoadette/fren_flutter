@@ -15,11 +15,14 @@ class TimelineHeader extends StatelessWidget {
   final _userApi = UserApi();
   final StoryUser user;
   final double? radius;
+  final double? paddingLeft;
   final int? timestamp;
   final bool? showAvatar;
   final bool? showName;
   final bool? showMenu;
   final bool? isChild;
+  final double? fontSize;
+  final Widget? underNameRow;
   final StoryComment? comment;
   final Function(String action)? onDeleteComment;
 
@@ -29,9 +32,12 @@ class TimelineHeader extends StatelessWidget {
       this.showAvatar = true,
       this.radius = 10,
       this.timestamp,
+      this.paddingLeft,
       this.showMenu,
       this.showName,
+      this.underNameRow,
       this.comment,
+      this.fontSize,
       this.isChild = false,
       this.onDeleteComment})
       : super(key: key);
@@ -43,10 +49,10 @@ class TimelineHeader extends StatelessWidget {
     return InkWell(
         onTap: () async {
           User u = await _userApi.getUserById(user.userId);
-          Get.to(ProfileScreen(user: u));
+          Get.to(() => ProfileScreen(user: u));
         },
         child: Container(
-          padding: const EdgeInsets.only(left: 15, right: 15),
+          padding: EdgeInsets.only(left: paddingLeft ?? 15, right: 15),
           child: Row(
               // mainAxisAlignment: MainAxisAlignment.start,
               // crossAxisAlignment: CrossAxisAlignment.center,
@@ -72,12 +78,12 @@ class TimelineHeader extends StatelessWidget {
                                 width:
                                     isChild == true ? width - 150 : width - 120,
                                 child: Text(user.username,
-                                    style:
-                                        Theme.of(context).textTheme.labelLarge),
+                                    style: TextStyle(fontSize: fontSize ?? 16)),
                               ),
                               if (timestamp != null)
                                 Text(formatDate(timestamp!),
                                     style: const TextStyle(fontSize: 10)),
+                              if (underNameRow != null) underNameRow!
                             ],
                           ),
                           if (showMenu == true)

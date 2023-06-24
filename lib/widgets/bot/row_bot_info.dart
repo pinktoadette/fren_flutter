@@ -1,3 +1,4 @@
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ class RowMachiInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
     double padding = 10;
-    double imageWidth = width * 0.2 + 5;
+    double imageWidth = width * 0.25 + 5;
     double textWidth = width - (padding * 2 + imageWidth + 30);
     return Container(
         padding: EdgeInsets.all(padding),
@@ -43,7 +44,10 @@ class RowMachiInfo extends StatelessWidget {
                     style: Theme.of(context).textTheme.headlineSmall,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(width: 5),
+                  Text(bot.category,
+                      style: const TextStyle(
+                          color: APP_MUTED_COLOR, fontSize: 14)),
+                  const SizedBox(height: 15),
                   SizedBox(
                       height: 80,
                       width: textWidth,

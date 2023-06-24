@@ -31,7 +31,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
   }
 
   void _getMyBoards() async {
-    await storyboardController.getBoards();
+    await storyboardController.getBoards(filter: StoryStatus.UNPUBLISHED);
   }
 
   @override

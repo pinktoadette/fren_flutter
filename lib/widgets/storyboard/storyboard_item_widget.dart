@@ -83,9 +83,15 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           padding: EdgeInsets.only(top: padding),
           width: width,
           child: TimelineHeader(
+            radius: 24,
             user: storyboard.createdBy,
             showName: true,
             showMenu: false,
+            underNameRow:
+                Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                    style: const TextStyle(
+                      fontSize: 12,
+                    )),
           ),
         ),
         InkWell(
@@ -101,20 +107,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                     const SizedBox(
                       height: 15,
                     ),
-                    Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                        style: const TextStyle(fontSize: 10)),
-                    Text(storyboard.category,
-                        style: const TextStyle(
-                            fontSize: 10,
-                            color: APP_SECONDARY_ACCENT_COLOR,
-                            fontWeight: FontWeight.bold)),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (photoUrl != "")
                           StoryCover(
                               width: width * 0.2,
-                              height: width * 0.2,
+                              height: width * 0.5,
                               photoUrl: photoUrl,
                               title: title),
                         Container(
@@ -134,6 +133,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                         Theme.of(context).colorScheme.primary,
                                     fontWeight: FontWeight.bold),
                               )),
+                              Text(storyboard.category,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: APP_MUTED_COLOR)),
+                              const SizedBox(
+                                height: 15,
+                              ),
                               if (subtitle != "")
                                 textLinkPreview(
                                     context: context, text: subtitle)

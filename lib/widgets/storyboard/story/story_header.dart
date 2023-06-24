@@ -15,7 +15,7 @@ class StoryHeaderWidget extends StatelessWidget {
   const StoryHeaderWidget({Key? key, required this.story}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    double storyCoverWidth = 50;
+    double storyCoverWidth = 70;
     double padding = 20;
     return InkWell(
       onTap: () async {
@@ -27,11 +27,6 @@ class StoryHeaderWidget extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TimelineHeader(
-                user: story.createdBy,
-                showAvatar: true,
-                showName: true,
-              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
@@ -45,17 +40,25 @@ class StoryHeaderWidget extends StatelessWidget {
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      TimelineHeader(
+                        paddingLeft: 0,
+                        user: story.createdBy,
+                        showAvatar: false,
+                        showName: true,
+                        fontSize: 12,
+                        isChild: true,
+                      ),
                       Text(story.title,
                           overflow: TextOverflow.fade,
                           maxLines: 1,
                           softWrap: false,
                           style: Theme.of(context).textTheme.labelMedium),
                       Text("${story.pages?.length ?? 0} pages",
-                          style: Theme.of(context).textTheme.labelSmall)
+                          style: Theme.of(context).textTheme.labelSmall),
                     ],
-                  ))
+                  )),
                 ],
-              )
+              ),
             ],
           )),
     );

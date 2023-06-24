@@ -303,7 +303,7 @@ class MyApp extends StatelessWidget {
             borderSide: BorderSide.none,
             borderRadius: BorderRadius.circular(17)),
         isDense: true,
-        fillColor: const Color.fromARGB(255, 26, 26, 26),
+        fillColor: APP_INPUT_COLOR,
         filled: true,
         labelStyle: GoogleFonts.poppins(
             fontSize: 14,

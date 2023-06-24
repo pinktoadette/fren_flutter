@@ -7,6 +7,7 @@ import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -96,7 +97,7 @@ class _HomeScreenState extends State<HomeScreen> {
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
     chatController.initUser();
     chatController.onChatLoad();
-    storyController.getBoards();
+    storyController.getBoards(filter: StoryStatus.UNPUBLISHED);
     timelineController.fetchPage(0);
   }
 

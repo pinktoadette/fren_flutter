@@ -6,12 +6,13 @@ import 'package:flutter/material.dart';
 ///
 const String APP_NAME = "machi";
 const Color APP_PRIMARY_COLOR = Colors.black;
-const Color APP_MUTED_COLOR = Colors.black12;
+const Color APP_MUTED_COLOR = Color.fromARGB(120, 250, 250, 250);
 const Color APP_ACCENT_COLOR = Color.fromARGB(255, 33, 202, 137);
-const Color APP_SECONDARY_ACCENT_COLOR = Color.fromARGB(255, 223, 51, 117);
+const Color APP_SECONDARY_ACCENT_COLOR = Color.fromARGB(255, 202, 137, 33);
 const Color APP_LIKE_COLOR = Color.fromARGB(255, 236, 85, 136);
 const Color APP_PRIMARY_BACKGROUND = Colors.white;
 const Color APP_INVERSE_PRIMARY_COLOR = Color.fromARGB(255, 196, 196, 196);
+const Color APP_INPUT_COLOR = Color.fromARGB(255, 26, 26, 26);
 const Color APP_TERTIARY = Color.fromARGB(255, 30, 30, 30);
 const Color APP_SUCCESS = Color.fromARGB(255, 33, 202, 137);
 const Color APP_WARNING = Color.fromARGB(255, 236, 185, 85);

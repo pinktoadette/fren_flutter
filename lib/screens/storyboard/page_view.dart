@@ -48,7 +48,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   final _timelineApi = TimelineApi();
 
   late AppLocalizations _i18n;
-  double bodyHeightPercent = 0.83;
+  double bodyHeightPercent = 0.85;
   double headerHeight = 140;
   final _storyApi = StoryApi();
 
@@ -252,7 +252,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   const CommentWidget(),
                                   const SliverToBoxAdapter(
                                       child: SizedBox(
-                                    height: 120,
+                                    height: 100,
                                   ))
                                 ]),
                             Positioned(bottom: 0, child: PostCommentWidget())
@@ -339,8 +339,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                       controller: controller,
                       count: story!.pages!.length,
                       effect: const ExpandingDotsEffect(
-                          dotHeight: 8,
-                          dotWidth: 14,
+                          dotHeight: 10,
+                          dotWidth: 18,
                           activeDotColor: APP_ACCENT_COLOR),
                     )),
                 const SizedBox(

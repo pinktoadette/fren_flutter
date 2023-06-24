@@ -21,65 +21,25 @@ class PostCommentWidget extends StatelessWidget {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
 
-    return Stack(
-      children: [
-        Container(
-          padding:
-              const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
-          width: width,
-          decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.tertiary,
-              borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(24), topRight: Radius.circular(24))),
-          child: ConstrainedBox(
-              constraints: const BoxConstraints(
-                minHeight: 80,
-                maxHeight: 350.0,
-              ),
-              child: TextFormField(
-                style: Theme.of(context).textTheme.bodyMedium,
-                controller: _commentController,
-                maxLines: null,
-                // maxLength: 250,
-                decoration: InputDecoration(
-                  fillColor: Colors.transparent,
-                  hintText: _i18n.translate("comment_leave"),
-                  hintStyle: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 14),
-                  border: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  errorBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  suffixIcon: IconButton(
-                    icon: const Icon(Iconsax.send_1),
-                    onPressed: () {
-                      if (_commentController.text.isEmpty) {
-                        return;
-                      } else {
-                        _postComment();
-                      }
-                    },
-                  ),
-                ),
-                validator: (value) {
-                  if ((value == null) || (value == "")) {
-                    return _i18n.translate("validation_1_character");
-                  }
-                  return null;
-                },
-              )),
-        ),
-        Obx(() => commentController.replyToComment.commentId != null
-            ? Positioned(
-                bottom: 0,
-                left: 5,
-                child: Align(
-                  widthFactor: 1,
-                  child: TextButton.icon(
+    return Container(
+        padding:
+            const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+        width: width,
+        decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.tertiary,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(24), topRight: Radius.circular(24))),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Obx(() => commentController.replyToComment.commentId != null
+                ? TextButton.icon(
+                    style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        alignment: Alignment.centerLeft),
                     label: Text(
-                      "Reply @${truncateText(30, commentController.replyToComment.user.username)}",
+                      "${_i18n.translate("comment_reply_to")} @${truncateText(30, commentController.replyToComment.user.username)}",
                       style: Theme.of(context).textTheme.labelSmall,
                       overflow: TextOverflow.fade,
                     ),
@@ -87,11 +47,52 @@ class PostCommentWidget extends StatelessWidget {
                     onPressed: () {
                       commentController.clearReplyTo();
                     },
+                  )
+                : const SizedBox.shrink()),
+            ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 60,
+                  maxHeight: 350.0,
+                ),
+                child: TextFormField(
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  controller: _commentController,
+                  maxLines: null,
+                  // maxLength: 250,
+                  decoration: InputDecoration(
+                    fillColor: Colors.transparent,
+                    hintText: _i18n.translate("comment_leave"),
+                    hintStyle: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 14),
+                    border: InputBorder.none,
+                    focusedBorder: InputBorder.none,
+                    enabledBorder: InputBorder.none,
+                    errorBorder: InputBorder.none,
+                    disabledBorder: InputBorder.none,
+                    suffixIcon: IconButton(
+                      icon: const Icon(
+                        Iconsax.send_2,
+                        size: 24,
+                      ),
+                      onPressed: () {
+                        if (_commentController.text.isEmpty) {
+                          return;
+                        } else {
+                          _postComment();
+                        }
+                      },
+                    ),
                   ),
-                ))
-            : const SizedBox.shrink()),
-      ],
-    );
+                  validator: (value) {
+                    if ((value == null) || (value == "")) {
+                      return _i18n.translate("validation_1_character");
+                    }
+                    return null;
+                  },
+                )),
+          ],
+        ));
   }
 
   void _postComment() async {

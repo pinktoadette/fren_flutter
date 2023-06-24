@@ -424,6 +424,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     if (content["gallery"] != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
+          characterId: UserModel().user.userId,
           type: "image",
           storyId: story.storyId,
           image: {

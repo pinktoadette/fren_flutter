@@ -38,7 +38,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextStyle textStyle = GoogleFonts.poppins(
       fontSize: 16, color: Colors.black, fontWeight: FontWeight.normal);
   TextStyle dimmedStyle = GoogleFonts.poppins(
-      fontSize: 16, color: APP_MUTED_COLOR, fontWeight: FontWeight.normal);
+      fontSize: 16, color: Colors.black12, fontWeight: FontWeight.normal);
   @override
   void initState() {
     super.initState();

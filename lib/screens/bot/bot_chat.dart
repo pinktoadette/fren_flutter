@@ -184,12 +184,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 isBotTyping: isBotTyping,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
+                inputBackgroundColor: APP_INPUT_COLOR,
                 inputTextStyle: GoogleFonts.poppins(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,
                 ),
                 primaryColor: Theme.of(context).colorScheme.secondary,
-                sendButtonIcon: const Icon(Iconsax.send_2, color: Colors.white),
+                sendButtonIcon: Icon(Iconsax.send_2,
+                    color: Theme.of(context).colorScheme.primary),
                 backgroundColor: Theme.of(context).colorScheme.background),
             onEndReached: _loadMoreMessage, //get more messages on top
             showUserNames: true,
