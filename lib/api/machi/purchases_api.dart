@@ -28,11 +28,19 @@ class PurchasesApi {
     }
   }
 
-  Future<Map<String, dynamic>> userCredits() async {
+  Future<Map<String, dynamic>> purchaseCredits() async {
     String url = '${baseUri}purchases/credits';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.post(url);
+    return response.data;
+  }
+
+  Future<Map<String, dynamic>> getCredits() async {
+    String url = '${baseUri}subscriber/credits';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
     return response.data;
   }
 }

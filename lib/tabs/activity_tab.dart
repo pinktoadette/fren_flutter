@@ -11,6 +11,7 @@ import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/tips/machi_how_to.dart';
@@ -57,6 +58,7 @@ class _ActivityTabState extends State<ActivityTab> {
                         Iconsax.info_circle,
                         color: APP_ACCENT_COLOR,
                       ))),
+            const SubscribeTokenCounter(),
             Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: Row(

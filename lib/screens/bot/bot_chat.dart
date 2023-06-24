@@ -20,6 +20,7 @@ import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter/material.dart';
@@ -71,6 +72,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool _isAttachmentUploading = false;
   bool isLoading = false;
   bool isBotSleeping = false;
+
   bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
@@ -159,15 +161,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               _showBotInfo();
             },
           ),
-          actions: [
-            TextButton.icon(
-                onPressed: () {
-                  _showSubscription(context);
-                },
-                icon: const Icon(Iconsax.coin),
-                label: Obx(
-                    () => Text(subscribeController.credits.value.toString())))
-          ],
+          actions: const [SubscribeTokenCounter()],
         ),
         body: Chat(
             listBottomWidget: CustomHeaderInputWidget(
@@ -635,13 +629,5 @@ class _BotChatScreenState extends State<BotChatScreen> {
         })
         .then((_) => messageController.offset = 10)
         .then((_) => Get.back());
-  }
-
-  void _showSubscription(BuildContext context) {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.98, child: SubscriptionProduct()));
   }
 }

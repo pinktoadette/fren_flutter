@@ -1,3 +1,5 @@
+import 'package:get/get.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -6,6 +8,7 @@ import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:machi_app/widgets/profile_basic_info_card.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_purchase_details.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -89,10 +92,15 @@ class ProfileTab extends StatelessWidget {
   }
 
   void _showSubscription(BuildContext context) {
+    final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
-        builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.98, child: SubscriptionProduct()));
+        builder: (context) => Obx(() => FractionallySizedBox(
+            heightFactor: subscribeController.credits.value > 0 ? 0.50 : 0.98,
+            child: subscribeController.credits.value > 0
+                ? const SubscribePurchaseDetails()
+                : const SubscriptionProduct())));
   }
 }

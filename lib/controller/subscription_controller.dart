@@ -25,7 +25,7 @@ class SubscribeController extends GetxController {
 
   void getCredits() async {
     final _purchaseApi = PurchasesApi();
-    Map<String, dynamic> result = await _purchaseApi.userCredits();
+    Map<String, dynamic> result = await _purchaseApi.getCredits();
     credits.value = result["credit"] ?? 0;
     debugPrint(credits.value.toString());
   }

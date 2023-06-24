@@ -246,13 +246,16 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
-        await _purchaseApi.userCredits();
+        await _purchaseApi.purchaseCredits();
+        await _purchaseApi.getCredits();
       }
-      Navigator.of(context).pop();
 
       Get.snackbar(_i18n.translate("success"),
           _i18n.translate("subscribed_successfully"),
-          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+          colorText: Colors.black,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS);
+      Navigator.of(context).pop();
     } on PlatformException catch (e) {
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {

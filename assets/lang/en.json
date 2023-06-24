@@ -102,6 +102,14 @@
   "subscribe_tokens_image": "200 tokens per each read and create generative image",
   "subscribe_no_offering_found": "No offers found",
   "subscribe_expired": "Subscription is expired",
+  
+  "subscribed_credits": "Credits",
+  "subscribed_active": "You are currently subscribed",
+  "subscribed_expires_on": "Expires on",
+  "subscribed_plan": "Your plan is on",
+  "subscribed_credits_remaining": "credits remaining.",
+  "subscribed_manage_plan": "Manage Plan",
+  "subscribed_credits_expired_footnote": "Use your credits before end of expiration or your credits will be lost.",
   "get": "Get",
 
   "_FlagUserDialog": "*** Flag User Profile Dialog Translations ***",
@@ -205,7 +213,7 @@
   "have_you_already_subscribed": "Have you subscribed?",
   "subscription_successfully_restored": "Subscription restored.",
   "oops_you_dont_have_an_activ_subscription": "Oops, you don't have an active subscription!\n\nPlease choose your package to subscribe.",
-  "subscribed_successfully": "Successfully subscribed! Start creating",
+  "subscribed_successfully": "Successfully subscribed! Start creating images",
 
   "_New_Version_1.0.5": "*** New version 1.0.5 Translations ***",
   
@@ -332,6 +340,7 @@
   "comment_none": "No comments. \nBe the first.",
   "comment_reply": "Reply",
   "comment_sent_success": "Reply sent",
+  "comment_reply_to": "Replying to",
   "comment_leave": "Leave a comment",
   "comment_delete": "Are you are you want to delete the comment?",
   "comment_deleted": "Deleted comment",
