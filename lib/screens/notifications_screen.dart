@@ -60,7 +60,7 @@ class NotificationsScreen extends StatelessWidget {
                         },
                         child: AvatarInitials(
                           radius: 20,
-                          userId: notification[NOTIF_RECEIVER_ID],
+                          userId: notification[NOTIF_SENDER_ID],
                           photoUrl: notification[NOTIF_SENDER_PHOTO_LINK],
                           username: notification[NOTIF_SENDER_USERNAME],
                         )),
@@ -89,7 +89,8 @@ class NotificationsScreen extends StatelessWidget {
                     onTap: () async {
                       /// Set notification read = true
                       await notification.reference.update({NOTIF_READ: true});
-                      if (notification[NOTIF_TYPE] == "REQUEST") {
+                      if (notification[NOTIF_TYPE] == "REQUEST" ||
+                          notification[NOTIF_TYPE] == "FOLLOWING") {
                         final User user = await UserModel()
                             .getUserObject(notification[NOTIF_SENDER_ID]);
                         Navigator.of(context).push(MaterialPageRoute(
