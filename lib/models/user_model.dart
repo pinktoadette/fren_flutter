@@ -615,7 +615,9 @@ class UserModel extends Model {
 
     /// Delete previous uploaded image if not nul
     if (oldImageUrl != "") {
-      await FirebaseStorage.instance.refFromURL(oldImageUrl!).delete();
+      if (oldImageUrl!.contains(UPLOAD_PATH_USER_PROFILE)) {
+        await FirebaseStorage.instance.refFromURL(oldImageUrl).delete();
+      }
     }
 
     /// Upload new image
@@ -626,10 +628,6 @@ class UserModel extends Model {
       /// Update profile image link
       await updateUserData(
           userId: user.userId, data: {USER_PROFILE_PHOTO: imageLink});
-    } else {
-      /// Update gallery image
-      await updateUserData(
-          userId: user.userId, data: {'$USER_GALLERY.image_$index': imageLink});
     }
   }
 

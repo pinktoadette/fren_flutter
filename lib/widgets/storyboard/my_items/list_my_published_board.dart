@@ -20,7 +20,6 @@ class ListPublishBoard extends StatefulWidget {
 class _ListPublishBoardState extends State<ListPublishBoard> {
   late AppLocalizations _i18n;
   double itemHeight = 150;
-  final _storyboardApi = StoryboardApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
@@ -43,40 +42,21 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
-        body: RefreshIndicator(
-            onRefresh: () async {
-              // Refresh Functionality
-              await _storyboardApi.getMyStoryboards(
-                  statusFilter: StoryStatus.PUBLISHED.name);
-            },
-            child: storyboardController.published.isEmpty
-                ? Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      _i18n.translate("story_nothing"),
-                      textAlign: TextAlign.center,
-                    ),
-                  )
-                : Obx(
-                    () => ListView.builder(
-                        shrinkWrap: true,
-                        scrollDirection: Axis.vertical,
-                        itemCount: storyboardController.published.length,
-                        itemBuilder: (BuildContext ctx, index) {
-                          Storyboard story =
-                              storyboardController.published[index];
-                          if (story.title == '') {
-                            return NoData(
-                                text: _i18n.translate("storyboard_nothing"));
-                          }
-                          return InkWell(
-                              onTap: () {
-                                _onStoryClick(index, story);
-                              },
-                              child: StoryboardItemWidget(
-                                  item: storyboardController.published[index]));
-                        }),
-                  )));
+        body: Obx(
+          () => ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
+              itemCount: storyboardController.published.length,
+              itemBuilder: (BuildContext ctx, index) {
+                Storyboard story = storyboardController.published[index];
+                return InkWell(
+                    onTap: () {
+                      _onStoryClick(index, story);
+                    },
+                    child: StoryboardItemWidget(
+                        item: storyboardController.published[index]));
+              }),
+        ));
   }
 
   void _onStoryClick(int index, Storyboard story) {

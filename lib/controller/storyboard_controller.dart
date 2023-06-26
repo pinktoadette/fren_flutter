@@ -37,6 +37,7 @@ class StoryboardController extends GetxController {
   // ignore: prefer_final_fields
   Rx<Storyboard> _currentStoryboard = initialStoryboard.obs;
   Rx<Story?> _currentStory = (null).obs;
+  RxList<Storyboard> _published = <Storyboard>[].obs;
 
   Storyboard get currentStoryboard => _currentStoryboard.value;
   set currentStoryboard(Storyboard value) => _currentStoryboard.value = value;
@@ -47,7 +48,8 @@ class StoryboardController extends GetxController {
   Story get currentStory => _currentStory.value ?? intialStory;
   set currentStory(Story value) => _currentStory.value = value;
 
-  RxList<Storyboard> published = <Storyboard>[].obs;
+  List<Storyboard> get published => _published;
+  set published(List<Storyboard> value) => _published.value = value;
 
   /// this is your own boards not timeline. Timeline has its own api call
   Future<void> getBoards({StoryStatus? filter}) async {
@@ -55,9 +57,11 @@ class StoryboardController extends GetxController {
     final List<Storyboard> stories =
         await storyboardApi.getMyStoryboards(statusFilter: filter?.name);
     if (filter == StoryStatus.PUBLISHED) {
-      published = stories.obs;
+      _published.addAll(stories);
+    } else {
+      _storyboards = stories.obs;
     }
-    _storyboards = stories.obs;
+    update();
   }
 
   void addNewStoryboard(Storyboard story) async {

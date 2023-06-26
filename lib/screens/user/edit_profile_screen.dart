@@ -139,15 +139,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         builder: (context) => ImageSourceSheet(
               onImageSelected: (image) async {
                 if (image != null) {
-                  /// Show progress dialog
-                  _pr.show(_i18n.translate("processing"));
-
                   /// Update profile image
                   await UserModel().updateProfileImage(
                       imageFile: image, oldImageUrl: imageUrl, path: 'profile');
-                  // Hide dialog
-                  _pr.hide();
-                  // close modal
                   Navigator.of(context).pop();
                 }
               },

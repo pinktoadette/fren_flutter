@@ -14,12 +14,14 @@ class CustomHeaderInputWidget extends StatefulWidget {
   final Function(dynamic data) onUpdateWidget;
   final Function(String image) onImageSelect;
 
+  final String? onTagChange;
   final bool? isBotTyping;
   final types.PartialImage? attachmentPreview;
   const CustomHeaderInputWidget(
       {super.key,
       required this.onUpdateWidget,
       required this.onImageSelect,
+      this.onTagChange,
       this.isBotTyping,
       this.attachmentPreview});
 
@@ -35,6 +37,16 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (_selectedIcon != null && widget.onTagChange == null) {
+      setState(() {
+        _selectedIcon = widget.onTagChange;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override

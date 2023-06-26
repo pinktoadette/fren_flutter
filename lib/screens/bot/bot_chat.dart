@@ -21,7 +21,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
-import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -153,7 +152,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
           // Show User profile info
           title: GestureDetector(
-            child: Obx(() => Text(chatController.botController.bot.name,
+            child: Obx(() => Text(botController.bot.name,
                 overflow: TextOverflow.fade,
                 style: Theme.of(context).textTheme.displayMedium)),
             onTap: () {
@@ -172,12 +171,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 },
                 onImageSelect: (value) {
                   setState(() {
-                    _setTags = value;
+                    _setTags = value == _setTags ? null : value;
                   });
                 },
+                onTagChange: _setTags,
                 isBotTyping: isBotTyping,
                 attachmentPreview: attachmentPreview),
             theme: DefaultChatTheme(
+                sentMessageBodyTextStyle: const TextStyle(color: Colors.black),
                 inputBackgroundColor: APP_INPUT_COLOR,
                 inputTextStyle: GoogleFonts.poppins(
                   fontSize: 16,
@@ -236,6 +237,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 _i18n.translate("success"),
                 _i18n.translate("story_added"),
                 snackPosition: SnackPosition.TOP,
+                colorText: Colors.black,
                 backgroundColor: APP_SUCCESS,
               );
             } else {
@@ -485,9 +487,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _channel.sink.add(json.encode({"message": response}));
     }
 
-    subscribeController.getCredits();
+    if (_setTags != null) {
+      subscribeController.getCredits();
+    }
     setState(() {
       isBotTyping = false;
+      _setTags = null;
     });
   }
 
@@ -545,7 +550,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         return FractionallySizedBox(
             heightFactor: 400 / height,
             child: BotProfileCard(
-              bot: chatController.botController.bot,
+              bot: botController.bot,
               room: _room,
               roomIdx: _roomIdx,
             ));

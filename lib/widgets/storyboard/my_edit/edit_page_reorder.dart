@@ -47,6 +47,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Layout? layout;
+  final GlobalKey _draggableKey = GlobalKey();
 
   @override
   void initState() {

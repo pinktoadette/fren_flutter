@@ -32,13 +32,6 @@ class TimelineController extends GetxController {
     super.dispose();
   }
 
-  @override
-  void onReady() {
-    pagingController.notifyPageRequestListeners(1);
-
-    super.onReady();
-  }
-
   Future<void> fetchPage(int pageKey) async {
     try {
       List<Storyboard> newItems =
