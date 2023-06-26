@@ -39,7 +39,7 @@ class PostCommentWidget extends StatelessWidget {
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         alignment: Alignment.centerLeft),
                     label: Text(
-                      "${_i18n.translate("comment_reply_to")} @${truncateText(30, commentController.replyToComment.user.username)}",
+                      "${_i18n.translate("comment_reply_to")} @${truncateText(maxLength: 30, text: commentController.replyToComment.user.username)}",
                       style: Theme.of(context).textTheme.labelSmall,
                       overflow: TextOverflow.fade,
                     ),

@@ -47,7 +47,7 @@
 //       if (message.type == types.MessageType.text &&
 //           !_trackUser.contains(message.author.firstName)) {
 //         _trackUser.add(message.author.firstName);
-//         String text = truncateText(200, message.text);
+//         String text = truncateText(maxLength: 200, text: message.text);
 //         Map<String, String> language = _streamApi.detectLanguage(string: text);
 //         List<String> voices = regionLang(lang: language["lang"]!)
 //             .map((e) =>

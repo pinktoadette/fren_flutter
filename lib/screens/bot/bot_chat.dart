@@ -243,7 +243,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             } else {
               Get.snackbar(
                 _i18n.translate("error"),
-                "only images are allowed",
+                _i18n.translate("add_images_only_collection"),
                 snackPosition: SnackPosition.TOP,
                 backgroundColor: APP_ERROR,
               );

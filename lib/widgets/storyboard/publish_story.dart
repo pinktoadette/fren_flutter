@@ -81,7 +81,7 @@ class _PublishStoryState extends State<PublishStory> {
                       const Padding(
                           padding: EdgeInsets.only(bottom: 50),
                           child: FireworksAnimation()),
-                    const Frankloader(),
+                    if (_isLoading == false) const Frankloader(),
                   ],
                 ),
                 if (_isLoading == true)

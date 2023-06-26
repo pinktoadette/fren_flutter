@@ -115,6 +115,8 @@ class _StoryEditState extends State<StoryEdit> {
           const SizedBox(
             height: 20,
           ),
+          Text(_i18n.translate("story_collection_title"),
+              style: Theme.of(context).textTheme.labelMedium),
           TextFormField(
             controller: _titleController,
             maxLength: 80,

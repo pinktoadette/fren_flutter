@@ -40,7 +40,7 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
         style: Theme.of(context).textTheme.labelMedium,
       ),
       const SizedBox(
-        width: 10,
+        width: 50,
       ),
       _category.isNotEmpty
           ? Expanded(

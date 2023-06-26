@@ -291,7 +291,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
         String text = message['text'];
         return Flexible(
             child: Text(
-          truncateText(100, text),
+          truncateText(maxLength: 100, text: text, removeNewline: true),
           style: Theme.of(context).textTheme.bodyMedium,
         ));
       case 'image':

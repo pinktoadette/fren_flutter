@@ -14,6 +14,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
+import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
@@ -121,7 +122,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                   padding: const EdgeInsets.all(10.0),
                   child: ElevatedButton(
                       onPressed: () {
-                        Get.to(() => PublishStory(story: story!));
+                        Get.to(() => ConfirmPublishDetails(
+                              story: widget.story,
+                            ));
                       },
                       child: Text(_i18n.translate("publish")))),
             if (story?.status.name == StoryStatus.PUBLISHED.name)

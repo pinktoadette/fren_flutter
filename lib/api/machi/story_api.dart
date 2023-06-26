@@ -119,6 +119,8 @@ class StoryApi {
       {required Story story,
       String? title,
       String? photoUrl,
+      String? summary,
+      String? category,
       String? layout}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
@@ -129,6 +131,8 @@ class StoryApi {
       await dio.put(url, data: {
         STORY_ID: story.storyId,
         STORY_TITLE: title ?? story.title,
+        STORY_CATEGORY: category ?? story.category,
+        STORY_SUMMARY: summary ?? story.summary,
         STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
         STORY_LAYOUT: layout ?? story.layout!.name
       });

@@ -311,7 +311,12 @@
   "my_machi": "My Machi",
 
   "publish": "Publish",
-  "publish_confirm": "Are you sure you want to publish this board?",
+  "publish_confirm_title": "Confirm Publish Info",
+  "publish_confirm": "Confirm",
+  "publish_confirm_title_story": "Title",
+  "publish_confirm_format": "Layout Format",
+  "publish_confirm_summary": "Summary",
+  "publish_confirm_category": "Category",
   "saved_success": "Saved",
   "search": "Search",
   "search_machi": "Search machi",
@@ -412,6 +417,7 @@
 
   "new_story_collection": "New Collection",
   "add_message_collection": "Add message to a collection",
+  "add_images_only_collection": "Only images are allowed in gallery",
   "story_collection": "Collection",
   "story_collection_title": "Title",
   "story_collection_subtitle": "Subtitle",

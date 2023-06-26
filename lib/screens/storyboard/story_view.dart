@@ -176,25 +176,6 @@ class _StoriesViewState extends State<StoriesView> {
               _i18n.translate("new_story_collection"),
               style: Theme.of(context).textTheme.labelSmall,
             )),
-
-      /// Publish all
-      // if (widget.message == null)
-      //   TextButton(
-      //       onPressed: () {
-      //         confirmDialog(context,
-      //             icon: const Icon(Iconsax.warning_2),
-      //             negativeAction: () => Navigator.of(context).pop(),
-      //             negativeText: _i18n.translate("CANCEL"),
-      //             message: _i18n.translate("publish_confirm"),
-      //             positiveText: _i18n.translate("publish"),
-      //             positiveAction: () {
-      //               _publishAll();
-      //             });
-      //       },
-      //       child: Text(
-      //         _i18n.translate("publish"),
-      //         style: Theme.of(context).textTheme.labelSmall,
-      //       ))
     ];
   }
 

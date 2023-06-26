@@ -1,7 +1,9 @@
-String truncateText(int maxLength, String text) {
-  int strLength = text.length;
+String truncateText(
+    {required int maxLength, required String text, bool? removeNewline}) {
+  String newText = removeNewline == true ? text.replaceAll("\n", " ") : text;
+  int strLength = newText.length;
   if (strLength > maxLength) {
-    return "${text.substring(0, maxLength)}...";
+    return "${newText.substring(0, maxLength)}...";
   }
-  return text;
+  return newText;
 }
