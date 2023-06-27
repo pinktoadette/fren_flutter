@@ -94,11 +94,15 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       dynamic message = widget.message;
       if (widget.message.type == types.MessageType.text) {
         await _storyboardApi.createStoryboard(
-            text: message.text, characterId: widget.message.author.id);
+            character: widget.message.author.firstName,
+            text: message.text,
+            characterId: widget.message.author.id);
       }
       if (widget.message.type == types.MessageType.image) {
         await _storyboardApi.createStoryboard(
-            image: message.uri, characterId: widget.message.author.id);
+            image: message.uri,
+            character: widget.message.author.firstName,
+            characterId: widget.message.author.id);
       }
       Navigator.of(context).pop();
       Get.snackbar(

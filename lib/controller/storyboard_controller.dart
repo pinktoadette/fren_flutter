@@ -37,6 +37,8 @@ class StoryboardController extends GetxController {
   // ignore: prefer_final_fields
   Rx<Storyboard> _currentStoryboard = initialStoryboard.obs;
   Rx<Story?> _currentStory = (null).obs;
+
+  // ignore: prefer_final_fields
   RxList<Storyboard> _published = <Storyboard>[].obs;
 
   Storyboard get currentStoryboard => _currentStoryboard.value;

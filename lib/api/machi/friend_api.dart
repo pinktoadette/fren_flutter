@@ -16,6 +16,48 @@ class FriendApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
+  Future<List<User>> userFollowing(String userId) async {
+    try {
+      String url = '${baseUri}follow/followings?userId=$userId';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.get(url);
+      final getData = response.data;
+
+      List<User> users = [];
+
+      for (var user in getData) {
+        Map<String, dynamic> record = user['user'];
+        users.add(User.fromDocument(record));
+      }
+      return users;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
+  Future<List<User>> userFollowers(String userId) async {
+    try {
+      String url = '${baseUri}follow/followers?userId=$userId';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.get(url);
+      final getData = response.data;
+
+      List<User> users = [];
+
+      for (var user in getData) {
+        Map<String, dynamic> record = user['user'];
+        users.add(User.fromDocument(record));
+      }
+      return users;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
   Future<User> followRequest(String friendId) async {
     try {
       String url = '${baseUri}follow/follow';

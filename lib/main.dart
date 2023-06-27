@@ -208,7 +208,7 @@ class MyApp extends StatelessWidget {
       textSelectionTheme: const TextSelectionThemeData(
         cursorColor: APP_ACCENT_COLOR,
         selectionColor: Colors.green,
-        selectionHandleColor: Colors.black,
+        selectionHandleColor: APP_ACCENT_COLOR,
       ),
       textTheme: TextTheme(
         displayLarge: GoogleFonts.poppins(fontSize: 25),

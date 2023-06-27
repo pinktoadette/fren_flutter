@@ -6,6 +6,8 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/user/follower_list.dart';
+import 'package:machi_app/screens/user/following_list.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -148,14 +150,24 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
                       children: [
-                        Text(
-                          "$followers \n" + _i18n.translate("followers"),
-                          textAlign: TextAlign.center,
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => FollowerList(user: widget.user));
+                          },
+                          child: Text(
+                            "$followers \n" + _i18n.translate("followers"),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         const SizedBox(width: 50),
-                        Text(
-                          "$followings \n" + _i18n.translate("following"),
-                          textAlign: TextAlign.center,
+                        TextButton(
+                          onPressed: () {
+                            Get.to(() => FollowingList(user: widget.user));
+                          },
+                          child: Text(
+                            "$followings \n" + _i18n.translate("following"),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                         const Spacer(),
                         _followButton(),
