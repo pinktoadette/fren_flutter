@@ -81,8 +81,8 @@ dependencies:
       ref: main
   any_link_preview: ^3.0.0
   chips_choice: ^3.0.0
-  cached_network_image: ^3.2.3
-  purchases_flutter: ^5.0.0
+  cached_network_image: ^3.2.3 #no web
+  purchases_flutter: ^5.0.0 #no web
   card_swiper: ^2.0.4
 
 dependency_overrides:

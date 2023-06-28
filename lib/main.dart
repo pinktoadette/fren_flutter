@@ -269,7 +269,7 @@ class MyApp extends StatelessWidget {
   // dark
   ThemeData _darkTheme() {
     final ThemeData darkTheme = ThemeData.dark();
-    const APP_PRIMARY_DARK_COLOR = Color.fromARGB(255, 196, 196, 196);
+    const APP_PRIMARY_DARK_COLOR = Color.fromARGB(255, 184, 183, 183);
     const APP_PRIMARY_DARK_BACKGROUND = Color.fromARGB(255, 16, 16, 16);
 
     return darkTheme.copyWith(
@@ -380,8 +380,10 @@ class MyApp extends StatelessWidget {
             GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700),
         headlineMedium:
             GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500),
-        headlineSmall:
-            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+        headlineSmall: GoogleFonts.poppins(
+            color: APP_PRIMARY_DARK_COLOR,
+            fontSize: 16,
+            fontWeight: FontWeight.bold),
         titleLarge:
             GoogleFonts.poppins(fontSize: 24, color: APP_PRIMARY_DARK_COLOR),
         titleMedium:

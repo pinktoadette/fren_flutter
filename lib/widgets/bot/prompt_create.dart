@@ -175,21 +175,21 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
               ],
             ),
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(_i18n.translate("bot_is_private")),
-              Switch(
-                activeColor: Theme.of(context).colorScheme.secondary,
-                value: _isPrivate,
-                onChanged: (newValue) {
-                  setState(() {
-                    _isPrivate = newValue;
-                  });
-                },
-              ),
-            ],
-          ),
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //   children: [
+          //     Text(_i18n.translate("bot_is_private")),
+          //     Switch(
+          //       activeColor: Theme.of(context).colorScheme.secondary,
+          //       value: _isPrivate,
+          //       onChanged: (newValue) {
+          //         setState(() {
+          //           _isPrivate = newValue;
+          //         });
+          //       },
+          //     ),
+          //   ],
+          // ),
           errorMessage != ''
               ? Text(
                   errorMessage,

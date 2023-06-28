@@ -12,7 +12,6 @@ import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/screens/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -75,83 +74,69 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: padding),
-          width: width,
-          child: TimelineHeader(
-            radius: 24,
-            user: storyboard.createdBy,
-            showName: true,
-            showMenu: false,
-            underNameRow:
-                Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                    style: const TextStyle(
-                      fontSize: 12,
-                    )),
-          ),
-        ),
-        InkWell(
-            onTap: () async {
-              _onStoryClick();
-            },
-            child: Container(
-                padding: EdgeInsets.only(left: padding),
-                width: width - padding,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const SizedBox(
-                      height: 15,
+
+    return Card(
+        child: Container(
+            decoration: photoUrl != ""
+                ? BoxDecoration(
+                    image: DecorationImage(
+                      opacity: 0.15,
+                      image: NetworkImage(
+                        photoUrl,
+                      ),
+                      fit: BoxFit.cover,
+                      alignment: Alignment.topCenter,
                     ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (photoUrl != "")
-                          StoryCover(
-                              width: width * 0.2,
-                              height: width * 0.5,
-                              photoUrl: photoUrl,
-                              title: title),
-                        Container(
-                          padding: photoUrl != ""
-                              ? const EdgeInsets.only(left: 10)
-                              : const EdgeInsets.only(left: 0),
-                          width: (photoUrl != "" ? width * 0.8 : width) -
-                              padding * 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                  child: Text(
-                                storyboard.title,
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.bold),
-                              )),
-                              Text(storyboard.category,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: APP_MUTED_COLOR)),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              if (subtitle != "")
-                                textLinkPreview(
-                                    context: context, text: subtitle)
-                            ],
+                  )
+                : const BoxDecoration(color: Colors.transparent),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                Container(
+                  padding: EdgeInsets.only(top: padding),
+                  width: width,
+                  child: TimelineHeader(
+                    radius: 24,
+                    user: storyboard.createdBy,
+                    showName: true,
+                    showMenu: false,
+                    underNameRow: Text(
+                        "$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                        style: const TextStyle(
+                          fontSize: 12,
+                        )),
+                  ),
+                ),
+                InkWell(
+                    onTap: () async {
+                      _onStoryClick();
+                    },
+                    child: Container(
+                      padding: const EdgeInsets.all(20),
+                      width: width - padding * 2,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                              child: Text(
+                            storyboard.title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          )),
+                          Text(storyboard.category,
+                              style: const TextStyle(
+                                  fontSize: 14, color: APP_MUTED_COLOR)),
+                          const SizedBox(
+                            height: 15,
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                ))),
-        if (widget.hideCollection == false) ..._showCollectionFooter()
-      ],
-    );
+                          if (subtitle != "")
+                            textLinkPreview(context: context, text: subtitle)
+                        ],
+                      ),
+                    )),
+                if (widget.hideCollection == false) ..._showCollectionFooter()
+              ],
+            )));
   }
 
   List<Widget> _showCollectionFooter() {

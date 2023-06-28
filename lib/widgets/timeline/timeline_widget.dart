@@ -6,6 +6,7 @@ import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/announcement/inline_survey.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 
@@ -48,8 +49,17 @@ class _TimelineWidgetState extends State<TimelineWidget> {
               child: const InlineAdaptiveAds(),
             ),
           );
+        } else if ((index + 1) % 4 == 0 && (index == 3)) {
+          return Padding(
+            padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+            child: Container(
+              width: width,
+              color: Theme.of(context).colorScheme.background,
+              child: const InlineSurvey(),
+            ),
+          );
         } else {
-          return const Divider();
+          return const SizedBox.shrink();
         }
       },
     );

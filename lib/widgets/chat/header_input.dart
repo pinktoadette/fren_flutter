@@ -16,6 +16,7 @@ class CustomHeaderInputWidget extends StatefulWidget {
 
   final String? onTagChange;
   final bool? isBotTyping;
+  final bool? showFastForward;
   final types.PartialImage? attachmentPreview;
   const CustomHeaderInputWidget(
       {super.key,
@@ -23,6 +24,7 @@ class CustomHeaderInputWidget extends StatefulWidget {
       required this.onImageSelect,
       this.onTagChange,
       this.isBotTyping,
+      this.showFastForward,
       this.attachmentPreview});
 
   @override
