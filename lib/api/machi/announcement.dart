@@ -25,4 +25,19 @@ class AnnouncementApi {
       throw error.toString();
     }
   }
+
+  Future<String> responseToSurvey(
+      {required String announceId, required String choiceId}) async {
+    try {
+      String url = '${baseUri}announcement/user_respond';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio
+          .post(url, data: {"announceId": announceId, "choiceId": choiceId});
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
 }
