@@ -6,6 +6,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/storyboard/add_message_preview.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 
 // ignore: must_be_immutable
@@ -48,6 +49,9 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
               style: Theme.of(context).textTheme.labelSmall,
             )
           ]),
+        ),
+        PreviewMessageToAdd(
+          message: widget.message,
         ),
         Align(
             alignment: Alignment.center,

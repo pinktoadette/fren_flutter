@@ -111,7 +111,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           leading: BackButton(
             onPressed: () {
               CommentController commentController = Get.find(tag: 'comment');
-              commentController.clearReplyTo();
+              commentController.clearComments();
               Get.back();
             },
           ),

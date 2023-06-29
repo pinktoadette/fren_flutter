@@ -205,34 +205,27 @@ class _BotChatScreenState extends State<BotChatScreen> {
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
-            listFooterWidget: _listWidget(),
-            onMessageFooterTap: (context, p1) {
-              setState(() {
-                _tappedMessage = p1;
-              });
-            },
+            listFooterWidgetBuilder: (message) => _listWidget(message),
             user: _user),
       );
     }
   }
 
-  List<GestureDetector> gestures() => [
-        GestureDetector(
-          onTap: () {
-            if (_tappedMessage != null) {
-              _handleMessageFooterTap(_tappedMessage!);
-            }
+  List<Widget> _listWidget(types.Message message) => [
+        TextButton(
+          onPressed: () {
+            _handleMessageFooterTap(message!);
           },
           child: Container(
             padding: const EdgeInsets.all(5),
             child: const Icon(Iconsax.book, size: 14),
           ),
         ),
-        GestureDetector(
-          onTap: () async {
-            if (_tappedMessage!.type == types.MessageType.image) {
+        TextButton(
+          onPressed: () async {
+            if (message.type == types.MessageType.image) {
               final _galleryApi = GalleryApi();
-              await _galleryApi.addUserGallery(messageId: _tappedMessage!.id);
+              await _galleryApi.addUserGallery(messageId: message.id);
               Get.snackbar(
                 _i18n.translate("success"),
                 _i18n.translate("story_added"),
@@ -254,8 +247,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
             child: const Icon(Iconsax.gallery_add, size: 14),
           ),
         ),
-        GestureDetector(
-          onTap: () {
+        TextButton(
+          onPressed: () {
             String? encodeQueryParameters(Map<String, String> params) {
               return params.entries
                   .map((MapEntry<String, String> e) =>
@@ -263,16 +256,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   .join('&');
             }
 
-            dynamic message = _tappedMessage;
+            dynamic msg = message;
 
             final Uri emailLaunchUri = Uri(
               scheme: 'mailto',
               path: '',
               query: encodeQueryParameters(<String, String>{
-                'subject': "${message?.author.firstName} @ Machi",
-                'body': _tappedMessage!.type == types.MessageType.text
-                    ? message?.text
-                    : "Not a text"
+                'subject': "${msg.author.firstName} @ Machi",
+                'body':
+                    msg.type == types.MessageType.text ? msg.text : "Not a text"
               }),
             );
 
@@ -284,15 +276,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
         ),
       ];
-
-  List<Widget> _listWidget() => gestures()
-      .map((gesture) => TextButton(
-            onPressed: () {
-              gesture.onTap!();
-            },
-            child: gesture.child!,
-          ))
-      .toList();
 
   void _handleMessageFooterTap(types.Message message) {
     showModalBottomSheet<void>(

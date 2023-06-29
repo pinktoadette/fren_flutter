@@ -59,6 +59,12 @@ class CommentController extends GetxController {
     _replyToComment.value = initial;
   }
 
+  // clear when exit story
+  void clearComments() {
+    comments = <StoryComment>[].obs;
+    clearReplyTo();
+  }
+
   Future<void> _fetchPage(int pageKey) async {
     StoryboardController storyboardController = Get.find(tag: "storyboard");
 
