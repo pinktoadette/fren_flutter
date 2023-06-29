@@ -84,9 +84,7 @@ class User {
         userBirthYear: doc[USER_BIRTH_YEAR] ?? 1990,
         username: doc[USER_USERNAME] ?? '',
         userJob: doc[USER_JOB] ?? '',
-        userInterest: doc.containsKey(USER_INTERESTS)
-            ? doc[USER_INTERESTS].cast<String>()
-            : [],
+        userInterest: doc[USER_INTERESTS] ?? [],
         userIndustry: doc[USER_INDUSTRY] ?? '',
         userBio: doc[USER_BIO] ?? '',
         userEnableMode: doc[USER_ENABLE_MODE],

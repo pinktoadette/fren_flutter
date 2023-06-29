@@ -67,14 +67,19 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
           const SizedBox(
             height: 20,
           ),
-          Text(
-            storyboard.title,
-            style: Theme.of(context).textTheme.titleLarge,
-          ),
+          Semantics(
+              label: storyboard.title,
+              child: Text(
+                storyboard.title,
+                style: Theme.of(context).textTheme.titleLarge,
+              )),
           Row(children: [
-            Text(
-              "${_i18n.translate("story_contributors")}: ",
-              style: Theme.of(context).textTheme.labelSmall,
+            Semantics(
+              label: _i18n.translate("story_contributors"),
+              child: Text(
+                "${_i18n.translate("story_contributors")}: ",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
             ),
             ...contributors.map((contribute) => Text(
                 "${contribute['character']} ",
@@ -83,7 +88,9 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
           const SizedBox(
             height: 20,
           ),
-          Text(storyboard.summary ?? "Summary not provided"),
+          Semantics(
+              label: storyboard.summary ?? "Summary not provided",
+              child: Text(storyboard.summary ?? "Summary not provided")),
           SizedBox(
             height: MediaQuery.of(context).viewInsets.bottom,
           ),

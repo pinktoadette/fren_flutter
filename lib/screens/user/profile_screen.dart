@@ -112,18 +112,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             child: SizedBox(
                                 width: size.width - avatar,
                                 height: 50,
-                                child: Text(
-                                  widget.user.username,
-                                  overflow: TextOverflow.fade,
-                                  style:
-                                      Theme.of(context).textTheme.displayMedium,
-                                )))
+                                child: Semantics(
+                                    label: widget.user.username,
+                                    child: Text(
+                                      widget.user.username,
+                                      overflow: TextOverflow.fade,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .displayMedium,
+                                    ))))
                       ])
-                    : Text(
-                        widget.user.username,
-                        overflow: TextOverflow.fade,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ));
+                    : Semantics(
+                        label: widget.user.username,
+                        child: Text(
+                          widget.user.username,
+                          overflow: TextOverflow.fade,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        )));
           }),
         ),
         SliverToBoxAdapter(
@@ -150,25 +155,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     padding: const EdgeInsets.all(20.0),
                     child: Row(
                       children: [
-                        TextButton(
-                          onPressed: () {
-                            Get.to(() => FollowerList(user: widget.user));
-                          },
-                          child: Text(
-                            "$followers \n" + _i18n.translate("followers"),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        Semantics(
+                            label: 'followers',
+                            button: true,
+                            child: TextButton(
+                              onPressed: () {
+                                Get.to(() => FollowerList(user: widget.user));
+                              },
+                              child: Text(
+                                "$followers \n" + _i18n.translate("followers"),
+                                textAlign: TextAlign.center,
+                              ),
+                            )),
                         const SizedBox(width: 50),
-                        TextButton(
-                          onPressed: () {
-                            Get.to(() => FollowingList(user: widget.user));
-                          },
-                          child: Text(
-                            "$followings \n" + _i18n.translate("following"),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
+                        Semantics(
+                            label: 'following',
+                            button: true,
+                            child: TextButton(
+                              onPressed: () {
+                                Get.to(() => FollowingList(user: widget.user));
+                              },
+                              child: Text(
+                                "$followings \n" + _i18n.translate("following"),
+                                textAlign: TextAlign.center,
+                              ),
+                            )),
                         const Spacer(),
                         _followButton(),
                       ],

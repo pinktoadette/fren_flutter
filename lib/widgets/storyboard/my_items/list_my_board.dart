@@ -65,7 +65,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                     ),
                   );
                 } else {
-                  return const Divider();
+                  return const SizedBox.shrink();
                 }
               },
               shrinkWrap: true,
