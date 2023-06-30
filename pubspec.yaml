@@ -42,7 +42,7 @@ dependencies:
   cloud_firestore: ^4.4.5
   firebase_messaging: ^14.3.0
   firebase_storage: ^11.0.16  
-  google_mobile_ads: 2.0.0 #no web
+  google_mobile_ads: 3.0.0 #no web
   # END 
 
   flutter_native_splash: 2.2.16 # Used to generate the app splash screen for both platforms android and iOS 
