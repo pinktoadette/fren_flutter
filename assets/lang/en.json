@@ -46,7 +46,6 @@
   "username": "Username",
   "enter_your_fullname": "Enter username",
   "name_hint": "This will be publicly displayed",
-  "profile_protected": "Your profile is protected.",
   "bio": "Bio",
   "select_three_interest": "Please select 3 interests",
   "write_your_bio": "Write a bio",
@@ -57,9 +56,15 @@
   "your_account_has_been_created_successfully": "Your account has been created successfully!",
   "an_error_occurred_while_creating_your_account": "An error occurred while creating your account, please close the app and open it again.",
 
+  "_ProfileSettings": "*** Settings ***",
+  "account": "Account",
+  "deactivate": "Deactivate",
+  "deactivate_info": "Your profile and content will not be visible. Your profile will be reactivated onced you sign back in.",
+
   "_EditProfileScreen": "*** Edit Profile Screen Translations ***",
   "edit_profile": "Edit profile",
   "profile_protected_view": "Protected Profile" ,
+  "profile_protected": "Your profile is protected.",
   "an_error_occurred_while_updating_your_profile": "An error occurred while updating your profile.\nPlease try again later!",
   "photo_will_be_deleted": "Photo will be deleted, and this action cannot be reversed!", 
 
@@ -193,7 +198,7 @@
   "only_13_years_old_and_above_are_allowed_to_create_an_account": "Only 13 years old and above are allowed to create an account!",
   "birthday": "Birthday:",
   "join_date": "Join date:",
-  "hide_profile": "Hide profile:",
+  "protected_profile": "Protected profile view",
   "your_profile_is_visible_on_discover_tab": "Your profile is visible on discover tab!",
   "your_profile_is_hidden_on_discover_tab": "Your profile is hidden on discover tab!",
 

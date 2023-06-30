@@ -1,5 +1,4 @@
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
@@ -22,7 +21,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _bioController = TextEditingController(text: UserModel().user.userBio);
 
   late AppLocalizations _i18n;
-  late ProgressDialog _pr;
 
   @override
   void initState() {
@@ -33,7 +31,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   Widget build(BuildContext context) {
     /// Initialization
     _i18n = AppLocalizations.of(context);
-    _pr = ProgressDialog(context, isDismissible: false);
 
     return Scaffold(
       key: _scaffoldKey,

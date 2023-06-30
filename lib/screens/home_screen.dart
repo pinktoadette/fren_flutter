@@ -26,7 +26,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:machi_app/controller/bot_controller.dart';
-import 'package:machi_app/controller/user_controller.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -37,7 +36,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  final UserController userController = Get.find(tag: 'user');
   final ChatController chatController = Get.find(tag: 'chatroom');
   final BotController botController = Get.find(tag: 'bot');
   final StoryboardController storyController = Get.find(tag: 'storyboard');
@@ -91,7 +89,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void _initializeState() {
-    userController.initUser();
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
     chatController.initUser();
     chatController.onChatLoad();

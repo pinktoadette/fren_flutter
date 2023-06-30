@@ -25,7 +25,6 @@ import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/comment/comment_widget.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
-import 'package:machi_app/widgets/storyboard/publish_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 

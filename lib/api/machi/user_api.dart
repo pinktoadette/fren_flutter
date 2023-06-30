@@ -65,4 +65,15 @@ class UserApi {
     }
     return false;
   }
+
+  Future<void> deactivateAccount() async {
+    try {
+      String url = '${baseUri}user/deactivate';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      await dio.post(url);
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+  }
 }

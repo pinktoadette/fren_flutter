@@ -201,7 +201,15 @@ class UserModel extends Model {
             blockedScreen!();
           } else {
             // Update UserModel for current user
+            Map<String, dynamic> update = {
+              USER_STATUS: "active",
+              USER_LAST_LOGIN: DateTime.fromMillisecondsSinceEpoch(
+                      userDoc[USER_LAST_LOGIN].millisecondsSinceEpoch)
+                  .toUtc()
+                  .millisecondsSinceEpoch
+            };
             updateUserObject(userDoc.data()!);
+            updateUserData(userId: userDoc[USER_ID], data: update);
 
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();

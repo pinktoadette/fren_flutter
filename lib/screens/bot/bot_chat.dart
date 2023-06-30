@@ -62,7 +62,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
   late WebSocketChannel _channel;
   late Chatroom _room;
-  types.Message? _tappedMessage;
 
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
@@ -214,7 +213,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   List<Widget> _listWidget(types.Message message) => [
         TextButton(
           onPressed: () {
-            _handleMessageFooterTap(message!);
+            _handleMessageFooterTap(message);
           },
           child: Container(
             padding: const EdgeInsets.all(5),

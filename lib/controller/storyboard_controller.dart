@@ -2,7 +2,6 @@ import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/models/user_model.dart';
 import 'package:get/get.dart';
 
 Storyboard initialStoryboard = Storyboard(
@@ -10,10 +9,7 @@ Storyboard initialStoryboard = Storyboard(
     title: '',
     category: '',
     summary: '',
-    createdBy: StoryUser(
-        photoUrl: UserModel().user.userProfilePhoto,
-        userId: UserModel().user.userId,
-        username: UserModel().user.username),
+    createdBy: StoryUser(photoUrl: '', userId: '', username: ''),
     story: [],
     status: StoryStatus.UNPUBLISHED,
     createdAt: getDateTimeEpoch(),
@@ -23,10 +19,7 @@ Story intialStory = Story(
     storyId: '',
     title: '',
     subtitle: '',
-    createdBy: StoryUser(
-        photoUrl: UserModel().user.userProfilePhoto,
-        userId: UserModel().user.userId,
-        username: UserModel().user.username),
+    createdBy: StoryUser(photoUrl: '', userId: '', username: ''),
     status: StoryStatus.UNPUBLISHED,
     category: '');
 

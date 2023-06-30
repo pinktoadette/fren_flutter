@@ -1,8 +1,12 @@
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/screens/account_page.dart';
+import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:machi_app/widgets/sign_out_button_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 
@@ -65,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           color: Theme.of(context).primaryColor, size: 30)
                       : Icon(Icons.visibility,
                           color: Theme.of(context).primaryColor, size: 30),
-                  title: Text(_i18n.translate('hide_profile'),
+                  title: Text(_i18n.translate('protected_profile'),
                       style: const TextStyle(fontSize: 18)),
                   trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
@@ -93,6 +97,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 ),
 
                 const Spacer(),
+
+                /// deactivate
+                ListTile(
+                  leading: const Icon(Iconsax.setting_2),
+                  title: Text(_i18n.translate("account"),
+                      style: Theme.of(context).textTheme.bodyMedium),
+                  trailing: const Icon(Icons.arrow_forward),
+                  onTap: () async {
+                    Get.to(() => const AccountPage());
+                  },
+                ),
 
                 /// sign out
                 const SignOutButtonCard(),

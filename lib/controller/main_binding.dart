@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
@@ -6,15 +7,16 @@ import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
-import 'package:machi_app/controller/user_controller.dart';
 import 'package:get/get.dart';
 
 class MainBinding implements Bindings {
   @override
   Future<void> dependencies() async {
-    Get.put<BotController>(BotController(), tag: "bot");
+    Get.lazyPut<BotController>(() => BotController(), tag: "bot");
 
-    Get.lazyPut<UserController>(() => UserController(), tag: "user");
+    Get.lazyPut<SubscribeController>(() => SubscribeController(),
+        tag: "subscribe");
+
     Get.lazyPut<MessageController>(() => MessageController(), tag: "message");
     Get.lazyPut<ChatController>(() => ChatController(), tag: "chatroom");
     Get.lazyPut<TimelineController>(() => TimelineController(),
@@ -22,8 +24,8 @@ class MainBinding implements Bindings {
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
     Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
-    Get.lazyPut<SubscribeController>(() => SubscribeController(),
-        tag: "subscribe");
-    Get.put<AudioController>(AudioController(), tag: "audio");
+
+    Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
+    debugPrint("Put controllers");
   }
 }

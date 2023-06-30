@@ -17,7 +17,6 @@ class ChatController extends GetxController implements GetxService {
   final MessageController messageController =
       Get.find(tag: 'message'); // current messages in this room
   final BotController botController = Get.find(tag: 'bot'); // current bot
-  final UserController userController = Get.find(tag: 'user'); // current user
   late Rx<types.User> _chatUser;
   late Rx<types.User> _chatBot;
 
@@ -58,9 +57,10 @@ class ChatController extends GetxController implements GetxService {
 
   @override
   void onInit() async {
+    super.onInit();
+
     initUser();
     initCurrentRoom();
-    super.onInit();
   }
 
   void initUser() {
