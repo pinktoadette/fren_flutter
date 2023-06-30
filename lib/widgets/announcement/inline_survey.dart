@@ -28,9 +28,11 @@ class _InlineSurveyState extends State<InlineSurvey> {
 
   void _getSurvey() async {
     final res = await _announceApi.getAnnounce();
-    setState(() {
-      survey = res[0];
-    });
+    if (res.isNotEmpty) {
+      setState(() {
+        survey = res[0];
+      });
+    }
   }
 
   void _postSurveyResponse() async {

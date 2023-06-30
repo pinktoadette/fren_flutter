@@ -199,6 +199,7 @@
   "birthday": "Birthday:",
   "join_date": "Join date:",
   "protected_profile": "Protected profile view",
+  "protected_profile_notes":"You can still post, comment but your profile will be limited to view by others.",
   "your_profile_is_visible_on_discover_tab": "Your profile is visible on discover tab!",
   "your_profile_is_hidden_on_discover_tab": "Your profile is hidden on discover tab!",
 

@@ -71,6 +71,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           color: Theme.of(context).primaryColor, size: 30),
                   title: Text(_i18n.translate('protected_profile'),
                       style: const TextStyle(fontSize: 18)),
+                  subtitle: Text(
+                    _i18n.translate("protected_profile_notes"),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                   trailing: Switch(
                     activeColor: Theme.of(context).colorScheme.secondary,
                     value: _hideProfile,

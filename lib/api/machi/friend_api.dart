@@ -18,7 +18,7 @@ class FriendApi {
 
   Future<List<User>> userFollowing(String userId) async {
     try {
-      String url = '${baseUri}follow/followers?userId=$userId';
+      String url = '${baseUri}follow/followings?userId=$userId';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
@@ -39,7 +39,7 @@ class FriendApi {
 
   Future<List<User>> userFollowers(String userId) async {
     try {
-      String url = '${baseUri}follow/followings?userId=$userId';
+      String url = '${baseUri}follow/followers?userId=$userId';
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);

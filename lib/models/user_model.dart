@@ -196,17 +196,17 @@ class UserModel extends Model {
           // final double longitude = userGeoPoint.longitude;
 
           /// Check User Account Status
-          if (userDoc[USER_STATUS] == 'blocked') {
+          if (userDoc[USER_STATUS] == 'suspended') {
             // Go to blocked user account screen
             blockedScreen!();
           } else {
             // Update UserModel for current user
             Map<String, dynamic> update = {
               USER_STATUS: "active",
-              USER_LAST_LOGIN: DateTime.fromMillisecondsSinceEpoch(
-                      userDoc[USER_LAST_LOGIN].millisecondsSinceEpoch)
-                  .toUtc()
-                  .millisecondsSinceEpoch
+              USER_LAST_LOGIN:
+                  DateTime.fromMillisecondsSinceEpoch(userDoc[USER_LAST_LOGIN])
+                      .toUtc()
+                      .millisecondsSinceEpoch
             };
             updateUserObject(userDoc.data()!);
             updateUserData(userId: userDoc[USER_ID], data: update);
