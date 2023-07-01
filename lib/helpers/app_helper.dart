@@ -149,18 +149,22 @@ class AppHelper {
   /// Get app current version from Cloud Firestore Database,
   /// that is the same with Google Play Store / Apple Store app version
   Future<int> getAppStoreVersion() async {
-    final DocumentSnapshot<Map<String, dynamic>> appInfo =
-        await _firestore.collection(C_APP_INFO).doc('settings').get();
-
-    // Update AppInfo object
-    AppModel().setAppInfo(appInfo.data() ?? {});
-    // Check Platform
-    if (Platform.isAndroid) {
-      return appInfo.data()?[ANDROID_APP_CURRENT_VERSION] ?? 1;
-    } else if (Platform.isIOS) {
-      return appInfo.data()?[IOS_APP_CURRENT_VERSION] ?? 1;
+    try {
+      final DocumentSnapshot<Map<String, dynamic>> appInfo =
+          await _firestore.collection(C_APP_INFO).doc('settings').get();
+      // Update AppInfo object
+      AppModel().setAppInfo(appInfo.data() ?? {});
+      // Check Platform
+      if (Platform.isAndroid) {
+        return appInfo.data()?[ANDROID_APP_CURRENT_VERSION] ?? 1;
+      } else if (Platform.isIOS) {
+        return appInfo.data()?[IOS_APP_CURRENT_VERSION] ?? 1;
+      }
+      return 1;
+    } catch (err) {
+      debugPrint(err.toString());
+      return 0;
     }
-    return 1;
   }
 
   /// Update app info data in database
