@@ -70,8 +70,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
@@ -80,7 +78,6 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: Image.asset(
           "assets/images/logo.png",
-          width: screenWidth * 0.3,
         ),
       ),
     );

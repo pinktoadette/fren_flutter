@@ -61,9 +61,12 @@ class _SignInScreenState extends State<SignInScreen> {
               const SizedBox(height: 100),
               Image.asset("assets/images/logo_machi.png"),
               const SizedBox(height: 40),
-              Text(_i18n.translate("app_short_description"),
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.labelSmall),
+              Semantics(
+                label: _i18n.translate("app_short_description"),
+                child: Text(_i18n.translate("app_short_description"),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.labelMedium),
+              ),
               const Spacer(),
               Expanded(
                 child: Align(

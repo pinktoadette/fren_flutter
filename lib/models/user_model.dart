@@ -107,9 +107,14 @@ class UserModel extends Model {
     _firestore.collection(C_USERS).doc(userId).update(data);
 
     notifyListeners();
+    updateExternalApi(userId: userId, data: data);
+  }
+
+  void updateExternalApi(
+      {required String userId, required Map<String, dynamic> data}) async {
     // external api
-    final mApi = UserApi();
-    await mApi.updateUser(data);
+    final userApi = UserApi();
+    await userApi.updateUser(data);
   }
 
   /// Update user device token and
@@ -203,13 +208,13 @@ class UserModel extends Model {
             // Update UserModel for current user
             Map<String, dynamic> update = {
               USER_STATUS: "active",
-              USER_LAST_LOGIN:
-                  DateTime.fromMillisecondsSinceEpoch(userDoc[USER_LAST_LOGIN])
-                      .toUtc()
-                      .millisecondsSinceEpoch
+              USER_LAST_LOGIN: userDoc[USER_LAST_LOGIN]
+                  .toDate()
+                  .toUtc()
+                  .millisecondsSinceEpoch
             };
             updateUserObject(userDoc.data()!);
-            updateUserData(userId: userDoc[USER_ID], data: update);
+            updateExternalApi(userId: userDoc[USER_ID], data: update);
 
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();
