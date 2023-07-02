@@ -143,6 +143,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     } else {
       return Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           leading: BackButton(
             color: Theme.of(context).colorScheme.primary,
             onPressed: () async {

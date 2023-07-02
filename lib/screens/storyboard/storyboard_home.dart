@@ -28,9 +28,10 @@ class _StoryboardState extends State<StoryboardHome>
 
     return Scaffold(
       appBar: AppBar(
+          centerTitle: false,
           title: Text(
             _i18n.translate("storyboard"),
-            style: Theme.of(context).textTheme.headlineMedium,
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
           automaticallyImplyLeading: false,
           actions: [

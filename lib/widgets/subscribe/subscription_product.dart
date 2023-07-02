@@ -58,7 +58,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           ]),
         ),
         body: SingleChildScrollView(
-            padding: const EdgeInsets.all(20), child: _showTiers(context)));
+            padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+            child: _showTiers(context)));
   }
 
   Future fetchOffers() async {
@@ -70,7 +71,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         packages = offerings[0].availablePackages;
         _selectedTier = offerings[0].availablePackages[0];
       });
-    } on PlatformException catch (_) {
+    } on PlatformException catch (err) {
+      debugPrint(err.message);
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("subscribe_no_offering_found"),

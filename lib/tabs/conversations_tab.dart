@@ -62,9 +62,12 @@ class _ConversationsTabState extends State<ConversationsTab> {
               controller: scrollController,
               slivers: [
                 FrostedAppBar(
-                    title: Text(
-                      _i18n.translate("chat"),
-                      style: Theme.of(context).textTheme.headlineMedium,
+                    title: Padding(
+                      padding: const EdgeInsets.only(top: 25),
+                      child: Text(
+                        _i18n.translate("chat"),
+                        style: Theme.of(context).textTheme.headlineLarge,
+                      ),
                     ),
                     showLeading: true,
                     actions: <Widget>[

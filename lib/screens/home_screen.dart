@@ -205,32 +205,32 @@ class _HomeScreenState extends State<HomeScreen> {
             currentIndex: _selectedIndex,
             backgroundColor: Colors.black,
             selectedItemColor: APP_ACCENT_COLOR,
+            selectedLabelStyle: const TextStyle(fontSize: 0),
+            unselectedLabelStyle: const TextStyle(fontSize: 0),
             unselectedItemColor:
                 Theme.of(context).colorScheme.primary.withAlpha(155),
             onTap: _onTappedNavBar,
             items: [
               /// Discover Tab
-              BottomNavigationBarItem(
-                  label: _i18n.translate("discover"),
-                  icon: const Icon(
+              const BottomNavigationBarItem(
+                  label: '',
+                  icon: Icon(
                     Iconsax.activity,
                   )),
 
               /// Discover new machi
-              BottomNavigationBarItem(
-                  label: _i18n.translate("storyboard"),
-                  icon: const Icon(Iconsax.book)),
+              const BottomNavigationBarItem(
+                  label: '', icon: Icon(Iconsax.book)),
 
               /// Conversations Tab
               BottomNavigationBarItem(
-                label: _i18n.translate("chat"),
+                label: '',
                 icon: _getConversationCounter(),
               ),
 
               /// Profile Tab
-              BottomNavigationBarItem(
-                  label: _i18n.translate("profile"),
-                  icon: const Icon(Iconsax.user)),
+              const BottomNavigationBarItem(
+                  label: '', icon: Icon(Iconsax.user)),
             ]),
         body: _showCurrentNavBar(),
         floatingActionButton: ExpandableFab(

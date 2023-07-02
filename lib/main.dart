@@ -63,6 +63,7 @@ void main() async {
   if (Platform.isIOS) {
     /// Revenue cat setup
     configuration = PurchasesConfiguration('appl_StnVJbAaVHGAiEcqkJSBLnlhgFp');
+    FirebaseMessaging.instance.requestPermission();
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(
@@ -71,6 +72,7 @@ void main() async {
       sound: true,
     );
   }
+
   // revenue cate
   await Purchases.configure(configuration);
 
