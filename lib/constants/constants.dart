@@ -23,6 +23,7 @@ const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
 
 const String GOOGLE_BANNER_ADS = 'ca-app-pub-8475595365680681/9246193145';
+const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
 const String GOOGLE_INTERSTI_ADS = 'ca-app-pub-3940256099942544/8691691433';
 

@@ -26,6 +26,18 @@ class _InlineSurveyState extends State<InlineSurvey> {
     _getSurvey();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _getSurvey();
+  }
+
+  @override
+  void dispose() {
+    survey?.dispose();
+    super.dispose();
+  }
+
   void _getSurvey() async {
     final res = await _announceApi.getAnnounce();
     if (res.isNotEmpty) {

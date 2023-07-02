@@ -21,8 +21,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import 'firebase_options.dart';
-
 void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,13 +29,13 @@ void main() async {
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
-
-  if (Firebase.apps.isNotEmpty) {
-    await Firebase.initializeApp(
-        options: DefaultFirebaseOptions.currentPlatform);
-  } else {
-    await Firebase.initializeApp();
-  }
+  await Firebase.initializeApp();
+  // if (Firebase.apps.isNotEmpty) {
+  //   await Firebase.initializeApp(
+  //       options: DefaultFirebaseOptions.currentPlatform);
+  // } else {
+  //   await Firebase.initializeApp();
+  // }
 
   /// Revenue CAt
   late PurchasesConfiguration configuration;

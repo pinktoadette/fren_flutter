@@ -22,7 +22,7 @@ class AdManager {
       return GOOGLE_BANNER_ADS;
     } else if (Platform.isIOS) {
       /// should be different
-      return GOOGLE_BANNER_ADS;
+      return GOOGLE_BANNER_ADS_IOS;
     }
     throw UnsupportedError("Unsupported platform");
   }
