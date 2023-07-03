@@ -76,67 +76,64 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         : "Last Updated ";
 
     return Card(
-        child: Container(
-            decoration: photoUrl != ""
-                ? BoxDecoration(
-                    image: DecorationImage(
-                      opacity: 0.15,
-                      image: NetworkImage(
-                        photoUrl,
-                      ),
-                      fit: BoxFit.cover,
-                      alignment: Alignment.topCenter,
-                    ),
-                  )
-                : const BoxDecoration(color: Colors.transparent),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Container(
-                  padding: EdgeInsets.only(top: padding),
-                  width: width,
-                  child: TimelineHeader(
-                    radius: 24,
-                    user: storyboard.createdBy,
-                    showName: true,
-                    showMenu: false,
-                    underNameRow: Text(
-                        "$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                        style: const TextStyle(
-                          fontSize: 12,
-                        )),
-                  ),
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        photoUrl != ""
+            ? SizedBox(
+                width: width,
+                height: 110,
+                child: Image.network(
+                  photoUrl,
+                  fit: BoxFit.cover,
                 ),
-                InkWell(
-                    onTap: () async {
-                      _onStoryClick();
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.all(20),
-                      width: width - padding * 2,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(
-                              child: Text(
-                            storyboard.title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          )),
-                          Text(storyboard.category,
-                              style: const TextStyle(
-                                  fontSize: 14, color: APP_MUTED_COLOR)),
-                          const SizedBox(
-                            height: 15,
-                          ),
-                          if (subtitle != "")
-                            textLinkPreview(context: context, text: subtitle)
-                        ],
-                      ),
+              )
+            : const SizedBox.shrink(),
+        Container(
+          padding: EdgeInsets.only(top: padding),
+          width: width,
+          child: TimelineHeader(
+            radius: 24,
+            user: storyboard.createdBy,
+            showName: true,
+            showMenu: false,
+            underNameRow:
+                Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                    style: const TextStyle(
+                      fontSize: 12,
                     )),
-                if (widget.hideCollection == false) ..._showCollectionFooter()
-              ],
-            )));
+          ),
+        ),
+        InkWell(
+            onTap: () async {
+              _onStoryClick();
+            },
+            child: Container(
+              padding: const EdgeInsets.all(20),
+              width: width - padding * 2,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                      child: Text(
+                    storyboard.title,
+                    style: Theme.of(context).textTheme.headlineSmall,
+                  )),
+                  Text(storyboard.category,
+                      style: const TextStyle(
+                          fontSize: 14, color: APP_MUTED_COLOR)),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  if (subtitle != "")
+                    textLinkPreview(context: context, text: subtitle)
+                ],
+              ),
+            )),
+        if (widget.hideCollection == false) ..._showCollectionFooter()
+      ],
+    ));
   }
 
   List<Widget> _showCollectionFooter() {

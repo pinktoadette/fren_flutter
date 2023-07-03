@@ -540,17 +540,17 @@ class UserModel extends Model {
   }
 
   /// Update User location info
-  Future<void> updateUserLocation({
-    required bool isPassport,
-    // Callback functions
-    required VoidCallback onSuccess,
-    required VoidCallback onFail,
-  }) async {
-    // String country = '';
-    // String locality = '';
+  // Future<void> updateUserLocation({
+  //   required bool isPassport,
+  //   // Callback functions
+  //   required VoidCallback onSuccess,
+  //   required VoidCallback onFail,
+  // }) async {
+  //   // String country = '';
+  //   // String locality = '';
 
-    // GeoFirePoint geoPoint;
-  }
+  //   // GeoFirePoint geoPoint;
+  // }
 
   /// Validate the user's maximum distance to
   /// decrement it to the free distance radius

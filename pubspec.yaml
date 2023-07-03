@@ -51,7 +51,7 @@ dependencies:
   image_picker: 0.8.7+5 # # Used to select images from the User's device image library or take a new photo using the camera
   image_cropper: 3.0.3 # Used to Crop/Rotate Selected images from user's device
   url_launcher: 6.1.11 # Used to open link schemes in application or browser
-  geolocator: 9.0.2 # Used to get User location by GPS 
+  # geolocator: 9.0.2 # Used to get User location by GPS 
   # geocoding: 2.0.5 # no web Used to translate User latitude and longitude coordinates into a readable address
   rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
   share: 2.0.4 # Used to share application content in other applications
