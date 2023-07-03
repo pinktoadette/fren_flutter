@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
@@ -440,13 +441,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
       await _messagesApi.saveUserResponse(
           messageMap: messageMap, tags: _setTags);
       _getMachiResponse();
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Error saving and getting bot response', fatal: true);
     }
   }
 
@@ -514,13 +517,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
       setState(() {
         _messages.addAll(oldMessages);
       });
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Error loading more messages in infinite scroll',
+          fatal: true);
     }
   }
 

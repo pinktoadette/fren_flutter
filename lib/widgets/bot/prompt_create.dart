@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
@@ -259,13 +260,15 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       _clear();
       Navigator.of(context).pop();
       SetCurrentRoom().setNewBotRoom(bot, true);
-    } catch (error) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot create a new prompt bot', fatal: true);
     } finally {
       _pr.hide();
     }

@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -30,6 +31,13 @@ void main() async {
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   await Firebase.initializeApp();
+  FlutterError.onError = (errorDetails) {
+    // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
+    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  };
+
+  FirebaseMessaging.instance.requestPermission();
+
   // if (Firebase.apps.isNotEmpty) {
   //   await Firebase.initializeApp(
   //       options: DefaultFirebaseOptions.currentPlatform);
@@ -63,7 +71,6 @@ void main() async {
   if (Platform.isIOS) {
     /// Revenue cat setup
     configuration = PurchasesConfiguration('appl_StnVJbAaVHGAiEcqkJSBLnlhgFp');
-    FirebaseMessaging.instance.requestPermission();
 
     await FirebaseMessaging.instance
         .setForegroundNotificationPresentationOptions(

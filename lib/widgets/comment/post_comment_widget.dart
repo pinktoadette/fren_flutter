@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
@@ -113,13 +114,15 @@ class PostCommentWidget extends StatelessWidget {
       _commentController.clear();
       commentController.clearReplyTo();
       FocusManager.instance.primaryFocus?.unfocus();
-    } catch (e) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Cannot post comment', fatal: true);
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
@@ -191,13 +192,16 @@ class _StoriesViewState extends State<StoriesView> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("story_delete_error"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Publishing all error', fatal: true);
     } finally {
       setState(() {
         isLoading = false;
@@ -251,13 +255,15 @@ class _StoriesViewState extends State<StoriesView> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
-    } catch (error) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Error adding message in story view', fatal: true);
     } finally {
       setState(() {
         isLoading = false;

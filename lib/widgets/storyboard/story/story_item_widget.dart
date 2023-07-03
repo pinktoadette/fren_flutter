@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -148,7 +149,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
-    } catch (err) {
+    } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(
         _i18n.translate("error"),
@@ -156,6 +157,8 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot add message from story item', fatal: true);
     }
   }
 }

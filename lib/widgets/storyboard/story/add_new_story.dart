@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -145,7 +146,7 @@ class _AddNewStoryState extends State<AddNewStory> {
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
       Navigator.of(context).pop();
-    } catch (err) {
+    } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(
         _i18n.translate("error"),
@@ -153,6 +154,9 @@ class _AddNewStoryState extends State<AddNewStory> {
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Cannot aadd a new story', fatal: true);
     } finally {
       setState(() {
         isLoading = false;

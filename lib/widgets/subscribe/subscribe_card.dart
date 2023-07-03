@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -32,7 +33,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
       setState(() {
         customer = customerInfo;
       });
-    } on PlatformException catch (_) {
+    } on PlatformException catch (err, s) {
       // Error fetching purchaser info
       Get.snackbar(
         _i18n.translate("Error"),
@@ -40,6 +41,8 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: "Cannot fetch customer ${err.message}", fatal: true);
     }
   }
 

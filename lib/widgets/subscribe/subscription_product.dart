@@ -1,4 +1,7 @@
+import 'dart:math';
+
 import 'package:card_swiper/card_swiper.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -71,7 +74,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         packages = offerings[0].availablePackages;
         _selectedTier = offerings[0].availablePackages[0];
       });
-    } on PlatformException catch (err) {
+    } on PlatformException catch (err, s) {
       debugPrint(err.message);
       Get.snackbar(
         _i18n.translate("error"),
@@ -79,6 +82,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot fetch offers: ${err.message}', fatal: true);
     }
   }
 
@@ -258,12 +264,14 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS);
       Navigator.of(context).pop();
-    } on PlatformException catch (e) {
+    } on PlatformException catch (e, s) {
       var errorCode = PurchasesErrorHelper.getErrorCode(e);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
         Get.snackbar(
             _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
             snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
+        await FirebaseCrashlytics.instance.recordError(e, s,
+            reason: 'Unable to purchase offers: ${e.message}', fatal: true);
       }
     }
   }

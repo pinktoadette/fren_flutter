@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -329,13 +330,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
       });
       widget.onMoveInsertPages(
           {"action": "move", "page": pageNum, "script": script});
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Unable to move message bits', fatal: true);
     }
   }
 
@@ -372,13 +375,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     snackPosition: SnackPosition.TOP,
                     backgroundColor: APP_SUCCESS,
                     colorText: Colors.black);
-              } catch (err) {
+              } catch (err, s) {
                 Get.snackbar(
                   _i18n.translate("error"),
                   _i18n.translate("an_error_has_occurred"),
                   snackPosition: SnackPosition.TOP,
                   backgroundColor: APP_ERROR,
                 );
+                await FirebaseCrashlytics.instance.recordError(err, s,
+                    reason: 'Unable to save add/edit text in bits ',
+                    fatal: true);
               }
             }));
   }
@@ -459,13 +465,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
     try {
       await _scriptApi.updateSequence(scripts: saveSequence);
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Unable to update sequence', fatal: true);
     }
   }
 
@@ -478,13 +486,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
         scripts = [...scripts];
       });
       widget.onUpdateSeq(scripts);
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Unable to delete message in edit bits', fatal: true);
     }
   }
 }

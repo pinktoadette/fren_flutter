@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/report_api.dart';
@@ -126,13 +127,15 @@ class _ReportFormState extends State<ReportForm> {
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
       Navigator.pop(context);
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Cannot submit a report', fatal: true);
     }
   }
 }

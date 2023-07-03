@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -114,13 +115,16 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
-    } catch (error) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot add message in add message board bottom sheet',
+          fatal: true);
     } finally {
       setState(() {
         isLoading = false;

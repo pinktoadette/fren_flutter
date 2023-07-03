@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -252,10 +253,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
           try {
             User user = await _friendApi.followRequest(widget.user.userId);
             _setUserCount(user);
-          } catch (err) {
+          } catch (err, s) {
             Get.snackbar(_i18n.translate("error"),
                 _i18n.translate("an_error_has_occurred"),
                 snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
+
+            await FirebaseCrashlytics.instance.recordError(err, s,
+                reason: 'Error following user', fatal: true);
           }
         },
         child: following == true

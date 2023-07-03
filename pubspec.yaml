@@ -84,6 +84,7 @@ dependencies:
   cached_network_image: ^3.2.3 #no web
   purchases_flutter: ^5.0.0 #no web
   card_swiper: ^2.0.4
+  firebase_crashlytics: ^3.3.3
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/story_api.dart';
@@ -134,13 +135,15 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
       );
 
       Get.to(() => PublishStory(story: story!));
-    } catch (e) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Error on publishing story', fatal: true);
     }
   }
 }

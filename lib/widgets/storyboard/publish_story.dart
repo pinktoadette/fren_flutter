@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -45,10 +46,13 @@ class _PublishStoryState extends State<PublishStory> {
       storyboardController.updateStory(story: widget.story);
 
       _goToNextStep(3);
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
           _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Publishing story error occurred. Check if its published.',
+          fatal: true);
       _goToNextStep(1);
     } finally {
       setState(() {

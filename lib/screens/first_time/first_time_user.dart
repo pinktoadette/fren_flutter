@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chips_choice/chips_choice.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -118,13 +119,15 @@ class _InterestScreenState extends State<InterestScreen> {
       Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => const HomeScreen()),
           (route) => false);
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("Error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Error saving users interest', fatal: true);
     }
   }
 }

@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
@@ -74,13 +75,17 @@ class _StoryPageViewState extends State<StoryPageView> {
       setState(() {
         story = details;
       });
-    } catch (error) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason:
+              'Cannot get story content: storyId ${story?.storyId ?? "Unknown id"}',
+          fatal: true);
     }
   }
 
@@ -188,13 +193,16 @@ class _StoryPageViewState extends State<StoryPageView> {
             storyboard: storyboardController.currentStoryboard,
             updateStory: update);
       }
-    } catch (err) {
+    } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
+
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Cannot like item', fatal: true);
     }
   }
 
