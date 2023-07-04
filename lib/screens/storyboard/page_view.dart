@@ -276,7 +276,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     Size size = MediaQuery.of(context).size;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
         ? size.height * bodyHeightPercent - headerHeight
-        : size.height - headerHeight - 10;
+        : size.height - headerHeight - 50;
 
     if (story!.pages!.isEmpty) {
       return SizedBox(

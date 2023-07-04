@@ -15,6 +15,7 @@ import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/screens/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // StoryboardItemWidget -> StoriesView (List of stories / Add ) -> StoryItemWidget -> PageView
@@ -80,16 +81,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        photoUrl != ""
-            ? SizedBox(
-                width: width,
-                height: 110,
-                child: Image.network(
-                  photoUrl,
-                  fit: BoxFit.cover,
-                ),
-              )
-            : const SizedBox.shrink(),
         Container(
           padding: EdgeInsets.only(top: padding),
           width: width,
@@ -115,14 +106,33 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(
-                      child: Text(
-                    storyboard.title,
-                    style: Theme.of(context).textTheme.headlineSmall,
-                  )),
-                  Text(storyboard.category,
-                      style: const TextStyle(
-                          fontSize: 14, color: APP_MUTED_COLOR)),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      StoryCover(
+                          width: width * 0.4 - padding * 4,
+                          height: width * 0.4 - padding * 4,
+                          photoUrl: photoUrl,
+                          title: title),
+                      Container(
+                          padding: const EdgeInsets.only(left: 10),
+                          width: width * 0.6 - padding * 2,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                storyboard.title,
+                                style:
+                                    Theme.of(context).textTheme.headlineSmall,
+                              ),
+                              Text(storyboard.category,
+                                  style: const TextStyle(
+                                      fontSize: 14, color: APP_MUTED_COLOR)),
+                            ],
+                          )),
+                    ],
+                  ),
                   const SizedBox(
                     height: 5,
                   ),

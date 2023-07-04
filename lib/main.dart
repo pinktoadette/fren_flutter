@@ -340,7 +340,7 @@ class MyApp extends StatelessWidget {
           contentTextStyle: TextStyle(fontSize: 16, fontFamily: 'poppins'),
           backgroundColor: APP_PRIMARY_DARK_BACKGROUND),
       cardTheme: CardTheme(
-          color: const Color.fromARGB(255, 0, 0, 0),
+          color: Color.fromARGB(255, 26, 26, 26),
           shadowColor: Colors.black,
           clipBehavior: Clip.antiAlias,
           elevation: 4.0,

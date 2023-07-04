@@ -27,6 +27,8 @@ const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
 const String GOOGLE_INTERSTI_ADS = 'ca-app-pub-3940256099942544/8691691433';
 
+const String SURVEY_FREE_FORM_LINK = 'https://forms.gle/bPa32xG3WwphxQua6';
+
 //
 // Add Google Maps - API KEY required for Passport feature
 //
