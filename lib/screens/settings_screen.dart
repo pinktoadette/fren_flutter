@@ -115,6 +115,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                 /// sign out
                 const SignOutButtonCard(),
+                const SizedBox(
+                  height: 50,
+                )
               ],
             );
           }),
