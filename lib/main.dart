@@ -38,13 +38,6 @@ void main() async {
 
   FirebaseMessaging.instance.requestPermission();
 
-  // if (Firebase.apps.isNotEmpty) {
-  //   await Firebase.initializeApp(
-  //       options: DefaultFirebaseOptions.currentPlatform);
-  // } else {
-  //   await Firebase.initializeApp();
-  // }
-
   /// Revenue CAt
   late PurchasesConfiguration configuration;
   if (Platform.isAndroid | Platform.isIOS) {
@@ -80,7 +73,7 @@ void main() async {
     );
   }
 
-  // revenue cate
+  // revenue cat
   await Purchases.configure(configuration);
 
   // GetX all Controller

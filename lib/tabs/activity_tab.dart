@@ -18,8 +18,6 @@ import 'package:machi_app/widgets/tips/machi_how_to.dart';
 import 'package:machi_app/widgets/tips/tips_widget.dart';
 
 class ActivityTab extends StatefulWidget {
-  // const ActivityTab({super.key});
-
   const ActivityTab({Key? key}) : super(key: key);
 
   @override

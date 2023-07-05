@@ -45,76 +45,94 @@ class _AddEditTextState extends State<AddEditText> {
     double height = MediaQuery.of(context).size.height;
 
     return Container(
-        height: height * 0.9,
+        height: height - 90,
         padding: EdgeInsets.only(
             top: 10,
             left: 10,
             right: 10,
             bottom: MediaQuery.of(context).viewInsets.bottom),
-        child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+        child: Stack(children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                // mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(_i18n.translate("story_add_text_scene"),
-                          style: const TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          )),
-                      ElevatedButton(
-                          onPressed: () {
-                            _onComplete(_textController.text);
-                          },
-                          child: widget.text == null
-                              ? Text(_i18n.translate("add"))
-                              : Text(_i18n.translate("UPDATE")))
-                    ],
-                  ),
-                  attachmentPreview != null || galleryImageUrl != null
-                      ? _attachmentPreview()
-                      : Container(
-                          decoration: BoxDecoration(
-                              borderRadius:
-                                  const BorderRadius.all(Radius.circular(10)),
-                              border: Border.all(
-                                  width: 1,
-                                  color: Colors.grey,
-                                  strokeAlign: BorderSide.strokeAlignCenter)),
-                          height: 50,
-                          child: IconButton(
-                              onPressed: () {
-                                _addImage();
-                              },
-                              icon: const Icon(Iconsax.image)),
-                        ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  ConstrainedBox(
-                      constraints: BoxConstraints(
-                        maxHeight: height - 200,
+                  Text(_i18n.translate("story_add_text_scene"),
+                      style: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                      )),
+                  ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        fixedSize: const Size(0, 0),
+                        padding: const EdgeInsets.all(5),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       ),
-                      child: TextFormField(
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          hintText: _i18n.translate("story_write_edit"),
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.primary),
-                        ),
-                        controller: _textController,
-                        scrollPadding: EdgeInsets.only(
-                            bottom: MediaQuery.of(context).viewInsets.bottom),
-                      ))
-                ])));
+                      onPressed: () {
+                        _onComplete(_textController.text);
+                      },
+                      child: widget.text == null
+                          ? Text(
+                              _i18n.translate("add"),
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 14),
+                            )
+                          : Text(
+                              _i18n.translate("UPDATE"),
+                              style: const TextStyle(
+                                  color: Colors.black, fontSize: 14),
+                            ))
+                ],
+              ),
+              attachmentPreview != null || galleryImageUrl != null
+                  ? _attachmentPreview()
+                  : Container(
+                      decoration: BoxDecoration(
+                          borderRadius:
+                              const BorderRadius.all(Radius.circular(10)),
+                          border: Border.all(
+                              width: 1,
+                              color: Colors.grey,
+                              strokeAlign: BorderSide.strokeAlignCenter)),
+                      height: 50,
+                      child: IconButton(
+                          onPressed: () {
+                            _addImage();
+                          },
+                          icon: const Icon(Iconsax.image)),
+                    ),
+              const SizedBox(
+                height: 40,
+              ),
+            ],
+          ),
+          Container(
+            margin: const EdgeInsets.only(top: 120),
+            child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: ConstrainedBox(
+                    constraints: const BoxConstraints(),
+                    child: TextFormField(
+                      onTapOutside: (b) {
+                        FocusManager.instance.primaryFocus?.unfocus();
+                      },
+                      maxLines: null,
+                      decoration: InputDecoration(
+                        hintText: _i18n.translate("story_write_edit"),
+                        hintStyle: TextStyle(
+                            color: Theme.of(context).colorScheme.primary),
+                      ),
+                      controller: _textController,
+                      scrollPadding: EdgeInsets.only(
+                          bottom: MediaQuery.of(context).viewInsets.bottom),
+                    ))),
+          )
+        ]));
   }
 
   void _onComplete(String text) {

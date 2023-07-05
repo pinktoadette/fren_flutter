@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:card_swiper/card_swiper.dart';
@@ -140,8 +141,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     final package = packages[index];
                     String period = _formatPeriod(
                         package.storeProduct.subscriptionPeriod ?? '');
-                    List<String> id =
-                        package.storeProduct.identifier.split(":");
+                    String id = Platform.isAndroid
+                        ? package.storeProduct.identifier.split(":")[1]
+                        : package.storeProduct.identifier;
                     return Card(
                         elevation: 5,
                         shadowColor: Colors.black,
@@ -158,20 +160,18 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                       style: const TextStyle(
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold)),
-                                  if (id[1] == UPSELL_AFFORDABLE ||
-                                      id[1] == UPSELL_BULK)
+                                  if (id == UPSELL_AFFORDABLE ||
+                                      id == UPSELL_BULK)
                                     Badge(
                                       label: Text(
-                                        _i18n.translate(
-                                            "plans_${id[1]}_subtitle"),
+                                        _i18n.translate("plans_${id}_subtitle"),
                                         style: const TextStyle(
                                             color: Colors.white,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ),
-                                  const SizedBox(
-                                    height: 50,
-                                  ),
+                                  Image.asset(
+                                      "assets/images/subscribe/image$index.png"),
                                   Align(
                                       alignment: Alignment.center,
                                       child: Text(
@@ -183,14 +183,14 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                   Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        _i18n.translate("plans_${id[1]}"),
+                                        _i18n.translate("plans_$id"),
                                         style: const TextStyle(
                                             fontSize: 24, color: Colors.black),
                                       )),
                                   Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        _i18n.translate("plans_${id[1]}_unit"),
+                                        _i18n.translate("plans_${id}_unit"),
                                         style: const TextStyle(
                                             fontSize: 12, color: Colors.black),
                                       )),
@@ -215,12 +215,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     setState(() {
                       _selectedTier = packages[value];
                     });
-                  }
-                  // control: const SwiperControl(),
-                  )),
-          const SizedBox(
-            height: 40,
-          ),
+                  })),
           SizedBox(
               width: size.width * 0.4,
               child: ElevatedButton(
