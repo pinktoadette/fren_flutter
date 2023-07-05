@@ -62,7 +62,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                     _showSubscription();
                   },
                   child: Container(
-                      padding: const EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(5),
                       child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
@@ -86,8 +86,8 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                                 Text(
                                     _i18n.translate(
                                         "become_a_subscription_member"),
-                                    style:
-                                        const TextStyle(color: Colors.black)),
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 14)),
                               ],
                             )
                           ])))));

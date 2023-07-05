@@ -15,6 +15,8 @@ import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+import '../image/image_rounded.dart';
+
 class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
 
@@ -56,13 +58,13 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
               padding: const EdgeInsets.all(5),
               child: Text(
                 _i18n.translate("subscribe_pro"),
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12, color: Colors.black),
               ),
             )
           ]),
         ),
         body: SingleChildScrollView(
-            padding: const EdgeInsets.only(top: 50, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 0, left: 20, right: 20),
             child: _showTiers(context)));
   }
 
@@ -107,7 +109,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                       Text(
                         offers!.metadata['main_title'] as String,
                         style:
-                            const TextStyle(color: Colors.white, fontSize: 20),
+                            const TextStyle(color: Colors.black, fontSize: 20),
                       ),
                       Text(
                         offers!.serverDescription,
@@ -124,9 +126,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                       ),
                     ],
                   ))),
-          const SizedBox(
-            height: 20,
-          ),
           SizedBox(
               width: size.width,
               height: size.width,
@@ -151,55 +150,84 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                             ? APP_ACCENT_COLOR
                             : APP_ACCENT_COLOR.withAlpha(250),
                         child: Container(
-                            padding: const EdgeInsets.all(30),
+                            decoration: BoxDecoration(
+                              image: DecorationImage(
+                                image: AssetImage(
+                                    "assets/images/subscribe/image${index + 1}.png"),
+                                fit: BoxFit.cover,
+                                alignment: Alignment.topCenter,
+                                colorFilter: ColorFilter.mode(
+                                    const Color.fromARGB(255, 47, 47, 47)
+                                        .withOpacity(0.2),
+                                    BlendMode.colorBurn),
+                              ),
+                            ),
                             width: size.width,
                             child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text(" ${period}ly",
-                                      style: const TextStyle(
-                                          color: Colors.black,
-                                          fontWeight: FontWeight.bold)),
-                                  if (id == UPSELL_AFFORDABLE ||
-                                      id == UPSELL_BULK)
-                                    Badge(
-                                      label: Text(
-                                        _i18n.translate("plans_${id}_subtitle"),
-                                        style: const TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold),
+                                  const Spacer(),
+                                  Container(
+                                    padding: const EdgeInsets.all(0),
+                                    decoration: const BoxDecoration(
+                                      gradient: LinearGradient(
+                                        colors: [
+                                          Colors.transparent,
+                                          Colors.black45,
+                                          Colors.black
+                                        ],
+                                        begin: Alignment.topCenter,
+                                        end: Alignment.bottomCenter,
+                                        stops: [0, 0.2, 1],
                                       ),
                                     ),
-                                  Image.asset(
-                                      "assets/images/subscribe/image$index.png"),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                          "${package.storeProduct.priceString} per $period",
-                                          style: const TextStyle(
-                                              color: Colors.black,
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold))),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        _i18n.translate("plans_$id"),
-                                        style: const TextStyle(
-                                            fontSize: 24, color: Colors.black),
-                                      )),
-                                  Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        _i18n.translate("plans_${id}_unit"),
-                                        style: const TextStyle(
-                                            fontSize: 12, color: Colors.black),
-                                      )),
-                                  const SizedBox(
-                                    height: 50,
-                                  ),
-                                  Text(_i18n.translate("plans_${id[1]}_des"),
-                                      style:
-                                          const TextStyle(color: Colors.black)),
+                                    alignment: Alignment.bottomCenter,
+                                    child: Column(
+                                      children: [
+                                        Text(" ${period}ly",
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontWeight: FontWeight.bold)),
+                                        if (id == UPSELL_AFFORDABLE ||
+                                            id == UPSELL_BULK)
+                                          Badge(
+                                            label: Text(
+                                              _i18n.translate(
+                                                  "plans_${id}_subtitle"),
+                                              style: const TextStyle(
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                          ),
+                                        Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                                "${package.storeProduct.priceString} per $period",
+                                                style: const TextStyle(
+                                                    fontSize: 18,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                        Padding(
+                                            padding: const EdgeInsets.only(
+                                                left: 25,
+                                                right: 25,
+                                                top: 10,
+                                                bottom: 10),
+                                            child: Text(
+                                              package.storeProduct.description,
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                            )),
+                                        Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Text(
+                                              _i18n.translate(
+                                                  "plans_${id}_unit"),
+                                              style:
+                                                  const TextStyle(fontSize: 12),
+                                            )),
+                                      ],
+                                    ),
+                                  )
                                 ])));
                   },
                   indicatorLayout: PageIndicatorLayout.COLOR,

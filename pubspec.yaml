@@ -116,6 +116,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/imports/
+    - assets/images/subscribe/
     - assets/lang/
     - assets/fonts/
     - assets/lottie/
