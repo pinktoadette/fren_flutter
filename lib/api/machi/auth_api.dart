@@ -15,7 +15,6 @@ class AuthApi {
 
   Future<Dio> getDio() async {
     String token = await getFirebaseUser!.getIdToken();
-    log(token);
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';
     dio.options.headers['content-Type'] = 'application/json';

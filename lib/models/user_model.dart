@@ -393,7 +393,7 @@ class UserModel extends Model {
         },
         body: jsonEncode(GitHubLoginRequest(
           clientId: GITHUB_CLIENT_ID,
-          clientSecret: GITHUB_CLIENT_SECRET,
+          clientSecret: "",
           code: code,
         )),
       );

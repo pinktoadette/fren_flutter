@@ -56,13 +56,13 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
               padding: const EdgeInsets.all(5),
               child: Text(
                 _i18n.translate("subscribe_pro"),
-                style: const TextStyle(fontSize: 12),
+                style: const TextStyle(fontSize: 12, color: Colors.black),
               ),
             )
           ]),
         ),
         body: Padding(
-          padding: const EdgeInsets.all(10),
+          padding: const EdgeInsets.all(30),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -72,8 +72,22 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
               ),
               Text(
                   "${_i18n.translate("subscribed_plan")} on $activeSubscription"),
-              Obx(() => Text(
-                  "${subscribeController.credits.value.toString()} ${_i18n.translate("subscribed_credits_remaining")} ")),
+
+              Obx(() => RichText(
+                      text: TextSpan(
+                    style: const TextStyle(
+                      fontSize: 16,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(
+                          text:
+                              "${subscribeController.credits.value.toString()} ",
+                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                      TextSpan(
+                          text:
+                              _i18n.translate("subscribed_credits_remaining")),
+                    ],
+                  ))),
               const SizedBox(
                 height: 10,
               ),
@@ -82,11 +96,11 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
               const SizedBox(
                 height: 80,
               ),
-              ElevatedButton(
-                  onPressed: () {},
-                  child: Text(_i18n.translate("subscribed_manage_plan"))),
+              // ElevatedButton(
+              //     onPressed: () {},
+              //     child: Text(_i18n.translate("subscribed_manage_plan"))),
               const SizedBox(
-                height: 10,
+                height: 40,
               ),
               Text(_i18n.translate("subscribed_credits_expired_footnote"),
                   style: const TextStyle(fontSize: 10)),

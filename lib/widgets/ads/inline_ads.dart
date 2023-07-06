@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/widgets/ads/ad_helper.dart';
@@ -48,7 +49,7 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
             _ad = ad as BannerAd;
           });
         },
-        onAdFailedToLoad: (ad, error) {
+        onAdFailedToLoad: (ad, error) async {
           // Releases an ad resource when it fails to load
           ad.dispose();
           debugPrint(
@@ -64,7 +65,7 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
       width: _adWidth,
       height: AD_HEIGHT,
       alignment: Alignment.center,
-      child: _ad != null ? AdWidget(ad: _ad!) : const Text("Machi"),
+      child: _ad != null ? AdWidget(ad: _ad!) : const Text("Machi Ads"),
     );
   }
 }

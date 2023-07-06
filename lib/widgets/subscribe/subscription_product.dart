@@ -9,6 +9,7 @@ import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -25,6 +26,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   bool isUserSubscribed = false;
   late AppLocalizations _i18n;
   late Package _selectedTier;
+  bool isLoading = false;
 
   Offering? offers;
   List<Package> packages = [];
@@ -247,11 +249,14 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           const SizedBox(height: 30),
           SizedBox(
               width: size.width * 0.4,
-              child: ElevatedButton(
+              child: ElevatedButton.icon(
                   onPressed: () {
                     _makePurchase();
                   },
-                  child: Text(
+                  icon: isLoading == true
+                      ? loadingButton(size: 16, color: Colors.black)
+                      : const SizedBox.shrink(),
+                  label: Text(
                     _i18n.translate("SUBSCRIBE"),
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   )))
@@ -272,14 +277,26 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   void _makePurchase() async {
+    setState(() {
+      isLoading = true;
+    });
     final _purchaseApi = PurchasesApi();
     String info = await AppHelper().getRevenueCat();
     try {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
-        await _purchaseApi.purchaseCredits();
-        await _purchaseApi.getCredits();
+        try {
+          await _purchaseApi.purchaseCredits();
+          await _purchaseApi.getCredits();
+        } catch (err, s) {
+          Get.snackbar(_i18n.translate("error"),
+              _i18n.translate("an_error_has_occurred"),
+              snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
+          await FirebaseCrashlytics.instance.recordError(err, s,
+              reason: 'Unable to save purchase offers: ${err.toString()}',
+              fatal: true);
+        }
       }
 
       Get.snackbar(_i18n.translate("success"),
@@ -288,15 +305,18 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS);
       Navigator.of(context).pop();
-    } on PlatformException catch (e, s) {
-      var errorCode = PurchasesErrorHelper.getErrorCode(e);
+    } on PlatformException catch (err, s) {
+      var errorCode = PurchasesErrorHelper.getErrorCode(err);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
-        Get.snackbar(
-            _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
-            snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
-        await FirebaseCrashlytics.instance.recordError(e, s,
-            reason: 'Unable to purchase offers: ${e.message}', fatal: true);
+        await FirebaseCrashlytics.instance.recordError(err, s,
+            reason: 'Unable to purchase offers: ${err.toString()}',
+            fatal: true);
       }
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+      Navigator.of(context).pop();
     }
   }
 }

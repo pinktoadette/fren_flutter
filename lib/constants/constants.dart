@@ -22,7 +22,8 @@ const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
 
-const String GOOGLE_BANNER_ADS = 'ca-app-pub-8475595365680681/9246193145';
+const String GOOGLE_BANNER_ADS_ANDROID =
+    'ca-app-pub-8475595365680681/9246193145';
 const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
 const String GOOGLE_INTERSTI_ADS = 'ca-app-pub-3940256099942544/8691691433';
@@ -47,8 +48,8 @@ const String SUB_TOKEN_IDENTIFIER = "token_";
 // For IOS Platform
 const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
-// const PY_API = "https://api.mymachi.app/api/";
 const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/api/";
+// const PY_API = "https://api.mymachi.app/api/";
 const PY_API = PY_DEV;
 const SOCKET_WS = "wss://api.mymachi.app/";
 

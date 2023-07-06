@@ -7,6 +7,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
+import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -112,7 +113,7 @@ class MessageMachiApi {
   //     Map<String, dynamic> newMessage = Map.from(element);
   //     newMessage['text'] = newMessage['message'];
   //     newMessage['type'] = newMessage['messageType'];
-  //     types.Message msg = createTypesMessages(newMessage);
+  //     types.Message msg = messageFromJson(newMessage);
   //     finalMessages.add(msg);
   //   }
   //   return finalMessages;

@@ -19,7 +19,7 @@ import 'package:machi_app/constants/constants.dart';
 class AdManager {
   static String get bannerAdUnitId {
     if (Platform.isAndroid) {
-      return GOOGLE_BANNER_ADS;
+      return GOOGLE_BANNER_ADS_ANDROID;
     } else if (Platform.isIOS) {
       /// should be different
       return GOOGLE_BANNER_ADS_IOS;
