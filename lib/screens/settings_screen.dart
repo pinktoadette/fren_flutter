@@ -6,7 +6,6 @@ import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/account_page.dart';
-import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:machi_app/widgets/sign_out_button_card.dart';
 import 'package:scoped_model/scoped_model.dart';
 

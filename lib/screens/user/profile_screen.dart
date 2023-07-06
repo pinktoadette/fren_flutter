@@ -237,10 +237,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           )),
-      SizedBox(
-        height: size.width / 3,
-        child: GalleryWidget(userId: widget.user.userId),
-      )
+      GalleryWidget(userId: widget.user.userId),
     ];
   }
 

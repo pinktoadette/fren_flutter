@@ -30,20 +30,29 @@ class _GalleryWidgetState extends State<GalleryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return ListView.builder(
-        physics: const ClampingScrollPhysics(),
-        shrinkWrap: true,
-        scrollDirection: Axis.horizontal,
-        itemCount: galleries.length,
-        itemBuilder: (BuildContext context, int index) {
-          return SizedBox(
-              width: width / 3,
-              height: width / 3,
-              child: StoryCover(
-                photoUrl: galleries[index].photoUrl,
-                title: galleries[index].caption,
-              ));
-        });
+    Size size = MediaQuery.of(context).size;
+    if (galleries.isEmpty) {
+      return Container(
+        height: 20,
+        alignment: Alignment.center,
+        child: const Text("Empty Gallery"),
+      );
+    }
+    return SizedBox(
+        height: size.width / 3,
+        child: ListView.builder(
+            physics: const ClampingScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            itemCount: galleries.length,
+            itemBuilder: (BuildContext context, int index) {
+              return SizedBox(
+                  width: size.width / 3,
+                  height: size.width / 3,
+                  child: StoryCover(
+                    photoUrl: galleries[index].photoUrl,
+                    title: galleries[index].caption,
+                  ));
+            }));
   }
 }

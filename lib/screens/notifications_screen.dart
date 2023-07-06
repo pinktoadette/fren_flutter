@@ -30,8 +30,9 @@ class NotificationsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        centerTitle: false,
         title: Text(i18n.translate("notifications"),
-            style: Theme.of(context).textTheme.bodyMedium),
+            style: Theme.of(context).textTheme.headlineLarge),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
           stream: _notificationsApi.getNotifications(),

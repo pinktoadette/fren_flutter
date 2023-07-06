@@ -30,7 +30,10 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return PagedSliverList<int, Storyboard>.separated(
+    return PagedListView<int, Storyboard>.separated(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(),
+      padding: EdgeInsets.zero,
       pagingController: timelineController.pagingController,
       builderDelegate: PagedChildBuilderDelegate<Storyboard>(
           firstPageProgressIndicatorBuilder: (_) => const Frankloader(),

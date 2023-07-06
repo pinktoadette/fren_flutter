@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
@@ -14,8 +13,6 @@ import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-
-import '../image/image_rounded.dart';
 
 class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
@@ -244,6 +241,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                       _selectedTier = packages[value];
                     });
                   })),
+          const SizedBox(height: 30),
           SizedBox(
               width: size.width * 0.4,
               child: ElevatedButton(

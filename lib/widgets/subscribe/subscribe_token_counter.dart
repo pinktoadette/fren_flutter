@@ -30,7 +30,7 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
         context: context,
         isScrollControlled: true,
         builder: (context) => Obx(() => FractionallySizedBox(
-            heightFactor: subscribeController.credits.value > 0 ? 0.5 : 0.98,
+            heightFactor: subscribeController.credits.value > 0 ? 0.5 : 0.95,
             child: subscribeController.credits.value > 0
                 ? const SubscribePurchaseDetails()
                 : const SubscriptionProduct())));

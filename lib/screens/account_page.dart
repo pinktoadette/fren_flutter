@@ -31,7 +31,6 @@ class AccountPage extends StatelessWidget {
     late AppLocalizations _i18n;
 
     _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
 
     return Scaffold(
         key: _scaffoldKey,

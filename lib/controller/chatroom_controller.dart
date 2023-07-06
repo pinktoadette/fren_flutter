@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:math';
 
 import 'package:machi_app/controller/message_controller.dart';
-import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/chatroom.dart';

@@ -102,7 +102,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             },
             child: Container(
               padding: const EdgeInsets.all(20),
-              width: width - padding * 2,
+              width: width - padding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -175,7 +175,10 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                     space: 3,
                     activeColor: APP_ACCENT_COLOR,
                     color: Colors.grey))),
-      if (hasSeries == false) _likeItemWidget(storyboard.story![0])
+      if (hasSeries == false) _likeItemWidget(storyboard.story![0], false),
+      const SizedBox(
+        height: 20,
+      )
     ];
   }
 
@@ -187,6 +190,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           Get.to(() => StoryPageView(story: story));
         },
         child: Card(
+            margin: EdgeInsets.zero,
             child: Container(
                 decoration: story.photoUrl != null && story.photoUrl != ""
                     ? BoxDecoration(
@@ -195,10 +199,16 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                           fit: BoxFit.fitWidth,
                           alignment: Alignment.topCenter,
                           colorFilter: ColorFilter.mode(
-                              Colors.black.withOpacity(0.9), BlendMode.darken),
+                              const Color.fromARGB(255, 32, 32, 32)
+                                  .withOpacity(0.9),
+                              BlendMode.darken),
                         ),
                       )
-                    : const BoxDecoration(shape: BoxShape.rectangle),
+                    : BoxDecoration(
+                        borderRadius: BorderRadius.circular(25),
+                        shape: BoxShape.rectangle,
+                        border: Border.all(
+                            width: 1, color: APP_INVERSE_PRIMARY_COLOR)),
                 padding: const EdgeInsets.all(15),
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -222,11 +232,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               overflow: TextOverflow.fade,
                             ),
                           )),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       SizedBox(
                         width: width * 0.9,
                         child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: _likeItemWidget(story),
+                          alignment: Alignment.bottomLeft,
+                          child: _likeItemWidget(story, true),
                         ),
                       )
                     ]))));
@@ -274,19 +287,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     }
   }
 
-  Widget _likeItemWidget(Story item) {
+  Widget _likeItemWidget(Story item, bool removeLeftPadding) {
     return Padding(
-        padding: const EdgeInsets.only(bottom: 0, right: 10),
+        padding: EdgeInsets.only(
+            left: removeLeftPadding == true ? 0 : 15, bottom: 0, right: 10),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            if (item.status == StoryStatus.PUBLISHED)
-              SizedBox(
-                  height: 25,
-                  child: Text(
-                      "${item.commentCount ?? 0} ${_i18n.translate("comments")}",
-                      style: Theme.of(context).textTheme.labelSmall)),
             SizedBox(
                 width: 50,
                 child: LikeItemWidget(
@@ -294,7 +302,18 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       _onLikePressed(item, val);
                     },
                     likes: item.likes ?? 0,
-                    mylikes: item.mylikes ?? 0))
+                    mylikes: item.mylikes ?? 0)),
+            Container(
+              height: 35,
+              padding: const EdgeInsets.only(left: 5, right: 10),
+              child: const Text("•"),
+            ),
+            if (item.status == StoryStatus.PUBLISHED)
+              SizedBox(
+                  height: 30,
+                  child: Text(
+                      "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
+                      style: const TextStyle(fontSize: 14))),
           ],
         ));
   }

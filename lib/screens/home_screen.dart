@@ -28,6 +28,9 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+import '../api/notifications_api.dart';
+import 'notifications_screen.dart';
+
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -188,6 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // const PlaylistTab(),
       const StoryboardHome(),
       const ConversationsTab(),
+      NotificationsScreen(),
       const ProfileTab()
     ];
 
@@ -226,6 +230,12 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                 label: '',
                 icon: _getConversationCounter(),
+              ),
+
+              /// Notification Tab
+              BottomNavigationBarItem(
+                label: '',
+                icon: _getNotificationCounter(),
               ),
 
               /// Profile Tab
@@ -293,5 +303,32 @@ class _HomeScreenState extends State<HomeScreen> {
           : NotificationCounter(
               icon: icon, counter: chatController.unreadCounter.value);
     });
+  }
+
+  /// Count unread notifications
+  Widget _getNotificationCounter() {
+    final _notificationsApi = NotificationsApi();
+
+    const icon = Icon(Iconsax.notification);
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
+        stream: _notificationsApi.getNotifications(),
+        builder: (context, snapshot) {
+          // Check result
+          if (!snapshot.hasData) {
+            return icon;
+          } else {
+            /// Get total counter to alert user
+            final total = snapshot.data!.docs
+                .where((doc) => doc.data()[NOTIF_READ] == false)
+                .toList()
+                .length;
+            if (total == 0) return icon;
+            return NotificationCounter(
+              icon: icon,
+              counter: total,
+              iconPadding: 10,
+            );
+          }
+        });
   }
 }
