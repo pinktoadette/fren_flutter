@@ -233,7 +233,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                             ),
                           )),
                       const SizedBox(
-                        height: 20,
+                        height: 15,
                       ),
                       SizedBox(
                         width: width * 0.9,
