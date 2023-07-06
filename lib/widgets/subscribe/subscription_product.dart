@@ -98,6 +98,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Card(
+              borderOnForeground: false,
+              shadowColor: Colors.black,
               color: Colors.black,
               child: Padding(
                   padding: const EdgeInsets.all(20),
@@ -148,6 +150,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                             : APP_ACCENT_COLOR.withAlpha(250),
                         child: Container(
                             decoration: BoxDecoration(
+                              color: Colors.black,
                               image: DecorationImage(
                                 image: AssetImage(
                                     "assets/images/subscribe/image${index + 1}.png"),
@@ -156,7 +159,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                 colorFilter: ColorFilter.mode(
                                     const Color.fromARGB(255, 47, 47, 47)
                                         .withOpacity(0.2),
-                                    BlendMode.colorBurn),
+                                    BlendMode.colorDodge),
                               ),
                             ),
                             width: size.width,

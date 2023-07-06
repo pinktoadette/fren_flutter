@@ -98,7 +98,7 @@ class ProfileTab extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         builder: (context) => Obx(() => FractionallySizedBox(
-            heightFactor: subscribeController.credits.value > 0 ? 0.50 : 0.98,
+            heightFactor: subscribeController.credits.value > 0 ? 0.50 : 0.95,
             child: subscribeController.credits.value > 0
                 ? const SubscribePurchaseDetails()
                 : const SubscriptionProduct())));

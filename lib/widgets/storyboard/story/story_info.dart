@@ -95,7 +95,10 @@ class _StoryInfoState extends State<StoryInfo> {
                     _showBotInfo(bot);
                   }
                 },
-                child: Text("${contribute['character']} ",
+                child: Text(
+                    contribute['characterId'].contains(BOT_PREFIX)
+                        ? "🤖${contribute['character']} "
+                        : contribute['character'],
                     style: Theme.of(context).textTheme.labelSmall)))
           ]),
           const SizedBox(
