@@ -1,11 +1,9 @@
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:machi_app/widgets/storyboard/view_storyboard.dart';
 
