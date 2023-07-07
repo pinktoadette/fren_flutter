@@ -59,8 +59,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
 
-    /// Revenue Cat
-    _fetchUserPlans();
+    /// Revenue Cat init in activity_tab
+    // _fetchUserPlans();
 
     /// Init streams
     _getCurrentUserUpdates();
@@ -98,15 +98,13 @@ class _HomeScreenState extends State<HomeScreen> {
     storyController.getBoards(filter: StoryStatus.UNPUBLISHED);
   }
 
-  void _fetchUserPlans() async {
-    try {
-      String userId = UserModel().user.userId;
-      await Purchases.logIn(userId);
-      subscribeController.initUser();
-    } catch (err) {
-      debugPrint(err.toString());
-    }
-  }
+  // void _fetchUserPlans() async {
+  //   try {
+  //     subscribeController.initUser();
+  //   } catch (err) {
+  //     debugPrint(err.toString());
+  //   }
+  // }
 
   /// get or create chatroom
   Future<void> _getChatrooms() async {

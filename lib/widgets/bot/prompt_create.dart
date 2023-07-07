@@ -31,7 +31,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
   final _nameController = TextEditingController();
   final _promptController = TextEditingController();
-  bool _isPrivate = false;
+  final bool _isPrivate = false;
 
   late ProgressDialog _pr;
   late AppLocalizations _i18n;

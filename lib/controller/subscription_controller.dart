@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 //@todo remove scope model to getX
@@ -19,8 +20,11 @@ class SubscribeController extends GetxController {
   }
 
   void initUser() async {
-    CustomerInfo customer = await Purchases.getCustomerInfo();
-    _customer = customer.obs;
+    String userId = UserModel().user.userId;
+    Purchases.logIn(userId).then((loginResult) async {
+      CustomerInfo customer = await Purchases.getCustomerInfo();
+      _customer = customer.obs;
+    });
   }
 
   void getCredits() async {
