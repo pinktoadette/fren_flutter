@@ -387,9 +387,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _hasNewMessages = true;
     });
 
-    Map<String, dynamic> formatMessage =
-        formatChatMessage(partialMessage: message);
-    _channel.sink.add(json.encode({"message": formatMessage}));
     String lastMessageId = "";
     if (attachmentPreview != null) {
       String uri = await uploadFile(
@@ -399,17 +396,23 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       _channel.sink.add(json.encode({"message": formatImgMessage}));
 
-      lastMessageId =
-          await _messagesApi.saveUserResponse(messageMap: formatImgMessage);
-    }
+      lastMessageId = await _messagesApi.saveUserResponse(
+          messageMap: {...formatImgMessage, MESSAGE_TEXT: message.text},
+          tags: _setTags);
+      setState(() {
+        _isAttachmentUploading = false;
+      });
 
+      if (_setTags != null) {
+        return;
+      }
+    }
+    Map<String, dynamic> formatMessage =
+        formatChatMessage(partialMessage: message);
+    _channel.sink.add(json.encode({"message": formatMessage}));
     // saves the text after the image, the text is linked to the image with lastMessageId
     await _saveResponseAndGetBot(
         {...formatMessage, "lastMessageId": lastMessageId});
-
-    setState(() {
-      _isAttachmentUploading = false;
-    });
   }
 
   void _handleAttachmentPressed() {

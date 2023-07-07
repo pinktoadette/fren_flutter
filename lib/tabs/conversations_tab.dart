@@ -209,18 +209,14 @@ class _ConversationsTabState extends State<ConversationsTab> {
                       }),
                       separatorBuilder: (context, index) {
                         if ((index + 1) % 3 == 0) {
-                          return Container(
-                            height: 150,
-                            color: Theme.of(context).colorScheme.background,
-                            child: Padding(
-                              padding: const EdgeInsetsDirectional.only(
-                                  top: 10, bottom: 10),
-                              child: Container(
-                                height: AD_HEIGHT,
-                                width: width,
-                                color: Theme.of(context).colorScheme.background,
-                                child: const InlineAdaptiveAds(),
-                              ),
+                          return Padding(
+                            padding: const EdgeInsetsDirectional.only(
+                                top: 10, bottom: 10),
+                            child: Container(
+                              height: AD_HEIGHT,
+                              width: width,
+                              color: Theme.of(context).colorScheme.background,
+                              child: const InlineAdaptiveAds(),
                             ),
                           );
                         } else {
@@ -295,7 +291,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
         return Flexible(
             child: Text(
           truncateText(maxLength: 100, text: text, removeNewline: true),
-          style: Theme.of(context).textTheme.bodyMedium,
+          style: Theme.of(context).textTheme.bodySmall,
         ));
       case 'image':
         return SizedBox(
