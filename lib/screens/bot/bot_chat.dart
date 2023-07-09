@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
@@ -389,21 +390,31 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     String lastMessageId = "";
     if (attachmentPreview != null) {
-      String uri = await uploadFile(
-          file: file!, category: UPLOAD_PATH_MESSAGE, categoryId: createUUID());
-      Map<String, dynamic> formatImgMessage =
-          formatChatMessage(partialMessage: attachmentPreview, uri: uri);
+      try {
+        String uri = await uploadFile(
+            file: file!,
+            category: UPLOAD_PATH_MESSAGE,
+            categoryId: createUUID());
+        Map<String, dynamic> formatImgMessage =
+            formatChatMessage(partialMessage: attachmentPreview, uri: uri);
 
-      _channel.sink.add(json.encode({"message": formatImgMessage}));
+        _channel.sink.add(json.encode({"message": formatImgMessage}));
 
-      lastMessageId = await _messagesApi.saveUserResponse(
-          messageMap: {...formatImgMessage, MESSAGE_TEXT: message.text},
-          tags: _setTags);
-      setState(() {
-        _isAttachmentUploading = false;
-      });
-
-      if (_setTags != null) {
+        lastMessageId = await _messagesApi.saveUserResponse(
+            messageMap: {...formatImgMessage, "text": message.text},
+            tags: _setTags);
+      } catch (err, s) {
+        Get.snackbar(
+          _i18n.translate("error"),
+          _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+        );
+        setState(() {
+          _isAttachmentUploading = false;
+        });
+        await FirebaseCrashlytics.instance.recordError(err, s,
+            reason: 'image uploaded and has error', fatal: true);
         return;
       }
     }
@@ -413,6 +424,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
     // saves the text after the image, the text is linked to the image with lastMessageId
     await _saveResponseAndGetBot(
         {...formatMessage, "lastMessageId": lastMessageId});
+    setState(() {
+      _isAttachmentUploading = false;
+    });
   }
 
   void _handleAttachmentPressed() {
@@ -463,17 +477,19 @@ class _BotChatScreenState extends State<BotChatScreen> {
     try {
       Map<String, dynamic> message = await _messagesApi.getBotResponse();
       _channel.sink.add(json.encode({"message": message}));
-    } catch (err) {
+    } catch (err, s) {
       dynamic response = {
         CHAT_AUTHOR_ID: _room.bot.botId,
         CHAT_AUTHOR: _room.bot.name,
         BOT_ID: _room.bot.botId,
         CHAT_MESSAGE_ID: createUUID(),
-        CHAT_TEXT: "Sorry, got an error 😕. ${err.toString()}",
+        CHAT_TEXT: "Sorry, got an error 😕. Try again.",
         CHAT_TYPE: "text",
         CREATED_AT: getDateTimeEpoch()
       };
       _channel.sink.add(json.encode({"message": response}));
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'bot has error ${err.toString()}', fatal: true);
     }
 
     if (_setTags != null) {
