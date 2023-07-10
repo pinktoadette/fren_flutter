@@ -49,69 +49,71 @@ class PostCommentWidget extends StatelessWidget {
                 )
               : const SizedBox.shrink()),
           Container(
-            padding: EdgeInsets.only(
-                top: commentController.replyToComment.commentId != null
-                    ? 30
-                    : 0),
-            child: SingleChildScrollView(
+              padding: EdgeInsets.only(
+                  top: commentController.replyToComment.commentId != null
+                      ? 30
+                      : 0),
+              child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       minHeight: 60,
                       maxHeight: 300.0,
                     ),
-                    child: Stack(children: [
-                      TextFormField(
-                        onTapOutside: (b) {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                        },
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        controller: _commentController,
-                        maxLines: null,
-                        // maxLength: 250,
-                        decoration: InputDecoration(
-                          fillColor: Colors.transparent,
-                          hintText: _i18n.translate("comment_leave"),
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 14),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                        ),
-                        validator: (value) {
-                          if ((value == null) || (value == "")) {
-                            return _i18n.translate("validation_1_character");
-                          }
-                          return null;
-                        },
-                      ),
-                      Positioned(
-                          bottom: 10,
-                          right: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: const Icon(
-                                  Iconsax.send_2,
-                                  size: 24,
-                                ),
-                                onPressed: () {
-                                  if (_commentController.text.isEmpty) {
-                                    return;
-                                  } else {
-                                    _postComment();
-                                  }
-                                },
-                              ),
-                            ],
-                          ))
-                    ]))),
-          )
+                    child: TapRegion(
+                        onTapOutside: (_) =>
+                            FocusManager.instance.primaryFocus?.unfocus(),
+                        child: Stack(children: [
+                          TextFormField(
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            controller: _commentController,
+                            maxLines: null,
+                            // maxLength: 250,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              hintText: _i18n.translate("comment_leave"),
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 14),
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if ((value == null) || (value == "")) {
+                                return _i18n
+                                    .translate("validation_1_character");
+                              }
+                              return null;
+                            },
+                          ),
+                          Positioned(
+                              bottom: 10,
+                              right: 0,
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Iconsax.send_2,
+                                      size: 24,
+                                    ),
+                                    onPressed: () {
+                                      if (_commentController.text.isEmpty) {
+                                        return;
+                                      } else {
+                                        _postComment();
+                                      }
+                                    },
+                                  ),
+                                ],
+                              ))
+                        ]))),
+              ))
         ]));
   }
 
