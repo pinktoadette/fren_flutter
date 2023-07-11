@@ -164,6 +164,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           actions: const [SubscribeTokenCounter()],
         ),
         body: Chat(
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             listBottomWidget: CustomHeaderInputWidget(
                 onUpdateWidget: (e) {
                   setState(() {
@@ -202,7 +203,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
                     builder: (context) => ProfileScreen(user: user)));
               }
             },
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
             onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
@@ -426,6 +426,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isAttachmentUploading = false;
     });
+    FocusScope.of(context).requestFocus(FocusNode());
   }
 
   void _handleAttachmentPressed() {

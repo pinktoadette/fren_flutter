@@ -5,18 +5,18 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "fren_flutter",
+            "name": "machi",
             "request": "launch",
             "type": "dart"
         },
         {
-            "name": "fren_flutter (profile mode)",
+            "name": "machi (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "fren_flutter (release mode)",
+            "name": "machi (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

@@ -70,12 +70,12 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         const SizedBox(
           height: 5,
         ),
-        Padding(
-            padding: const EdgeInsets.all(10),
-            child: Text(
-              _i18n.translate("add_to_exist_storyboard"),
-              style: Theme.of(context).textTheme.labelSmall,
-            )),
+        // Padding(
+        //     padding: const EdgeInsets.all(10),
+        //     child: Text(
+        //       _i18n.translate("add_to_exist_storyboard"),
+        //       style: Theme.of(context).textTheme.labelSmall,
+        //     )),
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
