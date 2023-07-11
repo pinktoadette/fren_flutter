@@ -11,6 +11,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_purchase_details.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class ProfileTab extends StatelessWidget {
   const ProfileTab({Key? key}) : super(key: key);
@@ -79,6 +80,30 @@ class ProfileTab extends StatelessWidget {
                     ),
                   ],
                 )),
+            Card(
+                clipBehavior: Clip.antiAlias,
+                elevation: 4.0,
+                shape: defaultCardBorder(),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Iconsax.document),
+                      title: Text(
+                        "Help Us Improve",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      onTap: () async {
+                        final Uri url =
+                            Uri.parse("https://forms.gle/2M2Qa23Frvimgjwi7");
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(url);
+                        } else {
+                          throw "Could not launch url: $url";
+                        }
+                      },
+                    ),
+                  ],
+                ))
 
             /// App Section Card
             // AppSectionCard(),
