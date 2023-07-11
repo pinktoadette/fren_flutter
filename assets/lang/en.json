@@ -357,7 +357,8 @@
   "comment_deleted": "Deleted reply",
   
   "story_share_message": "Create Board",
-  "storyboard_nothing": "No boards saved",
+  "storyboard_nothing": "No boards saved.",
+  "storyboard_noting_instruction": "How to: When chatting, click on the board icon located beneath the messages to save the message. \n\nWithin the boards, you have the flexibility to edit the messages, allowing you to create content or make any necessary modifications for future private reference.",
   "storyboard_confirm_delete": "Are you sure you want to delete this board? All text and images will be deleted",
   "storyboard_success_delete": "Board is successfully deleted",
   "storyboard_delete_error": "Something went wrong deleting the board",
@@ -399,6 +400,7 @@
   "story_success": "Your board is published!",
   "story_private": "Private",
   "story_published": "Published",
+  "story_nothing_published": "Nothing published",
   "story_sure_delete": "Are you sure you want to delete from the board?",
   "storybit_sure_delete": "Are you sure you want to delete from the collection?",
   "story_read_more": "Read more...",

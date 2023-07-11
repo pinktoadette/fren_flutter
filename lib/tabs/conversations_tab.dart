@@ -57,39 +57,40 @@ class _ConversationsTabState extends State<ConversationsTab> {
     final width = MediaQuery.of(context).size.width;
 
     return Scaffold(
+        appBar: AppBar(
+            title: Text(
+              _i18n.translate("chat"),
+              style: Theme.of(context).textTheme.headlineLarge,
+            ),
+            actions: <Widget>[
+              IconButton(
+                  onPressed: () {
+                    _createBot(context);
+                  },
+                  icon: const Icon(Iconsax.message_add_1)),
+              IconButton(
+                  onPressed: () {
+                    _viewBots(context);
+                  },
+                  icon: const Icon(Iconsax.messages)),
+              IconButton(
+                  onPressed: () async {
+                    Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
+                    SetCurrentRoom().setNewBotRoom(bot, true);
+                  },
+                  icon: const Icon(Iconsax.message_edit))
+            ]),
         body: RefreshIndicator(
-            child: CustomScrollView(
-              controller: scrollController,
-              slivers: [
-                FrostedAppBar(
-                    title: Padding(
-                      padding: const EdgeInsets.only(top: 25),
-                      child: Text(
-                        _i18n.translate("chat"),
-                        style: Theme.of(context).textTheme.headlineLarge,
-                      ),
+            onRefresh: () async {
+              handleScrolling();
+            },
+            child: chatController.roomlist.isEmpty
+                ? Center(
+                    child: Text(
+                      _i18n.translate("no_conversation"),
                     ),
-                    showLeading: true,
-                    actions: <Widget>[
-                      IconButton(
-                          onPressed: () {
-                            _createBot(context);
-                          },
-                          icon: const Icon(Iconsax.message_add_1)),
-                      IconButton(
-                          onPressed: () {
-                            _viewBots(context);
-                          },
-                          icon: const Icon(Iconsax.messages)),
-                      IconButton(
-                          onPressed: () async {
-                            Bot bot =
-                                await _botApi.getBot(botId: DEFAULT_BOT_ID);
-                            SetCurrentRoom().setNewBotRoom(bot, true);
-                          },
-                          icon: const Icon(Iconsax.message_edit))
-                    ]),
-                Obx(() => SliverList.separated(
+                  )
+                : Obx(() => ListView.separated(
                       itemCount: chatController.roomlist.length,
                       itemBuilder: ((context, index) {
                         final Chatroom room = chatController.roomlist[index];
@@ -223,16 +224,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                           return const Divider(height: 10);
                         }
                       },
-                    ))
-              ],
-            ),
-            onRefresh: () {
-              setState(() {
-                pageNum = 1;
-              });
-              return _chatroomApi.getAllMyRooms(
-                  page: pageNum, clearRooms: true);
-            }));
+                    ))));
   }
 
   void _onDelete(Chatroom room) async {

@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/datas/user.dart';
@@ -48,7 +49,8 @@ class AvatarInitials extends StatelessWidget {
                       style: Theme.of(context).textTheme.headlineSmall),
                 )
               : null,
-          foregroundImage: photoUrl == '' ? null : NetworkImage(photoUrl),
+          foregroundImage:
+              photoUrl == '' ? null : CachedNetworkImageProvider(photoUrl),
           backgroundColor: Theme.of(context).colorScheme.background,
         ),
       ),

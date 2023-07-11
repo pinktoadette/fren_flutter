@@ -26,7 +26,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
 import 'package:machi_app/controller/bot_controller.dart';
-import 'package:purchases_flutter/purchases_flutter.dart';
 
 import '../api/notifications_api.dart';
 import 'notifications_screen.dart';

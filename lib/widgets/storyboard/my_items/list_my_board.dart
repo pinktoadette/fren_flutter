@@ -44,13 +44,33 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
         _getMyBoards();
       },
       child: storyboardController.storyboards.isEmpty
-          ? Align(
-              alignment: Alignment.center,
-              child: Text(
-                _i18n.translate("story_nothing"),
-                textAlign: TextAlign.center,
-              ),
-            )
+          ? Container(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Row(
+                    children: [
+                      const Icon(Iconsax.book),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      Text(
+                        _i18n.translate("storyboard_nothing"),
+                        style: Theme.of(context).textTheme.displayMedium,
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Text(
+                    _i18n.translate("storyboard_noting_instruction"),
+                    textAlign: TextAlign.left,
+                  ),
+                ],
+              ))
           : Obx(() => ListView.separated(
               separatorBuilder: (BuildContext context, int index) {
                 if ((index + 1) % 3 == 0) {
