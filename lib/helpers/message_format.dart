@@ -77,7 +77,7 @@ types.Message messageFromJson(Map<String, dynamic> message) {
     message['height'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_HEIGHT];
     message['width'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_WIDTH];
     message['uri'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_URI];
-    message["metadata"] = {"text": ""};
+    message["metadata"] = {"caption": message[CHAT_TEXT] ?? ""};
 
     return types.ImageMessage.fromJson(message);
   }
