@@ -23,7 +23,7 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
   void initState() {
     super.initState();
     setState(() {
-      customer = subscribeController.customer;
+      customer = subscribeController.customer!;
 
       if (customer.activeSubscriptions.isNotEmpty) {
         /// only one subscription at a time

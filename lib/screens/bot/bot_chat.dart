@@ -102,12 +102,30 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   void _onSocketParse(String message) {
-    Map<String, dynamic> decodeData = json.decode(message);
-    types.Message newMessage = messageFromJson(decodeData["message"]);
-    setState(() {
-      _messages.insert(0, newMessage);
-    });
-    chatController.updateMessagesPreview(_roomIdx, newMessage);
+    try {
+      Map<String, dynamic> decodeData = json.decode(message);
+      types.Message newMessage = messageFromJson(decodeData["message"]);
+      setState(() {
+        _messages.insert(0, newMessage);
+      });
+      chatController.updateMessagesPreview(_roomIdx, newMessage);
+    } catch (_) {
+      if (message.contains('errors')) {
+        Get.snackbar(
+          _i18n.translate("error"),
+          _i18n.translate("Provider error"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+        );
+      } else {
+        Get.snackbar(
+          _i18n.translate("error"),
+          _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+        );
+      }
+    }
   }
 
   @override

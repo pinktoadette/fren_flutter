@@ -5,7 +5,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
@@ -41,7 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final ChatController chatController = Get.find(tag: 'chatroom');
   final BotController botController = Get.find(tag: 'bot');
   final StoryboardController storyController = Get.find(tag: 'storyboard');
-  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
 
   final _appNotifications = AppNotifications();
   final _chatroomApi = ChatroomMachiApi();
@@ -96,14 +94,6 @@ class _HomeScreenState extends State<HomeScreen> {
     chatController.onChatLoad();
     storyController.getBoards(filter: StoryStatus.UNPUBLISHED);
   }
-
-  // void _fetchUserPlans() async {
-  //   try {
-  //     subscribeController.initUser();
-  //   } catch (err) {
-  //     debugPrint(err.toString());
-  //   }
-  // }
 
   /// get or create chatroom
   Future<void> _getChatrooms() async {

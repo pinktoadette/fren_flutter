@@ -6,17 +6,17 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 
 //@todo remove scope model to getX
 class SubscribeController extends GetxController {
-  late Rx<CustomerInfo> _customer;
+  Rx<CustomerInfo?> _customer = (null).obs;
   RxInt credits = 0.obs;
 
-  CustomerInfo get customer => _customer.value;
-  set customer(CustomerInfo value) => _customer.value = value;
+  CustomerInfo? get customer => _customer.value;
+  set customer(CustomerInfo? value) => _customer.value = value!;
 
   @override
   void onInit() async {
+    super.onInit();
     initUser();
     _listenPurchases();
-    super.onInit();
   }
 
   void initUser() async {

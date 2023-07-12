@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -27,6 +28,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   late AppLocalizations _i18n;
   late Package _selectedTier;
   bool isLoading = false;
+  SubscribeController subscribeController = Get.find(tag: 'subscribe');
 
   Offering? offers;
   List<Package> packages = [];
@@ -34,6 +36,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   @override
   void initState() {
     super.initState();
+    subscribeController.getCredits();
     fetchOffers();
     isUserSubscribed = UserModel().user.isSubscribed;
   }
@@ -77,7 +80,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         _selectedTier = offerings[0].availablePackages[0];
       });
     } on PlatformException catch (err, s) {
-      debugPrint(err.message);
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("subscribe_no_offering_found"),
@@ -316,7 +318,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       setState(() {
         isLoading = false;
       });
-      Navigator.of(context).pop();
     }
   }
 }
