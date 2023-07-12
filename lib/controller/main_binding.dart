@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:machi_app/controller/audio_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/comment_controller.dart';
@@ -25,7 +24,7 @@ class MainBinding implements Bindings {
         tag: "storyboard");
     Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
 
-    Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
+    // Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
     debugPrint("Put controllers");
   }
 }

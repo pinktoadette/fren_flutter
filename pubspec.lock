@@ -427,7 +427,7 @@ packages:
     description:
       path: "."
       ref: master
-      resolved-ref: b8cf77285a65beec45ac0a5958d48ca352b43c0a
+      resolved-ref: "71d510365f102c74d39925b8ade0becef0aacd20"
       url: "https://github.com/pinktoadette/flutter_chat_ui_1.6.6.git"
     source: git
     version: "1.6.8"
@@ -578,10 +578,10 @@ packages:
     dependency: transitive
     description:
       name: freezed_annotation
-      sha256: aeac15850ef1b38ee368d4c53ba9a847e900bb2c53a4db3f6881cbb3cb684338
+      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.0"
+    version: "2.4.1"
   get:
     dependency: "direct main"
     description:
@@ -866,10 +866,10 @@ packages:
     dependency: transitive
     description:
       name: material_color_utilities
-      sha256: d92141dc6fe1dad30722f9aa826c7fbc896d021d792f80678280601aff8cf724
+      sha256: "9528f2f296073ff54cb9fee677df673ace1218163c3bc7628093e7eed5203d41"
       url: "https://pub.dev"
     source: hosted
-    version: "0.2.0"
+    version: "0.5.0"
   meta:
     dependency: transitive
     description:
@@ -1159,10 +1159,10 @@ packages:
     dependency: transitive
     description:
       name: source_span
-      sha256: dd904f795d4b4f3b870833847c461801f6750a9fa8e61ea5ac53f9422b31f250
+      sha256: "53e943d4206a5e30df338fd4c6e7a077e02254531b138a15aec3bd143c1a8b3c"
       url: "https://pub.dev"
     source: hosted
-    version: "1.9.1"
+    version: "1.10.0"
   sqflite:
     dependency: transitive
     description:
@@ -1231,10 +1231,10 @@ packages:
     dependency: transitive
     description:
       name: test_api
-      sha256: eb6ac1540b26de412b3403a163d919ba86f6a973fe6cc50ae3541b80092fdcfb
+      sha256: daadc9baabec998b062c9091525aa95786508b1c48e9c30f1f891b8bf6ff2e64
       url: "https://pub.dev"
     source: hosted
-    version: "0.5.1"
+    version: "0.5.2"
   typed_data:
     dependency: transitive
     description:
@@ -1383,10 +1383,10 @@ packages:
     dependency: transitive
     description:
       name: webview_flutter_wkwebview
-      sha256: a8d7e8b4be2a79e83b70235369971ec97d14df4cdbb40d305a8eeae67d8e6432
+      sha256: "0ede6bafb857b7608e65f4ad7bcf67ad03375a02d038c59929898e514591faca"
       url: "https://pub.dev"
     source: hosted
-    version: "3.6.2"
+    version: "3.6.3"
   widget_event:
     dependency: transitive
     description:

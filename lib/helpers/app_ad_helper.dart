@@ -13,7 +13,7 @@ class AppAdHelper {
   // Get Interstitial Ad ID
   static String get _interstitialID {
     if (Platform.isAndroid) {
-      return ANDROID_INTERSTITIAL_ID;
+      return GOOGLE_INTERSTI_ADS_ANDROID;
     } else if (Platform.isIOS) {
       return IOS_INTERSTITIAL_ID;
     } else {

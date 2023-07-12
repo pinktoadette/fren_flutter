@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';

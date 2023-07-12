@@ -70,12 +70,6 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         const SizedBox(
           height: 5,
         ),
-        // Padding(
-        //     padding: const EdgeInsets.all(10),
-        //     child: Text(
-        //       _i18n.translate("add_to_exist_storyboard"),
-        //       style: Theme.of(context).textTheme.labelSmall,
-        //     )),
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
@@ -106,6 +100,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       if (widget.message.type == types.MessageType.image) {
         await _storyboardApi.createStoryboard(
             image: message.uri,
+            text: message.metadata ? message.metadata["caption"] : "",
             character: widget.message.author.firstName,
             characterId: widget.message.author.id);
       }

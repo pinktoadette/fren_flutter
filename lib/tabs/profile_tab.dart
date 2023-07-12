@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -62,8 +63,7 @@ class ProfileTab extends StatelessWidget {
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onTap: () async {
-                        final Uri url =
-                            Uri.parse("https://forms.gle/2M2Qa23Frvimgjwi7");
+                        final Uri url = Uri.parse(SURVEY_FORM);
                         if (await canLaunchUrl(url)) {
                           await launchUrl(url);
                         } else {

@@ -81,7 +81,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
             ]),
         body: RefreshIndicator(
             onRefresh: () async {
-              await _chatroomApi.getAllMyRooms(limit: PAGE_CHAT_LIMIT, page: 0);
+              await _chatroomApi.getAllMyRooms(limit: PAGE_CHAT_LIMIT, page: 1);
             },
             child: chatController.roomlist.isEmpty
                 ? Center(

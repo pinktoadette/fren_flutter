@@ -106,7 +106,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   leading: const Icon(Iconsax.setting_2),
                   title: Text(_i18n.translate("account"),
                       style: Theme.of(context).textTheme.bodyMedium),
-                  trailing: const Icon(Icons.arrow_forward),
                   onTap: () async {
                     Get.to(() => const AccountPage());
                   },

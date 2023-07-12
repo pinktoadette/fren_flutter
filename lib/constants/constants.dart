@@ -26,10 +26,12 @@ const String GOOGLE_BANNER_ADS_ANDROID =
     'ca-app-pub-8475595365680681/9246193145';
 const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
-const String GOOGLE_INTERSTI_ADS = 'ca-app-pub-3940256099942544/8691691433';
+const String GOOGLE_INTERSTI_ADS_ANDROID =
+    'ca-app-pub-3940256099942544/8691691433';
+// For IOS Platform
+const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
 const String SURVEY_FREE_FORM_LINK = 'https://forms.gle/bPa32xG3WwphxQua6';
-
 //
 // Add Google Maps - API KEY required for Passport feature
 //
@@ -39,14 +41,13 @@ const String IOS_MAPS_API_KEY = "YOUR IOS API KEY";
 // GOOGLE ADMOB INTERSTITIAL IDS
 //
 // For Android Platform
-const String ANDROID_INTERSTITIAL_ID = "YOUR ANDROID AD ID";
 const double AD_HEIGHT = 80;
+
+const String SURVEY_FORM =
+    "https://docs.google.com/forms/d/e/1FAIpQLSes0yj-Puf53h-GAJScJKsTDSoVjkyM1qTrEanFXEEhc767Jg/viewform?usp=sf_link";
 
 /// Subscription symbol
 const String SUB_TOKEN_IDENTIFIER = "token_";
-
-// For IOS Platform
-const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
 
 const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/api/";
 // const PY_API = "https://api.mymachi.app/api/";
