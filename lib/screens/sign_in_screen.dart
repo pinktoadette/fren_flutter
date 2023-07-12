@@ -58,9 +58,11 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const SizedBox(height: 100),
-              Image.asset("assets/images/logo_machi.png"),
-              const SizedBox(height: 40),
+              Container(
+                padding: const EdgeInsets.only(top: 100, bottom: 50),
+                child: Image.asset("assets/images/logo_machi.png"),
+                width: screenWidth * 0.5,
+              ),
               Semantics(
                 label: _i18n.translate("app_short_description"),
                 child: Text(_i18n.translate("app_short_description"),
@@ -83,7 +85,7 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                         SignInButton(Buttons.Google,
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20.0),
+                              borderRadius: BorderRadius.circular(10.0),
                             ), onPressed: () {
                           setState(() {
                             isLoading = true;

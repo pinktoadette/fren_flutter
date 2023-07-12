@@ -16,7 +16,6 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
-import 'package:machi_app/widgets/common/frosted_app_bar.dart';
 
 import '../datas/user.dart';
 
@@ -82,7 +81,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
             ]),
         body: RefreshIndicator(
             onRefresh: () async {
-              handleScrolling();
+              await _chatroomApi.getAllMyRooms(limit: PAGE_CHAT_LIMIT, page: 0);
             },
             child: chatController.roomlist.isEmpty
                 ? Center(

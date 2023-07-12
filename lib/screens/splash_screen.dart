@@ -76,7 +76,10 @@ class _SplashScreenState extends State<SplashScreen> {
             const SystemUiOverlayStyle(statusBarColor: APP_TERTIARY),
       ),
       body: Center(
-        child: Image.asset("assets/images/logo.png", width: 200),
+        child: SizedBox(
+          width: 70,
+          child: Image.asset("assets/images/logo.png"),
+        ),
       ),
     );
   }

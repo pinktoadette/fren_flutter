@@ -95,7 +95,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget _showTiers(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     if (offers == null) {
-      return const NoData(text: "Guess we are not selling today!");
+      return const Center(
+          child: NoData(text: "Guess we are not selling today!"));
     }
     return Column(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -110,16 +111,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                   child: Column(
                     children: [
                       Text(
-                        offers!.metadata['main_title'] as String,
-                        style:
-                            const TextStyle(color: Colors.black, fontSize: 20),
+                        "Imaginfy",
+                        style: Theme.of(context).textTheme.headlineMedium,
                       ),
                       Text(
                         offers!.serverDescription,
                         style: const TextStyle(color: Colors.white),
-                      ),
-                      const SizedBox(
-                        height: 20,
                       ),
                       Text(
                         _i18n.translate("plans_include_gpt"),
