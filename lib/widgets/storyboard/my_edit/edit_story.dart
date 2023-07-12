@@ -51,6 +51,7 @@ class _EditPageState extends State<EditPage> {
 
     return Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           title: Text(
             _i18n.translate("storybits_edit"),
             style: Theme.of(context).textTheme.bodyMedium,
@@ -73,17 +74,12 @@ class _EditPageState extends State<EditPage> {
           ],
         ),
         body: SingleChildScrollView(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            Stack(
+            physics: const AlwaysScrollableScrollPhysics(),
+            child: Stack(
               children: [
                 ..._showPageWidget(),
               ],
-            ),
-          ],
-        )));
+            )));
   }
 
   List<Widget> _showPageWidget() {
@@ -137,18 +133,20 @@ class _EditPageState extends State<EditPage> {
                   });
             },
           )),
-      Positioned.fill(
-        bottom: 150,
-        child: Align(
-          alignment: Alignment.bottomCenter,
-          child: SmoothPageIndicator(
-            controller: _pageController,
-            count: story.pages?.length ?? 1,
-            effect: const ExpandingDotsEffect(
-                dotHeight: 14, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
-          ),
-        ),
-      )
+      Positioned(
+          bottom: 200,
+          height: 20,
+          width: size.width,
+          child: Container(
+            width: size.width,
+            alignment: Alignment.center,
+            child: SmoothPageIndicator(
+              controller: _pageController,
+              count: story.pages?.length ?? 1,
+              effect: const ExpandingDotsEffect(
+                  dotHeight: 8, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
+            ),
+          ))
     ];
   }
 

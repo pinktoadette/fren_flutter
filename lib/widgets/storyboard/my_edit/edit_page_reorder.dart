@@ -69,7 +69,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         _reorderListWidget(),
         Positioned(
             height: 100,
-            bottom: 50,
+            bottom: 100,
             child: Column(children: [
               Container(
                 color: Theme.of(context).colorScheme.background,
@@ -113,7 +113,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
 
     return Container(
-        margin: const EdgeInsets.only(bottom: 150),
+        margin: const EdgeInsets.only(bottom: 200),
         child: ReorderableListView(
             children: [
               for (int index = 0; index < scripts.length; index += 1)
