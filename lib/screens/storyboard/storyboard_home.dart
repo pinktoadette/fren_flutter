@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_published_board.dart';
@@ -41,7 +42,9 @@ class _StoryboardState extends State<StoryboardHome>
                     style: TextButton.styleFrom(
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.transparent),
-                    onPressed: () {
+                    onPressed: () async {
+                      await storyboardController.getBoards(
+                          filter: StoryStatus.PUBLISHED);
                       Get.to(() => const ListPublishBoard());
                     },
                     child: Text(_i18n.translate("story_published"))))

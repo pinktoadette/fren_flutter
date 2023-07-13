@@ -169,7 +169,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               _leaveBotTyping();
             },
           ),
-          // Show User profile info
+          titleSpacing: 0,
           title: GestureDetector(
             child: Obx(() => Text(botController.bot.name,
                 overflow: TextOverflow.fade,

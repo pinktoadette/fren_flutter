@@ -65,6 +65,7 @@ class _StoriesViewState extends State<StoriesView> {
                 Navigator.pop(context);
               },
             ),
+            titleSpacing: 0,
             actions: _listOfActions()),
         body: SingleChildScrollView(
             physics: const ScrollPhysics(),

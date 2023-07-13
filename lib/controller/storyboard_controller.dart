@@ -52,7 +52,7 @@ class StoryboardController extends GetxController {
     final List<Storyboard> stories =
         await storyboardApi.getMyStoryboards(statusFilter: filter?.name);
     if (filter == StoryStatus.PUBLISHED) {
-      _published.addAll(stories);
+      _published = stories.obs;
     } else {
       _storyboards = stories.obs;
     }
@@ -75,7 +75,7 @@ class StoryboardController extends GetxController {
   void removeStoryboardfromList(Storyboard storyboard) {
     _storyboards
         .removeWhere(((item) => item.storyboardId == storyboard.storyboardId));
-    _storyboards.refresh();
+    update();
   }
 
   void setCurrentBoard(Storyboard story) async {
