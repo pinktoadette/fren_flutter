@@ -285,7 +285,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             child: const Icon(Icons.email_outlined, size: 14),
           ),
         ),
-        if (subscribeController.credits.value == 0)
+        if (subscribeController.credits.value > 0)
           IconButton(
               onPressed: () async {
                 setState(() {
