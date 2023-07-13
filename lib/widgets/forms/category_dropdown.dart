@@ -40,7 +40,7 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
         style: Theme.of(context).textTheme.labelMedium,
       ),
       const SizedBox(
-        width: 50,
+        width: 30,
       ),
       _category.isNotEmpty
           ? Expanded(
@@ -62,7 +62,9 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
                       _category.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                      ),
                     );
                   }).toList()))
           : const SizedBox.shrink()

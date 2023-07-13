@@ -360,14 +360,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       await OpenFilex.open(localPath);
     }
-    if (message is types.TextMessage) {
-      String key = await _streamApi.getAuthToken();
-      http.StreamedResponse streamedResponse =
-          await _streamApi.streamAudio(key, message.text, 'eastus');
-      Uint8List data = await streamedResponse.stream.toBytes();
-      await _player.setAudioSource(BytesSource(data));
-      _player.play();
-    }
+    // for audio
+    // if (message is types.TextMessage) {
+    //   String key = await _streamApi.getAuthToken();
+    //   http.StreamedResponse streamedResponse =
+    //       await _streamApi.streamAudio(key, message.text, 'eastus');
+    //   Uint8List data = await streamedResponse.stream.toBytes();
+    //   await _player.setAudioSource(BytesSource(data));
+    //   _player.play();
+    // }
   }
 
   void _handlePreviewDataFetched(
@@ -418,8 +419,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         _channel.sink.add(json.encode({"message": formatImgMessage}));
 
         lastMessageId = await _messagesApi.saveUserResponse(
-            messageMap: {...formatImgMessage, "text": message.text},
-            tags: _setTags);
+            messageMap: {...formatImgMessage}, tags: _setTags);
       } catch (err, s) {
         Get.snackbar(
           _i18n.translate("error"),
@@ -429,6 +429,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         );
         setState(() {
           _isAttachmentUploading = false;
+          attachmentPreview = null;
         });
         await FirebaseCrashlytics.instance.recordError(err, s,
             reason: 'image uploaded and has error', fatal: true);
@@ -443,6 +444,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         {...formatMessage, "lastMessageId": lastMessageId});
     setState(() {
       _isAttachmentUploading = false;
+      attachmentPreview = null;
     });
     FocusScope.of(context).requestFocus(FocusNode());
   }

@@ -49,10 +49,12 @@ const String SURVEY_FORM =
 /// Subscription symbol
 const String SUB_TOKEN_IDENTIFIER = "token_";
 
-const PY_DEV = "https://machi-dev-h58fznydguaqwqftnozm.herokuapp.com/api/";
+const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
 // const PY_API = "https://api.mymachi.app/api/";
 const PY_API = PY_DEV;
-const SOCKET_WS = "wss://api.mymachi.app/";
+const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
+// const SOCKET_WS = "wss://api.mymachi.app/";
+const SOCKET_WS = SOCKET_WS_DEV;
 
 const double PLAY_BUTTON_WIDTH = 45;
 const int PAGE_CHAT_LIMIT = 10;

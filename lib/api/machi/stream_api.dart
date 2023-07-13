@@ -150,7 +150,7 @@ class StreamApi {
     Map<String, String> lang = detectLanguage2(string: text);
 
     var xml =
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'>$text</voice></speak>";
+        "<speak version='1.0' xmlns='https://www.w3.org/2001/10/synthesis' xml:lang='${lang["lang"]}'><voice name='${lang["person"]}'>$text</voice></speak>";
 
     request.body = xml;
     var streamedResponse = await http.Client().send(request);
@@ -184,7 +184,7 @@ class StreamApi {
     });
 
     var xml =
-        "<speak version='1.0' xmlns='http://www.w3.org/2001/10/synthesis' xml:lang='${media.character!.language.language}'>"
+        "<speak version='1.0' xmlns='https://www.w3.org/2001/10/synthesis' xml:lang='${media.character!.language.language}'>"
         "<voice name='${media.character!.voiceName}'>${media.character!.text}</voice></speak>";
 
     request.body = xml;
