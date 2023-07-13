@@ -300,10 +300,9 @@ class MyApp extends StatelessWidget {
             fontSize: 12, fontWeight: FontWeight.normal, color: APP_TERTIARY),
       ),
       textSelectionTheme: const TextSelectionThemeData(
-        cursorColor: APP_ACCENT_COLOR,
-        selectionColor: Color.fromARGB(255, 33, 202, 165),
-        selectionHandleColor: Colors.black,
-      ),
+          cursorColor: APP_ACCENT_COLOR,
+          selectionColor: Color.fromARGB(255, 26, 158, 107),
+          selectionHandleColor: Color.fromARGB(255, 22, 136, 92)),
       inputDecorationTheme: InputDecorationTheme(
         border: OutlineInputBorder(
             borderSide: BorderSide.none,

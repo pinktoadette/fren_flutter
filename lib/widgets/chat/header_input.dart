@@ -138,9 +138,9 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               child: SizedBox(
                 height: 80,
                 child: ClipRRect(
-                    borderRadius: BorderRadius.circular(20), // Image border
+                    borderRadius: BorderRadius.circular(25), // Image border
                     child: SizedBox.fromSize(
-                        size: const Size.fromRadius(48), // Image radius
+                        size: const Size.fromRadius(40), // Image radius
                         child: AspectRatio(
                           aspectRatio: 1.5,
                           child: Image.file(
@@ -158,7 +158,10 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               onTap: () {
                 widget.onUpdateWidget({'image': null});
               },
-              child: const Icon(Iconsax.close_circle),
+              child: const Icon(
+                Iconsax.close_circle,
+                size: 18,
+              ),
             ),
           ),
         ],

@@ -4,6 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -23,6 +24,7 @@ class PublishStory extends StatefulWidget {
 class _PublishStoryState extends State<PublishStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  TimelineController timelineController = Get.find(tag: 'timeline');
   final _storyApi = StoryApi();
   bool _isLoading = false;
   bool _isSuccess = false;
@@ -41,6 +43,9 @@ class _PublishStoryState extends State<PublishStory> {
         _isSuccess = false;
       });
       await _storyApi.publishStory(widget.story.storyId);
+
+      /// update timeline
+      timelineController.fetchPage(0);
 
       /// update storyboard controller
       storyboardController.updateStory(story: widget.story);

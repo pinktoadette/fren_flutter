@@ -623,13 +623,17 @@ class UserModel extends Model {
     if (path == 'profile') {
       uploadPath = UPLOAD_PATH_USER_PROFILE;
     } else {
-      uploadPath = 'uploads/users/gallery';
+      uploadPath = 'users/gallery';
     }
 
     /// Delete previous uploaded image if not nul
     if (oldImageUrl != "") {
       if (oldImageUrl!.contains(UPLOAD_PATH_USER_PROFILE)) {
-        await FirebaseStorage.instance.refFromURL(oldImageUrl).delete();
+        try {
+          await FirebaseStorage.instance.refFromURL(oldImageUrl).delete();
+        } catch (_) {
+          debugPrint("Tried deleting old image.");
+        }
       }
     }
 

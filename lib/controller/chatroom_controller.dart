@@ -97,10 +97,6 @@ class ChatController extends GetxController implements GetxService {
         .obs;
   }
 
-  void onClearRoomList() {
-    roomlist = <Chatroom>[].obs;
-  }
-
   /// when you create a new room, user is already in,
   /// therefore you are also in the current room
   void onCreateRoomList(Chatroom myRooms) {
@@ -165,7 +161,9 @@ class ChatController extends GetxController implements GetxService {
   // update messages from the chatroom, to view once when on convo tab
   void updateMessagesPreview(int index, types.Message message) {
     roomlist[index].messages.insert(0, message);
+    sortRoomExit(index);
     roomlist.refresh();
+    update();
   }
 
   // update messages from the chatroom, to view once when on convo tab
@@ -177,6 +175,7 @@ class ChatController extends GetxController implements GetxService {
       unreadCounter = max(unread, 0).obs;
     }
     roomlist.refresh();
+    update();
   }
 
   void sortRoomExit(int currentIndx) {

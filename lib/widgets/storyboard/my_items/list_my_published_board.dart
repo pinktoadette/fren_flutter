@@ -46,21 +46,26 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
                   child: Text(_i18n.translate("story_nothing_published")),
                 ),
               )
-            : Obx(
-                () => ListView.builder(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: storyboardController.published.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      Storyboard story = storyboardController.published[index];
-                      return InkWell(
-                          onTap: () {
-                            _onStoryClick(index, story);
-                          },
-                          child: StoryboardItemWidget(
-                              item: storyboardController.published[index]));
-                    }),
-              ));
+            : RefreshIndicator(
+                onRefresh: () async {
+                  _getMyBoards();
+                },
+                child: Obx(
+                  () => ListView.builder(
+                      shrinkWrap: true,
+                      scrollDirection: Axis.vertical,
+                      itemCount: storyboardController.published.length,
+                      itemBuilder: (BuildContext ctx, index) {
+                        Storyboard story =
+                            storyboardController.published[index];
+                        return InkWell(
+                            onTap: () {
+                              _onStoryClick(index, story);
+                            },
+                            child: StoryboardItemWidget(
+                                item: storyboardController.published[index]));
+                      }),
+                )));
   }
 
   void _onStoryClick(int index, Storyboard story) {

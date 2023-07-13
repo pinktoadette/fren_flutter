@@ -4,7 +4,6 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
@@ -161,7 +160,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               _leaveBotTyping();
             },
           ),
-          // Show User profile info
+          titleSpacing: 0,
           title: GestureDetector(
             child: Obx(() => Text(botController.bot.name,
                 overflow: TextOverflow.fade,
@@ -228,7 +227,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             _handleMessageFooterTap(message);
           },
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(3),
             child: const Icon(Iconsax.book, size: 14),
           ),
         ),
@@ -254,7 +253,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             }
           },
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(3),
             child: const Icon(Iconsax.gallery_add, size: 14),
           ),
         ),
@@ -282,10 +281,28 @@ class _BotChatScreenState extends State<BotChatScreen> {
             launchUrl(emailLaunchUri);
           },
           child: Container(
-            padding: const EdgeInsets.all(5),
+            padding: const EdgeInsets.all(3),
             child: const Icon(Icons.email_outlined, size: 14),
           ),
         ),
+        if (subscribeController.credits.value == 0)
+          IconButton(
+              onPressed: () async {
+                setState(() {
+                  _setTags = 'imagine';
+                });
+                Map<String, dynamic> formatMessage = message.toJson();
+                //@todo quick add
+                await _saveResponseAndGetBot({
+                  ...formatMessage,
+                  "chatroomId": chatController.currentRoom.chatroomId,
+                  "messageId": createUUID(),
+                  "name": UserModel().user.username,
+                  "authorId": UserModel().user.userId,
+                  "lastMessageId": ""
+                });
+              },
+              icon: const Icon(Iconsax.image, size: 14)),
       ];
 
   void _handleMessageFooterTap(types.Message message) {
@@ -352,14 +369,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       await OpenFilex.open(localPath);
     }
-    if (message is types.TextMessage) {
-      String key = await _streamApi.getAuthToken();
-      http.StreamedResponse streamedResponse =
-          await _streamApi.streamAudio(key, message.text, 'eastus');
-      Uint8List data = await streamedResponse.stream.toBytes();
-      await _player.setAudioSource(BytesSource(data));
-      _player.play();
-    }
+    // for audio
+    // if (message is types.TextMessage) {
+    //   String key = await _streamApi.getAuthToken();
+    //   http.StreamedResponse streamedResponse =
+    //       await _streamApi.streamAudio(key, message.text, 'eastus');
+    //   Uint8List data = await streamedResponse.stream.toBytes();
+    //   await _player.setAudioSource(BytesSource(data));
+    //   _player.play();
+    // }
   }
 
   void _handlePreviewDataFetched(
@@ -410,8 +428,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         _channel.sink.add(json.encode({"message": formatImgMessage}));
 
         lastMessageId = await _messagesApi.saveUserResponse(
-            messageMap: {...formatImgMessage, "text": message.text},
-            tags: _setTags);
+            messageMap: {...formatImgMessage}, tags: _setTags);
       } catch (err, s) {
         Get.snackbar(
           _i18n.translate("error"),
@@ -421,6 +438,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         );
         setState(() {
           _isAttachmentUploading = false;
+          attachmentPreview = null;
         });
         await FirebaseCrashlytics.instance.recordError(err, s,
             reason: 'image uploaded and has error', fatal: true);
@@ -435,6 +453,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         {...formatMessage, "lastMessageId": lastMessageId});
     setState(() {
       _isAttachmentUploading = false;
+      attachmentPreview = null;
     });
     FocusScope.of(context).requestFocus(FocusNode());
   }

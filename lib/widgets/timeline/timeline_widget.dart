@@ -30,41 +30,45 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
 
-    return PagedListView<int, Storyboard>.separated(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      padding: EdgeInsets.zero,
-      pagingController: timelineController.pagingController,
-      builderDelegate: PagedChildBuilderDelegate<Storyboard>(
-          firstPageProgressIndicatorBuilder: (_) => const Frankloader(),
-          newPageProgressIndicatorBuilder: (_) => const Frankloader(),
-          itemBuilder: (context, item, index) {
-            return StoryboardItemWidget(item: item);
-          }),
-      separatorBuilder: (BuildContext context, int index) {
-        if ((index + 1) % 3 == 0) {
-          return Padding(
-            padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-            child: Container(
-              height: AD_HEIGHT,
-              width: width,
-              color: Theme.of(context).colorScheme.background,
-              child: const InlineAdaptiveAds(),
-            ),
-          );
-        } else if ((index + 1) % 2 == 0 && (index == 1)) {
-          return Padding(
-            padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-            child: Container(
-              width: width,
-              color: Theme.of(context).colorScheme.background,
-              child: const InlineSurvey(),
-            ),
-          );
-        } else {
-          return const SizedBox.shrink();
-        }
-      },
-    );
+    return RefreshIndicator(
+        onRefresh: () async {
+          timelineController.fetchPage(0);
+        },
+        child: PagedListView<int, Storyboard>.separated(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          padding: EdgeInsets.zero,
+          pagingController: timelineController.pagingController,
+          builderDelegate: PagedChildBuilderDelegate<Storyboard>(
+              firstPageProgressIndicatorBuilder: (_) => const Frankloader(),
+              newPageProgressIndicatorBuilder: (_) => const Frankloader(),
+              itemBuilder: (context, item, index) {
+                return StoryboardItemWidget(item: item);
+              }),
+          separatorBuilder: (BuildContext context, int index) {
+            if ((index + 1) % 3 == 0) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+                child: Container(
+                  height: AD_HEIGHT,
+                  width: width,
+                  color: Theme.of(context).colorScheme.background,
+                  child: const InlineAdaptiveAds(),
+                ),
+              );
+            } else if ((index + 1) % 2 == 0 && (index == 1)) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+                child: Container(
+                  width: width,
+                  color: Theme.of(context).colorScheme.background,
+                  child: const InlineSurvey(),
+                ),
+              );
+            } else {
+              return const SizedBox.shrink();
+            }
+          },
+        ));
   }
 }
