@@ -43,59 +43,60 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
-    Storyboard storyboard = storyboardController.currentStoryboard;
     return Container(
       padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,
           top: 20,
           left: 20,
           right: 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-              child: StoryCover(
-            width: size.width * 0.75,
-            height: size.width * 0.75,
-            photoUrl: storyboard.photoUrl ?? "",
-            title: storyboard.title,
-          )),
-          const SizedBox(
-            height: 20,
-          ),
-          Semantics(
-              label: storyboard.title,
-              child: Text(
-                storyboard.title,
-                style: Theme.of(context).textTheme.titleLarge,
-              )),
-          Row(children: [
-            Semantics(
-              label: _i18n.translate("story_contributors"),
-              child: Text(
-                "${_i18n.translate("story_contributors")}: ",
-                style: Theme.of(context).textTheme.labelSmall,
+      child: Obx(() => Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
               ),
-            ),
-            ...contributors.map((contribute) => Text(
-                "${contribute['character']} ",
-                style: Theme.of(context).textTheme.labelSmall))
-          ]),
-          const SizedBox(
-            height: 20,
-          ),
-          Semantics(
-              label: storyboard.summary ?? "Summary not provided",
-              child: Text(storyboard.summary ?? "Summary not provided")),
-          SizedBox(
-            height: MediaQuery.of(context).viewInsets.bottom,
-          ),
-        ],
-      ),
+              Center(
+                  child: StoryCover(
+                width: size.width * 0.75,
+                height: size.width * 0.75,
+                photoUrl: storyboardController.currentStoryboard.photoUrl ?? "",
+                title: storyboardController.currentStoryboard.title,
+              )),
+              const SizedBox(
+                height: 20,
+              ),
+              Semantics(
+                  label: storyboardController.currentStoryboard.title,
+                  child: Text(
+                    storyboardController.currentStoryboard.title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  )),
+              Row(children: [
+                Semantics(
+                  label: _i18n.translate("story_contributors"),
+                  child: Text(
+                    "${_i18n.translate("story_contributors")}: ",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                ),
+                ...contributors.map((contribute) => Text(
+                    "${contribute['character']} ",
+                    style: Theme.of(context).textTheme.labelSmall))
+              ]),
+              const SizedBox(
+                height: 20,
+              ),
+              Semantics(
+                  label: storyboardController.currentStoryboard.summary ??
+                      "Summary not provided",
+                  child: Text(storyboardController.currentStoryboard.summary ??
+                      "Summary not provided")),
+              SizedBox(
+                height: MediaQuery.of(context).viewInsets.bottom,
+              ),
+            ],
+          )),
     );
   }
 }

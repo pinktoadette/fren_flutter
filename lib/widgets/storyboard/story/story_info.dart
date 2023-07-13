@@ -47,73 +47,72 @@ class _StoryInfoState extends State<StoryInfo> {
 
   @override
   Widget build(BuildContext context) {
-    Story story = storyboardController.currentStory;
     Size size = MediaQuery.of(context).size;
     _i18n = AppLocalizations.of(context);
 
-    return Container(
-      padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).viewInsets.bottom,
-          top: 20,
-          left: 20,
-          right: 20),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
-          ),
-          Center(
-              child: StoryCover(
-            width: size.width * 0.75,
-            height: size.width * 0.75,
-            photoUrl: story.photoUrl ?? "",
-            title: story.title,
-          )),
-          const SizedBox(
-            height: 20,
-          ),
-          Semantics(
-              label: story.title,
-              child: Text(
-                story.title,
-                style: Theme.of(context).textTheme.titleLarge,
+    return Obx(() => Container(
+          padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+              top: 20,
+              left: 20,
+              right: 20),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(
+                height: 10,
+              ),
+              Center(
+                  child: StoryCover(
+                width: size.width * 0.75,
+                height: size.width * 0.75,
+                photoUrl: storyboardController.currentStory.photoUrl ?? "",
+                title: storyboardController.currentStory.title,
               )),
-          Row(children: [
-            Semantics(
-                label: _i18n.translate("story_contributors"),
-                child: Text(
-                  "${_i18n.translate("story_contributors")}: ",
-                  style: Theme.of(context).textTheme.labelSmall,
-                )),
-            ...contributors.map((contribute) => TextButton(
-                onPressed: () async {
-                  if (contribute['characterId'].contains(BOT_PREFIX)) {
-                    Bot bot =
-                        await _botApi.getBot(botId: contribute['characterId']);
-                    _showBotInfo(bot);
-                  }
-                },
-                child: Text(
-                    contribute['characterId'].contains(BOT_PREFIX)
-                        ? "🤖${contribute['character']} "
-                        : contribute['character'],
-                    style: Theme.of(context).textTheme.labelSmall)))
-          ]),
-          const SizedBox(
-            height: 20,
+              const SizedBox(
+                height: 20,
+              ),
+              Semantics(
+                  label: storyboardController.currentStory.title,
+                  child: Text(
+                    storyboardController.currentStory.title,
+                    style: Theme.of(context).textTheme.titleLarge,
+                  )),
+              Row(children: [
+                Semantics(
+                    label: _i18n.translate("story_contributors"),
+                    child: Text(
+                      "${_i18n.translate("story_contributors")}: ",
+                      style: Theme.of(context).textTheme.labelSmall,
+                    )),
+                ...contributors.map((contribute) => TextButton(
+                    onPressed: () async {
+                      if (contribute['characterId'].contains(BOT_PREFIX)) {
+                        Bot bot = await _botApi.getBot(
+                            botId: contribute['characterId']);
+                        _showBotInfo(bot);
+                      }
+                    },
+                    child: Text(
+                        contribute['characterId'].contains(BOT_PREFIX)
+                            ? "🤖${contribute['character']} "
+                            : contribute['character'],
+                        style: Theme.of(context).textTheme.labelSmall)))
+              ]),
+              const SizedBox(
+                height: 20,
+              ),
+              Semantics(
+                label: storyboardController.currentStory.summary ?? "",
+                child: Text(storyboardController.currentStory.summary ?? ""),
+              ),
+              SizedBox(
+                height: MediaQuery.of(context).viewInsets.bottom,
+              ),
+            ],
           ),
-          Semantics(
-            label: story.summary ?? "",
-            child: Text(story.summary ?? ""),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).viewInsets.bottom,
-          ),
-        ],
-      ),
-    );
+        ));
   }
 
   void _showBotInfo(Bot bot) {

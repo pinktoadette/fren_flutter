@@ -97,6 +97,10 @@ class ChatController extends GetxController implements GetxService {
         .obs;
   }
 
+  void onClearRoomList() {
+    roomlist = <Chatroom>[].obs;
+  }
+
   /// when you create a new room, user is already in,
   /// therefore you are also in the current room
   void onCreateRoomList(Chatroom myRooms) {

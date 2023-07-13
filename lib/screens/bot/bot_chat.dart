@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
@@ -110,21 +111,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
       });
       chatController.updateMessagesPreview(_roomIdx, newMessage);
     } catch (_) {
-      if (message.contains('errors')) {
-        Get.snackbar(
-          _i18n.translate("error"),
-          _i18n.translate("Provider error"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_ERROR,
-        );
-      } else {
-        Get.snackbar(
-          _i18n.translate("error"),
-          _i18n.translate("an_error_has_occurred"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_ERROR,
-        );
-      }
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
     }
   }
 
@@ -495,13 +487,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
     try {
       Map<String, dynamic> message = await _messagesApi.getBotResponse();
       _channel.sink.add(json.encode({"message": message}));
-    } catch (err, s) {
+    } on DioException catch (err, s) {
       dynamic response = {
         CHAT_AUTHOR_ID: _room.bot.botId,
         CHAT_AUTHOR: _room.bot.name,
         BOT_ID: _room.bot.botId,
         CHAT_MESSAGE_ID: createUUID(),
-        CHAT_TEXT: "Sorry, got an error 😕. Try again.",
+        CHAT_TEXT: err.response?.data["message"] ??
+            "Sorry, got an error 😕. Try again.",
         CHAT_TYPE: "text",
         CREATED_AT: getDateTimeEpoch()
       };
