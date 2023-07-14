@@ -39,14 +39,14 @@ class _ConversationsTabState extends State<ConversationsTab> {
   @override
   void initState() {
     super.initState();
-    chatController.onListSocket();
+    // chatController.onListSocket();
     scrollController = ScrollController()..addListener(handleScrolling);
   }
 
   @override
   void dispose() {
     super.dispose();
-    chatController.onCloseSocket();
+    // chatController.onCloseSocket();
   }
 
   void handleScrolling() async {
@@ -146,7 +146,8 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                       ),
                                       ElevatedButton(
                                           onPressed: () => {
-                                                _onDelete(room),
+                                                _onDelete(chatController
+                                                    .roomlist[index]),
                                               },
                                           child:
                                               Text(_i18n.translate("DELETE"))),

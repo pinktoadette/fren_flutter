@@ -201,18 +201,18 @@ class ChatController extends GetxController implements GetxService {
   /// updates the message and typing indicator
 
   /// open socket
-  void onListSocket() {
-    for (var room in roomlist) {
-      _listenSocket(room);
-    }
-  }
+  // void onListSocket() {
+  //   for (var room in roomlist) {
+  //     _listenSocket(room);
+  //   }
+  // }
 
   /// close socket
-  void onCloseSocket() {
-    for (var channel in _channelMap.values) {
-      channel.sink.close();
-    }
-  }
+  // void onCloseSocket() {
+  //   for (var channel in _channelMap.values) {
+  //     channel.sink.close();
+  //   }
+  // }
 
   /// Get socket for particular room
   WebSocketChannel? getChannelForChatroom(String chatroomId) {
@@ -263,10 +263,16 @@ class ChatController extends GetxController implements GetxService {
     try {
       Map<String, dynamic> message =
           formatChatMessage(partialMessage: partialMessage, uri: uri);
-      WebSocketChannel? channel = _channelMap[room.chatroomId];
-      if (channel != null) {
-        channel.sink.add(json.encode({"message": message}));
-      }
+      // WebSocketChannel? channel = _channelMap[room.chatroomId];
+      // if (channel != null) {
+      //   channel.sink.add(json.encode({"message": message}));
+      // }
+      types.Message newMessage = messageFromJson(message);
+      int index = roomlist
+          .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+      roomlist[index].messages.insert(0, newMessage);
+      roomlist.refresh();
+      update();
       return message;
     } catch (err) {
       debugPrint(err.toString());
@@ -281,11 +287,15 @@ class ChatController extends GetxController implements GetxService {
         .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
     roomlist[index].isTyping = true;
     Map<String, dynamic> message = await _messageApi.getBotResponse();
-    WebSocketChannel? channel = _channelMap[room.chatroomId];
-    if (channel != null) {
-      channel.sink.add(json.encode({"message": message}));
-    }
+    // WebSocketChannel? channel = _channelMap[room.chatroomId];
+    // if (channel != null) {
+    //   channel.sink.add(json.encode({"message": message}));
+    // }
+    types.Message newMessage = messageFromJson(message);
+    roomlist[index].messages.insert(0, newMessage);
     roomlist[index].isTyping = false;
+
+    roomlist.refresh();
     update();
     return message;
   }

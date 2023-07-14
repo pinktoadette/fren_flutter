@@ -1,15 +1,10 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
-import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
-import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
-import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
@@ -26,7 +21,6 @@ import 'package:open_filex/open_filex.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/message_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
@@ -41,8 +35,6 @@ import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart' as status;
 import 'package:machi_app/helpers/create_uuid.dart';
 
 class BotChatScreen extends StatefulWidget {
@@ -61,7 +53,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   late types.User _user;
   late AppLocalizations _i18n;
-  late WebSocketChannel _channel;
   late Chatroom _room;
 
   late int _roomIdx;
@@ -81,48 +72,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     isTextSelectable: true,
   );
 
-  // Future<void> _listenSocket() async {
-  //   final _authApi = AuthApi();
-  //   Map<String, dynamic> headers = await _authApi.getHeaders();
-  //   final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${_room.chatroomId}');
-  //   _channel = WebSocketChannel.connect(wsUrl);
-  //   _channel.sink.add(json.encode({"token": headers}));
-  //   _channel.stream
-  //       .listen(
-  //     (_) {},
-  //     onError: (error) => Get.snackbar(
-  //         'Error', _i18n.translate("an_error_has_occurred"),
-  //         snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR),
-  //   )
-  //       .onData((data) {
-  //     // _onSocketParse(data);
-  //     Map<String, dynamic> decodeData = json.decode(data);
-  //     types.Message newMessage = messageFromJson(decodeData["message"]);
-  //     setState(() {
-  //       _messages.insert(0, newMessage);
-  //     });
-  //     chatController.onSocketParse(_roomIdx, newMessage);
-  //   });
-  // }
-
-  // void _onSocketParse(String message) {
-  //   try {
-  //     Map<String, dynamic> decodeData = json.decode(message);
-  //     types.Message newMessage = messageFromJson(decodeData["message"]);
-  //     setState(() {
-  //       _messages.insert(0, newMessage);
-  //     });
-  //     chatController.updateMessagesPreview(_roomIdx, newMessage);
-  //   } catch (_) {
-  //     Get.snackbar(
-  //       _i18n.translate("error"),
-  //       _i18n.translate("an_error_has_occurred"),
-  //       snackPosition: SnackPosition.TOP,
-  //       backgroundColor: APP_ERROR,
-  //     );
-  //   }
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -134,15 +83,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
-
-    //initialize socket
-    // _listenSocket();
   }
 
   @override
   void dispose() {
-    // _channel.sink.close(status.normalClosure);
-    _player.dispose();
+    // _player.dispose();
     super.dispose();
   }
 
@@ -446,10 +391,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
         return;
       }
     }
-    // Map<String, dynamic> formatMessage =
-    //     formatChatMessage(partialMessage: message);
-    // _channel.sink.add(json.encode({"message": formatMessage}));
-
     Map<String, dynamic> formatMessage =
         chatController.sendMessage(room: _room, partialMessage: message);
     // saves the text after the image, the text is linked to the image with lastMessageId
@@ -608,20 +549,15 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (_hasNewMessages == true) {
       /// mark as read when clicked when exit
       await _chatroomApi.markAsRead(chatController.currentRoom.chatroomId);
-      Chatroom room =
-          chatController.currentRoom.copyWith(read: true, messages: _messages);
-      chatController.updateRoom(_roomIdx, room);
+      // Chatroom room =
+      //     chatController.currentRoom.copyWith(read: true, messages: _messages);
+      // chatController.updateRoom(_roomIdx, room);
 
       chatController.sortRoomExit(_roomIdx);
     }
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
 
-    Get.delete<MessageController>()
-        .then((_) {
-          Get.put(MessageController());
-        })
-        .then((_) => messageController.offset = 10)
-        .then((_) => Get.back());
+    Get.back();
   }
 }
