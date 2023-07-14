@@ -272,6 +272,8 @@ const String STORY_PHOTO_URL = "photoUrl";
 const String STORY_CATEGORY = "category";
 const String STORY_LAYOUT = "layout";
 const String STORY_BITS = "bits";
+const String STORY_COVER_PAGES = "coverPages";
+const String STORY_PAGES_BACKGROUND = "backgroundUrl";
 
 /// Script
 const String STORY_SCRIPT_PAGES = "pages";

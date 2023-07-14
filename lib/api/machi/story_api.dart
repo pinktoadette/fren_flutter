@@ -134,7 +134,15 @@ class StoryApi {
         STORY_CATEGORY: category ?? story.category,
         STORY_SUMMARY: summary ?? story.summary,
         STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
-        STORY_LAYOUT: layout ?? story.layout!.name
+        STORY_LAYOUT: layout ?? story.layout!.name,
+        STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
+            ? story.pages!
+                .map((page) => {
+                      STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
+                      SCRIPT_PAGE_NUM: page.pageNum
+                    })
+                .toList()
+            : []
       });
       Story updatedStory = story.copyWith(
           layout: Layout.values.byName(layout ?? story.layout!.name),

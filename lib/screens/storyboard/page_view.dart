@@ -26,7 +26,6 @@ import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/comment/comment_widget.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
-import 'package:machi_app/widgets/storyboard/story/story_big_header.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -276,8 +275,8 @@ class _StoryPageViewState extends State<StoryPageView> {
   Widget _showPageWidget() {
     Size size = MediaQuery.of(context).size;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
-        ? size.height * bodyHeightPercent - headerHeight
-        : size.height - headerHeight - 50;
+        ? size.height * bodyHeightPercent
+        : size.height - 100;
 
     if (story!.pages!.isEmpty) {
       return SizedBox(
@@ -309,7 +308,13 @@ class _StoryPageViewState extends State<StoryPageView> {
                           child: Container(
                         decoration: BoxDecoration(
                           image: DecorationImage(
-                              image: NetworkImage(story?.photoUrl ?? ""),
+                              colorFilter: ColorFilter.mode(
+                                  const Color.fromARGB(255, 0, 0, 0)
+                                      .withOpacity(0.8),
+                                  BlendMode.darken),
+                              image: NetworkImage(
+                                  story?.pages![index].backgroundImageUrl ??
+                                      ""),
                               fit: BoxFit.cover),
                         ),
                         width: size.width,

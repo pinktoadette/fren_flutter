@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
+import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
@@ -15,6 +18,7 @@ import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
 // ignore: must_be_immutable
@@ -49,6 +53,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Layout? layout;
+  File? attachmentPreview;
+  String? urlPreview;
 
   @override
   void initState() {
@@ -66,9 +72,26 @@ class _EditPageReorderState extends State<EditPageReorder> {
     Size size = MediaQuery.of(context).size;
     return Container(
         decoration: BoxDecoration(
-          color: const Color(0xff7c94b6),
           image: DecorationImage(
-              image: NetworkImage(story.photoUrl ?? ""), fit: BoxFit.cover),
+              colorFilter: ColorFilter.mode(
+                  const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
+                  BlendMode.darken),
+              image: attachmentPreview != null
+                  ? FileImage(
+                      attachmentPreview!,
+                    )
+                  : urlPreview != null
+                      ? NetworkImage(urlPreview!)
+                      : story.pages![widget.pageIndex].backgroundImageUrl !=
+                              null
+                          ? NetworkImage(story
+                              .pages![widget.pageIndex].backgroundImageUrl!)
+                          : Image.asset(
+                              "assets/images/machi.png",
+                              scale: 0.2,
+                              width: 100,
+                            ).image,
+              fit: BoxFit.cover),
         ),
         child: Stack(
           children: [
@@ -92,6 +115,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             },
                           ),
                           IconButton(
+                            icon: const Icon(Iconsax.image),
+                            onPressed: () {
+                              _showPageImage(context);
+                            },
+                          ),
+                          IconButton(
                             icon: const Icon(Iconsax.element_plus),
                             onPressed: () {
                               widget.onMoveInsertPages({"action": "add"});
@@ -102,42 +131,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             onPressed: () {
                               _showLayOutSelection(context);
                             },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.image),
-                            onPressed: () {
-                              _showPageImage(context);
-                            },
-                          ),
+                          )
                         ]),
                   )
                 ])),
           ],
         ));
-  }
-
-  void _showPageImage(BuildContext context) async {
-    await showModalBottomSheet(
-        context: context,
-        builder: (context) => FractionallySizedBox(
-              heightFactor: 0.7,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text(_i18n.translate("story_page_background_image"),
-                        style: Theme.of(context).textTheme.headlineSmall),
-                  ),
-                  ImageSourceSheet(
-                    onImageSelected: (image) async {
-                      if (image != null) {}
-                    },
-                    onGallerySelected: (imageUrl) async {},
-                  )
-                ],
-              ),
-            ));
   }
 
   Widget _reorderListWidget() {
@@ -272,7 +271,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 scripts[index].text ?? "",
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                    color: layout == Layout.CONVO ? Colors.black : Colors.white,
+                    color: layout == Layout.CONVO
+                        ? Colors.black
+                        : APP_INVERSE_PRIMARY_COLOR,
                     fontSize: 16),
               ),
               size,
@@ -532,5 +533,54 @@ class _EditPageReorderState extends State<EditPageReorder> {
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Unable to delete message in edit bits', fatal: true);
     }
+  }
+
+  void _updateBackground() async {
+    final _storyApi = StoryApi();
+    String? url = urlPreview;
+    if (attachmentPreview != null) {
+      url = await uploadFile(
+          file: attachmentPreview!,
+          category: UPLOAD_PATH_SCRIPT_IMAGE,
+          categoryId: createUUID());
+    }
+    StoryPages storyPages = story.pages![widget.pageIndex];
+    storyPages.backgroundImageUrl = url;
+    story.pages![story.pages!
+            .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
+        storyPages;
+
+    Story updateStory = story.copyWith(pages: story.pages);
+
+    await _storyApi.updateStory(story: updateStory);
+    setState(() {
+      story = updateStory;
+    });
+  }
+
+  void _showPageImage(BuildContext context) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) => FractionallySizedBox(
+              heightFactor: 0.5,
+              child: EditPageBackground(
+                  passStory: story,
+                  backgroundImage:
+                      story.pages![widget.pageIndex].backgroundImageUrl,
+                  onGallerySelect: (value) => {
+                        setState(() {
+                          urlPreview = value;
+                          attachmentPreview = null;
+                        }),
+                        _updateBackground(),
+                      },
+                  onImageSelect: (value) => {
+                        setState(() {
+                          attachmentPreview = value;
+                          urlPreview = null;
+                        }),
+                        _updateBackground(),
+                      }),
+            ));
   }
 }

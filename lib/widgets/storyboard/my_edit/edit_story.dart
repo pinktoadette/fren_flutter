@@ -86,29 +86,26 @@ class _EditPageState extends State<EditPage> {
     Size size = MediaQuery.of(context).size;
     if (story.pages!.isEmpty) {
       return [
-        SizedBox(
-            height: size.height,
-            width: size.width,
-            child: EditPageReorder(
-                story: story,
-                scriptList: const [],
-                pageIndex: pageIndex,
-                layout: selectedLayout,
-                onMoveInsertPages: (data) {
-                  _moveInsertPages(data);
-                },
-                onUpdateSeq: (update) {
-                  _updateSequence(update);
-                },
-                onLayoutSelection: (layout) {
-                  selectedLayout = layout;
-                }))
+        EditPageReorder(
+            story: story,
+            scriptList: const [],
+            pageIndex: pageIndex,
+            layout: selectedLayout,
+            onMoveInsertPages: (data) {
+              _moveInsertPages(data);
+            },
+            onUpdateSeq: (update) {
+              _updateSequence(update);
+            },
+            onLayoutSelection: (layout) {
+              selectedLayout = layout;
+            })
       ];
     }
 
     return [
       SizedBox(
-          height: size.height,
+          height: size.height + 20,
           width: double.infinity,
           child: PageView.builder(
             onPageChanged: _onPageChange,

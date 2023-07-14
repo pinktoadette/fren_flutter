@@ -50,7 +50,9 @@ class StoryComment {
 class StoryPages {
   final List<Script>? scripts;
   final int? pageNum;
-  StoryPages({this.scripts, this.pageNum});
+  String? backgroundImageUrl;
+  double? backgroundAlpha;
+  StoryPages({this.scripts, this.pageNum, this.backgroundImageUrl});
 
   factory StoryPages.fromJson(Map<String, dynamic> doc) {
     List<Script> scripts = [];
@@ -66,9 +68,12 @@ class StoryPages {
     return pages;
   }
 
-  StoryPages copyWith({List<Script>? scripts, int? pageNum}) {
+  StoryPages copyWith(
+      {List<Script>? scripts, int? pageNum, String? backgroundImageUrl}) {
     return StoryPages(
-        pageNum: pageNum ?? this.pageNum, scripts: scripts ?? this.scripts);
+        pageNum: pageNum ?? this.pageNum,
+        scripts: scripts ?? this.scripts,
+        backgroundImageUrl: backgroundImageUrl ?? this.backgroundImageUrl);
   }
 }
 
@@ -161,7 +166,14 @@ class Story {
     if (doc[STORY_SCRIPT_PAGES]!.isNotEmpty) {
       doc[STORY_SCRIPT_PAGES].forEach((page) {
         StoryPages s = StoryPages.fromJson(page);
-        pages.add(s);
+        List<dynamic> coverPages = doc[STORY_COVER_PAGES] ?? [];
+        String? background;
+        if (coverPages.isNotEmpty) {
+          background = coverPages.firstWhere((element) =>
+              element[SCRIPT_PAGE_NUM] == s.pageNum)[STORY_PAGES_BACKGROUND];
+        }
+        StoryPages updated = s.copyWith(backgroundImageUrl: background);
+        pages.add(updated);
       });
     }
 

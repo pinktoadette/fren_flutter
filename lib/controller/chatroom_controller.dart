@@ -237,7 +237,7 @@ class ChatController extends GetxController implements GetxService {
             .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
         roomlist[index].messages.insert(0, newMessage);
         roomlist.refresh();
-        // update();
+        update();
       },
       onError: (error, s) async {
         // Handle error for this channel
