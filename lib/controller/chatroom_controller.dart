@@ -199,6 +199,7 @@ class ChatController extends GetxController implements GetxService {
   //// Socket /////
   /// listens for bot typing in each room
   /// updates the message and typing indicator
+  /// it seems like the socket is not stable on DO? gives cannot connect error sometimes
 
   /// open socket
   // void onListSocket() {
