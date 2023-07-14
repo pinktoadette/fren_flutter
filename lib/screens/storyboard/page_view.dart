@@ -26,6 +26,7 @@ import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/comment/comment_widget.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
+import 'package:machi_app/widgets/storyboard/story/story_big_header.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -158,7 +159,6 @@ class _StoryPageViewState extends State<StoryPageView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              StoryHeaderWidget(story: story!),
               _showPageWidget(),
             ],
           )),
@@ -291,7 +291,7 @@ class _StoryPageViewState extends State<StoryPageView> {
               }));
     }
 
-    return Stack(alignment: Alignment.bottomCenter, children: [
+    return Stack(alignment: Alignment.topCenter, children: [
       SizedBox(
           height: height,
           width: size.width,
@@ -302,36 +302,46 @@ class _StoryPageViewState extends State<StoryPageView> {
               List<Script>? scripts = story!.pages![index].scripts;
               return SingleChildScrollView(
                   scrollDirection: Axis.vertical,
-                  child: Card(
-                      child: Container(
-                    width: size.width,
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                        crossAxisAlignment: story!.layout == Layout.CONVO
-                            ? CrossAxisAlignment.end
-                            : CrossAxisAlignment.start,
-                        children: scripts!.map((script) {
-                          CrossAxisAlignment alignment =
-                              story!.layout == Layout.CONVO
-                                  ? story!.createdBy.username.trim() ==
-                                          script.characterName!.trim()
-                                      ? CrossAxisAlignment.end
-                                      : CrossAxisAlignment.start
-                                  : script.type == 'image'
-                                      ? CrossAxisAlignment.center
-                                      : CrossAxisAlignment.start;
-                          return Column(
-                              crossAxisAlignment: alignment,
-                              children: [
-                                _displayScript(script, size),
-                                if (story!.layout == Layout.CONVO)
-                                  Text(script.characterName ?? ""),
-                                const SizedBox(
-                                  height: 20,
-                                )
-                              ]);
-                        }).toList()),
-                  )));
+                  child: Column(
+                    children: [
+                      StoryHeaderWidget(story: story!),
+                      Card(
+                          child: Container(
+                        decoration: BoxDecoration(
+                          image: DecorationImage(
+                              image: NetworkImage(story?.photoUrl ?? ""),
+                              fit: BoxFit.cover),
+                        ),
+                        width: size.width,
+                        padding: const EdgeInsets.all(20),
+                        child: Column(
+                            crossAxisAlignment: story!.layout == Layout.CONVO
+                                ? CrossAxisAlignment.end
+                                : CrossAxisAlignment.start,
+                            children: scripts!.map((script) {
+                              CrossAxisAlignment alignment =
+                                  story!.layout == Layout.CONVO
+                                      ? story!.createdBy.username.trim() ==
+                                              script.characterName!.trim()
+                                          ? CrossAxisAlignment.end
+                                          : CrossAxisAlignment.start
+                                      : script.type == 'image'
+                                          ? CrossAxisAlignment.center
+                                          : CrossAxisAlignment.start;
+                              return Column(
+                                  crossAxisAlignment: alignment,
+                                  children: [
+                                    _displayScript(script, size),
+                                    if (story!.layout == Layout.CONVO)
+                                      Text(script.characterName ?? ""),
+                                    const SizedBox(
+                                      height: 20,
+                                    )
+                                  ]);
+                            }).toList()),
+                      ))
+                    ],
+                  ));
             },
           )),
       Positioned(

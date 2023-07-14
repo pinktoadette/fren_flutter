@@ -13,6 +13,7 @@ class Chatroom {
   final List<types.Message> messages;
   final List<types.User> users;
   final List<types.User>? blockedUsers;
+  bool? isTyping;
   final int createdAt;
   final int updatedAt;
   final bool? read;
@@ -26,6 +27,7 @@ class Chatroom {
       required this.messages,
       required this.users,
       required this.creatorUser,
+      this.isTyping,
       this.read,
       this.blockedUsers,
       this.title});
@@ -115,6 +117,7 @@ class Chatroom {
         creatorUser: doc[ROOM_CREATED_BY],
         users: users,
         messages: messages,
+        isTyping: false,
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[UPDATED_AT].toInt(),
         roomType: doc[ROOM_TYPE],

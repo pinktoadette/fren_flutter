@@ -363,6 +363,7 @@
   "storyboard_success_delete": "Board is successfully deleted",
   "storyboard_delete_error": "Something went wrong deleting the board",
   
+  
   "story_confirm_delete": "Are you sure you want to delete this module? All images will be deleted",
   "story_success_delete": "Module is successfully deleted",
   "story_delete_error": "Something went wrong deleting the module",
@@ -414,6 +415,7 @@
   "story_voice_assign": "Assign Voice",
   "story_voice_assign_info": "Assign voice to your speaker / narrator. \nOnly speaks first text for each user. Text will be cut off at 200 charaters.",
   "story_voice_read_text": "Sample Text",
+  "story_page_background_image": "Select background for the page",
   "story_bit_move_page": "Move to page",
   "story_bit_add_to_new_page": "Add to a new page",
   "story_bit_on_current_page": "On current page",

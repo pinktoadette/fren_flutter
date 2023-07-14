@@ -13,6 +13,7 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
+import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_text_collection.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
@@ -48,7 +49,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   Layout? layout;
-  final GlobalKey _draggableKey = GlobalKey();
 
   @override
   void initState() {
@@ -64,44 +64,80 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
-    return Stack(
-      children: [
-        _reorderListWidget(),
-        Positioned(
-            height: 100,
-            bottom: 100,
-            child: Column(children: [
-              Container(
-                color: Theme.of(context).colorScheme.background,
-                width: size.width,
+    return Container(
+        decoration: BoxDecoration(
+          color: const Color(0xff7c94b6),
+          image: DecorationImage(
+              image: NetworkImage(story.photoUrl ?? ""), fit: BoxFit.cover),
+        ),
+        child: Stack(
+          children: [
+            _reorderListWidget(),
+            Positioned(
                 height: 100,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Iconsax.text_block),
-                        onPressed: () {
-                          _addEditText();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.element_plus),
-                        onPressed: () {
-                          widget.onMoveInsertPages({"action": "add"});
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.grid_3),
-                        onPressed: () {
-                          _showLayOutSelection(context);
-                        },
-                      ),
-                    ]),
-              )
-            ])),
-      ],
-    );
+                bottom: 100,
+                child: Column(children: [
+                  Container(
+                    color: Theme.of(context).colorScheme.background,
+                    width: size.width,
+                    height: 100,
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          IconButton(
+                            icon: const Icon(Iconsax.text_block),
+                            onPressed: () {
+                              _addEditText();
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Iconsax.element_plus),
+                            onPressed: () {
+                              widget.onMoveInsertPages({"action": "add"});
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Iconsax.grid_3),
+                            onPressed: () {
+                              _showLayOutSelection(context);
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Iconsax.image),
+                            onPressed: () {
+                              _showPageImage(context);
+                            },
+                          ),
+                        ]),
+                  )
+                ])),
+          ],
+        ));
+  }
+
+  void _showPageImage(BuildContext context) async {
+    await showModalBottomSheet(
+        context: context,
+        builder: (context) => FractionallySizedBox(
+              heightFactor: 0.7,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(_i18n.translate("story_page_background_image"),
+                        style: Theme.of(context).textTheme.headlineSmall),
+                  ),
+                  ImageSourceSheet(
+                    onImageSelected: (image) async {
+                      if (image != null) {}
+                    },
+                    onGallerySelected: (imageUrl) async {},
+                  )
+                ],
+              ),
+            ));
   }
 
   Widget _reorderListWidget() {

@@ -57,7 +57,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final ChatController chatController = Get.find(tag: 'chatroom');
   final MessageController messageController = Get.find(tag: 'message');
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
-  late final List<types.Message> _messages = [];
+  late List<types.Message> _messages = [];
 
   late types.User _user;
   late AppLocalizations _i18n;
@@ -67,12 +67,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late int _roomIdx;
   final _messagesApi = MessageMachiApi();
   final _chatroomApi = ChatroomMachiApi();
-  final _streamApi = StreamApi();
   bool _isAttachmentUploading = false;
   bool isLoading = false;
-  bool isBotSleeping = false;
 
-  bool? isBotTyping;
+  // bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
   final _player = AudioPlayer();
@@ -83,44 +81,51 @@ class _BotChatScreenState extends State<BotChatScreen> {
     isTextSelectable: true,
   );
 
-  Future<void> _listenSocket() async {
-    final _authApi = AuthApi();
-    Map<String, dynamic> headers = await _authApi.getHeaders();
-    final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${_room.chatroomId}');
-    _channel = WebSocketChannel.connect(wsUrl);
-    _channel.sink.add(json.encode({"token": headers}));
-    _channel.stream
-        .listen(
-      (_) {},
-      onError: (error) => Get.snackbar(
-          'Error', _i18n.translate("an_error_has_occurred"),
-          snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR),
-    )
-        .onData((data) {
-      _onSocketParse(data);
-    });
-  }
+  // Future<void> _listenSocket() async {
+  //   final _authApi = AuthApi();
+  //   Map<String, dynamic> headers = await _authApi.getHeaders();
+  //   final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${_room.chatroomId}');
+  //   _channel = WebSocketChannel.connect(wsUrl);
+  //   _channel.sink.add(json.encode({"token": headers}));
+  //   _channel.stream
+  //       .listen(
+  //     (_) {},
+  //     onError: (error) => Get.snackbar(
+  //         'Error', _i18n.translate("an_error_has_occurred"),
+  //         snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR),
+  //   )
+  //       .onData((data) {
+  //     // _onSocketParse(data);
+  //     Map<String, dynamic> decodeData = json.decode(data);
+  //     types.Message newMessage = messageFromJson(decodeData["message"]);
+  //     setState(() {
+  //       _messages.insert(0, newMessage);
+  //     });
+  //     chatController.onSocketParse(_roomIdx, newMessage);
+  //   });
+  // }
 
-  void _onSocketParse(String message) {
-    try {
-      Map<String, dynamic> decodeData = json.decode(message);
-      types.Message newMessage = messageFromJson(decodeData["message"]);
-      setState(() {
-        _messages.insert(0, newMessage);
-      });
-      chatController.updateMessagesPreview(_roomIdx, newMessage);
-    } catch (_) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
-    }
-  }
+  // void _onSocketParse(String message) {
+  //   try {
+  //     Map<String, dynamic> decodeData = json.decode(message);
+  //     types.Message newMessage = messageFromJson(decodeData["message"]);
+  //     setState(() {
+  //       _messages.insert(0, newMessage);
+  //     });
+  //     chatController.updateMessagesPreview(_roomIdx, newMessage);
+  //   } catch (_) {
+  //     Get.snackbar(
+  //       _i18n.translate("error"),
+  //       _i18n.translate("an_error_has_occurred"),
+  //       snackPosition: SnackPosition.TOP,
+  //       backgroundColor: APP_ERROR,
+  //     );
+  //   }
+  // }
 
   @override
   void initState() {
+    super.initState();
     // get the room
     final args = Get.arguments;
     _room = args["room"];
@@ -131,14 +136,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _messages.addAll(_room.messages);
 
     //initialize socket
-    _listenSocket();
-
-    super.initState();
+    // _listenSocket();
   }
 
   @override
   void dispose() {
-    _channel.sink.close(status.normalClosure);
+    // _channel.sink.close(status.normalClosure);
     _player.dispose();
     super.dispose();
   }
@@ -152,72 +155,72 @@ class _BotChatScreenState extends State<BotChatScreen> {
       return const Frankloader();
     } else {
       return Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          leading: BackButton(
-            color: Theme.of(context).colorScheme.primary,
-            onPressed: () async {
-              _leaveBotTyping();
-            },
+          appBar: AppBar(
+            centerTitle: false,
+            leading: BackButton(
+              color: Theme.of(context).colorScheme.primary,
+              onPressed: () async {
+                _leaveChatroom();
+              },
+            ),
+            titleSpacing: 0,
+            title: GestureDetector(
+              child: Obx(() => Text(botController.bot.name,
+                  overflow: TextOverflow.fade,
+                  style: Theme.of(context).textTheme.displayMedium)),
+              onTap: () {
+                /// Show bot info
+                _showBotInfo();
+              },
+            ),
+            actions: const [SubscribeTokenCounter()],
           ),
-          titleSpacing: 0,
-          title: GestureDetector(
-            child: Obx(() => Text(botController.bot.name,
-                overflow: TextOverflow.fade,
-                style: Theme.of(context).textTheme.displayMedium)),
-            onTap: () {
-              /// Show bot info
-              _showBotInfo();
-            },
-          ),
-          actions: const [SubscribeTokenCounter()],
-        ),
-        body: Chat(
-            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-            listBottomWidget: CustomHeaderInputWidget(
-                onUpdateWidget: (e) {
-                  setState(() {
-                    attachmentPreview = e['image'];
-                  });
-                },
-                onImageSelect: (value) {
-                  setState(() {
-                    _setTags = value == _setTags ? null : value;
-                  });
-                },
-                onTagChange: _setTags,
-                isBotTyping: isBotTyping,
-                attachmentPreview: attachmentPreview),
-            theme: DefaultChatTheme(
-                sentMessageBodyTextStyle: const TextStyle(color: Colors.black),
-                inputBackgroundColor: APP_INPUT_COLOR,
-                inputTextStyle: GoogleFonts.poppins(
-                  fontSize: 16,
-                  fontWeight: FontWeight.normal,
-                ),
-                primaryColor: Theme.of(context).colorScheme.secondary,
-                sendButtonIcon: Icon(Iconsax.send_2,
-                    color: Theme.of(context).colorScheme.primary),
-                backgroundColor: Theme.of(context).colorScheme.background),
-            onEndReached: _loadMoreMessage, //get more messages on top
-            showUserNames: true,
-            showUserAvatars: true,
-            isAttachmentUploading: _isAttachmentUploading,
-            messages: _messages,
-            onSendPressed: _handleSendPressed,
-            onAvatarTap: (messageUser) async {
-              if (!messageUser.id.contains("Machi_")) {
-                final user = await UserModel().getUserObject(messageUser.id);
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => ProfileScreen(user: user)));
-              }
-            },
-            onAttachmentPressed: _handleAttachmentPressed,
-            onMessageTap: _handleMessageTap,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            listFooterWidgetBuilder: (message) => _listWidget(message),
-            user: _user),
-      );
+          body: Obx(() => Chat(
+              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+              listBottomWidget: CustomHeaderInputWidget(
+                  onUpdateWidget: (e) {
+                    setState(() {
+                      attachmentPreview = e['image'];
+                    });
+                  },
+                  onImageSelect: (value) {
+                    setState(() {
+                      _setTags = value == _setTags ? null : value;
+                    });
+                  },
+                  onTagChange: _setTags,
+                  isBotTyping: chatController.roomlist[_roomIdx].isTyping,
+                  attachmentPreview: attachmentPreview),
+              theme: DefaultChatTheme(
+                  sentMessageBodyTextStyle:
+                      const TextStyle(color: Colors.black),
+                  inputBackgroundColor: APP_INPUT_COLOR,
+                  inputTextStyle: GoogleFonts.poppins(
+                    fontSize: 16,
+                    fontWeight: FontWeight.normal,
+                  ),
+                  primaryColor: Theme.of(context).colorScheme.secondary,
+                  sendButtonIcon: Icon(Iconsax.send_2,
+                      color: Theme.of(context).colorScheme.primary),
+                  backgroundColor: Theme.of(context).colorScheme.background),
+              onEndReached: _loadMoreMessage, //get more messages on top
+              showUserNames: true,
+              showUserAvatars: true,
+              isAttachmentUploading: _isAttachmentUploading,
+              messages: chatController.roomlist[_roomIdx].messages,
+              onSendPressed: _handleSendPressed,
+              onAvatarTap: (messageUser) async {
+                if (!messageUser.id.contains("Machi_")) {
+                  final user = await UserModel().getUserObject(messageUser.id);
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ProfileScreen(user: user)));
+                }
+              },
+              onAttachmentPressed: _handleAttachmentPressed,
+              onMessageTap: _handleMessageTap,
+              onPreviewDataFetched: _handlePreviewDataFetched,
+              listFooterWidgetBuilder: (message) => _listWidget(message),
+              user: _user)));
     }
   }
 
@@ -422,10 +425,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
             file: file!,
             category: UPLOAD_PATH_MESSAGE,
             categoryId: createUUID());
-        Map<String, dynamic> formatImgMessage =
-            formatChatMessage(partialMessage: attachmentPreview, uri: uri);
-
-        _channel.sink.add(json.encode({"message": formatImgMessage}));
+        Map<String, dynamic> formatImgMessage = chatController.sendMessage(
+            room: _room, partialMessage: attachmentPreview, uri: uri);
 
         lastMessageId = await _messagesApi.saveUserResponse(
             messageMap: {...formatImgMessage}, tags: _setTags);
@@ -445,9 +446,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
         return;
       }
     }
+    // Map<String, dynamic> formatMessage =
+    //     formatChatMessage(partialMessage: message);
+    // _channel.sink.add(json.encode({"message": formatMessage}));
+
     Map<String, dynamic> formatMessage =
-        formatChatMessage(partialMessage: message);
-    _channel.sink.add(json.encode({"message": formatMessage}));
+        chatController.sendMessage(room: _room, partialMessage: message);
     // saves the text after the image, the text is linked to the image with lastMessageId
     await _saveResponseAndGetBot(
         {...formatMessage, "lastMessageId": lastMessageId});
@@ -500,33 +504,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   Future<void> _getMachiResponse() async {
-    setState(() {
-      isBotTyping = true;
-    });
-    try {
-      Map<String, dynamic> message = await _messagesApi.getBotResponse();
-      _channel.sink.add(json.encode({"message": message}));
-    } on DioException catch (err, s) {
-      dynamic response = {
-        CHAT_AUTHOR_ID: _room.bot.botId,
-        CHAT_AUTHOR: _room.bot.name,
-        BOT_ID: _room.bot.botId,
-        CHAT_MESSAGE_ID: createUUID(),
-        CHAT_TEXT: err.response?.data["message"] ??
-            "Sorry, got an error 😕. Try again.",
-        CHAT_TYPE: "text",
-        CREATED_AT: getDateTimeEpoch()
-      };
-      _channel.sink.add(json.encode({"message": response}));
-      await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'bot has error ${err.toString()}', fatal: true);
-    }
-
+    chatController.getMachiResponse(room: _room);
     if (_setTags != null) {
       subscribeController.getCredits();
     }
     setState(() {
-      isBotTyping = false;
       _setTags = null;
     });
   }
@@ -615,37 +597,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
               ));
         },
       );
-    }
-  }
-
-  void _leaveChat(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    confirmDialog(context,
-        message: _i18n.translate("leave_chat_warning"),
-        negativeAction: () => Navigator.of(context).pop(),
-        positiveText: _i18n.translate("leave_chatroom"),
-        positiveAction: () async {
-          /// Delete
-          await _chatroomApi.leaveChatroom(_roomIdx, _room);
-          Navigator.of(context).pop();
-          Get.delete<MessageController>().then((_) {
-            Get.put(MessageController());
-          }).then((_) => messageController.offset = 10);
-        });
-  }
-
-  void _leaveBotTyping() {
-    if (isBotTyping == true) {
-      confirmDialog(context,
-          message: _i18n.translate("leave_chat_bot_tying"),
-          negativeAction: () => Navigator.of(context).pop(),
-          positiveText: _i18n.translate("OK"),
-          positiveAction: () async {
-            Navigator.of(context).pop();
-            _leaveChatroom();
-          });
-    } else {
-      _leaveChatroom();
     }
   }
 

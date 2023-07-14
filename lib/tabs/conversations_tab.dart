@@ -15,6 +15,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
+import 'package:machi_app/widgets/chat/typing_indicator.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 
 import '../datas/user.dart';
@@ -38,7 +39,14 @@ class _ConversationsTabState extends State<ConversationsTab> {
   @override
   void initState() {
     super.initState();
+    chatController.onListSocket();
     scrollController = ScrollController()..addListener(handleScrolling);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    chatController.onCloseSocket();
   }
 
   void handleScrolling() async {
@@ -193,7 +201,13 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            _formatMessages(context, lastMsg),
+                                            room.isTyping == true
+                                                ? JumpingDots(
+                                                    color: Theme.of(context)
+                                                        .colorScheme
+                                                        .primary)
+                                                : _formatMessages(
+                                                    context, lastMsg),
                                             !isRead
                                                 ? const Icon(
                                                     Iconsax.info_circle1,
