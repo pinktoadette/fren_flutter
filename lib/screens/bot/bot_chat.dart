@@ -102,7 +102,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
     } else {
       return WillPopScope(
           onWillPop: () {
-            return Future.value(false);
+            _leaveChatroom();
+            return Future.value(true);
           },
           child: Scaffold(
               appBar: AppBar(
@@ -128,7 +129,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
               body: Obx(() => Chat(
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
-                  listBottomWidget: CustomHeaderInputWidget(
+                  inputHeader: CustomHeaderInputWidget(
                       onUpdateWidget: (e) {
                         setState(() {
                           attachmentPreview = e['image'];

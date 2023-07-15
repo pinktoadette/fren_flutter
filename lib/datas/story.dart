@@ -180,15 +180,16 @@ class Story {
       doc[STORY_SCRIPT_PAGES].forEach((page) {
         StoryPages s = StoryPages.fromJson(page);
         List<dynamic> coverPages = doc[STORY_COVER_PAGES] ?? [];
-        String? background;
         if (coverPages.isNotEmpty) {
-          Map<String, dynamic> item = coverPages.firstWhere(
-              (page) => page["pageNum"] != s.pageNum,
+          String? background;
+
+          Map<String, dynamic>? item = coverPages.firstWhere(
+              (page) => page["pageNum"] == s.pageNum,
               orElse: () => null);
-          background = item[STORY_PAGES_BACKGROUND];
-        }
-        if (background != null) {
-          s = s.copyWith(backgroundImageUrl: background);
+          background = item?[STORY_PAGES_BACKGROUND];
+          if (background != null) {
+            s = s.copyWith(backgroundImageUrl: background);
+          }
         }
         pages.add(s);
       });
