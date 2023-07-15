@@ -307,16 +307,26 @@ class _StoryPageViewState extends State<StoryPageView> {
                       Card(
                           child: Container(
                         decoration: BoxDecoration(
-                          image: DecorationImage(
-                              colorFilter: ColorFilter.mode(
-                                  const Color.fromARGB(255, 0, 0, 0)
-                                      .withOpacity(0.8),
-                                  BlendMode.darken),
-                              image: NetworkImage(
-                                  story?.pages![index].backgroundImageUrl ??
-                                      ""),
-                              fit: BoxFit.cover),
-                        ),
+                            image: DecorationImage(
+                                colorFilter: ColorFilter.mode(
+                                    const Color.fromARGB(255, 0, 0, 0)
+                                        .withOpacity(0.8),
+                                    BlendMode.darken),
+                                image: story?.pages![index]
+                                            .backgroundImageUrl !=
+                                        null
+                                    ? NetworkImage(story!
+                                        .pages![index].backgroundImageUrl!!)
+                                    : story!.pages![index].backgroundImageUrl !=
+                                            null
+                                        ? NetworkImage(story!
+                                            .pages![index].backgroundImageUrl!)
+                                        : Image.asset(
+                                            "assets/images/machi.png",
+                                            scale: 0.2,
+                                            width: 100,
+                                          ).image,
+                                fit: BoxFit.cover)),
                         width: size.width,
                         padding: const EdgeInsets.all(20),
                         child: Column(

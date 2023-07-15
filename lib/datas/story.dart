@@ -169,11 +169,13 @@ class Story {
         List<dynamic> coverPages = doc[STORY_COVER_PAGES] ?? [];
         String? background;
         if (coverPages.isNotEmpty) {
-          background = coverPages.firstWhere((element) =>
+          background = coverPages.firstOrNull((element) =>
               element[SCRIPT_PAGE_NUM] == s.pageNum)[STORY_PAGES_BACKGROUND];
         }
-        StoryPages updated = s.copyWith(backgroundImageUrl: background);
-        pages.add(updated);
+        if (background != null) {
+          s = s.copyWith(backgroundImageUrl: background);
+        }
+        pages.add(s);
       });
     }
 
