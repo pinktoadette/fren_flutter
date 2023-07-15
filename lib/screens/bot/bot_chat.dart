@@ -100,73 +100,80 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (isLoading) {
       return const Frankloader();
     } else {
-      return Scaffold(
-          appBar: AppBar(
-            centerTitle: false,
-            leading: BackButton(
-              color: Theme.of(context).colorScheme.primary,
-              onPressed: () async {
-                _leaveChatroom();
-              },
-            ),
-            titleSpacing: 0,
-            title: GestureDetector(
-              child: Obx(() => Text(botController.bot.name,
-                  overflow: TextOverflow.fade,
-                  style: Theme.of(context).textTheme.displayMedium)),
-              onTap: () {
-                /// Show bot info
-                _showBotInfo();
-              },
-            ),
-            actions: const [SubscribeHowToArt(), SubscribeTokenCounter()],
-          ),
-          body: Obx(() => Chat(
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              listBottomWidget: CustomHeaderInputWidget(
-                  onUpdateWidget: (e) {
-                    setState(() {
-                      attachmentPreview = e['image'];
-                    });
+      return WillPopScope(
+          onWillPop: () {
+            return Future.value(false);
+          },
+          child: Scaffold(
+              appBar: AppBar(
+                centerTitle: false,
+                leading: BackButton(
+                  color: Theme.of(context).colorScheme.primary,
+                  onPressed: () async {
+                    _leaveChatroom();
                   },
-                  onImageSelect: (value) {
-                    setState(() {
-                      _setTags = value == _setTags ? null : value;
-                    });
+                ),
+                titleSpacing: 0,
+                title: GestureDetector(
+                  child: Obx(() => Text(botController.bot.name,
+                      overflow: TextOverflow.fade,
+                      style: Theme.of(context).textTheme.displayMedium)),
+                  onTap: () {
+                    /// Show bot info
+                    _showBotInfo();
                   },
-                  onTagChange: _setTags,
-                  isBotTyping: chatController.roomlist[_roomIdx].isTyping,
-                  attachmentPreview: attachmentPreview),
-              theme: DefaultChatTheme(
-                  sentMessageBodyTextStyle:
-                      const TextStyle(color: Colors.black),
-                  inputBackgroundColor: APP_INPUT_COLOR,
-                  inputTextStyle: GoogleFonts.poppins(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                  ),
-                  primaryColor: Theme.of(context).colorScheme.secondary,
-                  sendButtonIcon: Icon(Iconsax.send_2,
-                      color: Theme.of(context).colorScheme.primary),
-                  backgroundColor: Theme.of(context).colorScheme.background),
-              onEndReached: _loadMoreMessage, //get more messages on top
-              showUserNames: true,
-              showUserAvatars: true,
-              isAttachmentUploading: _isAttachmentUploading,
-              messages: chatController.roomlist[_roomIdx].messages,
-              onSendPressed: _handleSendPressed,
-              onAvatarTap: (messageUser) async {
-                if (!messageUser.id.contains("Machi_")) {
-                  final user = await UserModel().getUserObject(messageUser.id);
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ProfileScreen(user: user)));
-                }
-              },
-              onAttachmentPressed: _handleAttachmentPressed,
-              onMessageTap: _handleMessageTap,
-              onPreviewDataFetched: _handlePreviewDataFetched,
-              listFooterWidgetBuilder: (message) => _listWidget(message),
-              user: _user)));
+                ),
+                actions: const [SubscribeHowToArt(), SubscribeTokenCounter()],
+              ),
+              body: Obx(() => Chat(
+                  keyboardDismissBehavior:
+                      ScrollViewKeyboardDismissBehavior.onDrag,
+                  listBottomWidget: CustomHeaderInputWidget(
+                      onUpdateWidget: (e) {
+                        setState(() {
+                          attachmentPreview = e['image'];
+                        });
+                      },
+                      onImageSelect: (value) {
+                        setState(() {
+                          _setTags = value == _setTags ? null : value;
+                        });
+                      },
+                      onTagChange: _setTags,
+                      isBotTyping: chatController.roomlist[_roomIdx].isTyping,
+                      attachmentPreview: attachmentPreview),
+                  theme: DefaultChatTheme(
+                      sentMessageBodyTextStyle:
+                          const TextStyle(color: Colors.black),
+                      inputBackgroundColor: APP_INPUT_COLOR,
+                      inputTextStyle: GoogleFonts.poppins(
+                        fontSize: 16,
+                        fontWeight: FontWeight.normal,
+                      ),
+                      primaryColor: Theme.of(context).colorScheme.secondary,
+                      sendButtonIcon: Icon(Iconsax.send_2,
+                          color: Theme.of(context).colorScheme.primary),
+                      backgroundColor:
+                          Theme.of(context).colorScheme.background),
+                  onEndReached: _loadMoreMessage, //get more messages on top
+                  showUserNames: true,
+                  showUserAvatars: true,
+                  isAttachmentUploading: _isAttachmentUploading,
+                  messages: chatController.roomlist[_roomIdx].messages,
+                  onSendPressed: _handleSendPressed,
+                  onAvatarTap: (messageUser) async {
+                    if (!messageUser.id.contains("Machi_")) {
+                      final user =
+                          await UserModel().getUserObject(messageUser.id);
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => ProfileScreen(user: user)));
+                    }
+                  },
+                  onAttachmentPressed: _handleAttachmentPressed,
+                  onMessageTap: _handleMessageTap,
+                  onPreviewDataFetched: _handlePreviewDataFetched,
+                  listFooterWidgetBuilder: (message) => _listWidget(message),
+                  user: _user))));
     }
   }
 
@@ -532,9 +539,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (_hasNewMessages == true) {
       /// mark as read when clicked when exit
       await _chatroomApi.markAsRead(chatController.currentRoom.chatroomId);
-      // Chatroom room =
-      //     chatController.currentRoom.copyWith(read: true, messages: _messages);
-      // chatController.updateRoom(_roomIdx, room);
+      Chatroom room =
+          chatController.currentRoom.copyWith(read: true, messages: _messages);
+      chatController.updateRoom(_roomIdx, room);
 
       chatController.sortRoomExit(_roomIdx);
     }

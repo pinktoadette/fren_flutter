@@ -3,6 +3,17 @@ import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
+extension ListExtensions<T> on List<T> {
+  T? firstOrNull(bool Function(T) test) {
+    for (final element in this) {
+      if (test(element)) {
+        return element;
+      }
+    }
+    return null;
+  }
+}
+
 class StoryComment {
   String comment;
   String? commentId;
@@ -170,8 +181,11 @@ class Story {
         StoryPages s = StoryPages.fromJson(page);
         List<dynamic> coverPages = doc[STORY_COVER_PAGES] ?? [];
         String? background;
-        if (coverPages.toList().isNotEmpty) {
-          background = coverPages.toList().firstOrNull![STORY_PAGES_BACKGROUND];
+        if (coverPages.isNotEmpty) {
+          Map<String, dynamic> item = coverPages.firstWhere(
+              (page) => page["pageNum"] != s.pageNum,
+              orElse: () => null);
+          background = item[STORY_PAGES_BACKGROUND];
         }
         if (background != null) {
           s = s.copyWith(backgroundImageUrl: background);
