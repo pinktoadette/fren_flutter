@@ -316,7 +316,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             .backgroundImageUrl !=
                                         null
                                     ? NetworkImage(story!
-                                        .pages![index].backgroundImageUrl!!)
+                                        .pages![index].backgroundImageUrl!)
                                     : story!.pages![index].backgroundImageUrl !=
                                             null
                                         ? NetworkImage(story!

@@ -31,7 +31,7 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
   String? galleryImageUrl;
   late Story story;
   late AppLocalizations _i18n;
-  double _alphaValue = 0;
+  final double _alphaValue = 0;
 
   @override
   void initState() {

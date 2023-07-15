@@ -116,7 +116,7 @@ class _EditPageState extends State<EditPage> {
               return EditPageReorder(
                   story: story,
                   scriptList: scripts,
-                  pageIndex: pageIndex,
+                  pageIndex: index,
                   layout: selectedLayout,
                   onMoveInsertPages: (data) {
                     _moveInsertPages(data);

@@ -63,8 +63,10 @@ class StoryPages {
         scripts.add(s);
       });
     }
-    StoryPages pages =
-        StoryPages(pageNum: doc[SCRIPT_PAGE_NUM], scripts: scripts);
+    StoryPages pages = StoryPages(
+      pageNum: doc[SCRIPT_PAGE_NUM],
+      scripts: scripts,
+    );
     return pages;
   }
 
@@ -168,9 +170,8 @@ class Story {
         StoryPages s = StoryPages.fromJson(page);
         List<dynamic> coverPages = doc[STORY_COVER_PAGES] ?? [];
         String? background;
-        if (coverPages.isNotEmpty) {
-          background = coverPages.firstOrNull((element) =>
-              element[SCRIPT_PAGE_NUM] == s.pageNum)[STORY_PAGES_BACKGROUND];
+        if (coverPages.toList().isNotEmpty) {
+          background = coverPages.toList().firstOrNull![STORY_PAGES_BACKGROUND];
         }
         if (background != null) {
           s = s.copyWith(backgroundImageUrl: background);

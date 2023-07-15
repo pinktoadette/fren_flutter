@@ -14,7 +14,7 @@ class AuthApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<Dio> getDio() async {
-    String token = await getFirebaseUser!.getIdToken();
+    String? token = await getFirebaseUser!.getIdToken();
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';
     dio.options.headers['content-Type'] = 'application/json';
@@ -26,13 +26,11 @@ class AuthApi {
   }
 
   Future<Map<String, dynamic>> getHeaders() async {
-    String token = await getFirebaseUser!.getIdToken();
+    String? token = await getFirebaseUser!.getIdToken();
     return {"fb-authorization": token, "api-key": myKey};
   }
 
   Future<Dio> getAzure() async {
-    String token = await getFirebaseUser!.getIdToken();
-    log(token);
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';
     dio.options.headers['content-Type'] = 'application/json';

@@ -42,7 +42,7 @@ class ChatController extends GetxController implements GetxService {
   bool isTest = false;
 
   final Map<String, WebSocketChannel> _channelMap = {};
-  Map<String, Function(List<types.Message>)> _messageListeners = {};
+  final Map<String, Function(List<types.Message>)> _messageListeners = {};
 
   types.User get chatUser => _chatUser.value;
   set chatUser(types.User value) => _chatUser.value = value;

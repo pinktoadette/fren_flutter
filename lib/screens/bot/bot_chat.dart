@@ -16,6 +16,7 @@ import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:just_audio/just_audio.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_how_to_art.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:open_filex/open_filex.dart';
 import 'package:flutter/material.dart';
@@ -49,7 +50,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final ChatController chatController = Get.find(tag: 'chatroom');
   final MessageController messageController = Get.find(tag: 'message');
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
-  late List<types.Message> _messages = [];
+  late final List<types.Message> _messages = [];
 
   late types.User _user;
   late AppLocalizations _i18n;
@@ -118,7 +119,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 _showBotInfo();
               },
             ),
-            actions: const [SubscribeTokenCounter()],
+            actions: const [SubscribeHowToArt(), SubscribeTokenCounter()],
           ),
           body: Obx(() => Chat(
               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
@@ -233,24 +234,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
             child: const Icon(Icons.email_outlined, size: 14),
           ),
         ),
-        if (subscribeController.credits.value > 0)
-          IconButton(
-              onPressed: () async {
-                setState(() {
-                  _setTags = 'imagine';
-                });
-                Map<String, dynamic> formatMessage = message.toJson();
-                //@todo quick add
-                await _saveResponseAndGetBot({
-                  ...formatMessage,
-                  "chatroomId": chatController.currentRoom.chatroomId,
-                  "messageId": createUUID(),
-                  "name": UserModel().user.username,
-                  "authorId": UserModel().user.userId,
-                  "lastMessageId": ""
-                });
-              },
-              icon: const Icon(Iconsax.image, size: 14)),
       ];
 
   void _handleMessageFooterTap(types.Message message) {
