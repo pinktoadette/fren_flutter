@@ -32,7 +32,7 @@ class SetCurrentRoom {
   void updateRoomAsCurrentRoom(Chatroom room, int index) async {
     chatController.currentRoom = room;
     botController.bot = room.bot;
-    chatController.updateRoom(index, room);
+    chatController.updateRoom(room);
 
     Get.to(() => (const BotChatScreen()),
         arguments: {"room": room, 'index': index});

@@ -171,29 +171,18 @@ class ChatController extends GetxController implements GetxService {
   }
 
   // update messages from the chatroom, to view once when on convo tab
-  void updateMessagesPreview(int index, types.Message message) {
-    roomlist[index].messages.insert(0, message);
-    sortRoomExit(index);
-    roomlist.refresh();
-    update();
-  }
-
-  // update messages from the chatroom, to view once when on convo tab
-  void updateRoom(int index, Chatroom room) {
+  void updateRoom(Chatroom room) {
     botController.bot = room.bot;
+    int index = roomlist
+        .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
     roomlist[index] = room;
+
     if (room.read == true) {
       int unread = unreadCounter.value - 1;
       unreadCounter = max(unread, 0).obs;
     }
     roomlist.refresh();
     update();
-  }
-
-  void sortRoomExit(int currentIndx) {
-    Chatroom currentRoom = roomlist[currentIndx];
-    roomlist.remove(currentRoom);
-    roomlist.insert(0, currentRoom);
   }
 
   //// Socket /////
@@ -261,24 +250,18 @@ class ChatController extends GetxController implements GetxService {
 
   Map<String, dynamic> sendMessage(
       {required Chatroom room, dynamic partialMessage, String? uri}) {
-    try {
-      Map<String, dynamic> message =
-          formatChatMessage(partialMessage: partialMessage, uri: uri);
-      // WebSocketChannel? channel = _channelMap[room.chatroomId];
-      // if (channel != null) {
-      //   channel.sink.add(json.encode({"message": message}));
-      // }
-      types.Message newMessage = messageFromJson(message);
-      int index = roomlist
-          .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
-      roomlist[index].messages.insert(0, newMessage);
-      roomlist.refresh();
-      update();
-      return message;
-    } catch (err) {
-      debugPrint(err.toString());
-    }
-    return {};
+    Map<String, dynamic> message =
+        formatChatMessage(partialMessage: partialMessage, uri: uri);
+    // WebSocketChannel? channel = _channelMap[room.chatroomId];
+    // if (channel != null) {
+    //   channel.sink.add(json.encode({"message": message}));
+    // }
+    types.Message newMessage = messageFromJson(message);
+    int index = roomlist
+        .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+    roomlist[index].messages.insert(0, newMessage);
+    _addUpdateResponse(newMessage, index);
+    return message;
   }
 
   Future<Map<String, dynamic>> getMachiResponse(
@@ -287,6 +270,7 @@ class ChatController extends GetxController implements GetxService {
     int index = roomlist
         .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
     roomlist[index].isTyping = true;
+    currentRoom.isTyping = true;
     Map<String, dynamic> message = await _messageApi.getBotResponse();
     // WebSocketChannel? channel = _channelMap[room.chatroomId];
     // if (channel != null) {
@@ -295,9 +279,20 @@ class ChatController extends GetxController implements GetxService {
     types.Message newMessage = messageFromJson(message);
     roomlist[index].messages.insert(0, newMessage);
     roomlist[index].isTyping = false;
+    currentRoom.isTyping = false;
+    _addUpdateResponse(newMessage, index);
+    return message;
+  }
 
+  void _addUpdateResponse(types.Message message, int index) {
+    // addMessage(message);
+    sortRoomExit();
     roomlist.refresh();
     update();
-    return message;
+  }
+
+  void sortRoomExit() {
+    roomlist.removeWhere((room) => room.chatroomId == currentRoom.chatroomId);
+    roomlist.insert(0, currentRoom);
   }
 }

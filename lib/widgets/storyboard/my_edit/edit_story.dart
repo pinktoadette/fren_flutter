@@ -105,7 +105,7 @@ class _EditPageState extends State<EditPage> {
 
     return [
       SizedBox(
-          height: size.height + 20,
+          height: size.height - 100,
           width: double.infinity,
           child: PageView.builder(
             onPageChanged: _onPageChange,
@@ -131,7 +131,7 @@ class _EditPageState extends State<EditPage> {
             },
           )),
       Positioned(
-          bottom: 200,
+          bottom: 0,
           height: 20,
           width: size.width,
           child: Container(

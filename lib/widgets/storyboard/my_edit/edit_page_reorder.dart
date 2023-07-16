@@ -97,7 +97,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             _reorderListWidget(),
             Positioned(
                 height: 100,
-                bottom: 100,
+                bottom: 0,
                 child: Column(children: [
                   Container(
                     color: Theme.of(context).colorScheme.background,
@@ -147,7 +147,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
 
     return Container(
-        margin: const EdgeInsets.only(bottom: 200),
+        margin: const EdgeInsets.only(bottom: 100),
         child: ReorderableListView(
             children: [
               for (int index = 0; index < scripts.length; index += 1)
@@ -235,11 +235,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
             icon: const Icon(Iconsax.document_forward, size: 16),
             initialValue: 1,
             // Callback that sets the selected popup menu item.
-            onSelected: (item) async {
-              if (item == story.pages!.length) {
+            onSelected: (num) async {
+              int pageNum = num;
+              if (num == story.pages!.length) {
                 widget.onMoveInsertPages({"action": "add"});
+                pageNum += 1;
               }
-              _moveBit(pageNum: item, scriptIndex: index);
+              _moveBit(pageNum: pageNum, scriptIndex: index);
             },
             itemBuilder: (BuildContext context) {
               return _showPages();

@@ -5,6 +5,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
+import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
@@ -126,10 +127,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 ),
                 actions: const [SubscribeHowToArt(), SubscribeTokenCounter()],
               ),
-              body: Obx(() => Chat(
+              body: Chat(
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
-                  inputHeader: CustomHeaderInputWidget(
+                  inputHeader: Obx(() => CustomHeaderInputWidget(
                       onUpdateWidget: (e) {
                         setState(() {
                           attachmentPreview = e['image'];
@@ -141,8 +142,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
                         });
                       },
                       onTagChange: _setTags,
-                      isBotTyping: chatController.roomlist[_roomIdx].isTyping,
-                      attachmentPreview: attachmentPreview),
+                      isBotTyping: chatController.currentRoom.isTyping,
+                      attachmentPreview: attachmentPreview)),
                   theme: DefaultChatTheme(
                       sentMessageBodyTextStyle:
                           const TextStyle(color: Colors.black),
@@ -160,7 +161,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   showUserNames: true,
                   showUserAvatars: true,
                   isAttachmentUploading: _isAttachmentUploading,
-                  messages: chatController.roomlist[_roomIdx].messages,
+                  messages: _messages,
                   onSendPressed: _handleSendPressed,
                   onAvatarTap: (messageUser) async {
                     if (!messageUser.id.contains("Machi_")) {
@@ -174,7 +175,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   onMessageTap: _handleMessageTap,
                   onPreviewDataFetched: _handlePreviewDataFetched,
                   listFooterWidgetBuilder: (message) => _listWidget(message),
-                  user: _user))));
+                  user: _user)));
     }
   }
 
@@ -363,7 +364,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             categoryId: createUUID());
         Map<String, dynamic> formatImgMessage = chatController.sendMessage(
             room: _room, partialMessage: attachmentPreview, uri: uri);
-
+        _addMessages(formatImgMessage);
         lastMessageId = await _messagesApi.saveUserResponse(
             messageMap: {...formatImgMessage}, tags: _setTags);
       } catch (err, s) {
@@ -378,15 +379,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
           attachmentPreview = null;
         });
         await FirebaseCrashlytics.instance.recordError(err, s,
-            reason: 'image uploaded and has error', fatal: true);
+            reason: 'image uploaded and has error ${err.toString()}',
+            fatal: true);
         return;
       }
     }
-    Map<String, dynamic> formatMessage =
+    Map<String, dynamic> newMessage =
         chatController.sendMessage(room: _room, partialMessage: message);
     // saves the text after the image, the text is linked to the image with lastMessageId
     await _saveResponseAndGetBot(
-        {...formatMessage, "lastMessageId": lastMessageId});
+        {...newMessage, "lastMessageId": lastMessageId});
+    _addMessages(newMessage);
     setState(() {
       _isAttachmentUploading = false;
       attachmentPreview = null;
@@ -436,7 +439,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   Future<void> _getMachiResponse() async {
-    chatController.getMachiResponse(room: _room);
+    Map<String, dynamic> newMessage =
+        await chatController.getMachiResponse(room: _room);
+    _addMessages(newMessage);
     if (_setTags != null) {
       subscribeController.getCredits();
     }
@@ -542,13 +547,20 @@ class _BotChatScreenState extends State<BotChatScreen> {
       await _chatroomApi.markAsRead(chatController.currentRoom.chatroomId);
       Chatroom room =
           chatController.currentRoom.copyWith(read: true, messages: _messages);
-      chatController.updateRoom(_roomIdx, room);
+      chatController.updateRoom(room);
 
-      chatController.sortRoomExit(_roomIdx);
+      chatController.sortRoomExit();
     }
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
 
     Get.back();
+  }
+
+  void _addMessages(Map<String, dynamic> message) {
+    types.Message newMessage = messageFromJson(message);
+    setState(() {
+      _messages.insert(0, newMessage);
+    });
   }
 }
