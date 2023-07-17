@@ -15,7 +15,7 @@ class TextBorder extends StatelessWidget {
           inherit: true,
           fontSize: size ?? 20,
           color: APP_INVERSE_PRIMARY_COLOR,
-          shadows: [
+          shadows: const [
             Shadow(
                 // bottomLeft
                 offset: Offset(-1.0, -1.0),

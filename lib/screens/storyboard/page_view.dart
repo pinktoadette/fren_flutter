@@ -292,7 +292,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     return Stack(alignment: Alignment.topCenter, children: [
       SizedBox(
-          height: height,
+          height: height - 80,
           width: size.width,
           child: PageView.builder(
             controller: controller,
@@ -310,7 +310,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                             image: DecorationImage(
                                 colorFilter: ColorFilter.mode(
                                     const Color.fromARGB(255, 0, 0, 0)
-                                        .withOpacity(0.4),
+                                        .withOpacity(0.6),
                                     BlendMode.darken),
                                 image: story?.pages![index]
                                             .backgroundImageUrl !=
@@ -322,7 +322,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                         ? NetworkImage(story!
                                             .pages![index].backgroundImageUrl!)
                                         : Image.asset(
-                                            "assets/images/machi.png",
+                                            "assets/images/blank.jpg",
                                             scale: 0.2,
                                             width: 100,
                                           ).image,
