@@ -49,8 +49,8 @@ const String SURVEY_FORM =
 /// Subscription symbol
 const String SUB_TOKEN_IDENTIFIER = "token_";
 
-const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
 // const PY_API = "https://api.mymachi.app/api/";
+const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
 const PY_API = PY_DEV;
 const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
 // const SOCKET_WS = "wss://api.mymachi.app/";

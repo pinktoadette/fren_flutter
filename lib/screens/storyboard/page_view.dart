@@ -404,6 +404,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     Widget widget = const SizedBox.shrink();
     if (script.type == "text") {
       widget = textLinkPreview(
+          useBorder: story!.layout == Layout.PUBLICATION,
           context: context,
           text: script.text ?? "",
           style: TextStyle(

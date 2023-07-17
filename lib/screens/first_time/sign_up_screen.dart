@@ -135,6 +135,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         Text(_i18n.translate('sign_up'),
                             style: Theme.of(context).textTheme.headlineMedium,
                             textAlign: TextAlign.left),
+                        Semantics(
+                          label: _i18n.translate("app_short_description"),
+                          child: Text(_i18n.translate("app_short_description"),
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context).textTheme.labelMedium),
+                        ),
                         const SizedBox(height: 20),
                         Image.asset(
                           "assets/images/logo.png",
@@ -264,7 +270,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_WARNING,
       );
-    } else if (!isNameAvail) {
+    } else if (isNameAvail == false) {
       Get.snackbar(
         _i18n.translate("validation_warning"),
         _i18n.translate("validation_username"),
