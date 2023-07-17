@@ -212,8 +212,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                   _showDatePicker();
                                 },
                               )),
-
-                          const Spacer(),
+                          if (!userModel.isLoading) const Spacer(),
                           if (userModel.isLoading)
                             const Center(child: Frankloader()),
                           if (!userModel.isLoading)

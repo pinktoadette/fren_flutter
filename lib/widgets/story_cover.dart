@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
@@ -85,6 +86,8 @@ class StoryCover extends StatelessWidget {
           width: w,
           height: w,
           fit: BoxFit.cover,
+          errorWidget: (context, url, error) =>
+              const Icon(Iconsax.gallery_slash),
         ),
       );
     }
