@@ -1,5 +1,6 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/widgets/decoration/text_border.dart';
 
 Widget textLinkPreview(
     {required BuildContext context, required String text, TextStyle? style}) {
@@ -13,10 +14,11 @@ Widget textLinkPreview(
   return SizedBox(
       child: Column(
     children: [
-      Text(
-        text,
-        style: style ?? Theme.of(context).textTheme.bodySmall,
-      ),
+      // Text(
+      //   text,
+      //   style: style ?? Theme.of(context).textTheme.bodySmall,
+      // ),
+      TextBorder(text: text, size: 16),
       if (urls.isNotEmpty)
         AnyLinkPreview(
           displayDirection: UIDirection.uiDirectionHorizontal,

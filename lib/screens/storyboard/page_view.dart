@@ -310,7 +310,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                             image: DecorationImage(
                                 colorFilter: ColorFilter.mode(
                                     const Color.fromARGB(255, 0, 0, 0)
-                                        .withOpacity(0.8),
+                                        .withOpacity(0.4),
                                     BlendMode.darken),
                                 image: story?.pages![index]
                                             .backgroundImageUrl !=
