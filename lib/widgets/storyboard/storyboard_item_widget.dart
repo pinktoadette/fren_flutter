@@ -60,8 +60,16 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             ? storyboard.story![0].summary!
             : "";
     if (storyboard.story!.isNotEmpty && storyboard.story!.length == 1) {
-      var page = storyboard.story![0].pages!
-          .firstWhereOrNull((element) => element.scripts!.first.type == "text");
+      StoryPages? page;
+      try {
+        page = storyboard.story?[0].pages?.firstWhere(
+          (element) => element.scripts?.first.type == "text",
+        );
+      } catch (e) {
+        // Handle the case when no element satisfies the condition
+        page = null;
+      }
+
       if (page != null) {
         subtitle = truncateText(maxLength: 250, text: page.scripts![0].text!);
       }

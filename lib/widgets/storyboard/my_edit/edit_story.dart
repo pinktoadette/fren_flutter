@@ -131,7 +131,7 @@ class _EditPageState extends State<EditPage> {
             },
           )),
       Positioned(
-          bottom: 0,
+          bottom: 30,
           height: 20,
           width: size.width,
           child: Container(

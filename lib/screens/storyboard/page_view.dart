@@ -412,8 +412,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                   : Theme.of(context).colorScheme.primary));
     } else if (script.type == "image") {
       widget = RoundedImage(
-        width: size.width * 0.75,
-        height: size.width * 0.75,
+        width: size.width * 0.9,
+        height: size.width * 0.9,
         photoUrl: script.image?.uri ?? "",
         icon: const Icon(Iconsax.image),
       );

@@ -70,6 +70,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
     return Container(
+        constraints: BoxConstraints(
+          minHeight: size.height,
+        ),
         decoration: BoxDecoration(
           image: DecorationImage(
               colorFilter: ColorFilter.mode(
