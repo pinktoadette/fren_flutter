@@ -130,7 +130,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                storyboard.title,
+                                title,
                                 style:
                                     Theme.of(context).textTheme.headlineSmall,
                               ),

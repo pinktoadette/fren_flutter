@@ -501,6 +501,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Future<void> _loadMoreMessage() async {
     try {
       List<types.Message> oldMessages = await _messagesApi.getMessages();
+
       setState(() {
         _messages.addAll(oldMessages);
       });
@@ -570,6 +571,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       chatController.sortRoomExit();
     }
+    messageController.offset = 10;
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
 

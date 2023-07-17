@@ -284,6 +284,12 @@ class ChatController extends GetxController implements GetxService {
     return message;
   }
 
+  void loadOldMessages({required List<types.Message> messages}) {
+    int index = roomlist.indexWhere(
+        (thisRoom) => thisRoom.chatroomId == currentRoom.chatroomId);
+    roomlist[index].messages.addAll(messages);
+  }
+
   void stopTyping({required Chatroom room}) {
     int index = roomlist
         .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);

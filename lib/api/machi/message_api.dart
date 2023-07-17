@@ -91,6 +91,7 @@ class MessageMachiApi {
             messageController.limitPage + messageController.offset;
       }
     }
+    chatController.loadOldMessages(messages: oldList);
     return oldList;
   }
 
