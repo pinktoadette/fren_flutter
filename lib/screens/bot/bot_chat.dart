@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
+import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -439,9 +441,26 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   Future<void> _getMachiResponse() async {
-    Map<String, dynamic> newMessage =
-        await chatController.getMachiResponse(room: _room);
-    _addMessages(newMessage);
+    try {
+      Map<String, dynamic> newMessage =
+          await chatController.getMachiResponse(room: _room);
+      _addMessages(newMessage);
+    } on DioException catch (error) {
+      dynamic response = {
+        CHAT_AUTHOR_ID: _room.bot.botId,
+        CHAT_AUTHOR: _room.bot.name,
+        BOT_ID: _room.bot.botId,
+        CHAT_MESSAGE_ID: createUUID(),
+        CHAT_TEXT: error.response?.data["message"] ??
+            "Sorry, got an error 😕. Try again.",
+        CHAT_TYPE: "text",
+        CREATED_AT: getDateTimeEpoch()
+      };
+      _addMessages(response);
+    } finally {
+      chatController.stopTyping(room: _room);
+    }
+
     if (_setTags != null) {
       subscribeController.getCredits();
     }

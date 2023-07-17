@@ -2,8 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/message_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -282,6 +282,13 @@ class ChatController extends GetxController implements GetxService {
     currentRoom.isTyping = false;
     _addUpdateResponse(newMessage, index);
     return message;
+  }
+
+  void stopTyping({required Chatroom room}) {
+    int index = roomlist
+        .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+    roomlist[index].isTyping = false;
+    currentRoom.isTyping = false;
   }
 
   void _addUpdateResponse(types.Message message, int index) {
