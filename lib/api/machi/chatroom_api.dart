@@ -83,7 +83,7 @@ class ChatroomMachiApi {
 
     if (response.statusCode == 200) {
       Chatroom updatedRoom = Chatroom.fromJson(updateRoom);
-      chatController.updateRoom(index, updatedRoom);
+      chatController.updateRoom(updatedRoom);
     }
   }
 
@@ -98,7 +98,7 @@ class ChatroomMachiApi {
 
     if (response.statusCode == 200) {
       Chatroom updatedRoom = Chatroom.fromJson(response.data ?? room);
-      chatController.updateRoom(index, updatedRoom);
+      chatController.updateRoom(updatedRoom);
       chatController.onLoadCurrentRoom(updatedRoom);
     }
   }

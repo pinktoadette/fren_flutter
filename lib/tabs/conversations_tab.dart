@@ -202,7 +202,9 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: [
-                                            room.isTyping == true
+                                            chatController.roomlist[index]
+                                                        .isTyping ==
+                                                    true
                                                 ? JumpingDots(
                                                     color: Theme.of(context)
                                                         .colorScheme

@@ -272,15 +272,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
         backgroundColor: APP_ERROR,
       );
       return;
-    } else if (UserModel().calculateUserAge(_initialDateTime) < 12) {
-      Get.snackbar(
-        'Must be 13+',
-        _i18n.translate(
-            "only_13_years_old_and_above_are_allowed_to_create_an_account"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_WARNING,
-      );
-    } else {
+    }
+    // else if (UserModel().calculateUserAge(_initialDateTime) < 12) {
+    //   Get.snackbar(
+    //     'Must be 13+',
+    //     _i18n.translate(
+    //         "only_13_years_old_and_above_are_allowed_to_create_an_account"),
+    //     snackPosition: SnackPosition.TOP,
+    //     backgroundColor: APP_WARNING,
+    //   );
+    // }
+    else {
       /// Call all input onSaved method
       _formKey.currentState!.save();
 
