@@ -56,15 +56,15 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
                     setState(() {
                       _selectedCategory = value!;
                     });
-                    widget.notifyParent({"selection": value});
+                    widget.notifyParent(value);
                   },
                   items:
                       _category.map<DropdownMenuItem<String>>((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(
-                        value,
-                      ),
+                      child: Text(value,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          textAlign: TextAlign.center),
                     );
                   }).toList()))
           : const SizedBox.shrink()

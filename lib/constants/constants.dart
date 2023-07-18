@@ -2,6 +2,22 @@
 
 import 'package:flutter/material.dart';
 
+const String env = 'prod';
+
+const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
+const PY_UAT = "https://machi-uat-onn4q.ondigitalocean.app/api/";
+const PY_PROD = "https://api.mymachi.app/api/";
+
+const PY_API = env == 'prod'
+    ? PY_PROD
+    : env == 'uat'
+        ? PY_UAT
+        : PY_DEV;
+const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
+
+// const SOCKET_WS = "wss://api.mymachi.app/";
+const SOCKET_WS = SOCKET_WS_DEV;
+
 /// APP SETINGS INFO CONSTANTS - SECTION ///
 ///
 const String APP_NAME = "machi";
@@ -48,13 +64,6 @@ const String SURVEY_FORM =
 
 /// Subscription symbol
 const String SUB_TOKEN_IDENTIFIER = "token_";
-
-// const PY_API = "https://api.mymachi.app/api/";
-const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
-const PY_API = PY_DEV;
-const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
-// const SOCKET_WS = "wss://api.mymachi.app/";
-const SOCKET_WS = SOCKET_WS_DEV;
 
 const double PLAY_BUTTON_WIDTH = 45;
 const int PAGE_CHAT_LIMIT = 10;

@@ -31,7 +31,7 @@ class SubscribeController extends GetxController {
     final _purchaseApi = PurchasesApi();
     Map<String, dynamic> result = await _purchaseApi.getCredits();
     credits.value = result["credit"] ?? 0;
-    debugPrint(credits.value.toString());
+    debugPrint("${credits.value.toString()} credits ");
   }
 
   void _listenPurchases() {

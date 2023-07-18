@@ -108,4 +108,12 @@ class BotApi {
 
     return botList;
   }
+
+  Future<String> machiHelper({required text, required action}) async {
+    String url = '${baseUri}machi_helper';
+    final dio = await auth.getDio();
+    final response =
+        await dio.post(url, data: {"text": text, "action": action});
+    return response.data;
+  }
 }
