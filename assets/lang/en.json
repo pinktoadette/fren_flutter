@@ -311,6 +311,7 @@
   "my_machi": "My Machi",
 
   "publish": "Publish",
+  "publish_preview": "Publish Preview",
   "publish_confirm_title": "Confirm Publish Info",
   "publish_confirm": "Confirm",
   "publish_confirm_title_story": "Title",
@@ -428,6 +429,7 @@
   "story_collection_subtitle": "Subtitle",
   "story_collection_summary": "Summary",
   "story_collection_create": "Create a new collection",
+  "story_collection_add_comment_post": "Post a Comment",
 
   "report_create": "File A Report",
   "report_comment_reason": "Any comments (optional)",
@@ -440,6 +442,12 @@
   "tips_3": "You can save messages to your board and create stories or dialog to share.",
   "tips_4": "Who is that actor that switch bodies...",
   "tips_5": "Ask for recommendations",
+
+  "machi_helper_shortern_text": "Shortern",
+  "machi_helper_rephrase_text": "✏️ Rephrase",
+  "machi_helper_get_ideas": "💡 Get Ideas",
+  "machi_helper_custom_question": "Question",
+  "machi_helper_replace_text": "Replace",
 
   "plans_include_gpt": "Free and paid plans include ChatGPT 3.5",
   "plans_imaginfy10":"10 images",

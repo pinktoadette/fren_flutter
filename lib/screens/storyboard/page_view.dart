@@ -125,13 +125,13 @@ class _StoryPageViewState extends State<StoryPageView> {
             if (widget.isPreview == true)
               Container(
                   padding: const EdgeInsets.all(10.0),
-                  child: ElevatedButton(
+                  child: OutlinedButton(
                       onPressed: () {
                         Get.to(() => ConfirmPublishDetails(
                               story: widget.story,
                             ));
                       },
-                      child: Text(_i18n.translate("publish")))),
+                      child: Text(_i18n.translate("publish_preview")))),
             if (story?.status.name == StoryStatus.PUBLISHED.name)
               PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert),

@@ -24,7 +24,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
   Story? story;
   final _titleController = TextEditingController();
   final _aboutController = TextEditingController();
-  final _selectedCategory = TextEditingController();
+  var _selectedCategory = TextEditingController();
 
   @override
   void initState() {
@@ -47,6 +47,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     TextStyle? styleLabel = Theme.of(context).textTheme.labelMedium;
+    TextStyle? styleBody = Theme.of(context).textTheme.bodyMedium;
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -66,12 +67,13 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
               Text(_i18n.translate("story_collection_title"),
                   style: styleLabel),
               TextFormField(
+                style: styleBody,
                 controller: _titleController,
                 maxLength: 80,
                 decoration: InputDecoration(
                     hintText: _i18n.translate("story_collection_title"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
+                    hintStyle:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
                 validator: (reason) {
                   if (reason?.isEmpty ?? false) {
@@ -83,13 +85,14 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
               Text(_i18n.translate("publish_confirm_summary"),
                   style: styleLabel),
               TextFormField(
+                style: styleBody,
                 controller: _aboutController,
                 maxLength: 80,
-                maxLines: 10,
+                maxLines: 3,
                 decoration: InputDecoration(
                     hintText: _i18n.translate("publish_confirm_summary"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
+                    hintStyle:
+                        TextStyle(color: Theme.of(context).colorScheme.primary),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
                 validator: (reason) {
                   if (reason?.isEmpty ?? false) {
@@ -107,19 +110,24 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                 ],
               ),
               CategoryDropdownWidget(
-                notifyParent: (value) {},
+                notifyParent: (value) {
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                },
                 selectedCategory: _selectedCategory.text,
               ),
-              const SizedBox(
-                height: 50,
-              ),
+              const Spacer(),
               Align(
                   alignment: Alignment.bottomCenter,
                   child: ElevatedButton(
                       onPressed: () {
                         _updateChanges();
                       },
-                      child: Text(_i18n.translate("publish"))))
+                      child: Text(_i18n.translate("publish")))),
+              const SizedBox(
+                height: 50,
+              ),
             ],
           ),
         ));

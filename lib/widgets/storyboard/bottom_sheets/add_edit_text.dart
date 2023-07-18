@@ -1,12 +1,15 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/bot/bot_helper.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 
 class AddEditText extends StatefulWidget {
@@ -89,35 +92,56 @@ class _AddEditTextState extends State<AddEditText> {
                             ))
                 ],
               ),
-              attachmentPreview != null || galleryImageUrl != null
-                  ? _attachmentPreview()
-                  : Container(
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                              strokeAlign: BorderSide.strokeAlignCenter)),
-                      height: 50,
-                      child: IconButton(
-                          onPressed: () {
-                            _addImage();
-                          },
-                          icon: const Icon(Iconsax.image)),
-                    ),
-              const SizedBox(
-                height: 40,
+              Row(
+                children: [
+                  attachmentPreview != null || galleryImageUrl != null
+                      ? _attachmentPreview()
+                      : Container(
+                          height: 70,
+                          width: 70,
+                          margin: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(10)),
+                              border: Border.all(
+                                  width: 1,
+                                  color: Colors.grey,
+                                  strokeAlign: BorderSide.strokeAlignCenter)),
+                          child: IconButton(
+                              onPressed: () {
+                                _addImage();
+                              },
+                              icon: const Icon(Iconsax.image)),
+                        ),
+                  Container(
+                    height: 70,
+                    width: 70,
+                    margin: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(10)),
+                        border: Border.all(
+                            width: 1,
+                            color: Colors.grey,
+                            strokeAlign: BorderSide.strokeAlignCenter)),
+                    child: IconButton(
+                        onPressed: () {
+                          _showHelperDetails();
+                        },
+                        icon: const AppLogo()),
+                  ),
+                ],
               ),
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 120),
+            margin: const EdgeInsets.only(top: 150),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(),
                     child: TextFormField(
+                      style: Theme.of(context).textTheme.bodySmall,
                       onTapOutside: (b) {
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
@@ -184,9 +208,10 @@ class _AddEditTextState extends State<AddEditText> {
     return Stack(
       children: <Widget>[
         SizedBox(
-          height: 80,
+          height: 70,
+          width: 70,
           child: ClipRRect(
-              borderRadius: BorderRadius.circular(20), // Image border
+              borderRadius: BorderRadius.circular(10), // Image border
               child: SizedBox.fromSize(
                   size: const Size.fromRadius(48), // Image radius
                   child: AspectRatio(
@@ -198,15 +223,15 @@ class _AddEditTextState extends State<AddEditText> {
                                 loadingButton(size: 16, color: Colors.black),
                             imageUrl: galleryImageUrl!,
                             fadeInDuration: const Duration(seconds: 1),
-                            width: 80,
-                            height: 80,
+                            width: 70,
+                            height: 70,
                             fit: BoxFit.cover,
                           )
                         : Image.file(
                             attachmentPreview!,
                             fit: BoxFit.fitHeight,
-                            width: 80,
-                            height: 80,
+                            width: 70,
+                            height: 70,
                           ),
                   ))),
         ),
@@ -224,5 +249,40 @@ class _AddEditTextState extends State<AddEditText> {
         ),
       ],
     );
+  }
+
+  _showHelperDetails() {
+    String text = "";
+    if (_textController.selection.isValid == true &&
+        _textController.selection.textInside(_textController.text) != "") {
+      text = _textController.selection.textInside(_textController.text);
+    } else {
+      text = _textController.text;
+    }
+
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => FractionallySizedBox(
+            heightFactor: 0.55,
+            child: DraggableScrollableSheet(
+              snap: true,
+              initialChildSize: 1,
+              minChildSize: 0.9,
+              builder: (context, scrollController) => SingleChildScrollView(
+                  controller: scrollController,
+                  child: MachiHelper(
+                      onTextReplace: (value) => {
+                            if (_textController.selection.isValid == false)
+                              {_textController.text = value}
+                            else
+                              {
+                                _textController.selection
+                                    .textInside(_textController.text)
+                                    .val(value)
+                              }
+                          },
+                      text: text)),
+            )));
   }
 }
