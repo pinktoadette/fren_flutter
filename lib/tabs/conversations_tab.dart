@@ -115,7 +115,6 @@ class _ConversationsTabState extends State<ConversationsTab> {
                             allUsers += ", ${user.firstName!}";
                           }
                         }
-                        final bool isRead = room.read ?? false;
 
                         return Dismissible(
                             key: Key(room.chatroomId),
@@ -211,7 +210,9 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                                         .primary)
                                                 : _formatMessages(
                                                     context, lastMsg),
-                                            !isRead
+                                            chatController
+                                                        .roomlist[index].read ==
+                                                    true
                                                 ? const Icon(
                                                     Iconsax.info_circle1,
                                                     size: 14,

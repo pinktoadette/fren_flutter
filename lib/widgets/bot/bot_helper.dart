@@ -39,7 +39,7 @@ class _MachiHelperState extends State<MachiHelper> {
     /// Initialization
     Size size = MediaQuery.of(context).size;
     return Container(
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(5),
         width: size.width,
         child: Column(
           children: [
