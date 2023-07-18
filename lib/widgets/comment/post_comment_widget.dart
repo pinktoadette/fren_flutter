@@ -10,12 +10,23 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 
-// ignore: must_be_immutable
-class PostCommentWidget extends StatelessWidget {
-  PostCommentWidget({Key? key}) : super(key: key);
+class PostCommentWidget extends StatefulWidget {
+  const PostCommentWidget({Key? key}) : super(key: key);
+
+  @override
+  _PostCommentWidgetState createState() => _PostCommentWidgetState();
+}
+
+class _PostCommentWidgetState extends State<PostCommentWidget> {
   final CommentController commentController = Get.find(tag: 'comment');
   final _commentController = TextEditingController();
   late AppLocalizations _i18n;
+  String? _comment;
+
+  @override
+  void initState() {
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +76,12 @@ class PostCommentWidget extends StatelessWidget {
                             FocusManager.instance.primaryFocus?.unfocus(),
                         child: Stack(children: [
                           TextFormField(
+                            onChanged: (String value) {
+                              _comment = value;
+                            },
+                            textCapitalization: TextCapitalization.sentences,
+                            autocorrect: true,
+                            enableSuggestions: true,
                             style: Theme.of(context).textTheme.bodyMedium,
                             controller: _commentController,
                             maxLines: null,
@@ -103,8 +120,8 @@ class PostCommentWidget extends StatelessWidget {
                                       size: 24,
                                     ),
                                     onPressed: () {
-                                      if (_commentController.text.isEmpty) {
-                                        return;
+                                      if (_comment == null || _comment == "") {
+                                        null;
                                       } else {
                                         _postComment();
                                       }
@@ -118,12 +135,16 @@ class PostCommentWidget extends StatelessWidget {
   }
 
   void _postComment() async {
+    if (_comment == null) {
+      return;
+    }
+
     StoryboardController storyboardController = Get.find(tag: 'storyboard');
     final _commentApi = CommentApi();
     try {
       StoryComment newComment = await _commentApi.postComment(
           storyId: storyboardController.currentStory.storyId,
-          comment: _commentController.text,
+          comment: _comment!,
           replyToComment: commentController.replyToComment.commentId == null
               ? null
               : commentController.replyToComment);
