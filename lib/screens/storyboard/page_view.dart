@@ -155,13 +155,13 @@ class _StoryPageViewState extends State<StoryPageView> {
         ),
         body: Stack(children: [
           SingleChildScrollView(
-              child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _showPageWidget(),
-            ],
-          )),
+              child: Obx(() => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      _showPageWidget(),
+                    ],
+                  ))),
           if (story?.status.name == StoryStatus.PUBLISHED.name) _commentSheet()
         ]));
   }
@@ -266,7 +266,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                                     height: 100,
                                   ))
                                 ]),
-                            Positioned(bottom: 0, child: PostCommentWidget())
+                            const Positioned(
+                                bottom: 0, child: PostCommentWidget())
                           ]))));
             });
       },
@@ -283,12 +284,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       return SizedBox(
           height: height,
           width: size.width,
-          child: PageView.builder(
-              controller: controller,
-              itemCount: 1,
-              itemBuilder: (_, index) {
-                return NoData(text: _i18n.translate("storybits_empty"));
-              }));
+          child: NoData(text: _i18n.translate("storybits_empty")));
     }
 
     return Stack(alignment: Alignment.topCenter, children: [
@@ -297,14 +293,17 @@ class _StoryPageViewState extends State<StoryPageView> {
           width: size.width,
           child: PageView.builder(
             controller: controller,
-            itemCount: story!.pages!.length,
+            itemCount: storyboardController.currentStory.pages!.length,
             itemBuilder: (_, index) {
               List<Script>? scripts = story!.pages![index].scripts;
               return SingleChildScrollView(
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      StoryHeaderWidget(story: story!),
+                      if (index == 0)
+                        StoryHeaderWidget(
+                          story: storyboardController.currentStory,
+                        ),
                       Card(
                           child: Container(
                         decoration: BoxDecoration(

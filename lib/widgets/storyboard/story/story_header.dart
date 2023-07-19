@@ -10,12 +10,27 @@ import 'package:machi_app/widgets/storyboard/story/story_info.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // Story book Onboarding swipe -> child : story_widget
-class StoryHeaderWidget extends StatelessWidget {
+class StoryHeaderWidget extends StatefulWidget {
   final Story story;
   const StoryHeaderWidget({Key? key, required this.story}) : super(key: key);
   @override
+  _StoryHeaderWidgetState createState() => _StoryHeaderWidgetState();
+}
+
+class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
+  late Story thisStory;
+
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      thisStory = widget.story;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    double storyCoverWidth = 70;
+    double storyCoverWidth = 50;
     double padding = 20;
     return InkWell(
       onTap: () async {
@@ -28,33 +43,33 @@ class StoryHeaderWidget extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   StoryCover(
                       width: storyCoverWidth,
                       height: storyCoverWidth,
-                      photoUrl: story.photoUrl ?? "",
-                      title: story.title),
+                      photoUrl: thisStory.photoUrl ?? "",
+                      title: thisStory.title),
                   const SizedBox(width: 10),
                   Flexible(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       TimelineHeader(
                         paddingLeft: 0,
-                        user: story.createdBy,
+                        user: thisStory.createdBy,
                         showAvatar: false,
                         showName: true,
                         fontSize: 12,
                         isChild: true,
                       ),
-                      Text(story.title,
+                      Text(thisStory.title,
                           overflow: TextOverflow.fade,
-                          maxLines: 1,
+                          maxLines: 2,
                           softWrap: false,
                           style: Theme.of(context).textTheme.labelMedium),
-                      Text("${story.pages?.length ?? 0} pages",
-                          style: Theme.of(context).textTheme.labelSmall),
                     ],
                   )),
                 ],
@@ -86,7 +101,11 @@ class StoryHeaderWidget extends StatelessWidget {
                 builder: (context, scrollController) => SingleChildScrollView(
                     controller: scrollController,
                     child: showInfo == false
-                        ? const StoryEdit()
+                        ? StoryEdit(
+                            onUpdateStory: (story) => setState(() {
+                              thisStory = story;
+                            }),
+                          )
                         : const StoryInfo()),
               ),
             ));

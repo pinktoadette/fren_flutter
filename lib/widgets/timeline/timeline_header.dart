@@ -53,96 +53,89 @@ class TimelineHeader extends StatelessWidget {
         },
         child: Container(
           padding: EdgeInsets.only(left: paddingLeft ?? 15, right: 15),
-          child: Row(
-              // mainAxisAlignment: MainAxisAlignment.start,
-              // crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                if (showAvatar == true)
-                  AvatarInitials(
-                      radius: radius,
-                      photoUrl: user.photoUrl,
-                      username: user.username),
-                const SizedBox(width: 5),
-                if (showName == true)
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          child: Row(children: [
+            if (showAvatar == true)
+              AvatarInitials(
+                  radius: radius,
+                  photoUrl: user.photoUrl,
+                  username: user.username),
+            const SizedBox(width: 5),
+            if (showName == true)
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
-                                width:
-                                    isChild == true ? width - 150 : width - 120,
-                                child: Text(user.username,
-                                    style: TextStyle(fontSize: fontSize ?? 16)),
-                              ),
-                              if (timestamp != null)
-                                Text(formatDate(timestamp!),
-                                    style: const TextStyle(fontSize: 10)),
-                              if (underNameRow != null) underNameRow!
-                            ],
+                          SizedBox(
+                            width: isChild == true ? width - 150 : width - 120,
+                            child: Text(user.username,
+                                style: TextStyle(fontSize: fontSize ?? 16)),
                           ),
-                          if (showMenu == true)
-                            PopupMenuButton<String>(
-                                icon: const Icon(
-                                  Icons.more_vert,
-                                  size: 14,
-                                ),
-                                itemBuilder: (context) =>
-                                    <PopupMenuEntry<String>>[
-                                      PopupMenuItem(
-                                        child: Text(
-                                          _i18n.translate("report_user"),
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .bodySmall,
-                                        ),
-                                        value: 'report_user',
-                                      ),
-                                      if (comment != null)
-                                        PopupMenuItem(
-                                          child: Text(
-                                              _i18n.translate("report_comment"),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall),
-                                          value: 'report_comment',
-                                        ),
-                                      if ((user.userId ==
-                                          UserModel().user.userId))
-                                        PopupMenuItem(
-                                          child: Text(_i18n.translate("DELETE"),
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .bodySmall),
-                                          value: 'delete',
-                                        ),
-                                    ],
-                                onSelected: (val) {
-                                  switch (val) {
-                                    case 'delete':
-                                      onDeleteComment!(val);
-                                      break;
-                                    case 'report_user':
-                                      _onReport(context, 'user', user.userId);
-                                      break;
-                                    case 'report_comment':
-                                      _onReport(context, 'comment',
-                                          comment!.commentId!);
-                                      break;
-                                    default:
-                                      break;
-                                  }
-                                })
+                          if (timestamp != null)
+                            Text(formatDate(timestamp!),
+                                style: const TextStyle(fontSize: 10)),
+                          if (underNameRow != null) underNameRow!
                         ],
                       ),
+                      if (showMenu == true)
+                        PopupMenuButton<String>(
+                            icon: const Icon(
+                              Icons.more_vert,
+                              size: 14,
+                            ),
+                            itemBuilder: (context) => <PopupMenuEntry<String>>[
+                                  PopupMenuItem(
+                                    child: Text(
+                                      _i18n.translate("report_user"),
+                                      style:
+                                          Theme.of(context).textTheme.bodySmall,
+                                    ),
+                                    value: 'report_user',
+                                  ),
+                                  if (comment != null)
+                                    PopupMenuItem(
+                                      child: Text(
+                                          _i18n.translate("report_comment"),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall),
+                                      value: 'report_comment',
+                                    ),
+                                  if ((user.userId == UserModel().user.userId))
+                                    PopupMenuItem(
+                                      child: Text(_i18n.translate("DELETE"),
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .bodySmall),
+                                      value: 'delete',
+                                    ),
+                                ],
+                            onSelected: (val) {
+                              switch (val) {
+                                case 'delete':
+                                  onDeleteComment!(val);
+                                  break;
+                                case 'report_user':
+                                  _onReport(context, 'user', user.userId);
+                                  break;
+                                case 'report_comment':
+                                  _onReport(
+                                      context, 'comment', comment!.commentId!);
+                                  break;
+                                default:
+                                  break;
+                              }
+                            })
                     ],
-                  )
-              ]),
+                  ),
+                ],
+              )
+          ]),
         ));
   }
 

@@ -154,7 +154,8 @@ class StoryboardController extends GetxController {
     currentStoryboard.story![storyIndex] = story;
     setCurrentStory(story);
     updateStoryboard(currentStoryboard);
-    _currentStory = stories[storyIndex].obs;
+    _currentStory = story.obs;
     _currentStory.refresh();
+    update();
   }
 }

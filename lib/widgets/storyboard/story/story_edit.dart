@@ -14,7 +14,8 @@ import 'package:machi_app/widgets/story_cover.dart';
 import 'package:get/get.dart';
 
 class StoryEdit extends StatefulWidget {
-  const StoryEdit({Key? key}) : super(key: key);
+  const StoryEdit({Key? key, required this.onUpdateStory}) : super(key: key);
+  final Function(Story story) onUpdateStory;
 
   @override
   _StoryEditState createState() => _StoryEditState();
@@ -83,7 +84,7 @@ class _StoryEditState extends State<StoryEdit> {
                   StoryCover(
                     width: size.width * 0.75,
                     height: size.width * 0.75,
-                    photoUrl: photoUrl,
+                    photoUrl: photoUrl ?? "",
                     title: storyboardController.currentStory.title,
                   ),
                 if (_uploadPath == null && photoUrl == null)
@@ -199,7 +200,8 @@ class _StoryEditState extends State<StoryEdit> {
     setState(() {
       isLoading = true;
     });
-    String imageUrl = photoUrl ?? "";
+    String imageUrl =
+        photoUrl ?? storyboardController.currentStory.photoUrl ?? "";
     Story story = storyboardController.currentStory;
     try {
       if (_uploadPath != null) {
@@ -222,6 +224,10 @@ class _StoryEditState extends State<StoryEdit> {
 
       await _storyApi.updateStory(
           story: story, title: _titleController.text, photoUrl: imageUrl);
+      Story s =
+          story.copyWith(title: _titleController.text, photoUrl: imageUrl);
+      widget.onUpdateStory(s);
+
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("update_successful"),
           snackPosition: SnackPosition.TOP,

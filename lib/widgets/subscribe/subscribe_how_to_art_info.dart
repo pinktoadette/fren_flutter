@@ -4,7 +4,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
-import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:url_launcher/url_launcher.dart';
 

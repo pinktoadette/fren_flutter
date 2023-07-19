@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:developer';
 
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
@@ -14,8 +15,8 @@ class MessageController extends GetxController implements GetxService {
   late Rx<Chatroom> _currentRoom;
 
   // get every 10, starting at 10, since 10 is default
-  int offset = 10;
-  int limitPage = 10;
+  int offset = 1; // inital chatroom load first 10, therefore go to page 1
+  int limitPage = PAGE_CHAT_LIMIT;
 
   Chatroom get currentRoom => _currentRoom.value;
   set currentRoom(Chatroom value) => _currentRoom.value = value;

@@ -64,6 +64,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   final _chatroomApi = ChatroomMachiApi();
   bool _isAttachmentUploading = false;
   bool isLoading = false;
+  bool isLastPage = false;
 
   // bool? isBotTyping;
   File? file;
@@ -130,6 +131,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 actions: const [SubscribeHowToArt(), SubscribeTokenCounter()],
               ),
               body: Chat(
+                  isLastPage: isLastPage,
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
                   inputHeader: Obx(() => CustomHeaderInputWidget(
@@ -504,6 +506,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       setState(() {
         _messages.addAll(oldMessages);
+        isLastPage = oldMessages.isEmpty;
       });
     } catch (err, s) {
       Get.snackbar(
@@ -571,7 +574,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       chatController.sortRoomExit();
     }
-    messageController.offset = 10;
+    messageController.offset = 1;
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
 

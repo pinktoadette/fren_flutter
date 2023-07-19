@@ -66,7 +66,7 @@ const String SURVEY_FORM =
 const String SUB_TOKEN_IDENTIFIER = "token_";
 
 const double PLAY_BUTTON_WIDTH = 45;
-const int PAGE_CHAT_LIMIT = 10;
+const int PAGE_CHAT_LIMIT = 10; //check with backend
 const int ALL_PAGE_SIZE = 20;
 
 const UPLOAD_PATH_BOARD = "board";

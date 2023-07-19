@@ -7,8 +7,8 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
 /// Storyboard or story photoUrl cover
-class StoryCover extends StatelessWidget {
-  final String? photoUrl;
+class StoryCover extends StatefulWidget {
+  final String photoUrl;
   final String title;
   final double? width;
   final double? height;
@@ -25,14 +25,18 @@ class StoryCover extends StatelessWidget {
       this.height,
       this.icon})
       : super(key: key);
+  @override
+  _StoryCoverState createState() => _StoryCoverState();
+}
 
+class _StoryCoverState extends State<StoryCover> {
   @override
   Widget build(BuildContext context) {
-    if (icon != null) {
+    if (widget.icon != null) {
       return Container(
           decoration: BoxDecoration(
               color: APP_ACCENT_COLOR,
-              borderRadius: BorderRadius.circular(radius ?? 20),
+              borderRadius: BorderRadius.circular(widget.radius ?? 20),
               boxShadow: [
                 BoxShadow(
                     blurRadius: 8,
@@ -44,18 +48,18 @@ class StoryCover extends StatelessWidget {
                     spreadRadius: -9)
               ]),
           child: SizedBox(
-              height: height ?? 120,
-              width: width ?? 120,
+              height: widget.height ?? 120,
+              width: widget.width ?? 120,
               child: Stack(children: [
                 _showImageLocal(context),
-                Positioned(bottom: 0, right: 0, child: icon!)
+                Positioned(bottom: 0, right: 0, child: widget.icon!)
               ])));
     }
 
     return Container(
         decoration: BoxDecoration(
             color: APP_TERTIARY,
-            borderRadius: BorderRadius.circular(radius ?? 20),
+            borderRadius: BorderRadius.circular(widget.radius ?? 20),
             boxShadow: [
               BoxShadow(
                   blurRadius: 8,
@@ -67,21 +71,21 @@ class StoryCover extends StatelessWidget {
                   spreadRadius: -9)
             ]),
         child: SizedBox(
-          height: height ?? 120,
-          width: width ?? 120,
+          height: widget.height ?? 120,
+          width: widget.width ?? 120,
           child: _showImageLocal(context),
         ));
   }
 
   Widget _showImageLocal(BuildContext context) {
-    double w = width ?? 120;
-    if (photoUrl != "") {
+    double w = widget.width ?? 120;
+    if (widget.photoUrl != "") {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(radius ?? 10.0),
+        borderRadius: BorderRadius.circular(widget.radius ?? 10.0),
         child: CachedNetworkImage(
           progressIndicatorBuilder: (context, url, progress) =>
               loadingButton(size: 16, color: Colors.black),
-          imageUrl: photoUrl!,
+          imageUrl: widget.photoUrl,
           fadeInDuration: const Duration(seconds: 1),
           width: w,
           height: w,
@@ -91,11 +95,13 @@ class StoryCover extends StatelessWidget {
         ),
       );
     }
-    if (file != null) {
+    if (widget.file != null) {
       return ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
           child: Image(
-              image: FileImage(file!), width: width ?? 120, fit: BoxFit.cover));
+              image: FileImage(widget.file!),
+              width: widget.width ?? 120,
+              fit: BoxFit.cover));
     }
     return Container(
       height: 190.0,
@@ -106,8 +112,8 @@ class StoryCover extends StatelessWidget {
           image: const DecorationImage(
               image: AssetImage("assets/images/chips.png"), fit: BoxFit.fill)),
       child: Center(
-          child: Text(title.substring(0, 1).toUpperCase(),
-              style: radius == 5
+          child: Text(widget.title.substring(0, 1).toUpperCase(),
+              style: widget.radius == 5
                   ? Theme.of(context).textTheme.labelSmall
                   : Theme.of(context).textTheme.headlineSmall)),
     );

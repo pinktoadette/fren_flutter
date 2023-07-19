@@ -89,11 +89,9 @@ class _StoriesViewState extends State<StoriesView> {
                           },
                         )),
                   Obx(
-                    () => ListView.separated(
+                    () => ListView.builder(
                         physics: const NeverScrollableScrollPhysics(),
                         shrinkWrap: true,
-                        separatorBuilder: (context, index) =>
-                            const Divider(height: 10),
                         scrollDirection: Axis.vertical,
                         itemCount: storyboardController
                             .currentStoryboard.story!.length,
