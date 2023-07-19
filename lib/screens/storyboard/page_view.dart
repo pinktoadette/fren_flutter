@@ -106,11 +106,12 @@ class _StoryPageViewState extends State<StoryPageView> {
     }
     return Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           title: Text(
             widget.isPreview == true
                 ? _i18n.translate("storyboard_preview")
                 : story?.title ?? "",
-            style: Theme.of(context).textTheme.bodySmall,
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
           leading: BackButton(
             onPressed: () {

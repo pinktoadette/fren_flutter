@@ -212,7 +212,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                                                     context, lastMsg),
                                             chatController
                                                         .roomlist[index].read ==
-                                                    true
+                                                    false
                                                 ? const Icon(
                                                     Iconsax.info_circle1,
                                                     size: 14,

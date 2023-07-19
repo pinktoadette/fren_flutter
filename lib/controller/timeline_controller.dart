@@ -11,6 +11,7 @@ class TimelineController extends GetxController {
   PagingController<int, Storyboard> pagingController =
       PagingController(firstPageKey: 0);
   Rx<Story?> _currentStory = (null).obs;
+  int _pageKey = 0;
 
   final _timelineApi = TimelineApi();
   static const int _pageSize = ALL_PAGE_SIZE;
@@ -46,6 +47,10 @@ class TimelineController extends GetxController {
     } catch (error) {
       pagingController.error = error;
     }
+  }
+
+  void insertPublishStoryboard(Storyboard storyboard) {
+    pagingController.appendPage([storyboard], pagingController.nextPageKey);
   }
 
   void setStoryTimelineControllerCurrent(Story story) {

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:get/get.dart';
@@ -46,12 +47,13 @@ class AvatarInitials extends StatelessWidget {
           child: (photoUrl == '')
               ? Center(
                   child: Text(username.substring(0, 1).toUpperCase(),
-                      style: Theme.of(context).textTheme.headlineSmall),
+                      style: const TextStyle(
+                          color: APP_PRIMARY_COLOR, fontSize: 18)),
                 )
               : null,
           foregroundImage:
               photoUrl == '' ? null : CachedNetworkImageProvider(photoUrl),
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: APP_INVERSE_PRIMARY_COLOR,
         ),
       ),
     );

@@ -6,6 +6,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/home_screen.dart';
@@ -44,11 +45,17 @@ class _PublishStoryState extends State<PublishStory> {
       });
       await _storyApi.publishStory(widget.story.storyId);
 
-      /// update timeline
-      timelineController.fetchPage(0);
-
       /// update storyboard controller
       storyboardController.updateStory(story: widget.story);
+
+      /// in current story. We know current storyboard
+      /// add to timeline
+      Storyboard newStoryboard =
+          storyboardController.findStoryboardByStory(widget.story);
+      timelineController.insertPublishStoryboard(newStoryboard);
+
+      /// update timeline
+      // timelineController.fetchPage(0);
 
       _goToNextStep(3);
     } catch (err, s) {

@@ -68,9 +68,6 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                   widget.item.comment,
                   style: Theme.of(context).textTheme.bodySmall,
                 )),
-            const SizedBox(
-              height: 5,
-            ),
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -102,11 +99,13 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                 ),
               ],
             ),
-            const Divider(),
+            const Divider(
+              height: 1,
+            ),
             if (widget.item.response != null && (toggleReplies == true))
               ...widget.item.response!
                   .map((ele) => Container(
-                        padding: const EdgeInsets.only(left: 30),
+                        padding: const EdgeInsets.only(left: 20),
                         color: Colors.black,
                         child: CommentRowWidget(
                             hideReply: true,

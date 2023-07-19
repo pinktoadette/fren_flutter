@@ -85,6 +85,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                       height: 80,
                       child: TextFormField(
                         maxLength: 40,
+                        style: Theme.of(context).textTheme.bodyMedium,
                         buildCounter: (_,
                                 {required currentLength,
                                 maxLength,
@@ -154,6 +155,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                 ),
                 const SizedBox(height: 10),
                 TextFormField(
+                  style: Theme.of(context).textTheme.bodyMedium,
                   maxLength: 500,
                   buildCounter: (_,
                           {required currentLength,

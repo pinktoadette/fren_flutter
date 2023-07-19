@@ -162,6 +162,7 @@ class StoryApi {
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {STORY_ID: storyId});
+
       return response.data;
     } catch (error) {
       debugPrint(error.toString());

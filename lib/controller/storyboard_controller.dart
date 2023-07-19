@@ -72,6 +72,14 @@ class StoryboardController extends GetxController {
     _storyboards.refresh();
   }
 
+  Storyboard findStoryboardByStory(Story story) {
+    Storyboard storyboard = currentStoryboard.story!.firstWhere(
+      (child) => child.storyId == story.storyId,
+    ) as Storyboard;
+
+    return storyboard;
+  }
+
   void removeStoryboardfromList(Storyboard storyboard) {
     _storyboards
         .removeWhere(((item) => item.storyboardId == storyboard.storyboardId));
