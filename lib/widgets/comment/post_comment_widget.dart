@@ -60,15 +60,16 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 )
               : const SizedBox.shrink()),
           Container(
+              margin: const EdgeInsets.only(top: 20),
               padding: EdgeInsets.only(
                   top: commentController.replyToComment.commentId != null
-                      ? 30
-                      : 0),
+                      ? 40
+                      : 00),
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(
-                      minHeight: 60,
+                      minHeight: 50,
                       maxHeight: 300.0,
                     ),
                     child: TapRegion(

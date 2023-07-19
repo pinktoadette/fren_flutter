@@ -82,7 +82,7 @@ class _InlineSurveyState extends State<InlineSurvey>
                   ),
                   TextButton(
                       onPressed: () async {
-                        final Uri url = Uri.parse(SURVEY_FREE_FORM_LINK);
+                        final Uri url = Uri.parse(SURVEY_FORM);
                         await launchUrl(url);
                       },
                       child: const Text("Suggestion Form"))

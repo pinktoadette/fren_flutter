@@ -370,7 +370,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
             room: _room, partialMessage: attachmentPreview, uri: uri);
         _addMessages(formatImgMessage);
         lastMessageId = await _messagesApi.saveUserResponse(
-            messageMap: {...formatImgMessage}, tags: _setTags);
+            messageMap: {...formatImgMessage, CHAT_TEXT: ""}, tags: _setTags);
       } catch (err, s) {
         Get.snackbar(
           _i18n.translate("error"),
@@ -386,8 +386,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
             reason: 'image uploaded and has error ${err.toString()}',
             fatal: true);
         return;
+      } finally {
+        setState(() {
+          attachmentPreview = null;
+        });
       }
     }
+
     Map<String, dynamic> newMessage =
         chatController.sendMessage(room: _room, partialMessage: message);
     // saves the text after the image, the text is linked to the image with lastMessageId
@@ -396,7 +401,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     _addMessages(newMessage);
     setState(() {
       _isAttachmentUploading = false;
-      attachmentPreview = null;
     });
     FocusScope.of(context).requestFocus(FocusNode());
   }

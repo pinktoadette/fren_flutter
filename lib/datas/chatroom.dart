@@ -100,7 +100,10 @@ class Chatroom {
           message['height'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_HEIGHT];
           message['width'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_WIDTH];
           message['uri'] = message[MESSAGE_IMAGE][MESSAGE_IMAGE_URI];
-          message["metadata"] = {"caption": message[CHAT_TEXT] ?? ""};
+          message["metadata"] = message[CHAT_TEXT].isNotEmpty &&
+                  message[CHAT_TEXT].contains(SLASH_IMAGINE) == false
+              ? {"caption": message[CHAT_TEXT]}
+              : null;
           finalMessage = types.ImageMessage.fromJson(message);
         }
         finalMessage = types.Message.fromJson(message);
