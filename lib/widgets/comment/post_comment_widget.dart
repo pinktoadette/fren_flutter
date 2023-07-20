@@ -67,7 +67,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             margin: const EdgeInsets.only(top: 20),
             padding: EdgeInsets.only(
                 top: commentController.replyToComment.commentId != null
-                    ? 40
+                    ? 20
                     : 00),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
