@@ -146,6 +146,8 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
                     aspectRatio: 1.5,
                     child: galleryImageUrl != null
                         ? CachedNetworkImage(
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                             progressIndicatorBuilder: (context, url,
                                     progress) =>
                                 loadingButton(size: 16, color: Colors.black),

@@ -1,5 +1,6 @@
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -62,7 +63,35 @@ class _FollowerListState extends State<FollowerList> {
                   followers[index].username,
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
-                subtitle: Text(followers[index].userBio ?? ""),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(followers[index].userBio ?? ""),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Flexible(
+                            child: Wrap(
+                          crossAxisAlignment: WrapCrossAlignment.start,
+                          alignment: WrapAlignment.start,
+                          spacing: 5,
+                          direction: Axis.horizontal,
+                          children: followers[index]
+                              .userInterest
+                              .map((interest) => Badge(
+                                    backgroundColor:
+                                        APP_MUTED_COLOR.withOpacity(0.4),
+                                    label: Text(
+                                      interest,
+                                      style: const TextStyle(fontSize: 10),
+                                    ),
+                                  ))
+                              .toList(),
+                        ))
+                      ],
+                    )
+                  ],
+                ),
                 onTap: () async {
                   User u = await _userApi.getUserById(followers[index].userId);
                   Get.to(() => ProfileScreen(user: u));

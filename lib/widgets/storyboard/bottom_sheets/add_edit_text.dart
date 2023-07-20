@@ -141,7 +141,7 @@ class _AddEditTextState extends State<AddEditText> {
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(),
                     child: TextFormField(
-                      style: Theme.of(context).textTheme.bodySmall,
+                      style: Theme.of(context).textTheme.bodyMedium,
                       onTapOutside: (b) {
                         FocusManager.instance.primaryFocus?.unfocus();
                       },
@@ -218,6 +218,8 @@ class _AddEditTextState extends State<AddEditText> {
                     aspectRatio: 1.5,
                     child: galleryImageUrl != null
                         ? CachedNetworkImage(
+                            errorWidget: (context, url, error) =>
+                                const Icon(Icons.error),
                             progressIndicatorBuilder: (context, url,
                                     progress) =>
                                 loadingButton(size: 16, color: Colors.black),

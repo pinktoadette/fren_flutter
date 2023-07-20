@@ -15,54 +15,39 @@ class CommentApi {
       {required String storyId,
       required String comment,
       StoryComment? replyToComment}) async {
-    try {
-      String url = '${baseUri}comment';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: {
-        STORY_ID: storyId,
-        STORY_COMMENT: comment,
-        COMMENT_REPLY_TO_ID: replyToComment?.commentId ?? "",
-        COMMENT_REPLY_TO_USER_ID: replyToComment?.user.userId ?? ""
-      });
-      StoryComment storyComment = StoryComment.fromDocument(response.data);
-      return storyComment;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    String url = '${baseUri}comment';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {
+      STORY_ID: storyId,
+      STORY_COMMENT: comment,
+      COMMENT_REPLY_TO_ID: replyToComment?.commentId ?? "",
+      COMMENT_REPLY_TO_USER_ID: replyToComment?.user.userId ?? ""
+    });
+    StoryComment storyComment = StoryComment.fromDocument(response.data);
+    return storyComment;
   }
 
   Future<List<StoryComment>> getComments(
       int page, int limit, String storyId) async {
-    try {
-      String url = '${baseUri}comment?storyId=$storyId&limit=$limit&page=$page';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+    String url = '${baseUri}comment?storyId=$storyId&limit=$limit&page=$page';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
 
-      List<StoryComment> comments = [];
-      for (var res in response.data) {
-        StoryComment c = StoryComment.fromDocument(res);
-        comments.add(c);
-      }
-      return comments;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
+    List<StoryComment> comments = [];
+    for (var res in response.data) {
+      StoryComment c = StoryComment.fromDocument(res);
+      comments.add(c);
     }
+    return comments;
   }
 
   Future<String> deleteComment(String commentId) async {
-    try {
-      String url = '${baseUri}comment';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.delete(url, data: {COMMENT_ID: commentId});
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    String url = '${baseUri}comment';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.delete(url, data: {COMMENT_ID: commentId});
+    return response.data;
   }
 }

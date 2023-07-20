@@ -1,9 +1,11 @@
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/first_time/first_time_user.dart';
+import 'package:machi_app/screens/first_time/interest_screen.dart';
+import 'package:machi_app/screens/first_time/profile_image_upload.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';
 import 'package:flutter/material.dart';
@@ -184,6 +186,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                     color: Colors.grey,
                                   ),
                                 )),
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp("[0-9a-zA-Z]")),
+                            ],
                             validator: (name) {
                               // Basic validation
                               if (name?.isEmpty ?? false) {
@@ -302,7 +308,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
         onSuccess: () async {
           Future(() {
             Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => const InterestScreen()),
+                MaterialPageRoute(
+                    builder: (context) => const ProfileImageGenerator()),
                 (route) => false);
           });
         },

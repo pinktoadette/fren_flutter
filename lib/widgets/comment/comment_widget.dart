@@ -7,14 +7,26 @@ import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/comment/comment_row_widget.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
-class CommentWidget extends StatelessWidget {
+class CommentWidget extends StatefulWidget {
   const CommentWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    CommentController commentController = Get.find(tag: "comment");
+  _CommentWidgetState createState() => _CommentWidgetState();
+}
 
-    AppLocalizations _i18n = AppLocalizations.of(context);
+class _CommentWidgetState extends State<CommentWidget> {
+  CommentController commentController = Get.find(tag: "comment");
+  late AppLocalizations _i18n;
+
+  @override
+  void dispose() {
+    super.dispose();
+    commentController.pagingController.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return PagedSliverList<int, dynamic>.separated(
       pagingController: commentController.pagingController,

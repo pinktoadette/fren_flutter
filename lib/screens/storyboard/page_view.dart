@@ -91,8 +91,6 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   @override
   Widget build(BuildContext context) {
-    Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
-
     _i18n = AppLocalizations.of(context);
 
     if (story == null && pages.isEmpty) {
@@ -209,7 +207,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   Widget _commentSheet() {
     return DraggableScrollableSheet(
-      initialChildSize: 1 - bodyHeightPercent,
+      initialChildSize: 1 - bodyHeightPercent + 0.025,
       minChildSize: 1 - bodyHeightPercent,
       expand: true,
       builder: (BuildContext context, ScrollController scrollController) {
@@ -243,7 +241,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   SliverToBoxAdapter(
                                       child: Padding(
                                     padding: const EdgeInsets.only(
-                                        left: 20, top: 10),
+                                        left: 20, top: 10, bottom: 10),
                                     child: Row(
                                       children: [
                                         const Icon(

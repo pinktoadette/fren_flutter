@@ -112,13 +112,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: TextFormField(
+                    style: const TextStyle(fontSize: 16),
+                    decoration: InputDecoration(
+                      hintText: _i18n.translate("write_your_bio"),
+                      isDense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 0, vertical: 0),
+                    ),
                     textCapitalization: TextCapitalization.sentences,
                     controller: _bioController,
                     maxLines: 10,
                     maxLength: 200,
-                    decoration: InputDecoration(
-                      hintText: _i18n.translate("write_your_bio"),
-                    ),
                   ),
                 ),
               ],

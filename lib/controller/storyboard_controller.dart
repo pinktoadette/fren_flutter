@@ -73,10 +73,7 @@ class StoryboardController extends GetxController {
   }
 
   Storyboard findStoryboardByStory(Story story) {
-    Storyboard storyboard = currentStoryboard.story!.firstWhere(
-      (child) => child.storyId == story.storyId,
-    ) as Storyboard;
-
+    Storyboard storyboard = currentStoryboard.copyWith(story: [story]);
     return storyboard;
   }
 

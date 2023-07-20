@@ -50,7 +50,7 @@ class TimelineController extends GetxController {
   }
 
   void insertPublishStoryboard(Storyboard storyboard) {
-    pagingController.appendPage([storyboard], pagingController.nextPageKey);
+    pagingController.appendLastPage([storyboard]);
   }
 
   void setStoryTimelineControllerCurrent(Story story) {

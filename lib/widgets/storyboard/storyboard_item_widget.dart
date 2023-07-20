@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
@@ -195,6 +196,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         onTap: () {
           storyboardController.setCurrentBoard(storyboard);
           timelineController.setStoryTimelineControllerCurrent(story);
+          Get.lazyPut<CommentController>(() => CommentController(),
+              tag: "comment");
+
           Get.to(() => StoryPageView(story: story));
         },
         child: Card(
@@ -261,9 +265,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
+      Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
+
       if ((storyboard.story!.isNotEmpty) & (storyboard.story!.length == 1)) {
         timelineController
             .setStoryTimelineControllerCurrent(storyboard.story![0]);
+
         Get.to(() => StoryPageView(story: storyboard.story![0]));
       } else {
         await Navigator.push(

@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/first_time/first_time_user.dart';
+import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:flutter/material.dart';

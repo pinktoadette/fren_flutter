@@ -65,6 +65,13 @@
   "edit_profile": "Edit profile",
   "profile_protected_view": "Protected Profile" ,
   "profile_protected": "Your profile is protected.",
+  "profile_image_generate_button": "Create",
+  "profile_image_generate_ai": "Generate Profile Image",
+  "profile_signup_intro": "Thanks for signing up",
+  "profile_ai_prompt_hint": "girl with brown hair with black aviator glasses, close up",
+  "profile_generate_ai_subtitle1": "Let's create a profile image.",
+  "profile_generate_ai_subtitle2": "Share your ideas, and we'll create a cool profile image together.",
+  "profile_generate_once": "You can only generate once but you can change the photo later.",
   "an_error_occurred_while_updating_your_profile": "An error occurred while updating your profile.\nPlease try again later!",
   "photo_will_be_deleted": "Photo will be deleted, and this action cannot be reversed!", 
 
@@ -350,7 +357,8 @@
   "comment_leave": "Leave a reply",
   "comment_delete": "Are you are you want to delete the reply?",
   "comment_deleted": "Deleted reply",
-  
+  "comments": "Replies",
+
   "story_share_message": "Create Board",
   "storyboard_nothing": "No boards saved.",
   "storyboard_noting_instruction": "How to: When chatting, click on the board icon located beneath the messages to save the message. \n\nWithin the boards, you have the flexibility to edit the messages, allowing you to create content or make any necessary modifications for future private reference.",
@@ -430,6 +438,8 @@
   "story_collection_summary": "Summary",
   "story_collection_create": "Create a new collection",
   "story_collection_add_comment_post": "Post a Comment",
+
+  "post_too_fast": "Slow down! Posting too fast.",
 
   "report_create": "File A Report",
   "report_comment_reason": "Any comments (optional)",

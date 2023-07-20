@@ -46,16 +46,14 @@ class _PublishStoryState extends State<PublishStory> {
       await _storyApi.publishStory(widget.story.storyId);
 
       /// update storyboard controller
-      storyboardController.updateStory(story: widget.story);
+      Story updateStory = widget.story.copyWith(status: StoryStatus.PUBLISHED);
+      storyboardController.updateStory(story: updateStory);
 
       /// in current story. We know current storyboard
       /// add to timeline
       Storyboard newStoryboard =
           storyboardController.findStoryboardByStory(widget.story);
       timelineController.insertPublishStoryboard(newStoryboard);
-
-      /// update timeline
-      // timelineController.fetchPage(0);
 
       _goToNextStep(3);
     } catch (err, s) {

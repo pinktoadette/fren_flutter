@@ -87,14 +87,14 @@ class CommentController extends GetxController {
   void addItem(StoryComment comment) async {
     if (comment.commentId != null) {
       pagingController.appendLastPage([comment]);
-      pagingController.refresh();
+      update();
     }
   }
 
   void updateItem(StoryComment comment) async {
     pagingController.itemList!
         .removeWhere((element) => element.commentId == comment.commentId);
-    pagingController.refresh();
+    update();
   }
 
   void removeItem(StoryComment comment) async {

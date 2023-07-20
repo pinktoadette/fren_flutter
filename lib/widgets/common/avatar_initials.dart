@@ -51,8 +51,12 @@ class AvatarInitials extends StatelessWidget {
                           color: APP_PRIMARY_COLOR, fontSize: 18)),
                 )
               : null,
-          foregroundImage:
-              photoUrl == '' ? null : CachedNetworkImageProvider(photoUrl),
+          foregroundImage: photoUrl == ''
+              ? null
+              : CachedNetworkImageProvider(
+                  photoUrl,
+                  errorListener: () => const Icon(Icons.error),
+                ),
           backgroundColor: APP_INVERSE_PRIMARY_COLOR,
         ),
       ),

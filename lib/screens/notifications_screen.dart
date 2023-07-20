@@ -85,7 +85,7 @@ class NotificationsScreen extends StatelessWidget {
                     ]),
                     subtitle: Text(notification[NOTIF_MESSAGE],
                         style: !notification[NOTIF_READ]
-                            ? Theme.of(context).textTheme.bodyMedium
+                            ? Theme.of(context).textTheme.bodySmall
                             : Theme.of(context).textTheme.labelSmall),
                     onTap: () async {
                       /// Set notification read = true

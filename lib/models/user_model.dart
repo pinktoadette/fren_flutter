@@ -182,6 +182,7 @@ class UserModel extends Model {
     required VoidCallback homeScreen,
     required VoidCallback signUpScreen,
     VoidCallback? updateLocationScreen,
+    VoidCallback? profileImageScreen,
     VoidCallback? interestScreen,
     // Optional functions called on app start
     VoidCallback? onboardScreen,
@@ -222,6 +223,12 @@ class UserModel extends Model {
             // if user didn't complete profile then go to chat intro bot
             if (userDoc[USER_PROFILE_FILLED] == false) {
               signUpScreen();
+              return;
+            }
+
+            if (!(userDoc.data() as Map<String, dynamic>)
+                .containsKey(USER_PROFILE_PHOTO)) {
+              profileImageScreen!();
               return;
             }
 
@@ -591,13 +598,14 @@ class UserModel extends Model {
   }
 
   /// Upload file to firestore
-  Future<String> uploadFile({
-    required File file,
-    required String path,
-    required String userId,
-  }) async {
+  Future<String> uploadFile(
+      {required File file,
+      required String path,
+      required String userId,
+      bool useIDname = false}) async {
     // Image name
-    String imageName = userId + getDateTimeEpoch().toString();
+    String imageName = userId;
+    if (useIDname == false) imageName += getDateTimeEpoch().toString();
     // Upload file
     final UploadTask uploadTask = _storageRef
         .ref()
@@ -639,7 +647,10 @@ class UserModel extends Model {
 
     /// Upload new image
     final imageLink = await uploadFile(
-        file: imageFile, path: uploadPath, userId: user.userId);
+        file: imageFile,
+        path: uploadPath,
+        userId: user.userId,
+        useIDname: true);
 
     if (path == 'profile') {
       /// Update profile image link

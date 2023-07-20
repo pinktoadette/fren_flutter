@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -22,6 +25,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   final _commentController = TextEditingController();
   late AppLocalizations _i18n;
   String? _comment;
+  bool _canType = true;
 
   @override
   void initState() {
@@ -60,78 +64,90 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 )
               : const SizedBox.shrink()),
           Container(
-              margin: const EdgeInsets.only(top: 20),
-              padding: EdgeInsets.only(
-                  top: commentController.replyToComment.commentId != null
-                      ? 40
-                      : 00),
-              child: SingleChildScrollView(
+            margin: const EdgeInsets.only(top: 20),
+            padding: EdgeInsets.only(
+                top: commentController.replyToComment.commentId != null
+                    ? 40
+                    : 00),
+            child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       minHeight: 50,
                       maxHeight: 300.0,
                     ),
-                    child: TapRegion(
+                    child: Stack(children: [
+                      TextFormField(
                         onTapOutside: (_) =>
-                            FocusManager.instance.primaryFocus?.unfocus(),
-                        child: Stack(children: [
-                          TextFormField(
-                            onChanged: (String value) {
-                              _comment = value;
-                            },
-                            textCapitalization: TextCapitalization.sentences,
-                            autocorrect: true,
-                            enableSuggestions: true,
-                            style: Theme.of(context).textTheme.bodyMedium,
-                            controller: _commentController,
-                            maxLines: null,
-                            // maxLength: 250,
-                            decoration: InputDecoration(
-                              fillColor: Colors.transparent,
-                              hintText: _i18n.translate("comment_leave"),
-                              hintStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontSize: 14),
-                              border: InputBorder.none,
-                              focusedBorder: InputBorder.none,
-                              enabledBorder: InputBorder.none,
-                              errorBorder: InputBorder.none,
-                              disabledBorder: InputBorder.none,
-                            ),
-                            validator: (value) {
-                              if ((value == null) || (value == "")) {
-                                return _i18n
-                                    .translate("validation_1_character");
-                              }
-                              return null;
-                            },
-                          ),
-                          Positioned(
-                              bottom: 10,
-                              right: 0,
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(
-                                      Iconsax.send_2,
-                                      size: 24,
-                                    ),
-                                    onPressed: () {
-                                      if (_comment == null || _comment == "") {
-                                        null;
-                                      } else {
-                                        _postComment();
-                                      }
-                                    },
-                                  ),
-                                ],
-                              ))
-                        ]))),
-              ))
+                            {FocusManager.instance.primaryFocus?.unfocus()},
+                        onChanged: (String value) {
+                          _comment = value;
+                        },
+                        textCapitalization: TextCapitalization.sentences,
+                        autocorrect: true,
+                        enableSuggestions: true,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                        controller: _commentController,
+                        maxLines: null,
+                        // maxLength: 250,
+                        decoration: InputDecoration(
+                          fillColor: Colors.transparent,
+                          hintText: _i18n.translate("comment_leave"),
+                          hintStyle: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontSize: 14),
+                          border: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                        ),
+                        validator: (value) {
+                          if ((value == null) || (value == "")) {
+                            return _i18n.translate("validation_1_character");
+                          }
+                          return null;
+                        },
+                      ),
+                      Positioned(
+                          bottom: 10,
+                          right: 0,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              IconButton(
+                                icon: const Icon(
+                                  Iconsax.send_2,
+                                  size: 24,
+                                ),
+                                onPressed: () {
+                                  if (_canType == false) {
+                                    Get.snackbar(
+                                      "Ayo",
+                                      _i18n.translate("post_too_fast"),
+                                      snackPosition: SnackPosition.TOP,
+                                      backgroundColor: APP_TERTIARY,
+                                    );
+                                  } else if (_comment == null ||
+                                      _comment == "") {
+                                    null;
+                                  } else {
+                                    setState(() => _canType = false);
+
+                                    _postComment();
+                                    Timer(
+                                        const Duration(seconds: 10),
+                                        () => setState(() {
+                                              _canType = true;
+                                            }));
+                                  }
+                                },
+                              ),
+                            ],
+                          ))
+                    ]))),
+          )
         ]));
   }
 
@@ -157,10 +173,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
       _commentController.clear();
       commentController.clearReplyTo();
       FocusManager.instance.primaryFocus?.unfocus();
-    } catch (err, s) {
+    } on DioException catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
+        err.response?.data["message"] ?? "Sorry, got an error 😕",
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );

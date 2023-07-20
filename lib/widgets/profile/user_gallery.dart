@@ -38,6 +38,12 @@ class _GalleryWidgetState extends State<UserGallery> {
     _fetchGallery(0);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _pagingController.dispose();
+  }
+
   void _fetchGallery(int pageKey) async {
     try {
       List<Gallery> newItems = await _galleryApi.getUserGallery(

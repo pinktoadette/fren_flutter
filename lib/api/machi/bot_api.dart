@@ -116,4 +116,19 @@ class BotApi {
         await dio.post(url, data: {"text": text, "action": action});
     return response.data;
   }
+
+  Future<List<dynamic>> machiImage({required text}) async {
+    String url = '${baseUri}machi_image';
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {"text": text});
+    return response.data;
+  }
+
+  Future<String> uploadImageUrl({required uri, required pathLocation}) async {
+    String url = '${baseUri}upload_url';
+    final dio = await auth.getDio();
+    final response =
+        await dio.post(url, data: {"url": uri, "path": pathLocation});
+    return response.data;
+  }
 }
