@@ -25,6 +25,6 @@ class MainBinding implements Bindings {
     Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
 
     // Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
-    debugPrint("Put controllers");
+    debugPrint("================ Finish putting controllers ================");
   }
 }

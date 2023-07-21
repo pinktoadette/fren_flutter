@@ -46,7 +46,7 @@
             <!-- android:name=".MainActivity" -->
             <!--  android:name="com.ryanheise.audioservice.AudioServiceActivity"  -->
         <activity
-            android:name="com.ryanheise.audioservice.AudioServiceActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
@@ -80,7 +80,7 @@
           android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>    
 
         <!-- For Audio service-->
-        <service 
+        <!-- <service 
             android:name="com.ryanheise.audioservice.AudioService"
             android:foregroundServiceType="mediaPlayback"
             android:exported="true"
@@ -97,7 +97,7 @@
           <intent-filter>
             <action android:name="android.intent.action.MEDIA_BUTTON" />
           </intent-filter>
-        </receiver> 
+        </receiver>  -->
 
         <!-- Config for firebase_admob plugin 
           Replace -> [ADMOB_APP_ID] with your Admob App ID -->
