@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -83,11 +84,17 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       attachmentPreview!,
                     )
                   : urlPreview != null
-                      ? NetworkImage(urlPreview!)
+                      ? CachedNetworkImageProvider(
+                          urlPreview!,
+                          errorListener: () => const Icon(Icons.error),
+                        )
                       : story.pages![widget.pageIndex].backgroundImageUrl !=
                               null
-                          ? NetworkImage(story
-                              .pages![widget.pageIndex].backgroundImageUrl!)
+                          ? CachedNetworkImageProvider(
+                              story
+                                  .pages![widget.pageIndex].backgroundImageUrl!,
+                              errorListener: () => const Icon(Icons.error),
+                            )
                           : Image.asset(
                               "assets/images/machi.png",
                               scale: 0.2,

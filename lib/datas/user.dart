@@ -77,7 +77,7 @@ class User {
         isFrankInitiated: doc[USER_INITIATED_FRANK] ?? false,
         isProfileFilled: doc[USER_PROFILE_FILLED] ?? false,
         userProfilePhoto: doc[USER_PROFILE_PHOTO] ?? '',
-        userFullname: doc[USER_FULLNAME],
+        userFullname: doc[USER_FULLNAME] ?? doc[USER_USERNAME] ?? "",
         userGender: doc[USER_GENDER] ?? '',
         userBirthDay: doc[USER_BIRTH_DAY] ?? 1,
         userBirthMonth: doc[USER_BIRTH_MONTH] ?? 1,

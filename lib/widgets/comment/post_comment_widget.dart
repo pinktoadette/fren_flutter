@@ -12,6 +12,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 
 class PostCommentWidget extends StatefulWidget {
   const PostCommentWidget({Key? key}) : super(key: key);
@@ -26,6 +27,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   late AppLocalizations _i18n;
   String? _comment;
   bool _canType = true;
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -117,10 +119,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               IconButton(
-                                icon: const Icon(
-                                  Iconsax.send_2,
-                                  size: 24,
-                                ),
+                                icon: _isLoading
+                                    ? loadingButton(size: 16)
+                                    : const Icon(
+                                        Iconsax.send_2,
+                                        size: 24,
+                                      ),
                                 onPressed: () {
                                   if (_canType == false) {
                                     Get.snackbar(
@@ -155,6 +159,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     if (_comment == null) {
       return;
     }
+    setState(() {
+      _isLoading = true;
+    });
 
     StoryboardController storyboardController = Get.find(tag: 'storyboard');
     final _commentApi = CommentApi();
@@ -182,6 +189,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
       );
       await FirebaseCrashlytics.instance
           .recordError(err, s, reason: 'Cannot post comment', fatal: true);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 

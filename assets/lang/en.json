@@ -86,7 +86,7 @@
   
   "chat": "Chat",
   "conversations": "Conversations",
-  "conversation_confirm_delete": "Are you sure you want to delete this conversation? This will delete all images and images saved to boards",
+  "conversation_confirm_delete": "Are you sure you want to delete? This will delete all images and cannot be recoverd.",
   "conversation_delete_error":"An error occurred deleting the messages",
   "conversation_success_delete":"Messages successfully deleted",
   

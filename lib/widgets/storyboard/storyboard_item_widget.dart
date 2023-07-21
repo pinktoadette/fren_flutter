@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
@@ -207,7 +208,10 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                 decoration: story.photoUrl != null && story.photoUrl != ""
                     ? BoxDecoration(
                         image: DecorationImage(
-                          image: NetworkImage(story.photoUrl!),
+                          image: CachedNetworkImageProvider(
+                            story.photoUrl!,
+                            errorListener: () => const Icon(Icons.error),
+                          ),
                           fit: BoxFit.fitWidth,
                           alignment: Alignment.topCenter,
                           colorFilter: ColorFilter.mode(

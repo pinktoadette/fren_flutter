@@ -256,9 +256,16 @@ class ChatController extends GetxController implements GetxService {
     //   channel.sink.add(json.encode({"message": message}));
     // }
     types.Message newMessage = messageFromJson(message);
-    int index = roomlist
-        .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
-    roomlist[index].messages.insert(0, newMessage);
+    int index = 0;
+    if (roomlist.isEmpty) {
+      Chatroom newRoom = room.copyWith(messages: [newMessage]);
+      roomlist.add(newRoom);
+    } else {
+      index = roomlist
+          .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+      roomlist[index].messages.insert(0, newMessage);
+    }
+
     _addUpdateResponse(newMessage, index);
     return message;
   }
@@ -306,5 +313,7 @@ class ChatController extends GetxController implements GetxService {
   void sortRoomExit() {
     roomlist.removeWhere((room) => room.chatroomId == currentRoom.chatroomId);
     roomlist.insert(0, currentRoom);
+    roomlist.refresh();
+    update();
   }
 }

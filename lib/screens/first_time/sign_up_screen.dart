@@ -4,7 +4,6 @@ import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:machi_app/screens/first_time/profile_image_upload.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/terms_of_service_row.dart';

@@ -21,7 +21,6 @@ class _CommentWidgetState extends State<CommentWidget> {
   @override
   void dispose() {
     super.dispose();
-    commentController.pagingController.dispose();
   }
 
   @override

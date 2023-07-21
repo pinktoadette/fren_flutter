@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-const String env = 'prod';
+const String env = 'dev';
 
 const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
 const PY_UAT = "https://machi-uat-onn4q.ondigitalocean.app/api/";

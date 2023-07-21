@@ -100,7 +100,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       if (widget.message.type == types.MessageType.image) {
         await _storyboardApi.createStoryboard(
             image: message.uri,
-            text: message.metadata["caption"],
+            text: message.metadata != null ? message.metadata["caption"] : "",
             character: widget.message.author.firstName,
             characterId: widget.message.author.id);
       }

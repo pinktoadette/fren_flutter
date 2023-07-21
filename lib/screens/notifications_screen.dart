@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -27,6 +29,7 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Initialization
     final i18n = AppLocalizations.of(context);
+    Get.lazyPut(() => CommentController());
 
     return Scaffold(
       appBar: AppBar(
@@ -98,7 +101,7 @@ class NotificationsScreen extends StatelessWidget {
                             builder: (context) => ProfileScreen(user: user)));
                       }
 
-                      if (notification[NOTIF_TYPE] == "COMMENT") {
+                      if (notification[NOTIF_TYPE].contains("COMMENT")) {
                         final _storyApi = StoryApi();
                         Story story = await _storyApi
                             .getMyStories(notification["itemId"]);

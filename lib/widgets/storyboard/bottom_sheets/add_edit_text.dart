@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -25,6 +24,8 @@ class AddEditText extends StatefulWidget {
 class _AddEditTextState extends State<AddEditText> {
   late AppLocalizations _i18n;
   late TextEditingController _textController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   File? attachmentPreview;
   String? galleryImageUrl;
 
@@ -141,6 +142,7 @@ class _AddEditTextState extends State<AddEditText> {
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(),
                     child: TextFormField(
+                      scrollController: _scrollController,
                       style: Theme.of(context).textTheme.bodyMedium,
                       onTapOutside: (b) {
                         FocusManager.instance.primaryFocus?.unfocus();
@@ -151,6 +153,7 @@ class _AddEditTextState extends State<AddEditText> {
                         hintStyle: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                       ),
+                      onChanged: (value) => {print(value)},
                       controller: _textController,
                       scrollPadding: EdgeInsets.only(
                           bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -278,13 +281,37 @@ class _AddEditTextState extends State<AddEditText> {
                             if (_textController.selection.isValid == false)
                               {_textController.text = value}
                             else
-                              {
-                                _textController.selection
-                                    .textInside(_textController.text)
-                                    .val(value)
-                              }
+                              {_replaceText(value)}
                           },
                       text: text)),
             )));
+  }
+
+  void _replaceText(String newText) {
+    final int start = _textController.selection.start;
+    final int end = _textController.selection.end;
+
+    // Get the original text
+    String originalText = _textController.text;
+
+    String textBeforeSelection = originalText.substring(0, start);
+    String textAfterSelection = originalText.substring(end);
+
+    // Combine the parts with the new text
+    String replacedText = textBeforeSelection + newText + textAfterSelection;
+
+    // Update the text controller with the replaced text and the correct selection
+    _textController.value = TextEditingValue(
+      text: replacedText,
+      selection: TextSelection(
+        baseOffset: start,
+        extentOffset: start + newText.length,
+      ),
+    );
+
+    Get.snackbar(_i18n.translate("success"), "Text is replaced",
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_SUCCESS,
+        colorText: Colors.black);
   }
 }

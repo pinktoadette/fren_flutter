@@ -5,6 +5,13 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "staging",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": ["--flavor", "staging", "--target", "lib/main.dart" ]
+        },
+        {
             "name": "machi",
             "request": "launch",
             "type": "dart"

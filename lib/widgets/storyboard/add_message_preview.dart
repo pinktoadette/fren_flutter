@@ -27,7 +27,10 @@ class _PreviewMessageToAddState extends State<PreviewMessageToAdd> {
                       overflow: TextOverflow.fade,
                       style: Theme.of(context).textTheme.labelSmall)
                   : StoryCover(
-                      radius: 10, photoUrl: message.uri, title: "image"))
+                      width: 70,
+                      radius: 10,
+                      photoUrl: message.uri,
+                      title: "image"))
         ]));
   }
 }

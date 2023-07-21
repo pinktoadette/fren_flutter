@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
@@ -19,11 +20,11 @@ import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
+import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
-import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/comment/comment_widget.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
@@ -44,6 +45,7 @@ class StoryPageView extends StatefulWidget {
 class _StoryPageViewState extends State<StoryPageView> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   TimelineController timelineController = Get.find(tag: 'timeline');
+  CommentController commentController = Get.find(tag: "comment");
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
@@ -66,6 +68,12 @@ class _StoryPageViewState extends State<StoryPageView> {
     } else {
       getStoryContent();
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    commentController.pagingController.dispose();
   }
 
   void getStoryContent() async {
@@ -313,12 +321,20 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 image: story?.pages![index]
                                             .backgroundImageUrl !=
                                         null
-                                    ? NetworkImage(story!
-                                        .pages![index].backgroundImageUrl!)
+                                    ? CachedNetworkImageProvider(
+                                        story!
+                                            .pages![index].backgroundImageUrl!,
+                                        errorListener: () =>
+                                            const Icon(Icons.error),
+                                      )
                                     : story!.pages![index].backgroundImageUrl !=
                                             null
-                                        ? NetworkImage(story!
-                                            .pages![index].backgroundImageUrl!)
+                                        ? CachedNetworkImageProvider(
+                                            story!.pages![index]
+                                                .backgroundImageUrl!,
+                                            errorListener: () =>
+                                                const Icon(Icons.error),
+                                          )
                                         : Image.asset(
                                             "assets/images/blank.jpg",
                                             scale: 0.2,
@@ -410,11 +426,11 @@ class _StoryPageViewState extends State<StoryPageView> {
                   ? Colors.black
                   : Theme.of(context).colorScheme.primary));
     } else if (script.type == "image") {
-      widget = RoundedImage(
+      widget = StoryCover(
+        photoUrl: script.image?.uri ?? "",
+        title: story?.title ?? "machi",
         width: size.width * 0.9,
         height: size.width * 0.9,
-        photoUrl: script.image?.uri ?? "",
-        icon: const Icon(Iconsax.image),
       );
     }
     Widget widgetScript = story!.layout == Layout.CONVO
