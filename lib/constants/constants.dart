@@ -334,8 +334,9 @@ const String REPORT_COMMENTS = "comments";
 const String SUBSCRIBED_AT = "subscribedAt";
 const String IS_SUBSCRIBED = "subscribed";
 const String SUBSCRIBED_MACHI = "mymachi";
-const String UPSELL_AFFORDABLE = "imaginfy50";
-const String UPSELL_BULK = "imaginfy200";
+const String UPSELL_AFFORDABLE = "imaginfy10";
+const String SELL_300_UNITS = "300";
+const String SELL_10_UNITS = "10";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id

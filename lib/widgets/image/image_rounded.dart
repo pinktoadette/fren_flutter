@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class RoundedImage extends StatelessWidget {
   double? radius;
+  bool? isLocal;
   double width;
   double height;
 
@@ -15,6 +16,7 @@ class RoundedImage extends StatelessWidget {
   RoundedImage(
       {Key? key,
       this.radius = 10,
+      this.isLocal = false,
       required this.width,
       required this.height,
       required this.icon,
@@ -29,18 +31,25 @@ class RoundedImage extends StatelessWidget {
         child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: photoUrl != ""
-                ? photoUrl.startsWith('https') == true
-                    ? Image.network(
-                        photoUrl,
-                        fit: BoxFit.cover,
-                      )
-                    : Image.file(
-                        File(photoUrl),
-                        width: double.infinity,
-                        fit: BoxFit.cover,
-                      )
+                ? _showPicture()
                 : Container(
                     child: icon,
                   )));
+  }
+
+  Widget _showPicture() {
+    if (isLocal == true) {
+      return Image.asset(photoUrl);
+    } else if (photoUrl.startsWith('https') == true) {
+      return Image.network(
+        photoUrl,
+        fit: BoxFit.cover,
+      );
+    }
+    return Image.file(
+      File(photoUrl),
+      width: double.infinity,
+      fit: BoxFit.cover,
+    );
   }
 }

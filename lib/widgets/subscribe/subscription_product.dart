@@ -96,6 +96,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
 
   Widget _showTiers(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double itemHeight = 410;
     if (offers == null) {
       return const Center(
           child: NoData(text: "Guess we are not selling today!"));
@@ -118,7 +119,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                       ),
                       Text(
                         offers!.serverDescription,
-                        style: const TextStyle(color: Colors.white),
+                        style: Theme.of(context).textTheme.bodySmall,
                       ),
                       Text(
                         _i18n.translate("plans_include_gpt"),
@@ -126,16 +127,33 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                             color: Color.fromARGB(255, 122, 122, 122),
                             fontSize: 12),
                       ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          for (int i = 0; i < 5; i++)
+                            RoundedImage(
+                                width: size.width / 6 - 5,
+                                height: size.width / 6 - 5,
+                                icon: const Icon(Iconsax.gallery_slash),
+                                isLocal: true,
+                                photoUrl:
+                                    "assets/images/subscribe/image${i + 1}.png"),
+                        ],
+                      ),
                     ],
                   ))),
           SizedBox(
               width: size.width,
-              height: 300,
+              height: itemHeight,
               child: Swiper(
                   scrollDirection: Axis.vertical,
                   outer: true,
                   itemWidth: size.width * 0.9,
-                  itemHeight: 300,
+                  itemHeight: itemHeight,
                   fade: 0.8,
                   viewportFraction: 0.39,
                   scale: 0.7,
@@ -143,62 +161,119 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     final package = packages[index];
                     String period = _formatPeriod(
                         package.storeProduct.subscriptionPeriod ?? '');
-                    String id = Platform.isAndroid
-                        ? package.storeProduct.identifier.split(":")[1]
-                        : package.storeProduct.identifier;
+                    String qty = package.storeProduct.identifier
+                        .replaceAll(RegExp(r'[^0-9]'), ''); // '23'
+
                     return Card(
-                        elevation: 5,
-                        shadowColor: Colors.black,
+                        surfaceTintColor: Colors.transparent,
                         color: _selectedTier == package
-                            ? APP_ACCENT_COLOR
-                            : APP_ACCENT_COLOR.withAlpha(100),
+                            ? APP_PRIMARY_COLOR
+                            : APP_PRIMARY_COLOR.withAlpha(100),
                         child: Container(
                             padding: const EdgeInsets.all(0),
-                            margin: const EdgeInsets.all(0),
-                            width: size.width * 0.65,
-                            height: size.width * 0.3,
+                            margin: const EdgeInsets.all(5),
+                            decoration: BoxDecoration(
+                                color: Colors.transparent,
+                                borderRadius:
+                                    const BorderRadius.all(Radius.circular(30)),
+                                border: Border.all(
+                                    width: 4,
+                                    color: _selectedTier == package
+                                        ? period == "Week"
+                                            ? APP_WARNING
+                                            : APP_ACCENT_COLOR
+                                        : APP_PRIMARY_COLOR.withAlpha(100),
+                                    strokeAlign: BorderSide.strokeAlignCenter)),
+                            width: size.width,
+                            height: itemHeight,
                             child: Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  SizedBox(
-                                    width: 100,
-                                    height: 200,
-                                    child: Image.asset(
-                                        "assets/images/subscribe/image${index + 1}.png"),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(5),
+                                  Container(
+                                      padding: const EdgeInsets.all(20),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            qty,
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .headlineLarge,
+                                          ),
+                                          Text(
+                                            "images",
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .labelSmall,
+                                          )
+                                        ],
+                                      )),
+                                  Container(
+                                    padding: const EdgeInsets.only(
+                                        top: 20, bottom: 20),
                                     child: Column(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(" ${period}ly",
-                                            style: const TextStyle(
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold)),
-                                        if (id == UPSELL_AFFORDABLE ||
-                                            id == UPSELL_BULK)
-                                          Badge(
-                                            label: Text(
-                                              _i18n.translate(
-                                                  "plans_${id}_subtitle"),
-                                              style: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ),
-                                        const SizedBox(
-                                          height: 20,
+                                        Row(
+                                          children: [
+                                            if (qty == SELL_10_UNITS ||
+                                                qty == SELL_300_UNITS)
+                                              Badge(
+                                                label: Text(
+                                                  _i18n.translate(
+                                                      "plans_${qty}_subtitle"),
+                                                  style: const TextStyle(
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                              ),
+                                            Text(" ${period}ly",
+                                                style: const TextStyle(
+                                                    color:
+                                                        APP_INVERSE_PRIMARY_COLOR,
+                                                    fontWeight:
+                                                        FontWeight.bold)),
+                                            const SizedBox(
+                                              height: 10,
+                                            )
+                                          ],
                                         ),
-                                        Text(
-                                            "${package.storeProduct.priceString} per $period",
+                                        RichText(
+                                          text: TextSpan(
+                                            text: package
+                                                .storeProduct.priceString,
                                             style: const TextStyle(
                                                 fontSize: 18,
-                                                color: Colors.black,
-                                                fontWeight: FontWeight.bold))
+                                                fontWeight: FontWeight.bold),
+                                            children: [
+                                              TextSpan(
+                                                text:
+                                                    ' / ${period.toLowerCase()}',
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.normal),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                        const SizedBox(
+                                          height: 15,
+                                        ),
+                                        Expanded(
+                                            child: Text(
+                                          "Get ${period}ly subscription to $qty images",
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .labelSmall,
+                                        ))
                                       ],
                                     ),
                                   )
