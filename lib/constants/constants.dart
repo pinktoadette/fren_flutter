@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 
 const String env = 'prod';
 
+const PY_LOCAL = "http://localhost:8000/api/";
 const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
 const PY_UAT = "https://machi-uat-onn4q.ondigitalocean.app/api/";
 const PY_PROD = "https://api.mymachi.app/api/";
@@ -12,7 +13,9 @@ const PY_API = env == 'prod'
     ? PY_PROD
     : env == 'uat'
         ? PY_UAT
-        : PY_DEV;
+        : env == 'dev'
+            ? PY_DEV
+            : PY_LOCAL;
 const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
 
 // const SOCKET_WS = "wss://api.mymachi.app/";
@@ -282,6 +285,7 @@ const String STORY_LAYOUT = "layout";
 const String STORY_BITS = "bits";
 const String STORY_COVER_PAGES = "coverPages";
 const String STORY_PAGES_BACKGROUND = "backgroundUrl";
+const String STORY_PAGES_ALPHA = "backgroundAlpha";
 
 /// Script
 const String STORY_SCRIPT_PAGES = "pages";

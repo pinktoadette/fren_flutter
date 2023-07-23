@@ -80,6 +80,7 @@ class StoryboardController extends GetxController {
   void removeStoryboardfromList(Storyboard storyboard) {
     _storyboards
         .removeWhere(((item) => item.storyboardId == storyboard.storyboardId));
+    _storyboards.refresh();
     update();
   }
 

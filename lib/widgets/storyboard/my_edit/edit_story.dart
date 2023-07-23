@@ -42,7 +42,14 @@ class _EditPageState extends State<EditPage> {
   void _setupPages() {
     setState(() {
       story = widget.passStory;
+      selectedLayout = widget.passStory.layout ?? Layout.CONVO;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _pageController.dispose();
   }
 
   @override

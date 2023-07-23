@@ -33,11 +33,6 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
   bool toggleReplies = false;
 
   @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
   Widget build(BuildContext context) {
     AppLocalizations _i18n = AppLocalizations.of(context);
     return Obx(() => Container(

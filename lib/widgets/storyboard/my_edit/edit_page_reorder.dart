@@ -16,6 +16,7 @@ import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
+import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
@@ -52,9 +53,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late Story story;
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   Layout? layout;
   File? attachmentPreview;
   String? urlPreview;
+  double _alphaValue = 0.5;
 
   @override
   void initState() {
@@ -63,6 +66,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       scripts = widget.scriptList;
       story = storyboardController.currentStory;
       layout = widget.layout;
+      urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
     });
   }
 
@@ -72,13 +76,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
     Size size = MediaQuery.of(context).size;
     return Container(
         constraints: BoxConstraints(
-          minHeight: size.height,
+          minHeight: size.height / 5,
         ),
         decoration: BoxDecoration(
           image: DecorationImage(
               colorFilter: ColorFilter.mode(
-                  const Color.fromARGB(255, 0, 0, 0).withOpacity(0.8),
-                  BlendMode.darken),
+                  Colors.black.withOpacity(_alphaValue), BlendMode.darken),
               image: attachmentPreview != null
                   ? FileImage(
                       attachmentPreview!,
@@ -278,15 +281,17 @@ class _EditPageReorderState extends State<EditPageReorder> {
             height: 30,
           ),
           _bubbleOrNot(
-              Text(
-                scripts[index].text ?? "",
-                textAlign: TextAlign.left,
-                style: TextStyle(
-                    color: layout == Layout.CONVO
-                        ? Colors.black
-                        : APP_INVERSE_PRIMARY_COLOR,
-                    fontSize: 16),
-              ),
+              layout == Layout.COMIC
+                  ? TextBorder(text: scripts[index].text ?? "", size: 16)
+                  : Text(
+                      scripts[index].text ?? "",
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          color: layout == Layout.CONVO
+                              ? Colors.black
+                              : APP_INVERSE_PRIMARY_COLOR,
+                          fontSize: 16),
+                    ),
               size,
               alignment),
           lay,
@@ -352,17 +357,24 @@ class _EditPageReorderState extends State<EditPageReorder> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.25,
+            heightFactor: 0.4,
             child: StoryLayout(
               onSelection: (value) {
                 setState(() {
                   layout = value;
                 });
                 widget.onLayoutSelection(value);
+                if (value == Layout.COMIC) {
+                  setState(() {
+                    _alphaValue = 0;
+                  });
+                }
               },
             ));
       },
-    );
+    ).whenComplete(() {
+      _updateBackground();
+    });
   }
 
   void _moveBit({required int pageNum, required int scriptIndex}) async {
@@ -554,9 +566,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
           file: attachmentPreview!,
           category: UPLOAD_PATH_SCRIPT_IMAGE,
           categoryId: createUUID());
+
+      /// delete last uploadfile
     }
     StoryPages storyPages = story.pages![widget.pageIndex];
     storyPages.backgroundImageUrl = url;
+    storyPages.backgroundAlpha = _alphaValue;
     story.pages![story.pages!
             .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
         storyPages;
@@ -572,10 +587,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
   void _showPageImage(BuildContext context) async {
     await showModalBottomSheet(
         context: context,
+        barrierColor: Colors.black.withOpacity(_alphaValue),
         builder: (context) => FractionallySizedBox(
-              heightFactor: 0.5,
+              heightFactor: 0.7,
               child: EditPageBackground(
                   passStory: story,
+                  alpha: _alphaValue,
                   backgroundImage:
                       story.pages![widget.pageIndex].backgroundImageUrl,
                   onGallerySelect: (value) => {
@@ -583,15 +600,20 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           urlPreview = value;
                           attachmentPreview = null;
                         }),
-                        _updateBackground(),
+                      },
+                  onAlphaChange: (value) => {
+                        setState(() {
+                          _alphaValue = value;
+                        })
                       },
                   onImageSelect: (value) => {
                         setState(() {
                           attachmentPreview = value;
                           urlPreview = null;
                         }),
-                        _updateBackground(),
                       }),
-            ));
+            )).whenComplete(() {
+      _updateBackground();
+    });
   }
 }

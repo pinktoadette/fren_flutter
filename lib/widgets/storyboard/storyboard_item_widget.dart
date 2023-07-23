@@ -18,6 +18,7 @@ import 'package:machi_app/screens/storyboard/story_view.dart';
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // StoryboardItemWidget -> StoriesView (List of stories / Add ) -> StoryItemWidget -> PageView
@@ -55,6 +56,38 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     _i18n = AppLocalizations.of(context);
     width = MediaQuery.of(context).size.width;
     double padding = 15;
+
+    // double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
+    String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
+        ? "Published on "
+        : "Last Updated ";
+    return Card(
+        child: Column(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Container(
+          padding: EdgeInsets.only(top: padding),
+          width: width,
+          child: TimelineHeader(
+            radius: 24,
+            user: storyboard.createdBy,
+            showName: true,
+            showMenu: false,
+            underNameRow:
+                Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                    style: const TextStyle(
+                      fontSize: 12,
+                    )),
+          ),
+        ),
+        _displayType(storyboard, padding, width),
+        if (widget.hideCollection == false) ..._showCollectionFooter()
+      ],
+    ));
+  }
+
+  Widget _displayType(Storyboard storyboard, double padding, double width) {
     String title = storyboard.title;
     String photoUrl = storyboard.photoUrl ?? "";
     String subtitle =
@@ -81,79 +114,112 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       title = storyboard.story![0].title;
       photoUrl = storyboard.story![0].photoUrl ?? "";
     }
-    // double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
-    String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
-        ? "Published on "
-        : "Last Updated ";
 
-    return Card(
-        child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        Container(
-          padding: EdgeInsets.only(top: padding),
-          width: width,
-          child: TimelineHeader(
-            radius: 24,
-            user: storyboard.createdBy,
-            showName: true,
-            showMenu: false,
-            underNameRow:
-                Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                    style: const TextStyle(
-                      fontSize: 12,
-                    )),
-          ),
-        ),
-        InkWell(
-            onTap: () async {
-              _onStoryClick();
-            },
-            child: Container(
-              padding: const EdgeInsets.all(20),
-              width: width - padding,
-              child: Column(
+    if (storyboard.story![0].layout == Layout.COMIC) {
+      /// @todo need to create a common meme layout. See under page_view _displayScript.
+      int index = 0;
+      Story story = storyboard.story![0];
+      double w = width - padding * 2;
+      return InkWell(
+          onTap: () async {
+            _onStoryClick();
+          },
+          child: Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              child: Card(
+                  child: Container(
+                      width: w - padding * 2,
+                      height: w - padding * 2,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              colorFilter: ColorFilter.mode(
+                                  const Color.fromARGB(255, 0, 0, 0)
+                                      .withOpacity(
+                                          story.pages![index].backgroundAlpha ??
+                                              0.5),
+                                  BlendMode.darken),
+                              image: story.pages![index].backgroundImageUrl !=
+                                      null
+                                  ? CachedNetworkImageProvider(
+                                      story.pages![index].backgroundImageUrl!,
+                                      errorListener: () =>
+                                          const Icon(Icons.error),
+                                    )
+                                  : story.pages![index].backgroundImageUrl !=
+                                          null
+                                      ? CachedNetworkImageProvider(
+                                          story.pages![index]
+                                              .backgroundImageUrl!,
+                                          errorListener: () =>
+                                              const Icon(Icons.error),
+                                        )
+                                      : Image.asset(
+                                          "assets/images/blank.jpg",
+                                          scale: 0.2,
+                                          width: 100,
+                                        ).image,
+                              fit: BoxFit.cover)),
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: story.pages![0].scripts!.map((script) {
+                            return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  textLinkPreview(
+                                      useBorder: story.layout == Layout.COMIC,
+                                      context: context,
+                                      text: script.text ?? "",
+                                      style:
+                                          const TextStyle(color: Colors.black))
+                                ]);
+                          }).toList())))));
+    }
+    return InkWell(
+        onTap: () async {
+          _onStoryClick();
+        },
+        child: Container(
+          padding: const EdgeInsets.all(20),
+          width: width - padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      StoryCover(
-                          width: width * 0.4 - padding * 4,
-                          height: width * 0.4 - padding * 4,
-                          photoUrl: photoUrl,
-                          title: title),
-                      Container(
-                          padding: const EdgeInsets.only(left: 10),
-                          width: width * 0.6 - padding * 2,
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                title,
-                                style:
-                                    Theme.of(context).textTheme.headlineSmall,
-                              ),
-                              Text(storyboard.category,
-                                  style: const TextStyle(
-                                      fontSize: 14, color: APP_MUTED_COLOR)),
-                            ],
-                          )),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  if (subtitle != "")
-                    textLinkPreview(context: context, text: subtitle)
+                  if (photoUrl != "")
+                    StoryCover(
+                        width: width * 0.4 - padding * 4,
+                        height: width * 0.4 - padding * 4,
+                        photoUrl: photoUrl,
+                        title: title),
+                  Container(
+                      padding: EdgeInsets.only(left: photoUrl != "" ? 10 : 0),
+                      width: width * 0.6 - (photoUrl != "" ? padding * 2 : 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            title,
+                            style: Theme.of(context).textTheme.headlineSmall,
+                          ),
+                          Text(storyboard.category,
+                              style: const TextStyle(
+                                  fontSize: 14, color: APP_MUTED_COLOR)),
+                        ],
+                      )),
                 ],
               ),
-            )),
-        if (widget.hideCollection == false) ..._showCollectionFooter()
-      ],
-    ));
+              const SizedBox(
+                height: 5,
+              ),
+              if (subtitle != "")
+                textLinkPreview(context: context, text: subtitle)
+            ],
+          ),
+        ));
   }
 
   List<Widget> _showCollectionFooter() {
@@ -197,8 +263,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         onTap: () {
           storyboardController.setCurrentBoard(storyboard);
           timelineController.setStoryTimelineControllerCurrent(story);
-          Get.lazyPut<CommentController>(() => CommentController(),
-              tag: "comment");
 
           Get.to(() => StoryPageView(story: story));
         },
@@ -264,7 +328,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   Future<void> _onStoryClick() async {
     /// if there is only one story, then go to the story bits
     /// if theres more than one, then show entire collection
-    /// @todo if it has a collection index, then go to that index
     storyboardController.setCurrentBoard(storyboard);
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
@@ -327,12 +390,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               padding: const EdgeInsets.only(left: 5, right: 10),
               child: const Text("•"),
             ),
-            if (item.status == StoryStatus.PUBLISHED)
-              SizedBox(
-                  height: 30,
-                  child: Text(
-                      "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
-                      style: const TextStyle(fontSize: 14))),
+            SizedBox(
+                height: 30,
+                child: Text(
+                    "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
+                    style: const TextStyle(fontSize: 14))),
           ],
         ));
   }
