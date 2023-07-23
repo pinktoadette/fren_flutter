@@ -92,8 +92,13 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
               scrollDirection: Axis.vertical,
               itemCount: storyboardController.storyboards.length,
               itemBuilder: (BuildContext ctx, index) {
+                if (index >= storyboardController.storyboards.length) {
+                  /// handle delete out of range
+                  return const SizedBox.shrink();
+                }
                 Storyboard storyboard = storyboardController.storyboards[index];
                 if (storyboard.story!.isEmpty) {
+                  // handles empty boards
                   return const SizedBox.shrink();
                 }
                 return Dismissible(

@@ -103,7 +103,9 @@ class Chatroom {
           message["metadata"] = message[CHAT_TEXT].isNotEmpty &&
                   message[CHAT_TEXT].contains(SLASH_IMAGINE) == false
               ? {"caption": message[CHAT_TEXT]}
-              : null;
+              : message[CHAT_TEXT] != null
+                  ? {"text": message[CHAT_TEXT]}
+                  : null;
           finalMessage = types.ImageMessage.fromJson(message);
         }
         finalMessage = types.Message.fromJson(message);

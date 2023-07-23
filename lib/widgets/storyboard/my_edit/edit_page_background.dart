@@ -11,15 +11,19 @@ import 'package:machi_app/widgets/image/image_source_sheet.dart';
 // ignore: must_be_immutable
 class EditPageBackground extends StatefulWidget {
   final Story passStory;
+  double? alpha;
   String? backgroundImage;
-  Function(File data)? onImageSelect;
-  Function(String url)? onGallerySelect;
+  Function(File? data)? onImageSelect;
+  Function(String? url)? onGallerySelect;
+  Function(double alphaValue)? onAlphaChange;
   EditPageBackground(
       {Key? key,
       required this.passStory,
+      this.alpha,
       this.backgroundImage,
       this.onImageSelect,
-      this.onGallerySelect})
+      this.onGallerySelect,
+      this.onAlphaChange})
       : super(key: key);
 
   @override
@@ -31,7 +35,7 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
   String? galleryImageUrl;
   late Story story;
   late AppLocalizations _i18n;
-  final double _alphaValue = 0;
+  double _alphaValue = 0.5;
 
   @override
   void initState() {
@@ -42,6 +46,8 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
   void _setupPages() {
     setState(() {
       story = widget.passStory;
+      _alphaValue = widget.alpha ?? 0.5;
+      galleryImageUrl = widget.backgroundImage;
     });
   }
 
@@ -87,18 +93,19 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
                 const SizedBox(
                   height: 50,
                 ),
-                // const Text("Alpha Value"),
-                // Slider(
-                //   value: _alphaValue,
-                //   max: 1,
-                //   divisions: 100,
-                //   label: _alphaValue.toString(),
-                //   onChanged: (double value) {
-                //     setState(() {
-                //       _alphaValue = value;
-                //     });
-                //   },
-                // ),
+                const Text("Alpha Value"),
+                Slider(
+                  value: _alphaValue,
+                  max: 1,
+                  divisions: 100,
+                  label: _alphaValue.toString(),
+                  onChanged: (double value) {
+                    setState(() {
+                      _alphaValue = value;
+                    });
+                    widget.onAlphaChange!(value);
+                  },
+                ),
               ],
             )));
   }
@@ -117,8 +124,6 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
             });
             widget.onImageSelect!(image);
           }
-          Navigator.pop(context);
-          Navigator.pop(context);
         },
         onGallerySelected: (imageUrl) async {
           setState(() {
@@ -126,8 +131,6 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
             attachmentPreview = null;
           });
           widget.onGallerySelect!(imageUrl);
-          Navigator.pop(context);
-          Navigator.pop(context);
         },
       ),
     );
@@ -174,6 +177,8 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
                 attachmentPreview = null;
                 galleryImageUrl = null;
               });
+              widget.onGallerySelect!(null);
+              widget.onImageSelect!(null);
             },
             child: const Icon(Iconsax.close_circle),
           ),

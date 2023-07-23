@@ -139,7 +139,8 @@ class StoryApi {
             ? story.pages!
                 .map((page) => {
                       STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
-                      SCRIPT_PAGE_NUM: page.pageNum
+                      SCRIPT_PAGE_NUM: page.pageNum,
+                      STORY_PAGES_ALPHA: page.backgroundAlpha
                     })
                 .toList()
             : []

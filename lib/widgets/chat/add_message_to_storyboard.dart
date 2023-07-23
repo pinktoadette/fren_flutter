@@ -100,7 +100,8 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       if (widget.message.type == types.MessageType.image) {
         await _storyboardApi.createStoryboard(
             image: message.uri,
-            text: message.metadata != null ? message.metadata["caption"] : "",
+            text:
+                message.metadata != null ? _getImageText(message.metadata) : "",
             character: widget.message.author.firstName,
             characterId: widget.message.author.id);
       }
@@ -125,5 +126,15 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         isLoading = false;
       });
     }
+  }
+
+  String _getImageText(Map<String, dynamic> metadata) {
+    if (metadata.containsKey("caption")) {
+      return metadata["caption"];
+    }
+    if (metadata.containsKey("text")) {
+      return metadata["text"];
+    }
+    return "";
   }
 }

@@ -73,7 +73,9 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   void dispose() {
     super.dispose();
-    commentController.pagingController.dispose();
+    if (widget.isPreview == false) {
+      commentController.pagingController.dispose();
+    }
   }
 
   void getStoryContent() async {
@@ -316,7 +318,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                             image: DecorationImage(
                                 colorFilter: ColorFilter.mode(
                                     const Color.fromARGB(255, 0, 0, 0)
-                                        .withOpacity(0.6),
+                                        .withOpacity(story?.pages![index]
+                                                .backgroundAlpha ??
+                                            0.5),
                                     BlendMode.darken),
                                 image: story?.pages![index]
                                             .backgroundImageUrl !=
@@ -415,10 +419,12 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   Widget _displayScript(Script script, Size size) {
+    /// @todo need to create a common meme layout. See under storyboard_item_widget the display creates two separate layouts.
+
     Widget widget = const SizedBox.shrink();
     if (script.type == "text") {
       widget = textLinkPreview(
-          useBorder: story!.layout == Layout.PUBLICATION,
+          useBorder: story!.layout == Layout.COMIC,
           context: context,
           text: script.text ?? "",
           style: TextStyle(

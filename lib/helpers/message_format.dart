@@ -80,7 +80,9 @@ types.Message messageFromJson(Map<String, dynamic> message) {
     message["metadata"] = message[CHAT_TEXT] != null &&
             message[CHAT_TEXT].contains(SLASH_IMAGINE) == false
         ? {"caption": message[CHAT_TEXT]}
-        : null;
+        : message[CHAT_TEXT] != null
+            ? {"text": message[CHAT_TEXT]}
+            : null;
 
     return types.ImageMessage.fromJson(message);
   }

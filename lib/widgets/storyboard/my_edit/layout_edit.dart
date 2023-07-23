@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: constant_identifier_names
-enum Layout { PUBLICATION, CONVO, FLASHCARD }
+enum Layout { PUBLICATION, CONVO, FLASHCARD, COMIC }
 
 class StoryLayout extends StatelessWidget {
   final Function(Layout) onSelection;
@@ -50,6 +50,8 @@ class StoryLayout extends StatelessWidget {
                   i18n.translate("story_layout_plaintext"), Layout.PUBLICATION),
               _createRow(context, const Icon(Iconsax.messages_1),
                   i18n.translate("story_layout_conversation"), Layout.CONVO),
+              _createRow(context, const Icon(Iconsax.messages_1),
+                  i18n.translate("story_layout_comic"), Layout.COMIC),
             ]));
   }
 
