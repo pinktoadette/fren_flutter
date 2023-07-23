@@ -260,29 +260,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
     if (!_agreeTerms) {
       // Show error message
-      Get.snackbar(
-        _i18n.translate("terms_condition"),
-        _i18n.translate("you_must_agree_to_our_privacy_policy"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
+      Get.snackbar(_i18n.translate("terms_condition"),
+          _i18n.translate("you_must_agree_to_our_privacy_policy"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+          colorText: Colors.black);
     }
 
     if (!_formKey.currentState!.validate()) {
-      Get.snackbar(
-        _i18n.translate('validation_warning'),
-        _i18n.translate("validation_3_characters"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_WARNING,
-      );
+      Get.snackbar(_i18n.translate('validation_warning'),
+          _i18n.translate("validation_3_characters"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_WARNING,
+          colorText: Colors.black);
     } else if (isNameAvail == false) {
-      Get.snackbar(
-        _i18n.translate("validation_warning"),
-        _i18n.translate("validation_username"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
-      return;
+      Get.snackbar(_i18n.translate("validation_warning"),
+          _i18n.translate("validation_username"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+          colorText: Colors.black);
     }
     // else if (UserModel().calculateUserAge(_initialDateTime) < 12) {
     //   Get.snackbar(
@@ -313,15 +309,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
           });
         },
         onFail: (error) async {
-          // Debug error
-          debugPrint(error);
-
-          Get.snackbar(
-            _i18n.translate("validation_warning"),
-            _i18n.translate("an_error_occurred_while_creating_your_account"),
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: APP_ERROR,
-          );
+          Get.snackbar(_i18n.translate("validation_warning"),
+              _i18n.translate("an_error_occurred_while_creating_your_account"),
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_ERROR,
+              colorText: Colors.black);
         },
       );
     }

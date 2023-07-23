@@ -68,6 +68,9 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
             if (widget.message != null) {
               _addMessage();
             } else {
+              Get.lazyPut<CommentController>(() => CommentController(),
+                  tag: "comment");
+
               storyboardController.currentStory = widget.story;
               Get.to(() => StoryPageView(story: widget.story));
             }

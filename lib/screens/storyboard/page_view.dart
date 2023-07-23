@@ -45,6 +45,7 @@ class StoryPageView extends StatefulWidget {
 class _StoryPageViewState extends State<StoryPageView> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   TimelineController timelineController = Get.find(tag: 'timeline');
+  CommentController commentController = Get.find(tag: 'comment');
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
@@ -60,6 +61,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   void initState() {
     super.initState();
+
     if (widget.isPreview == true) {
       setState(() {
         story = widget.story;
@@ -114,7 +116,6 @@ class _StoryPageViewState extends State<StoryPageView> {
           ),
           leading: BackButton(
             onPressed: () {
-              CommentController commentController = Get.find(tag: 'comment');
               commentController.clearComments();
               Get.back();
             },

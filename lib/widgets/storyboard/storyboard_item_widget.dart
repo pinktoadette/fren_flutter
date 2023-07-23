@@ -196,8 +196,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                         photoUrl: photoUrl,
                         title: title),
                   Container(
-                      padding: const EdgeInsets.only(left: 10),
-                      width: width * 0.6 - padding * 2,
+                      padding: EdgeInsets.only(left: photoUrl != "" ? 10 : 0),
+                      width: width * 0.6 - (photoUrl != "" ? padding * 2 : 0),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -332,6 +332,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
+      Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
+
       if ((storyboard.story!.isNotEmpty) & (storyboard.story!.length == 1)) {
         timelineController
             .setStoryTimelineControllerCurrent(storyboard.story![0]);
