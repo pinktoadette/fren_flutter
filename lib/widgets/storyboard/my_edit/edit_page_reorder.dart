@@ -66,6 +66,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       scripts = widget.scriptList;
       story = storyboardController.currentStory;
       layout = widget.layout;
+      urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
     });
   }
 
@@ -565,6 +566,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
           file: attachmentPreview!,
           category: UPLOAD_PATH_SCRIPT_IMAGE,
           categoryId: createUUID());
+
+      /// delete last uploadfile
     }
     StoryPages storyPages = story.pages![widget.pageIndex];
     storyPages.backgroundImageUrl = url;

@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
@@ -65,8 +63,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         : "Last Updated ";
     return Card(
         child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
           padding: EdgeInsets.only(top: padding),
@@ -126,46 +124,56 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           onTap: () async {
             _onStoryClick();
           },
-          child: Card(
-              child: Container(
-                  width: w,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          colorFilter: ColorFilter.mode(
-                              const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                                  story.pages![index].backgroundAlpha ?? 0.5),
-                              BlendMode.darken),
-                          image: story.pages![index].backgroundImageUrl != null
-                              ? CachedNetworkImageProvider(
-                                  story.pages![index].backgroundImageUrl!,
-                                  errorListener: () => const Icon(Icons.error),
-                                )
-                              : story.pages![index].backgroundImageUrl != null
+          child: Container(
+              margin: const EdgeInsets.only(bottom: 20),
+              child: Card(
+                  child: Container(
+                      width: w - padding * 2,
+                      height: w - padding * 2,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              colorFilter: ColorFilter.mode(
+                                  const Color.fromARGB(255, 0, 0, 0)
+                                      .withOpacity(
+                                          story.pages![index].backgroundAlpha ??
+                                              0.5),
+                                  BlendMode.darken),
+                              image: story.pages![index].backgroundImageUrl !=
+                                      null
                                   ? CachedNetworkImageProvider(
                                       story.pages![index].backgroundImageUrl!,
                                       errorListener: () =>
                                           const Icon(Icons.error),
                                     )
-                                  : Image.asset(
-                                      "assets/images/blank.jpg",
-                                      scale: 0.2,
-                                      width: 100,
-                                    ).image,
-                          fit: BoxFit.cover)),
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: story.pages![0].scripts!.map((script) {
-                        return Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              textLinkPreview(
-                                  useBorder: story.layout == Layout.COMIC,
-                                  context: context,
-                                  text: script.text ?? "",
-                                  style: const TextStyle(color: Colors.black))
-                            ]);
-                      }).toList()))));
+                                  : story.pages![index].backgroundImageUrl !=
+                                          null
+                                      ? CachedNetworkImageProvider(
+                                          story.pages![index]
+                                              .backgroundImageUrl!,
+                                          errorListener: () =>
+                                              const Icon(Icons.error),
+                                        )
+                                      : Image.asset(
+                                          "assets/images/blank.jpg",
+                                          scale: 0.2,
+                                          width: 100,
+                                        ).image,
+                              fit: BoxFit.cover)),
+                      padding: const EdgeInsets.all(20),
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: story.pages![0].scripts!.map((script) {
+                            return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  textLinkPreview(
+                                      useBorder: story.layout == Layout.COMIC,
+                                      context: context,
+                                      text: script.text ?? "",
+                                      style:
+                                          const TextStyle(color: Colors.black))
+                                ]);
+                          }).toList())))));
     }
     return InkWell(
         onTap: () async {
@@ -181,11 +189,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  StoryCover(
-                      width: width * 0.4 - padding * 4,
-                      height: width * 0.4 - padding * 4,
-                      photoUrl: photoUrl,
-                      title: title),
+                  if (photoUrl != "")
+                    StoryCover(
+                        width: width * 0.4 - padding * 4,
+                        height: width * 0.4 - padding * 4,
+                        photoUrl: photoUrl,
+                        title: title),
                   Container(
                       padding: const EdgeInsets.only(left: 10),
                       width: width * 0.6 - padding * 2,
@@ -254,8 +263,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         onTap: () {
           storyboardController.setCurrentBoard(storyboard);
           timelineController.setStoryTimelineControllerCurrent(story);
-          Get.lazyPut<CommentController>(() => CommentController(),
-              tag: "comment");
 
           Get.to(() => StoryPageView(story: story));
         },
@@ -321,13 +328,10 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   Future<void> _onStoryClick() async {
     /// if there is only one story, then go to the story bits
     /// if theres more than one, then show entire collection
-    /// @todo if it has a collection index, then go to that index
     storyboardController.setCurrentBoard(storyboard);
     if (widget.message != null) {
       Get.to(() => StoriesView(message: widget.message!));
     } else {
-      Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
-
       if ((storyboard.story!.isNotEmpty) & (storyboard.story!.length == 1)) {
         timelineController
             .setStoryTimelineControllerCurrent(storyboard.story![0]);
@@ -384,12 +388,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               padding: const EdgeInsets.only(left: 5, right: 10),
               child: const Text("•"),
             ),
-            if (item.status == StoryStatus.PUBLISHED)
-              SizedBox(
-                  height: 30,
-                  child: Text(
-                      "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
-                      style: const TextStyle(fontSize: 14))),
+            SizedBox(
+                height: 30,
+                child: Text(
+                    "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
+                    style: const TextStyle(fontSize: 14))),
           ],
         ));
   }

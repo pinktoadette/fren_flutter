@@ -42,12 +42,6 @@ class CommentController extends GetxController {
     pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey));
   }
 
-  @override
-  void dispose() {
-    pagingController.dispose();
-    super.dispose();
-  }
-
   // sets which comment the user is replying to.
   void replyTo(StoryComment comment) {
     _replyToComment.value = comment;

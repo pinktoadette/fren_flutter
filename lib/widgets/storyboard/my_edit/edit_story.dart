@@ -1,6 +1,5 @@
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
@@ -43,6 +42,7 @@ class _EditPageState extends State<EditPage> {
   void _setupPages() {
     setState(() {
       story = widget.passStory;
+      selectedLayout = widget.passStory.layout ?? Layout.CONVO;
     });
   }
 

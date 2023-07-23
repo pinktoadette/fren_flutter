@@ -29,7 +29,6 @@ class NotificationsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     /// Initialization
     final i18n = AppLocalizations.of(context);
-    Get.lazyPut(() => CommentController());
 
     return Scaffold(
       appBar: AppBar(

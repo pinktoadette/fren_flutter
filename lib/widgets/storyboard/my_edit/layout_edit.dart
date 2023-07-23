@@ -1,3 +1,4 @@
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -50,8 +51,18 @@ class StoryLayout extends StatelessWidget {
                   i18n.translate("story_layout_plaintext"), Layout.PUBLICATION),
               _createRow(context, const Icon(Iconsax.messages_1),
                   i18n.translate("story_layout_conversation"), Layout.CONVO),
-              _createRow(context, const Icon(Iconsax.messages_1),
+              _createRow(context, const Icon(Iconsax.smileys),
                   i18n.translate("story_layout_comic"), Layout.COMIC),
+              Row(
+                children: [
+                  const SizedBox(
+                    width: 50,
+                  ),
+                  Text(i18n.translate("story_layout_comic_note"),
+                      style:
+                          const TextStyle(fontSize: 12, color: APP_MUTED_COLOR))
+                ],
+              )
             ]));
   }
 
