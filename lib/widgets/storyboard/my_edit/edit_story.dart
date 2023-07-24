@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 /// Need to call pages since storyboard
@@ -29,6 +30,8 @@ class _EditPageState extends State<EditPage> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
   Layout selectedLayout = Layout.CONVO;
+  PageDirection _pageDirection = PageDirection.HORIZONTAL;
+
   int pageIndex = 0;
 
   get onUpdate => null;
@@ -104,6 +107,11 @@ class _EditPageState extends State<EditPage> {
             onUpdateSeq: (update) {
               _updateSequence(update);
             },
+            onPageAxisDirection: (direction) {
+              setState(() {
+                _pageDirection = direction;
+              });
+            },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
             })
@@ -118,6 +126,9 @@ class _EditPageState extends State<EditPage> {
             onPageChanged: _onPageChange,
             controller: _pageController,
             itemCount: story.pages!.length,
+            scrollDirection: _pageDirection == PageDirection.HORIZONTAL
+                ? Axis.horizontal
+                : Axis.vertical,
             itemBuilder: (_, index) {
               List<Script> scripts = story.pages![index].scripts ?? [];
               return EditPageReorder(
@@ -130,6 +141,11 @@ class _EditPageState extends State<EditPage> {
                   },
                   onUpdateSeq: (update) {
                     _updateSequence(update);
+                  },
+                  onPageAxisDirection: (direction) {
+                    setState(() {
+                      _pageDirection = direction;
+                    });
                   },
                   onLayoutSelection: (layout) {
                     selectedLayout = layout;

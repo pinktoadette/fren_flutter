@@ -21,6 +21,7 @@ import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 
 // ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
@@ -30,6 +31,7 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
   final Function(Layout data) onLayoutSelection;
+  final Function(PageDirection direction) onPageAxisDirection;
   Layout? layout;
 
   EditPageReorder(
@@ -39,6 +41,7 @@ class EditPageReorder extends StatefulWidget {
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
       required this.onLayoutSelection,
+      required this.onPageAxisDirection,
       this.pageIndex = 0,
       this.layout})
       : super(key: key);
@@ -58,6 +61,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.5;
+  PageDirection direction = PageDirection.VERICAL;
 
   @override
   void initState() {
@@ -129,13 +133,19 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           IconButton(
                             icon: const Icon(Iconsax.image),
                             onPressed: () {
-                              _showPageImage(context);
+                              _editPageImage(context);
                             },
                           ),
                           IconButton(
                             icon: const Icon(Iconsax.element_plus),
                             onPressed: () {
                               widget.onMoveInsertPages({"action": "add"});
+                            },
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.expand),
+                            onPressed: () {
+                              _editPageDirection(context);
                             },
                           ),
                           IconButton(
@@ -151,6 +161,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
         ));
   }
 
+  /// drag and drop of individual widget
+  /// it saves after each change.
   Widget _reorderListWidget() {
     Size size = MediaQuery.of(context).size;
     if (scripts.isEmpty || scripts[0].scriptId == "") {
@@ -194,7 +206,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                                   ),
                                   ElevatedButton(
                                       onPressed: () => {
-                                            _deleteMessage(index),
+                                            _deleteBit(index),
                                             Navigator.of(context).pop(true),
                                           },
                                       child: Text(_i18n.translate("DELETE"))),
@@ -222,6 +234,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
             }));
   }
 
+  /// shows how individual text / images inside the box,
+  /// such as text alignment
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
     CrossAxisAlignment alignment = layout == Layout.CONVO
@@ -318,6 +332,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
+  /// layout conversation style or plain text style
   Widget _bubbleOrNot(Widget widget, Size size, CrossAxisAlignment align) {
     return layout == Layout.CONVO
         ? StoryBubble(
@@ -328,6 +343,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         : widget;
   }
 
+  /// show all the pages in the collection.
   List<PopupMenuItem<int>> _showPages() {
     story = storyboardController.currentStory;
 
@@ -350,6 +366,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     return pagesMenu;
   }
 
+  /// select layouy format. Three choices.
   void _showLayOutSelection(BuildContext context) {
     // double height = MediaQuery.of(context).size.height;
     showModalBottomSheet<void>(
@@ -359,6 +376,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return FractionallySizedBox(
             heightFactor: 0.4,
             child: StoryLayout(
+              selection: layout ?? Layout.CONVO,
               onSelection: (value) {
                 setState(() {
                   layout = value;
@@ -377,6 +395,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
+  /// drag and drop individual boxes.
   void _moveBit({required int pageNum, required int scriptIndex}) async {
     try {
       Script script = scripts[scriptIndex].copyWith(pageNum: pageNum);
@@ -402,6 +421,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
+  /// add or edit texts for individual boxes.
   void _addEditText({int? index}) async {
     showModalBottomSheet<void>(
         context: context,
@@ -449,6 +469,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             }));
   }
 
+  /// save any images texts.
   Future<void> _saveOrUploadTextImg(Map<String, dynamic> content) async {
     if (content["text"] != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
@@ -509,6 +530,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     widget.onUpdateSeq(scripts);
   }
 
+  /// updates the sequence of the individual boxes when dragged and dropped.
   void _updateSequence() async {
     List<Script> newSequence = [];
     List<Map<String, dynamic>> saveSequence = [];
@@ -537,7 +559,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
-  void _deleteMessage(int index) async {
+  /// delete individual boxes.
+  void _deleteBit(int index) async {
     try {
       await _scriptApi.deleteScript(script: scripts[index]);
       scripts
@@ -558,6 +581,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
+  /// update background images on the page.
   void _updateBackground() async {
     final _storyApi = StoryApi();
     String? url = urlPreview;
@@ -584,7 +608,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
-  void _showPageImage(BuildContext context) async {
+  /// edit background image of the page.
+  void _editPageImage(BuildContext context) async {
     await showModalBottomSheet(
         context: context,
         barrierColor: Colors.black.withOpacity(_alphaValue),
@@ -614,6 +639,25 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       }),
             )).whenComplete(() {
       _updateBackground();
+    });
+  }
+
+  /// edit page direction scroll.
+  /// PageDirection.HORIZONTAL or PageDirection.VERTICAL.
+  void _editPageDirection(BuildContext context) async {
+    await showModalBottomSheet(
+        context: context,
+        barrierColor: Colors.black.withOpacity(_alphaValue),
+        builder: (context) => FractionallySizedBox(
+              heightFactor: 0.7,
+              child: PageScrollDirection(
+                selection: direction,
+                onSelection: (direction) {
+                  widget.onPageAxisDirection(direction);
+                },
+              ),
+            )).whenComplete(() {
+      // _updateBackground();
     });
   }
 }

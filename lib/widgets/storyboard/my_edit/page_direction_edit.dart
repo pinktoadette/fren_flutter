@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: constant_identifier_names
-enum Layout { PUBLICATION, CONVO, FLASHCARD, COMIC }
+enum PageDirection { HORIZONTAL, VERICAL }
 
-class StoryLayout extends StatelessWidget {
-  final Layout? selection;
-  final Function(Layout) onSelection;
-  const StoryLayout({
+class PageScrollDirection extends StatelessWidget {
+  final PageDirection? selection;
+  final Function(PageDirection direction) onSelection;
+  const PageScrollDirection({
     Key? key,
     this.selection,
     required this.onSelection,
@@ -36,7 +36,7 @@ class StoryLayout extends StatelessWidget {
                   Padding(
                     padding: const EdgeInsets.only(left: 20),
                     child: Text(
-                      i18n.translate("story_layout"),
+                      i18n.translate("story_page_direction"),
                       style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -49,12 +49,16 @@ class StoryLayout extends StatelessWidget {
                 ],
               ),
               const Divider(height: 5, thickness: 1),
-              _createRow(context, const Icon(Iconsax.book),
-                  i18n.translate("story_layout_plaintext"), Layout.PUBLICATION),
-              _createRow(context, const Icon(Iconsax.messages_1),
-                  i18n.translate("story_layout_conversation"), Layout.CONVO),
-              _createRow(context, const Icon(Iconsax.smileys),
-                  i18n.translate("story_layout_comic"), Layout.COMIC),
+              _createRow(
+                  context,
+                  const Icon(Icons.align_horizontal_right_rounded),
+                  i18n.translate("story_page_horizontal"),
+                  PageDirection.HORIZONTAL),
+              _createRow(
+                  context,
+                  const Icon(Icons.align_vertical_bottom_rounded),
+                  i18n.translate("story_page_vertical"),
+                  PageDirection.VERICAL),
               Row(
                 children: [
                   const SizedBox(
@@ -69,12 +73,12 @@ class StoryLayout extends StatelessWidget {
   }
 
   Widget _createRow(
-      BuildContext context, Icon icon, String item, Layout layout) {
+      BuildContext context, Icon icon, String item, PageDirection direction) {
     return SizedBox(
         width: double.infinity,
         child: InkWell(
             onTap: () async {
-              onSelection(layout);
+              onSelection(direction);
               Navigator.pop(context);
             },
             child: Padding(
@@ -88,7 +92,7 @@ class StoryLayout extends StatelessWidget {
                   Text(item,
                       style: TextStyle(
                           fontSize: 16,
-                          color: selection == layout
+                          color: selection == direction
                               ? APP_ACCENT_COLOR
                               : APP_INVERSE_PRIMARY_COLOR))
                 ],

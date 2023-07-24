@@ -380,6 +380,10 @@
   "story_layout_comic_note": "Background image may not be aligned in preview.",
   "story_layout_flashcard": "Flashcard",
 
+  "story_page_direction": "Page Scroll Direction",
+  "story_page_horizontal": "Horizontal scroll",
+  "story_page_vertical": "Vertical scroll",
+
   "story_share": "Share",
   "storyboard": "Board",
   "story_as_text": "Text Version",
