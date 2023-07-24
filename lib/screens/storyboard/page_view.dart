@@ -290,7 +290,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     return Stack(alignment: Alignment.topCenter, children: [
       SizedBox(
           height: height - 80,
-          width: size.width,
+          width: double.infinity,
           child: PageView.builder(
             controller: controller,
             itemCount: storyboardController.currentStory.pages!.length,
@@ -306,6 +306,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                         ),
                       Card(
                           child: Container(
+                        height: size.width,
                         decoration: BoxDecoration(
                             image: DecorationImage(
                                 colorFilter: ColorFilter.mode(
@@ -337,7 +338,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             width: 100,
                                           ).image,
                                 fit: BoxFit.cover)),
-                        width: size.width,
+                        // width: double.infinity,
                         padding: const EdgeInsets.all(20),
                         child: Column(
                             crossAxisAlignment: story!.layout == Layout.CONVO
@@ -418,7 +419,9 @@ class _StoryPageViewState extends State<StoryPageView> {
       widget = textLinkPreview(
           useBorder: story!.layout == Layout.COMIC,
           context: context,
+          width: story!.layout == Layout.COMIC ? size.width : null,
           text: script.text ?? "",
+          textAlign: script.textAlign ?? TextAlign.left,
           style: TextStyle(
               color: story!.layout == Layout.CONVO
                   ? Colors.black

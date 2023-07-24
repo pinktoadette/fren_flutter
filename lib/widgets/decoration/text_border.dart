@@ -4,13 +4,16 @@ import 'package:machi_app/constants/constants.dart';
 class TextBorder extends StatelessWidget {
   final String text;
   final double? size;
+  final TextAlign? textAlign;
 
-  const TextBorder({Key? key, required this.text, this.size}) : super(key: key);
+  const TextBorder({Key? key, required this.text, this.size, this.textAlign})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
+      textAlign: textAlign ?? TextAlign.left,
       style: TextStyle(
           inherit: true,
           fontSize: size ?? 20,

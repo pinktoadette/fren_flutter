@@ -78,10 +78,76 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        _reorderListWidget(),
+        Positioned(
+            height: 100,
+            bottom: 0,
+            child: Column(children: [
+              Container(
+                color: Theme.of(context).colorScheme.background,
+                width: size.width,
+                height: 100,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Iconsax.text_block),
+                        onPressed: () {
+                          _addEditText();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.image),
+                        onPressed: () {
+                          _editPageImage(context);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.element_plus),
+                        onPressed: () {
+                          widget.onMoveInsertPages({"action": "add"});
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.expand),
+                        onPressed: () {
+                          _editPageDirection(context);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.grid_3),
+                        onPressed: () {
+                          _showLayOutSelection(context);
+                        },
+                      )
+                    ]),
+              )
+            ])),
+      ],
+    );
+  }
+
+  /// drag and drop of individual widget
+  /// it saves after each change.
+  Widget _reorderListWidget() {
+    Size size = MediaQuery.of(context).size;
+    if (scripts.isEmpty || scripts[0].scriptId == "") {
+      return Container(
+        width: size.width,
+      );
+    }
+// Container(
+//         constraints: BoxConstraints(
+//           minHeight: size.width,
+//         ),
+//         child:
+
     return Container(
-        constraints: BoxConstraints(
-          minHeight: size.height / 5,
-        ),
+        margin: const EdgeInsets.only(bottom: 100),
+        constraints: BoxConstraints(minHeight: size.width),
         decoration: BoxDecoration(
           image: DecorationImage(
               colorFilter: ColorFilter.mode(
@@ -109,70 +175,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             ).image,
               fit: BoxFit.cover),
         ),
-        child: Stack(
-          children: [
-            _reorderListWidget(),
-            Positioned(
-                height: 100,
-                bottom: 0,
-                child: Column(children: [
-                  Container(
-                    color: Theme.of(context).colorScheme.background,
-                    width: size.width,
-                    height: 100,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Iconsax.text_block),
-                            onPressed: () {
-                              _addEditText();
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.image),
-                            onPressed: () {
-                              _editPageImage(context);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.element_plus),
-                            onPressed: () {
-                              widget.onMoveInsertPages({"action": "add"});
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.expand),
-                            onPressed: () {
-                              _editPageDirection(context);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.grid_3),
-                            onPressed: () {
-                              _showLayOutSelection(context);
-                            },
-                          )
-                        ]),
-                  )
-                ])),
-          ],
-        ));
-  }
-
-  /// drag and drop of individual widget
-  /// it saves after each change.
-  Widget _reorderListWidget() {
-    Size size = MediaQuery.of(context).size;
-    if (scripts.isEmpty || scripts[0].scriptId == "") {
-      return Container(
-        width: size.width,
-      );
-    }
-
-    return Container(
-        margin: const EdgeInsets.only(bottom: 100),
         child: ReorderableListView(
             children: [
               for (int index = 0; index < scripts.length; index += 1)
@@ -296,10 +298,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
           ),
           _bubbleOrNot(
               layout == Layout.COMIC
-                  ? TextBorder(text: scripts[index].text ?? "", size: 16)
+                  ? SizedBox(
+                      width: size.width,
+                      child: TextBorder(
+                          text: scripts[index].text ?? "",
+                          size: 16,
+                          textAlign: scripts[index].textAlign))
                   : Text(
                       scripts[index].text ?? "",
-                      textAlign: TextAlign.left,
+                      textAlign: scripts[index].textAlign,
                       style: TextStyle(
                           color: layout == Layout.CONVO
                               ? Colors.black
@@ -438,8 +445,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
                 if ((index != null) & (newContent?["text"] != "")) {
                   Script script = scripts[index!].copyWith(
-                    text: newContent?["text"] ?? "",
-                  );
+                      text: newContent?["text"] ?? "",
+                      textAlign: newContent?["textAlign"] ?? TextAlign.left);
 
                   await _scriptApi.updateScript(script: script);
 
@@ -478,6 +485,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
           type: "text",
           storyId: story.storyId,
           text: content["text"] ?? "",
+          textAlign: content["textAlign"] ?? TextAlign.left,
           pageNum: widget.pageIndex + 1);
       setState(() {
         scripts = [...scripts, pages.scripts![0]];

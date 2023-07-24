@@ -59,16 +59,6 @@ class PageScrollDirection extends StatelessWidget {
                   const Icon(Icons.align_vertical_bottom_rounded),
                   i18n.translate("story_page_vertical"),
                   PageDirection.VERICAL),
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 50,
-                  ),
-                  Text(i18n.translate("story_layout_comic_note"),
-                      style:
-                          const TextStyle(fontSize: 12, color: APP_MUTED_COLOR))
-                ],
-              )
             ]));
   }
 

@@ -169,7 +169,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                   textLinkPreview(
                                       useBorder: story.layout == Layout.COMIC,
                                       context: context,
-                                      text: script.text ?? "",
+                                      text: truncateText(
+                                          maxLength: 300,
+                                          text: script.text ?? ""),
                                       style:
                                           const TextStyle(color: Colors.black))
                                 ]);

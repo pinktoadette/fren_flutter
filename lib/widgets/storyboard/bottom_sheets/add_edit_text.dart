@@ -28,6 +28,7 @@ class _AddEditTextState extends State<AddEditText> {
 
   File? attachmentPreview;
   String? galleryImageUrl;
+  TextAlign textAlign = TextAlign.left;
 
   @override
   void initState() {
@@ -133,15 +134,41 @@ class _AddEditTextState extends State<AddEditText> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          textAlign = TextAlign.left;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_left)),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          textAlign = TextAlign.center;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_center)),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          textAlign = TextAlign.right;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_right)),
+                ],
+              )
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 150),
+            margin: const EdgeInsets.only(top: 200),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(),
                     child: TextFormField(
+                      textAlign: textAlign,
                       scrollController: _scrollController,
                       style: Theme.of(context).textTheme.bodyMedium,
                       onTapOutside: (b) {
@@ -169,7 +196,8 @@ class _AddEditTextState extends State<AddEditText> {
       widget.onTextComplete({
         "text": text,
         "image": attachmentPreview ?? "",
-        "gallery": galleryImageUrl ?? ""
+        "gallery": galleryImageUrl ?? "",
+        "textAlign": textAlign
       });
     } else {
       Get.snackbar(

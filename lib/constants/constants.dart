@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-const String env = 'prod';
+const String env = 'dev';
 
 const PY_LOCAL = "http://localhost:8000/api/";
 const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
@@ -293,6 +293,7 @@ const String SCRIPTS = "scripts";
 const String SCRIPT_ID = "scriptId";
 const String SCRIPT_TYPE = "type";
 const String SCRIPT_TEXT = "text";
+const String SCRIPT_TEXT_ALIGN = "textAlign";
 const String SCRIPT_IMAGE = "image";
 const String SCRIPT_IMAGE_WIDTH = "width";
 const String SCRIPT_IMAGE_HEIGHT = "height";
