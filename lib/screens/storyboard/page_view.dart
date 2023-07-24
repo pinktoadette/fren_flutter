@@ -309,7 +309,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                     ),
                   Card(
                       child: Container(
-                    height: size.height - 250,
+                    height: size.height - 300,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             colorFilter: ColorFilter.mode(
@@ -385,7 +385,6 @@ class _StoryPageViewState extends State<StoryPageView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Spacer(),
                 Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: SmoothPageIndicator(
