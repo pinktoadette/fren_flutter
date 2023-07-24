@@ -22,6 +22,7 @@ import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -293,30 +294,37 @@ class _StoryPageViewState extends State<StoryPageView> {
           width: double.infinity,
           child: PageView.builder(
             controller: controller,
+            scrollDirection: story!.pageDirection == PageDirection.HORIZONTAL
+                ? Axis.horizontal
+                : Axis.vertical,
             itemCount: storyboardController.currentStory.pages!.length,
             itemBuilder: (_, index) {
               List<Script>? scripts = story!.pages![index].scripts;
               return SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
                   child: Column(
-                    children: [
-                      if (index == 0)
-                        StoryHeaderWidget(
-                          story: storyboardController.currentStory,
-                        ),
-                      Card(
-                          child: Container(
-                        height: size.width,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                colorFilter: ColorFilter.mode(
-                                    const Color.fromARGB(255, 0, 0, 0)
-                                        .withOpacity(story?.pages![index]
-                                                .backgroundAlpha ??
-                                            0.5),
-                                    BlendMode.darken),
-                                image: story?.pages![index]
-                                            .backgroundImageUrl !=
+                children: [
+                  if (index == 0)
+                    StoryHeaderWidget(
+                      story: storyboardController.currentStory,
+                    ),
+                  Card(
+                      child: Container(
+                    height: size.height - 250,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                                    story?.pages![index].backgroundAlpha ??
+                                        0.5),
+                                BlendMode.darken),
+                            image: story?.pages![index].backgroundImageUrl !=
+                                    null
+                                ? CachedNetworkImageProvider(
+                                    story!.pages![index].backgroundImageUrl!,
+                                    errorListener: () =>
+                                        const Icon(Icons.error),
+                                  )
+                                : story!.pages![index].backgroundImageUrl !=
                                         null
                                     ? CachedNetworkImageProvider(
                                         story!
@@ -324,54 +332,52 @@ class _StoryPageViewState extends State<StoryPageView> {
                                         errorListener: () =>
                                             const Icon(Icons.error),
                                       )
-                                    : story!.pages![index].backgroundImageUrl !=
-                                            null
-                                        ? CachedNetworkImageProvider(
-                                            story!.pages![index]
-                                                .backgroundImageUrl!,
-                                            errorListener: () =>
-                                                const Icon(Icons.error),
-                                          )
-                                        : Image.asset(
-                                            "assets/images/blank.jpg",
-                                            scale: 0.2,
-                                            width: 100,
-                                          ).image,
-                                fit: BoxFit.cover)),
-                        // width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                            crossAxisAlignment: story!.layout == Layout.CONVO
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            children: scripts!.map((script) {
-                              CrossAxisAlignment alignment =
-                                  story!.layout == Layout.CONVO
-                                      ? story!.createdBy.username.trim() ==
-                                              script.characterName!.trim()
-                                          ? CrossAxisAlignment.end
-                                          : CrossAxisAlignment.start
-                                      : script.type == 'image'
-                                          ? CrossAxisAlignment.center
-                                          : CrossAxisAlignment.start;
-                              return Column(
-                                  crossAxisAlignment: alignment,
-                                  children: [
-                                    _displayScript(script, size),
-                                    if (story!.layout == Layout.CONVO)
-                                      Text(script.characterName ?? ""),
-                                    const SizedBox(
-                                      height: 20,
-                                    )
-                                  ]);
-                            }).toList()),
-                      ))
-                    ],
-                  ));
+                                    : Image.asset(
+                                        "assets/images/blank.jpg",
+                                        scale: 0.2,
+                                        width: 100,
+                                      ).image,
+                            fit: BoxFit.cover)),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                        crossAxisAlignment: story!.layout == Layout.CONVO
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: scripts!.map((script) {
+                          CrossAxisAlignment alignment =
+                              story!.layout == Layout.CONVO
+                                  ? story!.createdBy.username.trim() ==
+                                          script.characterName!.trim()
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start
+                                  : script.type == 'image'
+                                      ? CrossAxisAlignment.center
+                                      : CrossAxisAlignment.start;
+                          return Column(
+                              crossAxisAlignment: alignment,
+                              children: [
+                                _displayScript(script, size),
+                                if (story!.layout == Layout.CONVO)
+                                  Text(script.characterName ?? ""),
+                                const SizedBox(
+                                  height: 20,
+                                )
+                              ]);
+                        }).toList()),
+                  ))
+                ],
+              ));
             },
           )),
       Positioned(
-          bottom: 0,
+          bottom: story!.pageDirection == PageDirection.HORIZONTAL
+              ? 30
+              : size.height / 2,
+          width: story!.pageDirection == PageDirection.HORIZONTAL
+              ? size.width
+              : 40,
+          left:
+              story!.pageDirection == PageDirection.HORIZONTAL ? size.width : 0,
           child: SizedBox(
             height: 50,
             width: size.width,
@@ -385,6 +391,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                     child: SmoothPageIndicator(
                       controller: controller,
                       count: story!.pages!.length,
+                      axisDirection:
+                          story!.pageDirection == PageDirection.HORIZONTAL
+                              ? Axis.horizontal
+                              : Axis.vertical,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 10,
                           dotWidth: 18,
@@ -393,21 +403,24 @@ class _StoryPageViewState extends State<StoryPageView> {
                 const SizedBox(
                   width: 20,
                 ),
-                Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Obx(
-                      () => LikeItemWidget(
-                          onLike: (val) {
-                            _onLikePressed(widget.story, val);
-                          },
-                          size: 20,
-                          likes: timelineController.currentStory.likes ?? 0,
-                          mylikes:
-                              timelineController.currentStory.mylikes ?? 0),
-                    )),
               ],
             ),
-          ))
+          )),
+      Positioned(
+        bottom: 30,
+        right: 10,
+        child: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Obx(
+              () => LikeItemWidget(
+                  onLike: (val) {
+                    _onLikePressed(widget.story, val);
+                  },
+                  size: 20,
+                  likes: timelineController.currentStory.likes ?? 0,
+                  mylikes: timelineController.currentStory.mylikes ?? 0),
+            )),
+      )
     ]);
   }
 
@@ -419,7 +432,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       widget = textLinkPreview(
           useBorder: story!.layout == Layout.COMIC,
           context: context,
-          width: story!.layout == Layout.COMIC ? size.width : null,
+          width: story!.layout != Layout.CONVO ? size.width : null,
           text: script.text ?? "",
           textAlign: script.textAlign ?? TextAlign.left,
           style: TextStyle(

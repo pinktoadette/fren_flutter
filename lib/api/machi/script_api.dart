@@ -29,7 +29,7 @@ class ScriptApi {
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {
         "text": text,
-        "textAlign": textAlign.toString(),
+        "textAlign": textAlign?.name,
         "character": character,
         "characterId": characterId,
         "type": type,

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 
 // ignore: constant_identifier_names
-enum PageDirection { HORIZONTAL, VERICAL }
+enum PageDirection { HORIZONTAL, VERTICAL }
 
 class PageScrollDirection extends StatelessWidget {
   final PageDirection? selection;
@@ -58,7 +58,7 @@ class PageScrollDirection extends StatelessWidget {
                   context,
                   const Icon(Icons.align_vertical_bottom_rounded),
                   i18n.translate("story_page_vertical"),
-                  PageDirection.VERICAL),
+                  PageDirection.VERTICAL),
             ]));
   }
 

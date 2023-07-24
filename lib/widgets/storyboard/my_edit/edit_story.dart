@@ -154,19 +154,27 @@ class _EditPageState extends State<EditPage> {
             },
           )),
       Positioned(
-          bottom: 30,
-          height: 20,
+          bottom: _pageDirection == PageDirection.HORIZONTAL ? 30 : 50,
+          height: 30,
+          left: _pageDirection == PageDirection.HORIZONTAL ? 0 : 20,
           width: size.width,
           child: Container(
             width: size.width,
-            alignment: Alignment.center,
+            alignment: _pageDirection == PageDirection.HORIZONTAL
+                ? Alignment.center
+                : Alignment.bottomLeft,
             child: SmoothPageIndicator(
+              axisDirection: _pageDirection == PageDirection.VERTICAL
+                  ? Axis.vertical
+                  : Axis.horizontal,
               controller: _pageController,
               count: story.pages?.length ?? 1,
-              effect: const ExpandingDotsEffect(
-                  dotHeight: 8, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
+              effect: ExpandingDotsEffect(
+                  dotHeight: 8,
+                  dotWidth: _pageDirection == PageDirection.HORIZONTAL ? 14 : 8,
+                  activeDotColor: APP_ACCENT_COLOR),
             ),
-          ))
+          )),
     ];
   }
 

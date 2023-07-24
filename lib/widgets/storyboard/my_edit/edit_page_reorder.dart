@@ -61,7 +61,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.5;
-  PageDirection direction = PageDirection.VERICAL;
+  PageDirection _direction = PageDirection.HORIZONTAL;
 
   @override
   void initState() {
@@ -106,13 +106,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Iconsax.element_plus),
-                        onPressed: () {
-                          widget.onMoveInsertPages({"action": "add"});
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.expand),
+                        icon: _direction == PageDirection.HORIZONTAL
+                            ? const Icon(Icons.swipe_right)
+                            : const Icon(Icons.swipe_down),
                         onPressed: () {
                           _editPageDirection(context);
                         },
@@ -122,7 +118,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         onPressed: () {
                           _showLayOutSelection(context);
                         },
-                      )
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.element_plus),
+                        onPressed: () {
+                          widget.onMoveInsertPages({"action": "add"});
+                        },
+                      ),
                     ]),
               )
             ])),
@@ -139,11 +141,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
         width: size.width,
       );
     }
-// Container(
-//         constraints: BoxConstraints(
-//           minHeight: size.width,
-//         ),
-//         child:
 
     return Container(
         margin: const EdgeInsets.only(bottom: 100),
@@ -297,7 +294,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             height: 30,
           ),
           _bubbleOrNot(
-              layout == Layout.COMIC
+              layout != Layout.CONVO
                   ? SizedBox(
                       width: size.width,
                       child: TextBorder(
@@ -608,7 +605,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
             .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
         storyPages;
 
-    Story updateStory = story.copyWith(pages: story.pages);
+    Story updateStory =
+        story.copyWith(pages: story.pages, pageDirection: _direction);
 
     await _storyApi.updateStory(story: updateStory);
     setState(() {
@@ -659,13 +657,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
         builder: (context) => FractionallySizedBox(
               heightFactor: 0.7,
               child: PageScrollDirection(
-                selection: direction,
+                selection: _direction,
                 onSelection: (direction) {
+                  setState(() {
+                    _direction = direction;
+                  });
                   widget.onPageAxisDirection(direction);
                 },
               ),
             )).whenComplete(() {
-      // _updateBackground();
+      _updateBackground();
     });
   }
 }
