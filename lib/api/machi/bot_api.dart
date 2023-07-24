@@ -117,10 +117,11 @@ class BotApi {
     return response.data;
   }
 
-  Future<List<dynamic>> machiImage({required text}) async {
+  Future<List<dynamic>> machiImage({required text, required numImages}) async {
     String url = '${baseUri}machi_image';
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: {"text": text});
+    final response =
+        await dio.post(url, data: {"text": text, "numImages": numImages});
     return response.data;
   }
 

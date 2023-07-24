@@ -10,6 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/storyboard/storyboard_home.dart';
+import 'package:machi_app/screens/studio/image_studio.dart';
 import 'package:machi_app/tabs/conversations_tab.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/tabs/profile_tab.dart';
@@ -178,6 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // const PlaylistTab(),
       const StoryboardHome(),
       const ConversationsTab(),
+      const ImageStudioScreen(),
       NotificationsScreen(),
       const ProfileTab()
     ];
@@ -218,6 +220,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 label: '',
                 icon: _getConversationCounter(),
               ),
+
+              /// Art studio Tab
+              const BottomNavigationBarItem(
+                  label: '', icon: Icon(Iconsax.brush_3)),
 
               /// Notification Tab
               BottomNavigationBarItem(
