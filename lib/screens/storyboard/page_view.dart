@@ -309,7 +309,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                     ),
                   Card(
                       child: Container(
-                    height: size.height - 300,
+                    height: size.height - 250,
                     decoration: BoxDecoration(
                         image: DecorationImage(
                             colorFilter: ColorFilter.mode(

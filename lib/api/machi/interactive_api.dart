@@ -35,8 +35,8 @@ class InteractiveBoardApi {
     final getData = response.data;
 
     List<InteractiveBoard> boards = [];
-    for (var i; i < getData.length; i++) {
-      InteractiveBoard interactive = InteractiveBoard.fromJson(getData[i]);
+    for (var board in getData) {
+      InteractiveBoard interactive = InteractiveBoard.fromJson(board);
       boards.add(interactive);
     }
     return boards;

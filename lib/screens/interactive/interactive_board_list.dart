@@ -72,7 +72,7 @@ class _InteractiveBoardListState extends State<InteractiveBoardList> {
                     return InkWell(
                         onTap: () => Get.to(
                             () => InteractivePageView(interactive: item)),
-                        child: Text(item.category));
+                        child: Text(item.prompt));
                   }),
               separatorBuilder: (BuildContext context, int index) {
                 if ((index + 1) % 3 == 0) {

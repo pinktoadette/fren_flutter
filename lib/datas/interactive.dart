@@ -22,9 +22,9 @@ class InteractiveBoardPrompt {
 class InteractiveBoard {
   final String interactiveId;
   final String prompt;
-  final String category;
-  final String summary;
   final int sequence;
+  final String? category;
+  final String? summary;
   final String? photoUrl;
   final int? createdAt;
   final int? updatedAt;
@@ -33,8 +33,8 @@ class InteractiveBoard {
       {required this.interactiveId,
       required this.prompt,
       required this.sequence,
-      required this.category,
-      required this.summary,
+      this.category,
+      this.summary,
       this.photoUrl,
       this.createdAt,
       this.updatedAt});
@@ -79,6 +79,6 @@ class InteractiveBoard {
         summary: doc[INTERACTIVE_INITIAL_SUMMARY],
         photoUrl: doc[INTERACTIVE_PHOTO_URL],
         createdAt: doc[CREATED_AT].toInt(),
-        updatedAt: doc[UPDATED_AT].toInt());
+        updatedAt: doc[CREATED_AT].toInt());
   }
 }

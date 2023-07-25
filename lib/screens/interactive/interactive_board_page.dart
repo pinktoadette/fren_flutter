@@ -116,7 +116,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
         appBar: AppBar(
             centerTitle: false,
             title: Text(
-              widget.interactive.category,
+              "something",
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             leading: BackButton(
