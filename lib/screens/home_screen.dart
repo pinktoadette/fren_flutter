@@ -9,6 +9,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/create_post.dart';
 import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/screens/studio/image_studio.dart';
 import 'package:machi_app/tabs/conversations_tab.dart';
@@ -179,7 +180,6 @@ class _HomeScreenState extends State<HomeScreen> {
       // const PlaylistTab(),
       const StoryboardHome(),
       const ConversationsTab(),
-      const ImageStudioScreen(),
       NotificationsScreen(),
       const ProfileTab()
     ];
@@ -221,10 +221,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 icon: _getConversationCounter(),
               ),
 
-              /// Art studio Tab
-              const BottomNavigationBarItem(
-                  label: '', icon: Icon(Iconsax.brush_3)),
-
               /// Notification Tab
               BottomNavigationBarItem(
                 label: '',
@@ -236,52 +232,58 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: '', icon: Icon(Iconsax.user)),
             ]),
         body: _showCurrentNavBar(),
-        floatingActionButton: ExpandableFab(
-          isOpen: isFabOpen,
-          distance: 80.0,
-          children: [
-            ActionButton(
-              onPressed: () => {
-                showModalBottomSheet<void>(
-                    context: context,
-                    isScrollControlled: true,
-                    builder: (context) => FractionallySizedBox(
-                        heightFactor: 0.9,
-                        child: DraggableScrollableSheet(
-                          snap: true,
-                          initialChildSize: 1,
-                          minChildSize: 1,
-                          builder: (context, scrollController) =>
-                              SingleChildScrollView(
-                            controller: scrollController,
-                            child: const CreateMachiWidget(),
-                          ),
-                        ))),
-                setState(() {
-                  isFabOpen = false;
-                })
-              },
-              icon: const Icon(Iconsax.pen_add),
-            ),
-            ActionButton(
-              onPressed: () => {
-                showModalBottomSheet<void>(
-                  context: context,
-                  enableDrag: true,
-                  isScrollControlled: true,
-                  builder: (context) {
-                    return const FractionallySizedBox(
-                        heightFactor: 0.9, child: ExploreMachi());
-                  },
-                ),
-                setState(() {
-                  isFabOpen = false;
-                })
-              },
-              icon: const Icon(Iconsax.note),
-            ),
-          ],
-        ));
+        floatingActionButton: FloatingActionButton(
+            elevation: 2,
+            backgroundColor: Colors.transparent,
+            onPressed: () {
+              showModalBottomSheet<void>(
+                context: context,
+                enableDrag: true,
+                isScrollControlled: true,
+                builder: (context) {
+                  return const FractionallySizedBox(
+                      heightFactor: 0.9, child: CreatePost());
+                },
+              );
+            },
+            child: const CircleAvatar(
+              backgroundImage: AssetImage('assets/images/inverse_logo.jpg'),
+            ))
+
+        // ExpandableFab(
+        //   isOpen: isFabOpen,
+        //   distance: 80.0,
+        //   children: [
+        //     ActionButton(
+        //       onPressed: () => {
+        //         Get.to(() => const CreatePost()),
+        //         setState(() {
+        //           isFabOpen = false;
+        //         })
+        //       },
+        //       icon: const Icon(Iconsax.pen_add),
+        //     ),
+        //     ActionButton(
+        //       onPressed: () => {
+        //         showModalBottomSheet<void>(
+        //           context: context,
+        //           enableDrag: true,
+        //           isScrollControlled: true,
+        //           builder: (context) {
+        //             return const FractionallySizedBox(
+        //                 heightFactor: 0.9, child: ExploreMachi());
+        //           },
+        //         ),
+        //         setState(() {
+        //           isFabOpen = false;
+        //         })
+        //       },
+        //       icon: const Icon(Iconsax.note),
+        //     ),
+        //   ],
+        // )
+
+        );
   }
 
   /// Count unread conversations

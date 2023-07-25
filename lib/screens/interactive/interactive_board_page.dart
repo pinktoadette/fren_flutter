@@ -1,0 +1,443 @@
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/api/machi/interactive_api.dart';
+import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/timeline_api.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/comment_controller.dart';
+import 'package:machi_app/controller/interactive_board_controller.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/interactive.dart';
+import 'package:machi_app/datas/script.dart';
+import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:machi_app/helpers/text_link_preview.dart';
+import 'package:machi_app/screens/storyboard/confirm_publish.dart';
+import 'package:machi_app/widgets/common/chat_bubble_container.dart';
+import 'package:machi_app/widgets/like_widget.dart';
+import 'package:machi_app/widgets/report_list.dart';
+import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
+import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
+import 'package:machi_app/widgets/comment/post_comment_widget.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
+import 'package:machi_app/widgets/comment/comment_widget.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
+import 'package:machi_app/widgets/storyboard/story/story_header.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+
+/// Need to call pages since storyboard
+/// did not query this in order to increase speed
+class InteractivePageView extends StatefulWidget {
+  final InteractiveBoard interactive;
+  const InteractivePageView({Key? key, required this.interactive})
+      : super(key: key);
+
+  @override
+  _InteractivePageViewState createState() => _InteractivePageViewState();
+}
+
+class _InteractivePageViewState extends State<InteractivePageView> {
+  TimelineController timelineController = Get.find(tag: 'timeline');
+  CommentController commentController = Get.find(tag: 'comment');
+  InteractiveBoardController interactiveController =
+      Get.find(tag: 'interactive');
+
+  final controller = PageController(viewportFraction: 1, keepPage: true);
+  final _timelineApi = TimelineApi();
+  final _interaciveApi = InteractiveBoardApi();
+  late AppLocalizations _i18n;
+  double bodyHeightPercent = 0.85;
+  double headerHeight = 140;
+
+  late InteractiveBoardPrompt prompts;
+  var pages = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _getInitialPath();
+  }
+
+  void _getInitialPath() async {
+    InteractiveBoardPrompt p =
+        await _interaciveApi.getInteractiveId(widget.interactive.interactiveId);
+    setState(() {
+      prompts = p;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
+
+    if (pages.isEmpty) {
+      return Scaffold(
+          appBar: AppBar(
+            title: Text(_i18n.translate("story_collection")),
+          ),
+          body: NoData(text: _i18n.translate("loading")));
+    }
+    return Scaffold(
+        appBar: AppBar(
+          centerTitle: false,
+          title: Text(
+            widget.interactive.category,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+          leading: BackButton(
+            onPressed: () {
+              commentController.clearComments();
+              Get.back();
+            },
+          ),
+          titleSpacing: 0,
+        ),
+        body: Stack(children: [
+          SingleChildScrollView(
+              child: Obx(() => Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      _showPageWidget(),
+                    ],
+                  ))),
+          _commentSheet()
+        ]));
+  }
+
+  void _onReport() {
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 0.85,
+            child: ReportForm(
+              itemId: widget.interactive.interactiveId,
+              itemType: "interactive",
+            ));
+      },
+    );
+  }
+
+  Future<void> _onLikePressed(Story item, bool value) async {
+    try {
+      String response = await _timelineApi.likeStoryMachi(
+          "story", item.storyId, value == true ? 1 : 0);
+      if (response == "OK") {
+        Story update = item.copyWith(
+            mylikes: value == true ? 1 : 0,
+            likes:
+                value == true ? (item.likes! + 1) : max(0, (item.likes! - 1)));
+        timelineController.updateStoryboard(
+            storyboard: storyboardController.currentStoryboard,
+            updateStory: update);
+      }
+    } catch (err, s) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Cannot like item', fatal: true);
+    }
+  }
+
+  Widget _commentSheet() {
+    return DraggableScrollableSheet(
+      initialChildSize: 1 - bodyHeightPercent + 0.025,
+      minChildSize: 1 - bodyHeightPercent,
+      expand: true,
+      builder: (BuildContext context, ScrollController scrollController) {
+        if (controller.hasClients) {}
+        return AnimatedBuilder(
+            animation: controller,
+            builder: (context, child) {
+              return Container(
+                  decoration: BoxDecoration(
+                    boxShadow: [
+                      BoxShadow(
+                          color: Theme.of(context)
+                              .colorScheme
+                              .tertiary
+                              .withOpacity(0.5)
+                              .withAlpha(50),
+                          blurRadius: 15,
+                          offset: const Offset(0, -10)),
+                    ],
+                  ),
+                  child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(24),
+                          topRight: Radius.circular(24)),
+                      child: Container(
+                          color: const Color.fromARGB(255, 20, 20, 20),
+                          child: Stack(children: [
+                            CustomScrollView(
+                                controller: scrollController,
+                                slivers: [
+                                  SliverToBoxAdapter(
+                                      child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 20, top: 10, bottom: 10),
+                                    child: Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.keyboard_double_arrow_up,
+                                          size: 14,
+                                        ),
+                                        const SizedBox(
+                                          width: 10,
+                                        ),
+                                        Text(_i18n.translate("comments"),
+                                            style: Theme.of(context)
+                                                .textTheme
+                                                .bodySmall)
+                                      ],
+                                    ),
+                                  )),
+                                  const CommentWidget(),
+                                  const SliverToBoxAdapter(
+                                      child: SizedBox(
+                                    height: 100,
+                                  ))
+                                ]),
+                            const Positioned(
+                                bottom: 0, child: PostCommentWidget())
+                          ]))));
+            });
+      },
+    );
+  }
+
+  Widget _showPageWidget() {
+    Size size = MediaQuery.of(context).size;
+    double height = story?.status.name == StoryStatus.PUBLISHED.name
+        ? size.height * bodyHeightPercent
+        : size.height - 100;
+
+    if (story!.pages!.isEmpty) {
+      return SizedBox(
+          height: height,
+          width: size.width,
+          child: NoData(text: _i18n.translate("storybits_empty")));
+    }
+
+    return Stack(alignment: Alignment.topCenter, children: [
+      SizedBox(
+          height: height - 80,
+          width: double.infinity,
+          child: PageView.builder(
+            controller: controller,
+            scrollDirection: story!.pageDirection == PageDirection.HORIZONTAL
+                ? Axis.horizontal
+                : Axis.vertical,
+            itemCount: storyboardController.currentStory.pages!.length,
+            itemBuilder: (_, index) {
+              List<Script>? scripts = story!.pages![index].scripts;
+              return SingleChildScrollView(
+                  child: Column(
+                children: [
+                  if (index == 0)
+                    StoryHeaderWidget(
+                      story: storyboardController.currentStory,
+                    ),
+                  Card(
+                      child: Container(
+                    height: size.height - 300,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                                    story?.pages![index].backgroundAlpha ??
+                                        0.5),
+                                BlendMode.darken),
+                            image: story?.pages![index].backgroundImageUrl !=
+                                    null
+                                ? CachedNetworkImageProvider(
+                                    story!.pages![index].backgroundImageUrl!,
+                                    errorListener: () =>
+                                        const Icon(Icons.error),
+                                  )
+                                : story!.pages![index].backgroundImageUrl !=
+                                        null
+                                    ? CachedNetworkImageProvider(
+                                        story!
+                                            .pages![index].backgroundImageUrl!,
+                                        errorListener: () =>
+                                            const Icon(Icons.error),
+                                      )
+                                    : Image.asset(
+                                        "assets/images/blank.jpg",
+                                        scale: 0.2,
+                                        width: 100,
+                                      ).image,
+                            fit: BoxFit.cover)),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                        crossAxisAlignment: story!.layout == Layout.CONVO
+                            ? CrossAxisAlignment.end
+                            : CrossAxisAlignment.start,
+                        children: scripts!.map((script) {
+                          CrossAxisAlignment alignment =
+                              story!.layout == Layout.CONVO
+                                  ? story!.createdBy.username.trim() ==
+                                          script.characterName!.trim()
+                                      ? CrossAxisAlignment.end
+                                      : CrossAxisAlignment.start
+                                  : script.type == 'image'
+                                      ? CrossAxisAlignment.center
+                                      : CrossAxisAlignment.start;
+                          return Column(
+                              crossAxisAlignment: alignment,
+                              children: [
+                                _displayScript(script, size),
+                                if (story!.layout == Layout.CONVO)
+                                  Text(script.characterName ?? ""),
+                                const SizedBox(
+                                  height: 20,
+                                )
+                              ]);
+                        }).toList()),
+                  ))
+                ],
+              ));
+            },
+          )),
+      Positioned(
+          bottom: story!.pageDirection == PageDirection.HORIZONTAL
+              ? 30
+              : size.height / 2,
+          width: story!.pageDirection == PageDirection.HORIZONTAL
+              ? size.width
+              : 40,
+          left:
+              story!.pageDirection == PageDirection.HORIZONTAL ? size.width : 0,
+          child: SizedBox(
+            height: 50,
+            width: size.width,
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: SmoothPageIndicator(
+                      controller: controller,
+                      count: story!.pages!.length,
+                      axisDirection:
+                          story!.pageDirection == PageDirection.HORIZONTAL
+                              ? Axis.horizontal
+                              : Axis.vertical,
+                      effect: const ExpandingDotsEffect(
+                          dotHeight: 10,
+                          dotWidth: 18,
+                          activeDotColor: APP_ACCENT_COLOR),
+                    )),
+                const SizedBox(
+                  width: 20,
+                ),
+              ],
+            ),
+          )),
+      Positioned(
+        bottom: 30,
+        right: 10,
+        child: Padding(
+            padding: const EdgeInsets.only(right: 10),
+            child: Obx(
+              () => LikeItemWidget(
+                  onLike: (val) {
+                    _onLikePressed(widget.story, val);
+                  },
+                  size: 20,
+                  likes: timelineController.currentStory.likes ?? 0,
+                  mylikes: timelineController.currentStory.mylikes ?? 0),
+            )),
+      )
+    ]);
+  }
+
+  Widget _displayScript(Script script, Size size) {
+    /// @todo need to create a common meme layout. See under storyboard_item_widget the display creates two separate layouts.
+
+    Widget widget = const SizedBox.shrink();
+    if (script.type == "text") {
+      widget = textLinkPreview(
+          useBorder: story!.layout == Layout.COMIC,
+          context: context,
+          width: story!.layout != Layout.CONVO ? size.width : null,
+          text: script.text ?? "",
+          textAlign: script.textAlign ?? TextAlign.left,
+          style: TextStyle(
+              color: story!.layout == Layout.CONVO
+                  ? Colors.black
+                  : Theme.of(context).colorScheme.primary));
+    } else if (script.type == "image") {
+      widget = StoryCover(
+        photoUrl: script.image?.uri ?? "",
+        title: story?.title ?? "machi",
+        width: size.width * 0.9,
+        height: size.width * 0.9,
+      );
+    }
+    Widget widgetScript = story!.layout == Layout.CONVO
+        ? StoryBubble(
+            isRight: story!.createdBy.username == script.characterName,
+            widget: widget,
+            size: size)
+        : widget;
+    return widgetScript;
+  }
+
+  Widget _unpublishedTools() {
+    Storyboard storyboard = storyboardController.currentStoryboard;
+    return Row(
+      children: [
+        if ((story?.status != StoryStatus.PUBLISHED) &
+            (storyboard.story!.length == 1))
+          TextButton.icon(
+              onPressed: () {
+                Get.to(() => const AddNewStory());
+              },
+              icon: const Icon(Iconsax.add),
+              label: Text(
+                _i18n.translate("story_collection"),
+                style: Theme.of(context).textTheme.labelSmall,
+              )),
+        if (story?.status != StoryStatus.PUBLISHED)
+          IconButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => EditPage(
+                      passStory: story ?? widget.story,
+                    ),
+                  ),
+                ).then((val) {
+                  setState(() {
+                    story = val;
+                  });
+                });
+              },
+              icon: const Icon(
+                Iconsax.edit,
+                size: 20,
+              ))
+      ],
+    );
+  }
+}

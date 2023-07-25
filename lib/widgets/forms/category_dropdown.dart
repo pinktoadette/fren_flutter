@@ -24,7 +24,7 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
   }
 
   void _getCategory() async {
-    String _cat = await rootBundle.loadString('assets/json/interest.json');
+    String _cat = await rootBundle.loadString('assets/json/category.json');
     List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
     setState(() {
       _category = category;

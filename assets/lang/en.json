@@ -476,6 +476,15 @@
   "studio_art": "Image",
   "studio_audio": "Speech",
   "studio_music": "Music",
-  "studio_select_model": "Find a model"
+  "studio_select_model": "Find a model",
+
+  "post": "Post",
+  "post_create": "Create A Post",
+  "post_interactive_info": "Create an interactive post where users decide the outcome. You can create any content that follows guidelines, including stories and exams. You will only need to write the initial prompt, be very specific.",
+  "post_interactive_button": "Interactive",
+  "post_board_button": "Board",
+  "post_board_info": "Post from your board",
+  "post_interactive_hint": "Example: Imagine you wake up in a mysterious world, surrounded by enchanted forests and magnical creatures. As you take your first step, you notice a glowing object in the distance. What do you do next? \n\nYou have a microbiology exam coming up and need questions.",
   
+  "interactive": "Interactive"
 }

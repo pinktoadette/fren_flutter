@@ -31,7 +31,6 @@ class _ImageStudioScreenState extends State<ImageStudioScreen> {
 
     return Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
           title: Text(
             _i18n.translate("studio"),
             style: Theme.of(context).textTheme.headlineLarge,

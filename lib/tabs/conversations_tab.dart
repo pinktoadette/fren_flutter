@@ -10,6 +10,7 @@ import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/studio/image_studio.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
@@ -66,27 +67,45 @@ class _ConversationsTabState extends State<ConversationsTab> {
     return Scaffold(
         appBar: AppBar(
             title: Text(
-              _i18n.translate("chat"),
+              _i18n.translate("studio"),
               style: Theme.of(context).textTheme.headlineLarge,
             ),
-            actions: <Widget>[
-              IconButton(
-                  onPressed: () {
-                    _createBot(context);
-                  },
-                  icon: const Icon(Iconsax.message_add_1)),
-              IconButton(
-                  onPressed: () {
-                    _viewBots(context);
-                  },
-                  icon: const Icon(Iconsax.messages)),
-              IconButton(
-                  onPressed: () async {
-                    Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
-                    SetCurrentRoom().setNewBotRoom(bot, true);
-                  },
-                  icon: const Icon(Iconsax.message_edit))
-            ]),
+            bottom: PreferredSize(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IconButton(
+                            onPressed: () {
+                              _createBot(context);
+                            },
+                            icon: const Icon(Iconsax.message_add_1)),
+                        IconButton(
+                            onPressed: () {
+                              _viewBots(context);
+                            },
+                            icon: const Icon(Iconsax.messages)),
+                        IconButton(
+                            onPressed: () async {
+                              Bot bot =
+                                  await _botApi.getBot(botId: DEFAULT_BOT_ID);
+                              SetCurrentRoom().setNewBotRoom(bot, true);
+                            },
+                            icon: const Icon(Iconsax.message_edit))
+                      ],
+                    ),
+                    IconButton(
+                      icon: const Icon(Iconsax.brush_3),
+                      onPressed: () {
+                        Get.to(() => const ImageStudioScreen());
+                      },
+                    ),
+                  ],
+                ),
+                preferredSize: Size(width, 40)),
+            actions: <Widget>[]),
         body: RefreshIndicator(
             onRefresh: () async {
               await _chatroomApi.getAllMyRooms(

@@ -344,6 +344,17 @@ const String UPSELL_AFFORDABLE = "imaginfy10";
 const String SELL_300_UNITS = "300";
 const String SELL_10_UNITS = "10";
 
+/// INTERACTIVE
+const String INTERACTIVE_ID = "interactiveId";
+const String INTERACTIVE_PROMPT = "prompt";
+const String INTERACTIVE_USER__ID = "user_id";
+const String INTERACTIVE_NUM_SEQ = "sequence";
+const String INTERACTIVE_INITIAL_SUMMARY = "summary";
+const String INTERACTIVE_CATEGORY = "category";
+const String INTERACTIVE_PHOTO_URL = "photoUrl";
+const String INTERACTIVE_CURRENT_PROMPT = "mainText";
+const String INTERACTIVE_CURRENT_CHOICES = "options";
+
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id
 const String ROOM_ID = "chatroomId";
