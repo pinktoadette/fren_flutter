@@ -27,6 +27,21 @@ class InteractiveBoardApi {
     return interactive;
   }
 
+  Future<List<InteractiveBoard>> getAllInteractive({required int page}) async {
+    String url = '${baseUri}interactive/all?page=$page';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    final getData = response.data;
+
+    List<InteractiveBoard> boards = [];
+    for (var i; i < getData.length; i++) {
+      InteractiveBoard interactive = InteractiveBoard.fromJson(getData[i]);
+      boards.add(interactive);
+    }
+    return boards;
+  }
+
   Future<InteractiveBoardPrompt> getInteractiveId(String interactiveId) async {
     String url = '${baseUri}interactive/pose?interactiveId=$interactiveId';
     debugPrint("Requesting URL $url");

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/rendering.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/interactive_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
@@ -57,6 +58,8 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.85;
   double headerHeight = 140;
+  final ScrollController _scrollController = ScrollController();
+  double _previousScrollOffset = 0.0;
 
   late InteractiveBoardPrompt prompts;
   var pages = [];
@@ -65,6 +68,13 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   void initState() {
     super.initState();
     _getInitialPath();
+    _scrollController.addListener(_onScroll);
+  }
+
+  void dispose() {
+    _scrollController
+        .dispose(); // Dispose the ScrollController to avoid memory leaks
+    super.dispose();
   }
 
   void _getInitialPath() async {
@@ -73,6 +83,22 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     setState(() {
       prompts = p;
     });
+  }
+
+  void _onScroll() {
+    double currentScrollOffset = _scrollController.offset;
+    ScrollDirection scrollDirection;
+
+    if (currentScrollOffset > _previousScrollOffset) {
+      scrollDirection = ScrollDirection.forward;
+    } else {
+      scrollDirection = ScrollDirection.reverse;
+    }
+
+    // You can use the `scrollDirection` variable to determine the direction of the scroll
+    print('Scroll Direction: $scrollDirection');
+
+    _previousScrollOffset = currentScrollOffset;
   }
 
   @override
@@ -88,19 +114,37 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     }
     return Scaffold(
         appBar: AppBar(
-          centerTitle: false,
-          title: Text(
-            widget.interactive.category,
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          leading: BackButton(
-            onPressed: () {
-              commentController.clearComments();
-              Get.back();
-            },
-          ),
-          titleSpacing: 0,
-        ),
+            centerTitle: false,
+            title: Text(
+              widget.interactive.category,
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            leading: BackButton(
+              onPressed: () {
+                commentController.clearComments();
+                Get.back();
+              },
+            ),
+            titleSpacing: 0,
+            actions: [
+              PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (context) => <PopupMenuEntry<String>>[
+                        const PopupMenuItem(
+                          child: Text('Report'),
+                          value: 'report',
+                        )
+                      ],
+                  onSelected: (val) {
+                    switch (val) {
+                      case 'report':
+                        _onReport();
+                        break;
+                      default:
+                        break;
+                    }
+                  })
+            ]),
         body: Stack(children: [
           SingleChildScrollView(
               child: Obx(() => Column(
@@ -130,19 +174,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   }
 
   Future<void> _onLikePressed(Story item, bool value) async {
-    try {
-      String response = await _timelineApi.likeStoryMachi(
-          "story", item.storyId, value == true ? 1 : 0);
-      if (response == "OK") {
-        Story update = item.copyWith(
-            mylikes: value == true ? 1 : 0,
-            likes:
-                value == true ? (item.likes! + 1) : max(0, (item.likes! - 1)));
-        timelineController.updateStoryboard(
-            storyboard: storyboardController.currentStoryboard,
-            updateStory: update);
-      }
-    } catch (err, s) {
+    try {} catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
@@ -150,8 +182,8 @@ class _InteractivePageViewState extends State<InteractivePageView> {
         backgroundColor: APP_ERROR,
       );
 
-      await FirebaseCrashlytics.instance
-          .recordError(err, s, reason: 'Cannot like item', fatal: true);
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot like interactive item', fatal: true);
     }
   }
 
@@ -224,220 +256,61 @@ class _InteractivePageViewState extends State<InteractivePageView> {
 
   Widget _showPageWidget() {
     Size size = MediaQuery.of(context).size;
-    double height = story?.status.name == StoryStatus.PUBLISHED.name
-        ? size.height * bodyHeightPercent
-        : size.height - 100;
+    double height = size.height * bodyHeightPercent;
 
-    if (story!.pages!.isEmpty) {
-      return SizedBox(
-          height: height,
-          width: size.width,
-          child: NoData(text: _i18n.translate("storybits_empty")));
-    }
-
-    return Stack(alignment: Alignment.topCenter, children: [
-      SizedBox(
-          height: height - 80,
-          width: double.infinity,
-          child: PageView.builder(
-            controller: controller,
-            scrollDirection: story!.pageDirection == PageDirection.HORIZONTAL
-                ? Axis.horizontal
-                : Axis.vertical,
-            itemCount: storyboardController.currentStory.pages!.length,
-            itemBuilder: (_, index) {
-              List<Script>? scripts = story!.pages![index].scripts;
-              return SingleChildScrollView(
-                  child: Column(
-                children: [
-                  if (index == 0)
-                    StoryHeaderWidget(
-                      story: storyboardController.currentStory,
-                    ),
-                  Card(
-                      child: Container(
-                    height: size.height - 300,
-                    decoration: BoxDecoration(
-                        image: DecorationImage(
-                            colorFilter: ColorFilter.mode(
-                                const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                                    story?.pages![index].backgroundAlpha ??
-                                        0.5),
-                                BlendMode.darken),
-                            image: story?.pages![index].backgroundImageUrl !=
-                                    null
-                                ? CachedNetworkImageProvider(
-                                    story!.pages![index].backgroundImageUrl!,
-                                    errorListener: () =>
-                                        const Icon(Icons.error),
-                                  )
-                                : story!.pages![index].backgroundImageUrl !=
-                                        null
-                                    ? CachedNetworkImageProvider(
-                                        story!
-                                            .pages![index].backgroundImageUrl!,
-                                        errorListener: () =>
-                                            const Icon(Icons.error),
-                                      )
-                                    : Image.asset(
-                                        "assets/images/blank.jpg",
-                                        scale: 0.2,
-                                        width: 100,
-                                      ).image,
-                            fit: BoxFit.cover)),
-                    padding: const EdgeInsets.all(20),
-                    child: Column(
-                        crossAxisAlignment: story!.layout == Layout.CONVO
-                            ? CrossAxisAlignment.end
-                            : CrossAxisAlignment.start,
-                        children: scripts!.map((script) {
-                          CrossAxisAlignment alignment =
-                              story!.layout == Layout.CONVO
-                                  ? story!.createdBy.username.trim() ==
-                                          script.characterName!.trim()
-                                      ? CrossAxisAlignment.end
-                                      : CrossAxisAlignment.start
-                                  : script.type == 'image'
-                                      ? CrossAxisAlignment.center
-                                      : CrossAxisAlignment.start;
-                          return Column(
-                              crossAxisAlignment: alignment,
-                              children: [
-                                _displayScript(script, size),
-                                if (story!.layout == Layout.CONVO)
-                                  Text(script.characterName ?? ""),
-                                const SizedBox(
-                                  height: 20,
-                                )
-                              ]);
-                        }).toList()),
-                  ))
-                ],
-              ));
-            },
-          )),
-      Positioned(
-          bottom: story!.pageDirection == PageDirection.HORIZONTAL
-              ? 30
-              : size.height / 2,
-          width: story!.pageDirection == PageDirection.HORIZONTAL
-              ? size.width
-              : 40,
-          left:
-              story!.pageDirection == PageDirection.HORIZONTAL ? size.width : 0,
-          child: SizedBox(
-            height: 50,
-            width: size.width,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: SmoothPageIndicator(
-                      controller: controller,
-                      count: story!.pages!.length,
-                      axisDirection:
-                          story!.pageDirection == PageDirection.HORIZONTAL
-                              ? Axis.horizontal
-                              : Axis.vertical,
-                      effect: const ExpandingDotsEffect(
-                          dotHeight: 10,
-                          dotWidth: 18,
-                          activeDotColor: APP_ACCENT_COLOR),
-                    )),
-                const SizedBox(
-                  width: 20,
-                ),
-              ],
-            ),
-          )),
-      Positioned(
-        bottom: 30,
-        right: 10,
-        child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Obx(
-              () => LikeItemWidget(
-                  onLike: (val) {
-                    _onLikePressed(widget.story, val);
+    return WillPopScope(
+        onWillPop: () async {
+          // Disable swipe back to previous page
+          return false;
+        },
+        child: Stack(alignment: Alignment.topCenter, children: [
+          SizedBox(
+            height: height - 80,
+            width: double.infinity,
+            child: PageView.builder(
+              scrollDirection: Axis.vertical, // First, scroll vertically
+              itemCount: 3, // Number of pages in the vertical direction
+              itemBuilder: (context, verticalIndex) {
+                return PageView.builder(
+                  scrollDirection: Axis.horizontal, // Then, scroll horizontally
+                  itemCount: 3, // Number of pages in the horizontal direction
+                  itemBuilder: (context, horizontalIndex) {
+                    return Container(
+                      color: Colors.primaries[
+                          (verticalIndex + horizontalIndex) %
+                              Colors.primaries.length],
+                      child: Center(
+                        child: Text(
+                            'Page ${verticalIndex * 3 + horizontalIndex + 1}'),
+                      ),
+                    );
                   },
-                  size: 20,
-                  likes: timelineController.currentStory.likes ?? 0,
-                  mylikes: timelineController.currentStory.mylikes ?? 0),
-            )),
-      )
-    ]);
-  }
-
-  Widget _displayScript(Script script, Size size) {
-    /// @todo need to create a common meme layout. See under storyboard_item_widget the display creates two separate layouts.
-
-    Widget widget = const SizedBox.shrink();
-    if (script.type == "text") {
-      widget = textLinkPreview(
-          useBorder: story!.layout == Layout.COMIC,
-          context: context,
-          width: story!.layout != Layout.CONVO ? size.width : null,
-          text: script.text ?? "",
-          textAlign: script.textAlign ?? TextAlign.left,
-          style: TextStyle(
-              color: story!.layout == Layout.CONVO
-                  ? Colors.black
-                  : Theme.of(context).colorScheme.primary));
-    } else if (script.type == "image") {
-      widget = StoryCover(
-        photoUrl: script.image?.uri ?? "",
-        title: story?.title ?? "machi",
-        width: size.width * 0.9,
-        height: size.width * 0.9,
-      );
-    }
-    Widget widgetScript = story!.layout == Layout.CONVO
-        ? StoryBubble(
-            isRight: story!.createdBy.username == script.characterName,
-            widget: widget,
-            size: size)
-        : widget;
-    return widgetScript;
-  }
-
-  Widget _unpublishedTools() {
-    Storyboard storyboard = storyboardController.currentStoryboard;
-    return Row(
-      children: [
-        if ((story?.status != StoryStatus.PUBLISHED) &
-            (storyboard.story!.length == 1))
-          TextButton.icon(
-              onPressed: () {
-                Get.to(() => const AddNewStory());
+                );
               },
-              icon: const Icon(Iconsax.add),
-              label: Text(
-                _i18n.translate("story_collection"),
-                style: Theme.of(context).textTheme.labelSmall,
-              )),
-        if (story?.status != StoryStatus.PUBLISHED)
-          IconButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditPage(
-                      passStory: story ?? widget.story,
-                    ),
-                  ),
-                ).then((val) {
-                  setState(() {
-                    story = val;
-                  });
-                });
-              },
-              icon: const Icon(
-                Iconsax.edit,
-                size: 20,
-              ))
-      ],
-    );
+            ),
+          ),
+          Positioned(
+              bottom: 30,
+              width: size.width,
+              child: SizedBox(
+                  height: 50,
+                  width: size.width,
+                  child: const Icon(Icons.swipe))),
+          Positioned(
+            bottom: 30,
+            right: 10,
+            child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: Obx(
+                  () => LikeItemWidget(
+                      onLike: (val) {
+                        // _onLikePressed(widget.interactive, val);
+                      },
+                      size: 20,
+                      likes: timelineController.currentStory.likes ?? 0,
+                      mylikes: timelineController.currentStory.mylikes ?? 0),
+                )),
+          )
+        ]));
   }
 }

@@ -10,6 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/create_post.dart';
+import 'package:machi_app/screens/interactive/interactive_board_list.dart';
 import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 import 'package:machi_app/screens/studio/image_studio.dart';
 import 'package:machi_app/tabs/conversations_tab.dart';
@@ -179,6 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const ActivityTab(),
       // const PlaylistTab(),
       const StoryboardHome(),
+      const InteractiveBoardList(),
       const ConversationsTab(),
       NotificationsScreen(),
       const ProfileTab()
@@ -214,6 +216,9 @@ class _HomeScreenState extends State<HomeScreen> {
               /// Discover new machi
               const BottomNavigationBarItem(
                   label: '', icon: Icon(Iconsax.book)),
+
+              /// Discover new machi
+              const BottomNavigationBarItem(label: '', icon: Icon(Iconsax.add)),
 
               /// Conversations Tab
               BottomNavigationBarItem(

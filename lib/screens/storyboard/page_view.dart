@@ -203,8 +203,8 @@ class _StoryPageViewState extends State<StoryPageView> {
         backgroundColor: APP_ERROR,
       );
 
-      await FirebaseCrashlytics.instance
-          .recordError(err, s, reason: 'Cannot like item', fatal: true);
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot like storyboard item', fatal: true);
     }
   }
 
