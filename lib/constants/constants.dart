@@ -77,6 +77,7 @@ const UPLOAD_PATH_COLLECTION = "collection";
 const UPLOAD_PATH_MESSAGE = "message";
 const UPLOAD_PATH_USER_PROFILE = "profile";
 const UPLOAD_PATH_BOT_IMAGE = "machi";
+const UPLOAD_PATH_INTERACTIVE = "interactive";
 
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.

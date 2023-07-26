@@ -1,5 +1,6 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/rendering.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/interactive_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -7,13 +8,14 @@ import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/interactive_board_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/interactive.dart';
-import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
+import 'package:machi_app/widgets/divider_text.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
@@ -45,6 +47,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   double headerHeight = 140;
   List<String> _selectedChoices = [];
   String? _currentSelection;
+  int _currentSeq = 1;
   InteractiveBoardPrompt? prompt;
   bool isLoading = false;
 
@@ -80,6 +83,25 @@ class _InteractivePageViewState extends State<InteractivePageView> {
             ),
             titleSpacing: 0,
             actions: [
+              IconButton(
+                  onPressed: () {
+                    AlertDialog(
+                      title: Text(
+                        _i18n.translate("Interactive"),
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      content:
+                          Text(_i18n.translate("interactive_mode_action_info")),
+                      actions: <Widget>[
+                        OutlinedButton(
+                            onPressed: () => {
+                                  Navigator.of(context).pop(false),
+                                },
+                            child: Text(_i18n.translate("OK"))),
+                      ],
+                    );
+                  },
+                  icon: const Icon(Iconsax.info_circle)),
               PopupMenuButton<String>(
                   icon: const Icon(Icons.more_vert),
                   itemBuilder: (context) => <PopupMenuEntry<String>>[
@@ -219,6 +241,32 @@ class _InteractivePageViewState extends State<InteractivePageView> {
       return Center(child: NoData(text: _i18n.translate("no_data")));
     }
 
+    if (prompt!.options.isEmpty && _currentSeq == widget.interactive.sequence) {
+      return Align(
+          alignment: Alignment.center,
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Text(prompt!.mainText),
+              const SizedBox(height: 50),
+              Text(_i18n.translate("interactive_complete")),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    _getInitialPath();
+                  },
+                  icon: isLoading
+                      ? loadingButton(size: 16)
+                      : const SizedBox.shrink(),
+                  label: Text(_i18n.translate("interactive_try_again_button"))),
+              const SizedBox(height: 20),
+              const TextDivider(text: "OR"),
+              Text(_i18n.translate("interactive_read_comments_below"))
+            ],
+          )));
+    }
+
     return WillPopScope(
         onWillPop: () async {
           return false;
@@ -249,6 +297,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                                     scrollDirection: Axis.vertical,
                                     child: Column(
                                       children: [
+                                        const InlineAdaptiveAds(),
                                         widget.interactive.hidePrompt ==
                                                     false &&
                                                 adjustedIndex == 0
@@ -258,62 +307,60 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                                         isLoading
                                             ? const Frankloader()
                                             : const SizedBox(height: 20),
-                                        if (prompt!.options.length >= 3)
-                                          ...prompt!.options
-                                              .asMap()
-                                              .entries
-                                              .map((option) {
-                                            int idx = option.key;
-                                            String choice = option.value;
-                                            if (idx < 3) {
-                                              return Container(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  width: size.width * 0.75,
-                                                  child: OutlinedButton(
-                                                      style: OutlinedButton.styleFrom(
-                                                          side: BorderSide(
-                                                              color: _currentSelection ==
-                                                                      choice
-                                                                  ? APP_ACCENT_COLOR
-                                                                  : APP_MUTED_COLOR)),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          _currentSelection =
-                                                              choice;
-                                                          if (_selectedChoices
-                                                              .contains(
-                                                                  choice)) {
-                                                            _selectedChoices
-                                                                .remove(choice);
-                                                          } else {
-                                                            _selectedChoices
-                                                                .add(choice);
-                                                          }
-                                                        });
-                                                        _getNextPath(
-                                                          sequence: index,
-                                                          choice: idx,
-                                                        );
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10),
-                                                        child: Text(choice
-                                                                    .length >
-                                                                3
-                                                            ? choice
-                                                                .substring(3)
-                                                            : choice),
-                                                      )));
-                                            }
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: Text(choice),
-                                            );
-                                          }),
+                                        ...prompt!.options
+                                            .asMap()
+                                            .entries
+                                            .map((option) {
+                                          int idx = option.key;
+                                          String choice = option.value;
+                                          if (idx < 3) {
+                                            return Container(
+                                                padding:
+                                                    const EdgeInsets.all(10),
+                                                width: size.width * 0.75,
+                                                child: OutlinedButton(
+                                                    style: OutlinedButton.styleFrom(
+                                                        side: BorderSide(
+                                                            color: _currentSelection ==
+                                                                    choice
+                                                                ? APP_ACCENT_COLOR
+                                                                : APP_MUTED_COLOR)),
+                                                    onPressed: () {
+                                                      setState(() {
+                                                        _currentSelection =
+                                                            choice;
+                                                        if (_selectedChoices
+                                                            .contains(choice)) {
+                                                          _selectedChoices
+                                                              .remove(choice);
+                                                        } else {
+                                                          _selectedChoices
+                                                              .add(choice);
+                                                        }
+                                                      });
+                                                      _getNextPath(
+                                                        sequence:
+                                                            adjustedIndex + 1,
+                                                        choice: idx + 1,
+                                                      );
+                                                    },
+                                                    child: Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              10),
+                                                      child: Text(
+                                                          choice.length > 3
+                                                              ? choice
+                                                                  .substring(3)
+                                                              : choice),
+                                                    )));
+                                          }
+                                          return Padding(
+                                            padding:
+                                                const EdgeInsets.only(top: 10),
+                                            child: Text(choice),
+                                          );
+                                        }),
                                       ],
                                     ),
                                   )));
@@ -323,13 +370,29 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                 }
                 return Card(
                   color: Colors.white12,
-                  child: Center(
-                      child: Column(
-                    children: [
-                      loadingButton(size: 40),
-                      const Text("An image is here")
-                    ],
-                  )),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            image: widget.interactive.photoUrl != null
+                                ? CachedNetworkImageProvider(
+                                    widget.interactive.photoUrl!,
+                                    errorListener: () =>
+                                        const Icon(Icons.error),
+                                  )
+                                : Image.asset(
+                                    "assets/images/blank.jpg",
+                                    scale: 0.2,
+                                    width: 100,
+                                  ).image,
+                            fit: BoxFit.cover)),
+                    child: Center(
+                        child: Column(
+                      children: [
+                        loadingButton(size: 40),
+                        const Text("An image is here")
+                      ],
+                    )),
+                  ),
                 );
               },
             ),
@@ -352,11 +415,27 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   }
 
   void _getInitialPath() async {
-    InteractiveBoardPrompt p =
-        await _interaciveApi.getInteractiveId(widget.interactive.interactiveId);
-    setState(() {
-      prompt = p;
-    });
+    try {
+      InteractiveBoardPrompt p = await _interaciveApi
+          .getInteractiveId(widget.interactive.interactiveId);
+      setState(() {
+        prompt = p;
+      });
+    } catch (err, s) {
+      Get.snackbar(
+          _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+          colorText: Colors.black);
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason:
+              'Cannot get interactive id: ${widget.interactive.interactiveId}',
+          fatal: true);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   void _getNextPath({required int choice, required int sequence}) async {
@@ -371,11 +450,10 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     }
 
     Map<String, dynamic> userResponse = {
-      "option": choice + 1,
+      "option": choice,
       "interactiveId": widget.interactive.interactiveId,
-      "sequence": sequence + 1,
-      "action":
-          "Previous response: ${_selectedChoices.join('')}. ${prompt!.mainText}"
+      "sequence": sequence,
+      "action": prompt!.mainText + prompt!.options.join(" ")
     };
     InteractiveBoardPrompt p =
         await _interaciveApi.getNextPath(userResponse: userResponse);
@@ -390,6 +468,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
 
     setState(() {
       prompt = p;
+      _currentSeq += 1;
     });
   }
 }

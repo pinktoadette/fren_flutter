@@ -1,4 +1,3 @@
-import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/interactive_api.dart';
 import 'package:machi_app/constants/constants.dart';

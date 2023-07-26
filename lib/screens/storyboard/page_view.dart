@@ -324,19 +324,11 @@ class _StoryPageViewState extends State<StoryPageView> {
                                     errorListener: () =>
                                         const Icon(Icons.error),
                                   )
-                                : story!.pages![index].backgroundImageUrl !=
-                                        null
-                                    ? CachedNetworkImageProvider(
-                                        story!
-                                            .pages![index].backgroundImageUrl!,
-                                        errorListener: () =>
-                                            const Icon(Icons.error),
-                                      )
-                                    : Image.asset(
-                                        "assets/images/blank.jpg",
-                                        scale: 0.2,
-                                        width: 100,
-                                      ).image,
+                                : Image.asset(
+                                    "assets/images/blank.jpg",
+                                    scale: 0.2,
+                                    width: 100,
+                                  ).image,
                             fit: BoxFit.cover)),
                     padding: const EdgeInsets.all(20),
                     child: Column(

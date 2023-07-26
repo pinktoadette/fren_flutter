@@ -275,6 +275,7 @@ class _AddEditTextState extends State<AddEditText> {
             onTap: () {
               setState(() {
                 attachmentPreview = null;
+                galleryImageUrl = null;
               });
             },
             child: const Icon(Iconsax.close_circle),

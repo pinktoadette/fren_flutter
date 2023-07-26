@@ -32,6 +32,8 @@
   "validation_insufficient_caharacter":"Write something sufficient at least 50 characters for prompt and 3 for name",
   "validation_select_1": "Select at least one",
   "validation_username": "Username is taken",
+
+  "something_wrong": "Oops, something went wrong! Start all over.",
   
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",
@@ -486,5 +488,10 @@
   "post_board_info": "Post from your board",
   "post_interactive_hint": "Example: Imagine you wake up in a mysterious world, surrounded by enchanted forests and magnical creatures. As you take your first step, you notice a glowing object in the distance. What do you do next? \n\nYou have a microbiology exam coming up and need questions.",
   
-  "interactive": "Interactive"
+  "interactive": "Interactive",
+  "interactive_number_of_paths": "Total Seq",
+  "interactive_complete": "Nice! Want to try again?",
+  "interactive_try_again_button": "Again!",
+  "interactive_read_comments_below": "Share your comments below.",
+  "interactive_mode_action_info": "Questions are generated dynamically based on creator's prompt. The questions and responses are not saved unless you continue in the chat."
 }

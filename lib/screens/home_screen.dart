@@ -246,8 +246,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 enableDrag: true,
                 isScrollControlled: true,
                 builder: (context) {
-                  return const FractionallySizedBox(
-                      heightFactor: 0.9, child: CreatePost());
+                  return FractionallySizedBox(
+                      heightFactor: 0.9,
+                      child: SingleChildScrollView(
+                          child: Container(
+                              padding: EdgeInsets.only(
+                                  bottom:
+                                      MediaQuery.of(context).viewInsets.bottom),
+                              child: CreatePost())));
                 },
               );
             },
