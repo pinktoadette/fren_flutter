@@ -11,8 +11,6 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
@@ -35,7 +33,6 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   CommentController commentController = Get.find(tag: 'comment');
   InteractiveBoardController interactiveController =
       Get.find(tag: 'interactive');
-  final PageController _pageController = PageController();
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
@@ -43,22 +40,46 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.85;
   double headerHeight = 140;
-  List<String> _selectedChoices = [];
-  String? _currentSelection;
-  InteractiveBoardPrompt? prompt;
-  bool isLoading = false;
+  final ScrollController _scrollController = ScrollController();
+  double _previousScrollOffset = 0.0;
+
+  late InteractiveBoardPrompt prompt;
 
   @override
   void initState() {
     super.initState();
     _getInitialPath();
+    _scrollController.addListener(_onScroll);
   }
 
-  @override
   void dispose() {
-    _pageController.dispose();
-
+    _scrollController
+        .dispose(); // Dispose the ScrollController to avoid memory leaks
     super.dispose();
+  }
+
+  void _getInitialPath() async {
+    InteractiveBoardPrompt p =
+        await _interaciveApi.getInteractiveId(widget.interactive.interactiveId);
+    setState(() {
+      prompt = p;
+    });
+  }
+
+  void _onScroll() {
+    double currentScrollOffset = _scrollController.offset;
+    ScrollDirection scrollDirection;
+
+    if (currentScrollOffset > _previousScrollOffset) {
+      scrollDirection = ScrollDirection.forward;
+    } else {
+      scrollDirection = ScrollDirection.reverse;
+    }
+
+    // You can use the `scrollDirection` variable to determine the direction of the scroll
+    print('Scroll Direction: $scrollDirection');
+
+    _previousScrollOffset = currentScrollOffset;
   }
 
   @override
@@ -126,12 +147,8 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     );
   }
 
-  Future<void> _onLikePressed(InteractiveBoard item, bool value) async {
-    try {
-      String response = await _timelineApi.likeStoryMachi(
-          "interactive", item.interactiveId, value == true ? 1 : 0);
-      if (response == "OK") {}
-    } catch (err, s) {
+  Future<void> _onLikePressed(Story item, bool value) async {
+    try {} catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
@@ -216,11 +233,12 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     double height = size.height * bodyHeightPercent;
 
     if (prompt == null) {
-      return Center(child: NoData(text: _i18n.translate("no_data")));
+      return NoData(text: _i18n.translate("no_data"));
     }
 
     return WillPopScope(
         onWillPop: () async {
+          // Disable swipe back to previous page
           return false;
         },
         child: Stack(alignment: Alignment.topCenter, children: [
@@ -228,112 +246,49 @@ class _InteractivePageViewState extends State<InteractivePageView> {
             height: height - 80,
             width: double.infinity,
             child: PageView.builder(
-              physics: const NeverScrollableScrollPhysics(),
-              controller: _pageController,
               scrollDirection: Axis.vertical,
-              itemCount: widget.interactive.sequence * 2,
-              itemBuilder: (context, index) {
-                if (index % 2 == 0) {
-                  int adjustedIndex = index ~/ 2;
-                  if (adjustedIndex < widget.interactive.sequence) {
-                    // Show the regular content using the original PageView.builder
-                    return PageView.builder(
-                        scrollDirection: Axis.horizontal,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 3,
-                        itemBuilder: (context, horizontalIndex) {
-                          return Card(
-                              child: Container(
-                                  padding: const EdgeInsets.all(20),
-                                  child: SingleChildScrollView(
-                                    scrollDirection: Axis.vertical,
-                                    child: Column(
-                                      children: [
-                                        widget.interactive.hidePrompt ==
-                                                    false &&
-                                                adjustedIndex == 0
-                                            ? Text(widget.interactive.prompt)
-                                            : const SizedBox.shrink(),
-                                        Text(prompt!.mainText),
-                                        isLoading
-                                            ? const Frankloader()
-                                            : const SizedBox(height: 20),
-                                        if (prompt!.options.length >= 3)
-                                          ...prompt!.options
-                                              .asMap()
-                                              .entries
-                                              .map((option) {
-                                            int idx = option.key;
-                                            String choice = option.value;
-                                            if (idx < 3) {
-                                              return Container(
-                                                  padding:
-                                                      const EdgeInsets.all(10),
-                                                  width: size.width * 0.75,
-                                                  child: OutlinedButton(
-                                                      style: OutlinedButton.styleFrom(
-                                                          side: BorderSide(
-                                                              color: _currentSelection ==
-                                                                      choice
-                                                                  ? APP_ACCENT_COLOR
-                                                                  : APP_MUTED_COLOR)),
-                                                      onPressed: () {
-                                                        setState(() {
-                                                          _currentSelection =
-                                                              choice;
-                                                          if (_selectedChoices
-                                                              .contains(
-                                                                  choice)) {
-                                                            _selectedChoices
-                                                                .remove(choice);
-                                                          } else {
-                                                            _selectedChoices
-                                                                .add(choice);
-                                                          }
-                                                        });
-                                                        _getNextPath(
-                                                          sequence: index,
-                                                          choice: idx,
-                                                        );
-                                                      },
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(10),
-                                                        child: Text(choice
-                                                                    .length >
-                                                                3
-                                                            ? choice
-                                                                .substring(3)
-                                                            : choice),
-                                                      )));
-                                            }
-                                            return Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10),
-                                              child: Text(choice),
-                                            );
-                                          }),
-                                      ],
-                                    ),
-                                  )));
-                        });
-                  }
-                  return const SizedBox.shrink();
-                }
-                return Card(
-                  color: Colors.white12,
-                  child: Center(
+              itemCount: widget.interactive.sequence,
+              itemBuilder: (context, verticalIndex) {
+                return PageView.builder(
+                  scrollDirection: Axis.horizontal, // Then, scroll horizontally
+                  itemCount: 3, // right, left, up
+                  itemBuilder: (context, horizontalIndex) {
+                    return Card(
+                        child: Container(
+                      padding: const EdgeInsets.all(20),
                       child: Column(
-                    children: [
-                      loadingButton(size: 40),
-                      const Text("An image is here")
-                    ],
-                  )),
+                        children: [
+                          Text(prompt.mainText),
+                          const SizedBox(height: 20),
+                          ...prompt.options.asMap().entries.map((option) {
+                            int idx = option.key;
+                            String choice = option.value;
+
+                            return Container(
+                                padding: const EdgeInsets.all(10),
+                                width: size.width * 0.75,
+                                child: OutlinedButton(
+                                    onPressed: () {},
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(10),
+                                      child: Text(choice.substring(3)),
+                                    )));
+                          })
+                        ],
+                      ),
+                    ));
+                  },
                 );
               },
             ),
           ),
+          Positioned(
+              bottom: 30,
+              width: size.width,
+              child: SizedBox(
+                  height: 50,
+                  width: size.width,
+                  child: const Icon(Icons.swipe))),
           Positioned(
             bottom: 30,
             right: 10,
@@ -341,7 +296,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
               padding: const EdgeInsets.only(right: 10),
               child: LikeItemWidget(
                   onLike: (val) {
-                    _onLikePressed(widget.interactive, val);
+                    // _onLikePressed(widget.interactive, val);
                   },
                   size: 20,
                   likes: 0,
@@ -349,47 +304,5 @@ class _InteractivePageViewState extends State<InteractivePageView> {
             ),
           )
         ]));
-  }
-
-  void _getInitialPath() async {
-    InteractiveBoardPrompt p =
-        await _interaciveApi.getInteractiveId(widget.interactive.interactiveId);
-    setState(() {
-      prompt = p;
-    });
-  }
-
-  void _getNextPath({required int choice, required int sequence}) async {
-    // Step 1: Scroll to the right with a delay
-    if (_pageController.page!.toInt() < widget.interactive.sequence * 2 - 1) {
-      await Future.delayed(
-          const Duration(milliseconds: 500)); // Add a delay of 500 milliseconds
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.ease,
-      );
-    }
-
-    Map<String, dynamic> userResponse = {
-      "option": choice + 1,
-      "interactiveId": widget.interactive.interactiveId,
-      "sequence": sequence + 1,
-      "action":
-          "Previous response: ${_selectedChoices.join('')}. ${prompt!.mainText}"
-    };
-    InteractiveBoardPrompt p =
-        await _interaciveApi.getNextPath(userResponse: userResponse);
-
-    // Step 2: Scroll down after the API call is complete
-    if (_pageController.page!.toInt() < widget.interactive.sequence * 2 - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.ease,
-      );
-    }
-
-    setState(() {
-      prompt = p;
-    });
   }
 }

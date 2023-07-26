@@ -12,10 +12,10 @@ class InteractiveBoardPrompt {
   }
 
   factory InteractiveBoardPrompt.fromJson(Map<String, dynamic> doc) {
+    print(doc);
     return InteractiveBoardPrompt(
-      mainText: doc[INTERACTIVE_CURRENT_PROMPT],
-      options: doc[INTERACTIVE_CURRENT_CHOICES],
-    );
+        mainText: doc[INTERACTIVE_CURRENT_PROMPT],
+        options: doc[INTERACTIVE_CURRENT_CHOICES].cast<String>());
   }
 }
 
@@ -23,6 +23,7 @@ class InteractiveBoard {
   final String interactiveId;
   final String prompt;
   final int sequence;
+  final bool hidePrompt;
   final String? category;
   final String? summary;
   final String? photoUrl;
@@ -33,6 +34,7 @@ class InteractiveBoard {
       {required this.interactiveId,
       required this.prompt,
       required this.sequence,
+      required this.hidePrompt,
       this.category,
       this.summary,
       this.photoUrl,
@@ -42,6 +44,7 @@ class InteractiveBoard {
   InteractiveBoard copyWith(
       {String? photoUrl,
       String? prompt,
+      bool? hidePrompt,
       int? sequence,
       String? category,
       String? summary,
@@ -49,6 +52,7 @@ class InteractiveBoard {
     return InteractiveBoard(
         interactiveId: interactiveId,
         prompt: prompt ?? this.prompt,
+        hidePrompt: hidePrompt ?? this.hidePrompt,
         sequence: sequence ?? this.sequence,
         photoUrl: photoUrl ?? this.photoUrl,
         category: category ?? this.category,
@@ -74,6 +78,7 @@ class InteractiveBoard {
     return InteractiveBoard(
         interactiveId: doc[INTERACTIVE_ID],
         prompt: doc[INTERACTIVE_PROMPT],
+        hidePrompt: doc[INTERACTIVE_HIDE_PROMPT],
         sequence: doc[INTERACTIVE_NUM_SEQ],
         category: doc[INTERACTIVE_CATEGORY],
         summary: doc[INTERACTIVE_INITIAL_SUMMARY],

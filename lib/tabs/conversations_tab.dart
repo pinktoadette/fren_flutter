@@ -104,8 +104,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                     ),
                   ],
                 ),
-                preferredSize: Size(width, 40)),
-            actions: <Widget>[]),
+                preferredSize: Size(width, 40))),
         body: RefreshIndicator(
             onRefresh: () async {
               await _chatroomApi.getAllMyRooms(

@@ -5,9 +5,9 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/screens/interactive/interactive_board_page.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/interactive/interactive_item_widget.dart';
 
 class InteractiveBoardList extends StatefulWidget {
   const InteractiveBoardList({Key? key}) : super(key: key);
@@ -55,7 +55,10 @@ class _InteractiveBoardListState extends State<InteractiveBoardList> {
     return Scaffold(
         key: _scaffoldkey,
         appBar: AppBar(
-          title: Text(_i18n.translate("interactive")),
+          title: Text(
+            _i18n.translate("interactive"),
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
         ),
         body: RefreshIndicator(
             onRefresh: () async {
@@ -69,10 +72,7 @@ class _InteractiveBoardListState extends State<InteractiveBoardList> {
                   firstPageProgressIndicatorBuilder: (_) => const Frankloader(),
                   newPageProgressIndicatorBuilder: (_) => const Frankloader(),
                   itemBuilder: (context, item, index) {
-                    return InkWell(
-                        onTap: () => Get.to(
-                            () => InteractivePageView(interactive: item)),
-                        child: Text(item.prompt));
+                    return InteractiveItem(item: item);
                   }),
               separatorBuilder: (BuildContext context, int index) {
                 if ((index + 1) % 3 == 0) {

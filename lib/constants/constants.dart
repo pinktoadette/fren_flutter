@@ -352,6 +352,7 @@ const String INTERACTIVE_NUM_SEQ = "sequence";
 const String INTERACTIVE_INITIAL_SUMMARY = "summary";
 const String INTERACTIVE_CATEGORY = "category";
 const String INTERACTIVE_PHOTO_URL = "photoUrl";
+const String INTERACTIVE_HIDE_PROMPT = "hidePrompt";
 const String INTERACTIVE_CURRENT_PROMPT = "mainText";
 const String INTERACTIVE_CURRENT_CHOICES = "options";
 
