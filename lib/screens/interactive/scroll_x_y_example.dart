@@ -52,6 +52,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     _scrollController.addListener(_onScroll);
   }
 
+  @override
   void dispose() {
     _scrollController
         .dispose(); // Dispose the ScrollController to avoid memory leaks

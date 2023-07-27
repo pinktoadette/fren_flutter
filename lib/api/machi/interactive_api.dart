@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/cache_manager_api.dart';
 import 'package:machi_app/constants/constants.dart';

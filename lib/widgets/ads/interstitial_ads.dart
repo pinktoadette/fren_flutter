@@ -61,7 +61,7 @@ class _InterstitialAdsState extends State<InterstitialAds> {
       width: _adWidth,
       height: AD_HEIGHT,
       alignment: Alignment.center,
-      child: Text(" _ad.show()"),
+      child: const Text(" _ad.show()"),
     );
   }
 }

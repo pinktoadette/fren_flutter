@@ -1,6 +1,5 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
@@ -8,45 +7,32 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
 
 /// step 1. create prompt. Step 2 select theme.
-class CreatePrompt extends StatefulWidget {
+class CreatePrompt extends StatelessWidget {
+  final String? prompt;
   final Function(dynamic data) onDataChanged;
+  final TextEditingController postTextController;
 
-  const CreatePrompt({Key? key, required this.onDataChanged}) : super(key: key);
-
-  @override
-  _CreatePromptState createState() => _CreatePromptState();
-}
-
-class _CreatePromptState extends State<CreatePrompt> {
-  final _postTextController = TextEditingController();
-
-  late AppLocalizations _i18n;
-  bool isLoading = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _postTextController.dispose();
-    super.dispose();
-  }
+  const CreatePrompt({
+    Key? key,
+    required this.onDataChanged,
+    this.prompt,
+    required this.postTextController,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
+    AppLocalizations _i18n = AppLocalizations.of(context);
 
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
       ),
-      child: _initialSelection(),
+      child: _initialSelection(context),
     );
   }
 
-  Widget _initialSelection() {
+  Widget _initialSelection(BuildContext context) {
+    AppLocalizations _i18n = AppLocalizations.of(context);
     return Container(
         padding:
             EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
@@ -69,16 +55,17 @@ class _CreatePromptState extends State<CreatePrompt> {
                       strokeAlign: BorderSide.strokeAlignCenter)),
               child: TextButton(
                   onPressed: () {
-                    _showHelperDetails();
+                    _showHelperDetails(context);
                   },
                   child: const Text("ChatGPT")),
             ),
-            _promptModeDisplay()
+            _promptModeDisplay(context)
           ],
         ));
   }
 
-  Widget _promptModeDisplay() {
+  Widget _promptModeDisplay(BuildContext context) {
+    AppLocalizations _i18n = AppLocalizations.of(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,8 +75,8 @@ class _CreatePromptState extends State<CreatePrompt> {
               style: const TextStyle(fontSize: 16),
               textCapitalization: TextCapitalization.sentences,
               autocorrect: true,
-              controller: _postTextController,
-              onChanged: (value) => widget.onDataChanged(value),
+              controller: postTextController,
+              onChanged: (value) => onDataChanged(value),
               decoration: InputDecoration(
                   hintText: _i18n.translate("post_interactive_hint")),
               maxLines: 10,
@@ -99,14 +86,14 @@ class _CreatePromptState extends State<CreatePrompt> {
     );
   }
 
-  _showHelperDetails() {
+  _showHelperDetails(BuildContext context) {
     String text = "";
-    if (_postTextController.selection.isValid == true &&
-        _postTextController.selection.textInside(_postTextController.text) !=
+    if (postTextController.selection.isValid == true &&
+        postTextController.selection.textInside(postTextController.text) !=
             "") {
-      text = _postTextController.selection.textInside(_postTextController.text);
+      text = postTextController.selection.textInside(postTextController.text);
     } else {
-      text = _postTextController.text;
+      text = postTextController.text;
     }
 
     showModalBottomSheet<void>(
@@ -122,21 +109,22 @@ class _CreatePromptState extends State<CreatePrompt> {
                   controller: scrollController,
                   child: MachiHelper(
                       onTextReplace: (value) => {
-                            if (_postTextController.selection.isValid == false)
-                              {_postTextController.text = value}
+                            if (postTextController.selection.isValid == false)
+                              {postTextController.text = value}
                             else
-                              {_replaceText(value)}
+                              {_replaceText(value, context)}
                           },
                       text: text)),
             )));
   }
 
-  void _replaceText(String newText) {
-    final int start = _postTextController.selection.start;
-    final int end = _postTextController.selection.end;
+  void _replaceText(String newText, BuildContext context) {
+    AppLocalizations _i18n = AppLocalizations.of(context);
+    final int start = postTextController.selection.start;
+    final int end = postTextController.selection.end;
 
     // Get the original text
-    String originalText = _postTextController.text;
+    String originalText = postTextController.text;
 
     String textBeforeSelection = originalText.substring(0, start);
     String textAfterSelection = originalText.substring(end);
@@ -145,7 +133,7 @@ class _CreatePromptState extends State<CreatePrompt> {
     String replacedText = textBeforeSelection + newText + textAfterSelection;
 
     // Update the text controller with the replaced text and the correct selection
-    _postTextController.value = TextEditingValue(
+    postTextController.value = TextEditingValue(
       text: replacedText,
       selection: TextSelection(
         baseOffset: start,

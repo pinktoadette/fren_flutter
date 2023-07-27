@@ -1,5 +1,50 @@
 import 'package:machi_app/constants/constants.dart';
 
+class CreateNewInteractive {
+  final InteractiveTheme theme;
+  final String prompt;
+
+  CreateNewInteractive({required this.theme, required this.prompt});
+
+  CreateNewInteractive copyWith({InteractiveTheme? theme, String? prompt}) {
+    return CreateNewInteractive(
+        theme: theme ?? this.theme, prompt: prompt ?? this.prompt);
+  }
+}
+
+class InteractiveTheme {
+  final String name;
+  final String backgroundColor;
+  final String textColor;
+  final String titleColor;
+
+  InteractiveTheme(
+      {required this.name,
+      required this.backgroundColor,
+      required this.textColor,
+      required this.titleColor});
+
+  InteractiveTheme copyWith(
+      {String? name,
+      String? backgroundColor,
+      String? textColor,
+      String? titleColor}) {
+    return InteractiveTheme(
+        name: name ?? this.name,
+        backgroundColor: backgroundColor ?? this.backgroundColor,
+        textColor: textColor ?? this.textColor,
+        titleColor: titleColor ?? this.titleColor);
+  }
+
+  factory InteractiveTheme.fromJson(Map<String, dynamic> doc) {
+    return InteractiveTheme(
+        name: doc["name"],
+        backgroundColor: doc["backgroundColor"],
+        textColor: doc["textColor"],
+        titleColor: doc["titleColor"]);
+  }
+}
+
 class InteractiveBoardPrompt {
   final String mainText;
   final List<String> options;
@@ -12,7 +57,6 @@ class InteractiveBoardPrompt {
   }
 
   factory InteractiveBoardPrompt.fromJson(Map<String, dynamic> doc) {
-    print(doc);
     return InteractiveBoardPrompt(
         mainText: doc[INTERACTIVE_CURRENT_PROMPT],
         options: doc[INTERACTIVE_CURRENT_CHOICES].cast<String>());

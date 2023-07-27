@@ -45,7 +45,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.85;
   double headerHeight = 140;
-  List<String> _selectedChoices = [];
+  final List<String> _selectedChoices = [];
   String? _currentSelection;
   int _currentSeq = 1;
   InteractiveBoardPrompt? prompt;

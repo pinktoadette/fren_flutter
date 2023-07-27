@@ -21,7 +21,7 @@ class _MultiPageBottomSheetState extends State<MultiPageBottomSheet> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
-    return Container(
+    return SizedBox(
         height: size.height * 0.8,
         child: Column(
           mainAxisSize: MainAxisSize.min,
