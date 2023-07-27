@@ -257,6 +257,7 @@
 
   "dark_mode": "Dark Mode",
   "next_step": "Next",
+  "previous_step": "Previous",
   "enable": "Enable",
   "enable_mode": "Enable Mode",
   "enable_mode_des": "Allow Frankie to help you. The more you chat, the more it'll understand who you're looking for.",
@@ -481,7 +482,7 @@
   "studio_select_model": "Find a model",
 
   "post": "Post",
-  "post_create": "Create A Post",
+  "post_create": "New Post",
   "post_interactive_info": "Create an interactive post where users decide the outcome. You can create any content that follows guidelines, including stories and exams. You will only need to write the initial prompt, be very specific.",
   "post_interactive_button": "Interactive",
   "post_board_button": "Board",

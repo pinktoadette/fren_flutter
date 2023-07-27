@@ -1,0 +1,106 @@
+{
+    "themes": [
+      {
+        "name": "Enchanting Twilight",
+        "backgroundColor": "5D2A42",
+        "bodyTextColor": "FFF9EC",
+        "titleColor": "FFFDFA"
+      },
+      {
+        "name": "Radiant Jubilee",
+        "backgroundColor": "FB6376",
+        "bodyTextColor": "FFF9EC",
+        "titleColor": "FFFDFA"
+      },
+      {
+        "name": "Peachy Delight",
+        "backgroundColor": "FCB1A6",
+        "bodyTextColor": "FFF9EC",
+        "titleColor": "FFFDFA"
+      },
+      {
+        "name": "Beach Vibes",
+        "backgroundColor": "3a86ff",
+        "bodyTextColor": "ffbe0b",
+        "titleColor": "FFFDFA"
+      },
+      {
+        "name": "Midnight Serenity",
+        "backgroundColor": "14213d",
+        "bodyTextColor": "e5e5e5",
+        "titleColor": "ffffff"
+      },
+      {
+        "name": "Focused Mind",
+        "backgroundColor": "84a59d",
+        "bodyTextColor": "222f2c",
+        "titleColor": "090d0c"
+      },
+      {
+        "name": "Mental Clarity",
+        "backgroundColor": "66BB6A",
+        "bodyTextColor": "212121",
+        "titleColor": "0277BD"
+      },
+      {
+        "name": "Academic Pursuit",
+        "backgroundColor": "FF9800",
+        "bodyTextColor": "000000",
+        "titleColor": "4CAF50"
+      },
+      {
+        "name": "Playful Adventure",
+        "backgroundColor": "ff5400",
+        "bodyTextColor": "ffa376",
+        "titleColor": "ffcab1"
+      },{
+        "name": "Vibrant Fiesta",
+        "backgroundColor": "FFB319",
+        "bodyTextColor": "FFFFFF",
+        "titleColor": "E91E63"
+      },
+      {
+        "name": "Whimsical Wonderland",
+        "backgroundColor": "AB47BC",
+        "bodyTextColor": "F5F5F5",
+        "titleColor": "FF5722"
+      },
+      {
+        "name": "Professional Edge",
+        "backgroundColor": "3a506b",
+        "bodyTextColor": "c5c3c6",
+        "titleColor": "dcdcdd"
+      },
+      {
+        "name": "Corporate Elegance",
+        "backgroundColor": "37474F",
+        "bodyTextColor": "E0E0E0",
+        "titleColor": "2196F3"
+      },
+      {
+        "name": "Sophisticated Charm",
+        "backgroundColor": "607D8B",
+        "bodyTextColor": "FFFFFF",
+        "titleColor": "FFC107"
+      },
+      {
+        "name": "Reflections",
+        "backgroundColor": "c5c3c6",
+        "bodyTextColor": "46494c",
+        "titleColor": "000000"
+      },
+      {
+        "name": "Classic Monochrome",
+        "backgroundColor": "f8f8f8",
+        "bodyTextColor": "000000",
+        "titleColor": "000000"
+      },
+      {
+        "name": "Contemporary Contrast",
+        "backgroundColor": "000000",
+        "bodyTextColor": "f8f8f8",
+        "titleColor": "f8f8f8"
+      }
+    ]
+  }
+  

@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/interactive_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
@@ -7,8 +6,6 @@ import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/interactive/interactive_board_page.dart';
-import 'package:machi_app/widgets/ads/inline_ads.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
 class InteractiveItem extends StatefulWidget {
