@@ -21,8 +21,6 @@ class CreatePrompt extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
-
     return Padding(
       padding: EdgeInsets.only(
         bottom: MediaQuery.of(context).viewInsets.bottom,
@@ -76,7 +74,9 @@ class CreatePrompt extends StatelessWidget {
               textCapitalization: TextCapitalization.sentences,
               autocorrect: true,
               controller: postTextController,
-              onChanged: (value) => onDataChanged(value),
+              onChanged: (value) {
+                onDataChanged(value);
+              },
               decoration: InputDecoration(
                   hintText: _i18n.translate("post_interactive_hint")),
               maxLines: 10,

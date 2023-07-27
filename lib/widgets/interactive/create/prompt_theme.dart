@@ -43,9 +43,17 @@ class ThemePrompt extends StatelessWidget {
                     onThemeSelected(theme);
                   },
                   child: Card(
-                    color: selectedTheme == theme
-                        ? APP_ACCENT_COLOR
-                        : Theme.of(context).colorScheme.background,
+                    shape: selectedTheme == theme
+                        ? RoundedRectangleBorder(
+                            side: const BorderSide(
+                                color: APP_ACCENT_COLOR, width: 2.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                          )
+                        : RoundedRectangleBorder(
+                            side: const BorderSide(
+                                color: Colors.transparent, width: 0.0),
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
                     elevation: 2,
                     child: Padding(
                       padding: EdgeInsets.all(padding / 2),

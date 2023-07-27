@@ -40,25 +40,28 @@ class _PromptContainerState extends State<PromptContainer> {
   @override
   void initState() {
     super.initState();
-    _loadThemes();
+    _initialize();
+  }
 
+  void _initialize() async {
+    await _loadThemes();
     List<Widget> p = [
-      Obx(() => CreatePrompt(
-            prompt: _interactiveController.createInteractive.value!.prompt,
-            onDataChanged: (value) {
-              CreateNewInteractive newTheme =
-                  _newTheme!.copyWith(prompt: value);
-              _interactiveController.createInteractive(newTheme);
-            },
-            postTextController: _postTextController,
-          )),
+      CreatePrompt(
+        prompt: _interactiveController.createInteractive.value!.prompt,
+        onDataChanged: (value) {
+          setState(() {
+            _prompt = value;
+          });
+        },
+        postTextController: _postTextController,
+      ),
       Obx(() => ThemePrompt(
             themes: _themes,
             selectedTheme:
                 _interactiveController.createInteractive.value?.theme,
             onThemeSelected: (theme) {
-              CreateNewInteractive newTheme = _newTheme!.copyWith(theme: theme);
-              _interactiveController.createInteractive(newTheme);
+              _newTheme = _newTheme!.copyWith(theme: theme, prompt: _prompt);
+              _interactiveController.createInteractive(_newTheme);
             },
           )),
       Obx(() => ConfirmPrompt(
@@ -165,11 +168,9 @@ class _PromptContainerState extends State<PromptContainer> {
 
     setState(() {
       _themes = themes;
-    });
-
-    setState(() {
       _newTheme = CreateNewInteractive(theme: _themes[0], prompt: "");
     });
+    _interactiveController.createInteractive(_newTheme);
   }
 
   void _publishInteractive() async {
