@@ -4,21 +4,13 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:machi_app/api/machi/interactive_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
-import 'package:machi_app/helpers/uploader.dart';
-import 'package:machi_app/screens/interactive/interactive_board_page.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 
 /// Creator can create from
@@ -32,11 +24,12 @@ class ThemePrompt extends StatefulWidget {
 
 class _ThemePromptState extends State<ThemePrompt> {
   late AppLocalizations _i18n;
-  List<Map<String, String>>? _themes;
-  Map<String, String>? _selectedTheme;
+  List<Map<String, dynamic>>? _themes;
+  Map<String, dynamic>? _selectedTheme;
   File? attachmentPreview;
   String? galleryImageUrl;
   bool isLoading = false;
+  double padding = 20;
 
   @override
   void initState() {
@@ -52,8 +45,8 @@ class _ThemePromptState extends State<ThemePrompt> {
   void _loadThemes() async {
     String jsonContent = await rootBundle.loadString('assets/json/theme.json');
     List<dynamic> decodedJson = jsonDecode(jsonContent);
-    List<Map<String, String>> themes =
-        List.castFrom<dynamic, Map<String, String>>(decodedJson);
+    List<Map<String, dynamic>> themes =
+        List.castFrom<dynamic, Map<String, dynamic>>(decodedJson);
     setState(() {
       _themes = themes;
     });
@@ -78,65 +71,84 @@ class _ThemePromptState extends State<ThemePrompt> {
   }
 
   Widget _initialSelection() {
+    double width = MediaQuery.of(context).size.width;
     return Column(
       children: [
-        const Padding(
-            padding: EdgeInsets.only(left: 20, right: 20),
-            child: Text("Select a theme")),
+        Padding(
+            padding: EdgeInsets.only(left: padding, right: padding),
+            child: const Text("Select a theme")),
         _selectImage(),
         ..._themes!.map((theme) {
-          return Card(
-            elevation: 2,
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: SizedBox(
-                      height: 100,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: _themes!.length,
-                        itemBuilder: (context, index) {
-                          return Column(
-                            children: [
-                              Text(
-                                _themes![index]["name"]!,
-                                style: const TextStyle(
-                                    color: APP_MUTED_COLOR, fontSize: 14),
-                              ),
-                              Row(
-                                children: [
-                                  _buildBox(
-                                      _themes![index]["backgroundColor"]!),
-                                  _buildBox(_themes![index]["titleColor"]!),
-                                  _buildBox(_themes![index]["bodyTextColor"]!),
-                                ],
-                              )
-                            ],
-                          );
-                        },
+          return InkWell(
+              onTap: () => setState(() {
+                    _selectedTheme = theme;
+                  }),
+              child: Card(
+                color: _selectedTheme == theme
+                    ? APP_ACCENT_COLOR
+                    : Theme.of(context).colorScheme.background,
+                elevation: 2,
+                child: Padding(
+                  padding: EdgeInsets.all(padding / 2),
+                  child: Column(
+                    children: [
+                      Text(
+                        theme["name"]!,
+                        style:
+                            const TextStyle(color: Colors.white, fontSize: 14),
                       ),
-                    ),
+                      Row(
+                        children: [
+                          _buildBox(
+                              theme: theme["backgroundColor"]!,
+                              width: width,
+                              showText: theme),
+                          _buildBox(theme: theme["titleColor"]!, width: width),
+                          _buildBox(
+                              theme: theme["bodyTextColor"]!, width: width),
+                        ],
+                      )
+                    ],
                   ),
-                ],
-              ),
-            ),
-          );
+                ),
+              ));
         })
       ],
     );
   }
 
-  Widget _buildBox(String theme) {
+  Widget _buildBox(
+      {required String theme,
+      required double width,
+      Map<String, dynamic>? showText}) {
+    double w = (showText != null ? width / 2 : width / 4) - padding * 1.5;
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 8.0),
-      width: 100, // Adjust the width of the boxes as needed
+      padding: const EdgeInsets.all(10),
+      width: w,
+      height: showText != null ? w / 2 : w,
       decoration: BoxDecoration(
-        color: Color(
-            int.parse(theme, radix: 16)), // You can change the color as needed
+        color: Color(int.parse("0xFF$theme")),
         borderRadius: BorderRadius.circular(10),
       ),
+      child: showText != null
+          ? Center(
+              child: Column(
+                children: [
+                  Text("A Brown Fox Pangram",
+                      style: TextStyle(
+                          fontSize: 12,
+                          color: Color(
+                              int.parse("0xFF${showText["titleColor"]}")))),
+                  Text("A brown fox jumps over the lazy dog.",
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: Color(
+                              int.parse("0xFF${showText["bodyTextColor"]}"))))
+                ],
+              ),
+            )
+          : const SizedBox.shrink(),
     );
   }
 
