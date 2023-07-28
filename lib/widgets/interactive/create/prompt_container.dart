@@ -10,7 +10,6 @@ import 'package:machi_app/controller/interactive_board_controller.dart';
 import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/screens/interactive/interactive_board_page.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/interactive/create/confirm_prompt.dart';
 import 'package:machi_app/widgets/interactive/create/create_prompt.dart';
 import 'package:machi_app/widgets/interactive/create/prompt_theme.dart';
@@ -89,6 +88,9 @@ class _PromptContainerState extends State<PromptContainer> {
     Size size = MediaQuery.of(context).size;
     double headerHeight = size.height * 0.1 + 50;
     double bottomSheetHeight = size.height - headerHeight;
+    if (pages.isEmpty) {
+      return const SizedBox.shrink();
+    }
 
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -189,8 +191,8 @@ class _PromptContainerState extends State<PromptContainer> {
 
     try {
       final _interactiveApi = InteractiveBoardApi();
-      InteractiveBoard interactive =
-          await _interactiveApi.postInteractive(prompt: _prompt!);
+      InteractiveBoard interactive = await _interactiveApi.postInteractive(
+          prompt: _prompt!, themeId: _newTheme!.theme.id.toString());
       Get.to(() => InteractivePageView(interactive: interactive));
     } catch (err, s) {
       Get.snackbar(

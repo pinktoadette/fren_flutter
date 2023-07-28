@@ -1,102 +1,120 @@
 [
 
     {
+        "id": 1,
         "name": "Focused Mind",
         "backgroundColor": "84a59d",
         "textColor": "222f2c",
         "titleColor": "090d0c"
     },
     {
+        "id": 2,
         "name": "Mental Clarity",
         "backgroundColor": "66BB6A",
         "textColor": "212121",
         "titleColor": "0277BD"
         },
         {
+            "id": 3,
             "name": "Academic Pursuit",
             "backgroundColor": "FF9800",
             "textColor": "000000",
             "titleColor": "0067ff"
         },
     {
+        "id": 4,
         "name": "Playful Adventure",
         "backgroundColor": "ff5400",
         "textColor": "ffa376",
         "titleColor": "ffcab1"
     },
     {
+        "id": 5,
         "name": "Vibrant Fiesta",
         "backgroundColor": "FFB319",
         "textColor": "d6d6d6",
         "titleColor": "E91E63"
     },
     {
+        "id": 6,
         "name": "Whimsical Wonderland",
         "backgroundColor": "AB47BC",
         "textColor": "F5F5F5",
         "titleColor": "FF5722"
     },
     {
+        "id": 7,
         "name": "Professional Edge",
         "backgroundColor": "3a506b",
         "textColor": "c5c3c6",
         "titleColor": "dcdcdd"
     },
     {
+        
+        "id": 8,
         "name": "Corporate Elegance",
         "backgroundColor": "37474F",
         "textColor": "E0E0E0",
         "titleColor": "2196F3"
     },
     {
+        "id": 9,
         "name": "Sophisticated Charm",
         "backgroundColor": "607D8B",
         "textColor": "FFFFFF",
         "titleColor": "FFC107"
     },
     {
+        "id": 10,
         "name": "Reflections",
         "backgroundColor": "c5c3c6",
         "textColor": "46494c",
         "titleColor": "000000"
     },
     {
+        "id": 11,
         "name": "Classic Monochrome",
         "backgroundColor": "f8f8f8",
         "textColor": "000000",
         "titleColor": "000000"
     },
     {
+        "id": 12,
         "name": "Contemporary Contrast",
         "backgroundColor": "000000",
         "textColor": "f8f8f8",
         "titleColor": "f8f8f8"
     },
     {
+        "id": 13,
         "name": "Enchanting Twilight",
         "backgroundColor": "5D2A42",
         "textColor": "F2E2EA",
         "titleColor": "F6D7E0"
     },
     {
+        "id": 14,
         "name": "Radiant Jubilee",
         "backgroundColor": "FB6376",
         "textColor": "FFF9EC",
         "titleColor": "fdaeb8"
     },
     {
+        "id": 15,
         "name": "Peachy Delight",
         "backgroundColor": "FCB1A6",
         "textColor": "FFF9EC",
         "titleColor": "FFD8DE"
     },
     {
+        "id": 16,
         "name": "Beach Vibes",
         "backgroundColor": "3a86ff",
         "textColor": "ffbe0b",
         "titleColor": "f9314a"
     },
     {
+        "id": 17,
         "name": "Midnight Serenity",
         "backgroundColor": "14213d",
         "textColor": "e5e5e5",

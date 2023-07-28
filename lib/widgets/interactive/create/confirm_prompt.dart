@@ -1,9 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:machi_app/controller/interactive_board_controller.dart';
 import 'package:machi_app/datas/interactive.dart';
 
 class ConfirmPrompt extends StatelessWidget {

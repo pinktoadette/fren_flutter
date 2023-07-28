@@ -13,13 +13,15 @@ class CreateNewInteractive {
 }
 
 class InteractiveTheme {
+  final String id;
   final String name;
   final String backgroundColor;
   final String textColor;
   final String titleColor;
 
   InteractiveTheme(
-      {required this.name,
+      {required this.id,
+      required this.name,
       required this.backgroundColor,
       required this.textColor,
       required this.titleColor});
@@ -30,6 +32,7 @@ class InteractiveTheme {
       String? textColor,
       String? titleColor}) {
     return InteractiveTheme(
+        id: id,
         name: name ?? this.name,
         backgroundColor: backgroundColor ?? this.backgroundColor,
         textColor: textColor ?? this.textColor,
@@ -38,6 +41,7 @@ class InteractiveTheme {
 
   factory InteractiveTheme.fromJson(Map<String, dynamic> doc) {
     return InteractiveTheme(
+        id: doc["id"].toString(),
         name: doc["name"],
         backgroundColor: doc["backgroundColor"],
         textColor: doc["textColor"],

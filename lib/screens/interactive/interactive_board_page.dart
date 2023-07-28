@@ -372,6 +372,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                   color: Colors.white12,
                   child: Container(
                     decoration: BoxDecoration(
+                        color: Colors.orange,
                         image: DecorationImage(
                             image: widget.interactive.photoUrl != null
                                 ? CachedNetworkImageProvider(

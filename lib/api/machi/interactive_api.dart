@@ -14,7 +14,10 @@ class InteractiveBoardApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<InteractiveBoard> postInteractive(
-      {required String prompt, String? photoUrl, int? seq}) async {
+      {required String prompt,
+      required String themeId,
+      String? photoUrl,
+      int? seq}) async {
     /// @todo isPrivate = false until have more post, then make it private
     String url = '${baseUri}interactive/post';
     debugPrint("Requesting URL $url");
@@ -24,7 +27,8 @@ class InteractiveBoardApi {
       "photoUrl": photoUrl,
       "sequence": seq ?? 3,
       "hidePrompt": false,
-      "isPrivate": false
+      "isPrivate": false,
+      "themeId": themeId
     });
     final getData = response.data;
 
