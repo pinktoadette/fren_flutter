@@ -1,8 +1,5 @@
-import 'dart:convert';
-
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/interactive_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -11,7 +8,9 @@ import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/load_theme.dart';
 import 'package:machi_app/screens/interactive/interactive_board_page.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/interactive/create/confirm_prompt.dart';
+import 'package:machi_app/widgets/interactive/create/create_hidden_prompt.dart';
 import 'package:machi_app/widgets/interactive/create/create_prompt.dart';
 import 'package:machi_app/widgets/interactive/create/prompt_theme.dart';
 
@@ -24,15 +23,17 @@ class PromptContainer extends StatefulWidget {
 }
 
 class _PromptContainerState extends State<PromptContainer> {
-  InteractiveBoardController _interactiveController =
+  final InteractiveBoardController _interactiveController =
       Get.find(tag: 'interactive');
   int _currentPage = 0;
   late AppLocalizations _i18n;
   final List<Widget> pages = [];
   final TextEditingController _postTextController = TextEditingController();
+  final TextEditingController _hiddenTextController = TextEditingController();
 
   bool _isLoading = false;
   String? _prompt;
+  String? _hiddenPrompt;
 
   CreateNewInteractive? _newTheme;
   List<InteractiveTheme> _themes = [];
@@ -47,6 +48,7 @@ class _PromptContainerState extends State<PromptContainer> {
     await _loadThemes();
     List<Widget> p = [
       CreatePrompt(
+        hint: _i18n.translate("post_interactive_hint"),
         prompt: _interactiveController.createInteractive.value!.prompt,
         onDataChanged: (value) {
           setState(() {
@@ -54,6 +56,21 @@ class _PromptContainerState extends State<PromptContainer> {
           });
         },
         postTextController: _postTextController,
+      ),
+
+      /// hidden prompt
+      CreatePrompt(
+        hint: _i18n.translate("post_interactive_hidden_hint"),
+        prompt: _interactiveController.createInteractive.value!.hiddenPrompt,
+        onDataChanged: (value) {
+          setState(() {
+            _hiddenPrompt = value;
+          });
+          _newTheme =
+              _newTheme!.copyWith(prompt: _prompt, hiddenPrompt: _hiddenPrompt);
+          _interactiveController.createInteractive(_newTheme);
+        },
+        postTextController: _hiddenTextController,
       ),
       Obx(() => ThemePrompt(
             themes: _themes,
@@ -80,6 +97,7 @@ class _PromptContainerState extends State<PromptContainer> {
   @override
   void dispose() {
     _postTextController.dispose();
+    _hiddenTextController.dispose();
     super.dispose();
   }
 
@@ -138,7 +156,7 @@ class _PromptContainerState extends State<PromptContainer> {
             },
             child: Text(_i18n.translate("previous_step")),
           ),
-        ElevatedButton(
+        ElevatedButton.icon(
             onPressed: () {
               if (_currentPage == 0 && _prompt == "") {
                 return;
@@ -150,7 +168,9 @@ class _PromptContainerState extends State<PromptContainer> {
                 });
               }
             },
-            child: Text(
+            icon:
+                _isLoading ? loadingButton(size: 16) : const SizedBox.shrink(),
+            label: Text(
               _currentPage < pages.length - 1
                   ? _i18n.translate("next_step")
                   : _i18n.translate(
@@ -165,7 +185,8 @@ class _PromptContainerState extends State<PromptContainer> {
 
     setState(() {
       _themes = themes;
-      _newTheme = CreateNewInteractive(theme: _themes[0], prompt: "");
+      _newTheme =
+          CreateNewInteractive(theme: _themes[0], prompt: "", hiddenPrompt: "");
     });
     _interactiveController.createInteractive(_newTheme);
   }
@@ -186,9 +207,10 @@ class _PromptContainerState extends State<PromptContainer> {
 
     try {
       final _interactiveApi = InteractiveBoardApi();
-      InteractiveBoard interactive = await _interactiveApi.postInteractive(
-          prompt: _prompt!, themeId: _newTheme!.theme.id.toString());
+      InteractiveBoard interactive =
+          await _interactiveApi.postInteractive(prompt: _newTheme!);
       Get.to(() => InteractivePageView(interactive: interactive));
+      Navigator.of(context).pop();
     } catch (err, s) {
       Get.snackbar(
           _i18n.translate("error"), _i18n.translate("an_error_has_occurred"),

@@ -28,21 +28,17 @@ class InteractiveBoardApi {
   }
 
   Future<InteractiveBoard> postInteractive(
-      {required String prompt,
-      required String themeId,
-      String? photoUrl,
-      int? seq}) async {
+      {required CreateNewInteractive prompt}) async {
     /// @todo isPrivate = false until have more post, then make it private
     String url = '${baseUri}interactive/post';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.post(url, data: {
-      "prompt": prompt,
-      "photoUrl": photoUrl,
-      "sequence": seq ?? 3,
-      "hidePrompt": false,
+      "prompt": prompt.prompt,
+      "hiddenPrompt": prompt.hiddenPrompt,
       "isPrivate": false,
-      "themeId": themeId
+      "sequence": 4,
+      "themeId": prompt.theme.id
     });
     final getData = response.data;
     InteractiveTheme theme =
@@ -62,8 +58,8 @@ class InteractiveBoardApi {
     List<InteractiveBoard> boards = [];
 
     for (var board in getData) {
-      InteractiveTheme theme =
-          themes.firstWhere((t) => board[INTERACTIVE_THEME_ID] == t.id);
+      InteractiveTheme theme = themes
+          .firstWhere((t) => board[INTERACTIVE_THEME_ID] == t.id.toString());
 
       InteractiveBoard interactive = InteractiveBoard.fromJson(board, theme);
       boards.add(interactive);

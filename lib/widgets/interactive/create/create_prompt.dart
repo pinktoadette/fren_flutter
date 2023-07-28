@@ -6,16 +6,19 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
 
+// ignore: must_be_immutable
 /// step 1. create prompt. Step 2 select theme.
 class CreatePrompt extends StatelessWidget {
+  final String hint;
   final String? prompt;
   final Function(dynamic data) onDataChanged;
   final TextEditingController postTextController;
 
-  const CreatePrompt({
+  CreatePrompt({
     Key? key,
-    required this.onDataChanged,
     this.prompt,
+    required this.hint,
+    required this.onDataChanged,
     required this.postTextController,
   }) : super(key: key);
 
@@ -77,10 +80,9 @@ class CreatePrompt extends StatelessWidget {
               onChanged: (value) {
                 onDataChanged(value);
               },
-              decoration: InputDecoration(
-                  hintText: _i18n.translate("post_interactive_hint")),
+              decoration: InputDecoration(hintText: hint),
               maxLines: 10,
-              maxLength: 300,
+              maxLength: 400,
             ))
       ],
     );

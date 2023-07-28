@@ -1,16 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/helpers/load_theme.dart';
 
 class CreateNewInteractive {
   final InteractiveTheme theme;
   final String prompt;
+  final String? hiddenPrompt;
 
-  CreateNewInteractive({required this.theme, required this.prompt});
+  CreateNewInteractive(
+      {required this.theme, required this.prompt, required this.hiddenPrompt});
 
-  CreateNewInteractive copyWith({InteractiveTheme? theme, String? prompt}) {
+  CreateNewInteractive copyWith(
+      {InteractiveTheme? theme, String? prompt, String? hiddenPrompt}) {
     return CreateNewInteractive(
-        theme: theme ?? this.theme, prompt: prompt ?? this.prompt);
+        theme: theme ?? this.theme,
+        prompt: prompt ?? this.prompt,
+        hiddenPrompt: hiddenPrompt ?? this.hiddenPrompt);
   }
 }
 
@@ -72,11 +75,12 @@ class InteractiveBoardPrompt {
 class InteractiveBoard {
   final String interactiveId;
   final String prompt;
+  final String hiddenPrompt;
   final int sequence;
-  final bool hidePrompt;
   final InteractiveTheme theme;
   final String? category;
   final String? summary;
+  final String? title;
   final String? photoUrl;
   final int? createdAt;
   final int? updatedAt;
@@ -84,11 +88,12 @@ class InteractiveBoard {
   InteractiveBoard(
       {required this.interactiveId,
       required this.prompt,
+      required this.hiddenPrompt,
       required this.sequence,
-      required this.hidePrompt,
       required this.theme,
       this.category,
       this.summary,
+      this.title,
       this.photoUrl,
       this.createdAt,
       this.updatedAt});
@@ -96,20 +101,22 @@ class InteractiveBoard {
   InteractiveBoard copyWith(
       {String? photoUrl,
       String? prompt,
-      bool? hidePrompt,
+      String? hiddenPrompt,
       int? sequence,
       String? category,
       String? summary,
+      String? title,
       int? updatedAt}) {
     return InteractiveBoard(
         interactiveId: interactiveId,
         theme: theme,
         prompt: prompt ?? this.prompt,
-        hidePrompt: hidePrompt ?? this.hidePrompt,
+        hiddenPrompt: hiddenPrompt ?? this.hiddenPrompt,
         sequence: sequence ?? this.sequence,
         photoUrl: photoUrl ?? this.photoUrl,
         category: category ?? this.category,
         summary: summary ?? this.summary,
+        title: title ?? this.title,
         createdAt: createdAt,
         updatedAt: updatedAt ?? updatedAt);
   }
@@ -118,6 +125,7 @@ class InteractiveBoard {
     return <String, dynamic>{
       INTERACTIVE_ID: interactiveId,
       INTERACTIVE_PROMPT: prompt,
+      INTERACTIVE_HIDDEN_PROMPT: hiddenPrompt,
       INTERACTIVE_CATEGORY: category,
       INTERACTIVE_INITIAL_SUMMARY: summary,
       INTERACTIVE_NUM_SEQ: sequence,
@@ -132,12 +140,13 @@ class InteractiveBoard {
     return InteractiveBoard(
         interactiveId: doc[INTERACTIVE_ID],
         prompt: doc[INTERACTIVE_PROMPT],
-        hidePrompt: doc[INTERACTIVE_HIDE_PROMPT],
+        hiddenPrompt: doc[INTERACTIVE_HIDDEN_PROMPT],
         sequence: doc[INTERACTIVE_NUM_SEQ],
         category: doc[INTERACTIVE_CATEGORY],
         theme: theme,
         summary: doc[INTERACTIVE_INITIAL_SUMMARY],
         photoUrl: doc[INTERACTIVE_PHOTO_URL],
+        title: doc[INTERACTIVE_TITLE],
         createdAt: doc[CREATED_AT].toInt(),
         updatedAt: doc[CREATED_AT].toInt());
   }

@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
@@ -50,6 +52,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   int _currentSeq = 1;
   InteractiveBoardPrompt? prompt;
   bool isLoading = false;
+  bool canSwipeFirstPage = false;
 
   @override
   void initState() {
@@ -60,7 +63,6 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   @override
   void dispose() {
     _pageController.dispose();
-
     super.dispose();
   }
 
@@ -238,33 +240,33 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     double height = size.height * bodyHeightPercent;
 
     if (prompt == null) {
-      if (prompt!.options.isEmpty &&
-          _currentSeq == widget.interactive.sequence) {
-        return Align(
-            alignment: Alignment.center,
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 20),
-                Text(prompt!.mainText),
-                const SizedBox(height: 50),
-                Text(_i18n.translate("interactive_complete")),
-                ElevatedButton.icon(
-                    onPressed: () {
-                      _getInitialPath();
-                    },
-                    icon: isLoading
-                        ? loadingButton(size: 16)
-                        : const SizedBox.shrink(),
-                    label:
-                        Text(_i18n.translate("interactive_try_again_button"))),
-                const SizedBox(height: 20),
-                const TextDivider(text: "OR"),
-                Text(_i18n.translate("interactive_read_comments_below"))
-              ],
-            )));
-      }
+      return Center(child: NoData(text: _i18n.translate("no_data")));
+    }
+
+    if (prompt!.options.isEmpty && _currentSeq == widget.interactive.sequence) {
+      return Align(
+          alignment: Alignment.center,
+          child: Center(
+              child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const SizedBox(height: 20),
+              Text(prompt!.mainText),
+              const SizedBox(height: 50),
+              Text(_i18n.translate("interactive_complete")),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    _getInitialPath();
+                  },
+                  icon: isLoading
+                      ? loadingButton(size: 16)
+                      : const SizedBox.shrink(),
+                  label: Text(_i18n.translate("interactive_try_again_button"))),
+              const SizedBox(height: 20),
+              const TextDivider(text: "OR"),
+              Text(_i18n.translate("interactive_read_comments_below"))
+            ],
+          )));
     }
 
     return WillPopScope(
@@ -282,19 +284,50 @@ class _InteractivePageViewState extends State<InteractivePageView> {
               itemCount: widget.interactive.sequence * 2 + 1,
               itemBuilder: (context, index) {
                 if (index == 0) {
-                  return Center(
+                  return Card(
                       child: Container(
                           color: Color(int.parse(
                               "0xFF${widget.interactive.theme.backgroundColor}")),
-                          padding: const EdgeInsets.all(20),
-                          child: Text(
-                            widget.interactive.prompt,
-                            style: TextStyle(
-                                color: Color(int.parse(
-                                    "0xFF${widget.interactive.theme.textColor}"))),
+                          padding: const EdgeInsets.all(50),
+                          child: Stack(
+                            alignment: Alignment.topCenter,
+                            children: [
+                              Column(
+                                children: [
+                                  Text(widget.interactive.title ?? "",
+                                      style: TextStyle(
+                                          fontSize: 24,
+                                          color: Color(int.parse(
+                                              "0xFF${widget.interactive.theme.titleColor}")))),
+                                  const Divider(),
+                                  const SizedBox(
+                                    height: 20,
+                                  ),
+                                  Text(
+                                    widget.interactive.prompt,
+                                    style: TextStyle(
+                                        color: Color(int.parse(
+                                            "0xFF${widget.interactive.theme.textColor}"))),
+                                  ),
+                                ],
+                              ),
+                              Positioned(
+                                bottom: 20,
+                                child: ElevatedButton(
+                                  onPressed: () {
+                                    _nextPage();
+                                    setState(() {
+                                      _currentSeq++;
+                                    });
+                                  },
+                                  child: Text(_i18n
+                                      .translate("interactive_mode_start")),
+                                ),
+                              ),
+                            ],
                           )));
                 }
-                if (index % 2 == 0) {
+                if ((index + 1) % 2 == 0) {
                   int adjustedIndex = index ~/ 2;
                   if (adjustedIndex < widget.interactive.sequence) {
                     // Show the regular content using the original PageView.builder
@@ -453,10 +486,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     if (_pageController.page!.toInt() < widget.interactive.sequence * 2 - 1) {
       await Future.delayed(
           const Duration(milliseconds: 500)); // Add a delay of 500 milliseconds
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.ease,
-      );
+      _nextPage();
     }
 
     Map<String, dynamic> userResponse = {
@@ -480,5 +510,12 @@ class _InteractivePageViewState extends State<InteractivePageView> {
       prompt = p;
       _currentSeq += 1;
     });
+  }
+
+  void _nextPage() {
+    _pageController.nextPage(
+      duration: const Duration(milliseconds: 1000),
+      curve: Curves.ease,
+    );
   }
 }
