@@ -356,6 +356,7 @@ const String INTERACTIVE_PHOTO_URL = "photoUrl";
 const String INTERACTIVE_HIDE_PROMPT = "hidePrompt";
 const String INTERACTIVE_CURRENT_PROMPT = "mainText";
 const String INTERACTIVE_CURRENT_CHOICES = "options";
+const String INTERACTIVE_THEME_ID = "themeId";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id

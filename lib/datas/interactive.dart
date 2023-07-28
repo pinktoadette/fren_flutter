@@ -1,4 +1,6 @@
+import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/load_theme.dart';
 
 class CreateNewInteractive {
   final InteractiveTheme theme;
@@ -72,6 +74,7 @@ class InteractiveBoard {
   final String prompt;
   final int sequence;
   final bool hidePrompt;
+  final InteractiveTheme theme;
   final String? category;
   final String? summary;
   final String? photoUrl;
@@ -83,6 +86,7 @@ class InteractiveBoard {
       required this.prompt,
       required this.sequence,
       required this.hidePrompt,
+      required this.theme,
       this.category,
       this.summary,
       this.photoUrl,
@@ -99,6 +103,7 @@ class InteractiveBoard {
       int? updatedAt}) {
     return InteractiveBoard(
         interactiveId: interactiveId,
+        theme: theme,
         prompt: prompt ?? this.prompt,
         hidePrompt: hidePrompt ?? this.hidePrompt,
         sequence: sequence ?? this.sequence,
@@ -122,13 +127,15 @@ class InteractiveBoard {
     };
   }
 
-  factory InteractiveBoard.fromJson(Map<String, dynamic> doc) {
+  factory InteractiveBoard.fromJson(
+      Map<String, dynamic> doc, InteractiveTheme theme) {
     return InteractiveBoard(
         interactiveId: doc[INTERACTIVE_ID],
         prompt: doc[INTERACTIVE_PROMPT],
         hidePrompt: doc[INTERACTIVE_HIDE_PROMPT],
         sequence: doc[INTERACTIVE_NUM_SEQ],
         category: doc[INTERACTIVE_CATEGORY],
+        theme: theme,
         summary: doc[INTERACTIVE_INITIAL_SUMMARY],
         photoUrl: doc[INTERACTIVE_PHOTO_URL],
         createdAt: doc[CREATED_AT].toInt(),

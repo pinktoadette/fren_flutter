@@ -4,14 +4,28 @@ import 'package:machi_app/api/machi/cache_manager_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/datas/interactive.dart';
+import 'package:machi_app/helpers/load_theme.dart';
 
 class InteractiveBoardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final _cachedApi = CachedApi();
   final auth = AuthApi();
+  List<InteractiveTheme> themes = [];
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
+
+  InteractiveBoardApi() {
+    _loadThemes();
+  }
+
+  Future<void> _loadThemes() async {
+    try {
+      themes = await loadThemes();
+    } catch (e) {
+      debugPrint("Error loading themes: $e");
+    }
+  }
 
   Future<InteractiveBoard> postInteractive(
       {required String prompt,
@@ -31,8 +45,10 @@ class InteractiveBoardApi {
       "themeId": themeId
     });
     final getData = response.data;
+    InteractiveTheme theme =
+        themes.firstWhere((theme) => getData[INTERACTIVE_THEME_ID] == theme.id);
 
-    InteractiveBoard interactive = InteractiveBoard.fromJson(getData);
+    InteractiveBoard interactive = InteractiveBoard.fromJson(getData, theme);
     return interactive;
   }
 
@@ -44,8 +60,12 @@ class InteractiveBoardApi {
     final getData = response.data;
 
     List<InteractiveBoard> boards = [];
+
     for (var board in getData) {
-      InteractiveBoard interactive = InteractiveBoard.fromJson(board);
+      InteractiveTheme theme =
+          themes.firstWhere((t) => board[INTERACTIVE_THEME_ID] == t.id);
+
+      InteractiveBoard interactive = InteractiveBoard.fromJson(board, theme);
       boards.add(interactive);
     }
     return boards;
@@ -56,10 +76,10 @@ class InteractiveBoardApi {
         '${baseUri}interactive/post?interactiveId=$interactiveId';
     debugPrint("Requesting URL $url");
 
-    // final Map<String, dynamic>? cached = await _cachedApi.cachedUrl(url);
-    // if (cached != null) {
-    //   return InteractiveBoardPrompt.fromJson(cached);
-    // }
+    final Map<String, dynamic>? cached = await _cachedApi.cachedUrl(url);
+    if (cached != null) {
+      return InteractiveBoardPrompt.fromJson(cached);
+    }
 
     try {
       final dio = await auth.getDio();
@@ -68,7 +88,7 @@ class InteractiveBoardApi {
 
       final prompts = InteractiveBoardPrompt.fromJson(responseData);
 
-      // await _cachedApi.cacheUrl(url, responseData);
+      await _cachedApi.cacheUrl(url, responseData);
       return prompts;
     } catch (e) {
       debugPrint('Error fetching interactive ID: $e');

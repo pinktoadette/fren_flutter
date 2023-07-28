@@ -9,6 +9,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/interactive_board_controller.dart';
 import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/load_theme.dart';
 import 'package:machi_app/screens/interactive/interactive_board_page.dart';
 import 'package:machi_app/widgets/interactive/create/confirm_prompt.dart';
 import 'package:machi_app/widgets/interactive/create/create_prompt.dart';
@@ -160,13 +161,7 @@ class _PromptContainerState extends State<PromptContainer> {
   }
 
   Future<void> _loadThemes() async {
-    String jsonContent = await rootBundle.loadString('assets/json/theme.json');
-    List<dynamic> decodedJson = jsonDecode(jsonContent);
-    List<InteractiveTheme> themes = [];
-    for (var item in decodedJson) {
-      InteractiveTheme _theme = InteractiveTheme.fromJson(item);
-      themes.add(_theme);
-    }
+    List<InteractiveTheme> themes = await loadThemes();
 
     setState(() {
       _themes = themes;

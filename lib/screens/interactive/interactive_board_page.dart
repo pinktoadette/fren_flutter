@@ -238,33 +238,33 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     double height = size.height * bodyHeightPercent;
 
     if (prompt == null) {
-      return Center(child: NoData(text: _i18n.translate("no_data")));
-    }
-
-    if (prompt!.options.isEmpty && _currentSeq == widget.interactive.sequence) {
-      return Align(
-          alignment: Alignment.center,
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Text(prompt!.mainText),
-              const SizedBox(height: 50),
-              Text(_i18n.translate("interactive_complete")),
-              ElevatedButton.icon(
-                  onPressed: () {
-                    _getInitialPath();
-                  },
-                  icon: isLoading
-                      ? loadingButton(size: 16)
-                      : const SizedBox.shrink(),
-                  label: Text(_i18n.translate("interactive_try_again_button"))),
-              const SizedBox(height: 20),
-              const TextDivider(text: "OR"),
-              Text(_i18n.translate("interactive_read_comments_below"))
-            ],
-          )));
+      if (prompt!.options.isEmpty &&
+          _currentSeq == widget.interactive.sequence) {
+        return Align(
+            alignment: Alignment.center,
+            child: Center(
+                child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const SizedBox(height: 20),
+                Text(prompt!.mainText),
+                const SizedBox(height: 50),
+                Text(_i18n.translate("interactive_complete")),
+                ElevatedButton.icon(
+                    onPressed: () {
+                      _getInitialPath();
+                    },
+                    icon: isLoading
+                        ? loadingButton(size: 16)
+                        : const SizedBox.shrink(),
+                    label:
+                        Text(_i18n.translate("interactive_try_again_button"))),
+                const SizedBox(height: 20),
+                const TextDivider(text: "OR"),
+                Text(_i18n.translate("interactive_read_comments_below"))
+              ],
+            )));
+      }
     }
 
     return WillPopScope(
@@ -279,8 +279,21 @@ class _InteractivePageViewState extends State<InteractivePageView> {
               physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               scrollDirection: Axis.vertical,
-              itemCount: widget.interactive.sequence * 2,
+              itemCount: widget.interactive.sequence * 2 + 1,
               itemBuilder: (context, index) {
+                if (index == 0) {
+                  return Center(
+                      child: Container(
+                          color: Color(int.parse(
+                              "0xFF${widget.interactive.theme.backgroundColor}")),
+                          padding: const EdgeInsets.all(20),
+                          child: Text(
+                            widget.interactive.prompt,
+                            style: TextStyle(
+                                color: Color(int.parse(
+                                    "0xFF${widget.interactive.theme.textColor}"))),
+                          )));
+                }
                 if (index % 2 == 0) {
                   int adjustedIndex = index ~/ 2;
                   if (adjustedIndex < widget.interactive.sequence) {
@@ -298,11 +311,6 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                                     child: Column(
                                       children: [
                                         const InlineAdaptiveAds(),
-                                        widget.interactive.hidePrompt ==
-                                                    false &&
-                                                adjustedIndex == 0
-                                            ? Text(widget.interactive.prompt)
-                                            : const SizedBox.shrink(),
                                         Text(prompt!.mainText),
                                         isLoading
                                             ? const Frankloader()
@@ -372,7 +380,8 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                   color: Colors.white12,
                   child: Container(
                     decoration: BoxDecoration(
-                        color: Colors.orange,
+                        color: Color(int.parse(
+                            "0xFF${widget.interactive.theme.backgroundColor}")),
                         image: DecorationImage(
                             image: widget.interactive.photoUrl != null
                                 ? CachedNetworkImageProvider(
