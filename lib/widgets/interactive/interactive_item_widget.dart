@@ -63,7 +63,7 @@ class _InteractiveItemWidgetState extends State<InteractiveItem> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.item.summary!,
+                            widget.item.title ?? "",
                             style: Theme.of(context).textTheme.headlineSmall,
                           ),
                           Text(widget.item.category!,

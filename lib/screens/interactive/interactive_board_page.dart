@@ -14,6 +14,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
+import 'package:machi_app/widgets/ads/interstitial_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -52,7 +53,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
   int _currentSeq = 1;
   InteractiveBoardPrompt? prompt;
   bool isLoading = false;
-  bool canSwipeFirstPage = false;
+  int _adTime = 8;
 
   @override
   void initState() {
@@ -244,29 +245,26 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     }
 
     if (prompt!.options.isEmpty && _currentSeq == widget.interactive.sequence) {
-      return Align(
-          alignment: Alignment.center,
-          child: Center(
-              child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const SizedBox(height: 20),
-              Text(prompt!.mainText),
-              const SizedBox(height: 50),
-              Text(_i18n.translate("interactive_complete")),
-              ElevatedButton.icon(
-                  onPressed: () {
-                    _getInitialPath();
-                  },
-                  icon: isLoading
-                      ? loadingButton(size: 16)
-                      : const SizedBox.shrink(),
-                  label: Text(_i18n.translate("interactive_try_again_button"))),
-              const SizedBox(height: 20),
-              const TextDivider(text: "OR"),
-              Text(_i18n.translate("interactive_read_comments_below"))
-            ],
-          )));
+      return Container(
+          padding: const EdgeInsets.all(20),
+          height: size.height * 0.75,
+          child: Column(children: [
+            const SizedBox(height: 20),
+            Text(prompt!.mainText),
+            const Spacer(),
+            Text(_i18n.translate("interactive_complete")),
+            ElevatedButton.icon(
+                onPressed: () {
+                  _getInitialPath();
+                },
+                icon: isLoading
+                    ? loadingButton(size: 16)
+                    : const SizedBox.shrink(),
+                label: Text(_i18n.translate("interactive_try_again_button"))),
+            const SizedBox(height: 20),
+            const TextDivider(text: "OR"),
+            Text(_i18n.translate("interactive_read_comments_below"))
+          ]));
     }
 
     return WillPopScope(
@@ -283,6 +281,11 @@ class _InteractivePageViewState extends State<InteractivePageView> {
               scrollDirection: Axis.vertical,
               itemCount: widget.interactive.sequence * 2 + 1,
               itemBuilder: (context, index) {
+                int itemCount = widget.interactive.sequence * 2;
+                int midpoint = itemCount ~/ 2;
+                if (itemCount % 2 == 1) {
+                  midpoint -= 1;
+                }
                 if (index == 0) {
                   return Card(
                       child: Container(
@@ -334,7 +337,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                     return PageView.builder(
                         scrollDirection: Axis.horizontal,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: 3,
+                        itemCount: widget.interactive.sequence,
                         itemBuilder: (context, horizontalIndex) {
                           return Card(
                               child: Container(
@@ -343,6 +346,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                                     scrollDirection: Axis.vertical,
                                     child: Column(
                                       children: [
+                                        // TimelineHeader(user: user),
                                         const InlineAdaptiveAds(),
                                         Text(prompt!.mainText),
                                         isLoading
@@ -354,7 +358,8 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                                             .map((option) {
                                           int idx = option.key;
                                           String choice = option.value;
-                                          if (idx < 3) {
+                                          if (idx <
+                                              widget.interactive.sequence) {
                                             return Container(
                                                 padding:
                                                     const EdgeInsets.all(10),
@@ -380,10 +385,11 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                                                         }
                                                       });
                                                       _getNextPath(
-                                                        sequence:
-                                                            adjustedIndex + 1,
-                                                        choice: idx + 1,
-                                                      );
+                                                          sequence:
+                                                              adjustedIndex + 1,
+                                                          choice: idx + 1,
+                                                          showAds: index ==
+                                                              midpoint);
                                                     },
                                                     child: Padding(
                                                       padding:
@@ -408,6 +414,17 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                         });
                   }
                   return const SizedBox.shrink();
+                }
+                if (index - 1 == midpoint) {
+                  return InterstitialAds(
+                    onAdStatus: (data) {
+                      String stats = data["status"];
+
+                      setState(() {
+                        _adTime = stats == "closed" ? 0 : 5;
+                      });
+                    },
+                  );
                 }
                 return Card(
                   color: Colors.white12,
@@ -481,11 +498,16 @@ class _InteractivePageViewState extends State<InteractivePageView> {
     }
   }
 
-  void _getNextPath({required int choice, required int sequence}) async {
+  void _getNextPath(
+      {required int choice, required int sequence, required showAds}) async {
+    if (showAds == true) {
+      _nextPage();
+
+      await Future.delayed(Duration(seconds: _adTime));
+    }
     // Step 1: Scroll to the right with a delay
     if (_pageController.page!.toInt() < widget.interactive.sequence * 2 - 1) {
-      await Future.delayed(
-          const Duration(milliseconds: 500)); // Add a delay of 500 milliseconds
+      await Future.delayed(const Duration(milliseconds: 1000));
       _nextPage();
     }
 
@@ -500,10 +522,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
 
     // Step 2: Scroll down after the API call is complete
     if (_pageController.page!.toInt() < widget.interactive.sequence * 2 - 1) {
-      _pageController.nextPage(
-        duration: const Duration(milliseconds: 1000),
-        curve: Curves.ease,
-      );
+      _nextPage();
     }
 
     setState(() {

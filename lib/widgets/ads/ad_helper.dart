@@ -27,6 +27,21 @@ class AdManager {
     throw UnsupportedError("Unsupported platform");
   }
 
+  static String get interstitialAdUnitId {
+    // tester final adUnitId = Platform.isAndroid
+    //     ? 'ca-app-pub-3940256099942544/1033173712'
+    //     : 'ca-app-pub-3940256099942544/4411468910';
+
+    if (Platform.isAndroid) {
+      // 31712 test
+      return 'ca-app-pub-3940256099942544/1033173712'; //GOOGLE_INTERSTI_ADS_ANDROID;
+    } else if (Platform.isIOS) {
+      /// should be different
+      return IOS_INTERSTITIAL_ID;
+    }
+    throw UnsupportedError("Unsupported platform");
+  }
+
   static String get nativeAdUnitId {
     if (Platform.isAndroid) {
       return 'ca-app-pub-3940256099942544/2247696110';

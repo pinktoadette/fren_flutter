@@ -46,9 +46,9 @@ const String GOOGLE_BANNER_ADS_ANDROID =
 const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
 const String GOOGLE_INTERSTI_ADS_ANDROID =
-    'ca-app-pub-3940256099942544/8691691433';
+    'ca-app-pub-8475595365680681~6477088834';
 // For IOS Platform
-const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
+const String IOS_INTERSTITIAL_ID = "ca-app-pub-8475595365680681~1405545735";
 
 //
 // Add Google Maps - API KEY required for Passport feature

@@ -95,6 +95,7 @@ class InteractiveBoardApi {
   Future<InteractiveBoardPrompt> getNextPath(
       {required Map<String, dynamic> userResponse}) async {
     String url = '${baseUri}interactive/response';
+
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.post(url, data: userResponse);
