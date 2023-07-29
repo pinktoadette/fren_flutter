@@ -21,6 +21,7 @@ import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 
 // ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
@@ -30,6 +31,7 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
   final Function(Layout data) onLayoutSelection;
+  final Function(PageDirection direct) onPageAxisDirection;
   Layout? layout;
 
   EditPageReorder(
@@ -39,6 +41,7 @@ class EditPageReorder extends StatefulWidget {
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
       required this.onLayoutSelection,
+      required this.onPageAxisDirection,
       this.pageIndex = 0,
       this.layout})
       : super(key: key);
@@ -58,6 +61,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.5;
+  PageDirection _direction = PageDirection.HORIZONTAL;
 
   @override
   void initState() {
@@ -74,10 +78,73 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
+    return Stack(
+      children: [
+        _reorderListWidget(),
+        Positioned(
+            height: 100,
+            bottom: 0,
+            child: Column(children: [
+              Container(
+                color: Theme.of(context).colorScheme.background,
+                width: size.width,
+                height: 100,
+                child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Iconsax.text_block),
+                        onPressed: () {
+                          _addEditText();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.image),
+                        onPressed: () {
+                          _editPageImage(context);
+                        },
+                      ),
+                      IconButton(
+                        icon: _direction == PageDirection.HORIZONTAL
+                            ? const Icon(Icons.swipe_right)
+                            : const Icon(Icons.swipe_down),
+                        onPressed: () {
+                          _editPageDirection(context);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.grid_3),
+                        onPressed: () {
+                          _showLayOutSelection(context);
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.element_plus),
+                        onPressed: () {
+                          widget.onMoveInsertPages({"action": "add"});
+                        },
+                      ),
+                    ]),
+              )
+            ])),
+      ],
+    );
+  }
+
+  /// drag and drop of individual widget
+  /// it saves after each change.
+  Widget _reorderListWidget() {
+    Size size = MediaQuery.of(context).size;
+    if (scripts.isEmpty || scripts[0].scriptId == "") {
+      return Container(
+        width: size.width,
+      );
+    }
+
     return Container(
-        constraints: BoxConstraints(
-          minHeight: size.height / 5,
-        ),
+        margin: const EdgeInsets.only(bottom: 100),
+        constraints: BoxConstraints(minHeight: size.width),
         decoration: BoxDecoration(
           image: DecorationImage(
               colorFilter: ColorFilter.mode(
@@ -105,62 +172,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             ).image,
               fit: BoxFit.cover),
         ),
-        child: Stack(
-          children: [
-            _reorderListWidget(),
-            Positioned(
-                height: 100,
-                bottom: 0,
-                child: Column(children: [
-                  Container(
-                    color: Theme.of(context).colorScheme.background,
-                    width: size.width,
-                    height: 100,
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          IconButton(
-                            icon: const Icon(Iconsax.text_block),
-                            onPressed: () {
-                              _addEditText();
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.image),
-                            onPressed: () {
-                              _showPageImage(context);
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.element_plus),
-                            onPressed: () {
-                              widget.onMoveInsertPages({"action": "add"});
-                            },
-                          ),
-                          IconButton(
-                            icon: const Icon(Iconsax.grid_3),
-                            onPressed: () {
-                              _showLayOutSelection(context);
-                            },
-                          )
-                        ]),
-                  )
-                ])),
-          ],
-        ));
-  }
-
-  Widget _reorderListWidget() {
-    Size size = MediaQuery.of(context).size;
-    if (scripts.isEmpty || scripts[0].scriptId == "") {
-      return Container(
-        width: size.width,
-      );
-    }
-
-    return Container(
-        margin: const EdgeInsets.only(bottom: 100),
         child: ReorderableListView(
             children: [
               for (int index = 0; index < scripts.length; index += 1)
@@ -194,7 +205,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                                   ),
                                   ElevatedButton(
                                       onPressed: () => {
-                                            _deleteMessage(index),
+                                            _deleteBit(index),
                                             Navigator.of(context).pop(true),
                                           },
                                       child: Text(_i18n.translate("DELETE"))),
@@ -222,6 +233,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
             }));
   }
 
+  /// shows how individual text / images inside the box,
+  /// such as text alignment
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
     CrossAxisAlignment alignment = layout == Layout.CONVO
@@ -242,10 +255,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
             },
             icon: const Icon(
               Iconsax.edit,
-              size: 16,
+              size: 20,
             )),
         PopupMenuButton<int>(
-            icon: const Icon(Iconsax.document_forward, size: 16),
+            icon: const Icon(Iconsax.document_forward, size: 20),
             initialValue: 1,
             // Callback that sets the selected popup menu item.
             onSelected: (num) async {
@@ -281,11 +294,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
             height: 30,
           ),
           _bubbleOrNot(
-              layout == Layout.COMIC
-                  ? TextBorder(text: scripts[index].text ?? "", size: 16)
+              layout != Layout.CONVO
+                  ? SizedBox(
+                      width: size.width,
+                      child: TextBorder(
+                          text: scripts[index].text ?? "",
+                          size: 16,
+                          textAlign: scripts[index].textAlign))
                   : Text(
                       scripts[index].text ?? "",
-                      textAlign: TextAlign.left,
+                      textAlign: scripts[index].textAlign,
                       style: TextStyle(
                           color: layout == Layout.CONVO
                               ? Colors.black
@@ -318,6 +336,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
+  /// layout conversation style or plain text style
   Widget _bubbleOrNot(Widget widget, Size size, CrossAxisAlignment align) {
     return layout == Layout.CONVO
         ? StoryBubble(
@@ -328,6 +347,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         : widget;
   }
 
+  /// show all the pages in the collection.
   List<PopupMenuItem<int>> _showPages() {
     story = storyboardController.currentStory;
 
@@ -336,20 +356,31 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return PopupMenuItem<int>(
           value: page.pageNum,
           child: Text(
-              "${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
+              " ${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
         );
       }
       return PopupMenuItem<int>(
         value: null,
-        child: Text(_i18n.translate("story_bit_on_current_page")),
+        child: Row(
+          children: [
+            const Icon(Iconsax.arrow_right_3),
+            Text(" ${_i18n.translate("story_bit_on_current_page")}")
+          ],
+        ),
       );
     }).toList();
     pagesMenu.add(PopupMenuItem<int>(
         value: story.pages!.length,
-        child: Text(_i18n.translate("story_bit_add_to_new_page"))));
+        child: Row(
+          children: [
+            const Icon(Iconsax.add),
+            Text(" ${_i18n.translate("story_bit_add_to_new_page")}")
+          ],
+        )));
     return pagesMenu;
   }
 
+  /// select layouy format. Three choices.
   void _showLayOutSelection(BuildContext context) {
     // double height = MediaQuery.of(context).size.height;
     showModalBottomSheet<void>(
@@ -359,6 +390,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return FractionallySizedBox(
             heightFactor: 0.4,
             child: StoryLayout(
+              selection: layout ?? Layout.CONVO,
               onSelection: (value) {
                 setState(() {
                   layout = value;
@@ -377,6 +409,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
+  /// drag and drop individual boxes.
   void _moveBit({required int pageNum, required int scriptIndex}) async {
     try {
       Script script = scripts[scriptIndex].copyWith(pageNum: pageNum);
@@ -402,13 +435,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
+  /// add or edit texts for individual boxes.
   void _addEditText({int? index}) async {
     showModalBottomSheet<void>(
         context: context,
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => AddEditText(
-            text: index != null ? scripts[index].text : null,
+            script: index != null ? scripts[index] : null,
             onTextComplete: (newContent) async {
               try {
                 if ((index == null) & (newContent != null)) {
@@ -418,8 +452,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
                 if ((index != null) & (newContent?["text"] != "")) {
                   Script script = scripts[index!].copyWith(
-                    text: newContent?["text"] ?? "",
-                  );
+                      text: newContent?["text"] ?? "",
+                      textAlign: newContent?["textAlign"] ?? TextAlign.left);
 
                   await _scriptApi.updateScript(script: script);
 
@@ -449,6 +483,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             }));
   }
 
+  /// save any images texts.
   Future<void> _saveOrUploadTextImg(Map<String, dynamic> content) async {
     if (content["text"] != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
@@ -457,6 +492,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
           type: "text",
           storyId: story.storyId,
           text: content["text"] ?? "",
+          textAlign: content["textAlign"] ?? TextAlign.left,
           pageNum: widget.pageIndex + 1);
       setState(() {
         scripts = [...scripts, pages.scripts![0]];
@@ -509,6 +545,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     widget.onUpdateSeq(scripts);
   }
 
+  /// updates the sequence of the individual boxes when dragged and dropped.
   void _updateSequence() async {
     List<Script> newSequence = [];
     List<Map<String, dynamic>> saveSequence = [];
@@ -537,7 +574,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
-  void _deleteMessage(int index) async {
+  /// delete individual boxes.
+  void _deleteBit(int index) async {
     try {
       await _scriptApi.deleteScript(script: scripts[index]);
       scripts
@@ -558,6 +596,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     }
   }
 
+  /// update background images on the page.
   void _updateBackground() async {
     final _storyApi = StoryApi();
     String? url = urlPreview;
@@ -576,7 +615,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
             .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
         storyPages;
 
-    Story updateStory = story.copyWith(pages: story.pages);
+    Story updateStory =
+        story.copyWith(pages: story.pages, pageDirection: _direction);
 
     await _storyApi.updateStory(story: updateStory);
     setState(() {
@@ -584,7 +624,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
-  void _showPageImage(BuildContext context) async {
+  /// edit background image of the page.
+  void _editPageImage(BuildContext context) async {
     await showModalBottomSheet(
         context: context,
         barrierColor: Colors.black.withOpacity(_alphaValue),
@@ -612,6 +653,29 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           urlPreview = null;
                         }),
                       }),
+            )).whenComplete(() {
+      _updateBackground();
+    });
+  }
+
+  /// edit page direction scroll.
+  /// PageDirection.HORIZONTAL or PageDirection.VERTICAL.
+  void _editPageDirection(BuildContext context) async {
+    await showModalBottomSheet(
+        context: context,
+        barrierColor: Colors.black.withOpacity(_alphaValue),
+        builder: (context) => FractionallySizedBox(
+              heightFactor: 0.7,
+              child: PageScrollDirection(
+                onSelection: (direction) {
+                  widget.onPageAxisDirection(direction);
+
+                  setState(() {
+                    _direction = direction;
+                  });
+                  Navigator.pop(context);
+                },
+              ),
             )).whenComplete(() {
       _updateBackground();
     });

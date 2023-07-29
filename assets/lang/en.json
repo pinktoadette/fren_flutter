@@ -32,6 +32,8 @@
   "validation_insufficient_caharacter":"Write something sufficient at least 50 characters for prompt and 3 for name",
   "validation_select_1": "Select at least one",
   "validation_username": "Username is taken",
+
+  "something_wrong": "Oops, something went wrong! Start all over.",
   
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",
@@ -255,6 +257,7 @@
 
   "dark_mode": "Dark Mode",
   "next_step": "Next",
+  "previous_step": "Previous",
   "enable": "Enable",
   "enable_mode": "Enable Mode",
   "enable_mode_des": "Allow Frankie to help you. The more you chat, the more it'll understand who you're looking for.",
@@ -380,6 +383,10 @@
   "story_layout_comic_note": "Background image may not be aligned in preview.",
   "story_layout_flashcard": "Flashcard",
 
+  "story_page_direction": "Page Scroll Direction",
+  "story_page_horizontal": "Horizontal scroll",
+  "story_page_vertical": "Vertical scroll",
+
   "story_share": "Share",
   "storyboard": "Board",
   "story_as_text": "Text Version",
@@ -462,20 +469,33 @@
   "machi_helper_replace_text": "Replace",
 
   "plans_include_gpt": "Free and paid plans include ChatGPT 3.5",
-  "plans_imaginfy10":"10 images",
-  "plans_imaginfy50":"50 images",
-  "plans_imaginfy100":"100 images",
-  "plans_imaginfy200":"200 images",
   "plans_10_subtitle": "Just $1",
   "plans_50_subtitle": "Great Value",
   "plans_100_subtitle": "Bulk Savings",
   "plans_300_subtitle": "Best Deal",
-  "plans_imaginfy10_des": "Create up to 10 artistic prompts for only $1",
-  "plans_imaginfy50_des": "Best Affordability! Unlock 50 for $4.49",
-  "plans_imaginfy100_des": "Buy more, save and unlock your creativity",
-  "plans_imaginfy200_des": "Ultimate savings and unlock your creative potential",
-  "plans_imaginfy10_unit": "$0.10/image",
-  "plans_imaginfy50_unit": "$0.09/image",
-  "plans_imaginfy100_unit": "$0.085/image",
-  "plans_imaginfy200_unit": "$0.08/image"
+
+  "studio": "Studio",
+  "studio_draw_prompt": "Enter a prompt",
+  "studio_art": "Image",
+  "studio_audio": "Speech",
+  "studio_music": "Music",
+  "studio_select_model": "Find a model",
+
+  "post": "Post",
+  "post_create": "New Post",
+  "post_interactive_info": "Create an interactive post where users decide the outcome. You can create any content that follows guidelines, including stories and exams. You will only need to write the initial prompt, be very specific.",
+  "post_interactive_button": "Interactive",
+  "post_board_button": "Board",
+  "post_board_info": "Post from your board",
+  "post_interactive_hint": "Example: Imagine you wake up in a mysterious world, surrounded by enchanted forests and magnical creatures. As you take your first step, you notice a glowing object in the distance. What do you do next? \n\nYou have a microbiology exam coming up and need questions.",
+  "post_interactive_hidden_hint": "(optional) Secret text - This is not displayed but will take part of the path. \n\nThis is where you'll surprise your readers!",
+
+  
+  "interactive": "Interactive",
+  "interactive_number_of_paths": "Total Seq",
+  "interactive_complete": "Nice! Want to try again?",
+  "interactive_try_again_button": "Again!",
+  "interactive_read_comments_below": "Share your comments below.",
+  "interactive_mode_action_info": "Questions are generated dynamically based on creator's prompt. The questions and responses are not saved unless you continue in the chat.",
+  "interactive_mode_start": "Let's Go"
 }

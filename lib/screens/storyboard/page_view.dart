@@ -17,11 +17,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
+import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -153,17 +155,20 @@ class _StoryPageViewState extends State<StoryPageView> {
                   })
           ],
         ),
-        body: Stack(children: [
-          SingleChildScrollView(
-              child: Obx(() => Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      _showPageWidget(),
-                    ],
-                  ))),
-          if (story?.status.name == StoryStatus.PUBLISHED.name) _commentSheet()
-        ]));
+        body: LayoutBuilder(builder: (context, constraints) {
+          return Stack(children: [
+            SingleChildScrollView(
+                child: Obx(() => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        _showPageWidget(constraints),
+                      ],
+                    ))),
+            if (story?.status.name == StoryStatus.PUBLISHED.name)
+              _commentSheet()
+          ]);
+        }));
   }
 
   void _onReport() {
@@ -202,8 +207,8 @@ class _StoryPageViewState extends State<StoryPageView> {
         backgroundColor: APP_ERROR,
       );
 
-      await FirebaseCrashlytics.instance
-          .recordError(err, s, reason: 'Cannot like item', fatal: true);
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot like storyboard item', fatal: true);
     }
   }
 
@@ -274,11 +279,12 @@ class _StoryPageViewState extends State<StoryPageView> {
     );
   }
 
-  Widget _showPageWidget() {
+  Widget _showPageWidget(BoxConstraints constraints) {
     Size size = MediaQuery.of(context).size;
+    double footerHeight = 100;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
         ? size.height * bodyHeightPercent
-        : size.height - 100;
+        : size.height - footerHeight;
 
     if (story!.pages!.isEmpty) {
       return SizedBox(
@@ -289,88 +295,92 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     return Stack(alignment: Alignment.topCenter, children: [
       SizedBox(
-          height: height - 80,
-          width: size.width,
+          height: height - footerHeight,
+          width: double.infinity,
           child: PageView.builder(
             controller: controller,
+            scrollDirection: story!.pageDirection == PageDirection.HORIZONTAL
+                ? Axis.horizontal
+                : Axis.vertical,
             itemCount: storyboardController.currentStory.pages!.length,
             itemBuilder: (_, index) {
               List<Script>? scripts = story!.pages![index].scripts;
-              return SingleChildScrollView(
-                  scrollDirection: Axis.vertical,
-                  child: Column(
-                    children: [
-                      if (index == 0)
-                        StoryHeaderWidget(
-                          story: storyboardController.currentStory,
-                        ),
-                      Card(
-                          child: Container(
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                colorFilter: ColorFilter.mode(
-                                    const Color.fromARGB(255, 0, 0, 0)
-                                        .withOpacity(story?.pages![index]
-                                                .backgroundAlpha ??
-                                            0.5),
-                                    BlendMode.darken),
-                                image: story?.pages![index]
-                                            .backgroundImageUrl !=
-                                        null
-                                    ? CachedNetworkImageProvider(
-                                        story!
-                                            .pages![index].backgroundImageUrl!,
-                                        errorListener: () =>
-                                            const Icon(Icons.error),
-                                      )
-                                    : story!.pages![index].backgroundImageUrl !=
-                                            null
-                                        ? CachedNetworkImageProvider(
-                                            story!.pages![index]
-                                                .backgroundImageUrl!,
-                                            errorListener: () =>
-                                                const Icon(Icons.error),
-                                          )
-                                        : Image.asset(
-                                            "assets/images/blank.jpg",
-                                            scale: 0.2,
-                                            width: 100,
-                                          ).image,
-                                fit: BoxFit.cover)),
-                        width: size.width,
-                        padding: const EdgeInsets.all(20),
-                        child: Column(
-                            crossAxisAlignment: story!.layout == Layout.CONVO
-                                ? CrossAxisAlignment.end
-                                : CrossAxisAlignment.start,
-                            children: scripts!.map((script) {
-                              CrossAxisAlignment alignment =
-                                  story!.layout == Layout.CONVO
-                                      ? story!.createdBy.username.trim() ==
-                                              script.characterName!.trim()
-                                          ? CrossAxisAlignment.end
-                                          : CrossAxisAlignment.start
-                                      : script.type == 'image'
-                                          ? CrossAxisAlignment.center
-                                          : CrossAxisAlignment.start;
-                              return Column(
-                                  crossAxisAlignment: alignment,
-                                  children: [
-                                    _displayScript(script, size),
-                                    if (story!.layout == Layout.CONVO)
-                                      Text(script.characterName ?? ""),
-                                    const SizedBox(
-                                      height: 20,
-                                    )
-                                  ]);
-                            }).toList()),
-                      ))
-                    ],
-                  ));
+              return Card(
+                child: Container(
+                  height: size.height - 250,
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          colorFilter: ColorFilter.mode(
+                              const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                                  story?.pages![index].backgroundAlpha ?? 0.5),
+                              BlendMode.darken),
+                          image: story?.pages![index].backgroundImageUrl != null
+                              ? CachedNetworkImageProvider(
+                                  story!.pages![index].backgroundImageUrl!,
+                                  errorListener: () => const Icon(Icons.error),
+                                )
+                              : Image.asset(
+                                  "assets/images/blank.jpg",
+                                  scale: 0.2,
+                                  width: 100,
+                                ).image,
+                          fit: BoxFit.cover)),
+                  padding: const EdgeInsets.all(20),
+                  child: SingleChildScrollView(
+                    child: ConstrainedBox(
+                        constraints: BoxConstraints(
+                            minWidth: constraints.maxWidth,
+                            minHeight: constraints.maxHeight - 200),
+                        child: IntrinsicHeight(
+                            child: Column(
+                                crossAxisAlignment:
+                                    story!.layout == Layout.CONVO
+                                        ? CrossAxisAlignment.end
+                                        : CrossAxisAlignment.start,
+                                children: [
+                              Expanded(
+                                  child: Column(
+                                      children: scripts!.map((script) {
+                                CrossAxisAlignment alignment =
+                                    story!.layout == Layout.CONVO
+                                        ? story!.createdBy.username.trim() ==
+                                                script.characterName!.trim()
+                                            ? CrossAxisAlignment.end
+                                            : CrossAxisAlignment.start
+                                        : script.type == 'image'
+                                            ? CrossAxisAlignment.center
+                                            : CrossAxisAlignment.start;
+                                return Column(
+                                    crossAxisAlignment: alignment,
+                                    children: [
+                                      _displayScript(script, size),
+                                      if (story!.layout == Layout.CONVO)
+                                        Text(script.characterName ?? ""),
+                                    ]);
+                              }).toList())),
+                              if ((index % 2 == 0) &
+                                  ((story!.status) == StoryStatus.PUBLISHED))
+                                const Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: InlineAdaptiveAds(),
+                                ),
+                              const SizedBox(
+                                height: 50,
+                              )
+                            ]))),
+                  ),
+                ),
+              );
             },
           )),
       Positioned(
-          bottom: 0,
+          bottom: story!.pageDirection == PageDirection.HORIZONTAL
+              ? 50
+              : size.height / 2,
+          width: story!.pageDirection == PageDirection.HORIZONTAL
+              ? size.width
+              : 40,
+          left: story!.pageDirection == PageDirection.HORIZONTAL ? 0 : 10,
           child: SizedBox(
             height: 50,
             width: size.width,
@@ -378,35 +388,67 @@ class _StoryPageViewState extends State<StoryPageView> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Spacer(),
                 Padding(
                     padding: const EdgeInsets.only(bottom: 10),
                     child: SmoothPageIndicator(
                       controller: controller,
                       count: story!.pages!.length,
+                      axisDirection:
+                          story!.pageDirection == PageDirection.HORIZONTAL
+                              ? Axis.horizontal
+                              : Axis.vertical,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 10,
                           dotWidth: 18,
                           activeDotColor: APP_ACCENT_COLOR),
                     )),
-                const SizedBox(
-                  width: 20,
-                ),
-                Padding(
-                    padding: const EdgeInsets.only(right: 10),
-                    child: Obx(
-                      () => LikeItemWidget(
-                          onLike: (val) {
-                            _onLikePressed(widget.story, val);
-                          },
-                          size: 20,
-                          likes: timelineController.currentStory.likes ?? 0,
-                          mylikes:
-                              timelineController.currentStory.mylikes ?? 0),
-                    )),
               ],
             ),
-          ))
+          )),
+      if (story!.status == StoryStatus.PUBLISHED)
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: Container(
+              color: Colors.black.withOpacity(0.8),
+              child: Obx(
+                () => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: LikeItemWidget(
+                            onLike: (val) {
+                              _onLikePressed(widget.story, val);
+                            },
+                            size: 40,
+                            likes: timelineController.currentStory.likes ?? 0,
+                            mylikes:
+                                timelineController.currentStory.mylikes ?? 0)),
+                    Container(
+                        padding: const EdgeInsets.only(left: 30, top: 12),
+                        width: size.width,
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Iconsax.message,
+                              size: 16,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              timelineController.currentStory.commentCount
+                                  .toString(),
+                              style: const TextStyle(fontSize: 12),
+                            )
+                          ],
+                        ))
+                  ],
+                ),
+              )),
+        )
     ]);
   }
 
@@ -418,18 +460,22 @@ class _StoryPageViewState extends State<StoryPageView> {
       widget = textLinkPreview(
           useBorder: story!.layout == Layout.COMIC,
           context: context,
+          width: story!.layout != Layout.CONVO ? size.width : null,
           text: script.text ?? "",
+          textAlign: script.textAlign ?? TextAlign.left,
           style: TextStyle(
               color: story!.layout == Layout.CONVO
                   ? Colors.black
                   : Theme.of(context).colorScheme.primary));
     } else if (script.type == "image") {
-      widget = StoryCover(
-        photoUrl: script.image?.uri ?? "",
-        title: story?.title ?? "machi",
-        width: size.width * 0.9,
-        height: size.width * 0.9,
-      );
+      widget = Padding(
+          padding: const EdgeInsets.only(bottom: 10),
+          child: StoryCover(
+            photoUrl: script.image?.uri ?? "",
+            title: story?.title ?? "machi",
+            width: size.width * 0.9,
+            height: size.width * 0.9,
+          ));
     }
     Widget widgetScript = story!.layout == Layout.CONVO
         ? StoryBubble(

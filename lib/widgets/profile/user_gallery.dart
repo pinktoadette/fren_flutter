@@ -68,6 +68,7 @@ class _GalleryWidgetState extends State<UserGallery> {
     AppLocalizations _i18n = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           title: Text(
             _i18n.translate("gallery"),
             style: Theme.of(context).textTheme.bodyMedium,

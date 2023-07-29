@@ -4,16 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
+// ignore: must_be_immutable
 class ImagePromptGeneratorWidget extends StatefulWidget {
+  int? numImages;
+  bool? isProfile;
+
   final Function(String url) onImageSelected;
 
-  const ImagePromptGeneratorWidget({
+  ImagePromptGeneratorWidget({
     Key? key,
     required this.onImageSelected,
+    this.numImages = 4,
+    this.isProfile = false,
   }) : super(key: key);
 
   @override
@@ -24,6 +32,7 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
 class _ImagePromptGeneratorWidgetState
     extends State<ImagePromptGeneratorWidget> {
   final _promptController = TextEditingController();
+  SubscribeController subscribeController = Get.find(tag: 'subscribe');
   late AppLocalizations _i18n;
   List<dynamic> _items = [];
   String _selectedUrl = '';
@@ -40,6 +49,9 @@ class _ImagePromptGeneratorWidgetState
   @override
   void initState() {
     super.initState();
+    if (widget.isProfile == false) {
+      _counter = subscribeController.credits.value;
+    }
   }
 
   @override
@@ -118,7 +130,7 @@ class _ImagePromptGeneratorWidgetState
                     _i18n.translate("profile_image_generate_button"),
                   ),
                   onPressed: () {
-                    _generatePhoto();
+                    _generatePhoto(context);
                   },
                 )),
         const SizedBox(
@@ -128,8 +140,12 @@ class _ImagePromptGeneratorWidgetState
     );
   }
 
-  void _generatePhoto() async {
+  void _generatePhoto(BuildContext context) async {
     if (_counter == 0) {
+      return;
+    }
+    if (subscribeController.credits.value == 0) {
+      _showSubscription(context);
       return;
     }
     setState(() {
@@ -137,8 +153,8 @@ class _ImagePromptGeneratorWidgetState
     });
     try {
       final _botApi = BotApi();
-      List<dynamic> imageUrl =
-          await _botApi.machiImage(text: _promptController.text);
+      List<dynamic> imageUrl = await _botApi.machiImage(
+          text: _promptController.text, numImages: widget.numImages);
       setState(() {
         _items = imageUrl;
         _counter -= 1;
@@ -157,5 +173,14 @@ class _ImagePromptGeneratorWidgetState
         _isLoading = false;
       });
     }
+  }
+
+  void _showSubscription(BuildContext context) {
+    showModalBottomSheet<void>(
+        context: context,
+        isScrollControlled: true,
+        builder: (context) => Obx(() => FractionallySizedBox(
+            heightFactor: subscribeController.credits.value > 0 ? 0.5 : 0.95,
+            child: const SubscriptionProduct())));
   }
 }

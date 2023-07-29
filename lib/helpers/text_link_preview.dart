@@ -5,7 +5,9 @@ import 'package:machi_app/widgets/decoration/text_border.dart';
 Widget textLinkPreview(
     {required BuildContext context,
     required String text,
+    TextAlign? textAlign = TextAlign.left,
     bool? useBorder = false,
+    double? width,
     TextStyle? style}) {
   final urlRegExp = RegExp(
       r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
@@ -15,21 +17,33 @@ Widget textLinkPreview(
       .toList();
 
   return SizedBox(
+      width: width,
       child: Column(
-    children: [
-      useBorder == true
-          ? TextBorder(text: text, size: 16)
-          : Text(
-              text,
-              style: style ?? Theme.of(context).textTheme.bodySmall,
+        crossAxisAlignment: textAlign == TextAlign.center
+            ? CrossAxisAlignment.center
+            : textAlign == TextAlign.right
+                ? CrossAxisAlignment.end
+                : CrossAxisAlignment.start,
+        children: [
+          useBorder == true
+              ? TextBorder(
+                  text: text,
+                  size: 16,
+                  textAlign: textAlign,
+                )
+              : Text(
+                  text,
+                  textAlign: textAlign,
+                  style: style ?? Theme.of(context).textTheme.bodySmall,
+                  overflow: TextOverflow.fade,
+                ),
+          if (urls.isNotEmpty)
+            AnyLinkPreview(
+              displayDirection: UIDirection.uiDirectionHorizontal,
+              link: urls[0],
+              errorBody: 'Hmm... cant get link',
+              errorTitle: 'Error title',
             ),
-      if (urls.isNotEmpty)
-        AnyLinkPreview(
-          displayDirection: UIDirection.uiDirectionHorizontal,
-          link: urls[0],
-          errorBody: 'Hmm... cant get link',
-          errorTitle: 'Error title',
-        ),
-    ],
-  ));
+        ],
+      ));
 }

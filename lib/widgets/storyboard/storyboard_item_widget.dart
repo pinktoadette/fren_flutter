@@ -169,7 +169,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                   textLinkPreview(
                                       useBorder: story.layout == Layout.COMIC,
                                       context: context,
-                                      text: script.text ?? "",
+                                      text: truncateText(
+                                          maxLength: 300,
+                                          text: script.text ?? ""),
                                       style:
                                           const TextStyle(color: Colors.black))
                                 ]);
@@ -263,7 +265,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         onTap: () {
           storyboardController.setCurrentBoard(storyboard);
           timelineController.setStoryTimelineControllerCurrent(story);
-
+          storyboardController.onGoToPageView(story);
           Get.to(() => StoryPageView(story: story));
         },
         child: Card(

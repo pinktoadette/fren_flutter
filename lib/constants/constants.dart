@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-const String env = 'prod';
+const String env = 'dev';
 
 const PY_LOCAL = "http://localhost:8000/api/";
 const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
@@ -46,9 +46,9 @@ const String GOOGLE_BANNER_ADS_ANDROID =
 const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
 const String GOOGLE_INTERSTI_ADS_ANDROID =
-    'ca-app-pub-3940256099942544/8691691433';
+    'ca-app-pub-8475595365680681~6477088834';
 // For IOS Platform
-const String IOS_INTERSTITIAL_ID = "YOUR iOS AD ID";
+const String IOS_INTERSTITIAL_ID = "ca-app-pub-8475595365680681~1405545735";
 
 //
 // Add Google Maps - API KEY required for Passport feature
@@ -77,6 +77,7 @@ const UPLOAD_PATH_COLLECTION = "collection";
 const UPLOAD_PATH_MESSAGE = "message";
 const UPLOAD_PATH_USER_PROFILE = "profile";
 const UPLOAD_PATH_BOT_IMAGE = "machi";
+const UPLOAD_PATH_INTERACTIVE = "interactive";
 
 /// List of Supported Locales
 /// Add your new supported Locale to the array list.
@@ -282,6 +283,7 @@ const String STORY_STATUS = "status";
 const String STORY_PHOTO_URL = "photoUrl";
 const String STORY_CATEGORY = "category";
 const String STORY_LAYOUT = "layout";
+const String STORY_PAGE_DIRECTION = "pageDirection";
 const String STORY_BITS = "bits";
 const String STORY_COVER_PAGES = "coverPages";
 const String STORY_PAGES_BACKGROUND = "backgroundUrl";
@@ -293,6 +295,7 @@ const String SCRIPTS = "scripts";
 const String SCRIPT_ID = "scriptId";
 const String SCRIPT_TYPE = "type";
 const String SCRIPT_TEXT = "text";
+const String SCRIPT_TEXT_ALIGN = "textAlign";
 const String SCRIPT_IMAGE = "image";
 const String SCRIPT_IMAGE_WIDTH = "width";
 const String SCRIPT_IMAGE_HEIGHT = "height";
@@ -341,6 +344,20 @@ const String SUBSCRIBED_MACHI = "mymachi";
 const String UPSELL_AFFORDABLE = "imaginfy10";
 const String SELL_300_UNITS = "300";
 const String SELL_10_UNITS = "10";
+
+/// INTERACTIVE
+const String INTERACTIVE_ID = "interactiveId";
+const String INTERACTIVE_PROMPT = "prompt";
+const String INTERACTIVE_USER__ID = "user_id";
+const String INTERACTIVE_NUM_SEQ = "sequence";
+const String INTERACTIVE_INITIAL_SUMMARY = "summary";
+const String INTERACTIVE_TITLE = "title";
+const String INTERACTIVE_CATEGORY = "category";
+const String INTERACTIVE_PHOTO_URL = "photoUrl";
+const String INTERACTIVE_HIDDEN_PROMPT = "hiddenPrompt";
+const String INTERACTIVE_CURRENT_PROMPT = "mainText";
+const String INTERACTIVE_CURRENT_CHOICES = "options";
+const String INTERACTIVE_THEME_ID = "themeId";
 
 /// chatroom
 const String FLUTTER_UI_ID = "id"; //fluter_chat_ui id

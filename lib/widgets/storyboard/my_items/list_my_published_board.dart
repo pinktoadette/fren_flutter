@@ -42,8 +42,8 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
         ),
         body: storyboardController.published.isEmpty
             ? Center(
-                child: Align(
-                  child: Text(_i18n.translate("story_nothing_published")),
+                child: Text(
+                  _i18n.translate("story_nothing_published"),
                 ),
               )
             : RefreshIndicator(

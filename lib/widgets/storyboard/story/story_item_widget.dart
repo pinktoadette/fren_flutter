@@ -2,7 +2,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
@@ -68,10 +67,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
             if (widget.message != null) {
               _addMessage();
             } else {
-              Get.lazyPut<CommentController>(() => CommentController(),
-                  tag: "comment");
-
-              storyboardController.currentStory = widget.story;
+              storyboardController.onGoToPageView(widget.story);
               Get.to(() => StoryPageView(story: widget.story));
             }
           }

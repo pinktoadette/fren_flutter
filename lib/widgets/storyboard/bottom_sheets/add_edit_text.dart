@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,9 +13,9 @@ import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 
 class AddEditText extends StatefulWidget {
-  final String? text;
+  final Script? script;
   final Function(Map<String, dynamic>?) onTextComplete;
-  const AddEditText({Key? key, required this.onTextComplete, this.text})
+  const AddEditText({Key? key, required this.onTextComplete, this.script})
       : super(key: key);
 
   @override
@@ -28,12 +29,14 @@ class _AddEditTextState extends State<AddEditText> {
 
   File? attachmentPreview;
   String? galleryImageUrl;
+  TextAlign textAlign = TextAlign.left;
 
   @override
   void initState() {
     super.initState();
-    if (widget.text != null) {
-      _textController = TextEditingController(text: widget.text);
+    if (widget.script?.text != null) {
+      _textController = TextEditingController(text: widget.script!.text);
+      textAlign = widget.script?.textAlign ?? TextAlign.left;
     }
   }
 
@@ -80,7 +83,7 @@ class _AddEditTextState extends State<AddEditText> {
                       onPressed: () {
                         _onComplete(_textController.text);
                       },
-                      child: widget.text == null
+                      child: widget.script?.text == null
                           ? Text(
                               _i18n.translate("add"),
                               style: const TextStyle(
@@ -133,15 +136,41 @@ class _AddEditTextState extends State<AddEditText> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          textAlign = TextAlign.left;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_left)),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          textAlign = TextAlign.center;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_center)),
+                  IconButton(
+                      onPressed: () {
+                        setState(() {
+                          textAlign = TextAlign.right;
+                        });
+                      },
+                      icon: const Icon(Icons.align_horizontal_right)),
+                ],
+              )
             ],
           ),
           Container(
-            margin: const EdgeInsets.only(top: 150),
+            margin: const EdgeInsets.only(top: 200),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(),
                     child: TextFormField(
+                      textAlign: textAlign,
                       scrollController: _scrollController,
                       style: Theme.of(context).textTheme.bodyMedium,
                       onTapOutside: (b) {
@@ -169,7 +198,8 @@ class _AddEditTextState extends State<AddEditText> {
       widget.onTextComplete({
         "text": text,
         "image": attachmentPreview ?? "",
-        "gallery": galleryImageUrl ?? ""
+        "gallery": galleryImageUrl ?? "",
+        "textAlign": textAlign
       });
     } else {
       Get.snackbar(
@@ -247,6 +277,7 @@ class _AddEditTextState extends State<AddEditText> {
             onTap: () {
               setState(() {
                 attachmentPreview = null;
+                galleryImageUrl = null;
               });
             },
             child: const Icon(Iconsax.close_circle),

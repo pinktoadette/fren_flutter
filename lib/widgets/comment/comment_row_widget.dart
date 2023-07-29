@@ -64,15 +64,21 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                   style: Theme.of(context).textTheme.bodySmall,
                 )),
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                if (widget.item.response != null && widget.hideReply != true)
-                  InkWell(
-                      onTap: () => setState(() {
-                            toggleReplies = !toggleReplies;
-                          }),
-                      child: Text("${widget.item.response!.length} replies ",
-                          style: Theme.of(context).textTheme.labelSmall)),
+                const SizedBox(
+                  width: 20,
+                ),
+                LikeItemWidget(
+                    onLike: (val) {
+                      _onLikePressed(widget.item.commentId!, val);
+                    },
+                    likes: widget.item.likes ?? 0,
+                    mylikes: widget.item.mylikes ?? 0),
+                const SizedBox(
+                  width: 10,
+                ),
                 if (widget.hideReply == false)
                   TextButton(
                       onPressed: () {
@@ -83,15 +89,13 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                 const SizedBox(
                   width: 5,
                 ),
-                LikeItemWidget(
-                    onLike: (val) {
-                      _onLikePressed(widget.item.commentId!, val);
-                    },
-                    likes: widget.item.likes ?? 0,
-                    mylikes: widget.item.mylikes ?? 0),
-                const SizedBox(
-                  width: 20,
-                ),
+                if (widget.item.response != null && widget.hideReply != true)
+                  TextButton(
+                      onPressed: () => setState(() {
+                            toggleReplies = !toggleReplies;
+                          }),
+                      child: Text("${widget.item.response!.length} replies ",
+                          style: Theme.of(context).textTheme.labelSmall)),
               ],
             ),
             const Divider(

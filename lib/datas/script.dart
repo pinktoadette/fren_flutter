@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
@@ -60,6 +61,7 @@ class Script {
   final int? pageNum;
   final ScriptImage? image;
   final String? text;
+  final TextAlign? textAlign;
   final Voiceover? voiceover;
   final String? status;
   final int? createdAt;
@@ -74,6 +76,7 @@ class Script {
       this.pageNum,
       this.image,
       this.text,
+      this.textAlign,
       this.voiceover,
       this.status,
       this.createdAt,
@@ -88,6 +91,7 @@ class Script {
       int? pageNum,
       ScriptImage? image,
       String? text,
+      TextAlign? textAlign,
       Voiceover? voiceover,
       String? status}) {
     return Script(
@@ -99,8 +103,9 @@ class Script {
         pageNum: pageNum ?? this.pageNum,
         image: image ?? this.image,
         text: text ?? this.text,
+        textAlign: textAlign ?? this.textAlign,
         voiceover: voiceover ?? this.voiceover,
-        status: '');
+        status: status ?? this.status);
   }
 
   Map<String, dynamic> toJSON() {
@@ -108,6 +113,7 @@ class Script {
       SCRIPT_ID: scriptId,
       SCRIPT_TYPE: type,
       SCRIPT_TEXT: text,
+      SCRIPT_TEXT_ALIGN: textAlign?.name,
       SCRIPT_PAGE_NUM: pageNum,
       SCRIPT_IMAGE: image != null ? image!.toJSON() : null,
       SCRIPT_SPEAKER_NAME: characterName,
@@ -139,6 +145,9 @@ class Script {
         scriptId: doc[SCRIPT_ID],
         type: doc[SCRIPT_TYPE],
         text: doc[SCRIPT_TEXT],
+        textAlign: doc[SCRIPT_TEXT_ALIGN] != null
+            ? TextAlign.values.byName(doc[SCRIPT_TEXT_ALIGN])
+            : TextAlign.left,
         image: image,
         createdBy: user,
         createdAt: doc[CREATED_AT].toInt(),

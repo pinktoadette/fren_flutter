@@ -16,22 +16,16 @@ class StoryBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-        alignment: isRight ? Alignment.bottomRight : Alignment.bottomLeft,
-        child: CustomPaint(
+      alignment: isRight ? Alignment.bottomRight : Alignment.bottomLeft,
+      child: CustomPaint(
           painter: Bubble(isRight),
           child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
-              constraints: BoxConstraints(maxWidth: size.width * 0.75),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                      padding: const EdgeInsets.symmetric(
-                          vertical: 10, horizontal: 0),
-                      child: widget),
-                ],
-              )),
-        ));
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 15),
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10, horizontal: 0),
+                child: widget),
+          )),
+    );
   }
 }

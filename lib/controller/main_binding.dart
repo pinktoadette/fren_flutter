@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/comment_controller.dart';
+import 'package:machi_app/controller/interactive_board_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
@@ -23,6 +24,8 @@ class MainBinding implements Bindings {
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
     Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
+    Get.lazyPut<InteractiveBoardController>(() => InteractiveBoardController(),
+        tag: "interactive");
 
     // Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
     debugPrint("================ Finish putting controllers ================");

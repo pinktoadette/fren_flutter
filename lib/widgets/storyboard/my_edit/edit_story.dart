@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 /// Need to call pages since storyboard
@@ -29,6 +30,8 @@ class _EditPageState extends State<EditPage> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
   Layout selectedLayout = Layout.CONVO;
+  PageDirection _pageDirection = PageDirection.HORIZONTAL;
+
   int pageIndex = 0;
 
   get onUpdate => null;
@@ -104,6 +107,10 @@ class _EditPageState extends State<EditPage> {
             onUpdateSeq: (update) {
               _updateSequence(update);
             },
+            onPageAxisDirection: (direction) {
+              // update
+              _updatePageDirection(direction);
+            },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
             })
@@ -118,6 +125,9 @@ class _EditPageState extends State<EditPage> {
             onPageChanged: _onPageChange,
             controller: _pageController,
             itemCount: story.pages!.length,
+            scrollDirection: _pageDirection == PageDirection.HORIZONTAL
+                ? Axis.horizontal
+                : Axis.vertical,
             itemBuilder: (_, index) {
               List<Script> scripts = story.pages![index].scripts ?? [];
               return EditPageReorder(
@@ -131,6 +141,10 @@ class _EditPageState extends State<EditPage> {
                   onUpdateSeq: (update) {
                     _updateSequence(update);
                   },
+                  onPageAxisDirection: (direction) {
+                    // update
+                    _updatePageDirection(direction);
+                  },
                   onLayoutSelection: (layout) {
                     selectedLayout = layout;
                     _updateLayout(layout);
@@ -138,20 +152,42 @@ class _EditPageState extends State<EditPage> {
             },
           )),
       Positioned(
-          bottom: 30,
-          height: 20,
+          bottom: story.pageDirection == PageDirection.HORIZONTAL
+              ? 50
+              : size.height / 2,
+          height: story.pageDirection == PageDirection.HORIZONTAL
+              ? 150
+              : size.height,
+          left: _pageDirection == PageDirection.HORIZONTAL ? 0 : 20,
           width: size.width,
           child: Container(
             width: size.width,
-            alignment: Alignment.center,
+            alignment: _pageDirection == PageDirection.HORIZONTAL
+                ? Alignment.center
+                : Alignment.bottomLeft,
             child: SmoothPageIndicator(
+              axisDirection: _pageDirection == PageDirection.VERTICAL
+                  ? Axis.vertical
+                  : Axis.horizontal,
               controller: _pageController,
               count: story.pages?.length ?? 1,
-              effect: const ExpandingDotsEffect(
-                  dotHeight: 8, dotWidth: 14, activeDotColor: APP_ACCENT_COLOR),
+              effect: ExpandingDotsEffect(
+                  dotHeight: 8,
+                  dotWidth: _pageDirection == PageDirection.HORIZONTAL ? 14 : 8,
+                  activeDotColor: APP_ACCENT_COLOR),
             ),
-          ))
+          )),
     ];
+  }
+
+  void _updatePageDirection(PageDirection direction) {
+    Story update = story.copyWith(pageDirection: direction);
+    storyboardController.updateStory(story: update);
+
+    setState(() {
+      _pageDirection = direction;
+      story = update;
+    });
   }
 
   /// update / delete sequence

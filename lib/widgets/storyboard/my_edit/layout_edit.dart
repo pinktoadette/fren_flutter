@@ -7,9 +7,11 @@ import 'package:iconsax/iconsax.dart';
 enum Layout { PUBLICATION, CONVO, FLASHCARD, COMIC }
 
 class StoryLayout extends StatelessWidget {
+  final Layout? selection;
   final Function(Layout) onSelection;
   const StoryLayout({
     Key? key,
+    this.selection,
     required this.onSelection,
   }) : super(key: key);
 
@@ -83,7 +85,12 @@ class StoryLayout extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(item, style: const TextStyle(fontSize: 16))
+                  Text(item,
+                      style: TextStyle(
+                          fontSize: 16,
+                          color: selection == layout
+                              ? APP_ACCENT_COLOR
+                              : APP_INVERSE_PRIMARY_COLOR))
                 ],
               ),
             )));

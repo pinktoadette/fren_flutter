@@ -18,6 +18,7 @@ class ScriptApi {
       required String character,
       required String storyId,
       String? text,
+      TextAlign? textAlign,
       Map<String, dynamic>? image,
       String? voiceId,
       String? characterId,
@@ -28,6 +29,7 @@ class ScriptApi {
       final dio = await auth.getDio();
       final response = await dio.post(url, data: {
         "text": text,
+        "textAlign": textAlign?.name,
         "character": character,
         "characterId": characterId,
         "type": type,

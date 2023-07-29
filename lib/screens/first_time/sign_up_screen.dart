@@ -258,15 +258,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool isNameAvail = await _userApi
         .checkUsername(_nameController.text.toLowerCase().replaceAll(' ', ''));
 
-    if (!_agreeTerms) {
-      // Show error message
-      Get.snackbar(_i18n.translate("terms_condition"),
-          _i18n.translate("you_must_agree_to_our_privacy_policy"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_ERROR,
-          colorText: Colors.black);
-    }
-
     if (!_formKey.currentState!.validate()) {
       Get.snackbar(_i18n.translate('validation_warning'),
           _i18n.translate("validation_3_characters"),

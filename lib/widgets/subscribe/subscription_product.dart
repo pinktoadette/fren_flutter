@@ -1,4 +1,3 @@
-import 'dart:io';
 
 import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';

@@ -2,6 +2,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 
 extension ListExtensions<T> on List<T> {
   T? firstOrNull(bool Function(T) test) {
@@ -109,6 +110,7 @@ class Story {
   final String category;
   List<StoryPages>? pages;
   Layout? layout;
+  PageDirection? pageDirection; // aka scroll direction
   final int? likes;
   final int? mylikes;
   final int? createdAt;
@@ -125,6 +127,7 @@ class Story {
       this.summary,
       required this.category,
       this.layout,
+      this.pageDirection,
       this.likes,
       this.mylikes,
       this.commentCount,
@@ -145,6 +148,7 @@ class Story {
       int? mylikes,
       int? commentCount,
       Layout? layout,
+      PageDirection? pageDirection,
       String? summary}) {
     return Story(
         storyId: storyId ?? this.storyId,
@@ -159,6 +163,7 @@ class Story {
         mylikes: mylikes ?? this.mylikes,
         commentCount: commentCount ?? this.commentCount,
         layout: layout ?? this.layout,
+        pageDirection: pageDirection ?? this.pageDirection,
         category: category ?? this.category);
   }
 
@@ -216,6 +221,9 @@ class Story {
         layout: doc[STORY_LAYOUT] != null
             ? Layout.values.byName(doc[STORY_LAYOUT])
             : Layout.CONVO,
+        pageDirection: doc[STORY_PAGE_DIRECTION] != null
+            ? PageDirection.values.byName(doc[STORY_PAGE_DIRECTION])
+            : PageDirection.HORIZONTAL,
         pages: pages,
         status: StoryStatus.values.byName(doc[STORY_STATUS]),
         likes: doc[ITEM_LIKES],
