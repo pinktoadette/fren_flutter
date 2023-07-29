@@ -71,6 +71,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           pinned: true,
           snap: false,
           floating: false,
+          centerTitle: false,
           leading: const BackButton(),
           expandedHeight: 180.0,
           flexibleSpace: LayoutBuilder(builder: (context, constraints) {
