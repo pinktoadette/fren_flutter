@@ -31,7 +31,7 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   @override
   Widget build(BuildContext context) {
     double storyCoverWidth = 50;
-    double padding = 20;
+    double padding = 0;
     return InkWell(
       onTap: () async {
         _showEditStory(context);
