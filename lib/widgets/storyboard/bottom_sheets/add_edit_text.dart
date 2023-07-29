@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -12,9 +13,9 @@ import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 
 class AddEditText extends StatefulWidget {
-  final String? text;
+  final Script? script;
   final Function(Map<String, dynamic>?) onTextComplete;
-  const AddEditText({Key? key, required this.onTextComplete, this.text})
+  const AddEditText({Key? key, required this.onTextComplete, this.script})
       : super(key: key);
 
   @override
@@ -33,8 +34,9 @@ class _AddEditTextState extends State<AddEditText> {
   @override
   void initState() {
     super.initState();
-    if (widget.text != null) {
-      _textController = TextEditingController(text: widget.text);
+    if (widget.script?.text != null) {
+      _textController = TextEditingController(text: widget.script!.text);
+      textAlign = widget.script?.textAlign ?? TextAlign.left;
     }
   }
 
@@ -81,7 +83,7 @@ class _AddEditTextState extends State<AddEditText> {
                       onPressed: () {
                         _onComplete(_textController.text);
                       },
-                      child: widget.text == null
+                      child: widget.script?.text == null
                           ? Text(
                               _i18n.translate("add"),
                               style: const TextStyle(

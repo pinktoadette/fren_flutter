@@ -265,7 +265,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         onTap: () {
           storyboardController.setCurrentBoard(storyboard);
           timelineController.setStoryTimelineControllerCurrent(story);
-
+          storyboardController.onGoToPageView(story);
           Get.to(() => StoryPageView(story: story));
         },
         child: Card(

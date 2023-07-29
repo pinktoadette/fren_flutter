@@ -4,10 +4,9 @@ import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/bot/bot_helper.dart';
 
-// ignore: must_be_immutable
 /// step 1. create prompt. Step 2 select theme.
+// ignore: must_be_immutable
 class CreateHiddenPrompt extends StatelessWidget {
   final String? hiddenPrompt;
   final Function(dynamic data) onDataChanged;

@@ -51,12 +51,12 @@ class PageScrollDirection extends StatelessWidget {
               const Divider(height: 5, thickness: 1),
               _createRow(
                   context,
-                  const Icon(Icons.align_horizontal_right_rounded),
+                  const Icon(Icons.align_vertical_bottom_rounded),
                   i18n.translate("story_page_horizontal"),
                   PageDirection.HORIZONTAL),
               _createRow(
                   context,
-                  const Icon(Icons.align_vertical_bottom_rounded),
+                  const Icon(Icons.align_horizontal_right_rounded),
                   i18n.translate("story_page_vertical"),
                   PageDirection.VERTICAL),
             ]));

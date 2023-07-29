@@ -1,4 +1,5 @@
 import 'package:machi_app/api/machi/storyboard_api.dart';
+import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/date_format.dart';
@@ -89,6 +90,11 @@ class StoryboardController extends GetxController {
   }
 
   /// Story
+  void onGoToPageView(Story story) {
+    Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
+    currentStory = story;
+  }
+
   clearStory() {
     _currentStory = intialStory.obs;
   }

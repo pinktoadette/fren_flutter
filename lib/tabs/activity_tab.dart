@@ -33,7 +33,7 @@ class _ActivityTabState extends State<ActivityTab> {
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           automaticallyImplyLeading: false,
-          actions: const [SubscribeTokenCounter(), InterstitialAds()],
+          actions: const [SubscribeTokenCounter()],
         ),
         body: Obx(() => SingleChildScrollView(
                 child: Column(

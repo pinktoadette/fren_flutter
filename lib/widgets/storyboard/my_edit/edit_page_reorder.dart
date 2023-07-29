@@ -255,10 +255,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
             },
             icon: const Icon(
               Iconsax.edit,
-              size: 16,
+              size: 20,
             )),
         PopupMenuButton<int>(
-            icon: const Icon(Iconsax.document_forward, size: 16),
+            icon: const Icon(Iconsax.document_forward, size: 20),
             initialValue: 1,
             // Callback that sets the selected popup menu item.
             onSelected: (num) async {
@@ -356,17 +356,27 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return PopupMenuItem<int>(
           value: page.pageNum,
           child: Text(
-              "${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
+              " ${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
         );
       }
       return PopupMenuItem<int>(
         value: null,
-        child: Text(_i18n.translate("story_bit_on_current_page")),
+        child: Row(
+          children: [
+            const Icon(Iconsax.arrow_right_3),
+            Text(" ${_i18n.translate("story_bit_on_current_page")}")
+          ],
+        ),
       );
     }).toList();
     pagesMenu.add(PopupMenuItem<int>(
         value: story.pages!.length,
-        child: Text(_i18n.translate("story_bit_add_to_new_page"))));
+        child: Row(
+          children: [
+            const Icon(Iconsax.add),
+            Text(" ${_i18n.translate("story_bit_add_to_new_page")}")
+          ],
+        )));
     return pagesMenu;
   }
 
@@ -432,7 +442,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => AddEditText(
-            text: index != null ? scripts[index].text : null,
+            script: index != null ? scripts[index] : null,
             onTextComplete: (newContent) async {
               try {
                 if ((index == null) & (newContent != null)) {
