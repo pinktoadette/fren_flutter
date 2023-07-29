@@ -6,6 +6,7 @@ import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
@@ -59,8 +60,9 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
             ),
             Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
-                child: Text(
-                  widget.item.comment,
+                child: textLinkPreview(
+                  context: context,
+                  text: widget.item.comment,
                   style: Theme.of(context).textTheme.bodySmall,
                 )),
             Row(

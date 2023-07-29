@@ -11,10 +11,13 @@ import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
+import 'cache_manager_api.dart';
+
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = "${PY_API}story/";
   final auth = AuthApi();
+  final _cachedApi = CachedApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
@@ -80,15 +83,22 @@ class StoryApi {
 
   Future<Story> getMyStories(String storyId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
+    String url = '${baseUri}story?storyId=$storyId';
+    debugPrint("Requesting URL $url");
+
+    final Map<String, dynamic>? cached = await _cachedApi.cachedUrl(url);
+    if (cached != null) {
+      return Story.fromJson(cached);
+    }
 
     try {
-      String url = '${baseUri}story?storyId=$storyId';
-      debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       final response = await dio.get(url);
 
       Story story = Story.fromJson(response.data);
       storyController.setCurrentStory(story);
+      await _cachedApi.cacheUrl(url, response.data);
+
       return story;
     } catch (error) {
       debugPrint(error.toString());

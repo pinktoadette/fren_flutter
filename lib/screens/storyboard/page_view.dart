@@ -359,8 +359,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                                         Text(script.characterName ?? ""),
                                     ]);
                               }).toList())),
-                              if ((index % 2 == 0) &
-                                  ((story!.status) == StoryStatus.PUBLISHED))
+                              if (((index + 1) % 2 == 0) &
+                                  (story!.status == StoryStatus.PUBLISHED))
                                 const Align(
                                   alignment: Alignment.bottomCenter,
                                   child: InlineAdaptiveAds(

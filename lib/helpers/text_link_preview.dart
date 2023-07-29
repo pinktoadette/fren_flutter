@@ -27,18 +27,20 @@ Widget textLinkPreview(
         children: [
           useBorder == true
               ? TextBorder(
-                  text: text,
+                  text: urls.isNotEmpty ? text.replaceAll(urls[0], "") : text,
                   size: 16,
                   textAlign: textAlign,
                 )
               : Text(
-                  text,
+                  urls.isNotEmpty ? text.replaceAll(urls[0], "") : text,
                   textAlign: textAlign,
                   style: style ?? Theme.of(context).textTheme.bodySmall,
                   overflow: TextOverflow.fade,
                 ),
           if (urls.isNotEmpty)
             AnyLinkPreview(
+              showMultimedia: true,
+              cache: const Duration(days: 3),
               displayDirection: UIDirection.uiDirectionHorizontal,
               link: urls[0],
               errorBody: 'Hmm... cant get link',
