@@ -268,7 +268,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     context: context,
                     isScrollControlled: true,
                     builder: (context) => FractionallySizedBox(
-                        heightFactor: 0.9,
+                        heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
                         child: DraggableScrollableSheet(
                           snap: true,
                           initialChildSize: 1,
@@ -293,9 +293,8 @@ class _HomeScreenState extends State<HomeScreen> {
                   isScrollControlled: true,
                   builder: (context) {
                     return const FractionallySizedBox(
-                        heightFactor: 0.9, child: ExploreMachi()
-                        //  ListMyBot()
-                        );
+                        heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+                        child: ExploreMachi());
                   },
                 ),
                 setState(() {

@@ -176,6 +176,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
         context: context,
         isScrollControlled: true,
         builder: (context) => const FractionallySizedBox(
-            heightFactor: 0.95, child: SubscriptionProduct()));
+            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+            child: SubscriptionProduct()));
   }
 }

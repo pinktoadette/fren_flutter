@@ -142,7 +142,7 @@ class _InteractivePageViewState extends State<InteractivePageView> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.85,
+            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: ReportForm(
               itemId: widget.interactive.interactiveId,
               itemType: "interactive",

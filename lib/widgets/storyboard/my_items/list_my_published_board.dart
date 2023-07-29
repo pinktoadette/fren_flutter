@@ -39,6 +39,7 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
             _i18n.translate("story_published"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          centerTitle: false,
         ),
         body: storyboardController.published.isEmpty
             ? Center(

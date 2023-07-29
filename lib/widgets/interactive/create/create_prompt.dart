@@ -102,7 +102,7 @@ class CreatePrompt extends StatelessWidget {
         context: context,
         isScrollControlled: true,
         builder: (context) => FractionallySizedBox(
-            heightFactor: 0.55,
+            heightFactor: MODAL_HEIGHT_SMALL_FACTOR,
             child: DraggableScrollableSheet(
               snap: true,
               initialChildSize: 1,

@@ -194,17 +194,12 @@ class Story {
         StoryPages s = StoryPages.fromJson(page);
         List<dynamic> coverPages = doc[STORY_COVER_PAGES] ?? [];
         if (coverPages.isNotEmpty) {
-          String? background;
-
           Map<String, dynamic>? item = coverPages.firstWhere(
               (page) => page["pageNum"] == s.pageNum,
               orElse: () => null);
-          background = item?[STORY_PAGES_BACKGROUND];
-          if (background != null) {
-            s = s.copyWith(
-                backgroundImageUrl: background,
-                backgroundAlpha: item?[STORY_PAGES_ALPHA] ?? 0.8);
-          }
+          s = s.copyWith(
+              backgroundImageUrl: item?[STORY_PAGES_BACKGROUND] ?? "",
+              backgroundAlpha: item?[STORY_PAGES_ALPHA] ?? 0.8);
         }
         pages.add(s);
       });
@@ -214,7 +209,7 @@ class Story {
         storyId: doc[STORY_ID],
         title: doc[STORY_TITLE],
         subtitle: doc[STORY_SUBTITLE] ?? "",
-        photoUrl: doc[STORY_PHOTO_URL],
+        photoUrl: doc[STORY_PHOTO_URL] ?? "",
         createdBy: user,
         summary: doc[STORY_SUMMARY] ?? "No summary",
         category: doc[STORY_CATEGORY] ?? "Other",

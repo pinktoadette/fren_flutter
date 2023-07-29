@@ -8,7 +8,8 @@ import 'package:google_mobile_ads/google_mobile_ads.dart';
 /// Loads and shows an inline adaptive banner ad in a scrolling view,
 /// and reloads the ad when the orientation changes.
 class InlineAdaptiveAds extends StatefulWidget {
-  const InlineAdaptiveAds({super.key});
+  final double? height;
+  const InlineAdaptiveAds({super.key, this.height});
 
   @override
   _InlineAdaptiveAdsState createState() => _InlineAdaptiveAdsState();
@@ -62,7 +63,7 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
   Widget build(BuildContext context) {
     return Container(
       width: _adWidth,
-      height: AD_HEIGHT,
+      height: widget.height ?? AD_HEIGHT,
       alignment: Alignment.center,
       child: _ad != null ? AdWidget(ad: _ad!) : const Text("Machi Ads"),
     );

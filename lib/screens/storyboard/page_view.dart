@@ -18,6 +18,7 @@ import 'package:get/get.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
@@ -177,7 +178,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.85,
+            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: ReportForm(
               itemId: story!.storyId,
               itemType: "story",
@@ -362,7 +363,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   ((story!.status) == StoryStatus.PUBLISHED))
                                 const Align(
                                   alignment: Alignment.bottomCenter,
-                                  child: InlineAdaptiveAds(),
+                                  child: InlineAdaptiveAds(
+                                    height: 50,
+                                  ),
                                 ),
                               const SizedBox(
                                 height: 50,
@@ -416,8 +419,15 @@ class _StoryPageViewState extends State<StoryPageView> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Container(
+                    Padding(
                         padding: const EdgeInsets.only(left: 20),
+                        child: AvatarInitials(
+                            radius: 16,
+                            userId: story!.createdBy.userId,
+                            photoUrl: story!.createdBy.photoUrl,
+                            username: story!.createdBy.username)),
+                    Container(
+                        padding: const EdgeInsets.only(left: 0),
                         child: LikeItemWidget(
                             onLike: (val) {
                               _onLikePressed(widget.story, val);

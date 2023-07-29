@@ -255,7 +255,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       isScrollControlled: true,
       enableDrag: true,
       builder: (context) => FractionallySizedBox(
-          heightFactor: 0.9,
+          heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
           child: DraggableScrollableSheet(
             snap: true,
             initialChildSize: 1,
@@ -555,7 +555,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         isScrollControlled: true,
         builder: (context) {
           return FractionallySizedBox(
-              heightFactor: 0.9,
+              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
               child: FriendListWidget(
                 roomIdx: _roomIdx,
               ));

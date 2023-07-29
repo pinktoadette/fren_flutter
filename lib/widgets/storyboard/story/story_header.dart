@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +94,7 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => FractionallySizedBox(
-              heightFactor: 0.9,
+              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
               child: DraggableScrollableSheet(
                 snap: true,
                 initialChildSize: 1,

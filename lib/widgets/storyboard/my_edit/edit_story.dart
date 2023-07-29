@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -153,7 +155,9 @@ class _EditPageState extends State<EditPage> {
           )),
       Positioned(
           bottom: story.pageDirection == PageDirection.HORIZONTAL
-              ? 50
+              ? Platform.isAndroid
+                  ? 50
+                  : 80
               : size.height / 2,
           height: story.pageDirection == PageDirection.HORIZONTAL
               ? 150

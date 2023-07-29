@@ -28,7 +28,7 @@ class StoryUser {
   factory StoryUser.fromDocument(Map<String, dynamic> doc) {
     return StoryUser(
         userId: doc[USER_ID],
-        photoUrl: doc[USER_PROFILE_PHOTO],
+        photoUrl: doc[USER_PROFILE_PHOTO] ?? "",
         username: doc[USER_USERNAME]);
   }
 }

@@ -161,21 +161,23 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               fit: BoxFit.cover)),
                       padding: const EdgeInsets.all(20),
                       child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: story.pages![0].scripts!.map((script) {
-                            return Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  textLinkPreview(
-                                      useBorder: story.layout == Layout.COMIC,
-                                      context: context,
-                                      text: truncateText(
-                                          maxLength: 300,
-                                          text: script.text ?? ""),
-                                      style:
-                                          const TextStyle(color: Colors.black))
-                                ]);
-                          }).toList())))));
+                        return Column(
+                            crossAxisAlignment:
+                                script.textAlign == TextAlign.center
+                                    ? CrossAxisAlignment.center
+                                    : script.textAlign == TextAlign.end
+                                        ? CrossAxisAlignment.end
+                                        : CrossAxisAlignment.start,
+                            children: [
+                              textLinkPreview(
+                                  useBorder: story.layout == Layout.COMIC,
+                                  context: context,
+                                  text: truncateText(
+                                      maxLength: 300, text: script.text ?? ""),
+                                  style: const TextStyle(color: Colors.black))
+                            ]);
+                      }).toList())))));
     }
     return InkWell(
         onTap: () async {

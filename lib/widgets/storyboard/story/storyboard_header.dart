@@ -96,7 +96,7 @@ class _StoryboardHeaderWidgetState extends State<StoryboardHeaderWidget> {
       isScrollControlled: true,
       enableDrag: true,
       builder: (context) => FractionallySizedBox(
-          heightFactor: 0.9,
+          heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
           child: DraggableScrollableSheet(
             snap: true,
             initialChildSize: 1,

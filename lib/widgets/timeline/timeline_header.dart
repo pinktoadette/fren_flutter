@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
@@ -145,7 +146,7 @@ class TimelineHeader extends StatelessWidget {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.9,
+            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: ReportForm(
               itemId: itemId,
               itemType: itemType,

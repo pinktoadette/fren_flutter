@@ -67,6 +67,9 @@ const String SURVEY_FORM =
 /// Subscription symbol
 const String SUB_TOKEN_IDENTIFIER = "token_";
 
+const double MODAL_HEIGHT_SMALL_FACTOR = 0.75;
+const double MODAL_HEIGHT_LARGE_FACTOR = 0.9;
+
 const double PLAY_BUTTON_WIDTH = 45;
 const int PAGE_CHAT_LIMIT = 10; //check with backend
 const int ALL_PAGE_SIZE = 20;

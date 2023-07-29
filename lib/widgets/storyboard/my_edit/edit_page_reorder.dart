@@ -83,7 +83,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         _reorderListWidget(),
         Positioned(
             height: 100,
-            bottom: 0,
+            bottom: Platform.isAndroid ? 0 : 30,
             child: Column(children: [
               Container(
                 color: Theme.of(context).colorScheme.background,
@@ -313,7 +313,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
               size,
               alignment),
           lay,
-          icons
+          icons,
+          const SizedBox(
+            height: 30,
+          ),
         ]);
       case "image":
         return Column(crossAxisAlignment: alignment, children: <Widget>[
@@ -329,7 +332,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
               size,
               alignment),
           lay,
-          icons
+          icons,
+          const SizedBox(
+            height: 30,
+          ),
         ]);
       default:
         return const Icon(Iconsax.activity);
@@ -396,11 +402,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   layout = value;
                 });
                 widget.onLayoutSelection(value);
-                if (value == Layout.COMIC) {
-                  setState(() {
-                    _alphaValue = 0;
-                  });
-                }
               },
             ));
       },
@@ -630,7 +631,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         context: context,
         barrierColor: Colors.black.withOpacity(_alphaValue),
         builder: (context) => FractionallySizedBox(
-              heightFactor: 0.7,
+              heightFactor: MODAL_HEIGHT_SMALL_FACTOR,
               child: EditPageBackground(
                   passStory: story,
                   alpha: _alphaValue,
@@ -665,7 +666,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         context: context,
         barrierColor: Colors.black.withOpacity(_alphaValue),
         builder: (context) => FractionallySizedBox(
-              heightFactor: 0.7,
+              heightFactor: MODAL_HEIGHT_SMALL_FACTOR,
               child: PageScrollDirection(
                 onSelection: (direction) {
                   widget.onPageAxisDirection(direction);

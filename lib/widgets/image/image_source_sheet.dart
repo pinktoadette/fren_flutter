@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -200,7 +201,7 @@ class ImageSourceSheet extends StatelessWidget {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 0.9,
+            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: UserGallery(
               userId: UserModel().user.userId,
               onFileTap: (val) {

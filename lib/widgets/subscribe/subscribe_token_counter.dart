@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_purchase_details.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
@@ -30,7 +31,9 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
         context: context,
         isScrollControlled: true,
         builder: (context) => Obx(() => FractionallySizedBox(
-            heightFactor: subscribeController.credits.value > 0 ? 0.5 : 0.95,
+            heightFactor: subscribeController.credits.value > 0
+                ? MODAL_HEIGHT_SMALL_FACTOR
+                : MODAL_HEIGHT_LARGE_FACTOR,
             child: subscribeController.credits.value > 0
                 ? const SubscribePurchaseDetails()
                 : const SubscriptionProduct())));

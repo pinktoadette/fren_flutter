@@ -1,4 +1,3 @@
-
 import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/services.dart';
@@ -100,10 +99,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       return const Center(
           child: NoData(text: "Guess we are not selling today!"));
     }
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    return SingleChildScrollView(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
           Card(
               borderOnForeground: false,
               shadowColor: Colors.black,
@@ -292,7 +292,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                       _selectedTier = packages[value];
                     });
                   })),
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
           SizedBox(
               width: size.width * 0.4,
               child: ElevatedButton.icon(
@@ -305,8 +305,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                   label: Text(
                     _i18n.translate("SUBSCRIBE"),
                     style: const TextStyle(fontWeight: FontWeight.bold),
-                  )))
-        ]);
+                  ))),
+          const SizedBox(height: 30),
+        ]));
   }
 
   String _formatPeriod(String period) {
