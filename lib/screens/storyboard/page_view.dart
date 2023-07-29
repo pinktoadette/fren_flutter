@@ -338,10 +338,6 @@ class _StoryPageViewState extends State<StoryPageView> {
                                         ? CrossAxisAlignment.end
                                         : CrossAxisAlignment.start,
                                 children: [
-                              if (index == 0)
-                                StoryHeaderWidget(
-                                  story: storyboardController.currentStory,
-                                ),
                               Expanded(
                                   child: Column(
                                       children: scripts!.map((script) {
@@ -362,12 +358,15 @@ class _StoryPageViewState extends State<StoryPageView> {
                                         Text(script.characterName ?? ""),
                                     ]);
                               }).toList())),
-                              if (index % 2 == 0)
+                              if ((index % 2 == 0) &
+                                  ((story!.status) == StoryStatus.PUBLISHED))
                                 const Align(
                                   alignment: Alignment.bottomCenter,
-                                  child:
-                                      InlineAdaptiveAds(), // Replace YourWidget2 with your actual widget2
+                                  child: InlineAdaptiveAds(),
                                 ),
+                              const SizedBox(
+                                height: 50,
+                              )
                             ]))),
                   ),
                 ),
@@ -376,13 +375,12 @@ class _StoryPageViewState extends State<StoryPageView> {
           )),
       Positioned(
           bottom: story!.pageDirection == PageDirection.HORIZONTAL
-              ? 30
+              ? 50
               : size.height / 2,
           width: story!.pageDirection == PageDirection.HORIZONTAL
               ? size.width
               : 40,
-          left:
-              story!.pageDirection == PageDirection.HORIZONTAL ? size.width : 0,
+          left: story!.pageDirection == PageDirection.HORIZONTAL ? 0 : 10,
           child: SizedBox(
             height: 50,
             width: size.width,
@@ -404,27 +402,53 @@ class _StoryPageViewState extends State<StoryPageView> {
                           dotWidth: 18,
                           activeDotColor: APP_ACCENT_COLOR),
                     )),
-                const SizedBox(
-                  width: 20,
-                ),
               ],
             ),
           )),
-      Positioned(
-        bottom: 30,
-        right: 10,
-        child: Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: Obx(
-              () => LikeItemWidget(
-                  onLike: (val) {
-                    _onLikePressed(widget.story, val);
-                  },
-                  size: 20,
-                  likes: timelineController.currentStory.likes ?? 0,
-                  mylikes: timelineController.currentStory.mylikes ?? 0),
-            )),
-      )
+      if (story!.status == StoryStatus.PUBLISHED)
+        Positioned(
+          bottom: 0,
+          left: 0,
+          child: Container(
+              color: Colors.black.withOpacity(0.8),
+              child: Obx(
+                () => Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: LikeItemWidget(
+                            onLike: (val) {
+                              _onLikePressed(widget.story, val);
+                            },
+                            size: 40,
+                            likes: timelineController.currentStory.likes ?? 0,
+                            mylikes:
+                                timelineController.currentStory.mylikes ?? 0)),
+                    Container(
+                        padding: const EdgeInsets.only(left: 30, top: 12),
+                        width: size.width,
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Iconsax.message,
+                              size: 16,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              timelineController.currentStory.commentCount
+                                  .toString(),
+                              style: const TextStyle(fontSize: 12),
+                            )
+                          ],
+                        ))
+                  ],
+                ),
+              )),
+        )
     ]);
   }
 

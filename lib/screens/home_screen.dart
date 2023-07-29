@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const ActivityTab(),
       // const PlaylistTab(),
       const StoryboardHome(),
-      const InteractiveBoardList(),
+      // const InteractiveBoardList(),
       const ConversationsTab(),
       NotificationsScreen(),
       const ProfileTab()
@@ -211,9 +211,6 @@ class _HomeScreenState extends State<HomeScreen> {
               /// Discover new machi
               const BottomNavigationBarItem(
                   label: '', icon: Icon(Iconsax.book)),
-
-              /// Discover new machi
-              const BottomNavigationBarItem(label: '', icon: Icon(Iconsax.add)),
 
               /// Conversations Tab
               BottomNavigationBarItem(
@@ -296,7 +293,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _getConversationCounter() {
     // Set icon
     final icon = Icon(Iconsax.message,
-        color: _selectedIndex == 3 ? APP_ACCENT_COLOR : null);
+        color: _selectedIndex == 2 ? APP_ACCENT_COLOR : null);
 
     return Obx(() {
       return chatController.unreadCounter.value == 0

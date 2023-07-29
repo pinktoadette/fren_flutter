@@ -1,4 +1,7 @@
+import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,11 +10,9 @@ import 'package:iconsax/iconsax.dart';
 enum PageDirection { HORIZONTAL, VERTICAL }
 
 class PageScrollDirection extends StatelessWidget {
-  final PageDirection? selection;
   final Function(PageDirection direction) onSelection;
   const PageScrollDirection({
     Key? key,
-    this.selection,
     required this.onSelection,
   }) : super(key: key);
 
@@ -51,12 +52,12 @@ class PageScrollDirection extends StatelessWidget {
               const Divider(height: 5, thickness: 1),
               _createRow(
                   context,
-                  const Icon(Icons.align_vertical_bottom_rounded),
+                  const Icon(Icons.align_horizontal_right_rounded),
                   i18n.translate("story_page_horizontal"),
                   PageDirection.HORIZONTAL),
               _createRow(
                   context,
-                  const Icon(Icons.align_horizontal_right_rounded),
+                  const Icon(Icons.align_vertical_bottom_rounded),
                   i18n.translate("story_page_vertical"),
                   PageDirection.VERTICAL),
             ]));
@@ -64,12 +65,13 @@ class PageScrollDirection extends StatelessWidget {
 
   Widget _createRow(
       BuildContext context, Icon icon, String item, PageDirection direction) {
+    StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
     return SizedBox(
         width: double.infinity,
         child: InkWell(
             onTap: () async {
               onSelection(direction);
-              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(15),
@@ -79,12 +81,14 @@ class PageScrollDirection extends StatelessWidget {
                   const SizedBox(
                     width: 10,
                   ),
-                  Text(item,
+                  Obx(() => Text(item,
                       style: TextStyle(
                           fontSize: 16,
-                          color: selection == direction
-                              ? APP_ACCENT_COLOR
-                              : APP_INVERSE_PRIMARY_COLOR))
+                          color:
+                              storyboardController.currentStory.pageDirection ==
+                                      direction
+                                  ? APP_ACCENT_COLOR
+                                  : APP_INVERSE_PRIMARY_COLOR)))
                 ],
               ),
             )));

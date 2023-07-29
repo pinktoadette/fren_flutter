@@ -108,9 +108,8 @@ class _EditPageState extends State<EditPage> {
               _updateSequence(update);
             },
             onPageAxisDirection: (direction) {
-              setState(() {
-                _pageDirection = direction;
-              });
+              // update
+              _updatePageDirection(direction);
             },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
@@ -143,9 +142,8 @@ class _EditPageState extends State<EditPage> {
                     _updateSequence(update);
                   },
                   onPageAxisDirection: (direction) {
-                    setState(() {
-                      _pageDirection = direction;
-                    });
+                    // update
+                    _updatePageDirection(direction);
                   },
                   onLayoutSelection: (layout) {
                     selectedLayout = layout;
@@ -176,6 +174,16 @@ class _EditPageState extends State<EditPage> {
             ),
           )),
     ];
+  }
+
+  void _updatePageDirection(PageDirection direction) {
+    Story update = story.copyWith(pageDirection: direction);
+    storyboardController.updateStory(story: update);
+
+    setState(() {
+      _pageDirection = direction;
+      story = update;
+    });
   }
 
   /// update / delete sequence

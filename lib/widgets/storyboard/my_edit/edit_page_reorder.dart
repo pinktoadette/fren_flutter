@@ -31,7 +31,7 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
   final Function(Layout data) onLayoutSelection;
-  final Function(PageDirection direction) onPageAxisDirection;
+  final Function(PageDirection direct) onPageAxisDirection;
   Layout? layout;
 
   EditPageReorder(
@@ -667,12 +667,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
         builder: (context) => FractionallySizedBox(
               heightFactor: 0.7,
               child: PageScrollDirection(
-                selection: _direction,
                 onSelection: (direction) {
+                  widget.onPageAxisDirection(direction);
+
                   setState(() {
                     _direction = direction;
                   });
-                  widget.onPageAxisDirection(direction);
+                  Navigator.pop(context);
                 },
               ),
             )).whenComplete(() {

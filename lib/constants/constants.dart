@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-const String env = 'prod';
+const String env = 'dev';
 
 const PY_LOCAL = "http://localhost:8000/api/";
 const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
