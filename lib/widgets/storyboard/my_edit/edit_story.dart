@@ -152,8 +152,12 @@ class _EditPageState extends State<EditPage> {
             },
           )),
       Positioned(
-          bottom: _pageDirection == PageDirection.HORIZONTAL ? 30 : 50,
-          height: 30,
+          bottom: story.pageDirection == PageDirection.HORIZONTAL
+              ? 50
+              : size.height / 2,
+          height: story.pageDirection == PageDirection.HORIZONTAL
+              ? 150
+              : size.height,
           left: _pageDirection == PageDirection.HORIZONTAL ? 0 : 20,
           width: size.width,
           child: Container(
