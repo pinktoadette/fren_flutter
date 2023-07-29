@@ -5,7 +5,6 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:machi_app/config.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -24,13 +23,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() async {
-  AppConfig.create(
-    appName: "Machi Dev",
-    baseUrl: PY_DEV,
-    primaryColor: Colors.red,
-    flavor: Flavor.dev,
-  );
-
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
 

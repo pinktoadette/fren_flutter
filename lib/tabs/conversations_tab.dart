@@ -66,45 +66,48 @@ class _ConversationsTabState extends State<ConversationsTab> {
 
     return Scaffold(
         appBar: AppBar(
-            title: Text(
-              _i18n.translate("studio"),
-              style: Theme.of(context).textTheme.headlineLarge,
-            ),
-            bottom: PreferredSize(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        IconButton(
-                            onPressed: () {
-                              _createBot(context);
-                            },
-                            icon: const Icon(Iconsax.message_add_1)),
-                        IconButton(
-                            onPressed: () {
-                              _viewBots(context);
-                            },
-                            icon: const Icon(Iconsax.messages)),
-                        IconButton(
-                            onPressed: () async {
-                              Bot bot =
-                                  await _botApi.getBot(botId: DEFAULT_BOT_ID);
-                              SetCurrentRoom().setNewBotRoom(bot, true);
-                            },
-                            icon: const Icon(Iconsax.message_edit))
-                      ],
-                    ),
-                    IconButton(
-                      icon: const Icon(Iconsax.brush_3),
-                      onPressed: () {
-                        Get.to(() => const ImageStudioScreen());
-                      },
-                    ),
-                  ],
-                ),
-                preferredSize: Size(width, 40))),
+          centerTitle: false,
+          title: Text(
+            _i18n.translate("chat"),
+            style: Theme.of(context).textTheme.headlineLarge,
+          ),
+          actions: [
+            IconButton(
+                onPressed: () {
+                  _createBot(context);
+                },
+                icon: const Icon(Iconsax.message_add_1)),
+            IconButton(
+                onPressed: () {
+                  _viewBots(context);
+                },
+                icon: const Icon(Iconsax.messages)),
+            IconButton(
+                onPressed: () async {
+                  Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
+                  SetCurrentRoom().setNewBotRoom(bot, true);
+                },
+                icon: const Icon(Iconsax.message_edit))
+          ],
+          // bottom: PreferredSize(
+          //     child: Row(
+          //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          //       children: [
+          //         Row(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children:
+          //         ),
+          //         IconButton(
+          //           icon: const Icon(Iconsax.brush_3),
+          //           onPressed: () {
+          //             Get.to(
+          //                 () => ImageStudioScreen(onImageSelect: (data) {}));
+          //           },
+          //         ),
+          //       ],
+          //     ),
+          //     preferredSize: Size(width, 40))
+        ),
         body: RefreshIndicator(
             onRefresh: () async {
               await _chatroomApi.getAllMyRooms(

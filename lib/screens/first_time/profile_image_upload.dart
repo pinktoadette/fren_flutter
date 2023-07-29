@@ -58,6 +58,7 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               ImagePromptGeneratorWidget(
+                  isProfile: true,
                   onImageSelected: (value) => {_saveSelectedPhoto(value)}),
               const SizedBox(
                 height: 100,
