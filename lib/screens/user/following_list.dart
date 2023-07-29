@@ -47,6 +47,7 @@ class _FollowingListState extends State<FollowingList> {
 
     return Scaffold(
         appBar: AppBar(
+          centerTitle: false,
           title: Text(_i18n.translate("following")),
         ),
         body: ListView.builder(
