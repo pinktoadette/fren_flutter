@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:machi_app/api/machi/story_api.dart';
@@ -25,7 +26,8 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _pageController = PageController(viewportFraction: 1, keepPage: true);
+  final PageController _pageController =
+      PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
   double itemHeight = 120;
@@ -35,8 +37,10 @@ class _EditPageState extends State<EditPage> {
   PageDirection _pageDirection = PageDirection.HORIZONTAL;
 
   int pageIndex = 0;
-
-  get onUpdate => null;
+  bool reachedBottom = false;
+  bool _shouldScrollNextPage = false;
+  bool _scrolling = false;
+  Timer? _delayTimer;
 
   @override
   void initState() {
@@ -54,6 +58,7 @@ class _EditPageState extends State<EditPage> {
   @override
   void dispose() {
     super.dispose();
+    _delayTimer?.cancel();
     _pageController.dispose();
   }
 
@@ -85,13 +90,25 @@ class _EditPageState extends State<EditPage> {
                     child: Text(_i18n.translate("storyboard_preview"))))
           ],
         ),
-        body: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Stack(
-              children: [
-                ..._showPageWidget(),
-              ],
-            )));
+        body: Stack(
+          children: [
+            ..._showPageWidget(),
+          ],
+        ));
+  }
+
+  void _startDelayTimer() {
+    _delayTimer?.cancel();
+    _delayTimer = Timer(Duration(seconds: 2), () {
+      if (_scrolling && _shouldScrollNextPage) {
+        _pageController.nextPage(
+          duration: const Duration(milliseconds: 500),
+          curve: Curves.easeIn,
+        );
+      }
+      _scrolling = false;
+      _shouldScrollNextPage = false; // Reset the flag after the delay
+    });
   }
 
   List<Widget> _showPageWidget() {
@@ -120,59 +137,96 @@ class _EditPageState extends State<EditPage> {
     }
 
     return [
-      SizedBox(
-          height: size.height - 100,
-          width: double.infinity,
-          child: PageView.builder(
-            onPageChanged: _onPageChange,
-            controller: _pageController,
-            itemCount: story.pages!.length,
-            scrollDirection: _pageDirection == PageDirection.HORIZONTAL
-                ? Axis.horizontal
-                : Axis.vertical,
-            itemBuilder: (_, index) {
-              List<Script> scripts = story.pages![index].scripts ?? [];
-              return EditPageReorder(
-                  story: story,
-                  scriptList: scripts,
-                  pageIndex: index,
-                  layout: selectedLayout,
-                  onMoveInsertPages: (data) {
-                    _moveInsertPages(data);
-                  },
-                  onUpdateSeq: (update) {
-                    _updateSequence(update);
-                  },
-                  onPageAxisDirection: (direction) {
-                    // update
-                    _updatePageDirection(direction);
-                  },
-                  onLayoutSelection: (layout) {
-                    selectedLayout = layout;
-                    _updateLayout(layout);
+      NotificationListener<ScrollNotification>(
+          onNotification: (notification) {
+            double currentPos = notification.metrics.pixels;
+            double pageHeight = size.height - 100;
+
+            if (notification is ScrollEndNotification) {
+              if (_scrolling &&
+                  currentPos >= pageHeight * 1.1 &&
+                  reachedBottom &&
+                  _shouldScrollNextPage) {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                );
+              }
+
+              if (currentPos <= 0) {
+                _pageController.previousPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                );
+              }
+
+              _scrolling = false;
+              _shouldScrollNextPage =
+                  false; // Reset the flag after the scroll action or when no further scroll is detected
+            } else if (notification is ScrollUpdateNotification) {
+              if (currentPos >= pageHeight * 1.25) {
+                if (!reachedBottom) {
+                  setState(() {
+                    reachedBottom = true;
                   });
-            },
-          )),
+                }
+              } else {
+                setState(() {
+                  reachedBottom = false;
+                });
+              }
+
+              if (!_scrolling) {
+                _scrolling = true;
+                _shouldScrollNextPage =
+                    true; // Set the flag to true when the user initiates a scroll
+                _startDelayTimer();
+              }
+            }
+
+            return true; // Return false to allow other listeners (if any) to receive the notification
+          },
+          child: SizedBox(
+              height: size.height - 100,
+              width: double.infinity,
+              child: PageView.builder(
+                onPageChanged: _onPageChange,
+                controller: _pageController,
+                itemCount: story.pages!.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (_, index) {
+                  List<Script> scripts = story.pages![index].scripts ?? [];
+                  return EditPageReorder(
+                      story: story,
+                      scriptList: scripts,
+                      pageIndex: index,
+                      layout: selectedLayout,
+                      onMoveInsertPages: (data) {
+                        _moveInsertPages(data);
+                      },
+                      onUpdateSeq: (update) {
+                        _updateSequence(update);
+                      },
+                      onPageAxisDirection: (direction) {
+                        // update
+                        _updatePageDirection(direction);
+                      },
+                      onLayoutSelection: (layout) {
+                        selectedLayout = layout;
+                        _updateLayout(layout);
+                      });
+                },
+              ))),
       Positioned(
-          bottom: story.pageDirection == PageDirection.HORIZONTAL
-              ? Platform.isAndroid
-                  ? 50
-                  : 80
-              : size.height / 2,
-          height: story.pageDirection == PageDirection.HORIZONTAL
-              ? 150
-              : size.height,
-          left: _pageDirection == PageDirection.HORIZONTAL ? 0 : 20,
-          width: size.width,
-          child: Container(
-            width: size.width,
-            alignment: _pageDirection == PageDirection.HORIZONTAL
-                ? Alignment.center
-                : Alignment.bottomLeft,
+          height: size.height / 2,
+          left: 20,
+          width: 20,
+          top: size.height / 4,
+          child: SizedBox(
+            width: 20,
+            height: size.height / 2,
             child: SmoothPageIndicator(
-              axisDirection: _pageDirection == PageDirection.VERTICAL
-                  ? Axis.vertical
-                  : Axis.horizontal,
+              axisDirection: Axis.vertical,
               controller: _pageController,
               count: story.pages?.length ?? 1,
               effect: ExpandingDotsEffect(

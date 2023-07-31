@@ -8,7 +8,9 @@ import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
@@ -197,7 +199,8 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   }
 
   void _formatComment(StoryComment value) {
-    CommentController commentController = Get.find(tag: 'comment');
+    StoryboardController storyboardController = Get.find(tag: 'storyboard');
+    TimelineController timelineController = Get.find(tag: 'timeline');
     StoryComment? replyTo = commentController.replyToComment;
     if (replyTo.commentId != null) {
       replyTo.response!.add(value);
@@ -206,5 +209,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     }
 
     commentController.addItem(value);
+
+    Storyboard currentBoard = storyboardController.currentStoryboard;
+    Story currentStory = storyboardController.currentStory;
+    Story update = currentStory.copyWith(
+        commentCount: (currentStory.commentCount ?? 0) + 1);
+    timelineController.updateStoryboard(
+        storyboard: currentBoard, updateStory: update);
   }
 }

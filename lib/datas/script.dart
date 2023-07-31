@@ -55,6 +55,7 @@ class Voiceover {
 class Script {
   final String? scriptId;
   final String? characterName;
+  final String? characterId;
   final StoryUser? createdBy;
   final String? type;
   final int? seqNum;
@@ -70,6 +71,7 @@ class Script {
   Script(
       {this.scriptId,
       this.characterName,
+      this.characterId,
       this.createdBy,
       this.type,
       this.seqNum,
@@ -86,6 +88,7 @@ class Script {
       {String? scriptId,
       StoryUser? createdBy,
       String? characterName,
+      String? characterId,
       String? type,
       int? seqNum,
       int? pageNum,
@@ -98,6 +101,7 @@ class Script {
         scriptId: scriptId ?? this.scriptId,
         createdBy: createdBy ?? this.createdBy,
         characterName: characterName ?? this.characterName,
+        characterId: characterId,
         type: type ?? this.type,
         seqNum: seqNum ?? this.seqNum,
         pageNum: pageNum ?? this.pageNum,
@@ -117,6 +121,7 @@ class Script {
       SCRIPT_PAGE_NUM: pageNum,
       SCRIPT_IMAGE: image != null ? image!.toJSON() : null,
       SCRIPT_SPEAKER_NAME: characterName,
+      SCRIPT_SPEAKER_USER_ID: characterId,
       SCRIPT_VOICE_INFO: voiceover,
       SCRIPT_CREATED_BY: createdBy,
       SCRIPT_SEQUENCE_NUM: seqNum,
@@ -154,6 +159,7 @@ class Script {
         updatedAt: doc[UPDATED_AT].toInt(),
         voiceover: voiceover,
         characterName: doc[SCRIPT_SPEAKER_NAME],
+        characterId: doc[SCRIPT_SPEAKER_USER_ID],
         seqNum: doc[SCRIPT_SEQUENCE_NUM],
         pageNum: doc[SCRIPT_PAGE_NUM],
         status: doc[SCRIPT_STATUS]);

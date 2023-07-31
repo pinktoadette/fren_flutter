@@ -159,13 +159,13 @@ class _StoryPageViewState extends State<StoryPageView> {
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(children: [
             SingleChildScrollView(
-                child: Obx(() => Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        _showPageWidget(constraints),
-                      ],
-                    ))),
+                child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                _showPageWidget(constraints),
+              ],
+            )),
             if (story?.status.name == StoryStatus.PUBLISHED.name)
               _commentSheet()
           ]);
@@ -293,11 +293,10 @@ class _StoryPageViewState extends State<StoryPageView> {
           width: size.width,
           child: NoData(text: _i18n.translate("storybits_empty")));
     }
-
     return Stack(alignment: Alignment.topCenter, children: [
       SizedBox(
           height: height - footerHeight,
-          width: double.infinity,
+          width: constraints.maxWidth,
           child: PageView.builder(
             controller: controller,
             scrollDirection: story!.pageDirection == PageDirection.HORIZONTAL
@@ -306,6 +305,13 @@ class _StoryPageViewState extends State<StoryPageView> {
             itemCount: storyboardController.currentStory.pages!.length,
             itemBuilder: (_, index) {
               List<Script>? scripts = story!.pages![index].scripts;
+              String? background = story?.pages?[index].backgroundImageUrl;
+
+              String backgroundUrl =
+                  (background != null && background.contains("http"))
+                      ? background
+                      : "";
+
               return Card(
                 child: Container(
                   height: size.height - 250,
@@ -315,9 +321,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                               const Color.fromARGB(255, 0, 0, 0).withOpacity(
                                   story?.pages![index].backgroundAlpha ?? 0.5),
                               BlendMode.darken),
-                          image: story?.pages![index].backgroundImageUrl != null
+                          image: backgroundUrl != ""
                               ? CachedNetworkImageProvider(
-                                  story!.pages![index].backgroundImageUrl!,
+                                  backgroundUrl,
                                   errorListener: () => const Icon(Icons.error),
                                 )
                               : Image.asset(
@@ -330,7 +336,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                   child: SingleChildScrollView(
                     child: ConstrainedBox(
                         constraints: BoxConstraints(
-                            minWidth: constraints.maxWidth,
+                            minWidth: constraints.maxWidth * 0.7,
                             minHeight: constraints.maxHeight - 200),
                         child: IntrinsicHeight(
                             child: Column(
@@ -344,8 +350,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                                       children: scripts!.map((script) {
                                 CrossAxisAlignment alignment =
                                     story!.layout == Layout.CONVO
-                                        ? story!.createdBy.username.trim() ==
-                                                script.characterName!.trim()
+                                        ? story!.createdBy.userId ==
+                                                script.characterId
                                             ? CrossAxisAlignment.end
                                             : CrossAxisAlignment.start
                                         : script.type == 'image'
@@ -489,7 +495,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     }
     Widget widgetScript = story!.layout == Layout.CONVO
         ? StoryBubble(
-            isRight: story!.createdBy.username == script.characterName,
+            isRight: story!.createdBy.userId == script.characterId,
             widget: widget,
             size: size)
         : widget;

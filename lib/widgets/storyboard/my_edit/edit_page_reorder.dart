@@ -61,7 +61,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.5;
-  PageDirection _direction = PageDirection.HORIZONTAL;
+  PageDirection _direction = PageDirection.VERTICAL;
 
   @override
   void initState() {
@@ -105,14 +105,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           _editPageImage(context);
                         },
                       ),
-                      IconButton(
-                        icon: _direction == PageDirection.HORIZONTAL
-                            ? const Icon(Icons.swipe_right)
-                            : const Icon(Icons.swipe_down),
-                        onPressed: () {
-                          _editPageDirection(context);
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: _direction == PageDirection.HORIZONTAL
+                      //       ? const Icon(Icons.swipe_right)
+                      //       : const Icon(Icons.swipe_down),
+                      //   onPressed: () {
+                      //     _editPageDirection(context);
+                      //   },
+                      // ),
                       IconButton(
                         icon: const Icon(Iconsax.grid_3),
                         onPressed: () {
@@ -238,7 +238,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
     CrossAxisAlignment alignment = layout == Layout.CONVO
-        ? story.createdBy.username == scripts[index].characterName
+        ? story.createdBy.userId == scripts[index].characterId
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start
         : CrossAxisAlignment.start;
