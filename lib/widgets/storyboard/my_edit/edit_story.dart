@@ -164,7 +164,7 @@ class _EditPageState extends State<EditPage> {
               _shouldScrollNextPage =
                   false; // Reset the flag after the scroll action or when no further scroll is detected
             } else if (notification is ScrollUpdateNotification) {
-              if (currentPos >= pageHeight * 1.25) {
+              if (currentPos >= pageHeight * 1.15) {
                 if (!reachedBottom) {
                   setState(() {
                     reachedBottom = true;
