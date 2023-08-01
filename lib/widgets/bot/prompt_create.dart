@@ -13,6 +13,7 @@ import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:get/get.dart';
@@ -118,11 +119,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                                   ? FileImage(_uploadPath!)
                                   : null,
                               backgroundImage: photoUrl != null
-                                  ? CachedNetworkImageProvider(
-                                      photoUrl!,
-                                      errorListener: () =>
-                                          const Icon(Icons.error),
-                                    )
+                                  ? imageCacheWrapper(photoUrl!)
                                   : null,
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,

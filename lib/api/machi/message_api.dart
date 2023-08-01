@@ -88,8 +88,6 @@ class MessageMachiApi {
         }
         //set the next start page
         messageController.offset += 1;
-        print("================================");
-        print(messageController.offset.toString());
       }
     }
     chatController.loadOldMessages(messages: oldList);

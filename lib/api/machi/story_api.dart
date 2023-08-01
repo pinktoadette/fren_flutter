@@ -86,10 +86,10 @@ class StoryApi {
     String url = '${baseUri}story?storyId=$storyId';
     debugPrint("Requesting URL $url");
 
-    // final Map<String, dynamic>? cached = await _cachedApi.cachedUrl(url);
-    // if (cached != null) {
-    //   return Story.fromJson(cached);
-    // }
+    final Map<String, dynamic>? cached = await _cachedApi.cachedUrl(url);
+    if (cached != null) {
+      return Story.fromJson(cached);
+    }
 
     try {
       final dio = await auth.getDio();
@@ -97,7 +97,7 @@ class StoryApi {
 
       Story story = Story.fromJson(response.data);
       storyController.setCurrentStory(story);
-      // await _cachedApi.cacheUrl(url, response.data);
+      await _cachedApi.cacheUrl(url, response.data);
 
       return story;
     } catch (error) {

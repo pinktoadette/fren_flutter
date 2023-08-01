@@ -10,6 +10,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
@@ -106,7 +107,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       }
 
       if (page != null) {
-        subtitle = truncateText(maxLength: 250, text: page.scripts![0].text!);
+        subtitle = truncateText(maxLength: 200, text: page.scripts![0].text!);
       }
     }
 
@@ -140,19 +141,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                   BlendMode.darken),
                               image: story.pages![index].backgroundImageUrl !=
                                       null
-                                  ? CachedNetworkImageProvider(
+                                  ? imageCacheWrapper(
                                       story.pages![index].backgroundImageUrl!,
-                                      errorListener: () =>
-                                          const Icon(Icons.error),
                                     )
                                   : story.pages![index].backgroundImageUrl !=
                                           null
-                                      ? CachedNetworkImageProvider(
-                                          story.pages![index]
-                                              .backgroundImageUrl!,
-                                          errorListener: () =>
-                                              const Icon(Icons.error),
-                                        )
+                                      ? imageCacheWrapper(story
+                                          .pages![index].backgroundImageUrl!)
                                       : Image.asset(
                                           "assets/images/blank.jpg",
                                           scale: 0.2,
@@ -160,24 +155,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                         ).image,
                               fit: BoxFit.cover)),
                       padding: const EdgeInsets.all(20),
-                      child: Column(
-                          children: story.pages![0].scripts!.map((script) {
-                        return Column(
-                            crossAxisAlignment:
-                                script.textAlign == TextAlign.center
-                                    ? CrossAxisAlignment.center
-                                    : script.textAlign == TextAlign.end
-                                        ? CrossAxisAlignment.end
-                                        : CrossAxisAlignment.start,
-                            children: [
-                              textLinkPreview(
-                                  useBorder: story.layout == Layout.COMIC,
-                                  context: context,
-                                  text: truncateText(
-                                      maxLength: 300, text: script.text ?? ""),
-                                  style: const TextStyle(color: Colors.black))
-                            ]);
-                      }).toList())))));
+                      child: textLinkPreview(
+                          useBorder: story.layout == Layout.COMIC,
+                          context: context,
+                          text: truncateScriptsTo250Chars(
+                              scripts: story.pages![0].scripts, length: 300),
+                          style: const TextStyle(color: Colors.black))))));
     }
     return InkWell(
         onTap: () async {
@@ -276,10 +259,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                 decoration: story.photoUrl != null && story.photoUrl != ""
                     ? BoxDecoration(
                         image: DecorationImage(
-                          image: CachedNetworkImageProvider(
-                            story.photoUrl!,
-                            errorListener: () => const Icon(Icons.error),
-                          ),
+                          image: imageCacheWrapper(story.photoUrl!),
                           fit: BoxFit.fitWidth,
                           alignment: Alignment.topCenter,
                           colorFilter: ColorFilter.mode(
@@ -374,32 +354,37 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   Widget _likeItemWidget(Story item, bool removeLeftPadding) {
-    return Padding(
-        padding: EdgeInsets.only(
-            left: removeLeftPadding == true ? 0 : 15, bottom: 0, right: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SizedBox(
-                width: 50,
-                child: LikeItemWidget(
-                    onLike: (val) {
-                      _onLikePressed(item, val);
-                    },
-                    likes: item.likes ?? 0,
-                    mylikes: item.mylikes ?? 0)),
-            Container(
-              height: 35,
-              padding: const EdgeInsets.only(left: 5, right: 10),
-              child: const Text("•"),
-            ),
-            SizedBox(
-                height: 30,
-                child: Text(
-                    "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
-                    style: const TextStyle(fontSize: 14))),
-          ],
-        ));
+    return InkWell(
+      onTap: () async {
+        _onStoryClick();
+      },
+      child: Padding(
+          padding: EdgeInsets.only(
+              left: removeLeftPadding == true ? 0 : 15, bottom: 0, right: 10),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(
+                  width: 50,
+                  child: LikeItemWidget(
+                      onLike: (val) {
+                        _onLikePressed(item, val);
+                      },
+                      likes: item.likes ?? 0,
+                      mylikes: item.mylikes ?? 0)),
+              Container(
+                height: 35,
+                padding: const EdgeInsets.only(left: 5, right: 10),
+                child: const Text("•"),
+              ),
+              SizedBox(
+                  height: 30,
+                  child: Text(
+                      "${_i18n.translate("replies")}  ${item.commentCount ?? 0} ",
+                      style: const TextStyle(fontSize: 14))),
+            ],
+          )),
+    );
   }
 }

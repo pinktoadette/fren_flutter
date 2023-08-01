@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -23,6 +22,7 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
+import 'dart:ui' as ui;
 
 // ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
@@ -155,8 +155,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       attachmentPreview!,
                     )
                   : urlPreview != null
-                      ? imageWrapper(urlPreview!)
-                      : imageWrapper(
+                      ? imageCacheWrapper(urlPreview!)
+                      : imageCacheWrapper(
                           story.pages![widget.pageIndex].backgroundImageUrl!),
               fit: BoxFit.cover),
         ),
@@ -504,6 +504,34 @@ class _EditPageReorderState extends State<EditPageReorder> {
             "size": bytes.length,
             "height": result.height.toDouble(),
             "width": result.width.toDouble(),
+            "uri": uploadImage,
+            "manual": true
+          },
+          pageNum: widget.pageIndex + 1);
+      setState(() {
+        scripts = [...scripts, pages.scripts![0]];
+      });
+    }
+
+    if (content["byteImage"] != "") {
+      String uploadImage = await uploadBytesFile(
+        uint8arr: content["byteImage"],
+        category: UPLOAD_PATH_SCRIPT_IMAGE,
+        categoryId: createUUID(),
+      );
+
+      ui.Codec codec = await ui.instantiateImageCodec(content["byteImage"]);
+      ui.FrameInfo frameInfo = await codec.getNextFrame();
+
+      StoryPages pages = await _scriptApi.addScriptToStory(
+          character: UserModel().user.username,
+          characterId: UserModel().user.userId,
+          type: "image",
+          storyId: story.storyId,
+          image: {
+            "size": content["byteImage"].lengthInBytes,
+            "height": frameInfo.image.height,
+            "width": frameInfo.image.width,
             "uri": uploadImage,
             "manual": true
           },

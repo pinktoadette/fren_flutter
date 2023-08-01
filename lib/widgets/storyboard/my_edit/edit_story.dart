@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/rendering.dart';
 import 'package:machi_app/api/machi/story_api.dart';
@@ -197,7 +196,7 @@ class _EditPageState extends State<EditPage> {
               ))),
       Positioned(
           left: 10,
-          width: 40,
+          width: 10,
           top: size.height / 4,
           child: SizedBox(
             width: 50,

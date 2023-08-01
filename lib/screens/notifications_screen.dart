@@ -31,93 +31,123 @@ class NotificationsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
-        title: Text(i18n.translate("notifications"),
-            style: Theme.of(context).textTheme.headlineLarge),
+        title: Text(
+          i18n.translate("notifications"),
+          style: Theme.of(context).textTheme.headlineLarge,
+        ),
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-          stream: _notificationsApi.getNotifications(),
-          builder: (context, snapshot) {
-            /// Check data
-            if (!snapshot.hasData) {
-              return NoData(text: i18n.translate("no_notification"));
-            } else {
-              return ListView.separated(
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => const Divider(height: 10),
-                itemCount: snapshot.data!.docs.length,
-                itemBuilder: ((context, index) {
-                  /// Get notification DocumentSnapshot<Map<String, dynamic>>
-                  final DocumentSnapshot<Map<String, dynamic>> notification =
-                      snapshot.data!.docs[index];
+        stream: _notificationsApi.getNotifications(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return NoData(text: i18n.translate("no_notification"));
+          } else {
+            return ListView.builder(
+              itemCount: snapshot.data!.docs.length,
+              itemBuilder: (context, index) {
+                final notification = snapshot.data!.docs[index];
+                final notifType = notification[NOTIF_TYPE];
+                final notifRead = notification[NOTIF_READ];
+                final createdAt = formatDate(notification[CREATED_AT]);
 
-                  /// Show notification
-                  return ListTile(
-                    leading: InkWell(
-                        onTap: () async {
-                          final User user = await UserModel()
-                              .getUserObject(notification[NOTIF_SENDER_ID]);
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ProfileScreen(user: user)));
-                        },
-                        child: AvatarInitials(
-                          radius: 20,
-                          userId: notification[NOTIF_SENDER_ID],
-                          photoUrl: notification[NOTIF_SENDER_PHOTO_LINK] ?? "",
-                          username: notification[NOTIF_SENDER_USERNAME],
-                        )),
-                    title: Row(children: [
-                      Text(notification[NOTIF_SENDER_USERNAME],
-                          style: !notification[NOTIF_READ]
-                              ? Theme.of(context).textTheme.titleMedium
-                              : Theme.of(context).textTheme.bodyMedium),
-                      const Spacer(),
-                      Text(formatDate(notification[CREATED_AT]),
-                          style: !notification[NOTIF_READ]
-                              ? Theme.of(context).textTheme.bodyMedium
-                              : Theme.of(context).textTheme.labelSmall),
-                      !notification[NOTIF_READ]
-                          ? const Icon(Iconsax.info_circle1,
-                              size: 14, color: APP_ACCENT_COLOR)
-                          : const SizedBox(
-                              width: 15,
-                              height: 15,
-                            )
-                    ]),
-                    subtitle: Text(notification[NOTIF_MESSAGE],
-                        style: !notification[NOTIF_READ]
-                            ? Theme.of(context).textTheme.bodySmall
-                            : Theme.of(context).textTheme.labelSmall),
-                    onTap: () async {
-                      /// Set notification read = true
-                      await notification.reference.update({NOTIF_READ: true});
-                      if (notification[NOTIF_TYPE] == "REQUEST" ||
-                          notification[NOTIF_TYPE] == "FOLLOWING") {
-                        final User user = await UserModel()
-                            .getUserObject(notification[NOTIF_SENDER_ID]);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ProfileScreen(user: user)));
-                      }
+                return NotificationListItem(
+                  notification: notification,
+                  notifType: notifType,
+                  notifRead: notifRead,
+                  createdAt: createdAt,
+                  onTap: () => _onNotificationTap(context, notification),
+                );
+              },
+            );
+          }
+        },
+      ),
+    );
+  }
 
-                      if (notification[NOTIF_TYPE].contains("COMMENT")) {
-                        final _storyApi = StoryApi();
-                        Story story = await _storyApi
-                            .getMyStories(notification["itemId"]);
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => StoryPageView(story: story)));
-                      }
+  void _onNotificationTap(BuildContext context,
+      DocumentSnapshot<Map<String, dynamic>> notification) async {
+    /// Set notification read = true
+    await notification.reference.update({NOTIF_READ: true});
 
-                      /// Handle notification click
-                      _appNotifications.onNotificationClick(context,
-                          nType: notification.data()?[NOTIF_TYPE] ?? '',
-                          nSenderId:
-                              notification.data()?[NOTIF_SENDER_ID] ?? '',
-                          nMessage: notification.data()?[NOTIF_MESSAGE] ?? '');
-                    },
-                  );
-                }),
-              );
-            }
-          }),
+    final notifType = notification[NOTIF_TYPE];
+    final notifSenderId = notification[NOTIF_SENDER_ID];
+    final notifMessage = notification[NOTIF_MESSAGE];
+
+    if (notifType == "REQUEST" || notifType == "FOLLOWING") {
+      final User user = await UserModel().getUserObject(notifSenderId);
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => ProfileScreen(user: user)));
+    } else if (notifType.contains("COMMENT")) {
+      final _storyApi = StoryApi();
+      Story story = await _storyApi.getMyStories(notification["itemId"]);
+      Navigator.of(context).push(
+          MaterialPageRoute(builder: (context) => StoryPageView(story: story)));
+    }
+
+    /// Handle notification click
+    _appNotifications.onNotificationClick(
+      context,
+      nType: notifType,
+      nSenderId: notifSenderId,
+      nMessage: notifMessage,
+    );
+  }
+}
+
+class NotificationListItem extends StatelessWidget {
+  final DocumentSnapshot<Map<String, dynamic>> notification;
+  final String notifType;
+  final bool notifRead;
+  final String createdAt;
+  final VoidCallback onTap;
+
+  NotificationListItem({
+    required this.notification,
+    required this.notifType,
+    required this.notifRead,
+    required this.createdAt,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      leading: InkWell(
+        onTap: onTap,
+        child: AvatarInitials(
+          radius: 20,
+          userId: notification[NOTIF_SENDER_ID],
+          photoUrl: notification[NOTIF_SENDER_PHOTO_LINK] ?? "",
+          username: notification[NOTIF_SENDER_USERNAME],
+        ),
+      ),
+      title: Row(
+        children: [
+          Text(
+            notification[NOTIF_SENDER_USERNAME],
+            style: !notifRead
+                ? Theme.of(context).textTheme.titleMedium
+                : Theme.of(context).textTheme.bodyMedium,
+          ),
+          const Spacer(),
+          Text(
+            createdAt,
+            style: !notifRead
+                ? Theme.of(context).textTheme.bodyMedium
+                : Theme.of(context).textTheme.labelSmall,
+          ),
+          if (!notifRead)
+            const Icon(Iconsax.info_circle1, size: 14, color: APP_ACCENT_COLOR),
+        ],
+      ),
+      subtitle: Text(
+        notification[NOTIF_MESSAGE],
+        style: !notifRead
+            ? Theme.of(context).textTheme.bodySmall
+            : Theme.of(context).textTheme.labelSmall,
+      ),
+      onTap: onTap,
     );
   }
 }

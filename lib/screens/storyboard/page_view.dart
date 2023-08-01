@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/rendering.dart';
 import 'package:iconsax/iconsax.dart';
@@ -17,6 +16,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
@@ -54,9 +54,9 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
-
+  static double BODY_HEIGHT_PERCENT = 0.85;
   late AppLocalizations _i18n;
-  double bodyHeightPercent = 0.85;
+  double bodyHeightPercent = BODY_HEIGHT_PERCENT;
   double headerHeight = 140;
 
   bool _userScrolledAgain = false;
@@ -220,70 +220,82 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   Widget _commentSheet() {
-    return DraggableScrollableSheet(
-      initialChildSize: 1 - bodyHeightPercent + 0.025,
-      minChildSize: 1 - bodyHeightPercent,
-      expand: true,
-      builder: (BuildContext context, ScrollController scrollController) {
-        if (controller.hasClients) {}
-        return AnimatedBuilder(
-            animation: controller,
-            builder: (context, child) {
-              return Container(
-                  decoration: BoxDecoration(
-                    boxShadow: [
-                      BoxShadow(
-                          color: Theme.of(context)
-                              .colorScheme
-                              .tertiary
-                              .withOpacity(0.5)
-                              .withAlpha(50),
-                          blurRadius: 15,
-                          offset: const Offset(0, -10)),
-                    ],
-                  ),
-                  child: ClipRRect(
-                      borderRadius: const BorderRadius.only(
-                          topLeft: Radius.circular(24),
-                          topRight: Radius.circular(24)),
-                      child: Container(
-                          color: const Color.fromARGB(255, 20, 20, 20),
-                          child: Stack(children: [
-                            CustomScrollView(
-                                controller: scrollController,
-                                slivers: [
-                                  SliverToBoxAdapter(
-                                      child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        left: 20, top: 10, bottom: 10),
-                                    child: Row(
-                                      children: [
-                                        const Icon(
-                                          Icons.keyboard_double_arrow_up,
-                                          size: 14,
-                                        ),
-                                        const SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(_i18n.translate("comments"),
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodySmall)
-                                      ],
-                                    ),
-                                  )),
-                                  const CommentWidget(),
-                                  const SliverToBoxAdapter(
-                                      child: SizedBox(
-                                    height: 100,
-                                  ))
-                                ]),
-                            const Positioned(
-                                bottom: 0, child: PostCommentWidget())
-                          ]))));
+    return NotificationListener<DraggableScrollableNotification>(
+        onNotification:
+            (DraggableScrollableNotification scrollableNotification) {
+          if (scrollableNotification.extent ==
+              scrollableNotification.minExtent) {
+            setState(() {
+              bodyHeightPercent = BODY_HEIGHT_PERCENT;
             });
-      },
-    );
+          }
+
+          return false;
+        },
+        child: DraggableScrollableSheet(
+          initialChildSize: 1 - bodyHeightPercent + 0.025,
+          minChildSize: 1 - bodyHeightPercent,
+          expand: true,
+          builder: (BuildContext context, ScrollController scrollController) {
+            if (controller.hasClients) {}
+            return AnimatedBuilder(
+                animation: controller,
+                builder: (context, child) {
+                  return Container(
+                      decoration: BoxDecoration(
+                        boxShadow: [
+                          BoxShadow(
+                              color: Theme.of(context)
+                                  .colorScheme
+                                  .tertiary
+                                  .withOpacity(0.5)
+                                  .withAlpha(50),
+                              blurRadius: 15,
+                              offset: const Offset(0, -10)),
+                        ],
+                      ),
+                      child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(24),
+                              topRight: Radius.circular(24)),
+                          child: Container(
+                              color: const Color.fromARGB(255, 20, 20, 20),
+                              child: Stack(children: [
+                                CustomScrollView(
+                                    controller: scrollController,
+                                    slivers: [
+                                      SliverToBoxAdapter(
+                                          child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            left: 20, top: 10, bottom: 10),
+                                        child: Row(
+                                          children: [
+                                            const Icon(
+                                              Icons.keyboard_double_arrow_up,
+                                              size: 14,
+                                            ),
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(_i18n.translate("comments"),
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodySmall)
+                                          ],
+                                        ),
+                                      )),
+                                      const CommentWidget(),
+                                      const SliverToBoxAdapter(
+                                          child: SizedBox(
+                                        height: 100,
+                                      ))
+                                    ]),
+                                const Positioned(
+                                    bottom: 0, child: PostCommentWidget())
+                              ]))));
+                });
+          },
+        ));
   }
 
   Widget _showPageWidget(BoxConstraints constraints) {
@@ -341,17 +353,28 @@ class _StoryPageViewState extends State<StoryPageView> {
               }
             }
 
+            if (controller.page == controller.page!.roundToDouble() &&
+                controller.page ==
+                    storyboardController.currentStory.pages!.length - 1 &&
+                currentPos == maxScrollExtent &&
+                bodyHeightPercent == BODY_HEIGHT_PERCENT) {
+              setState(() {
+                bodyHeightPercent = direction == ScrollDirection.reverse
+                    ? 0.5
+                    : BODY_HEIGHT_PERCENT;
+              });
+            }
+
             return false;
           },
           child: SizedBox(
-              height: height - footerHeight,
+              height: story!.status == StoryStatus.PUBLISHED
+                  ? height - footerHeight
+                  : height,
               width: constraints.maxWidth,
               child: PageView.builder(
                 controller: controller,
-                scrollDirection:
-                    story!.pageDirection == PageDirection.HORIZONTAL
-                        ? Axis.horizontal
-                        : Axis.vertical,
+                scrollDirection: Axis.vertical,
                 itemCount: storyboardController.currentStory.pages!.length,
                 itemBuilder: (_, index) {
                   List<Script>? scripts = story!.pages![index].scripts;
@@ -374,11 +397,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                           0.5),
                                   BlendMode.darken),
                               image: backgroundUrl != ""
-                                  ? CachedNetworkImageProvider(
-                                      backgroundUrl,
-                                      errorListener: () =>
-                                          const Icon(Icons.error),
-                                    )
+                                  ? imageCacheWrapper(backgroundUrl)
                                   : Image.asset(
                                       "assets/images/blank.jpg",
                                       scale: 0.2,
@@ -398,6 +417,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             ? CrossAxisAlignment.end
                                             : CrossAxisAlignment.start,
                                     children: [
+                                  if (index == 0)
+                                    StoryHeaderWidget(story: story!),
                                   Expanded(
                                       child: Column(
                                           children: scripts!.map((script) {
@@ -437,7 +458,7 @@ class _StoryPageViewState extends State<StoryPageView> {
               ))),
       Positioned(
           left: 10,
-          width: 40,
+          width: 10,
           top: size.height / 4,
           child: SizedBox(
             height: 50,
@@ -451,10 +472,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                     child: SmoothPageIndicator(
                       controller: controller,
                       count: story!.pages!.length,
-                      axisDirection:
-                          story!.pageDirection == PageDirection.HORIZONTAL
-                              ? Axis.horizontal
-                              : Axis.vertical,
+                      axisDirection: Axis.vertical,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 10,
                           dotWidth: 18,
