@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/rendering.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
@@ -56,6 +58,10 @@ class _StoryPageViewState extends State<StoryPageView> {
   late AppLocalizations _i18n;
   double bodyHeightPercent = 0.85;
   double headerHeight = 140;
+
+  bool _userScrolledAgain = false;
+  Timer? _scrollTimer;
+
   final _storyApi = StoryApi();
 
   Story? story;
@@ -72,6 +78,13 @@ class _StoryPageViewState extends State<StoryPageView> {
     } else {
       getStoryContent();
     }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollTimer?.cancel();
+    controller.dispose();
   }
 
   void getStoryContent() async {
@@ -158,14 +171,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         ),
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(children: [
-            SingleChildScrollView(
-                child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                _showPageWidget(constraints),
-              ],
-            )),
+            _showPageWidget(constraints),
             if (story?.status.name == StoryStatus.PUBLISHED.name)
               _commentSheet()
           ]);
@@ -294,102 +300,144 @@ class _StoryPageViewState extends State<StoryPageView> {
           child: NoData(text: _i18n.translate("storybits_empty")));
     }
     return Stack(alignment: Alignment.topCenter, children: [
-      SizedBox(
-          height: height - footerHeight,
-          width: constraints.maxWidth,
-          child: PageView.builder(
-            controller: controller,
-            scrollDirection: story!.pageDirection == PageDirection.HORIZONTAL
-                ? Axis.horizontal
-                : Axis.vertical,
-            itemCount: storyboardController.currentStory.pages!.length,
-            itemBuilder: (_, index) {
-              List<Script>? scripts = story!.pages![index].scripts;
-              String? background = story?.pages?[index].backgroundImageUrl;
+      NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            double currentPos = notification.metrics.pixels;
+            double maxScrollExtent = notification.metrics.maxScrollExtent;
+            final ScrollDirection direction = notification.direction;
 
-              String backgroundUrl =
-                  (background != null && background.contains("http"))
-                      ? background
-                      : "";
-
-              return Card(
-                child: Container(
-                  height: size.height - 250,
-                  decoration: BoxDecoration(
-                      image: DecorationImage(
-                          colorFilter: ColorFilter.mode(
-                              const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                                  story?.pages![index].backgroundAlpha ?? 0.5),
-                              BlendMode.darken),
-                          image: backgroundUrl != ""
-                              ? CachedNetworkImageProvider(
-                                  backgroundUrl,
-                                  errorListener: () => const Icon(Icons.error),
-                                )
-                              : Image.asset(
-                                  "assets/images/blank.jpg",
-                                  scale: 0.2,
-                                  width: 100,
-                                ).image,
-                          fit: BoxFit.cover)),
-                  padding: const EdgeInsets.all(20),
-                  child: SingleChildScrollView(
-                    child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                            minWidth: constraints.maxWidth * 0.7,
-                            minHeight: constraints.maxHeight - 200),
-                        child: IntrinsicHeight(
-                            child: Column(
-                                crossAxisAlignment:
-                                    story!.layout == Layout.CONVO
-                                        ? CrossAxisAlignment.end
-                                        : CrossAxisAlignment.start,
-                                children: [
-                              Expanded(
-                                  child: Column(
-                                      children: scripts!.map((script) {
-                                CrossAxisAlignment alignment =
-                                    story!.layout == Layout.CONVO
-                                        ? story!.createdBy.userId ==
-                                                script.characterId
-                                            ? CrossAxisAlignment.end
-                                            : CrossAxisAlignment.start
-                                        : script.type == 'image'
-                                            ? CrossAxisAlignment.center
-                                            : CrossAxisAlignment.start;
-                                return Column(
-                                    crossAxisAlignment: alignment,
-                                    children: [
-                                      _displayScript(script, size),
-                                      if (story!.layout == Layout.CONVO)
-                                        Text(script.characterName ?? ""),
-                                    ]);
-                              }).toList())),
-                              if (((index + 1) % 2 == 0) &
-                                  (story!.status == StoryStatus.PUBLISHED))
-                                const Align(
-                                  alignment: Alignment.bottomCenter,
-                                  child: InlineAdaptiveAds(
-                                    height: 50,
-                                  ),
-                                ),
-                              const SizedBox(
-                                height: 50,
-                              )
-                            ]))),
-                  ),
-                ),
+            // Check if the user has reached the bottom of the page.
+            if (currentPos == maxScrollExtent) {
+              // Wait for 1 second to see if the user scrolls again.
+              if (_scrollTimer != null &&
+                  _scrollTimer!.isActive &&
+                  (direction == ScrollDirection.reverse)) {
+                // The user scrolled again within x seconds.
+                _userScrolledAgain = true;
+                controller.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              } else {
+                _scrollTimer?.cancel();
+                _scrollTimer = Timer(const Duration(milliseconds: 2500), () {
+                  if (_userScrolledAgain) {
+                    _userScrolledAgain = false;
+                  }
+                });
+              }
+            }
+            if (direction == ScrollDirection.forward && currentPos == 0) {
+              controller.previousPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn,
               );
-            },
-          )),
+            } else {
+              if (currentPos < 0 && direction == ScrollDirection.reverse) {
+                controller.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                );
+              }
+            }
+
+            return false;
+          },
+          child: SizedBox(
+              height: height - footerHeight,
+              width: constraints.maxWidth,
+              child: PageView.builder(
+                controller: controller,
+                scrollDirection:
+                    story!.pageDirection == PageDirection.HORIZONTAL
+                        ? Axis.horizontal
+                        : Axis.vertical,
+                itemCount: storyboardController.currentStory.pages!.length,
+                itemBuilder: (_, index) {
+                  List<Script>? scripts = story!.pages![index].scripts;
+                  String? background = story?.pages?[index].backgroundImageUrl;
+
+                  String backgroundUrl =
+                      (background != null && background.contains("http"))
+                          ? background
+                          : "";
+
+                  return Card(
+                    child: Container(
+                      height: size.height - 250,
+                      decoration: BoxDecoration(
+                          image: DecorationImage(
+                              colorFilter: ColorFilter.mode(
+                                  const Color.fromARGB(255, 0, 0, 0)
+                                      .withOpacity(story
+                                              ?.pages![index].backgroundAlpha ??
+                                          0.5),
+                                  BlendMode.darken),
+                              image: backgroundUrl != ""
+                                  ? CachedNetworkImageProvider(
+                                      backgroundUrl,
+                                      errorListener: () =>
+                                          const Icon(Icons.error),
+                                    )
+                                  : Image.asset(
+                                      "assets/images/blank.jpg",
+                                      scale: 0.2,
+                                      width: 100,
+                                    ).image,
+                              fit: BoxFit.cover)),
+                      padding: const EdgeInsets.all(20),
+                      child: SingleChildScrollView(
+                        child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                                minWidth: constraints.maxWidth * 0.7,
+                                minHeight: constraints.maxHeight - 200),
+                            child: IntrinsicHeight(
+                                child: Column(
+                                    crossAxisAlignment:
+                                        story!.layout == Layout.CONVO
+                                            ? CrossAxisAlignment.end
+                                            : CrossAxisAlignment.start,
+                                    children: [
+                                  Expanded(
+                                      child: Column(
+                                          children: scripts!.map((script) {
+                                    CrossAxisAlignment alignment =
+                                        story!.layout == Layout.CONVO
+                                            ? story!.createdBy.userId ==
+                                                    script.characterId
+                                                ? CrossAxisAlignment.end
+                                                : CrossAxisAlignment.start
+                                            : script.type == 'image'
+                                                ? CrossAxisAlignment.center
+                                                : CrossAxisAlignment.start;
+                                    return Column(
+                                        crossAxisAlignment: alignment,
+                                        children: [
+                                          _displayScript(script, size),
+                                          if (story!.layout == Layout.CONVO)
+                                            Text(script.characterName ?? ""),
+                                        ]);
+                                  }).toList())),
+                                  if (((index + 1) % 2 == 0) &
+                                      (story!.status == StoryStatus.PUBLISHED))
+                                    const Align(
+                                      alignment: Alignment.bottomCenter,
+                                      child: InlineAdaptiveAds(
+                                        height: 50,
+                                      ),
+                                    ),
+                                  const SizedBox(
+                                    height: 50,
+                                  )
+                                ]))),
+                      ),
+                    ),
+                  );
+                },
+              ))),
       Positioned(
-          bottom: story!.pageDirection == PageDirection.HORIZONTAL
-              ? 50
-              : size.height / 2,
-          width: story!.pageDirection == PageDirection.HORIZONTAL
-              ? size.width
-              : 40,
-          left: story!.pageDirection == PageDirection.HORIZONTAL ? 0 : 10,
+          left: 10,
+          width: 40,
+          top: size.height / 4,
           child: SizedBox(
             height: 50,
             width: size.width,

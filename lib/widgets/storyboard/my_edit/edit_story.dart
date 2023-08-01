@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:flutter/rendering.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -34,13 +35,10 @@ class _EditPageState extends State<EditPage> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
   Layout selectedLayout = Layout.CONVO;
-  PageDirection _pageDirection = PageDirection.HORIZONTAL;
 
   int pageIndex = 0;
-  bool reachedBottom = false;
-  bool _shouldScrollNextPage = false;
-  bool _scrolling = false;
-  Timer? _delayTimer;
+  bool _userScrolledAgain = false;
+  Timer? _scrollTimer;
 
   @override
   void initState() {
@@ -58,7 +56,7 @@ class _EditPageState extends State<EditPage> {
   @override
   void dispose() {
     super.dispose();
-    _delayTimer?.cancel();
+    _scrollTimer?.cancel();
     _pageController.dispose();
   }
 
@@ -97,20 +95,6 @@ class _EditPageState extends State<EditPage> {
         ));
   }
 
-  void _startDelayTimer() {
-    _delayTimer?.cancel();
-    _delayTimer = Timer(Duration(seconds: 2), () {
-      if (_scrolling && _shouldScrollNextPage) {
-        _pageController.nextPage(
-          duration: const Duration(milliseconds: 500),
-          curve: Curves.easeIn,
-        );
-      }
-      _scrolling = false;
-      _shouldScrollNextPage = false; // Reset the flag after the delay
-    });
-  }
-
   List<Widget> _showPageWidget() {
     Size size = MediaQuery.of(context).size;
     if (story.pages!.isEmpty) {
@@ -137,56 +121,51 @@ class _EditPageState extends State<EditPage> {
     }
 
     return [
-      NotificationListener<ScrollNotification>(
+      NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
             double currentPos = notification.metrics.pixels;
-            double pageHeight = size.height - 100;
+            double maxScrollExtent = notification.metrics.maxScrollExtent;
+            final ScrollDirection direction = notification.direction;
 
-            if (notification is ScrollEndNotification) {
-              if (_scrolling &&
-                  currentPos >= pageHeight * 1.1 &&
-                  reachedBottom &&
-                  _shouldScrollNextPage) {
-                _pageController.nextPage(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
-                );
-              }
-
-              if (currentPos <= 0) {
+            // Check if the user has reached the bottom of the page.
+            if (currentPos == maxScrollExtent) {
+              if (direction == ScrollDirection.forward) {
                 _pageController.previousPage(
                   duration: const Duration(milliseconds: 500),
                   curve: Curves.easeIn,
                 );
               }
 
-              _scrolling = false;
-              _shouldScrollNextPage =
-                  false; // Reset the flag after the scroll action or when no further scroll is detected
-            } else if (notification is ScrollUpdateNotification) {
-              if (currentPos >= pageHeight * 1.15) {
-                if (!reachedBottom) {
-                  setState(() {
-                    reachedBottom = true;
-                  });
-                }
+              // Wait for 1 second to see if the user scrolls again.
+              else if (_scrollTimer != null &&
+                  _scrollTimer!.isActive &&
+                  (direction == ScrollDirection.reverse)) {
+                // The user scrolled again within x seconds.
+                _userScrolledAgain = true;
+                _pageController.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
               } else {
-                setState(() {
-                  reachedBottom = false;
+                _scrollTimer?.cancel();
+                _scrollTimer = Timer(const Duration(milliseconds: 2500), () {
+                  if (_userScrolledAgain) {
+                    _userScrolledAgain = false;
+                  }
                 });
               }
-
-              if (!_scrolling) {
-                _scrolling = true;
-                _shouldScrollNextPage =
-                    true; // Set the flag to true when the user initiates a scroll
-                _startDelayTimer();
+            } else {
+              if (currentPos < 0 && direction == ScrollDirection.reverse) {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                );
               }
             }
 
-            return true; // Return false to allow other listeners (if any) to receive the notification
+            return false;
           },
-          child: SizedBox(
+          child: Container(
+              padding: const EdgeInsets.all(5),
               height: size.height - 100,
               width: double.infinity,
               child: PageView.builder(
@@ -208,7 +187,6 @@ class _EditPageState extends State<EditPage> {
                         _updateSequence(update);
                       },
                       onPageAxisDirection: (direction) {
-                        // update
                         _updatePageDirection(direction);
                       },
                       onLayoutSelection: (layout) {
@@ -218,20 +196,19 @@ class _EditPageState extends State<EditPage> {
                 },
               ))),
       Positioned(
-          height: size.height / 2,
-          left: 20,
-          width: 20,
+          left: 10,
+          width: 40,
           top: size.height / 4,
           child: SizedBox(
-            width: 20,
+            width: 50,
             height: size.height / 2,
             child: SmoothPageIndicator(
               axisDirection: Axis.vertical,
               controller: _pageController,
               count: story.pages?.length ?? 1,
-              effect: ExpandingDotsEffect(
-                  dotHeight: 8,
-                  dotWidth: _pageDirection == PageDirection.HORIZONTAL ? 14 : 8,
+              effect: const ExpandingDotsEffect(
+                  dotHeight: 10,
+                  dotWidth: 18,
                   activeDotColor: APP_ACCENT_COLOR),
             ),
           )),
@@ -243,7 +220,6 @@ class _EditPageState extends State<EditPage> {
     storyboardController.updateStory(story: update);
 
     setState(() {
-      _pageDirection = direction;
       story = update;
     });
   }

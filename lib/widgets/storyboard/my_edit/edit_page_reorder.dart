@@ -82,13 +82,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         _reorderListWidget(),
         Positioned(
-            height: 100,
+            height: 70,
             bottom: Platform.isAndroid ? 0 : 30,
             child: Column(children: [
               Container(
                 color: Theme.of(context).colorScheme.background,
                 width: size.width,
-                height: 100,
+                height: 70,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
