@@ -302,6 +302,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     return Stack(alignment: Alignment.topCenter, children: [
       NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
+            /// @ttodo duplicate function in edit_story.dart
             double currentPos = notification.metrics.pixels;
             double maxScrollExtent = notification.metrics.maxScrollExtent;
             final ScrollDirection direction = notification.direction;

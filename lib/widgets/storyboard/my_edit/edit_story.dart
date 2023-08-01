@@ -123,21 +123,15 @@ class _EditPageState extends State<EditPage> {
     return [
       NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
+            /// @ttodo duplicate function in page_view.dart
             double currentPos = notification.metrics.pixels;
             double maxScrollExtent = notification.metrics.maxScrollExtent;
             final ScrollDirection direction = notification.direction;
 
             // Check if the user has reached the bottom of the page.
             if (currentPos == maxScrollExtent) {
-              if (direction == ScrollDirection.forward) {
-                _pageController.previousPage(
-                  duration: const Duration(milliseconds: 500),
-                  curve: Curves.easeIn,
-                );
-              }
-
               // Wait for 1 second to see if the user scrolls again.
-              else if (_scrollTimer != null &&
+              if (_scrollTimer != null &&
                   _scrollTimer!.isActive &&
                   (direction == ScrollDirection.reverse)) {
                 // The user scrolled again within x seconds.
@@ -153,6 +147,12 @@ class _EditPageState extends State<EditPage> {
                   }
                 });
               }
+            }
+            if (direction == ScrollDirection.forward && currentPos == 0) {
+              _pageController.previousPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn,
+              );
             } else {
               if (currentPos < 0 && direction == ScrollDirection.reverse) {
                 _pageController.nextPage(

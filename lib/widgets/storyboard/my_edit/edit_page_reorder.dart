@@ -13,6 +13,7 @@ import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
@@ -154,22 +155,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       attachmentPreview!,
                     )
                   : urlPreview != null
-                      ? CachedNetworkImageProvider(
-                          urlPreview!,
-                          errorListener: () => const Icon(Icons.error),
-                        )
-                      : story.pages![widget.pageIndex].backgroundImageUrl !=
-                              null
-                          ? CachedNetworkImageProvider(
-                              story
-                                  .pages![widget.pageIndex].backgroundImageUrl!,
-                              errorListener: () => const Icon(Icons.error),
-                            )
-                          : Image.asset(
-                              "assets/images/machi.png",
-                              scale: 0.2,
-                              width: 100,
-                            ).image,
+                      ? imageWrapper(urlPreview!)
+                      : imageWrapper(
+                          story.pages![widget.pageIndex].backgroundImageUrl!),
               fit: BoxFit.cover),
         ),
         child: ReorderableListView(
