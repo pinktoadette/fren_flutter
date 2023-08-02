@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
@@ -10,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
@@ -207,8 +205,10 @@ class _AddEditTextState extends State<AddEditText> {
     widget.onTextComplete({
       "text": image == null ? text : "",
       "byteImage": _imageBytes ?? "",
-      "image": image != null ? "" : attachmentPreview,
-      "gallery": image != null ? "" : galleryImageUrl,
+      "image":
+          image != null || attachmentPreview == null ? "" : attachmentPreview,
+      "gallery":
+          image != null || galleryImageUrl == null ? "" : galleryImageUrl,
       "textAlign": textAlign
     });
   }

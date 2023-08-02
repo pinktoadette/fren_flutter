@@ -28,7 +28,7 @@ Widget textLinkPreview(
           useBorder == true
               ? TextBorder(
                   text: urls.isNotEmpty ? text.replaceAll(urls[0], "") : text,
-                  size: 16,
+                  size: 20,
                   textAlign: textAlign,
                 )
               : Text(

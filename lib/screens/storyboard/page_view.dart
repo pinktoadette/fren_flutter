@@ -89,10 +89,9 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   void getStoryContent() async {
     try {
-      Story details = await _storyApi.getMyStories(widget.story.storyId);
-      timelineController.setStoryTimelineControllerCurrent(details);
+      timelineController.setStoryTimelineControllerCurrent(widget.story);
       setState(() {
-        story = details;
+        story = widget.story;
       });
     } catch (err, s) {
       Get.snackbar(
@@ -547,6 +546,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           text: script.text ?? "",
           textAlign: script.textAlign ?? TextAlign.left,
           style: TextStyle(
+              fontSize: story!.layout == Layout.COMIC ? 20 : 16,
               color: story!.layout == Layout.CONVO
                   ? Colors.black
                   : Theme.of(context).colorScheme.primary));

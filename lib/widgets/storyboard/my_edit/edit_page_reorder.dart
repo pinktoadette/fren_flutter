@@ -156,8 +156,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
                     )
                   : urlPreview != null
                       ? imageCacheWrapper(urlPreview!)
-                      : imageCacheWrapper(
-                          story.pages![widget.pageIndex].backgroundImageUrl!),
+                      : story.pages![widget.pageIndex].backgroundImageUrl !=
+                              null
+                          ? imageCacheWrapper(story
+                              .pages![widget.pageIndex].backgroundImageUrl!)
+                          : const AssetImage(
+                              "assets/images/machi.png",
+                            ),
               fit: BoxFit.cover),
         ),
         child: ReorderableListView(
@@ -287,7 +292,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       width: size.width,
                       child: TextBorder(
                           text: scripts[index].text ?? "",
-                          size: 16,
+                          size: layout == Layout.COMIC ? 20 : 16,
                           textAlign: scripts[index].textAlign))
                   : Text(
                       scripts[index].text ?? "",
@@ -296,7 +301,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           color: layout == Layout.CONVO
                               ? Colors.black
                               : APP_INVERSE_PRIMARY_COLOR,
-                          fontSize: 16),
+                          fontSize: layout == Layout.COMIC ? 20 : 16),
                     ),
               size,
               alignment),

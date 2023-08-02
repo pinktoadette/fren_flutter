@@ -58,7 +58,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     width = MediaQuery.of(context).size.width;
     double padding = 15;
 
-    // double rightBox = width - (storyCoverWidth + playWidth + padding * 3.2);
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";

@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/notifications_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -67,6 +70,9 @@ class NotificationsScreen extends StatelessWidget {
 
   void _onNotificationTap(BuildContext context,
       DocumentSnapshot<Map<String, dynamic>> notification) async {
+    StoryboardController storyboardController = Get.find(tag: 'storyboard');
+    TimelineController timelineController = Get.find(tag: 'timeline');
+
     /// Set notification read = true
     await notification.reference.update({NOTIF_READ: true});
 
@@ -81,8 +87,9 @@ class NotificationsScreen extends StatelessWidget {
     } else if (notifType.contains("COMMENT")) {
       final _storyApi = StoryApi();
       Story story = await _storyApi.getMyStories(notification["itemId"]);
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => StoryPageView(story: story)));
+      timelineController.setStoryTimelineControllerCurrent(story);
+      storyboardController.onGoToPageView(story);
+      Get.to(() => StoryPageView(story: story));
     }
 
     /// Handle notification click
@@ -102,7 +109,8 @@ class NotificationListItem extends StatelessWidget {
   final String createdAt;
   final VoidCallback onTap;
 
-  NotificationListItem({
+  const NotificationListItem({
+    super.key,
     required this.notification,
     required this.notifType,
     required this.notifRead,
