@@ -6,6 +6,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -120,6 +121,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       int index = 0;
       Story story = storyboard.story![0];
       double w = width - padding * 2;
+      String displayText = truncateScriptsTo250Chars(
+          scripts: story.pages![0].scripts, length: 200);
+      Script? firstScriptWithImage = story.pages![0].scripts!.firstWhere(
+        (script) => script.type == 'image',
+        orElse: () => Script(image: null),
+      );
       return InkWell(
           onTap: () async {
             _onStoryClick();
@@ -154,12 +161,21 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                         ).image,
                               fit: BoxFit.cover)),
                       padding: const EdgeInsets.all(20),
-                      child: textLinkPreview(
-                          useBorder: story.layout == Layout.COMIC,
-                          context: context,
-                          text: truncateScriptsTo250Chars(
-                              scripts: story.pages![0].scripts, length: 300),
-                          style: const TextStyle(color: Colors.black))))));
+                      child: displayText != ""
+                          ? textLinkPreview(
+                              useBorder: story.layout == Layout.COMIC,
+                              context: context,
+                              text: displayText,
+                              maxLines: 10,
+                              style: const TextStyle(color: Colors.black),
+                            )
+                          : firstScriptWithImage.image != null
+                              ? CachedNetworkImage(
+                                  imageUrl: firstScriptWithImage.image!.uri,
+                                  errorWidget: (context, url, error) =>
+                                      const Icon(Icons.error),
+                                )
+                              : const SizedBox.shrink()))));
     }
     return InkWell(
         onTap: () async {

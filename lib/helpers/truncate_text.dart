@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:machi_app/datas/script.dart';
 
 String truncateText(
@@ -22,7 +24,7 @@ String truncateScriptsTo250Chars(
   for (var script in scripts) {
     int remainingLength = length - totalLength;
     String truncatedText = truncateText(
-      maxLength: remainingLength,
+      maxLength: max(0, remainingLength),
       text: script.text ?? '',
     );
 

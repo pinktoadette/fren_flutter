@@ -97,5 +97,7 @@ class CommentController extends GetxController {
     if (index != -1) {
       pagingController.itemList!.removeAt(index);
     }
+    pagingController.itemList;
+    pagingController.refresh();
   }
 }

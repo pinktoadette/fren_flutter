@@ -8,6 +8,7 @@ Widget textLinkPreview(
     TextAlign? textAlign = TextAlign.left,
     bool? useBorder = false,
     double? width,
+    int? maxLines,
     TextStyle? style}) {
   final urlRegExp = RegExp(
       r"((https?:www\.)|(https?:\/\/)|(www\.))[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9]{1,6}(\/[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)?");
@@ -30,6 +31,7 @@ Widget textLinkPreview(
                   text: urls.isNotEmpty ? text.replaceAll(urls[0], "") : text,
                   size: 20,
                   textAlign: textAlign,
+                  maxLines: maxLines,
                 )
               : Text(
                   urls.isNotEmpty ? text.replaceAll(urls[0], "") : text,

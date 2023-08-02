@@ -13,8 +13,11 @@ class TimelineApi {
 
   ////
   /// TIMELINE is now STORYBOARD class, to make things less complicated / less features
-  Future<List<Storyboard>> getTimeline(int limit, int page) async {
-    String url = '${baseUri}timeline/user_feed?limit=$limit&page=$page';
+  Future<List<Storyboard>> getTimeline(
+      int limit, int page, bool? refresh) async {
+    String? refreshKey = refresh == true ? "&refresh=true" : null;
+    String url =
+        '${baseUri}timeline/user_feed?limit=$limit&page=$page$refreshKey';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);

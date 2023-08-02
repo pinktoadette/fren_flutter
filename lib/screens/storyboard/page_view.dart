@@ -343,6 +343,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeIn,
               );
+              // if comment is open, and user scrolls down, then collapse it.
+              setState(() {
+                bodyHeightPercent = BODY_HEIGHT_PERCENT;
+              });
             } else {
               if (currentPos < 0 && direction == ScrollDirection.reverse) {
                 controller.nextPage(
@@ -352,17 +356,18 @@ class _StoryPageViewState extends State<StoryPageView> {
               }
             }
 
-            if (controller.page == controller.page!.roundToDouble() &&
-                controller.page ==
-                    storyboardController.currentStory.pages!.length - 1 &&
-                currentPos == maxScrollExtent &&
-                bodyHeightPercent == BODY_HEIGHT_PERCENT) {
-              setState(() {
-                bodyHeightPercent = direction == ScrollDirection.reverse
-                    ? 0.5
-                    : BODY_HEIGHT_PERCENT;
-              });
-            }
+            // if comment is closed, and user scrolls up, then open it.
+            // if (controller.page == controller.page!.roundToDouble() &&
+            //     controller.page ==
+            //         storyboardController.currentStory.pages!.length - 1 &&
+            //     currentPos == maxScrollExtent &&
+            //     bodyHeightPercent == BODY_HEIGHT_PERCENT) {
+            //   setState(() {
+            //     bodyHeightPercent = direction == ScrollDirection.reverse
+            //         ? 0.5
+            //         : BODY_HEIGHT_PERCENT;
+            //   });
+            // }
 
             return false;
           },
@@ -486,49 +491,47 @@ class _StoryPageViewState extends State<StoryPageView> {
           left: 0,
           child: Container(
               color: Colors.black.withOpacity(0.8),
-              child: Obx(
-                () => Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: AvatarInitials(
-                            radius: 16,
-                            userId: story!.createdBy.userId,
-                            photoUrl: story!.createdBy.photoUrl,
-                            username: story!.createdBy.username)),
-                    Container(
-                        padding: const EdgeInsets.only(left: 0),
-                        child: LikeItemWidget(
-                            onLike: (val) {
-                              _onLikePressed(widget.story, val);
-                            },
-                            size: 40,
-                            likes: timelineController.currentStory.likes ?? 0,
-                            mylikes:
-                                timelineController.currentStory.mylikes ?? 0)),
-                    Container(
-                        padding: const EdgeInsets.only(left: 30, top: 12),
-                        width: size.width,
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Iconsax.message,
-                              size: 16,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              timelineController.currentStory.commentCount
-                                  .toString(),
-                              style: const TextStyle(fontSize: 12),
-                            )
-                          ],
-                        ))
-                  ],
-                ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: AvatarInitials(
+                          radius: 16,
+                          userId: story!.createdBy.userId,
+                          photoUrl: story!.createdBy.photoUrl,
+                          username: story!.createdBy.username)),
+                  Container(
+                      padding: const EdgeInsets.only(left: 0),
+                      child: Obx(() => LikeItemWidget(
+                          onLike: (val) {
+                            _onLikePressed(widget.story, val);
+                          },
+                          size: 40,
+                          likes: timelineController.currentStory.likes ?? 0,
+                          mylikes:
+                              timelineController.currentStory.mylikes ?? 0))),
+                  Container(
+                      padding: const EdgeInsets.only(left: 30, top: 12),
+                      width: size.width,
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Iconsax.message,
+                            size: 16,
+                          ),
+                          const SizedBox(
+                            width: 20,
+                          ),
+                          Obx(() => Text(
+                                timelineController.currentStory.commentCount
+                                    .toString(),
+                                style: const TextStyle(fontSize: 12),
+                              ))
+                        ],
+                      ))
+                ],
               )),
         )
     ]);
