@@ -166,7 +166,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               useBorder: story.layout == Layout.COMIC,
                               context: context,
                               text: displayText,
-                              maxLines: 10,
+                              maxLines: 9,
                               style: const TextStyle(color: Colors.black),
                             )
                           : firstScriptWithImage.image != null
