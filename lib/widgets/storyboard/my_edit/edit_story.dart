@@ -1,5 +1,6 @@
-import 'dart:io';
+import 'dart:async';
 
+import 'package:flutter/rendering.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -25,18 +26,18 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
-  final _pageController = PageController(viewportFraction: 1, keepPage: true);
+  final PageController _pageController =
+      PageController(viewportFraction: 1, keepPage: true);
 
   late AppLocalizations _i18n;
   double itemHeight = 120;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
   Layout selectedLayout = Layout.CONVO;
-  PageDirection _pageDirection = PageDirection.HORIZONTAL;
 
   int pageIndex = 0;
-
-  get onUpdate => null;
+  bool _userScrolledAgain = false;
+  Timer? _scrollTimer;
 
   @override
   void initState() {
@@ -54,6 +55,7 @@ class _EditPageState extends State<EditPage> {
   @override
   void dispose() {
     super.dispose();
+    _scrollTimer?.cancel();
     _pageController.dispose();
   }
 
@@ -85,13 +87,11 @@ class _EditPageState extends State<EditPage> {
                     child: Text(_i18n.translate("storyboard_preview"))))
           ],
         ),
-        body: SingleChildScrollView(
-            physics: const AlwaysScrollableScrollPhysics(),
-            child: Stack(
-              children: [
-                ..._showPageWidget(),
-              ],
-            )));
+        body: Stack(
+          children: [
+            ..._showPageWidget(),
+          ],
+        ));
   }
 
   List<Widget> _showPageWidget() {
@@ -120,64 +120,94 @@ class _EditPageState extends State<EditPage> {
     }
 
     return [
-      SizedBox(
-          height: size.height - 100,
-          width: double.infinity,
-          child: PageView.builder(
-            onPageChanged: _onPageChange,
-            controller: _pageController,
-            itemCount: story.pages!.length,
-            scrollDirection: _pageDirection == PageDirection.HORIZONTAL
-                ? Axis.horizontal
-                : Axis.vertical,
-            itemBuilder: (_, index) {
-              List<Script> scripts = story.pages![index].scripts ?? [];
-              return EditPageReorder(
-                  story: story,
-                  scriptList: scripts,
-                  pageIndex: index,
-                  layout: selectedLayout,
-                  onMoveInsertPages: (data) {
-                    _moveInsertPages(data);
-                  },
-                  onUpdateSeq: (update) {
-                    _updateSequence(update);
-                  },
-                  onPageAxisDirection: (direction) {
-                    // update
-                    _updatePageDirection(direction);
-                  },
-                  onLayoutSelection: (layout) {
-                    selectedLayout = layout;
-                    _updateLayout(layout);
-                  });
-            },
-          )),
-      Positioned(
-          bottom: story.pageDirection == PageDirection.HORIZONTAL
-              ? Platform.isAndroid
-                  ? 50
-                  : 80
-              : size.height / 2,
-          height: story.pageDirection == PageDirection.HORIZONTAL
-              ? 150
-              : size.height,
-          left: _pageDirection == PageDirection.HORIZONTAL ? 0 : 20,
-          width: size.width,
+      NotificationListener<UserScrollNotification>(
+          onNotification: (notification) {
+            /// @ttodo duplicate function in page_view.dart
+            double currentPos = notification.metrics.pixels;
+            double maxScrollExtent = notification.metrics.maxScrollExtent;
+            final ScrollDirection direction = notification.direction;
+
+            // Check if the user has reached the bottom of the page.
+            if (currentPos == maxScrollExtent) {
+              // Wait for 1 second to see if the user scrolls again.
+              if (_scrollTimer != null &&
+                  _scrollTimer!.isActive &&
+                  (direction == ScrollDirection.reverse)) {
+                // The user scrolled again within x seconds.
+                _userScrolledAgain = true;
+                _pageController.nextPage(
+                    duration: const Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              } else {
+                _scrollTimer?.cancel();
+                _scrollTimer = Timer(const Duration(milliseconds: 2500), () {
+                  if (_userScrolledAgain) {
+                    _userScrolledAgain = false;
+                  }
+                });
+              }
+            }
+            if (direction == ScrollDirection.forward && currentPos == 0) {
+              _pageController.previousPage(
+                duration: const Duration(milliseconds: 500),
+                curve: Curves.easeIn,
+              );
+            } else {
+              if (currentPos < 0 && direction == ScrollDirection.reverse) {
+                _pageController.nextPage(
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.easeIn,
+                );
+              }
+            }
+
+            return false;
+          },
           child: Container(
-            width: size.width,
-            alignment: _pageDirection == PageDirection.HORIZONTAL
-                ? Alignment.center
-                : Alignment.bottomLeft,
+              padding: const EdgeInsets.all(5),
+              height: size.height - 100,
+              width: double.infinity,
+              child: PageView.builder(
+                onPageChanged: _onPageChange,
+                controller: _pageController,
+                itemCount: story.pages!.length,
+                scrollDirection: Axis.vertical,
+                itemBuilder: (_, index) {
+                  List<Script> scripts = story.pages![index].scripts ?? [];
+                  return EditPageReorder(
+                      story: story,
+                      scriptList: scripts,
+                      pageIndex: index,
+                      layout: selectedLayout,
+                      onMoveInsertPages: (data) {
+                        _moveInsertPages(data);
+                      },
+                      onUpdateSeq: (update) {
+                        _updateSequence(update);
+                      },
+                      onPageAxisDirection: (direction) {
+                        _updatePageDirection(direction);
+                      },
+                      onLayoutSelection: (layout) {
+                        selectedLayout = layout;
+                        _updateLayout(layout);
+                      });
+                },
+              ))),
+      Positioned(
+          left: 10,
+          width: 10,
+          top: size.height / 4,
+          child: SizedBox(
+            width: 50,
+            height: size.height / 2,
             child: SmoothPageIndicator(
-              axisDirection: _pageDirection == PageDirection.VERTICAL
-                  ? Axis.vertical
-                  : Axis.horizontal,
+              axisDirection: Axis.vertical,
               controller: _pageController,
               count: story.pages?.length ?? 1,
-              effect: ExpandingDotsEffect(
-                  dotHeight: 8,
-                  dotWidth: _pageDirection == PageDirection.HORIZONTAL ? 14 : 8,
+              effect: const ExpandingDotsEffect(
+                  dotHeight: 10,
+                  dotWidth: 18,
                   activeDotColor: APP_ACCENT_COLOR),
             ),
           )),
@@ -189,7 +219,6 @@ class _EditPageState extends State<EditPage> {
     storyboardController.updateStory(story: update);
 
     setState(() {
-      _pageDirection = direction;
       story = update;
     });
   }

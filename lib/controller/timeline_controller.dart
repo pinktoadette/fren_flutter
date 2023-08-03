@@ -23,7 +23,7 @@ class TimelineController extends GetxController {
   void onInit() {
     super.onInit();
     pagingController.addPageRequestListener((pageKey) {
-      fetchPage(pageKey);
+      fetchPage(pageKey, false);
     });
   }
 
@@ -33,10 +33,10 @@ class TimelineController extends GetxController {
     super.dispose();
   }
 
-  Future<void> fetchPage(int pageKey) async {
+  Future<void> fetchPage(int pageKey, bool? refresh) async {
     try {
       List<Storyboard> newItems =
-          await _timelineApi.getTimeline(_pageSize, pageKey);
+          await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
       var isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         pagingController.appendLastPage(newItems);
@@ -50,7 +50,7 @@ class TimelineController extends GetxController {
   }
 
   void insertPublishStoryboard(Storyboard storyboard) {
-    pagingController.appendLastPage([storyboard]);
+    pagingController.appendPage([storyboard], 0);
   }
 
   void setStoryTimelineControllerCurrent(Story story) {

@@ -32,7 +32,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
 
     return RefreshIndicator(
         onRefresh: () async {
-          timelineController.fetchPage(0);
+          timelineController.fetchPage(0, true);
         },
         child: PagedListView<int, Storyboard>.separated(
           shrinkWrap: true,

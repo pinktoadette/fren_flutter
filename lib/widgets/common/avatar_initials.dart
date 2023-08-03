@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:get/get.dart';
 
@@ -51,12 +52,7 @@ class AvatarInitials extends StatelessWidget {
                           color: APP_PRIMARY_COLOR, fontSize: 18)),
                 )
               : null,
-          foregroundImage: photoUrl == ''
-              ? null
-              : CachedNetworkImageProvider(
-                  photoUrl,
-                  errorListener: () => const Icon(Icons.error),
-                ),
+          foregroundImage: photoUrl == '' ? null : imageCacheWrapper(photoUrl),
           backgroundColor: APP_INVERSE_PRIMARY_COLOR,
         ),
       ),

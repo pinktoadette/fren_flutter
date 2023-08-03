@@ -39,7 +39,7 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
     return Obx(() => Container(
         color:
             commentController.replyToComment.commentId == widget.item.commentId
-                ? APP_TERTIARY.withOpacity(0.2)
+                ? APP_TERTIARY
                 : null,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

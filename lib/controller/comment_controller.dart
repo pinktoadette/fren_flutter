@@ -92,8 +92,12 @@ class CommentController extends GetxController {
   }
 
   void removeItem(StoryComment comment) async {
-    pagingController.itemList!
-        .removeWhere((element) => element.commentId == comment.commentId);
+    final int index = pagingController.itemList!
+        .indexWhere((element) => element.commentId == comment.commentId);
+    if (index != -1) {
+      pagingController.itemList!.removeAt(index);
+    }
+    pagingController.itemList;
     pagingController.refresh();
   }
 }

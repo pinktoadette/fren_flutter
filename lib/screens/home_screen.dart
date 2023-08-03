@@ -17,7 +17,6 @@ import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/button/action_button.dart';
 import 'package:machi_app/widgets/button/expandable_fab.dart';
-import 'package:machi_app/widgets/interactive/create/prompt_container.dart';
 import 'package:machi_app/widgets/notification_counter.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';

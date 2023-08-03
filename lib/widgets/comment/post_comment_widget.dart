@@ -8,7 +8,9 @@ import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
@@ -66,7 +68,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 )
               : const SizedBox.shrink()),
           Container(
-            margin: const EdgeInsets.only(top: 20),
+            margin: const EdgeInsets.only(top: 10, bottom: 10),
             padding: EdgeInsets.only(
                 top: commentController.replyToComment.commentId != null
                     ? 20
@@ -78,8 +80,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                       minHeight: 50,
                       maxHeight: 300.0,
                     ),
-                    child: Stack(children: [
-                      TextFormField(
+                    child: Row(children: [
+                      Expanded(
+                          child: TextFormField(
                         onTapOutside: (_) =>
                             {FocusManager.instance.primaryFocus?.unfocus()},
                         onChanged: (String value) {
@@ -110,46 +113,36 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           }
                           return null;
                         },
-                      ),
-                      Positioned(
-                          bottom: 10,
-                          right: 0,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              IconButton(
-                                icon: _isLoading
-                                    ? loadingButton(size: 16)
-                                    : const Icon(
-                                        Iconsax.send_2,
-                                        size: 24,
-                                      ),
-                                onPressed: () {
-                                  if (_canType == false) {
-                                    Get.snackbar(
-                                      "Ayo",
-                                      _i18n.translate("post_too_fast"),
-                                      snackPosition: SnackPosition.TOP,
-                                      backgroundColor: APP_TERTIARY,
-                                    );
-                                  } else if (_comment == null ||
-                                      _comment == "") {
-                                    null;
-                                  } else {
-                                    setState(() => _canType = false);
-
-                                    _postComment();
-                                    Timer(
-                                        const Duration(seconds: 10),
-                                        () => setState(() {
-                                              _canType = true;
-                                            }));
-                                  }
-                                },
+                      )),
+                      IconButton(
+                        icon: _isLoading
+                            ? loadingButton(size: 16)
+                            : const Icon(
+                                Iconsax.send_2,
+                                size: 24,
                               ),
-                            ],
-                          ))
+                        onPressed: () {
+                          if (_canType == false) {
+                            Get.snackbar(
+                              "Ayo",
+                              _i18n.translate("post_too_fast"),
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: APP_TERTIARY,
+                            );
+                          } else if (_comment == null || _comment == "") {
+                            null;
+                          } else {
+                            setState(() => _canType = false);
+
+                            _postComment();
+                            Timer(
+                                const Duration(seconds: 10),
+                                () => setState(() {
+                                      _canType = true;
+                                    }));
+                          }
+                        },
+                      ),
                     ]))),
           )
         ]));
@@ -197,7 +190,8 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   }
 
   void _formatComment(StoryComment value) {
-    CommentController commentController = Get.find(tag: 'comment');
+    StoryboardController storyboardController = Get.find(tag: 'storyboard');
+    TimelineController timelineController = Get.find(tag: 'timeline');
     StoryComment? replyTo = commentController.replyToComment;
     if (replyTo.commentId != null) {
       replyTo.response!.add(value);
@@ -206,5 +200,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     }
 
     commentController.addItem(value);
+
+    Storyboard currentBoard = storyboardController.currentStoryboard;
+    Story currentStory = storyboardController.currentStory;
+    Story update = currentStory.copyWith(
+        commentCount: (currentStory.commentCount ?? 0) + 1);
+    timelineController.updateStoryboard(
+        storyboard: currentBoard, updateStory: update);
   }
 }

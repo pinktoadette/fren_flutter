@@ -34,7 +34,7 @@ class _CommentWidgetState extends State<CommentWidget> {
         return CommentRowWidget(
             item: item,
             onDelete: (item) {
-              commentController.removeItem(item);
+              removeItem(item);
             });
       }),
       separatorBuilder: (BuildContext context, int index) {
@@ -53,5 +53,18 @@ class _CommentWidgetState extends State<CommentWidget> {
         }
       },
     );
+  }
+
+  void removeItem(dynamic item) {
+    final List<dynamic> updatedList =
+        List.from(commentController.pagingController.itemList!);
+    final int index = updatedList
+        .indexWhere((element) => element.commentId == item.commentId);
+    if (index != -1) {
+      updatedList.removeAt(index);
+      setState(() {
+        commentController.pagingController.itemList = updatedList;
+      });
+    }
   }
 }

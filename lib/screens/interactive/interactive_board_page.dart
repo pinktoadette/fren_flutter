@@ -13,6 +13,7 @@ import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/ads/interstitial_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
@@ -434,11 +435,8 @@ class _InteractivePageViewState extends State<InteractivePageView> {
                             "0xFF${widget.interactive.theme.backgroundColor}")),
                         image: DecorationImage(
                             image: widget.interactive.photoUrl != null
-                                ? CachedNetworkImageProvider(
-                                    widget.interactive.photoUrl!,
-                                    errorListener: () =>
-                                        const Icon(Icons.error),
-                                  )
+                                ? imageCacheWrapper(
+                                    widget.interactive.photoUrl!)
                                 : Image.asset(
                                     "assets/images/blank.jpg",
                                     scale: 0.2,

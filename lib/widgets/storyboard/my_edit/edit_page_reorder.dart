@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -13,6 +12,7 @@ import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
@@ -22,6 +22,7 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
+import 'dart:ui' as ui;
 
 // ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
@@ -61,7 +62,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.5;
-  PageDirection _direction = PageDirection.HORIZONTAL;
+  PageDirection _direction = PageDirection.VERTICAL;
 
   @override
   void initState() {
@@ -82,13 +83,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         _reorderListWidget(),
         Positioned(
-            height: 100,
+            height: 70,
             bottom: Platform.isAndroid ? 0 : 30,
             child: Column(children: [
               Container(
                 color: Theme.of(context).colorScheme.background,
                 width: size.width,
-                height: 100,
+                height: 70,
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -105,14 +106,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           _editPageImage(context);
                         },
                       ),
-                      IconButton(
-                        icon: _direction == PageDirection.HORIZONTAL
-                            ? const Icon(Icons.swipe_right)
-                            : const Icon(Icons.swipe_down),
-                        onPressed: () {
-                          _editPageDirection(context);
-                        },
-                      ),
+                      // IconButton(
+                      //   icon: _direction == PageDirection.HORIZONTAL
+                      //       ? const Icon(Icons.swipe_right)
+                      //       : const Icon(Icons.swipe_down),
+                      //   onPressed: () {
+                      //     _editPageDirection(context);
+                      //   },
+                      // ),
                       IconButton(
                         icon: const Icon(Iconsax.grid_3),
                         onPressed: () {
@@ -154,22 +155,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       attachmentPreview!,
                     )
                   : urlPreview != null
-                      ? CachedNetworkImageProvider(
-                          urlPreview!,
-                          errorListener: () => const Icon(Icons.error),
-                        )
+                      ? imageCacheWrapper(urlPreview!)
                       : story.pages![widget.pageIndex].backgroundImageUrl !=
                               null
-                          ? CachedNetworkImageProvider(
-                              story
-                                  .pages![widget.pageIndex].backgroundImageUrl!,
-                              errorListener: () => const Icon(Icons.error),
-                            )
-                          : Image.asset(
+                          ? imageCacheWrapper(story
+                              .pages![widget.pageIndex].backgroundImageUrl!)
+                          : const AssetImage(
                               "assets/images/machi.png",
-                              scale: 0.2,
-                              width: 100,
-                            ).image,
+                            ),
               fit: BoxFit.cover),
         ),
         child: ReorderableListView(
@@ -238,7 +231,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
     CrossAxisAlignment alignment = layout == Layout.CONVO
-        ? story.createdBy.username == scripts[index].characterName
+        ? story.createdBy.userId == scripts[index].characterId
             ? CrossAxisAlignment.end
             : CrossAxisAlignment.start
         : CrossAxisAlignment.start;
@@ -299,7 +292,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       width: size.width,
                       child: TextBorder(
                           text: scripts[index].text ?? "",
-                          size: 16,
+                          size: layout == Layout.COMIC ? 20 : 16,
                           textAlign: scripts[index].textAlign))
                   : Text(
                       scripts[index].text ?? "",
@@ -308,7 +301,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           color: layout == Layout.CONVO
                               ? Colors.black
                               : APP_INVERSE_PRIMARY_COLOR,
-                          fontSize: 16),
+                          fontSize: layout == Layout.COMIC ? 20 : 16),
                     ),
               size,
               alignment),
@@ -516,6 +509,34 @@ class _EditPageReorderState extends State<EditPageReorder> {
             "size": bytes.length,
             "height": result.height.toDouble(),
             "width": result.width.toDouble(),
+            "uri": uploadImage,
+            "manual": true
+          },
+          pageNum: widget.pageIndex + 1);
+      setState(() {
+        scripts = [...scripts, pages.scripts![0]];
+      });
+    }
+
+    if (content["byteImage"] != "") {
+      String uploadImage = await uploadBytesFile(
+        uint8arr: content["byteImage"],
+        category: UPLOAD_PATH_SCRIPT_IMAGE,
+        categoryId: createUUID(),
+      );
+
+      ui.Codec codec = await ui.instantiateImageCodec(content["byteImage"]);
+      ui.FrameInfo frameInfo = await codec.getNextFrame();
+
+      StoryPages pages = await _scriptApi.addScriptToStory(
+          character: UserModel().user.username,
+          characterId: UserModel().user.userId,
+          type: "image",
+          storyId: story.storyId,
+          image: {
+            "size": content["byteImage"].lengthInBytes,
+            "height": frameInfo.image.height,
+            "width": frameInfo.image.width,
             "uri": uploadImage,
             "manual": true
           },

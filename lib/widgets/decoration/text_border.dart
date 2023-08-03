@@ -5,8 +5,10 @@ class TextBorder extends StatelessWidget {
   final String text;
   final double? size;
   final TextAlign? textAlign;
+  final int? maxLines;
 
-  const TextBorder({Key? key, required this.text, this.size, this.textAlign})
+  const TextBorder(
+      {Key? key, required this.text, this.size, this.textAlign, this.maxLines})
       : super(key: key);
 
   @override
@@ -14,11 +16,11 @@ class TextBorder extends StatelessWidget {
     return Text(
       text,
       textAlign: textAlign ?? TextAlign.left,
-      style: TextStyle(
+      maxLines: maxLines,
+      style: const TextStyle(
           inherit: true,
-          fontSize: size ?? 20,
           color: APP_INVERSE_PRIMARY_COLOR,
-          shadows: const [
+          shadows: [
             Shadow(
                 // bottomLeft
                 offset: Offset(-1.0, -1.0),

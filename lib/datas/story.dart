@@ -108,6 +108,7 @@ class Story {
   final StoryStatus status;
   final String? photoUrl;
   final String category;
+  final String? slug;
   List<StoryPages>? pages;
   Layout? layout;
   PageDirection? pageDirection; // aka scroll direction
@@ -123,6 +124,7 @@ class Story {
       required this.subtitle,
       required this.createdBy,
       required this.status,
+      this.slug,
       this.photoUrl,
       this.summary,
       required this.category,
@@ -144,6 +146,7 @@ class Story {
       List<StoryPages>? pages,
       String? photoUrl,
       String? category,
+      String? slug,
       int? likes,
       int? mylikes,
       int? commentCount,
@@ -154,6 +157,7 @@ class Story {
         storyId: storyId ?? this.storyId,
         title: title ?? this.title,
         subtitle: subtitle ?? this.subtitle,
+        slug: slug,
         createdBy: createdBy ?? this.createdBy,
         status: status ?? this.status,
         pages: pages ?? this.pages,
@@ -213,6 +217,7 @@ class Story {
         createdBy: user,
         summary: doc[STORY_SUMMARY] ?? "No summary",
         category: doc[STORY_CATEGORY] ?? "Other",
+        slug: doc[STORY_SLUG] ?? "",
         layout: doc[STORY_LAYOUT] != null
             ? Layout.values.byName(doc[STORY_LAYOUT])
             : Layout.CONVO,

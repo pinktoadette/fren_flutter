@@ -1,4 +1,4 @@
-import 'package:audio_service/audio_service.dart';
+// import 'package:audio_service/audio_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machi_app/api/machi/stream_api.dart';
 import 'package:machi_app/audio/notifiers/play_button_notifier.dart';
@@ -59,7 +59,7 @@ class MediaStreamItem {
   final Duration? duration;
   final String? displayTitle;
   final String? displaySubtitle;
-  final Rating? rating; // using audio service
+  // final Rating? rating; // using audio service
 
   MediaStreamItem({
     required this.id,
@@ -73,33 +73,35 @@ class MediaStreamItem {
     this.duration,
     this.displayTitle,
     this.displaySubtitle,
-    this.rating,
+    // this.rating,
   });
 
-  MediaStreamItem copyWith(
-      {String? title,
-      String? album,
-      User? artist,
-      BytesSource? bytes,
-      String? url,
-      MediaStreamCharacter? character,
-      String? genre,
-      Duration? duration,
-      String? displayTitle,
-      String? displaySubtitle,
-      Rating? rating}) {
+  MediaStreamItem copyWith({
+    String? title,
+    String? album,
+    User? artist,
+    BytesSource? bytes,
+    String? url,
+    MediaStreamCharacter? character,
+    String? genre,
+    Duration? duration,
+    String? displayTitle,
+    String? displaySubtitle,
+    // Rating? rating
+  }) {
     return MediaStreamItem(
-        id: id,
-        title: title ?? this.title,
-        artist: artist ?? this.artist,
-        bytes: bytes ?? this.bytes,
-        url: url ?? this.url,
-        displayTitle: displayTitle ?? this.displayTitle,
-        displaySubtitle: displaySubtitle ?? this.displaySubtitle,
-        character: character ?? this.character,
-        genre: genre ?? this.genre,
-        duration: duration ?? this.duration,
-        rating: rating ?? this.rating);
+      id: id,
+      title: title ?? this.title,
+      artist: artist ?? this.artist,
+      bytes: bytes ?? this.bytes,
+      url: url ?? this.url,
+      displayTitle: displayTitle ?? this.displayTitle,
+      displaySubtitle: displaySubtitle ?? this.displaySubtitle,
+      character: character ?? this.character,
+      genre: genre ?? this.genre,
+      duration: duration ?? this.duration,
+      // rating: rating ?? this.rating
+    );
   }
 
   Map<String, dynamic> toJSON() {
@@ -114,7 +116,7 @@ class MediaStreamItem {
       'character': character,
       'genre': genre,
       'duration': duration?.inMicroseconds ?? 0,
-      'rating': rating
+      // 'rating': rating
     };
   }
 }

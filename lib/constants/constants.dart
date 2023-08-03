@@ -21,6 +21,8 @@ const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
 // const SOCKET_WS = "wss://api.mymachi.app/";
 const SOCKET_WS = SOCKET_WS_DEV;
 
+const String APP_WEBSITE = "https://mymachi.app/";
+
 /// APP SETINGS INFO CONSTANTS - SECTION ///
 ///
 const String APP_NAME = "machi";
@@ -285,6 +287,7 @@ const String STORY_CREATED_BY = "createdBy";
 const String STORY_STATUS = "status";
 const String STORY_PHOTO_URL = "photoUrl";
 const String STORY_CATEGORY = "category";
+const String STORY_SLUG = "slug";
 const String STORY_LAYOUT = "layout";
 const String STORY_PAGE_DIRECTION = "pageDirection";
 const String STORY_BITS = "bits";
