@@ -554,8 +554,12 @@ class _StoryPageViewState extends State<StoryPageView> {
     String textToCopy =
         "${APP_WEBSITE}post/${story!.storyId.substring(0, 5)}-${story!.slug}";
     Clipboard.setData(ClipboardData(text: textToCopy));
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Copied to clipboard: $textToCopy')),
+    ;
+    Get.snackbar(
+      "Link",
+      'Copied to clipboard: $textToCopy',
+      snackPosition: SnackPosition.TOP,
+      backgroundColor: APP_TERTIARY,
     );
   }
 
