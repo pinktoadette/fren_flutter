@@ -132,50 +132,43 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             _onStoryClick();
           },
           child: Container(
-              margin: const EdgeInsets.only(bottom: 20),
-              child: Card(
-                  child: Container(
-                      width: w - padding * 2,
-                      height: w - padding * 2,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              colorFilter: ColorFilter.mode(
-                                  const Color.fromARGB(255, 0, 0, 0)
-                                      .withOpacity(
-                                          story.pages![index].backgroundAlpha ??
-                                              0.5),
-                                  BlendMode.darken),
-                              image: story.pages![index].backgroundImageUrl !=
-                                      null
-                                  ? imageCacheWrapper(
-                                      story.pages![index].backgroundImageUrl!,
-                                    )
-                                  : story.pages![index].backgroundImageUrl !=
-                                          null
-                                      ? imageCacheWrapper(story
-                                          .pages![index].backgroundImageUrl!)
-                                      : Image.asset(
-                                          "assets/images/blank.jpg",
-                                          scale: 0.2,
-                                          width: 100,
-                                        ).image,
-                              fit: BoxFit.cover)),
-                      padding: const EdgeInsets.all(20),
-                      child: displayText != ""
-                          ? textLinkPreview(
-                              useBorder: story.layout == Layout.COMIC,
-                              context: context,
-                              text: displayText,
-                              maxLines: 9,
-                              style: const TextStyle(color: Colors.black),
+              padding: EdgeInsets.only(top: padding),
+              width: w,
+              height: w,
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      colorFilter: ColorFilter.mode(
+                          const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                              story.pages![index].backgroundAlpha ?? 0.5),
+                          BlendMode.darken),
+                      image: story.pages![index].backgroundImageUrl != null
+                          ? imageCacheWrapper(
+                              story.pages![index].backgroundImageUrl!,
                             )
-                          : firstScriptWithImage.image != null
-                              ? CachedNetworkImage(
-                                  imageUrl: firstScriptWithImage.image!.uri,
-                                  errorWidget: (context, url, error) =>
-                                      const Icon(Icons.error),
-                                )
-                              : const SizedBox.shrink()))));
+                          : story.pages![index].backgroundImageUrl != null
+                              ? imageCacheWrapper(
+                                  story.pages![index].backgroundImageUrl!)
+                              : Image.asset(
+                                  "assets/images/blank.jpg",
+                                  scale: 0.2,
+                                  width: 100,
+                                ).image,
+                      fit: BoxFit.cover)),
+              child: displayText != ""
+                  ? textLinkPreview(
+                      useBorder: story.layout == Layout.COMIC,
+                      context: context,
+                      text: displayText,
+                      maxLines: 9,
+                      style: const TextStyle(color: Colors.black),
+                    )
+                  : firstScriptWithImage.image != null
+                      ? CachedNetworkImage(
+                          imageUrl: firstScriptWithImage.image!.uri,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        )
+                      : const SizedBox.shrink()));
     }
     return InkWell(
         onTap: () async {

@@ -3,6 +3,7 @@ import 'dart:math';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
@@ -26,7 +27,6 @@ import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
-import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
@@ -170,7 +170,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         ),
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(children: [
-            _showPageWidget(constraints),
+            _showPageWidget(context, constraints),
             if (story?.status.name == StoryStatus.PUBLISHED.name)
               _commentSheet()
           ]);
@@ -297,7 +297,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         ));
   }
 
-  Widget _showPageWidget(BoxConstraints constraints) {
+  Widget _showPageWidget(BuildContext context, BoxConstraints constraints) {
     Size size = MediaQuery.of(context).size;
     double footerHeight = 100;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
@@ -491,50 +491,72 @@ class _StoryPageViewState extends State<StoryPageView> {
           left: 0,
           child: Container(
               color: Colors.black.withOpacity(0.8),
+              width: size.width,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.end,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: AvatarInitials(
-                          radius: 16,
-                          userId: story!.createdBy.userId,
-                          photoUrl: story!.createdBy.photoUrl,
-                          username: story!.createdBy.username)),
+                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                    Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: AvatarInitials(
+                            radius: 16,
+                            userId: story!.createdBy.userId,
+                            photoUrl: story!.createdBy.photoUrl,
+                            username: story!.createdBy.username)),
+                    Container(
+                        padding: const EdgeInsets.only(left: 0),
+                        child: Obx(() => LikeItemWidget(
+                            onLike: (val) {
+                              _onLikePressed(widget.story, val);
+                            },
+                            size: 40,
+                            likes: timelineController.currentStory.likes ?? 0,
+                            mylikes:
+                                timelineController.currentStory.mylikes ?? 0))),
+                    Container(
+                        padding: const EdgeInsets.only(left: 30, top: 12),
+                        child: Row(
+                          children: [
+                            const Icon(
+                              Iconsax.message,
+                              size: 16,
+                            ),
+                            const SizedBox(
+                              width: 20,
+                            ),
+                            Obx(() => Text(
+                                  timelineController.currentStory.commentCount
+                                      .toString(),
+                                  style: const TextStyle(fontSize: 12),
+                                ))
+                          ],
+                        ))
+                  ]),
                   Container(
-                      padding: const EdgeInsets.only(left: 0),
-                      child: Obx(() => LikeItemWidget(
-                          onLike: (val) {
-                            _onLikePressed(widget.story, val);
-                          },
-                          size: 40,
-                          likes: timelineController.currentStory.likes ?? 0,
-                          mylikes:
-                              timelineController.currentStory.mylikes ?? 0))),
-                  Container(
-                      padding: const EdgeInsets.only(left: 30, top: 12),
-                      width: size.width,
+                      padding: const EdgeInsets.only(right: 20),
                       child: Row(
                         children: [
-                          const Icon(
-                            Iconsax.message,
-                            size: 16,
+                          IconButton(
+                            onPressed: () => {_copyLink(context)},
+                            icon: const Icon(Icons.share),
+                            iconSize: 16,
                           ),
-                          const SizedBox(
-                            width: 20,
-                          ),
-                          Obx(() => Text(
-                                timelineController.currentStory.commentCount
-                                    .toString(),
-                                style: const TextStyle(fontSize: 12),
-                              ))
                         ],
                       ))
                 ],
               )),
         )
     ]);
+  }
+
+  void _copyLink(BuildContext context) {
+    String textToCopy =
+        "${APP_WEBSITE}post/${story!.storyId.substring(0, 5)}-${story!.slug}";
+    Clipboard.setData(ClipboardData(text: textToCopy));
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Copied to clipboard: $textToCopy')),
+    );
   }
 
   Widget _displayScript(Script script, Size size) {
@@ -549,7 +571,6 @@ class _StoryPageViewState extends State<StoryPageView> {
           text: script.text ?? "",
           textAlign: script.textAlign ?? TextAlign.left,
           style: TextStyle(
-              fontSize: story!.layout == Layout.COMIC ? 20 : 16,
               color: story!.layout == Layout.CONVO
                   ? Colors.black
                   : Theme.of(context).colorScheme.primary));

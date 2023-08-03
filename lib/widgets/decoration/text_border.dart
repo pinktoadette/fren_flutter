@@ -17,11 +17,10 @@ class TextBorder extends StatelessWidget {
       text,
       textAlign: textAlign ?? TextAlign.left,
       maxLines: maxLines,
-      style: TextStyle(
+      style: const TextStyle(
           inherit: true,
-          fontSize: size ?? 20,
           color: APP_INVERSE_PRIMARY_COLOR,
-          shadows: const [
+          shadows: [
             Shadow(
                 // bottomLeft
                 offset: Offset(-1.0, -1.0),
