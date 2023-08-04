@@ -66,6 +66,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool isLoading = false;
   bool isLastPage = false;
 
+  late FocusNode _focusNode;
   // bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
@@ -88,12 +89,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
     // get the messages loaded from the room
     _messages.addAll(_room.messages);
+    _focusNode = FocusNode();
   }
 
   @override
   void dispose() {
     // _player.dispose();
     super.dispose();
+    _focusNode.dispose();
   }
 
   @override
@@ -402,7 +405,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     setState(() {
       _isAttachmentUploading = false;
     });
-    FocusScope.of(context).requestFocus(FocusNode());
+    _focusNode.unfocus();
   }
 
   void _handleAttachmentPressed() {

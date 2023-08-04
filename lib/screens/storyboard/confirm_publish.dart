@@ -41,6 +41,8 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
   void dispose() {
     super.dispose();
     _titleController.dispose();
+    _aboutController.dispose();
+    _selectedCategory.dispose();
   }
 
   @override

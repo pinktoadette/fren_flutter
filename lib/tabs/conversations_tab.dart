@@ -47,6 +47,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
   @override
   void dispose() {
     super.dispose();
+    scrollController.dispose();
     // chatController.onCloseSocket();
   }
 

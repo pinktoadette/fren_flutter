@@ -30,6 +30,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>com.googleusercontent.apps.350828450571-rcpa6q64itdohbh2ojssve4ce0jnn157</string>
+				<string>app.mymachi</string>
 			</array>
 		</dict>
 	</array>
@@ -49,7 +50,6 @@
 	<true/>
 	<key>UIBackgroundModes</key>
 	<array>
-		<string>fetch</string>
 		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>

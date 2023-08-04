@@ -37,6 +37,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _commentController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;

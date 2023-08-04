@@ -49,6 +49,7 @@ class _AddEditTextState extends State<AddEditText> {
   void dispose() {
     super.dispose();
     _textController.dispose();
+    _scrollController.dispose();
   }
 
   @override

@@ -19,12 +19,20 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   final _bioController = TextEditingController(text: UserModel().user.userBio);
+  late FocusNode _focusNode;
 
   late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -41,7 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           TextButton(
             child: Text(_i18n.translate("SAVE")),
             onPressed: () {
-              FocusScope.of(context).requestFocus(FocusNode());
+              _focusNode.unfocus();
 
               /// Validate form
               if (_formKey.currentState!.validate()) {

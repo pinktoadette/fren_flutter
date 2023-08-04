@@ -45,6 +45,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _nameController.dispose();
+  }
+
   /// Set terms
   void _setAgreeTerms(bool value) {
     setState(() {

@@ -31,6 +31,12 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _titleController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;

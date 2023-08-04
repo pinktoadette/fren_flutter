@@ -19,14 +19,16 @@ class _ListPromptBotState extends State<ListPromptBots> {
   final _botApi = BotApi();
   final PagingController<int, Bot> _pagingController =
       PagingController(firstPageKey: 0);
-  String? _searchTerm;
+  final TextEditingController _searchController = TextEditingController();
 
   static const int _pageSize = ALL_PAGE_SIZE;
 
   Future<void> _fetchAllBots(int pageKey) async {
     try {
       List<Bot> newItems = await _botApi.getAllBots(
-          page: pageKey, modelType: BotModelType.prompt, search: _searchTerm);
+          page: pageKey,
+          modelType: BotModelType.prompt,
+          search: _searchController.text);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -48,6 +50,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
   @override
   void dispose() {
     _pagingController.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
@@ -94,28 +97,28 @@ class _ListPromptBotState extends State<ListPromptBots> {
           ),
         ],
       )),
-      Positioned(
-          top: 20,
-          child: SizedBox(
-            width: width - 20,
-            child: TextField(
-              onChanged: (pattern) async {
-                if (pattern.length >= 3) {
-                  _searchTerm = pattern;
-                  await Future.delayed(const Duration(seconds: 2));
-                  _fetchAllBots(0);
-                  _pagingController.refresh();
-                }
-              },
-              style: TextStyle(color: Theme.of(context).colorScheme.primary),
-              decoration: InputDecoration(
-                  filled: true,
-                  prefixIcon: const Icon(
-                    Icons.search,
-                  ),
-                  hintText: _i18n.translate("search")),
-            ),
-          )),
+      Container(
+        color: Colors.black,
+        padding: const EdgeInsets.all(20),
+        width: width,
+        child: TextField(
+          controller: _searchController,
+          onChanged: (pattern) async {
+            if (pattern.length >= 3) {
+              await Future.delayed(const Duration(seconds: 2));
+              _fetchAllBots(0);
+              _pagingController.refresh();
+            }
+          },
+          style: TextStyle(color: Theme.of(context).colorScheme.primary),
+          decoration: InputDecoration(
+              filled: true,
+              prefixIcon: const Icon(
+                Icons.search,
+              ),
+              hintText: _i18n.translate("search")),
+        ),
+      ),
     ]);
   }
 }

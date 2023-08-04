@@ -44,6 +44,13 @@ class _PromptContainerState extends State<PromptContainer> {
     _initialize();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _postTextController.dispose();
+    _hiddenTextController.dispose();
+  }
+
   void _initialize() async {
     await _loadThemes();
     List<Widget> p = [
@@ -92,13 +99,6 @@ class _PromptContainerState extends State<PromptContainer> {
     ];
 
     pages.addAll(p);
-  }
-
-  @override
-  void dispose() {
-    _postTextController.dispose();
-    _hiddenTextController.dispose();
-    super.dispose();
   }
 
   @override
