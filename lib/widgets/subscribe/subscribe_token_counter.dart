@@ -22,7 +22,10 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
         onPressed: () {
           _showSubscription(context);
         },
-        icon: const Icon(Iconsax.coin),
+        icon: const Icon(
+          Iconsax.coin,
+          size: 1,
+        ),
         label: Obx(() => Text(subscribeController.credits.value.toString())));
   }
 

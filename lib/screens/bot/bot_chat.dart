@@ -14,11 +14,9 @@ import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/chat/add_message_to_storyboard.dart';
 import 'package:machi_app/widgets/chat/header_input.dart';
-import 'package:machi_app/widgets/friend_list.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:just_audio/just_audio.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_how_to_art.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:open_filex/open_filex.dart';
@@ -35,7 +33,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:path_provider/path_provider.dart';
 
-import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -70,7 +67,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   // bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
-  final _player = AudioPlayer();
   String? _setTags;
   types.PartialImage? attachmentPreview;
 
@@ -451,23 +447,35 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   Future<void> _getMachiResponse() async {
     try {
-      Map<String, dynamic> newMessage =
-          await chatController.getMachiResponse(room: _room);
+      chatController.typingStatus(room: _room, isTyping: true);
+      // Use Future.delayed for lazy loading
+      await Future.delayed(const Duration(seconds: 1));
+
+      // Use Future.microtask to perform the expensive operation without blocking the main thread
+      Map<String, dynamic> newMessage = await Future.microtask(
+        () => chatController.getMachiResponse(room: _room),
+      );
       _addMessages(newMessage);
     } on DioException catch (error) {
+      String errorMessage = "Sorry, got an error 😕. Try again.";
+
+      if (error.response != null &&
+          error.response is Map<String, dynamic> &&
+          error.response?.data) {
+        errorMessage = error.response!.data["message"];
+      }
       dynamic response = {
         CHAT_AUTHOR_ID: _room.bot.botId,
         CHAT_AUTHOR: _room.bot.name,
         BOT_ID: _room.bot.botId,
         CHAT_MESSAGE_ID: createUUID(),
-        CHAT_TEXT: error.response?.data["message"] ??
-            "Sorry, got an error 😕. Try again.",
+        CHAT_TEXT: errorMessage,
         CHAT_TYPE: "text",
         CREATED_AT: getDateTimeEpoch()
       };
       _addMessages(response);
     } finally {
-      chatController.stopTyping(room: _room);
+      chatController.typingStatus(room: _room, isTyping: false);
     }
 
     if (_setTags != null) {
@@ -545,27 +553,27 @@ class _BotChatScreenState extends State<BotChatScreen> {
     );
   }
 
-  void _showFriends() {
-    if (_room.users.length >= 2) {
-      confirmDialog(context,
-          message: _i18n.translate("friend_invite_limit_chat"),
-          positiveText: _i18n.translate("OK"), positiveAction: () {
-        Navigator.of(context).pop();
-      });
-    } else {
-      showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) {
-          return FractionallySizedBox(
-              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-              child: FriendListWidget(
-                roomIdx: _roomIdx,
-              ));
-        },
-      );
-    }
-  }
+  // void _showFriends() {
+  //   if (_room.users.length >= 2) {
+  //     confirmDialog(context,
+  //         message: _i18n.translate("friend_invite_limit_chat"),
+  //         positiveText: _i18n.translate("OK"), positiveAction: () {
+  //       Navigator.of(context).pop();
+  //     });
+  //   } else {
+  //     showModalBottomSheet<void>(
+  //       context: context,
+  //       isScrollControlled: true,
+  //       builder: (context) {
+  //         return FractionallySizedBox(
+  //             heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+  //             child: FriendListWidget(
+  //               roomIdx: _roomIdx,
+  //             ));
+  //       },
+  //     );
+  //   }
+  // }
 
   void _leaveChatroom() async {
     // if there are no messages, remove from roomList

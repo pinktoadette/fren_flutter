@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
@@ -33,7 +32,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
   final _nameController = TextEditingController();
   final _promptController = TextEditingController();
-  final bool _isPrivate = false;
+  // final bool _isPrivate = false;
 
   late ProgressDialog _pr;
   late AppLocalizations _i18n;

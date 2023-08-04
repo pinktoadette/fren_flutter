@@ -37,6 +37,8 @@ class _HowToMachiState extends State<HowToMachi> {
 
     return Scaffold(
       appBar: AppBar(
+        titleSpacing: 0,
+        centerTitle: false,
         title: Image.asset(
           "assets/images/logo_white.png",
           width: max(150, width * 0.3),

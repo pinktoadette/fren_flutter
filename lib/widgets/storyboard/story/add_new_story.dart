@@ -23,17 +23,25 @@ class _AddNewStoryState extends State<AddNewStory> {
   late AppLocalizations _i18n;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
-
   final _titleController = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   File? _uploadPath;
   String? photoUrl;
 
   bool isLoading = false;
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   void dispose() {
-    super.dispose();
+    _scrollController.dispose();
     _titleController.dispose();
+
+    super.dispose();
   }
 
   @override
@@ -44,19 +52,45 @@ class _AddNewStoryState extends State<AddNewStory> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          titleSpacing: 0,
+          centerTitle: false,
           title: Text(
             _i18n.translate("new_story_collection"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
+          actions: [
+            TextButton.icon(
+                icon: isLoading == true
+                    ? loadingButton(size: 16)
+                    : const SizedBox.shrink(),
+                onPressed: () {
+                  _addNewStory();
+                },
+                label: Text(
+                  _i18n.translate("add"),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ))
+          ],
         ),
-        body: Container(
+        body: SingleChildScrollView(
           padding: const EdgeInsets.all(20),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                _i18n.translate("story_collection_create"),
-                style: Theme.of(context).textTheme.labelSmall,
+              TextFormField(
+                controller: _titleController,
+                maxLength: 80,
+                style: const TextStyle(fontSize: 16),
+                textCapitalization: TextCapitalization.sentences,
+                decoration: InputDecoration(
+                    hintText: _i18n.translate("story_collection_title"),
+                    floatingLabelBehavior: FloatingLabelBehavior.always),
+                validator: (reason) {
+                  if (reason?.isEmpty ?? false) {
+                    return _i18n.translate("story_enter_title");
+                  }
+                  return null;
+                },
               ),
               const SizedBox(
                 height: 10,
@@ -65,8 +99,8 @@ class _AddNewStoryState extends State<AddNewStory> {
                 child: Stack(
                   children: [
                     StoryCover(
-                      width: width * 0.8,
-                      height: width * 0.8,
+                      width: width * 0.9,
+                      height: width * 0.9,
                       photoUrl: '',
                       file: _uploadPath,
                       title: "Cover",
@@ -90,32 +124,6 @@ class _AddNewStoryState extends State<AddNewStory> {
                 onTap: () async {
                   /// Update story image
                   _selectImage(path: 'collection');
-                },
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              TextFormField(
-                controller: _titleController,
-                maxLength: 80,
-                buildCounter: (_,
-                        {required currentLength,
-                        maxLength,
-                        required isFocused}) =>
-                    _counter(context, currentLength, maxLength),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    hintText: _i18n.translate("story_collection_title"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.secondary),
-                    floatingLabelBehavior: FloatingLabelBehavior.always),
-                validator: (reason) {
-                  if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("story_enter_title");
-                  }
-                  return null;
                 },
               ),
             ],
@@ -185,33 +193,5 @@ class _AddNewStoryState extends State<AddNewStory> {
                 Navigator.of(context).pop();
               },
             ));
-  }
-
-  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0.0),
-      child: Container(
-          alignment: Alignment.topLeft,
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  currentLength.toString() + "/" + maxLength.toString(),
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                const Spacer(),
-                ElevatedButton.icon(
-                    icon: isLoading == true
-                        ? loadingButton(size: 16)
-                        : const SizedBox.shrink(),
-                    onPressed: () {
-                      _addNewStory();
-                    },
-                    label: Text(_i18n.translate("add")))
-              ],
-            )
-          ])),
-    );
   }
 }

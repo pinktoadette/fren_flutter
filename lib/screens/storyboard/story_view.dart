@@ -1,7 +1,6 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/api/machi/story_api.dart';
-import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
@@ -19,11 +18,7 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 
 /// StoryboardItemWidget -> StoriesView (List of stories / Add ) -> StoryItemWidget -> PageView
 /// message input is when the user wants to add the message to the collection.
-/// user cannot create a new collection here
 class StoriesView extends StatefulWidget {
-  /// passed from chat messages to be added to story collection
-  /// This is a very deep pass.
-  /// Chat -> storyboard_item -> story_view -> story_item
   final types.Message? message;
 
   const StoriesView({Key? key, this.message}) : super(key: key);
@@ -66,6 +61,7 @@ class _StoriesViewState extends State<StoriesView> {
               },
             ),
             titleSpacing: 0,
+            centerTitle: false,
             actions: _listOfActions()),
         body: SingleChildScrollView(
             physics: const ScrollPhysics(),
@@ -74,6 +70,7 @@ class _StoriesViewState extends State<StoriesView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const StoryboardHeaderWidget(),
+                  const Divider(),
                   if (widget.message != null)
                     Align(
                         alignment: Alignment.center,
@@ -176,36 +173,6 @@ class _StoriesViewState extends State<StoriesView> {
               style: Theme.of(context).textTheme.labelSmall,
             )),
     ];
-  }
-
-  void _publishAll() async {
-    setState(() {
-      isLoading = true;
-    });
-    String storyboardId = storyboardController.currentStoryboard.storyboardId;
-    final _storyboardApi = StoryboardApi();
-    try {
-      await _storyboardApi.publishAll(storyboardId: storyboardId);
-      Get.snackbar(_i18n.translate("story_publish_time"),
-          _i18n.translate("story_publish_error"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
-    } catch (err, s) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("story_delete_error"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
-
-      await FirebaseCrashlytics.instance
-          .recordError(err, s, reason: 'Publishing all error', fatal: true);
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
   }
 
   void _onDelete(Story story) async {

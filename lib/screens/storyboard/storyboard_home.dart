@@ -40,8 +40,7 @@ class _StoryboardState extends State<StoryboardHome>
                 padding: const EdgeInsets.all(10.0),
                 child: TextButton(
                     style: TextButton.styleFrom(
-                        foregroundColor: Colors.white,
-                        backgroundColor: Colors.transparent),
+                        textStyle: Theme.of(context).textTheme.bodyMedium),
                     onPressed: () async {
                       await storyboardController.getBoards(
                           filter: StoryStatus.PUBLISHED);

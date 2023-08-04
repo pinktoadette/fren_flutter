@@ -66,7 +66,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 ),
               );
             } else {
-              return const SizedBox.shrink();
+              return const Divider();
             }
           },
         ));

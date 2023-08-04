@@ -31,6 +31,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   SubscribeController subscribeController = Get.find(tag: 'subscribe');
 
   Offering? offers;
+  int qty = 0;
   List<Package> packages = [];
 
   @override
@@ -50,6 +51,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           automaticallyImplyLeading: false,
+          titleSpacing: 0,
+          centerTitle: false,
           title: Row(children: [
             const AppLogo(),
             Container(
@@ -104,47 +107,43 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-          Card(
-              borderOnForeground: false,
-              shadowColor: Colors.black,
-              color: Colors.black,
-              child: Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
+          Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  Text(
+                    "Imaginfy",
+                    style: Theme.of(context).textTheme.headlineMedium,
+                  ),
+                  Text(
+                    offers!.serverDescription,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(
+                    _i18n.translate("plans_include_gpt"),
+                    style: const TextStyle(
+                        color: Color.fromARGB(255, 122, 122, 122),
+                        fontSize: 12),
+                  ),
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        "Imaginfy",
-                        style: Theme.of(context).textTheme.headlineMedium,
-                      ),
-                      Text(
-                        offers!.serverDescription,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
-                      Text(
-                        _i18n.translate("plans_include_gpt"),
-                        style: const TextStyle(
-                            color: Color.fromARGB(255, 122, 122, 122),
-                            fontSize: 12),
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          for (int i = 0; i < 5; i++)
-                            RoundedImage(
-                                width: size.width / 6 - 5,
-                                height: size.width / 6 - 5,
-                                icon: const Icon(Iconsax.gallery_slash),
-                                isLocal: true,
-                                photoUrl:
-                                    "assets/images/subscribe/image${i + 1}.png"),
-                        ],
-                      ),
+                      for (int i = 0; i < 5; i++)
+                        RoundedImage(
+                            width: size.width / 6 - 5,
+                            height: size.width / 6 - 5,
+                            icon: const Icon(Iconsax.gallery_slash),
+                            isLocal: true,
+                            photoUrl:
+                                "assets/images/subscribe/image${i + 1}.png"),
                     ],
-                  ))),
+                  ),
+                ],
+              )),
           SizedBox(
               width: size.width,
               height: itemHeight,
@@ -329,13 +328,17 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     });
     final _purchaseApi = PurchasesApi();
     String info = await AppHelper().getRevenueCat();
+    String qty = _selectedTier.identifier.replaceAll(RegExp(r'[^0-9]'), '');
     try {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
-          await _purchaseApi.purchaseCredits();
-          await _purchaseApi.getCredits();
+          subscribeController.credits = int.parse(qty).obs;
+          await Future.wait([
+            _purchaseApi.purchaseCredits(),
+            _purchaseApi.getCredits(),
+          ]);
         } catch (err, s) {
           Get.snackbar(_i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),

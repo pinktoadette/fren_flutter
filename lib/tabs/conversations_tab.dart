@@ -10,7 +10,6 @@ import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/studio/image_studio.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';

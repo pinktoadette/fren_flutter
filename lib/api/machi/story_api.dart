@@ -11,13 +11,10 @@ import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
-import 'cache_manager_api.dart';
-
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = "${PY_API}story/";
   final auth = AuthApi();
-  final _cachedApi = CachedApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 

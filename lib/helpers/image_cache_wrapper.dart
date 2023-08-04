@@ -15,7 +15,7 @@ ImageProvider<Object> imageCacheWrapper(String imageUrl) {
     // For example, AssetImage('path_to_placeholder_image')
     // If you don't want to show any image, return an empty ImageProvider
     return const AssetImage(
-      "assets/images/machi.png",
+      "assets/images/blank.jpg",
     );
   }
 }

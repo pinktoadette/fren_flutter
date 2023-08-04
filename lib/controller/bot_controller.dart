@@ -34,7 +34,20 @@ class BotController extends GetxController {
 
   Future<void> fetchCurrentBot(String botId) async {
     final botApi = BotApi();
-    final Bot botNow = await botApi.getBot(botId: botId);
+    Bot botNow;
+
+    if (botId == DEFAULT_BOT_ID) {
+      // Use cached data if botId matches DEFAULT_BOT_ID
+      if (_currentBot.value.name != "") {
+        _currentBot.refresh();
+        return; // No need to fetch from the API
+      }
+    }
+
+    // Fetch bot data from the API
+    botNow = await botApi.getBot(botId: botId);
+
+    // Update the cached data
     _currentBot = botNow.obs;
     _currentBot.refresh();
   }

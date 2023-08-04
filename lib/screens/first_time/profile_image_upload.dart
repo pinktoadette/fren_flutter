@@ -17,7 +17,6 @@ class ProfileImageGenerator extends StatefulWidget {
 
 class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   late AppLocalizations _i18n;
-  final String _selectedUrl = "";
 
   @override
   void initState() {

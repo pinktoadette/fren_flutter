@@ -1,16 +1,11 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:math';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/message_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/chatroom.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -41,7 +36,6 @@ class ChatController extends GetxController implements GetxService {
   bool isTest = false;
 
   final Map<String, WebSocketChannel> _channelMap = {};
-  final Map<String, Function(List<types.Message>)> _messageListeners = {};
 
   types.User get chatUser => _chatUser.value;
   set chatUser(types.User value) => _chatUser.value = value;
@@ -172,8 +166,7 @@ class ChatController extends GetxController implements GetxService {
   // update messages from the chatroom, to view once when on convo tab
   void updateRoom(Chatroom room) {
     botController.bot = room.bot;
-    int index = roomlist
-        .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+    int index = findRoomIndx(room: room);
     roomlist[index] = room;
 
     if (room.read == true) {
@@ -209,43 +202,42 @@ class ChatController extends GetxController implements GetxService {
   }
 
   /// listen to socket, response back
-  Future<void> _listenSocket(Chatroom room) async {
-    final _authApi = AuthApi();
-    Map<String, dynamic> headers = await _authApi.getHeaders();
-    final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${room.chatroomId}');
-    WebSocketChannel channel = WebSocketChannel.connect(wsUrl);
-    channel.sink.add(json.encode({"token": headers}));
-    _channelMap[room.chatroomId] = channel;
+  // Future<void> _listenSocket(Chatroom room) async {
+  //   final _authApi = AuthApi();
+  //   Map<String, dynamic> headers = await _authApi.getHeaders();
+  //   final Uri wsUrl = Uri.parse('${SOCKET_WS}messages/${room.chatroomId}');
+  //   WebSocketChannel channel = WebSocketChannel.connect(wsUrl);
+  //   channel.sink.add(json.encode({"token": headers}));
+  //   _channelMap[room.chatroomId] = channel;
 
-    channel.stream.listen(
-      (data) {
-        // Handle received data for this channel
-        Map<String, dynamic> decodeData = json.decode(data);
-        types.Message newMessage = messageFromJson(decodeData["message"]);
-        int index = roomlist
-            .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
-        roomlist[index].messages.insert(0, newMessage);
-        roomlist.refresh();
-        update();
-      },
-      onError: (error, s) async {
-        // Handle error for this channel
-        dynamic response = {
-          CHAT_AUTHOR_ID: room.bot.botId,
-          CHAT_AUTHOR: room.bot.name,
-          BOT_ID: room.bot.botId,
-          CHAT_MESSAGE_ID: createUUID(),
-          CHAT_TEXT: error.response?.data["message"] ??
-              "Sorry, got an error 😕. Try again.",
-          CHAT_TYPE: "text",
-          CREATED_AT: getDateTimeEpoch()
-        };
-        channel.sink.add(json.encode({"message": response}));
-        await FirebaseCrashlytics.instance.recordError(error, s,
-            reason: 'bot has error ${error.toString()}', fatal: true);
-      },
-    );
-  }
+  //   channel.stream.listen(
+  //     (data) {
+  //       // Handle received data for this channel
+  //       Map<String, dynamic> decodeData = json.decode(data);
+  //       types.Message newMessage = messageFromJson(decodeData["message"]);
+  //       int index = findRoomIndx(room: room);
+  //       roomlist[index].messages.insert(0, newMessage);
+  //       roomlist.refresh();
+  //       update();
+  //     },
+  //     onError: (error, s) async {
+  //       // Handle error for this channel
+  //       dynamic response = {
+  //         CHAT_AUTHOR_ID: room.bot.botId,
+  //         CHAT_AUTHOR: room.bot.name,
+  //         BOT_ID: room.bot.botId,
+  //         CHAT_MESSAGE_ID: createUUID(),
+  //         CHAT_TEXT: error.response?.data["message"] ??
+  //             "Sorry, got an error 😕. Try again.",
+  //         CHAT_TYPE: "text",
+  //         CREATED_AT: getDateTimeEpoch()
+  //       };
+  //       channel.sink.add(json.encode({"message": response}));
+  //       await FirebaseCrashlytics.instance.recordError(error, s,
+  //           reason: 'bot has error ${error.toString()}', fatal: true);
+  //     },
+  //   );
+  // }
 
   Map<String, dynamic> sendMessage(
       {required Chatroom room, dynamic partialMessage, String? uri}) {
@@ -261,8 +253,7 @@ class ChatController extends GetxController implements GetxService {
       Chatroom newRoom = room.copyWith(messages: [newMessage]);
       roomlist.add(newRoom);
     } else {
-      index = roomlist
-          .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+      index = findRoomIndx(room: room);
       roomlist[index].messages.insert(0, newMessage);
     }
 
@@ -273,10 +264,8 @@ class ChatController extends GetxController implements GetxService {
   Future<Map<String, dynamic>> getMachiResponse(
       {required Chatroom room}) async {
     final _messageApi = MessageMachiApi();
-    int index = roomlist
-        .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
+    int index = findRoomIndx(room: room);
     roomlist[index].isTyping = true;
-    currentRoom.isTyping = true;
     Map<String, dynamic> message = await _messageApi.getBotResponse();
     // WebSocketChannel? channel = _channelMap[room.chatroomId];
     // if (channel != null) {
@@ -285,7 +274,6 @@ class ChatController extends GetxController implements GetxService {
     types.Message newMessage = messageFromJson(message);
     roomlist[index].messages.insert(0, newMessage);
     roomlist[index].isTyping = false;
-    currentRoom.isTyping = false;
     _addUpdateResponse(newMessage, index);
     return message;
   }
@@ -296,11 +284,16 @@ class ChatController extends GetxController implements GetxService {
     roomlist[index].messages.addAll(messages);
   }
 
-  void stopTyping({required Chatroom room}) {
+  int findRoomIndx({required Chatroom room}) {
     int index = roomlist
         .indexWhere((thisRoom) => thisRoom.chatroomId == room.chatroomId);
-    roomlist[index].isTyping = false;
-    currentRoom.isTyping = false;
+    return index;
+  }
+
+  void typingStatus({required Chatroom room, required bool isTyping}) {
+    int index = findRoomIndx(room: room);
+    roomlist[index].isTyping = isTyping;
+    currentRoom.isTyping = isTyping;
   }
 
   void _addUpdateResponse(types.Message message, int index) {

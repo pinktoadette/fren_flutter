@@ -15,8 +15,6 @@ import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-/// Need to call pages since storyboard
-/// did not query this in order to increase speed
 class EditPage extends StatefulWidget {
   final Story passStory;
   const EditPage({Key? key, required this.passStory}) : super(key: key);
@@ -122,7 +120,7 @@ class _EditPageState extends State<EditPage> {
     return [
       NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
-            /// @ttodo duplicate function in page_view.dart
+            /// @todo duplicate function in page_view.dart
             double currentPos = notification.metrics.pixels;
             double maxScrollExtent = notification.metrics.maxScrollExtent;
             final ScrollDirection direction = notification.direction;

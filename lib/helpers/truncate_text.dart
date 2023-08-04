@@ -31,7 +31,7 @@ String truncateScriptsTo250Chars(
     aggregatedText += truncatedText;
     totalLength += truncatedText.length;
 
-    if (totalLength >= 250) {
+    if (totalLength >= length) {
       break;
     }
   }

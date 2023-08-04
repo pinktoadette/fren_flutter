@@ -5,7 +5,6 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/storyboard/story/listen_audio_story.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 
@@ -56,12 +55,6 @@ class _ViewStoryboardState extends State<ViewStoryboard> {
                     child: Icon(Iconsax.menu),
                   ),
                   onTap: () {})
-            else
-              IconButton(
-                  onPressed: () {
-                    _showAudioList();
-                  },
-                  icon: const Icon(Iconsax.sound))
           ],
         ),
         body: SizedBox(
@@ -79,13 +72,5 @@ class _ViewStoryboardState extends State<ViewStoryboard> {
                     ])),
               ],
             )));
-  }
-
-  void _showAudioList() {
-    showModalBottomSheet(
-        context: context,
-        builder: (context) => ViewAudioStory(
-              storyboard: storyboardController.currentStoryboard,
-            ));
   }
 }

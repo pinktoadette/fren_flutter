@@ -17,7 +17,10 @@ class _SubscribeHowToArtState extends State<SubscribeHowToArt> {
         onPressed: () {
           _showHowTo(context);
         },
-        icon: const Icon(Iconsax.brush_4));
+        icon: const Icon(
+          Iconsax.brush_4,
+          size: 18,
+        ));
   }
 
   void _showHowTo(BuildContext context) {

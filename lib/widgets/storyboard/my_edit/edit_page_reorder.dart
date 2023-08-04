@@ -62,7 +62,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.5;
-  PageDirection _direction = PageDirection.VERTICAL;
+  final PageDirection _direction = PageDirection.VERTICAL;
 
   @override
   void initState() {
@@ -254,7 +254,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             icon: const Icon(Iconsax.document_forward, size: 20),
             initialValue: 1,
             // Callback that sets the selected popup menu item.
-            onSelected: (num) async {
+            onSelected: (int num) async {
               int pageNum = num;
               if (num == story.pages!.length) {
                 widget.onMoveInsertPages({"action": "add"});
@@ -675,29 +675,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           urlPreview = null;
                         }),
                       }),
-            )).whenComplete(() {
-      _updateBackground();
-    });
-  }
-
-  /// edit page direction scroll.
-  /// PageDirection.HORIZONTAL or PageDirection.VERTICAL.
-  void _editPageDirection(BuildContext context) async {
-    await showModalBottomSheet(
-        context: context,
-        barrierColor: Colors.black.withOpacity(_alphaValue),
-        builder: (context) => FractionallySizedBox(
-              heightFactor: MODAL_HEIGHT_SMALL_FACTOR,
-              child: PageScrollDirection(
-                onSelection: (direction) {
-                  widget.onPageAxisDirection(direction);
-
-                  setState(() {
-                    _direction = direction;
-                  });
-                  Navigator.pop(context);
-                },
-              ),
             )).whenComplete(() {
       _updateBackground();
     });

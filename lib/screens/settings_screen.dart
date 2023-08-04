@@ -2,7 +2,6 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/account_page.dart';
@@ -19,18 +18,15 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _hideProfile = false;
-  bool _isDarkMode = false;
   late AppLocalizations _i18n;
 
   /// Initialize user settings
   void initUserSettings() async {
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
       }
-      _isDarkMode = isDarkMode;
     });
   }
 
@@ -49,6 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
+          titleSpacing: 0,
           centerTitle: false,
           title: Text(
             _i18n.translate("settings"),

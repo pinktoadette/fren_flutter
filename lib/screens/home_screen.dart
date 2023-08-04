@@ -2,11 +2,11 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/app_notifications.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/storyboard/storyboard_home.dart';
@@ -45,7 +45,6 @@ class _HomeScreenState extends State<HomeScreen> {
   final _chatroomApi = ChatroomMachiApi();
 
   int _selectedIndex = 0;
-  late AppLocalizations _i18n;
   late Stream<DocumentSnapshot<Map<String, dynamic>>> _userStream;
   bool isFabOpen = false;
 
@@ -61,9 +60,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
     /// Init streams
     _getCurrentUserUpdates();
-
-    // create a new room for quick chat
-    _getChatrooms();
 
     // _handlePurchaseUpdates();
     _initFirebaseMessage();
@@ -88,21 +84,26 @@ class _HomeScreenState extends State<HomeScreen> {
     });
   }
 
-  void _initializeState() {
-    botController.fetchCurrentBot(DEFAULT_BOT_ID);
+  void _initializeState() async {
     chatController.initUser();
     chatController.onChatLoad();
-    storyController.getBoards(filter: StoryStatus.UNPUBLISHED);
-  }
 
-  /// get or create chatroom
-  Future<void> _getChatrooms() async {
-    await Future.wait([
-      _chatroomApi.createNewRoom(),
-      _chatroomApi.getAllMyRooms(page: 1, clearRooms: true)
-    ]).then((_) {}).whenComplete(() {
-      debugPrint("Loaded new and all chatrooms");
-    });
+    try {
+      await Future.wait([
+        botController.fetchCurrentBot(DEFAULT_BOT_ID),
+        storyController.getBoards(filter: StoryStatus.UNPUBLISHED)
+      ]);
+
+      await Future.wait([
+        _chatroomApi.createNewRoom(),
+        _chatroomApi.getAllMyRooms(page: 1, clearRooms: true)
+      ]);
+    } catch (error, s) {
+      await FirebaseCrashlytics.instance.recordError(error, s,
+          reason: 'Failed to load init home screen', fatal: true);
+    }
+
+    debugPrint("Loaded new and all chatrooms");
   }
 
   /// Get current User Real Time updates
@@ -188,8 +189,6 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
     return Scaffold(
         bottomNavigationBar: BottomNavigationBar(
             type: BottomNavigationBarType.fixed,

@@ -57,23 +57,40 @@ class _StoryboardEditState extends State<StoryboardEdit> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                child: Text(_i18n.translate("SAVE")),
+                onPressed: () {
+                  _saveStoryboard();
+                },
+              )),
           Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                Text(
-                  storyboard.title,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                TextFormField(
+                  controller: _titleController,
+                  maxLength: 80,
+                  decoration: InputDecoration(
+                      hintText: _i18n.translate("story_collection_title"),
+                      floatingLabelBehavior: FloatingLabelBehavior.always),
+                  validator: (reason) {
+                    if (reason?.isEmpty ?? false) {
+                      return _i18n.translate("story_enter_title");
+                    }
+                    return null;
+                  },
                 ),
                 const SizedBox(
-                  height: 10,
+                  height: 20,
                 ),
                 GestureDetector(
                   child: Stack(
                     children: [
                       StoryCover(
-                        width: size.width * 0.75,
-                        height: size.width * 0.75,
+                        width: size.width * 0.9,
+                        height: size.width * 0.9,
                         photoUrl: photoUrl ?? storyboard.photoUrl ?? "",
                         file: _uploadPath,
                         title: storyboard.title,
@@ -101,29 +118,6 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                 ),
                 const SizedBox(
                   height: 20,
-                ),
-                TextFormField(
-                  controller: _titleController,
-                  maxLength: 80,
-                  buildCounter: (_,
-                          {required currentLength,
-                          maxLength,
-                          required isFocused}) =>
-                      _counter(context, currentLength, maxLength),
-                  decoration: InputDecoration(
-                      hintText: _i18n.translate("story_collection_title"),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.secondary),
-                      floatingLabelBehavior: FloatingLabelBehavior.always),
-                  validator: (reason) {
-                    if (reason?.isEmpty ?? false) {
-                      return _i18n.translate("story_enter_title");
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(
-                  height: 80,
                 ),
               ],
             ),
@@ -154,34 +148,6 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                 // Navigator.of(context).pop();
               },
             ));
-  }
-
-  Widget _counter(BuildContext context, int currentLength, int? maxLength) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 0.0),
-      child: Container(
-          alignment: Alignment.topLeft,
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  currentLength.toString() + "/" + maxLength.toString(),
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                const Spacer(),
-                ElevatedButton.icon(
-                    icon: isLoading == true
-                        ? loadingButton(size: 16)
-                        : const SizedBox.shrink(),
-                    onPressed: () {
-                      _saveStoryboard();
-                    },
-                    label: Text(_i18n.translate("SAVE")))
-              ],
-            )
-          ])),
-    );
   }
 
   void _saveStoryboard() async {

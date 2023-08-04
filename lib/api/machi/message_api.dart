@@ -93,28 +93,4 @@ class MessageMachiApi {
     chatController.loadOldMessages(messages: oldList);
     return oldList;
   }
-
-  // Future<void> syncMessages(Map<String, dynamic> messages) async {
-  //   /// if timestamp don't match between local and remote, then sync to remote
-  //   final DatabaseService _databaseService = DatabaseService();
-  //   await _databaseService.insertChat(messages);
-  // }
-
-  // Future<List<types.Message>> getLocalDbMessages() async {
-  //   /// get local messages
-  //   Bot bot = botControl.bot;
-  //   final DatabaseService _databaseService = DatabaseService();
-  //   final List<Map<String, dynamic>> messages =
-  //       await _databaseService.getLastMessages(bot.botId);
-  //   final List<types.Message> finalMessages = [];
-
-  //   for (var element in messages) {
-  //     Map<String, dynamic> newMessage = Map.from(element);
-  //     newMessage['text'] = newMessage['message'];
-  //     newMessage['type'] = newMessage['messageType'];
-  //     types.Message msg = messageFromJson(newMessage);
-  //     finalMessages.add(msg);
-  //   }
-  //   return finalMessages;
-  // }
 }

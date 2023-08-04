@@ -62,13 +62,12 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";
-    return Card(
-        child: Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Container(
-          padding: EdgeInsets.only(top: padding),
+          padding: EdgeInsets.only(top: padding, bottom: padding),
           width: width,
           child: TimelineHeader(
             radius: 24,
@@ -85,7 +84,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         _displayType(storyboard, padding, width),
         if (widget.hideCollection == false) ..._showCollectionFooter()
       ],
-    ));
+    );
   }
 
   Widget _displayType(Storyboard storyboard, double padding, double width) {
@@ -122,7 +121,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       Story story = storyboard.story![0];
       double w = width - padding * 2;
       String displayText = truncateScriptsTo250Chars(
-          scripts: story.pages![0].scripts, length: 200);
+          scripts: story.pages![0].scripts, length: 300);
       Script? firstScriptWithImage = story.pages![0].scripts!.firstWhere(
         (script) => script.type == 'image',
         orElse: () => Script(image: null),
@@ -132,7 +131,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             _onStoryClick();
           },
           child: Container(
-              padding: EdgeInsets.only(top: padding),
+              margin: const EdgeInsets.only(top: 10),
               width: w,
               height: w,
               decoration: BoxDecoration(
@@ -155,19 +154,18 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                                 ).image,
                       fit: BoxFit.cover)),
               child: displayText != ""
-                  ? textLinkPreview(
-                      useBorder: story.layout == Layout.COMIC,
-                      context: context,
-                      text: displayText,
-                      maxLines: 9,
-                      style: const TextStyle(color: Colors.black),
-                    )
+                  ? Padding(
+                      padding: const EdgeInsets.all(20),
+                      child: textLinkPreview(
+                        useBorder: story.layout == Layout.COMIC,
+                        context: context,
+                        text: displayText,
+                        maxLines: 9,
+                        style: const TextStyle(color: Colors.black),
+                      ))
                   : firstScriptWithImage.image != null
-                      ? CachedNetworkImage(
-                          imageUrl: firstScriptWithImage.image!.uri,
-                          errorWidget: (context, url, error) =>
-                              const Icon(Icons.error),
-                        )
+                      ? StoryCover(
+                          photoUrl: firstScriptWithImage.image!.uri, title: "")
                       : const SizedBox.shrink()));
     }
     return InkWell(
@@ -261,60 +259,57 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
           storyboardController.onGoToPageView(story);
           Get.to(() => StoryPageView(story: story));
         },
-        child: Card(
-            margin: EdgeInsets.zero,
-            child: Container(
-                decoration: story.photoUrl != null && story.photoUrl != ""
-                    ? BoxDecoration(
-                        image: DecorationImage(
-                          image: imageCacheWrapper(story.photoUrl!),
-                          fit: BoxFit.fitWidth,
-                          alignment: Alignment.topCenter,
-                          colorFilter: ColorFilter.mode(
-                              const Color.fromARGB(255, 32, 32, 32)
-                                  .withOpacity(0.9),
-                              BlendMode.darken),
-                        ),
-                      )
-                    : BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        shape: BoxShape.rectangle,
-                        border: Border.all(
-                            width: 1, color: APP_INVERSE_PRIMARY_COLOR)),
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Collection ${index + 1}",
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
-                      Text(
-                        story.title,
-                        style: Theme.of(context).textTheme.labelMedium,
-                      ),
-                      SizedBox(
-                          width: width - 40,
-                          height: width * 0.3,
-                          child: Padding(
-                            padding: const EdgeInsets.all(0),
-                            child: Text(
-                              story.pages?[0].scripts?[0].text ?? "",
-                              style: Theme.of(context).textTheme.bodySmall,
-                              overflow: TextOverflow.fade,
-                            ),
-                          )),
-                      const SizedBox(
-                        height: 15,
-                      ),
-                      SizedBox(
-                        width: width * 0.9,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: _likeItemWidget(story, true),
-                        ),
-                      )
-                    ]))));
+        child: Container(
+            decoration: story.photoUrl != null && story.photoUrl != ""
+                ? BoxDecoration(
+                    image: DecorationImage(
+                      image: imageCacheWrapper(story.photoUrl!),
+                      fit: BoxFit.fitWidth,
+                      alignment: Alignment.topCenter,
+                      colorFilter: ColorFilter.mode(
+                          const Color.fromARGB(255, 32, 32, 32)
+                              .withOpacity(0.9),
+                          BlendMode.darken),
+                    ),
+                  )
+                : BoxDecoration(
+                    borderRadius: BorderRadius.circular(25),
+                    shape: BoxShape.rectangle,
+                    border:
+                        Border.all(width: 1, color: APP_INVERSE_PRIMARY_COLOR)),
+            padding: const EdgeInsets.all(15),
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(
+                "Collection ${index + 1}",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              Text(
+                story.title,
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              SizedBox(
+                  width: width - 40,
+                  height: width * 0.3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(0),
+                    child: Text(
+                      story.pages?[0].scripts?[0].text ?? "",
+                      style: Theme.of(context).textTheme.bodySmall,
+                      overflow: TextOverflow.fade,
+                    ),
+                  )),
+              const SizedBox(
+                height: 15,
+              ),
+              SizedBox(
+                width: width * 0.9,
+                child: Align(
+                  alignment: Alignment.bottomLeft,
+                  child: _likeItemWidget(story, true),
+                ),
+              )
+            ])));
   }
 
   Future<void> _onStoryClick() async {

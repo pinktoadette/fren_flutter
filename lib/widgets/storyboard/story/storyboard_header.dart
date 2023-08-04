@@ -30,56 +30,53 @@ class _StoryboardHeaderWidgetState extends State<StoryboardHeaderWidget> {
         onTap: () {
           _showEditStoryboard(context);
         },
-        child: Card(
-            elevation: 1,
-            child: Column(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 10,
+            ),
+            TimelineHeader(
+              user: storyboard.createdBy,
+              showAvatar: true,
+              showName: true,
+            ),
+            Row(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 10,
+                Padding(
+                  padding: EdgeInsets.all(padding),
+                  child: StoryCover(
+                      width: storyCoverWidth,
+                      height: storyCoverWidth,
+                      photoUrl:
+                          storyboardController.currentStoryboard.photoUrl ?? "",
+                      title: storyboard.title),
                 ),
-                TimelineHeader(
-                  user: storyboard.createdBy,
-                  showAvatar: true,
-                  showName: true,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
+                Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.all(padding),
-                      child: StoryCover(
-                          width: storyCoverWidth,
-                          height: storyCoverWidth,
-                          photoUrl:
-                              storyboardController.currentStoryboard.photoUrl ??
-                                  "",
-                          title: storyboard.title),
+                    Text(storyboardController.currentStoryboard.category,
+                        style: const TextStyle(
+                            fontSize: 10,
+                            color: APP_SECONDARY_ACCENT_COLOR,
+                            fontWeight: FontWeight.bold)),
+                    SizedBox(
+                      width: width - (padding * 2 + storyCoverWidth + 10),
+                      height: 25,
+                      child: Text(storyboard.title,
+                          style: Theme.of(context).textTheme.labelMedium),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(storyboardController.currentStoryboard.category,
-                            style: const TextStyle(
-                                fontSize: 10,
-                                color: APP_SECONDARY_ACCENT_COLOR,
-                                fontWeight: FontWeight.bold)),
-                        SizedBox(
-                          width: width - (padding * 2 + storyCoverWidth + 10),
-                          height: 25,
-                          child: Text(storyboard.title,
-                              style: Theme.of(context).textTheme.labelMedium),
-                        ),
-                        Text("${storyboard.story?.length ?? 0} collection",
-                            style: Theme.of(context).textTheme.labelSmall)
-                      ],
-                    )
+                    Text("${storyboard.story?.length ?? 0} collection",
+                        style: Theme.of(context).textTheme.labelSmall)
                   ],
-                ),
+                )
               ],
-            ))));
+            ),
+          ],
+        )));
   }
 
   void _showEditStoryboard(BuildContext context) {

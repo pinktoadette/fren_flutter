@@ -5,7 +5,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
@@ -54,6 +53,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
   final _timelineApi = TimelineApi();
+  // ignore: non_constant_identifier_names
   static double BODY_HEIGHT_PERCENT = 0.85;
   late AppLocalizations _i18n;
   double bodyHeightPercent = BODY_HEIGHT_PERCENT;
@@ -61,8 +61,6 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   bool _userScrolledAgain = false;
   Timer? _scrollTimer;
-
-  final _storyApi = StoryApi();
 
   Story? story;
   var pages = [];
@@ -87,23 +85,19 @@ class _StoryPageViewState extends State<StoryPageView> {
     controller.dispose();
   }
 
-  void getStoryContent() async {
+  void getStoryContent() {
     try {
       timelineController.setStoryTimelineControllerCurrent(widget.story);
       setState(() {
         story = widget.story;
       });
-    } catch (err, s) {
+    } catch (err) {
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
-      await FirebaseCrashlytics.instance.recordError(err, s,
-          reason:
-              'Cannot get story content: storyId ${story?.storyId ?? "Unknown id"}',
-          fatal: true);
     }
   }
 
@@ -356,19 +350,6 @@ class _StoryPageViewState extends State<StoryPageView> {
               }
             }
 
-            // if comment is closed, and user scrolls up, then open it.
-            // if (controller.page == controller.page!.roundToDouble() &&
-            //     controller.page ==
-            //         storyboardController.currentStory.pages!.length - 1 &&
-            //     currentPos == maxScrollExtent &&
-            //     bodyHeightPercent == BODY_HEIGHT_PERCENT) {
-            //   setState(() {
-            //     bodyHeightPercent = direction == ScrollDirection.reverse
-            //         ? 0.5
-            //         : BODY_HEIGHT_PERCENT;
-            //   });
-            // }
-
             return false;
           },
           child: SizedBox(
@@ -389,73 +370,70 @@ class _StoryPageViewState extends State<StoryPageView> {
                           ? background
                           : "";
 
-                  return Card(
-                    child: Container(
-                      height: size.height - 250,
-                      decoration: BoxDecoration(
-                          image: DecorationImage(
-                              colorFilter: ColorFilter.mode(
-                                  const Color.fromARGB(255, 0, 0, 0)
-                                      .withOpacity(story
-                                              ?.pages![index].backgroundAlpha ??
-                                          0.5),
-                                  BlendMode.darken),
-                              image: backgroundUrl != ""
-                                  ? imageCacheWrapper(backgroundUrl)
-                                  : Image.asset(
-                                      "assets/images/blank.jpg",
-                                      scale: 0.2,
-                                      width: 100,
-                                    ).image,
-                              fit: BoxFit.cover)),
-                      padding: const EdgeInsets.all(20),
-                      child: SingleChildScrollView(
-                        child: ConstrainedBox(
-                            constraints: BoxConstraints(
-                                minWidth: constraints.maxWidth * 0.7,
-                                minHeight: constraints.maxHeight - 200),
-                            child: IntrinsicHeight(
-                                child: Column(
-                                    crossAxisAlignment:
-                                        story!.layout == Layout.CONVO
-                                            ? CrossAxisAlignment.end
-                                            : CrossAxisAlignment.start,
-                                    children: [
-                                  if (index == 0)
-                                    StoryHeaderWidget(story: story!),
-                                  Expanded(
-                                      child: Column(
-                                          children: scripts!.map((script) {
-                                    CrossAxisAlignment alignment =
-                                        story!.layout == Layout.CONVO
-                                            ? story!.createdBy.userId ==
-                                                    script.characterId
-                                                ? CrossAxisAlignment.end
-                                                : CrossAxisAlignment.start
-                                            : script.type == 'image'
-                                                ? CrossAxisAlignment.center
-                                                : CrossAxisAlignment.start;
-                                    return Column(
-                                        crossAxisAlignment: alignment,
-                                        children: [
-                                          _displayScript(script, size),
-                                          if (story!.layout == Layout.CONVO)
-                                            Text(script.characterName ?? ""),
-                                        ]);
-                                  }).toList())),
-                                  if (((index + 1) % 2 == 0) &
-                                      (story!.status == StoryStatus.PUBLISHED))
-                                    const Align(
-                                      alignment: Alignment.bottomCenter,
-                                      child: InlineAdaptiveAds(
-                                        height: 50,
-                                      ),
+                  return Container(
+                    height: size.height - 250,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                                    story?.pages![index].backgroundAlpha ??
+                                        0.5),
+                                BlendMode.darken),
+                            image: backgroundUrl != ""
+                                ? imageCacheWrapper(backgroundUrl)
+                                : Image.asset(
+                                    "assets/images/blank.jpg",
+                                    scale: 0.2,
+                                    width: 100,
+                                  ).image,
+                            fit: BoxFit.cover)),
+                    padding: const EdgeInsets.all(20),
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              minWidth: constraints.maxWidth * 0.7,
+                              minHeight: constraints.maxHeight - 200),
+                          child: IntrinsicHeight(
+                              child: Column(
+                                  crossAxisAlignment:
+                                      story!.layout == Layout.CONVO
+                                          ? CrossAxisAlignment.end
+                                          : CrossAxisAlignment.start,
+                                  children: [
+                                if (index == 0)
+                                  StoryHeaderWidget(story: story!),
+                                Expanded(
+                                    child: Column(
+                                        children: scripts!.map((script) {
+                                  CrossAxisAlignment alignment =
+                                      story!.layout == Layout.CONVO
+                                          ? story!.createdBy.userId ==
+                                                  script.characterId
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.start
+                                          : script.type == 'image'
+                                              ? CrossAxisAlignment.center
+                                              : CrossAxisAlignment.start;
+                                  return Column(
+                                      crossAxisAlignment: alignment,
+                                      children: [
+                                        _displayScript(script, size),
+                                        if (story!.layout == Layout.CONVO)
+                                          Text(script.characterName ?? ""),
+                                      ]);
+                                }).toList())),
+                                if (((index + 1) % 2 == 0) &
+                                    (story!.status == StoryStatus.PUBLISHED))
+                                  const Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: InlineAdaptiveAds(
+                                      height: 50,
                                     ),
-                                  const SizedBox(
-                                    height: 50,
-                                  )
-                                ]))),
-                      ),
+                                  ),
+                                const SizedBox(
+                                  height: 50,
+                                )
+                              ]))),
                     ),
                   );
                 },
@@ -554,7 +532,6 @@ class _StoryPageViewState extends State<StoryPageView> {
     String textToCopy =
         "${APP_WEBSITE}post/${story!.storyId.substring(0, 5)}-${story!.slug}";
     Clipboard.setData(ClipboardData(text: textToCopy));
-    ;
     Get.snackbar(
       "Link",
       'Copied to clipboard: $textToCopy',
