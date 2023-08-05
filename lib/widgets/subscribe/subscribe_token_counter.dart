@@ -24,7 +24,7 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
         },
         icon: const Icon(
           Iconsax.coin,
-          size: 1,
+          size: 16,
         ),
         label: Obx(() => Text(subscribeController.credits.value.toString())));
   }

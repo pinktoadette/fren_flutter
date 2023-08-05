@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/secrets.dart';
 import 'package:machi_app/controller/main_binding.dart';
@@ -379,8 +380,10 @@ class UserModel extends Model {
         // Callback function
         onError();
       });
-    } catch (e) {
-      return;
+    } catch (err, s) {
+      await FirebaseCrashlytics.instance
+          .recordError(err, s, reason: 'Unable to sign in', fatal: true);
+      rethrow;
     }
   }
 

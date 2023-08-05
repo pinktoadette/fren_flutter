@@ -1,8 +1,6 @@
-import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/onboarding/onboarding.dart';
 import 'package:onboarding/onboarding.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -13,7 +11,6 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  late AppLocalizations _i18n;
   late Material materialButton;
   late int index;
 
@@ -47,70 +44,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
-    const _pageTitleStyle = TextStyle(
-      fontSize: 23.0,
-      wordSpacing: 1,
-      letterSpacing: 1.2,
-      fontWeight: FontWeight.bold,
-      color: APP_PRIMARY_COLOR,
-    );
-
-    const _pageInfoStyle = TextStyle(
-      color: APP_PRIMARY_COLOR,
-      letterSpacing: 0.7,
-      height: 1.5,
-    );
-
-    final onboardingPagesList = [1, 2, 3].map((int num) {
-      return PageModel(
-        widget: DecoratedBox(
-          decoration: BoxDecoration(
-            color: Theme.of(context).colorScheme.background,
-            border: Border.all(
-              width: 0.0,
-              color: Theme.of(context).colorScheme.background,
-            ),
-          ),
-          child: SingleChildScrollView(
-            controller: ScrollController(),
-            child: Column(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.symmetric(
-                    horizontal: 45.0,
-                    vertical: 10.0,
-                  ),
-                  child: Frankloader(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 45.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(_i18n.translate('onboard_page${num}_title'),
-                        style: _pageTitleStyle, textAlign: TextAlign.left),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 45.0, vertical: 10.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      _i18n.translate('onboard_page${num}_subtitle'),
-                      style: _pageInfoStyle,
-                      textAlign: TextAlign.left,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      );
-    }).toList();
-
     return Scaffold(
         appBar: AppBar(
           toolbarHeight: 60,
@@ -126,63 +59,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             ),
           ],
         ),
-        body: Onboarding(
-          pages: onboardingPagesList,
-          onPageChange: (int pageIndex) {
-            index = pageIndex;
-          },
-          startPageIndex: 0,
-          footerBuilder: (context, dragDistance, pagesLength, setIndex) {
-            return DecoratedBox(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.background,
-                border: Border.all(
-                  width: 0.0,
-                  color: Theme.of(context).colorScheme.background,
-                ),
-              ),
-              child: ColoredBox(
-                color: Theme.of(context).colorScheme.background,
-                child: Padding(
-                  padding: const EdgeInsets.all(45.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      CustomIndicator(
-                        netDragPercent: dragDistance,
-                        pagesLength: pagesLength,
-                        indicator: Indicator(
-                          indicatorDesign: IndicatorDesign.line(
-                            lineDesign: LineDesign(
-                              lineType: DesignType.line_uniform,
-                            ),
-                          ),
-                        ),
-                      ),
-                      index == pagesLength - 1
-                          ? ElevatedButton(
-                              child: Container(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  child: Text(_i18n.translate("continue"),
-                                      style: TextStyle(
-                                          fontSize: 16,
-                                          color: Theme.of(context)
-                                              .colorScheme
-                                              .background))),
-                              onPressed: () {
-                                Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const SignUpScreen()));
-                              },
-                            )
-                          : _nextButton(setIndex: setIndex)
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        ));
+        body: const OnboardingWidget());
   }
 }

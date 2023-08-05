@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
@@ -21,7 +22,14 @@ class SignOutButtonCard extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium),
         trailing: const Icon(Icons.arrow_forward),
         onTap: () async {
-          await Purchases.logOut();
+          try {
+            await Purchases.logOut();
+          } catch (err, s) {
+            await FirebaseCrashlytics.instance.recordError(err, s,
+                reason: 'Revenue cat no sign out ${err.toString()}',
+                fatal: false);
+          }
+
           // Log out button
           UserModel().signOut().then((_) {
             /// Go to login screen
@@ -30,6 +38,9 @@ class SignOutButtonCard extends StatelessWidget {
               Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const SignInScreen()));
             });
+          }).catchError((err, s) async {
+            await FirebaseCrashlytics.instance.recordError(err, s,
+                reason: 'User cannot sign out ${err.toString()}', fatal: false);
           });
         },
       ),

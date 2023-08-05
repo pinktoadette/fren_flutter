@@ -451,10 +451,9 @@ class _BotChatScreenState extends State<BotChatScreen> {
       // Use Future.delayed for lazy loading
       await Future.delayed(const Duration(seconds: 1));
 
-      // Use Future.microtask to perform the expensive operation without blocking the main thread
-      Map<String, dynamic> newMessage = await Future.microtask(
-        () => chatController.getMachiResponse(room: _room),
-      );
+      Map<String, dynamic> newMessage =
+          await chatController.getMachiResponse(room: _room);
+
       _addMessages(newMessage);
     } on DioException catch (error) {
       String errorMessage = "Sorry, got an error 😕. Try again.";
@@ -485,35 +484,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _setTags = null;
     });
   }
-
-  /// DO NOT DELETE
-  /// tHIS IS USED ON RABBIT
-  // Future<void> _streamBotResponse(Map<String, dynamic> task) async {
-  //   setState(() {
-  //     isBotTyping = true;
-  //   });
-
-  //   Timer.periodic(const Duration(seconds: 1), (Timer t) async {
-  //     var response = await _messagesApi.getTaskResponse(task["task_id"]);
-  //     if (response["status"] == "Success") {
-  //       if (response["result"].containsKey("text")) {
-  //         t.cancel();
-  //         String strResponse = json.encode({"message": response["result"]});
-  //         _onSocketParse(strResponse);
-  //         setState(() {
-  //           isBotTyping = false;
-  //         });
-  //       }
-  //     }
-  //     // try 60 seconds for images
-  //     if (t.tick > 60) {
-  //       t.cancel();
-  //       setState(() {
-  //         isBotTyping = false;
-  //       });
-  //     }
-  //   });
-  // }
 
   Future<void> _loadMoreMessage() async {
     try {
@@ -573,6 +543,35 @@ class _BotChatScreenState extends State<BotChatScreen> {
   //       },
   //     );
   //   }
+  // }
+
+  /// DO NOT DELETE
+  /// tHIS IS USED ON RABBIT
+  // Future<void> _streamBotResponse(Map<String, dynamic> task) async {
+  //   setState(() {
+  //     isBotTyping = true;
+  //   });
+
+  //   Timer.periodic(const Duration(seconds: 1), (Timer t) async {
+  //     var response = await _messagesApi.getTaskResponse(task["task_id"]);
+  //     if (response["status"] == "Success") {
+  //       if (response["result"].containsKey("text")) {
+  //         t.cancel();
+  //         String strResponse = json.encode({"message": response["result"]});
+  //         _onSocketParse(strResponse);
+  //         setState(() {
+  //           isBotTyping = false;
+  //         });
+  //       }
+  //     }
+  //     // try 60 seconds for images
+  //     if (t.tick > 60) {
+  //       t.cancel();
+  //       setState(() {
+  //         isBotTyping = false;
+  //       });
+  //     }
+  //   });
   // }
 
   void _leaveChatroom() async {
