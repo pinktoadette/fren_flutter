@@ -62,10 +62,6 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                     _i18n.translate("subscribe_curent_libraries"),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
-                  Text(
-                    "* may take time to load",
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
                   const SizedBox(
                     height: 10,
                   ),
@@ -100,6 +96,10 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                         TableRow(
                             children: [Text('majicmix*'), Text('majicmix')]),
                       ]),
+                  Text(
+                    "* may take time to load",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
                   const SizedBox(
                     height: 20,
                   ),

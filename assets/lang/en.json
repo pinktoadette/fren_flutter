@@ -105,7 +105,7 @@
   "subscribe_free": "Free",
   "subscribe_libraries": "Subscription Libraries",
   "subscribe_how_to": "Generative AI images utilize libraries from open journey, stable diffusion, dall-e.",
-  "subscribe_curent_libraries": "To use the different libraries type:",
+  "subscribe_curent_libraries": "To use the different libraries type your prompt follow by the model name:",
   "subscribe_no_offering_found": "No offers found",
   "subscribe_add_your_own_model": "Want to add your own model? Give us some feedback.",
   "subscribe_expired": "Subscription is expired",
