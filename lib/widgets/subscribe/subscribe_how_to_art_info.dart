@@ -60,7 +60,7 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                   ),
                   Text(
                     _i18n.translate("subscribe_curent_libraries"),
-                    style: Theme.of(context).textTheme.bodyMedium,
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
                   const SizedBox(
                     height: 10,
