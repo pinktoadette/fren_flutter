@@ -43,7 +43,7 @@ dependencies:
   cloud_firestore: ^4.4.5
   firebase_messaging: ^14.3.0
   firebase_storage: ^11.0.16  
-  google_mobile_ads: 3.0.0 #no web
+  google_mobile_ads: ^2.0.0 #3.0.0 #no web 2 chat_ui incompatible
   # END 
 
   flutter_native_splash: 2.2.16 # Used to generate the app splash screen for both platforms android and iOS 
@@ -51,9 +51,7 @@ dependencies:
   scoped_model: 2.0.0 # Used to Manage Application State
   image_picker: 0.8.7+5 # # Used to select images from the User's device image library or take a new photo using the camera
   image_cropper: 3.0.3 # Used to Crop/Rotate Selected images from user's device
-  url_launcher: 6.1.11 # Used to open link schemes in application or browser
-  # geolocator: 9.0.2 # Used to get User location by GPS 
-  # geocoding: 2.0.5 # no web Used to translate User latitude and longitude coordinates into a readable address
+  url_launcher: 6.1.12 # Used to open link schemes in application or browser
   rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
@@ -78,8 +76,8 @@ dependencies:
 
   flutter_chat_ui:
     git:
-      url: https://github.com/pinktoadette/flutter_chat_ui_1.6.6.git
-      ref: master
+      url: https://github.com/pinktoadette/flutter_chat_ui.git
+      ref: main
   any_link_preview: ^3.0.0
   chips_choice: ^3.0.0
   cached_network_image: ^3.2.3 #no web

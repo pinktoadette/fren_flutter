@@ -8,13 +8,14 @@ import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:flutter/material.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
-import 'package:machi_app/widgets/common/app_logo.dart';
-import 'package:get/get.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
@@ -33,6 +34,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Offering? offers;
   int qty = 0;
   List<Package> packages = [];
+  late ProgressDialog _pr;
 
   @override
   void initState() {
@@ -45,6 +47,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    _pr = ProgressDialog(context, isDismissible: false);
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -329,11 +332,14 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     final _purchaseApi = PurchasesApi();
     String info = await AppHelper().getRevenueCat();
     String qty = _selectedTier.identifier.replaceAll(RegExp(r'[^0-9]'), '');
+
     try {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
+          _pr.show(_i18n.translate("processing"));
+
           subscribeController.credits = int.parse(qty).obs;
           await Future.wait([
             _purchaseApi.purchaseCredits(),
@@ -346,6 +352,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await FirebaseCrashlytics.instance.recordError(err, s,
               reason: 'Unable to save purchase offers: ${err.toString()}',
               fatal: true);
+        } finally {
+          _pr.hide();
         }
       }
 
