@@ -382,7 +382,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                             image: backgroundUrl != ""
                                 ? imageCacheWrapper(backgroundUrl)
                                 : Image.asset(
-                                    "assets/images/blank.jpg",
+                                    "assets/images/blank.png",
                                     scale: 0.2,
                                     width: 100,
                                   ).image,

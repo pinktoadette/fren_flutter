@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../dialogs/common_dialogs.dart';
 import 'blocked_account_screen.dart';
 import 'first_time/on_boarding_screen.dart';
 
@@ -56,10 +56,10 @@ class _SignInScreenState extends State<SignInScreen> {
         child: SizedBox(
           width: screenWidth * 0.7,
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
-                padding: const EdgeInsets.only(top: 100, bottom: 50),
+                padding: const EdgeInsets.only(top: 50, bottom: 50),
                 child: Image.asset("assets/images/logo_machi.png"),
                 width: screenWidth * 0.5,
               ),
@@ -107,9 +107,12 @@ class _SignInScreenState extends State<SignInScreen> {
                                     _nextScreen(const BlockedAccountScreen()));
                           }, onError: () async {
                             // Show error message to user
-                            errorDialog(context,
-                                message:
-                                    _i18n.translate("an_error_has_occurred"));
+                            Get.snackbar(
+                              _i18n.translate("Error"),
+                              _i18n.translate("an_error_has_occurred"),
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: APP_ERROR,
+                            );
                           }).whenComplete(() => setState(() {
                                 isLoading = false;
                               }));

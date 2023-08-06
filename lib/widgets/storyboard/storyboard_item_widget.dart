@@ -147,7 +147,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               ? imageCacheWrapper(
                                   story.pages![index].backgroundImageUrl!)
                               : Image.asset(
-                                  "assets/images/blank.jpg",
+                                  "assets/images/blank.png",
                                   scale: 0.2,
                                   width: 100,
                                 ).image,

@@ -78,9 +78,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             padding: EdgeInsets.only(
                 top: commentController.replyToComment.commentId != null
                     ? 20
-                    : 00),
+                    : 10),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
+                physics: const AlwaysScrollableScrollPhysics(),
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       minHeight: 50,
@@ -100,7 +101,6 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                         style: Theme.of(context).textTheme.bodyMedium,
                         controller: _commentController,
                         maxLines: null,
-                        // maxLength: 250,
                         decoration: InputDecoration(
                           fillColor: Colors.transparent,
                           hintText: _i18n.translate("comment_leave"),

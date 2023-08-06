@@ -33,6 +33,9 @@ class TimelineController extends GetxController {
   }
 
   Future<void> fetchPage(int pageKey, bool? refresh) async {
+    if (refresh == true) {
+      pagingController.itemList?.clear();
+    }
     try {
       List<Storyboard> newItems =
           await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
