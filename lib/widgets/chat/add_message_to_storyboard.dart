@@ -107,10 +107,11 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       }
       Navigator.of(context).pop();
       Get.snackbar(
-          _i18n.translate("success"), _i18n.translate("story_edits_added"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+        _i18n.translate("success"),
+        _i18n.translate("story_edits_added"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_SUCCESS,
+      );
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

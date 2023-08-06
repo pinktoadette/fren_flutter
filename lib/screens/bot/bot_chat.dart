@@ -201,7 +201,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 _i18n.translate("success"),
                 _i18n.translate("story_added"),
                 snackPosition: SnackPosition.TOP,
-                colorText: Colors.black,
                 backgroundColor: APP_SUCCESS,
               );
             } else {
@@ -480,9 +479,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (_setTags != null) {
       subscribeController.getCredits();
     }
-    setState(() {
-      _setTags = null;
-    });
+    if (mounted) {
+      setState(() {
+        _setTags = null;
+      });
+    }
   }
 
   Future<void> _loadMoreMessage() async {
@@ -597,8 +598,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   void _addMessages(Map<String, dynamic> message) {
     types.Message newMessage = messageFromJson(message);
-    setState(() {
-      _messages.insert(0, newMessage);
-    });
+    if (mounted) {
+      setState(() {
+        _messages.insert(0, newMessage);
+      });
+    }
   }
 }

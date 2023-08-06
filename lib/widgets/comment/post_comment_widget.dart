@@ -172,10 +172,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
               ? null
               : commentController.replyToComment);
       _formatComment(newComment);
-      Get.snackbar(_i18n.translate("success"), _i18n.translate("posted"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+      Get.snackbar(
+        _i18n.translate("success"),
+        _i18n.translate("posted"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_SUCCESS,
+      );
       _commentController.clear();
       commentController.clearReplyTo();
       FocusManager.instance.primaryFocus?.unfocus();

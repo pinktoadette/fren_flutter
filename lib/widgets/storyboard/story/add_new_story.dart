@@ -150,9 +150,7 @@ class _AddNewStoryState extends State<AddNewStory> {
           photoUrl: imageUrl);
 
       Get.snackbar(_i18n.translate("posted"), _i18n.translate("story_added"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
       Navigator.of(context).pop();
     } catch (err, s) {
       debugPrint(err.toString());

@@ -147,9 +147,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
       Navigator.of(context).popUntil((_) => count++ >= 2);
       Get.snackbar(
           _i18n.translate("story_added"), _i18n.translate("story_added_info"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
     } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(

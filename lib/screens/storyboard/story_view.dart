@@ -181,9 +181,7 @@ class _StoriesViewState extends State<StoriesView> {
       Navigator.of(context).pop(true);
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("story_success_delete"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("DELETE"),
@@ -218,9 +216,7 @@ class _StoriesViewState extends State<StoriesView> {
       Navigator.of(context).pop();
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("story_edits_added"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

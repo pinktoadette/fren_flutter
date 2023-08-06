@@ -461,8 +461,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 Get.snackbar(_i18n.translate("story_added"),
                     _i18n.translate("story_added_info"),
                     snackPosition: SnackPosition.TOP,
-                    backgroundColor: APP_SUCCESS,
-                    colorText: Colors.black);
+                    backgroundColor: APP_SUCCESS);
               } catch (err, s) {
                 Get.snackbar(
                   _i18n.translate("error"),
