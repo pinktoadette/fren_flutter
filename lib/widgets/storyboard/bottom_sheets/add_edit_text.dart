@@ -33,7 +33,7 @@ class _AddEditTextState extends State<AddEditText> {
   File? attachmentPreview;
   String? galleryImageUrl;
   TextAlign textAlign = TextAlign.left;
-  double _alphaValue = 0.5;
+  double _alphaValue = 0.2;
   Uint8List? _imageBytes;
 
   @override

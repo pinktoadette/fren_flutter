@@ -61,7 +61,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Layout? layout;
   File? attachmentPreview;
   String? urlPreview;
-  double _alphaValue = 0.5;
+  double _alphaValue = 0.2;
   final PageDirection _direction = PageDirection.VERTICAL;
 
   @override

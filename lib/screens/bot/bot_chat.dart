@@ -448,13 +448,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Future<void> _getMachiResponse() async {
     try {
       chatController.typingStatus(room: _room, isTyping: true);
-      // Use Future.delayed for lazy loading
-      await Future.delayed(const Duration(seconds: 1));
-
-      // Use Future.microtask to perform the expensive operation without blocking the main thread
-      Map<String, dynamic> newMessage = await Future.microtask(
-        () => chatController.getMachiResponse(room: _room),
-      );
+      Map<String, dynamic> newMessage =
+          await chatController.getMachiResponse(room: _room);
       _addMessages(newMessage);
     } on DioException catch (error) {
       String errorMessage = "Sorry, got an error 😕. Try again.";
