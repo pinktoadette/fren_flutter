@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
-import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 import 'package:get/get.dart';
@@ -35,20 +34,6 @@ class _ActivityTabState extends State<ActivityTab> {
         actions: const [SubscribeTokenCounter()],
       ),
       body: const TimelineWidget(),
-
-      // Obx(() => SingleChildScrollView(
-      //         child: Column(
-      //       mainAxisAlignment: MainAxisAlignment.center,
-      //       crossAxisAlignment: CrossAxisAlignment.start,
-      //       children: [
-      //         subscriptionController.customer == null
-      //             ? const SizedBox.shrink()
-      //             : subscriptionController.customer!.allPurchaseDates.isEmpty
-      //                 ? const SubscriptionCard()
-      //                 : const SizedBox.shrink(),
-      //         const TimelineWidget(),
-      //       ],
-      //     )))
     );
   }
 }
