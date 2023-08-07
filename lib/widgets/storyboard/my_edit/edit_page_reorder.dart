@@ -14,6 +14,7 @@ import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -264,6 +265,30 @@ class _EditPageReorderState extends State<EditPageReorder> {
             itemBuilder: (BuildContext context) {
               return _showPages();
             }),
+        if (scripts[index].type == "image")
+          IconButton(
+              onPressed: () async {
+                try {
+                  await saveImageFromUrl(scripts[index].image!.uri);
+                  Get.snackbar(
+                    _i18n.translate("success"),
+                    _i18n.translate("saved_success"),
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: APP_SUCCESS,
+                  );
+                } catch (err) {
+                  Get.snackbar(
+                    _i18n.translate("error"),
+                    err.toString(),
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: APP_ERROR,
+                  );
+                }
+              },
+              icon: const Icon(
+                Iconsax.direct_inbox,
+                size: 20,
+              )),
       ],
     );
 
