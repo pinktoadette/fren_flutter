@@ -8,7 +8,6 @@ import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/story_cover.dart';
-import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 // ignore: must_be_immutable
 class ImagePromptGeneratorWidget extends StatefulWidget {
@@ -144,10 +143,7 @@ class _ImagePromptGeneratorWidgetState
     if (_counter == 0) {
       return;
     }
-    if (subscribeController.credits.value == 0) {
-      _showSubscription(context);
-      return;
-    }
+
     setState(() {
       _isLoading = true;
     });
@@ -173,14 +169,5 @@ class _ImagePromptGeneratorWidgetState
         _isLoading = false;
       });
     }
-  }
-
-  void _showSubscription(BuildContext context) {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        builder: (context) => Obx(() => FractionallySizedBox(
-            heightFactor: subscribeController.credits.value > 0 ? 0.5 : 0.95,
-            child: const SubscriptionProduct())));
   }
 }

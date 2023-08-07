@@ -6,7 +6,7 @@ String truncateText(
     {required int maxLength, required String text, bool? removeNewline}) {
   String newText = removeNewline == true ? text.replaceAll("\n", " ") : text;
   int strLength = newText.length;
-  if (strLength > maxLength) {
+  if (strLength > maxLength && (strLength > 0 && maxLength > 0)) {
     return "${newText.substring(0, maxLength)}...";
   }
   return newText;

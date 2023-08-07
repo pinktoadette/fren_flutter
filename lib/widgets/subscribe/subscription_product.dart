@@ -345,6 +345,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
             _purchaseApi.purchaseCredits(),
             _purchaseApi.getCredits(),
           ]);
+          Get.snackbar(_i18n.translate("success"),
+          _i18n.translate("subscribed_successfully"),
+          colorText: Colors.black,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS);
         } catch (err, s) {
           Get.snackbar(_i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),
@@ -356,12 +361,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           _pr.hide();
         }
       }
-
-      Get.snackbar(_i18n.translate("success"),
-          _i18n.translate("subscribed_successfully"),
-          colorText: Colors.black,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS);
       Navigator.of(context).pop();
     } on PlatformException catch (err, s) {
       var errorCode = PurchasesErrorHelper.getErrorCode(err);
