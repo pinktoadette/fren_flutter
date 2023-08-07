@@ -87,6 +87,8 @@ dependencies:
   flutter_cache_manager: ^3.3.1
   screenshot: ^2.1.0
   leak_detector: ^1.0.1+4
+  permission_handler: ^10.4.3
+  image_gallery_saver: ^2.0.3
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

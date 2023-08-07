@@ -7,6 +7,7 @@ import 'package:machi_app/api/machi/chatroom_api.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -192,31 +193,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
           ),
         ),
         TextButton(
-          onPressed: () async {
-            if (message.type == types.MessageType.image) {
-              final _galleryApi = GalleryApi();
-              await _galleryApi.addUserGallery(messageId: message.id);
-              Get.snackbar(
-                _i18n.translate("success"),
-                _i18n.translate("story_added"),
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: APP_SUCCESS,
-              );
-            } else {
-              Get.snackbar(
-                _i18n.translate("error"),
-                _i18n.translate("add_images_only_collection"),
-                snackPosition: SnackPosition.TOP,
-                backgroundColor: APP_ERROR,
-              );
-            }
-          },
-          child: Container(
-            padding: const EdgeInsets.all(3),
-            child: const Icon(Iconsax.gallery_add, size: 14),
-          ),
-        ),
-        TextButton(
           onPressed: () {
             String? encodeQueryParameters(Map<String, String> params) {
               return params.entries
@@ -244,6 +220,51 @@ class _BotChatScreenState extends State<BotChatScreen> {
             child: const Icon(Icons.email_outlined, size: 14),
           ),
         ),
+        if (message.type == types.MessageType.image)
+          TextButton(
+            onPressed: () async {
+              if (message.type == types.MessageType.image) {
+                final _galleryApi = GalleryApi();
+                await _galleryApi.addUserGallery(messageId: message.id);
+                Get.snackbar(
+                  _i18n.translate("success"),
+                  _i18n.translate("story_added"),
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: APP_SUCCESS,
+                );
+              } else {
+                Get.snackbar(
+                  _i18n.translate("error"),
+                  _i18n.translate("add_images_only_collection"),
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: APP_ERROR,
+                );
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              child: const Icon(Iconsax.gallery_add, size: 14),
+            ),
+          ),
+        if (message.type == types.MessageType.image)
+          TextButton(
+            onPressed: () async {
+              try {
+                await saveImageFromUrl((message as types.ImageMessage).uri);
+              } catch (err) {
+                Get.snackbar(
+                  _i18n.translate("error"),
+                  err.toString(),
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: APP_ERROR,
+                );
+              }
+            },
+            child: Container(
+              padding: const EdgeInsets.all(3),
+              child: const Icon(Iconsax.direct_inbox, size: 14),
+            ),
+          )
       ];
 
   void _handleMessageFooterTap(types.Message message) {
