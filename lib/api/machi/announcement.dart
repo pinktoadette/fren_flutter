@@ -21,8 +21,7 @@ class AnnouncementApi {
       final response = await dio.get(url);
       return response.data;
     } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
+      return Future.error(error.toString());
     }
   }
 
@@ -36,8 +35,7 @@ class AnnouncementApi {
           .post(url, data: {"announceId": announceId, "choiceId": choiceId});
       return response.data;
     } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
+      return Future.error(error.toString());
     }
   }
 }

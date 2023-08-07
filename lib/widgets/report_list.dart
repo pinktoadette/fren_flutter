@@ -123,9 +123,7 @@ class _ReportFormState extends State<ReportForm> {
           comments: _commentController.text);
 
       Get.snackbar(_i18n.translate("success"), _i18n.translate("submitted"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
       Navigator.pop(context);
     } catch (err, s) {
       Get.snackbar(

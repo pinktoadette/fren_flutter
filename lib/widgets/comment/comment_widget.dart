@@ -65,6 +65,9 @@ class _CommentWidgetState extends State<CommentWidget> {
       setState(() {
         commentController.pagingController.itemList = updatedList;
       });
+    } else {
+      /// @todo this is nested comments. Need to filter later.
+      commentController.pagingController.refresh();
     }
   }
 }

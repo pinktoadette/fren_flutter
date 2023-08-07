@@ -390,8 +390,6 @@ class _AddEditTextState extends State<AddEditText> {
     );
 
     Get.snackbar(_i18n.translate("success"), "Text is replaced",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_SUCCESS,
-        colorText: Colors.black);
+        snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
   }
 }

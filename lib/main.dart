@@ -22,6 +22,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import 'package:leak_detector/leak_detector.dart';
+
 void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
@@ -42,7 +44,7 @@ void main() async {
   late PurchasesConfiguration configuration;
   if (Platform.isAndroid | Platform.isIOS) {
     /// Revenue cat for subscription and payments
-    await Purchases.setLogLevel(LogLevel.debug);
+    await Purchases.setLogLevel(LogLevel.info);
 
     /// Revenue cat
     configuration = PurchasesConfiguration('goog_EutdJZovasmfuBudvjOKZpEkGcx');
@@ -81,15 +83,47 @@ void main() async {
   await mainBinding.dependencies();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(const MyApp()));
+      .then((value) => runApp(MyApp()));
 }
 
-// Define the Navigator global key state to be used when the build context is not available!
-final navigatorKey = GlobalKey<NavigatorState>();
-final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class _MyAppState extends State<MyApp> {
+// Define the Navigator global key state to be used when the build context is not available!
+  final navigatorKey = GlobalKey<NavigatorState>();
+  final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  bool _checking = false;
+
+  @override
+  void initState() {
+    super.initState();
+    LeakDetector().init(maxRetainingPath: 300);
+    LeakDetector().onLeakedStream.listen((LeakedInfo info) {
+      //print to console
+      info.retainingPath.forEach((node) {
+        print("=============== LeakedInfo *********************");
+        print(node);
+      });
+      //show preview page
+      showLeakedInfoPage(navigatorKey.currentContext!, info);
+    });
+    LeakDetector().onEventStream.listen((DetectorEvent event) {
+      print("=============== DetectorEVENT *********************");
+      print(event);
+      if (event.type == DetectorEventType.startAnalyze) {
+        setState(() {
+          _checking = true;
+        });
+      } else if (event.type == DetectorEventType.endAnalyze) {
+        setState(() {
+          _checking = false;
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +133,15 @@ class MyApp extends StatelessWidget {
         model: UserModel(),
         child: GetMaterialApp(
           navigatorKey: navigatorKey,
+          navigatorObservers: [
+            //used the LeakNavigatorObserver
+            LeakNavigatorObserver(
+              shouldCheck: (route) {
+                return route.settings.name != null &&
+                    route.settings.name != '/';
+              },
+            ),
+          ],
           scaffoldMessengerKey: scaffoldMessengerKey,
           title: APP_NAME,
           debugShowCheckedModeBanner: false,

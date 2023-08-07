@@ -26,8 +26,7 @@ class GalleryApi {
 
       return galleries;
     } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
+      return Future.error(error.toString());
     }
   }
 
@@ -39,8 +38,7 @@ class GalleryApi {
       final response = await dio.post(url, data: {CHAT_MESSAGE_ID: messageId});
       return response.data;
     } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
+      return Future.error(error.toString());
     }
   }
 }

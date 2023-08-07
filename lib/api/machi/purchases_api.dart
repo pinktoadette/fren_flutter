@@ -23,8 +23,8 @@ class PurchasesApi {
       final offerings = await Purchases.getOfferings();
       final current = offerings.current;
       return current == null ? [] : [current];
-    } on PlatformException {
-      rethrow;
+    } on PlatformException catch (error) {
+      return Future.error(error.toString());
     }
   }
 

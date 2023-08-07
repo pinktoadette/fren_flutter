@@ -230,9 +230,7 @@ class _StoryEditState extends State<StoryEdit> {
 
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("update_successful"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
     } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(
