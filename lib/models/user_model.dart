@@ -504,8 +504,10 @@ class UserModel extends Model {
 
       /// Callback function
       onSuccess();
-    }).catchError((onError) {
+    }).catchError((onError, stack) async {
       isLoading = false;
+      await FirebaseCrashlytics.instance.recordError(onError, stack,
+          reason: 'Unable to SIGN UP!', fatal: true);
       notifyListeners();
       debugPrint('signUp() -> error');
       // Callback function
