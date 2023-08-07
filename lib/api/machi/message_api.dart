@@ -27,8 +27,10 @@ class MessageMachiApi {
     String url = '${baseUri}chat/user_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response =
-        await dio.post(url, data: {...messageMap, CHAT_MESSAGE_TAGS: tags});
+    final response = await dio.post(url, data: {
+      ...messageMap,
+      if (tags != null && tags.isNotEmpty) CHAT_MESSAGE_TAGS: tags
+    });
     // returns messageId
     return response.data;
   }

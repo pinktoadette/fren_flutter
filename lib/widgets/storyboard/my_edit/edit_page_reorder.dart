@@ -431,8 +431,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   /// add or edit texts for individual boxes.
   void _addEditText({int? index, Map<String, dynamic>? newContent}) async {
     try {
-      _pr.show(_i18n.translate("processing"));
-
       if (index == null) {
         await _saveOrUploadTextImg(newContent!);
       } else {
@@ -465,7 +463,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
       Get.snackbar(
           _i18n.translate("story_added"), _i18n.translate("story_added_info"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
-      _pr.hide();
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -475,6 +472,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Unable to save add/edit text in bits ', fatal: true);
+    } finally {
       _pr.hide();
     }
   }

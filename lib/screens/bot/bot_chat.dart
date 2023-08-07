@@ -408,9 +408,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Future<void> _getMachiResponse() async {
     try {
       chatController.typingStatus(room: _room, isTyping: true);
-      // Use Future.delayed for lazy loading
-      await Future.delayed(const Duration(seconds: 1));
-
       Map<String, dynamic> newMessage =
           await chatController.getMachiResponse(room: _room);
 
