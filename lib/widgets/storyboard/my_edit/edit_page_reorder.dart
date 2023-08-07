@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +11,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
@@ -61,7 +63,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Layout? layout;
   File? attachmentPreview;
   String? urlPreview;
-  double _alphaValue = 0.5;
+  double _alphaValue = 0.25;
+  late ProgressDialog _pr;
+
   final PageDirection _direction = PageDirection.VERTICAL;
 
   @override
@@ -79,6 +83,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
+    _pr = ProgressDialog(context, isDismissible: false);
+
     return Stack(
       children: [
         _reorderListWidget(),
@@ -97,27 +103,21 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.text_block),
                         onPressed: () {
-                          _addEditText();
+                          Get.to(() => AddEditText(
+                              onTextComplete: (content) =>
+                                  _addEditText(newContent: content)));
                         },
                       ),
                       IconButton(
                         icon: const Icon(Iconsax.image),
                         onPressed: () {
-                          _editPageImage(context);
+                          _editPageImage();
                         },
                       ),
-                      // IconButton(
-                      //   icon: _direction == PageDirection.HORIZONTAL
-                      //       ? const Icon(Icons.swipe_right)
-                      //       : const Icon(Icons.swipe_down),
-                      //   onPressed: () {
-                      //     _editPageDirection(context);
-                      //   },
-                      // ),
                       IconButton(
                         icon: const Icon(Iconsax.grid_3),
                         onPressed: () {
-                          _showLayOutSelection(context);
+                          _showLayOutSelection();
                         },
                       ),
                       IconButton(
@@ -161,7 +161,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                           ? imageCacheWrapper(story
                               .pages![widget.pageIndex].backgroundImageUrl!)
                           : const AssetImage(
-                              "assets/images/machi.png",
+                              "assets/images/blank.png",
                             ),
               fit: BoxFit.cover),
         ),
@@ -240,11 +240,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         IconButton(
             onPressed: () {
-              if (scripts[index].type == "text") {
-                _addEditText(index: index);
-              } else {
-                null;
-              }
+              Get.to(() => AddEditText(
+                  script: scripts[index],
+                  onTextComplete: (content) =>
+                      _addEditText(newContent: content, index: index)));
             },
             icon: const Icon(
               Iconsax.edit,
@@ -380,7 +379,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// select layouy format. Three choices.
-  void _showLayOutSelection(BuildContext context) {
+  void _showLayOutSelection() {
     // double height = MediaQuery.of(context).size.height;
     showModalBottomSheet<void>(
       context: context,
@@ -430,55 +429,59 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// add or edit texts for individual boxes.
-  void _addEditText({int? index}) async {
-    showModalBottomSheet<void>(
-        context: context,
-        isScrollControlled: true,
-        enableDrag: true,
-        builder: (context) => AddEditText(
-            script: index != null ? scripts[index] : null,
-            onTextComplete: (newContent) async {
-              try {
-                if ((index == null) & (newContent != null)) {
-                  await _saveOrUploadTextImg(newContent!);
-                  Navigator.pop(context);
-                }
+  void _addEditText({int? index, Map<String, dynamic>? newContent}) async {
+    try {
+      _pr.show(_i18n.translate("processing"));
 
-                if ((index != null) & (newContent?["text"] != "")) {
-                  Script script = scripts[index!].copyWith(
-                      text: newContent?["text"] ?? "",
-                      textAlign: newContent?["textAlign"] ?? TextAlign.left);
+      if (index == null) {
+        await _saveOrUploadTextImg(newContent!);
+      } else {
+        ScriptImage? uploadedByte;
+        if (newContent?["byteImage"] != "") {
+          Map<String, dynamic> upload =
+              await _uploadBytes(newContent?["byteImage"]);
+          uploadedByte = ScriptImage(
+              size: upload['size'],
+              height: upload['height'],
+              width: upload['width'],
+              uri: upload['uri']);
+        }
+        String newText = newContent?["text"] ?? "";
+        Script newScript = scripts[index].copyWith(
+            text: newText,
+            image: uploadedByte,
+            type: uploadedByte != null ? 'image' : 'text',
+            characterId: newContent?["characterId"],
+            textAlign: newContent?["textAlign"] ?? TextAlign.left);
 
-                  await _scriptApi.updateScript(script: script);
+        await _scriptApi.updateScript(script: newScript);
 
-                  setState(() {
-                    scripts[index] = script;
-                  });
-                  Navigator.pop(context);
-                }
+        setState(() {
+          scripts[index] = newScript;
+        });
+      }
 
-                widget.onUpdateSeq(scripts);
-                Get.snackbar(_i18n.translate("story_added"),
-                    _i18n.translate("story_added_info"),
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: APP_SUCCESS,
-                    colorText: Colors.black);
-              } catch (err, s) {
-                Get.snackbar(
-                  _i18n.translate("error"),
-                  _i18n.translate("an_error_has_occurred"),
-                  snackPosition: SnackPosition.TOP,
-                  backgroundColor: APP_ERROR,
-                );
-                await FirebaseCrashlytics.instance.recordError(err, s,
-                    reason: 'Unable to save add/edit text in bits ',
-                    fatal: true);
-              }
-            }));
+      widget.onUpdateSeq(scripts);
+      Get.snackbar(
+          _i18n.translate("story_added"), _i18n.translate("story_added_info"),
+          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+      _pr.hide();
+    } catch (err, s) {
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Unable to save add/edit text in bits ', fatal: true);
+      _pr.hide();
+    }
   }
 
   /// save any images texts.
-  Future<void> _saveOrUploadTextImg(Map<String, dynamic> content) async {
+  Future<Script> _saveOrUploadTextImg(Map<String, dynamic> content) async {
+    late Script newScript;
     if (content["text"] != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
@@ -488,9 +491,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
           text: content["text"] ?? "",
           textAlign: content["textAlign"] ?? TextAlign.left,
           pageNum: widget.pageIndex + 1);
-      setState(() {
-        scripts = [...scripts, pages.scripts![0]];
-      });
+      newScript = pages.scripts![0];
     }
     if (content["image"] != "") {
       String uploadImage = await uploadFile(
@@ -513,37 +514,21 @@ class _EditPageReorderState extends State<EditPageReorder> {
             "manual": true
           },
           pageNum: widget.pageIndex + 1);
-      setState(() {
-        scripts = [...scripts, pages.scripts![0]];
-      });
+      newScript = pages.scripts![0];
     }
 
     if (content["byteImage"] != "") {
-      String uploadImage = await uploadBytesFile(
-        uint8arr: content["byteImage"],
-        category: UPLOAD_PATH_SCRIPT_IMAGE,
-        categoryId: createUUID(),
-      );
-
-      ui.Codec codec = await ui.instantiateImageCodec(content["byteImage"]);
-      ui.FrameInfo frameInfo = await codec.getNextFrame();
+      Map<String, dynamic> uploadedBytes =
+          await _uploadBytes(content["byteImages"]);
 
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
           characterId: UserModel().user.userId,
           type: "image",
           storyId: story.storyId,
-          image: {
-            "size": content["byteImage"].lengthInBytes,
-            "height": frameInfo.image.height,
-            "width": frameInfo.image.width,
-            "uri": uploadImage,
-            "manual": true
-          },
+          image: uploadedBytes,
           pageNum: widget.pageIndex + 1);
-      setState(() {
-        scripts = [...scripts, pages.scripts![0]];
-      });
+      newScript = pages.scripts![0];
     }
 
     if (content["gallery"] != "") {
@@ -560,11 +545,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
             "manual": true
           },
           pageNum: widget.pageIndex + 1);
-      setState(() {
-        scripts = [...scripts, pages.scripts![0]];
-      });
+      newScript = pages.scripts![0];
     }
+    setState(() {
+      scripts = [...scripts, newScript];
+    });
     widget.onUpdateSeq(scripts);
+    return newScript;
   }
 
   /// updates the sequence of the individual boxes when dragged and dropped.
@@ -647,7 +634,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// edit background image of the page.
-  void _editPageImage(BuildContext context) async {
+  void _editPageImage() async {
     await showModalBottomSheet(
         context: context,
         barrierColor: Colors.black.withOpacity(_alphaValue),
@@ -678,5 +665,24 @@ class _EditPageReorderState extends State<EditPageReorder> {
             )).whenComplete(() {
       _updateBackground();
     });
+  }
+
+  /// upload bytes to storage.
+  Future<Map<String, dynamic>> _uploadBytes(Uint8List bytes) async {
+    String uploadImage = await uploadBytesFile(
+      uint8arr: bytes,
+      category: UPLOAD_PATH_SCRIPT_IMAGE,
+      categoryId: createUUID(),
+    );
+
+    ui.Codec codec = await ui.instantiateImageCodec(bytes);
+    ui.FrameInfo frameInfo = await codec.getNextFrame();
+    return {
+      "size": bytes.lengthInBytes,
+      "height": frameInfo.image.height,
+      "width": frameInfo.image.width,
+      "uri": uploadImage,
+      "manual": true
+    };
   }
 }

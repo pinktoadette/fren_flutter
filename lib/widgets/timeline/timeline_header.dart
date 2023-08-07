@@ -53,6 +53,7 @@ class TimelineHeader extends StatelessWidget {
           Get.to(() => ProfileScreen(user: u));
         },
         child: Container(
+          width: width,
           padding: EdgeInsets.only(left: paddingLeft ?? 15, right: 15),
           child: Row(children: [
             if (showAvatar == true)

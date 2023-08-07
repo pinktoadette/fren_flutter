@@ -8,15 +8,16 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
-import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:screenshot/screenshot.dart';
 
 class AddEditText extends StatefulWidget {
   final Script? script;
   final Function(Map<String, dynamic>?) onTextComplete;
+
   const AddEditText({Key? key, required this.onTextComplete, this.script})
       : super(key: key);
 
@@ -29,20 +30,22 @@ class _AddEditTextState extends State<AddEditText> {
   late TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   ScreenshotController screenshotController = ScreenshotController();
+  Offset offset = Offset.zero;
 
   File? attachmentPreview;
   String? galleryImageUrl;
   TextAlign textAlign = TextAlign.left;
   double _alphaValue = 0.5;
-  Uint8List? _imageBytes;
 
   @override
   void initState() {
     super.initState();
-    if (widget.script?.text != null) {
-      _textController = TextEditingController(text: widget.script!.text);
-      textAlign = widget.script?.textAlign ?? TextAlign.left;
-    }
+    setState(() {
+      galleryImageUrl = widget.script?.image?.uri;
+    });
+    _textController =
+        TextEditingController(text: widget.script?.text ?? "Text");
+    textAlign = widget.script?.textAlign ?? TextAlign.left;
   }
 
   @override
@@ -55,162 +58,86 @@ class _AddEditTextState extends State<AddEditText> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
 
-    return Container(
-      height: size.height - 90,
-      padding: EdgeInsets.only(
-          top: 10,
-          left: 10,
-          right: 10,
-          bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: SingleChildScrollView(
-          child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const SizedBox(
-            height: 10,
+    return Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          centerTitle: false,
+          titleSpacing: 0,
+          title: Text(
+            _i18n.translate("story_add_text_scene"),
+            style: Theme.of(context).textTheme.bodyMedium,
           ),
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(_i18n.translate("story_add_text_scene"),
-                  style: const TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                  )),
-              ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: const Size(0, 0),
-                    padding: const EdgeInsets.all(5),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                  ),
-                  onPressed: () {
-                    _onComplete(_textController.text);
-                  },
-                  child: widget.script?.text == null
-                      ? Text(
-                          _i18n.translate("add"),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                        )
-                      : Text(
-                          _i18n.translate("UPDATE"),
-                          style: const TextStyle(
-                              color: Colors.black, fontSize: 14),
-                        ))
-            ],
-          ),
-          Row(
-            children: [
-              attachmentPreview != null || galleryImageUrl != null
-                  ? _attachmentPreview(context)
-                  : Container(
-                      height: 70,
-                      width: 70,
-                      margin:
-                          const EdgeInsets.only(top: 10, left: 5, bottom: 10),
-                      decoration: BoxDecoration(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(10)),
-                          border: Border.all(
-                              width: 1,
-                              color: Colors.grey,
-                              strokeAlign: BorderSide.strokeAlignCenter)),
-                      child: IconButton(
-                          onPressed: () {
-                            _addImage();
-                          },
-                          icon: const Icon(Iconsax.image)),
-                    ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: 70,
-                margin: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    border: Border.all(
-                        width: 1,
-                        color: Colors.grey,
-                        strokeAlign: BorderSide.strokeAlignCenter)),
-                child: IconButton(
-                    onPressed: () {
-                      _showHelperDetails();
-                    },
-                    icon: const AppLogo()),
-              ),
-              Row(
+          actions: [
+            TextButton(
+                onPressed: () {
+                  _onComplete();
+                },
+                child: widget.script?.text == null
+                    ? Text(
+                        _i18n.translate("add"),
+                      )
+                    : Text(
+                        _i18n.translate("UPDATE"),
+                      ))
+          ],
+        ),
+        body: Container(
+            padding: EdgeInsets.only(
+                left: 10,
+                right: 10,
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          textAlign = TextAlign.left;
-                        });
-                      },
-                      icon: const Icon(Icons.align_horizontal_left)),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          textAlign = TextAlign.center;
-                        });
-                      },
-                      icon: const Icon(Icons.align_horizontal_center)),
-                  IconButton(
-                      onPressed: () {
-                        setState(() {
-                          textAlign = TextAlign.right;
-                        });
-                      },
-                      icon: const Icon(Icons.align_horizontal_right)),
+                  Row(
+                    children: [
+                      attachmentPreview != null || galleryImageUrl != null
+                          ? _attachmentPreview()
+                          : Container(
+                              height: 70,
+                              width: 70,
+                              margin: const EdgeInsets.only(
+                                  top: 10, left: 5, bottom: 10),
+                              decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(10)),
+                                  border: Border.all(
+                                      width: 1,
+                                      color: Colors.grey,
+                                      strokeAlign:
+                                          BorderSide.strokeAlignCenter)),
+                              child: IconButton(
+                                  onPressed: () {
+                                    _addImage();
+                                  },
+                                  icon: const Icon(Iconsax.image)),
+                            ),
+                    ],
+                  ),
+                  if (attachmentPreview == null && galleryImageUrl == null)
+                    ..._showTextEdits()
                 ],
               ),
-            ],
-          ),
-          SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: ConstrainedBox(
-                  constraints: const BoxConstraints(),
-                  child: TextFormField(
-                    textAlign: textAlign,
-                    scrollController: _scrollController,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                    onTapOutside: (b) {
-                      FocusManager.instance.primaryFocus?.unfocus();
-                    },
-                    maxLines: null,
-                    decoration: InputDecoration(
-                      hintText: _i18n.translate("story_write_edit"),
-                      hintStyle: TextStyle(
-                          color: Theme.of(context).colorScheme.primary),
-                    ),
-                    controller: _textController,
-                    scrollPadding: EdgeInsets.only(
-                        bottom: MediaQuery.of(context).viewInsets.bottom),
-                  ))),
-        ],
-      )),
-    );
+            )));
   }
 
-  void _onComplete(String text) async {
-    Uint8List? image = await screenshotController.capture();
-    setState(() {
-      _imageBytes = image;
-    });
+  void _onComplete() async {
+    String text = _textController.text;
+    Uint8List? _imageBytes;
+    if ((attachmentPreview != null || galleryImageUrl != null) &&
+        _textController.text != "") {
+      _imageBytes = await screenshotController.capture();
+    }
 
     widget.onTextComplete({
-      "text": image == null ? text : "",
+      "text": _imageBytes == null ? text : "",
       "byteImage": _imageBytes ?? "",
-      "image":
-          image != null || attachmentPreview == null ? "" : attachmentPreview,
-      "gallery":
-          image != null || galleryImageUrl == null ? "" : galleryImageUrl,
-      "textAlign": textAlign
+      "image": _imageBytes == null ? attachmentPreview ?? "" : "",
+      "gallery": _imageBytes == null ? galleryImageUrl ?? "" : "",
+      "textAlign": textAlign,
+      "characterId": widget.script?.characterId ?? UserModel().user.userId
     });
   }
 
@@ -240,55 +167,87 @@ class _AddEditTextState extends State<AddEditText> {
     );
   }
 
-  Widget _attachmentPreview(BuildContext context) {
+  Widget _attachmentPreview() {
     Size size = MediaQuery.of(context).size;
     double width = size.width - 40;
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Stack(
-            children: <Widget>[
-              Screenshot(
-                  controller: screenshotController,
-                  child: ClipRRect(
+          Screenshot(
+              controller: screenshotController,
+              child: Stack(
+                children: <Widget>[
+                  ClipRRect(
                       borderRadius: BorderRadius.circular(20.0),
                       child: Container(
-                          height: width,
+                        height: width,
+                        width: width,
+                        decoration: BoxDecoration(
+                            image: DecorationImage(
+                                colorFilter: ColorFilter.mode(
+                                    const Color.fromARGB(255, 0, 0, 0)
+                                        .withOpacity(_alphaValue),
+                                    BlendMode.darken),
+                                image: galleryImageUrl != null
+                                    ? imageCacheWrapper(
+                                        galleryImageUrl!,
+                                      )
+                                    : FileImage(attachmentPreview!),
+                                fit: BoxFit.cover)),
+                      )),
+                  Positioned(
+                    left: offset.dx,
+                    top: offset.dy,
+                    child: GestureDetector(
+                        onPanUpdate: (details) {
+                          setState(() {
+                            offset = Offset(offset.dx + details.delta.dx,
+                                offset.dy + details.delta.dy);
+                          });
+                        },
+                        child: SizedBox(
                           width: width,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                  colorFilter: ColorFilter.mode(
-                                      const Color.fromARGB(255, 0, 0, 0)
-                                          .withOpacity(_alphaValue),
-                                      BlendMode.darken),
-                                  image: galleryImageUrl != null
-                                      ? imageCacheWrapper(
-                                          galleryImageUrl!,
-                                        )
-                                      : FileImage(attachmentPreview!),
-                                  fit: BoxFit.cover)),
-                          child: TextBorder(
-                            text: _textController.text,
-                            textAlign: textAlign,
-                            size: 16,
-                          )))),
-              Positioned(
-                top: 0,
-                right: 5,
-                child: GestureDetector(
-                  onTap: () {
-                    setState(() {
-                      attachmentPreview = null;
-                      galleryImageUrl = null;
-                      _imageBytes = null;
-                    });
-                  },
-                  child: const Icon(Iconsax.close_circle),
-                ),
-              ),
-            ],
-          ),
+                          height: width,
+                          child: TextFormField(
+                            maxLines: null,
+                            textAlign: TextAlign.center,
+                            controller: _textController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              filled: true,
+                              fillColor: Colors.transparent,
+                              contentPadding: EdgeInsets.zero,
+                            ),
+                            style: const TextStyle(
+                                inherit: true,
+                                color: APP_INVERSE_PRIMARY_COLOR,
+                                shadows: [
+                                  Shadow(
+                                      // bottomLeft
+                                      offset: Offset(-1.0, -1.0),
+                                      color: APP_PRIMARY_COLOR),
+                                  Shadow(
+                                      // bottomRight
+                                      offset: Offset(1.0, -1.0),
+                                      color: APP_PRIMARY_COLOR),
+                                  Shadow(
+                                      // topRight
+                                      offset: Offset(1.0, 1.0),
+                                      color: APP_PRIMARY_COLOR),
+                                  Shadow(
+                                      // topLeft
+                                      offset: Offset(-1.0, 1.0),
+                                      color: APP_PRIMARY_COLOR),
+                                ]),
+                          ),
+                        )),
+                  ),
+                ],
+              )),
           SizedBox(
             width: width,
             child: Slider(
@@ -304,6 +263,77 @@ class _AddEditTextState extends State<AddEditText> {
             ),
           )
         ]);
+  }
+
+  List<Widget> _showTextEdits() {
+    return [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            width: 70,
+            margin: const EdgeInsets.all(5),
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                border: Border.all(
+                    width: 1,
+                    color: Colors.grey,
+                    strokeAlign: BorderSide.strokeAlignCenter)),
+            child: IconButton(
+                onPressed: () {
+                  _showHelperDetails();
+                },
+                icon: const AppLogo()),
+          ),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      textAlign = TextAlign.left;
+                    });
+                  },
+                  icon: const Icon(Icons.align_horizontal_left)),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      textAlign = TextAlign.center;
+                    });
+                  },
+                  icon: const Icon(Icons.align_horizontal_center)),
+              IconButton(
+                  onPressed: () {
+                    setState(() {
+                      textAlign = TextAlign.right;
+                    });
+                  },
+                  icon: const Icon(Icons.align_horizontal_right)),
+            ],
+          ),
+        ],
+      ),
+      SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: ConstrainedBox(
+              constraints: const BoxConstraints(),
+              child: TextFormField(
+                textAlign: textAlign,
+                scrollController: _scrollController,
+                style: Theme.of(context).textTheme.bodyMedium,
+                onTapOutside: (b) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
+                maxLines: null,
+                decoration: InputDecoration(
+                  hintText: _i18n.translate("story_write_edit"),
+                  hintStyle:
+                      TextStyle(color: Theme.of(context).colorScheme.primary),
+                ),
+                controller: _textController,
+                scrollPadding: EdgeInsets.only(
+                    bottom: MediaQuery.of(context).viewInsets.bottom),
+              ))),
+    ];
   }
 
   _showHelperDetails() {

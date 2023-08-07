@@ -14,7 +14,6 @@ import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/chat/add_message_to_storyboard.dart';
 import 'package:machi_app/widgets/chat/header_input.dart';
-import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:machi_app/widgets/subscribe/subscribe_how_to_art.dart';
@@ -174,7 +173,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                           builder: (context) => ProfileScreen(user: user)));
                     }
                   },
-                  onAttachmentPressed: _handleAttachmentPressed,
+                  // onAttachmentPressed: _handleAttachmentPressed,
                   onMessageTap: _handleMessageTap,
                   onPreviewDataFetched: _handlePreviewDataFetched,
                   listFooterWidgetBuilder: (message) => _listWidget(message),
@@ -335,22 +334,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     });
   }
 
-  void _handleImageSelection(File image) async {
-    var bytes = image.readAsBytesSync();
-    var result = await decodeImageFromList(bytes);
-    types.PartialImage message = types.PartialImage(
-      height: result.height.toDouble(),
-      name: image.path.split(Platform.pathSeparator).last,
-      size: bytes.length,
-      uri: image.path,
-      width: result.width.toDouble(),
-    );
-    setState(() {
-      attachmentPreview = message;
-      file = image;
-    });
-  }
-
   // when pressed, it formats the message, sends to socket and calls the api
   void _handleSendPressed(types.PartialText message) async {
     setState(() {
@@ -402,29 +385,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _isAttachmentUploading = false;
     });
     _focusNode.unfocus();
-  }
-
-  void _handleAttachmentPressed() {
-    showModalBottomSheet<void>(
-        context: context,
-        builder: (context) => ImageSourceSheet(
-              // includeFile: true,
-              onImageSelected: (image) async {
-                if (image != null) {
-                  Navigator.pop(context);
-                  _handleImageSelection(image);
-                }
-              },
-              onGallerySelected: (imageUrl) {
-                types.PartialImage message = types.PartialImage(
-                    height: 516,
-                    name: imageUrl,
-                    size: imageUrl.length,
-                    uri: imageUrl,
-                    width: 516);
-                _handleSendPressed(message as types.PartialText);
-              },
-            ));
   }
 
   /// saves user reponse. Backend handles all bot response / timing.

@@ -226,8 +226,8 @@ class _StoryPageViewState extends State<StoryPageView> {
           return false;
         },
         child: DraggableScrollableSheet(
-          initialChildSize: 1 - bodyHeightPercent + 0.025,
-          minChildSize: 1 - bodyHeightPercent,
+          initialChildSize: 1 - bodyHeightPercent + 0.05,
+          minChildSize: 1 - bodyHeightPercent + 0.05,
           expand: true,
           builder: (BuildContext context, ScrollController scrollController) {
             if (controller.hasClients) {}

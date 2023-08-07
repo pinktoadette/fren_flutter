@@ -228,8 +228,10 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             itemCount: storyboard.story!.length,
             itemBuilder: (context, index) {
               if (storyboard.story![index].status == StoryStatus.PUBLISHED) {
-                return _collectionCards(
-                    index: index, story: storyboard.story![index]);
+                return SizedBox(
+                    width: width,
+                    child: _collectionCards(
+                        index: index, story: storyboard.story![index]));
               }
               return const SizedBox.shrink();
             },

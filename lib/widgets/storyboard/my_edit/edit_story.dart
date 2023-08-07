@@ -165,33 +165,35 @@ class _EditPageState extends State<EditPage> {
               padding: const EdgeInsets.all(5),
               height: size.height - 100,
               width: double.infinity,
-              child: PageView.builder(
-                onPageChanged: _onPageChange,
-                controller: _pageController,
-                itemCount: story.pages!.length,
-                scrollDirection: Axis.vertical,
-                itemBuilder: (_, index) {
-                  List<Script> scripts = story.pages![index].scripts ?? [];
-                  return EditPageReorder(
-                      story: story,
-                      scriptList: scripts,
-                      pageIndex: index,
-                      layout: selectedLayout,
-                      onMoveInsertPages: (data) {
-                        _moveInsertPages(data);
-                      },
-                      onUpdateSeq: (update) {
-                        _updateSequence(update);
-                      },
-                      onPageAxisDirection: (direction) {
-                        _updatePageDirection(direction);
-                      },
-                      onLayoutSelection: (layout) {
-                        selectedLayout = layout;
-                        _updateLayout(layout);
-                      });
-                },
-              ))),
+              child: Obx(() => PageView.builder(
+                    onPageChanged: _onPageChange,
+                    controller: _pageController,
+                    itemCount: storyboardController.currentStory.pages!.length,
+                    scrollDirection: Axis.vertical,
+                    itemBuilder: (_, index) {
+                      List<Script> scripts = storyboardController
+                              .currentStory.pages![index].scripts ??
+                          [];
+                      return EditPageReorder(
+                          story: storyboardController.currentStory,
+                          scriptList: scripts,
+                          pageIndex: index,
+                          layout: selectedLayout,
+                          onMoveInsertPages: (data) {
+                            _moveInsertPages(data);
+                          },
+                          onUpdateSeq: (update) {
+                            _updateSequence(update);
+                          },
+                          onPageAxisDirection: (direction) {
+                            _updatePageDirection(direction);
+                          },
+                          onLayoutSelection: (layout) {
+                            selectedLayout = layout;
+                            _updateLayout(layout);
+                          });
+                    },
+                  )))),
       Positioned(
           left: 10,
           width: 10,

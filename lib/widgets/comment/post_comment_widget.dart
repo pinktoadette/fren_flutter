@@ -27,7 +27,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   final CommentController commentController = Get.find(tag: 'comment');
   final _commentController = TextEditingController();
   late AppLocalizations _i18n;
-  String? _comment;
+  String _comment = "";
   bool _canType = true;
   bool _isLoading = false;
 
@@ -72,7 +72,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                     commentController.clearReplyTo();
                   },
                 )
-              : const SizedBox.shrink()),
+              : const SizedBox(
+                  height: 20,
+                )),
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 10),
             padding: EdgeInsets.only(
@@ -85,79 +87,80 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                 child: ConstrainedBox(
                     constraints: const BoxConstraints(
                       minHeight: 50,
-                      maxHeight: 300.0,
+                      maxHeight: 100.0,
                     ),
-                    child: Row(children: [
-                      Expanded(
-                          child: TextFormField(
-                        onTapOutside: (_) =>
-                            {FocusManager.instance.primaryFocus?.unfocus()},
-                        onChanged: (String value) {
-                          _comment = value;
-                        },
-                        textCapitalization: TextCapitalization.sentences,
-                        autocorrect: true,
-                        enableSuggestions: true,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        controller: _commentController,
-                        maxLines: null,
-                        decoration: InputDecoration(
-                          fillColor: Colors.transparent,
-                          hintText: _i18n.translate("comment_leave"),
-                          hintStyle: TextStyle(
-                              color: Theme.of(context).colorScheme.primary,
-                              fontSize: 14),
-                          border: InputBorder.none,
-                          focusedBorder: InputBorder.none,
-                          enabledBorder: InputBorder.none,
-                          errorBorder: InputBorder.none,
-                          disabledBorder: InputBorder.none,
-                        ),
-                        validator: (value) {
-                          if ((value == null) || (value == "")) {
-                            return _i18n.translate("validation_1_character");
-                          }
-                          return null;
-                        },
-                      )),
-                      IconButton(
-                        icon: _isLoading
-                            ? loadingButton(size: 16)
-                            : const Icon(
-                                Iconsax.send_2,
-                                size: 24,
-                              ),
-                        onPressed: () {
-                          if (_canType == false) {
-                            Get.snackbar(
-                              "Ayo",
-                              _i18n.translate("post_too_fast"),
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: APP_TERTIARY,
-                            );
-                          } else if (_comment == null || _comment == "") {
-                            null;
-                          } else {
-                            setState(() => _canType = false);
-
-                            _postComment();
-                            Timer(
-                                const Duration(seconds: 10),
-                                () => setState(() {
-                                      _canType = true;
-                                    }));
-                          }
-                        },
-                      ),
-                    ]))),
+                    child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Expanded(
+                              child: TextFormField(
+                            onTapOutside: (_) =>
+                                {FocusManager.instance.primaryFocus?.unfocus()},
+                            onChanged: (String value) {
+                              setState(() {
+                                _comment = value;
+                              });
+                            },
+                            textCapitalization: TextCapitalization.sentences,
+                            autocorrect: true,
+                            enableSuggestions: true,
+                            style: Theme.of(context).textTheme.bodyMedium,
+                            controller: _commentController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              fillColor: Colors.transparent,
+                              hintText: _i18n.translate("comment_leave"),
+                              hintStyle: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 14),
+                              border: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              enabledBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              disabledBorder: InputBorder.none,
+                            ),
+                            validator: (value) {
+                              if ((value == null) || (value == "")) {
+                                return _i18n
+                                    .translate("validation_1_character");
+                              }
+                              return null;
+                            },
+                          )),
+                          if (_comment.isNotEmpty)
+                            IconButton(
+                              icon: _isLoading
+                                  ? loadingButton(size: 16)
+                                  : const Icon(
+                                      Iconsax.send_2,
+                                      size: 24,
+                                    ),
+                              onPressed: () {
+                                if (_canType == false) {
+                                  Get.snackbar(
+                                    "Ayo",
+                                    _i18n.translate("post_too_fast"),
+                                    snackPosition: SnackPosition.TOP,
+                                    backgroundColor: APP_TERTIARY,
+                                  );
+                                } else {
+                                  setState(() => _canType = false);
+                                  _postComment();
+                                  Timer(
+                                      const Duration(seconds: 10),
+                                      () => setState(() {
+                                            _canType = true;
+                                          }));
+                                }
+                              },
+                            ),
+                        ]))),
           )
         ]));
   }
 
   void _postComment() async {
-    if (_comment == null) {
-      return;
-    }
     setState(() {
       _isLoading = true;
     });
@@ -167,7 +170,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     try {
       StoryComment newComment = await _commentApi.postComment(
           storyId: storyboardController.currentStory.storyId,
-          comment: _comment!,
+          comment: _comment,
           replyToComment: commentController.replyToComment.commentId == null
               ? null
               : commentController.replyToComment);
