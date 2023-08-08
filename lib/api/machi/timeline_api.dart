@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
 class TimelineApi {
@@ -51,5 +53,35 @@ class TimelineApi {
     final response = await dio.post(url,
         data: {'itemType': itemType, 'itemId': itemId, 'value': actionValue});
     return response.data;
+  }
+
+  Future<Map<String, dynamic>> getHomepage() async {
+    String url = '${baseUri}timeline/homepage';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    List<Bot> bots = [];
+    List<Gallery> galleries = [];
+    List<Storyboard> storyboards = [];
+    for (var machi in response.data['machi']) {
+      Bot bot = Bot.fromDocument(machi);
+      bots.add(bot);
+    }
+
+    for (var gall in response.data['gallery']) {
+      Gallery gallery = Gallery.fromJson(gall);
+      galleries.add(gallery);
+    }
+
+    for (var boards in response.data['story']) {
+      Storyboard board = Storyboard.fromJson(boards);
+      storyboards.add(board);
+    }
+
+    return {
+      'machi': bots.toList(),
+      'gallery': galleries.toList(),
+      'story': storyboards.toList()
+    };
   }
 }

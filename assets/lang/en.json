@@ -490,6 +490,10 @@
   "post_interactive_hint": "Example: Imagine you wake up in a mysterious world, surrounded by enchanted forests and magnical creatures. As you take your first step, you notice a glowing object in the distance. What do you do next? \n\nYou have a microbiology exam coming up and need questions.",
   "post_interactive_hidden_hint": "(optional) Secret text - This is not displayed but will take part of the path. \n\nThis is where you'll surprise your readers!",
 
+  "latest_machi_for_you": "Machi for You", 
+  "latest_machi_yours": "Your Machi",
+  "latest_gallery": "Latest Gallery",
+  "latest_story": "Latest Story",
   
   "interactive": "Interactive",
   "interactive_number_of_paths": "Total Seq",
