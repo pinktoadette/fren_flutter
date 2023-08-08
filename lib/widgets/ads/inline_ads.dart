@@ -17,7 +17,7 @@ class InlineAdaptiveAds extends StatefulWidget {
 
 class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
   BannerAd? _ad;
-  static const _insets = 16.0;
+  static const _insets = 0.0;
   double get _adWidth => MediaQuery.of(context).size.width - (2 * _insets);
 
   @override

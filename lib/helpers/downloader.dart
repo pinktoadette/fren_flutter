@@ -22,6 +22,8 @@ Future<String> saveImageFromUrl(String imageUrl) async {
       return "Saved";
     }
     throw "Failed to save";
+  } else {
+    await openAppSettings();
   }
   throw "Need to enable permission to access media location.";
 }

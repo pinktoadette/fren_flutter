@@ -34,7 +34,7 @@ class _ActivityTabState extends State<ActivityTab> {
         automaticallyImplyLeading: false,
         actions: const [SubscribeTokenCounter()],
       ),
-      body: SuggestionWidget(),
+      body: const SuggestionWidget(),
     );
   }
 }

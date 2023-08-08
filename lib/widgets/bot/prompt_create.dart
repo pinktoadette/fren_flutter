@@ -251,6 +251,10 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           category: UPLOAD_PATH_BOT_IMAGE,
           categoryId: createUUID());
     }
+    if (photoUrl != "") {
+      botImgUrl = await copyFileToDifferentFolder(
+          sourceUrl: photoUrl!, destinationCategory: 'machi/');
+    }
 
     try {
       Bot bot = await _botApi.createBot(
@@ -261,7 +265,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       await _chatroomApi.createNewRoom();
       _clear();
       SetCurrentRoom().setNewBotRoom(bot, true);
-      Navigator.of(context).pop();
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -279,6 +282,10 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   void _clear() {
     _promptController.clear();
     _nameController.clear();
+    setState(() {
+      _uploadPath = null;
+      photoUrl = null;
+    });
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {

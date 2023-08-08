@@ -20,6 +20,7 @@ class SetCurrentRoom {
     }
     chatController.addEmptyRoomToList();
     chatController.onLoadCurrentRoom(chatController.emptyRoom);
+
     Get.to(() => const BotChatScreen(), arguments: {
       "room": chatController.currentRoom,
       "index": chatController.roomlist.length - 1

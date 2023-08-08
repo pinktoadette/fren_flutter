@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
+import 'package:machi_app/widgets/ads/inline_ads.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 
 class SuggestionWidget extends StatefulWidget {
+  const SuggestionWidget({super.key});
+
   @override
   _SuggestionWidgetState createState() => _SuggestionWidgetState();
 }
 
 class _SuggestionWidgetState extends State<SuggestionWidget> {
-  // Dummy JSON data to represent the gallery and card suggestions
+  ChatController chatController = Get.find(tag: 'chatroom');
+  SubscribeController subscriptionController = Get.find(tag: 'subscribe');
+
   final List<Map<String, dynamic>> topics = [
     {
       'topic': "meme",
@@ -37,6 +46,7 @@ class _SuggestionWidgetState extends State<SuggestionWidget> {
         child: Container(
             child: Column(
           children: [
+            const InlineAdaptiveAds(),
             Column(
                 children: topics.map((topicData) {
               return Column(
@@ -58,14 +68,18 @@ class _SuggestionWidgetState extends State<SuggestionWidget> {
                 ],
               );
             }).toList()),
-
-            SizedBox(height: 20),
+            const SubscriptionCard(),
+            subscriptionController.customer == null
+                ? const SizedBox.shrink()
+                : subscriptionController.customer!.allPurchaseDates.isEmpty
+                    ? const SubscriptionCard()
+                    : const SizedBox.shrink(),
 
             // 3x3 grid of image placeholders
             GridView.builder(
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 3,
                 childAspectRatio: 1.0,
               ),
@@ -73,12 +87,12 @@ class _SuggestionWidgetState extends State<SuggestionWidget> {
               itemBuilder: (context, index) {
                 return Container(
                   color: Colors.grey,
-                  margin: EdgeInsets.all(5),
+                  margin: const EdgeInsets.all(1),
                 );
               },
             ),
 
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
 
             // Two cards side by side
             Row(
