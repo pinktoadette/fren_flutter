@@ -8,6 +8,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/first_time/steps_counter.dart';
 import 'package:machi_app/screens/home_screen.dart';
 
 class InterestScreen extends StatefulWidget {
@@ -43,86 +44,74 @@ class _InterestScreenState extends State<InterestScreen> {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
 
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          titleSpacing: 0,
-        ),
-        body: Container(
-          padding: const EdgeInsets.only(left: 40, right: 0, top: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                "Ok, ${UserModel().user.username}. Last step!",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Text(
-                _i18n.translate("select_up_to_three"),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Text(
-                _i18n.translate("select_interest"),
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              if (_category.isNotEmpty)
-                SizedBox(
-                    width: width,
-                    child: ChipsChoice<String>.multiple(
-                      value: _selectedInterest,
-                      onChanged: (val) =>
-                          setState(() => _selectedInterest = val),
-                      choiceItems: C2Choice.listFrom<String, String>(
-                        source: _category,
-                        value: (i, v) => v,
-                        label: (i, v) => v,
-                        tooltip: (i, v) => v,
-                      ),
-                      choiceStyle: C2ChipStyle.filled(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(20)),
-                        selectedStyle: const C2ChipStyle(
-                          backgroundColor: APP_ACCENT_COLOR,
-                        ),
-                      ),
-                      choiceCheckmark: true,
-                      wrapped: true,
-                    )),
-              const Spacer(),
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
-                    child: Text(
-                      _i18n.translate("DONE"),
-                    ),
-                    onPressed: () {
-                      if (_selectedInterest.length != _numSelection) {
-                        Get.snackbar(
-                          _i18n.translate("validation_warning"),
-                          _i18n.translate("select_up_to_three"),
-                          snackPosition: SnackPosition.TOP,
-                          backgroundColor: APP_ERROR,
-                        );
-                      } else {
-                        _saveUserInterest();
-                      }
-                    },
-                  )),
-              const SizedBox(
-                height: 100,
-              )
-            ],
+    return SafeArea(
+        child: Container(
+      padding: const EdgeInsets.only(left: 40, right: 40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const StepCounterSignup(step: 3),
+          Text(
+            "Ok, ${UserModel().user.username}. Last step!",
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
-        ));
+          Text(
+            _i18n.translate("select_up_to_three"),
+            style: Theme.of(context).textTheme.labelMedium,
+          ),
+          Text(
+            _i18n.translate("select_interest"),
+            style: Theme.of(context).textTheme.labelSmall,
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          if (_category.isNotEmpty)
+            SizedBox(
+                width: width,
+                child: ChipsChoice<String>.multiple(
+                  value: _selectedInterest,
+                  onChanged: (val) => setState(() => _selectedInterest = val),
+                  choiceItems: C2Choice.listFrom<String, String>(
+                    source: _category,
+                    value: (i, v) => v,
+                    label: (i, v) => v,
+                    tooltip: (i, v) => v,
+                  ),
+                  choiceStyle: C2ChipStyle.filled(
+                    borderRadius: const BorderRadius.all(Radius.circular(20)),
+                    selectedStyle: const C2ChipStyle(
+                      backgroundColor: APP_ACCENT_COLOR,
+                    ),
+                  ),
+                  choiceCheckmark: true,
+                  wrapped: true,
+                )),
+          const Spacer(),
+          Align(
+              alignment: Alignment.bottomCenter,
+              child: ElevatedButton(
+                child: Text(
+                  _i18n.translate("DONE"),
+                ),
+                onPressed: () {
+                  if (_selectedInterest.length != _numSelection) {
+                    Get.snackbar(_i18n.translate("validation_warning"),
+                        _i18n.translate("select_up_to_three"),
+                        snackPosition: SnackPosition.TOP,
+                        backgroundColor: APP_WARNING,
+                        colorText: Colors.black);
+                  } else {
+                    _saveUserInterest();
+                  }
+                },
+              )),
+          const SizedBox(
+            height: 50,
+          )
+        ],
+      ),
+    ));
   }
 
   void _saveUserInterest() async {

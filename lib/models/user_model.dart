@@ -186,7 +186,6 @@ class UserModel extends Model {
     VoidCallback? profileImageScreen,
     VoidCallback? interestScreen,
     // Optional functions called on app start
-    VoidCallback? onboardScreen,
     VoidCallback? signInScreen,
     VoidCallback? blockedScreen,
     Function? botChatScreen,

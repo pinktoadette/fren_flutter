@@ -6,7 +6,10 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/interest_screen.dart';
+import 'package:machi_app/screens/first_time/steps_counter.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
+import 'package:machi_app/widgets/walkthru/walkthru.dart';
 
 class ProfileImageGenerator extends StatefulWidget {
   const ProfileImageGenerator({Key? key}) : super(key: key);
@@ -17,6 +20,9 @@ class ProfileImageGenerator extends StatefulWidget {
 
 class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   late AppLocalizations _i18n;
+  final _scaffoldKey = GlobalKey<ScaffoldState>();
+  bool _showWalkthru = false;
+  bool _walkthruCompleted = false;
 
   @override
   void initState() {
@@ -27,44 +33,99 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 
-    return Scaffold(
-        appBar: AppBar(
-          automaticallyImplyLeading: false,
-          titleSpacing: 0,
-        ),
-        body: SingleChildScrollView(
-            child: Container(
-          padding: const EdgeInsets.all(30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "${_i18n.translate("hello")} ${UserModel().user.username}!",
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Text(
-                _i18n.translate("profile_generate_ai_subtitle1"),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Text(
-                "${_i18n.translate("profile_generate_ai_subtitle2")} ${_i18n.translate("profile_generate_once")}",
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              ImagePromptGeneratorWidget(
-                  isProfile: true,
-                  onImageSelected: (value) => {_saveSelectedPhoto(value)}),
-              const SizedBox(
-                height: 100,
-              )
-            ],
-          ),
-        )));
+    return SafeArea(
+        child: Scaffold(
+            key: _scaffoldKey,
+            body: Container(
+                padding: const EdgeInsets.only(left: 40, right: 40),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const StepCounterSignup(step: 2),
+                      Semantics(
+                          label:
+                              "${_i18n.translate("hello")} ${UserModel().user.username}, ${_i18n.translate("sign_up_step_2_title")}",
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text:
+                                      "${_i18n.translate("hello")} ${UserModel().user.username}, ",
+                                  style: const TextStyle(
+                                      color: APP_ACCENT_COLOR, fontSize: 22),
+                                ),
+                                TextSpan(
+                                  text: _i18n.translate("sign_up_step_2_title"),
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .headlineMedium,
+                                ),
+                              ],
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Semantics(
+                          label:
+                              "${_i18n.translate("sign_up_step_2_direction")} ${_i18n.translate("sign_up_profile_generate_once")}",
+                          child: Text.rich(
+                            TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: _i18n
+                                      .translate("sign_up_step_2_direction"),
+                                  style: Theme.of(context).textTheme.bodySmall,
+                                ),
+                                TextSpan(
+                                  text: _i18n.translate(
+                                      "sign_up_profile_generate_once"),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 14),
+                                ),
+                              ],
+                            ),
+                          )),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Offstage(
+                        offstage: !(!_walkthruCompleted && !_showWalkthru) &&
+                            !(_walkthruCompleted && !_showWalkthru),
+                        child: ImagePromptGeneratorWidget(
+                          isProfile: true,
+                          onButtonClicked: (onclick) {
+                            setState(() {
+                              _showWalkthru = onclick;
+                            });
+                          },
+                          onImageSelected: (value) {
+                            _saveSelectedPhoto(value);
+                          },
+                          onImageReturned: (bool onImages) {
+                            setState(() {
+                              _showWalkthru = !onImages;
+                            });
+                          },
+                        ),
+                      ),
+                      Offstage(
+                        offstage: !_showWalkthru,
+                        child: WalkThruSteps(onCarouselCompletion: () {
+                          _walkthruCompleted = true;
+                        }),
+                      ),
+                      if (_showWalkthru)
+                        TextButton.icon(
+                            onPressed: null,
+                            icon: loadingButton(
+                                size: 16, color: APP_ACCENT_COLOR),
+                            label: const Text("Generating images"))
+                    ],
+                  ),
+                ))));
   }
 
   void _saveSelectedPhoto(String photoUrl) async {

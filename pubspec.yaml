@@ -121,6 +121,7 @@ flutter:
     - assets/images/
     - assets/images/imports/
     - assets/images/subscribe/
+    - assets/images/walkthru/
     - assets/lang/
     - assets/fonts/
     - assets/lottie/

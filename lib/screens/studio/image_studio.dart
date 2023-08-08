@@ -50,7 +50,10 @@ class _ImageStudioScreenState extends State<ImageStudioScreen> {
                 height: 10,
               ),
               ImagePromptGeneratorWidget(
-                  onImageSelected: (value) => {widget.onImageSelect(value)}),
+                onButtonClicked: (onclick) {},
+                onImageSelected: (value) => {widget.onImageSelect(value)},
+                onImageReturned: (bool onImages) {},
+              ),
               const SizedBox(
                 height: 100,
               )

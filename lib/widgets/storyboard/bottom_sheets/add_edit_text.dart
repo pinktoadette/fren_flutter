@@ -10,7 +10,6 @@ import 'package:get/get.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
-import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:screenshot/screenshot.dart';
 

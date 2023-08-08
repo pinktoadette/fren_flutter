@@ -13,7 +13,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'blocked_account_screen.dart';
-import 'first_time/on_boarding_screen.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -99,8 +98,6 @@ class _SignInScreenState extends State<SignInScreen> {
                                     _nextScreen(const SignUpScreen()),
                                 interestScreen: () =>
                                     _nextScreen(const InterestScreen()),
-                                onboardScreen: () =>
-                                    _nextScreen(const OnboardingScreen()),
                                 homeScreen: () =>
                                     _nextScreen(const HomeScreen()),
                                 blockedScreen: () =>
