@@ -27,8 +27,13 @@ class StoryboardItemWidget extends StatefulWidget {
   final Storyboard item;
   final types.Message? message;
   final bool? hideCollection;
+  final bool? showHeader;
   const StoryboardItemWidget(
-      {Key? key, required this.item, this.message, this.hideCollection = false})
+      {Key? key,
+      required this.item,
+      this.message,
+      this.hideCollection = false,
+      this.showHeader = true})
       : super(key: key);
 
   @override
@@ -65,21 +70,22 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Container(
-          padding: EdgeInsets.only(top: padding, bottom: padding),
-          width: width,
-          child: TimelineHeader(
-            radius: 24,
-            user: storyboard.createdBy,
-            showName: true,
-            showMenu: false,
-            underNameRow:
-                Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                    style: const TextStyle(
-                      fontSize: 12,
-                    )),
+        if (widget.showHeader == true)
+          Container(
+            padding: EdgeInsets.only(top: padding, bottom: padding),
+            width: width,
+            child: TimelineHeader(
+              radius: 24,
+              user: storyboard.createdBy,
+              showName: true,
+              showMenu: false,
+              underNameRow:
+                  Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                      style: const TextStyle(
+                        fontSize: 12,
+                      )),
+            ),
           ),
-        ),
         _displayType(storyboard, padding, width),
         if (widget.hideCollection == false) ..._showCollectionFooter()
       ],

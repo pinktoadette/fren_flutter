@@ -150,7 +150,8 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                     child: StoryboardItemWidget(
                         message: widget.message,
                         item: storyboard,
-                        hideCollection: true));
+                        hideCollection: true,
+                        showHeader: false));
               })),
     );
   }

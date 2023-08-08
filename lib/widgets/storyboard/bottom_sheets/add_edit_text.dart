@@ -30,6 +30,7 @@ class _AddEditTextState extends State<AddEditText> {
   late TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   ScreenshotController screenshotController = ScreenshotController();
+
   Offset offset = Offset.zero;
 
   File? attachmentPreview;
@@ -83,44 +84,20 @@ class _AddEditTextState extends State<AddEditText> {
           ],
         ),
         body: Container(
-            padding: EdgeInsets.only(
-                left: 10,
-                right: 10,
-                bottom: MediaQuery.of(context).viewInsets.bottom),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      attachmentPreview != null || galleryImageUrl != null
-                          ? _attachmentPreview()
-                          : Container(
-                              height: 70,
-                              width: 70,
-                              margin: const EdgeInsets.only(
-                                  top: 10, left: 5, bottom: 10),
-                              decoration: BoxDecoration(
-                                  borderRadius: const BorderRadius.all(
-                                      Radius.circular(10)),
-                                  border: Border.all(
-                                      width: 1,
-                                      color: Colors.grey,
-                                      strokeAlign:
-                                          BorderSide.strokeAlignCenter)),
-                              child: IconButton(
-                                  onPressed: () {
-                                    _addImage();
-                                  },
-                                  icon: const Icon(Iconsax.image)),
-                            ),
-                    ],
-                  ),
-                  if (attachmentPreview == null && galleryImageUrl == null)
-                    ..._showTextEdits()
-                ],
-              ),
-            )));
+          padding: EdgeInsets.only(
+              left: 10,
+              right: 10,
+              bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: ListView(
+            // crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              if (attachmentPreview == null && galleryImageUrl == null)
+                ..._showTextEdits()
+              else
+                _attachmentPreview()
+            ],
+          ),
+        ));
   }
 
   void _onComplete() async {
@@ -170,6 +147,7 @@ class _AddEditTextState extends State<AddEditText> {
   Widget _attachmentPreview() {
     Size size = MediaQuery.of(context).size;
     double width = size.width - 40;
+
     return Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -266,27 +244,20 @@ class _AddEditTextState extends State<AddEditText> {
   }
 
   List<Widget> _showTextEdits() {
+    Size size = MediaQuery.of(context).size;
     return [
       Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Container(
-            width: 70,
-            margin: const EdgeInsets.all(5),
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                border: Border.all(
-                    width: 1,
-                    color: Colors.grey,
-                    strokeAlign: BorderSide.strokeAlignCenter)),
-            child: IconButton(
-                onPressed: () {
-                  _showHelperDetails();
-                },
-                icon: const AppLogo()),
-          ),
           Row(
             children: [
+              attachmentPreview != null || galleryImageUrl != null
+                  ? _attachmentPreview()
+                  : IconButton(
+                      onPressed: () {
+                        _addImage();
+                      },
+                      icon: const Icon(Iconsax.image)),
               IconButton(
                   onPressed: () {
                     setState(() {
@@ -310,12 +281,21 @@ class _AddEditTextState extends State<AddEditText> {
                   icon: const Icon(Icons.align_horizontal_right)),
             ],
           ),
+          IconButton(
+              onPressed: () {
+                _showHelperDetails();
+              },
+              icon: const Icon(Icons.lightbulb_outlined)),
         ],
       ),
-      SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: ConstrainedBox(
-              constraints: const BoxConstraints(),
+      Container(
+          height: size.height - 160,
+          width: MediaQuery.of(context).size.width,
+          padding:
+              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              physics: const AlwaysScrollableScrollPhysics(),
               child: TextFormField(
                 textAlign: textAlign,
                 scrollController: _scrollController,
@@ -330,8 +310,6 @@ class _AddEditTextState extends State<AddEditText> {
                       TextStyle(color: Theme.of(context).colorScheme.primary),
                 ),
                 controller: _textController,
-                scrollPadding: EdgeInsets.only(
-                    bottom: MediaQuery.of(context).viewInsets.bottom),
               ))),
     ];
   }

@@ -165,120 +165,128 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     String qty = package.storeProduct.identifier
                         .replaceAll(RegExp(r'[^0-9]'), ''); // '23'
 
-                    return Card(
-                        surfaceTintColor: Colors.transparent,
-                        color: _selectedTier == package
-                            ? APP_PRIMARY_COLOR
-                            : APP_PRIMARY_COLOR.withAlpha(100),
-                        child: Container(
-                            padding: const EdgeInsets.all(0),
-                            margin: const EdgeInsets.all(5),
-                            decoration: BoxDecoration(
-                                color: Colors.transparent,
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(30)),
-                                border: Border.all(
-                                    width: 4,
-                                    color: _selectedTier == package
-                                        ? period == "Week"
-                                            ? APP_WARNING
-                                            : APP_ACCENT_COLOR
-                                        : APP_PRIMARY_COLOR.withAlpha(100),
-                                    strokeAlign: BorderSide.strokeAlignCenter)),
-                            width: size.width,
-                            height: itemHeight,
-                            child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.all(20),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            qty,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .headlineLarge,
-                                          ),
-                                          Text(
-                                            "images",
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .labelSmall,
-                                          )
-                                        ],
-                                      )),
-                                  Container(
-                                    padding: const EdgeInsets.only(
-                                        top: 20, bottom: 20),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Row(
-                                          children: [
-                                            if (qty == SELL_10_UNITS ||
-                                                qty == SELL_300_UNITS)
-                                              Badge(
-                                                label: Text(
-                                                  _i18n.translate(
-                                                      "plans_${qty}_subtitle"),
-                                                  style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
+                    return InkWell(
+                        onTap: () {
+                          setState(() {
+                            _selectedTier = package;
+                          });
+                        },
+                        child: Card(
+                            surfaceTintColor: Colors.transparent,
+                            color: _selectedTier == package
+                                ? APP_PRIMARY_COLOR
+                                : APP_PRIMARY_COLOR.withAlpha(100),
+                            child: Container(
+                                padding: const EdgeInsets.all(0),
+                                margin: const EdgeInsets.all(5),
+                                decoration: BoxDecoration(
+                                    color: Colors.transparent,
+                                    borderRadius: const BorderRadius.all(
+                                        Radius.circular(30)),
+                                    border: Border.all(
+                                        width: 4,
+                                        color: _selectedTier == package
+                                            ? period == "Week"
+                                                ? APP_WARNING
+                                                : APP_ACCENT_COLOR
+                                            : APP_PRIMARY_COLOR.withAlpha(100),
+                                        strokeAlign:
+                                            BorderSide.strokeAlignCenter)),
+                                width: size.width,
+                                height: itemHeight,
+                                child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: [
+                                      Container(
+                                          padding: const EdgeInsets.all(20),
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.center,
+                                            children: [
+                                              Text(
+                                                qty,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .headlineLarge,
                                               ),
-                                            Text(" ${period}ly",
+                                              Text(
+                                                "images",
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .labelSmall,
+                                              )
+                                            ],
+                                          )),
+                                      Container(
+                                        padding: const EdgeInsets.only(
+                                            top: 20, bottom: 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                if (qty == SELL_10_UNITS ||
+                                                    qty == SELL_300_UNITS)
+                                                  Badge(
+                                                    label: Text(
+                                                      _i18n.translate(
+                                                          "plans_${qty}_subtitle"),
+                                                      style: const TextStyle(
+                                                          color: Colors.black,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                    ),
+                                                  ),
+                                                Text(" ${period}ly",
+                                                    style: const TextStyle(
+                                                        color:
+                                                            APP_INVERSE_PRIMARY_COLOR,
+                                                        fontWeight:
+                                                            FontWeight.bold)),
+                                                const SizedBox(
+                                                  height: 10,
+                                                )
+                                              ],
+                                            ),
+                                            RichText(
+                                              text: TextSpan(
+                                                text: package
+                                                    .storeProduct.priceString,
                                                 style: const TextStyle(
-                                                    color:
-                                                        APP_INVERSE_PRIMARY_COLOR,
+                                                    fontSize: 18,
                                                     fontWeight:
-                                                        FontWeight.bold)),
+                                                        FontWeight.bold),
+                                                children: [
+                                                  TextSpan(
+                                                    text:
+                                                        ' / ${period.toLowerCase()}',
+                                                    style: const TextStyle(
+                                                        fontSize: 16,
+                                                        fontWeight:
+                                                            FontWeight.normal),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
                                             const SizedBox(
-                                              height: 10,
-                                            )
+                                              height: 15,
+                                            ),
+                                            Expanded(
+                                                child: Text(
+                                              "Get ${period}ly subscription to $qty images",
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .labelSmall,
+                                            ))
                                           ],
                                         ),
-                                        RichText(
-                                          text: TextSpan(
-                                            text: package
-                                                .storeProduct.priceString,
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
-                                            children: [
-                                              TextSpan(
-                                                text:
-                                                    ' / ${period.toLowerCase()}',
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.normal),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 15,
-                                        ),
-                                        Expanded(
-                                            child: Text(
-                                          "Get ${period}ly subscription to $qty images",
-                                          style: Theme.of(context)
-                                              .textTheme
-                                              .labelSmall,
-                                        ))
-                                      ],
-                                    ),
-                                  )
-                                ])));
+                                      )
+                                    ]))));
                   },
                   indicatorLayout: PageIndicatorLayout.COLOR,
                   autoplay: false,
@@ -334,22 +342,20 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     String qty = _selectedTier.identifier.replaceAll(RegExp(r'[^0-9]'), '');
 
     try {
+      _pr.show(_i18n.translate("processing"));
+
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
-          _pr.show(_i18n.translate("processing"));
-
           subscribeController.credits = int.parse(qty).obs;
           await Future.wait([
             _purchaseApi.purchaseCredits(),
             _purchaseApi.getCredits(),
           ]);
           Get.snackbar(_i18n.translate("success"),
-          _i18n.translate("subscribed_successfully"),
-          colorText: Colors.black,
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS);
+              _i18n.translate("subscribed_successfully"),
+              snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
         } catch (err, s) {
           Get.snackbar(_i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),
@@ -357,8 +363,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await FirebaseCrashlytics.instance.recordError(err, s,
               reason: 'Unable to save purchase offers: ${err.toString()}',
               fatal: true);
-        } finally {
-          _pr.hide();
         }
       }
       Navigator.of(context).pop();
@@ -373,6 +377,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       setState(() {
         isLoading = false;
       });
+      _pr.hide();
     }
   }
 }

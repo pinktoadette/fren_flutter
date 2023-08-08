@@ -222,7 +222,7 @@
   "have_you_already_subscribed": "Have you subscribed?",
   "subscription_successfully_restored": "Subscription restored.",
   "oops_you_dont_have_an_activ_subscription": "Oops, you don't have an active subscription!\n\nPlease choose your package to subscribe.",
-  "subscribed_successfully": "Successfully subscribed! Start creating images. Please wait a couple of seconds for the credits to arrive.",
+  "subscribed_successfully": "Successfully subscribed!",
 
   "_New_Version_1.0.5": "*** New version 1.0.5 Translations ***",
   
@@ -420,7 +420,7 @@
   "story_add_text_scene": "Add/Edit Content",
   "story_show_names": "Show Names",
   "storybits": "Bits",
-  "storybits_edit": "Edit bits",
+  "storybits_edit": "Edit Messages",
   "storybits_empty": "No bits here",
   "storymods": "pages",
   "story_created_at": "CREATED",
