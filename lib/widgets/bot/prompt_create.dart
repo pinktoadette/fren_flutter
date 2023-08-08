@@ -233,12 +233,11 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     });
 
     if (_promptController.text.length < 50 || _nameController.text.length < 3) {
-      Get.snackbar(
-        _i18n.translate("validation_warning"),
-        _i18n.translate("validation_insufficient_caharacter"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_WARNING,
-      );
+      Get.snackbar(_i18n.translate("validation_warning"),
+          _i18n.translate("validation_insufficient_caharacter"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_WARNING,
+          colorText: Colors.black);
       return;
     }
     _pr.show(_i18n.translate("processing"));

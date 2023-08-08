@@ -7,7 +7,7 @@ Widget loadingButton({required double size, Color? color}) {
     height: size,
     padding: const EdgeInsets.all(2.0),
     child: CircularProgressIndicator(
-      color: color ?? APP_ACCENT_COLOR,
+      color: color ?? APP_PRIMARY_COLOR,
       strokeWidth: 2,
     ),
   );

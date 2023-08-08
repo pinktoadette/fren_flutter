@@ -12,7 +12,6 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
-import 'first_time/on_boarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -64,7 +63,6 @@ class _SplashScreenState extends State<SplashScreen> {
             profileImageScreen: () =>
                 _nextScreen(const ProfileImageGenerator()),
             interestScreen: () => _nextScreen(const InterestScreen()),
-            onboardScreen: () => _nextScreen(const OnboardingScreen()),
             homeScreen: () => _nextScreen(const HomeScreen()),
             blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
       }

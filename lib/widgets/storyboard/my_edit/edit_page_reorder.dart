@@ -486,7 +486,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
       widget.onUpdateSeq(scripts);
       Get.snackbar(
-          _i18n.translate("story_added"), _i18n.translate("story_added_info"),
+          _i18n.translate("saved_success"), _i18n.translate("story_added_info"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
     } catch (err, s) {
       Get.snackbar(

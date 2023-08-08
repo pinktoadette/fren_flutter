@@ -40,9 +40,13 @@
   "please_enter_the_sms_code_sent": "Please enter the SMS code sent\n to your device",
 
   "_SignUpScreen": "*** SignUp Screen Translations ***",
-  "select_your_birthday": "Birthdate",
   "sign_up": "Sign Up",
-  "create_account": "Create Account",
+  "sign_up_step_1_title": "Hey fren 👋, let's start with a username",
+  "sign_up_step_2_title": "let's create a profile picture using prompts",
+  "sign_up_step_2_direction": "You can describe yourself, your pet, your favorite vacay spot. Be specific.",
+  "sign_up_profile_ai_prompt_hint": "girl with brown hair with black aviator glasses, close up",
+  "sign_up_profile_generate_once": "You can generate only this once but you can change the photo later.",
+  
   "profile_photo": "Profile photo",
   "please_select_your_profile_photo": "Please select your profile photo",
   "username": "Username",
@@ -70,10 +74,6 @@
   "profile_image_generate_button": "Create",
   "profile_image_generate_ai": "Generate Profile Image",
   "profile_signup_intro": "Thanks for signing up",
-  "profile_ai_prompt_hint": "girl with brown hair with black aviator glasses, close up",
-  "profile_generate_ai_subtitle1": "Let's create a profile image.",
-  "profile_generate_ai_subtitle2": "Share your ideas, and we'll create a cool profile image together.",
-  "profile_generate_once": "You can only generate once but you can change the photo later.",
   "an_error_occurred_while_updating_your_profile": "An error occurred while updating your profile.\nPlease try again later!",
   "photo_will_be_deleted": "Photo will be deleted, and this action cannot be reversed!", 
 
@@ -222,7 +222,7 @@
   "have_you_already_subscribed": "Have you subscribed?",
   "subscription_successfully_restored": "Subscription restored.",
   "oops_you_dont_have_an_activ_subscription": "Oops, you don't have an active subscription!\n\nPlease choose your package to subscribe.",
-  "subscribed_successfully": "Successfully subscribed! Start creating images. Please wait a couple of seconds for the credits to arrive.",
+  "subscribed_successfully": "Successfully subscribed!",
 
   "_New_Version_1.0.5": "*** New version 1.0.5 Translations ***",
   
@@ -420,7 +420,7 @@
   "story_add_text_scene": "Add/Edit Content",
   "story_show_names": "Show Names",
   "storybits": "Bits",
-  "storybits_edit": "Edit bits",
+  "storybits_edit": "Edit Messages",
   "storybits_empty": "No bits here",
   "storymods": "pages",
   "story_created_at": "CREATED",

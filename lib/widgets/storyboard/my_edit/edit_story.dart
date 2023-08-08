@@ -64,6 +64,7 @@ class _EditPageState extends State<EditPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
+          titleSpacing: 0,
           title: Text(
             _i18n.translate("storybits_edit"),
             style: Theme.of(context).textTheme.bodyMedium,

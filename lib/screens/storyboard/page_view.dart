@@ -58,6 +58,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   late AppLocalizations _i18n;
   double bodyHeightPercent = BODY_HEIGHT_PERCENT;
   double headerHeight = 140;
+  static double bottomSheetPadding = 0.05;
 
   bool _userScrolledAgain = false;
   Timer? _scrollTimer;
@@ -164,7 +165,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         ),
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(children: [
-            _showPageWidget(context, constraints),
+            _showPageWidget(constraints),
             if (story?.status.name == StoryStatus.PUBLISHED.name)
               _commentSheet()
           ]);
@@ -226,8 +227,8 @@ class _StoryPageViewState extends State<StoryPageView> {
           return false;
         },
         child: DraggableScrollableSheet(
-          initialChildSize: 1 - bodyHeightPercent + 0.05,
-          minChildSize: 1 - bodyHeightPercent + 0.05,
+          initialChildSize: 1 - bodyHeightPercent + bottomSheetPadding,
+          minChildSize: 1 - bodyHeightPercent + bottomSheetPadding,
           expand: true,
           builder: (BuildContext context, ScrollController scrollController) {
             if (controller.hasClients) {}
@@ -291,11 +292,11 @@ class _StoryPageViewState extends State<StoryPageView> {
         ));
   }
 
-  Widget _showPageWidget(BuildContext context, BoxConstraints constraints) {
+  Widget _showPageWidget(BoxConstraints constraints) {
     Size size = MediaQuery.of(context).size;
     double footerHeight = 100;
     double height = story?.status.name == StoryStatus.PUBLISHED.name
-        ? size.height * bodyHeightPercent
+        ? size.height * bodyHeightPercent - bottomSheetPadding
         : size.height - footerHeight;
 
     if (story!.pages!.isEmpty) {
@@ -438,6 +439,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                   );
                 },
               ))),
+
+      /// Page indicator
       Positioned(
           left: 10,
           width: 10,
@@ -463,6 +466,8 @@ class _StoryPageViewState extends State<StoryPageView> {
               ],
             ),
           )),
+
+      /// creator of content and stats
       if (story!.status == StoryStatus.PUBLISHED)
         Positioned(
           bottom: 0,
@@ -470,6 +475,8 @@ class _StoryPageViewState extends State<StoryPageView> {
           child: Container(
               color: Colors.black.withOpacity(0.8),
               width: size.width,
+              height: 80,
+              padding: const EdgeInsets.only(top: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,

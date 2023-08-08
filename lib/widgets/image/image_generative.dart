@@ -16,9 +16,17 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
 
   final Function(String url) onImageSelected;
 
+  /// if user clicks button, parnet widget will show some tutorials, other distractions
+  final Function(bool onclick) onButtonClicked;
+
+  /// notify when the the images are returned
+  final Function(bool onImages) onImageReturned;
+
   ImagePromptGeneratorWidget({
     Key? key,
     required this.onImageSelected,
+    required this.onImageReturned,
+    required this.onButtonClicked,
     this.numImages = 4,
     this.isProfile = false,
   }) : super(key: key);
@@ -28,8 +36,10 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
       _ImagePromptGeneratorWidgetState();
 }
 
-class _ImagePromptGeneratorWidgetState
-    extends State<ImagePromptGeneratorWidget> {
+class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
+    with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   final _promptController = TextEditingController();
   SubscribeController subscribeController = Get.find(tag: 'subscribe');
   late AppLocalizations _i18n;
@@ -66,13 +76,16 @@ class _ImagePromptGeneratorWidgetState
 
     return Column(
       children: [
-        TextFormField(
+        TextField(
+          onTapOutside: (b) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
           scrollPadding:
               EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
           style: const TextStyle(fontSize: 14),
           decoration: InputDecoration(
             hintStyle: const TextStyle(color: APP_MUTED_COLOR, fontSize: 14),
-            hintText: _i18n.translate("profile_ai_prompt_hint"),
+            hintText: _i18n.translate("sign_up_profile_ai_prompt_hint"),
             isDense: true,
             contentPadding: const EdgeInsets.all(20.0),
           ),
@@ -121,7 +134,7 @@ class _ImagePromptGeneratorWidgetState
                 child: Text(_i18n.translate("OK")))
             : Align(
                 alignment: Alignment.bottomCenter,
-                child: ElevatedButton.icon(
+                child: TextButton.icon(
                   icon: _isLoading
                       ? loadingButton(size: 12)
                       : const SizedBox.shrink(),
@@ -129,7 +142,8 @@ class _ImagePromptGeneratorWidgetState
                     _i18n.translate("profile_image_generate_button"),
                   ),
                   onPressed: () {
-                    _generatePhoto(context);
+                    widget.onButtonClicked(true);
+                    _generatePhoto();
                   },
                 )),
         const SizedBox(
@@ -139,7 +153,7 @@ class _ImagePromptGeneratorWidgetState
     );
   }
 
-  void _generatePhoto(BuildContext context) async {
+  void _generatePhoto() async {
     if (_counter == 0) {
       return;
     }
@@ -155,6 +169,7 @@ class _ImagePromptGeneratorWidgetState
         _items = imageUrl;
         _counter -= 1;
       });
+      widget.onImageReturned(true);
     } on DioException catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

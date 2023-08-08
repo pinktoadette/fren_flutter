@@ -1,6 +1,7 @@
 import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
@@ -67,7 +68,7 @@ class _MachiHelperState extends State<MachiHelper> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 _isLoading == true
-                    ? loadingButton(size: 20)
+                    ? loadingButton(size: 20, color: APP_ACCENT_COLOR)
                     : const SizedBox.shrink(),
                 SizedBox(
                     width: size.width - 60,
@@ -103,9 +104,11 @@ class _MachiHelperState extends State<MachiHelper> {
 
   List<Widget> _showResponse() {
     return [
-      Text(
-        _response!,
-      ),
+      Padding(
+          padding: const EdgeInsets.all(20),
+          child: Text(
+            _response!,
+          )),
       ElevatedButton(
           onPressed: () {
             widget.onTextReplace(_response!);

@@ -83,10 +83,12 @@ void main() async {
   await mainBinding.dependencies();
 
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
-      .then((value) => runApp(MyApp()));
+      .then((value) => runApp(const MyApp()));
 }
 
 class MyApp extends StatefulWidget {
+  const MyApp({super.key});
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -95,7 +97,6 @@ class _MyAppState extends State<MyApp> {
 // Define the Navigator global key state to be used when the build context is not available!
   final navigatorKey = GlobalKey<NavigatorState>();
   final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  bool _checking = false;
 
   @override
   void initState() {
@@ -103,24 +104,20 @@ class _MyAppState extends State<MyApp> {
     LeakDetector().init(maxRetainingPath: 300);
     LeakDetector().onLeakedStream.listen((LeakedInfo info) {
       //print to console
-      info.retainingPath.forEach((node) {
-        print("=============== LeakedInfo *********************");
-        print(node);
-      });
+      for (var node in info.retainingPath) {
+        debugPrint("=============== LeakedInfo *********************");
+        debugPrint(node.toString());
+      }
       //show preview page
       showLeakedInfoPage(navigatorKey.currentContext!, info);
     });
     LeakDetector().onEventStream.listen((DetectorEvent event) {
-      print("=============== DetectorEVENT *********************");
-      print(event);
+      debugPrint("=============== DetectorEVENT *********************");
+      debugPrint(event.toString());
       if (event.type == DetectorEventType.startAnalyze) {
-        setState(() {
-          _checking = true;
-        });
+        debugPrint("=============== Detector Started *********************");
       } else if (event.type == DetectorEventType.endAnalyze) {
-        setState(() {
-          _checking = false;
-        });
+        debugPrint("=============== Detector Ended *********************");
       }
     });
   }
