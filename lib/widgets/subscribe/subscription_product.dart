@@ -348,14 +348,15 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
+          /// temp
           subscribeController.credits = int.parse(qty).obs;
-          await Future.wait([
-            _purchaseApi.purchaseCredits(),
-            _purchaseApi.getCredits(),
-          ]);
+          await _purchaseApi.purchaseCredits();
+          subscribeController.getCredits();
           Get.snackbar(_i18n.translate("success"),
               _i18n.translate("subscribed_successfully"),
-              snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_SUCCESS,
+              colorText: APP_INVERSE_PRIMARY_COLOR);
         } catch (err, s) {
           Get.snackbar(_i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),
@@ -363,6 +364,10 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await FirebaseCrashlytics.instance.recordError(err, s,
               reason: 'Unable to save purchase offers: ${err.toString()}',
               fatal: true);
+          setState(() {
+            isLoading = false;
+          });
+          _pr.hide();
         }
       }
       Navigator.of(context).pop();

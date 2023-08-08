@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchasesApi {
@@ -41,6 +43,7 @@ class PurchasesApi {
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
-    return response.data;
+    Map<String, dynamic> credits = response.data;
+    return credits;
   }
 }
