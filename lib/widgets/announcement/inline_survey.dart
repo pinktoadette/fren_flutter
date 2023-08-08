@@ -55,7 +55,7 @@ class _InlineSurveyState extends State<InlineSurvey>
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Cannot save users survey response ${err.toString()}',
-          fatal: true);
+          fatal: false);
     }
   }
 

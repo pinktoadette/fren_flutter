@@ -221,12 +221,6 @@ class UserModel extends Model {
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();
 
-            // if user didn't complete profile then go to chat intro bot
-            if (userDoc[USER_PROFILE_FILLED] == false) {
-              signUpScreen();
-              return;
-            }
-
             if (!(userDoc.data() as Map<String, dynamic>)
                 .containsKey(USER_PROFILE_PHOTO)) {
               profileImageScreen!();

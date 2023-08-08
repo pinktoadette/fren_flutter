@@ -208,7 +208,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       );
 
       await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Cannot like storyboard item', fatal: true);
+          reason: 'Cannot like storyboard item', fatal: false);
     }
   }
 

@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -48,8 +49,10 @@ class UserApi {
       debugPrint("Requesting URL $url");
       final dio = await auth.getDio();
       await dio.put(url, data: data);
-    } catch (error) {
+    } catch (error, s) {
       debugPrint(error.toString());
+      await FirebaseCrashlytics.instance.recordError(error, s,
+          reason: 'Update user failed in signing', fatal: true);
     }
   }
 

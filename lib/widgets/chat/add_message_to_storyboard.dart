@@ -121,7 +121,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Cannot add message in add message board bottom sheet',
-          fatal: true);
+          fatal: false);
     } finally {
       setState(() {
         isLoading = false;

@@ -192,7 +192,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
         backgroundColor: APP_ERROR,
       );
       await FirebaseCrashlytics.instance
-          .recordError(err, s, reason: 'Cannot post comment', fatal: true);
+          .recordError(err, s, reason: 'Cannot post comment', fatal: false);
     } finally {
       setState(() {
         _isLoading = false;

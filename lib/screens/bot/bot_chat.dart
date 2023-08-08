@@ -386,7 +386,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
         });
         await FirebaseCrashlytics.instance.recordError(err, s,
             reason: 'image uploaded and has error ${err.toString()}',
-            fatal: true);
+            fatal: false);
         return;
       } finally {
         setState(() {
@@ -481,7 +481,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error loading more messages in infinite scroll',
-          fatal: true);
+          fatal: false);
     }
   }
 

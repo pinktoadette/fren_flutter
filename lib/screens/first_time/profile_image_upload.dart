@@ -88,7 +88,7 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
         backgroundColor: APP_ERROR,
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Error saving users profile', fatal: true);
+          reason: 'Error saving users profile', fatal: false);
     }
   }
 }
