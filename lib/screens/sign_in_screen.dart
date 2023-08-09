@@ -1,11 +1,8 @@
-import 'dart:async';
-
 import 'package:flutter/services.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:machi_app/widgets/signin/sigin_widget.dart';
+import 'package:machi_app/widgets/signin/signin_widget.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -18,18 +15,6 @@ class _SignInScreenState extends State<SignInScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
-  User? user = FirebaseAuth.instance.currentUser;
-  bool isLoading = false;
-  bool google = false;
-
-  /// Navigate to next page
-  void _nextScreen(screen) {
-    // Go to next page route
-    Future(() {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => screen), (route) => false);
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

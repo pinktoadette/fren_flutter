@@ -1,22 +1,16 @@
-import 'dart:typed_data';
-
-import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:machi_app/api/machi/auth_api.dart';
-import 'package:machi_app/constants/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
-class CachedApi {
-  final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
-  final auth = AuthApi();
+class CachingHelper {
+  final CacheManager _cacheManager = DefaultCacheManager();
 
-  fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
+  Future<Map<String, dynamic>?> cachedUrl(
+    String url,
+    Duration maxCacheAge,
+  ) async {
+    FileInfo? cachedFile = await _cacheManager.getFileFromCache(url);
 
-  Future<Map<String, dynamic>?> cachedUrl(String url) async {
-    final cacheManager = DefaultCacheManager();
-
-    FileInfo? cachedFile = await cacheManager.getFileFromCache(url);
     if (cachedFile != null && cachedFile.validTill.isAfter(DateTime.now())) {
       final jsonString = await cachedFile.file.readAsString();
       final cachedData = json.decode(jsonString);
@@ -26,13 +20,18 @@ class CachedApi {
     return null;
   }
 
-  Future<void> cacheUrl(String url, Map<String, dynamic> data) async {
-    final cacheManager = DefaultCacheManager();
+  /// take json, no class structure.
+  Future<void> cacheUrl(
+    String url,
+    Map<String, dynamic> data,
+    Duration maxCacheAge,
+  ) async {
     Uint8List bytes = Uint8List.fromList(utf8.encode(json.encode(data)));
 
-    await cacheManager.putFile(
+    await _cacheManager.putFile(
       url,
       bytes,
+      maxAge: maxCacheAge,
     );
   }
 }

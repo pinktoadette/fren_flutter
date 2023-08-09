@@ -28,6 +28,8 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
 
   @override
   void initState() {
+    MobileAds.instance.initialize();
+
     _loadAds();
     super.initState();
   }

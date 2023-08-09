@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
-import 'package:machi_app/widgets/homepage/homepage.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -68,10 +68,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 padding: const EdgeInsets.all(30),
                 alignment:
                     index == 0 ? Alignment.center : Alignment.bottomCenter,
-                child: TextBorder(
-                  text: listCaptions[index],
-                  textAlign: TextAlign.center,
-                  size: 20,
+                child: Semantics(
+                  label: listCaptions[index],
+                  child: TextBorder(
+                    text: listCaptions[index],
+                    textAlign: TextAlign.center,
+                    size: 20,
+                  ),
                 ),
               ),
               const Spacer(),
@@ -107,7 +110,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
-                        builder: (context) => const HomepageWidget()),
+                        builder: (context) => const ActivityTab()),
                   );
                 });
               }

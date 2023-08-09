@@ -2,6 +2,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
+import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
@@ -35,8 +36,8 @@ class SignOutButtonCard extends StatelessWidget {
             /// Go to login screen
             Future(() {
               Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
-                  builder: (context) => const SignInScreen()));
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const ActivityTab()));
             });
           }).catchError((err, s) async {
             await FirebaseCrashlytics.instance.recordError(err, s,

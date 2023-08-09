@@ -9,8 +9,9 @@ import 'package:machi_app/helpers/load_theme.dart';
 class InteractiveBoardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
-  final _cachedApi = CachedApi();
   final auth = AuthApi();
+  CachingHelper cachingHelper = CachingHelper();
+
   List<InteractiveTheme> themes = [];
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
@@ -72,9 +73,10 @@ class InteractiveBoardApi {
         '${baseUri}interactive/post?interactiveId=$interactiveId';
     debugPrint("Requesting URL $url");
 
-    final Map<String, dynamic>? cached = await _cachedApi.cachedUrl(url);
-    if (cached != null) {
-      return InteractiveBoardPrompt.fromJson(cached);
+    final api1CachedData =
+        await cachingHelper.cachedUrl(url, const Duration(minutes: 2));
+    if (api1CachedData != null) {
+      return InteractiveBoardPrompt.fromJson(api1CachedData);
     }
 
     try {
@@ -84,7 +86,8 @@ class InteractiveBoardApi {
 
       final prompts = InteractiveBoardPrompt.fromJson(responseData);
 
-      await _cachedApi.cacheUrl(url, responseData);
+      await cachingHelper.cacheUrl(
+          url, responseData, const Duration(seconds: 30));
       return prompts;
     } catch (e) {
       debugPrint('Error fetching interactive ID: $e');

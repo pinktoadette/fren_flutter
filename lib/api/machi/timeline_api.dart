@@ -1,7 +1,7 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
+import 'package:machi_app/api/machi/cache_manager_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/constants/secrets.dart';
@@ -14,6 +14,7 @@ class TimelineApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;
   final auth = AuthApi();
+  CachingHelper cachingHelper = CachingHelper();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
@@ -30,8 +31,9 @@ class TimelineApi {
       url = '${baseUri}timeline/public?limit=$limit&page=$page';
     }
 
-    debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
+    final dio = userController.user == null
+        ? await auth.getPublicDio()
+        : await auth.getDio();
     final response = await dio.get(url);
 
     List<Storyboard> timeline = [];
@@ -69,30 +71,46 @@ class TimelineApi {
   Future<Map<String, dynamic>> getHomepage() async {
     String url = '${baseUri}timeline/homepage';
     debugPrint("Requesting URL $url");
+
+    final cachedData =
+        await cachingHelper.cachedUrl(url, const Duration(minutes: 2));
+    if (cachedData != null) {
+      Map<String, dynamic> result = _homeDatafromJson(cachedData);
+      return result;
+    }
+
     final dio = await auth.getDio();
     final response = await dio.get(url);
+
+    await cachingHelper.cacheUrl(
+        url, response.data, const Duration(minutes: 5));
+    Map<String, dynamic> result = _homeDatafromJson(response.data);
+    return result;
+  }
+
+  Map<String, dynamic> _homeDatafromJson(Map<String, dynamic> data) {
     List<Bot> bots = [];
+    List<Bot> mybots = [];
     List<Gallery> galleries = [];
-    List<Storyboard> storyboards = [];
-    for (var machi in response.data['machi']) {
+    for (var machi in data['machi']) {
       Bot bot = Bot.fromDocument(machi);
       bots.add(bot);
     }
 
-    for (var gall in response.data['gallery']) {
+    for (var machi in data['mymachi']) {
+      Bot bot = Bot.fromDocument(machi);
+      mybots.add(bot);
+    }
+
+    for (var gall in data['gallery']) {
       Gallery gallery = Gallery.fromJson(gall);
       galleries.add(gallery);
     }
 
-    for (var boards in response.data['story']) {
-      Storyboard board = Storyboard.fromJson(boards);
-      storyboards.add(board);
-    }
-
     return {
       'machi': bots.toList(),
+      'mymachi': mybots.toList(),
       'gallery': galleries.toList(),
-      'story': storyboards.toList()
     };
   }
 
@@ -100,11 +118,7 @@ class TimelineApi {
     String url = '${baseUri}timeline/public_homepage';
     debugPrint("Requesting URL $url");
 
-    final dio = Dio();
-    dio.options.headers['Accept'] = '*/*';
-    dio.options.headers['content-Type'] = 'application/json';
-    dio.options.headers["api-key"] = MACHI_KEY;
-
+    final dio = await auth.getPublicDio();
     final response = await dio.get(url);
     final data = response.data;
 

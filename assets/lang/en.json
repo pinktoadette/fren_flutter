@@ -2,7 +2,7 @@
   "lang": "en",
 
   "_app_information": "*** App Basic Informaton ***",
-  "app_short_description": "Create. Chat. Share.",
+  "app_short_description": "Chat. LOL. Scroll. Share.",
 
   "_AboutScreen": "*** About us Screen Translations ***",
   "about_us": "About us",
@@ -41,6 +41,7 @@
 
   "_SignUpScreen": "*** SignUp Screen Translations ***",
   "sign_up": "Sign Up",
+  "sign_in": "Sign In",
   "sign_up_step_1_title": "Hey fren 👋, let's start with a username",
   "sign_up_step_2_title": "let's create a profile picture using prompts",
   "sign_up_step_2_direction": "You can describe yourself, your pet, your favorite vacay spot. Be specific.",
@@ -290,7 +291,6 @@
   "create_bot_success": "Your machi is now published!",
   "manage_bot": "Manage Published Models",
   "media_attached": "Media attached",
-  "login_from_desktop": "Login from Desktop",
   "create_bot_des": "Add models by signing in your GitHub account and earn. \n\nYour GitHub account must be linked to hugging face dataset.",
   "bot_name": "Name",
   "bot_name_hint": "Give a name",

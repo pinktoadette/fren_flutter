@@ -11,6 +11,16 @@ class AuthApi {
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
+  Future<Dio> getPublicDio() async {
+    final dio = Dio();
+    dio.options.headers['Accept'] = '*/*';
+    dio.options.headers['content-Type'] = 'application/json';
+    dio.options.headers["api-key"] = myKey;
+    dio.options.receiveTimeout = const Duration(seconds: 120);
+    dio.options.followRedirects = false;
+    return dio;
+  }
+
   Future<Dio> getDio() async {
     String? token = await getFirebaseUser!.getIdToken();
     final dio = Dio();

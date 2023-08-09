@@ -5,12 +5,14 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
+import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
@@ -43,6 +45,7 @@ class StoryboardItemWidget extends StatefulWidget {
 class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   TimelineController timelineController = Get.find(tag: 'timeline');
+  UserController userController = Get.find(tag: 'user');
 
   late Storyboard storyboard;
   late AppLocalizations _i18n;
@@ -87,7 +90,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             ),
           ),
         _displayType(storyboard, padding, width),
-        if (widget.hideCollection == false) ..._showCollectionFooter()
+        if (widget.hideCollection == false && userController.user != null)
+          ..._showCollectionFooter()
       ],
     );
   }
@@ -133,7 +137,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       );
       return InkWell(
           onTap: () async {
-            _onStoryClick();
+            _navigateNextPage();
           },
           child: Container(
               margin: const EdgeInsets.only(top: 10),
@@ -175,7 +179,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     }
     return InkWell(
         onTap: () async {
-          _onStoryClick();
+          _navigateNextPage();
         },
         child: Container(
           padding: const EdgeInsets.all(20),
@@ -319,6 +323,16 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             ])));
   }
 
+  Future<void> _navigateNextPage() async {
+    NavigationHelper.handleGoToPageOrLogin(
+      context: context,
+      userController: userController,
+      navigateAction: () {
+        _onStoryClick();
+      },
+    );
+  }
+
   Future<void> _onStoryClick() async {
     /// if there is only one story, then go to the story bits
     /// if theres more than one, then show entire collection
@@ -366,7 +380,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   Widget _likeItemWidget(Story item, bool removeLeftPadding) {
     return InkWell(
       onTap: () async {
-        _onStoryClick();
+        _navigateNextPage();
       },
       child: Padding(
           padding: EdgeInsets.only(

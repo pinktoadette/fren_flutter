@@ -52,7 +52,8 @@ class UserApi {
     } catch (error, s) {
       debugPrint(error.toString());
       await FirebaseCrashlytics.instance.recordError(error, s,
-          reason: 'Update user failed in signing', fatal: true);
+          reason: 'Update user failed in signing: ${error.toString()}',
+          fatal: true);
     }
   }
 

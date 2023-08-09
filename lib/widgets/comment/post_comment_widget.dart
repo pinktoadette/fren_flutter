@@ -45,12 +45,16 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-
+    final query = MediaQuery.of(context);
+    double padding = 20;
     return Container(
-        padding:
-            const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
-        width: width,
+        padding: EdgeInsets.fromLTRB(
+          padding,
+          0,
+          padding,
+          query.viewInsets.bottom + padding / 2,
+        ),
+        width: query.size.width,
         decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.tertiary,
             borderRadius: const BorderRadius.only(

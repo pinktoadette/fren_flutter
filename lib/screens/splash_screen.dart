@@ -13,6 +13,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
+import 'package:machi_app/tabs/activity_tab.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -59,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen> {
       } else {
         /// Authenticate User Account
         UserModel().authUserAccount(
-            signInScreen: () => _nextScreen(const SignInScreen()),
+            signInScreen: () => _nextScreen(const ActivityTab()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
             walkthruScreen: () => _nextScreen(const OnboardingScreen()),
             profileImageScreen: () =>
