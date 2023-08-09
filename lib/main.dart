@@ -9,17 +9,18 @@ import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/models/app_model.dart';
+import 'package:machi_app/widgets/common/default_card_border.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/screens/splash_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:leak_detector/leak_detector.dart';
@@ -77,6 +78,9 @@ void main() async {
 
   // revenue cat
   await Purchases.configure(configuration);
+
+  // getx storyage
+  await GetStorage.init();
 
   // GetX all Controller
   MainBinding mainBinding = MainBinding();

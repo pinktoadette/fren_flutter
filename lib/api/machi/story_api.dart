@@ -25,57 +25,45 @@ class StoryApi {
       required String title,
       String? text}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
-    try {
-      String url = '${baseUri}story';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: {
-        STORYBOARD_ID: storyboardId,
-        STORY_TITLE: title,
-        STORY_PHOTO_URL: photoUrl,
-        CHAT_TEXT: text ?? "",
-      });
 
-      Story story = Story.fromJson(response.data);
-      storyController.addNewStory(story);
-      return story;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    String url = '${baseUri}story';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {
+      STORYBOARD_ID: storyboardId,
+      STORY_TITLE: title,
+      STORY_PHOTO_URL: photoUrl,
+      CHAT_TEXT: text ?? "",
+    });
+
+    Story story = Story.fromJson(response.data);
+    storyController.addNewStory(story);
+    return story;
   }
 
   Future<Storyboard> addItemToStory(
       types.Message message, String storyboardId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
-    try {
-      String url = '${baseUri}story';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: {STORY_ID: storyboardId});
 
-      Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(story);
-      return story;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    String url = '${baseUri}story';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {STORY_ID: storyboardId});
+
+    Storyboard story = Storyboard.fromJson(response.data);
+    storyController.updateStoryboard(story);
+    return story;
   }
 
   Future<String> deletStory(Story story) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
-    try {
-      String url = '${baseUri}story';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.delete(url, data: {STORY_ID: story.storyId});
-      storyController.removeStory(story);
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+
+    String url = '${baseUri}story';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.delete(url, data: {STORY_ID: story.storyId});
+    storyController.removeStory(story);
+    return response.data;
   }
 
   Future<Story> getMyStories(String storyId) async {
@@ -83,36 +71,26 @@ class StoryApi {
     String url = '${baseUri}story?storyId=$storyId';
     debugPrint("Requesting URL $url");
 
-    try {
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
 
-      Story story = Story.fromJson(response.data);
-      storyController.setCurrentStory(story);
-      return story;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    Story story = Story.fromJson(response.data);
+    storyController.setCurrentStory(story);
+    return story;
   }
 
   Future<Storyboard> updateScriptSequence(
       List<Map<String, dynamic>> stories) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
-    try {
-      String url = '${baseUri}script/update_seq';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      log(stories.toString());
-      final response = await dio.post(url, data: stories);
-      Storyboard story = Storyboard.fromJson(response.data);
-      storyController.updateStoryboard(story);
-      return story;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    String url = '${baseUri}script/update_seq';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    log(stories.toString());
+    final response = await dio.post(url, data: stories);
+    Storyboard story = Storyboard.fromJson(response.data);
+    storyController.updateStoryboard(story);
+    return story;
   }
 
   Future<Story> updateStory(
@@ -124,52 +102,42 @@ class StoryApi {
       String? layout}) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
 
-    try {
-      String url = '${baseUri}story';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      await dio.put(url, data: {
-        STORY_ID: story.storyId,
-        STORY_TITLE: title ?? story.title,
-        STORY_CATEGORY: category ?? story.category,
-        STORY_SUMMARY: summary ?? story.summary,
-        STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
-        STORY_LAYOUT: layout ?? story.layout!.name,
-        STORY_PAGE_DIRECTION: story.pageDirection?.name,
-        STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
-            ? story.pages!
-                .map((page) => {
-                      STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
-                      SCRIPT_PAGE_NUM: page.pageNum,
-                      STORY_PAGES_ALPHA: page.backgroundAlpha
-                    })
-                .toList()
-            : []
-      });
-      Story updatedStory = story.copyWith(
-          layout: Layout.values.byName(layout ?? story.layout!.name),
-          title: title ?? story.title,
-          pageDirection: story.pageDirection,
-          photoUrl: photoUrl ?? story.photoUrl);
-      storyController.updateStory(story: updatedStory);
-      return updatedStory;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    String url = '${baseUri}story';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    await dio.put(url, data: {
+      STORY_ID: story.storyId,
+      STORY_TITLE: title ?? story.title,
+      STORY_CATEGORY: category ?? story.category,
+      STORY_SUMMARY: summary ?? story.summary,
+      STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
+      STORY_LAYOUT: layout ?? story.layout!.name,
+      STORY_PAGE_DIRECTION: story.pageDirection?.name,
+      STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
+          ? story.pages!
+              .map((page) => {
+                    STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
+                    SCRIPT_PAGE_NUM: page.pageNum,
+                    STORY_PAGES_ALPHA: page.backgroundAlpha
+                  })
+              .toList()
+          : []
+    });
+    Story updatedStory = story.copyWith(
+        layout: Layout.values.byName(layout ?? story.layout!.name),
+        title: title ?? story.title,
+        pageDirection: story.pageDirection,
+        photoUrl: photoUrl ?? story.photoUrl);
+    storyController.updateStory(story: updatedStory);
+    return updatedStory;
   }
 
   Future<Map<String, dynamic>> publishStory(String storyId) async {
-    try {
-      String url = '${baseUri}publish';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: {STORY_ID: storyId});
+    String url = '${baseUri}publish';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url, data: {STORY_ID: storyId});
 
-      return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
-      throw error.toString();
-    }
+    return response.data;
   }
 }

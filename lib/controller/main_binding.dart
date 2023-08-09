@@ -8,6 +8,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/controller/user_controller.dart';
 
 class MainBinding implements Bindings {
   @override
@@ -16,6 +17,7 @@ class MainBinding implements Bindings {
 
     Get.lazyPut<SubscribeController>(() => SubscribeController(),
         tag: "subscribe");
+    Get.lazyPut<UserController>(() => UserController(), tag: "user");
 
     Get.lazyPut<MessageController>(() => MessageController(), tag: "message");
     Get.lazyPut<ChatController>(() => ChatController(), tag: "chatroom");
@@ -24,8 +26,8 @@ class MainBinding implements Bindings {
     Get.lazyPut<StoryboardController>(() => StoryboardController(),
         tag: "storyboard");
     Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
-    Get.lazyPut<InteractiveBoardController>(() => InteractiveBoardController(),
-        tag: "interactive");
+    // Get.lazyPut<InteractiveBoardController>(() => InteractiveBoardController(),
+    //     tag: "interactive");
 
     // Get.lazyPut<AudioController>(() => AudioController(), tag: "audio");
     debugPrint("================ Finish putting controllers ================");

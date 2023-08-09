@@ -1,7 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:machi_app/constants/secrets.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -17,8 +21,15 @@ class TimelineApi {
   /// TIMELINE is now STORYBOARD class, to make things less complicated / less features
   Future<List<Storyboard>> getTimeline(
       int limit, int page, bool? refresh) async {
+    UserController userController = Get.find(tag: 'user');
+
     // String? refreshKey = refresh == true ? "&refresh=true" : "";
     String url = '${baseUri}timeline/user_feed?limit=$limit&page=$page';
+
+    if (userController.user == null) {
+      url = '${baseUri}timeline/public?limit=$limit&page=$page';
+    }
+
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
     final response = await dio.get(url);
@@ -82,6 +93,36 @@ class TimelineApi {
       'machi': bots.toList(),
       'gallery': galleries.toList(),
       'story': storyboards.toList()
+    };
+  }
+
+  Future<Map<String, dynamic>> getPublicHomepage() async {
+    String url = '${baseUri}timeline/public_homepage';
+    debugPrint("Requesting URL $url");
+
+    final dio = Dio();
+    dio.options.headers['Accept'] = '*/*';
+    dio.options.headers['content-Type'] = 'application/json';
+    dio.options.headers["api-key"] = MACHI_KEY;
+
+    final response = await dio.get(url);
+    final data = response.data;
+
+    List<Bot> bots = [];
+    List<Gallery> galleries = [];
+    for (var machi in data['machi']) {
+      Bot bot = Bot.fromDocument(machi);
+      bots.add(bot);
+    }
+
+    for (var gall in data['gallery']) {
+      Gallery gallery = Gallery.fromJson(gall);
+      galleries.add(gallery);
+    }
+
+    return {
+      'machi': bots.toList(),
+      'gallery': galleries.toList(),
     };
   }
 }

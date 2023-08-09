@@ -14,28 +14,20 @@ class AnnouncementApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<dynamic> getAnnounce() async {
-    try {
-      String url = '${baseUri}announcement/announce';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
-      return response.data;
-    } catch (error) {
-      return Future.error(error.toString());
-    }
+    String url = '${baseUri}announcement/announce';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.get(url);
+    return response.data;
   }
 
   Future<String> responseToSurvey(
       {required String announceId, required String choiceId}) async {
-    try {
-      String url = '${baseUri}announcement/user_respond';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio
-          .post(url, data: {"announceId": announceId, "choiceId": choiceId});
-      return response.data;
-    } catch (error) {
-      return Future.error(error.toString());
-    }
+    String url = '${baseUri}announcement/user_respond';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio
+        .post(url, data: {"announceId": announceId, "choiceId": choiceId});
+    return response.data;
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/constants/constants.dart';

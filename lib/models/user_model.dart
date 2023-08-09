@@ -6,6 +6,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/secrets.dart';
 import 'package:machi_app/controller/main_binding.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
@@ -95,10 +96,6 @@ class UserModel extends Model {
     user = User.fromDocument(userDoc);
     notifyListeners();
     debugPrint('User object -> updated!');
-
-    // external api
-    // final mApi = UserApi();
-    // await mApi.updateUser(userDoc);
   }
 
   /// Update user data
@@ -233,15 +230,13 @@ class UserModel extends Model {
               return;
             }
 
-            // Check location data
-            // if (latitude == 0.0 && longitude == 0.0) {
-            //   // Show Update your current location message
-            //   updateLocationScreen();
-            //   return;
-            // }
             // Go to home screen
             homeScreen();
           }
+          // @todo need to remove this
+          UserController userController = Get.find(tag: 'user');
+          userController.initUser();
+
           // Debug
           debugPrint("firebaseUser exists");
         } else {
@@ -253,6 +248,8 @@ class UserModel extends Model {
       });
     } else {
       debugPrint("firebaseUser not logged in");
+      // final box = GetStorage();
+
       walkthruScreen!();
 
       // signInScreen!();

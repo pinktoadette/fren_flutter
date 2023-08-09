@@ -4,6 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
@@ -20,6 +21,7 @@ class TimelineWidget extends StatefulWidget {
 }
 
 class _TimelineWidgetState extends State<TimelineWidget> {
+  UserController userController = Get.find(tag: 'user');
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
   SubscribeController subscriptionController = Get.find(tag: 'subscribe');
@@ -42,11 +44,12 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              subscriptionController.customer == null
-                  ? const SizedBox.shrink()
-                  : subscriptionController.customer!.allPurchaseDates.isEmpty
-                      ? const SubscriptionCard()
-                      : const SizedBox.shrink(),
+              if (userController.user != null)
+                subscriptionController.customer == null
+                    ? const SizedBox.shrink()
+                    : subscriptionController.customer!.allPurchaseDates.isEmpty
+                        ? const SubscriptionCard()
+                        : const SizedBox.shrink(),
               PagedListView<int, Storyboard>.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

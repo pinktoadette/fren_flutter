@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/screens/sign_in_screen.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
+import 'package:machi_app/widgets/homepage/homepage.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -19,28 +19,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     'assets/images/onboard/onboard1.png',
     'assets/images/onboard/onboard2.png',
     'assets/images/onboard/onboard3.png',
+    'assets/images/blank.png'
   ];
   final listCaptions = [
     "Prepare for a LOL escapade with machi",
     "Engage in witty banter with bots that rival a stand-up comedian",
     "Create or scroll thru epic stories and comics that would leave Shakespeare and Superman in awe",
+    "Welcome to Machi"
   ];
   int currentPageIndex = 0;
 
   @override
   void initState() {
     super.initState();
-    _controller.addListener(() {
-      setState(() {
-        currentPageIndex = _controller.page!.round();
-      });
-
-      if (currentPageIndex == 3) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => const SignInScreen()),
-        );
-      }
-    });
   }
 
   @override
@@ -106,8 +97,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         children: [
           PageView.builder(
             scrollDirection: Axis.vertical,
+            physics: currentPageIndex == 3
+                ? const NeverScrollableScrollPhysics()
+                : const AlwaysScrollableScrollPhysics(),
             controller: _controller,
+            itemCount: listCaptions.length,
             itemBuilder: (_, index) {
+              if (index == 3) {
+                Future.delayed(const Duration(milliseconds: 500), () {
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                        builder: (context) => const HomepageWidget()),
+                  );
+                });
+              }
               return pages[index % pages.length];
             },
           ),

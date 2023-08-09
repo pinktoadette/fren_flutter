@@ -1,19 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:get/get.dart';
-import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/first_time/interest_screen.dart';
-import 'package:machi_app/screens/first_time/onboarding.dart';
-import 'package:machi_app/screens/home_screen.dart';
-import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'blocked_account_screen.dart';
+import 'package:machi_app/widgets/signin/sigin_widget.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -70,54 +62,15 @@ class _SignInScreenState extends State<SignInScreen> {
                     style: Theme.of(context).textTheme.labelMedium),
               ),
               const Spacer(),
-              Expanded(
+              const Expanded(
                 child: Align(
                   alignment: FractionalOffset.bottomCenter,
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: EdgeInsets.all(20),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: <Widget>[
-                        if (isLoading == true)
-                          Lottie.asset(
-                            'assets/lottie/loader.json',
-                          ),
-                        SignInButton(Buttons.Google,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
-                            ), onPressed: () {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          UserModel().signInWithGoogle(checkUserAccount: () {
-                            /// Authenticate User Account
-                            UserModel().authUserAccount(
-                                signInScreen: () =>
-                                    _nextScreen(const SignInScreen()),
-                                signUpScreen: () =>
-                                    _nextScreen(const SignUpScreen()),
-                                walkthruScreen: () =>
-                                    _nextScreen(const OnboardingScreen()),
-                                interestScreen: () =>
-                                    _nextScreen(const InterestScreen()),
-                                homeScreen: () =>
-                                    _nextScreen(const HomeScreen()),
-                                blockedScreen: () =>
-                                    _nextScreen(const BlockedAccountScreen()));
-                          }, onError: () async {
-                            // Show error message to user
-                            Get.snackbar(
-                              _i18n.translate("Error"),
-                              _i18n.translate("an_error_has_occurred"),
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: APP_ERROR,
-                            );
-                          }).whenComplete(() => setState(() {
-                                isLoading = false;
-                              }));
-                        }),
-                      ],
+                      children: <Widget>[SignInWidget()],
                     ),
                   ),
                 ),

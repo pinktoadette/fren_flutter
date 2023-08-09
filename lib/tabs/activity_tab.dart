@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
-import 'package:machi_app/widgets/suggestion/suggestion.dart';
+import 'package:machi_app/widgets/homepage/homepage.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 import 'package:get/get.dart';
 
@@ -34,7 +34,7 @@ class _ActivityTabState extends State<ActivityTab> {
         automaticallyImplyLeading: false,
         actions: const [SubscribeTokenCounter()],
       ),
-      body: const SuggestionWidget(),
+      body: const HomepageWidget(),
     );
   }
 }
