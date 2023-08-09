@@ -165,11 +165,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Get.to(() => FollowerList(user: widget.user));
                               },
                               child: Text(
-                                "$followers \n" + _i18n.translate("followers"),
-                                textAlign: TextAlign.center,
-                              ),
+                                  "$followers \n" +
+                                      _i18n.translate("followers"),
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodySmall),
                             )),
-                        const SizedBox(width: 50),
+                        const SizedBox(width: 20),
                         Semantics(
                             label: 'following',
                             button: true,
@@ -178,9 +179,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Get.to(() => FollowingList(user: widget.user));
                               },
                               child: Text(
-                                "$followings \n" + _i18n.translate("following"),
-                                textAlign: TextAlign.center,
-                              ),
+                                  "$followings \n" +
+                                      _i18n.translate("following"),
+                                  textAlign: TextAlign.center,
+                                  style: Theme.of(context).textTheme.bodySmall),
                             )),
                         const Spacer(),
                         _followButton(),
@@ -193,7 +195,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   /// Profile details
                   Container(
                     padding: const EdgeInsets.only(left: 20.0, right: 20),
-                    child: Text(widget.user.userBio ?? "",
+                    child: Text(
+                        widget.user.userBio!.isEmpty
+                            ? "Hey there 👋"
+                            : widget.user.userBio!,
                         overflow: TextOverflow.fade,
                         style: Theme.of(context).textTheme.bodySmall),
                   ),

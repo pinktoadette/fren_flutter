@@ -17,7 +17,6 @@ class MainBinding implements Bindings {
     Get.lazyPut<SubscribeController>(() => SubscribeController(),
         tag: "subscribe");
     Get.lazyPut<UserController>(() => UserController(), tag: "user");
-
     Get.lazyPut<MessageController>(() => MessageController(), tag: "message");
     Get.lazyPut<ChatController>(() => ChatController(), tag: "chatroom");
     Get.lazyPut<TimelineController>(() => TimelineController(),

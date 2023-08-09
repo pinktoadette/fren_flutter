@@ -90,8 +90,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             ),
           ),
         _displayType(storyboard, padding, width),
-        if (widget.hideCollection == false && userController.user != null)
-          ..._showCollectionFooter()
+        if (widget.hideCollection == false) ..._showCollectionFooter()
       ],
     );
   }
@@ -227,7 +226,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   List<Widget> _showCollectionFooter() {
     bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
     return [
-      if (hasSeries)
+      if (hasSeries && userController.user != null)
         Swiper(
             itemWidth: width,
             itemHeight: 250,
@@ -254,8 +253,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                     size: 5,
                     space: 3,
                     activeColor: APP_ACCENT_COLOR,
-                    color: Colors.grey))),
-      if (hasSeries == false) _likeItemWidget(storyboard.story![0], false),
+                    color: Colors.grey)))
+      else
+        _likeItemWidget(storyboard.story![0], false),
       const SizedBox(
         height: 20,
       )

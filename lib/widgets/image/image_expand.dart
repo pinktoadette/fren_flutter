@@ -69,11 +69,15 @@ class ExpandedImagePage extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       if (gallery.createdBy != null)
-                        AvatarInitials(
-                            radius: 16,
-                            userId: gallery.createdBy!.userId,
-                            photoUrl: gallery.createdBy!.photoUrl,
-                            username: gallery.createdBy!.username),
+                        Row(
+                          children: [
+                            AvatarInitials(
+                                radius: 16,
+                                userId: gallery.createdBy!.userId,
+                                photoUrl: gallery.createdBy!.photoUrl,
+                                username: gallery.createdBy!.username),
+                          ],
+                        ),
                       TextButton(
                         onPressed: () async {
                           try {

@@ -4,6 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/widgets/image/image_expand.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
 class UserGallery extends StatefulWidget {
@@ -93,8 +94,22 @@ class _GalleryWidgetState extends State<UserGallery> {
                         Navigator.pop(context);
                       }
                     },
-                    child: StoryCover(
-                        photoUrl: item.photoUrl, title: item.caption),
+                    child: GestureDetector(
+                      onTap: () {
+                        // Navigate to the expanded image page
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ExpandedImagePage(gallery: item),
+                          ),
+                        );
+                      },
+                      child: StoryCover(
+                        radius: 0,
+                        photoUrl: item.photoUrl,
+                        title: item.caption,
+                      ),
+                    ),
                   )),
         ));
   }

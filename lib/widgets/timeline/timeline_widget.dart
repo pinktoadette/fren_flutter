@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
@@ -10,7 +9,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/announcement/inline_survey.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
@@ -33,6 +31,14 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   void initState() {
     super.initState();
+    _getContent();
+  }
+
+  void _getContent() async {
+    await Future.wait([
+      timelineController.fetchHomepageItems(userController.user != null),
+      timelineController.fetchPage(0, true),
+    ]);
   }
 
   @override
@@ -42,10 +48,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
 
     return RefreshIndicator(
         onRefresh: () async {
-          await Future.wait([
-            timelineController.fetchHomepageItems(userController.user != null),
-            timelineController.fetchPage(0, true),
-          ]);
+          _getContent();
         },
         child: SingleChildScrollView(
             child: Column(
@@ -59,15 +62,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     : subscriptionController.customer!.allPurchaseDates.isEmpty
                         ? const SubscriptionCard()
                         : const SizedBox.shrink(),
-              if (timelineController.pagingController.itemList != null)
-                Container(
-                  alignment: Alignment.bottomLeft,
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text(
-                    _i18n.translate("latest_story"),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
               PagedListView<int, Storyboard>.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

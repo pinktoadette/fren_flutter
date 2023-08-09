@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
@@ -55,13 +56,17 @@ class _SignInWidgetState extends State<SignInWidget> {
       SignInButton(Buttons.Google,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
-          ), onPressed: () {
+          ), onPressed: () async {
         setState(() {
           isLoading = true;
         });
 
         /// clear timeline from public view
-        timelineController.clear();
+        Get.deleteAll();
+
+        /// Need to reassign
+        MainBinding mainBinding = MainBinding();
+        await mainBinding.dependencies();
 
         UserModel().signInWithGoogle(checkUserAccount: () {
           /// Authenticate User Account

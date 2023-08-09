@@ -142,36 +142,33 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                 ),
               ),
               // 3x3 grid of image placeholders
-              GridView.builder(
+              GridView.count(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1.0,
-                ),
-                itemCount: timelineController.galleryList.length,
-                itemBuilder: (context, index) {
-                  Gallery gallery = timelineController.galleryList[index];
-                  return GestureDetector(
-                    onTap: () {
-                      // Navigate to the expanded image page
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ExpandedImagePage(gallery: gallery),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      color: Colors.grey,
+                crossAxisCount: 3,
+                childAspectRatio: 1.0,
+                children: List.generate(
+                  timelineController.galleryList.length,
+                  (index) {
+                    Gallery gallery = timelineController.galleryList[index];
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigate to the expanded image page
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ExpandedImagePage(gallery: gallery),
+                          ),
+                        );
+                      },
                       child: StoryCover(
                         radius: 0,
                         photoUrl: gallery.photoUrl,
                         title: gallery.caption,
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
               const InlineAdaptiveAds(),
             ],

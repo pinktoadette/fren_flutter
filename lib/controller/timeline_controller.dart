@@ -53,7 +53,7 @@ class TimelineController extends GetxController {
   clear() {
     machiList.value = [];
     galleryList.value = [];
-    pagingController.dispose();
+    pagingController.itemList?.clear();
   }
 
   Future<void> fetchPage(int pageKey, bool? refresh) async {
