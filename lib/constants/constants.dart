@@ -394,3 +394,4 @@ const String SLASH_BOARD = "/board";
 const String GALLERY = "gallery";
 const String GALLERY_IMAGE_CAPTION = "caption";
 const String GALLERY_IMAGE_URL = "photoUrl";
+const String GALLERY_CREATED_BY = "createdBy";

@@ -185,6 +185,7 @@ class UserModel extends Model {
     VoidCallback? updateLocationScreen,
     VoidCallback? profileImageScreen,
     VoidCallback? interestScreen,
+    VoidCallback? walkthruScreen,
     // Optional functions called on app start
     VoidCallback? signInScreen,
     VoidCallback? blockedScreen,
@@ -252,7 +253,9 @@ class UserModel extends Model {
       });
     } else {
       debugPrint("firebaseUser not logged in");
-      signInScreen!();
+      walkthruScreen!();
+
+      // signInScreen!();
     }
   }
 

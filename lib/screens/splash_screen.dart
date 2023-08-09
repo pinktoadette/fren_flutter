@@ -6,6 +6,7 @@ import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_helper.dart';
+import 'package:machi_app/screens/first_time/onboarding.dart';
 import 'package:machi_app/screens/first_time/profile_image_upload.dart';
 import 'package:machi_app/screens/update_app_screen.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -60,6 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
         UserModel().authUserAccount(
             signInScreen: () => _nextScreen(const SignInScreen()),
             signUpScreen: () => _nextScreen(const SignUpScreen()),
+            walkthruScreen: () => _nextScreen(const OnboardingScreen()),
             profileImageScreen: () =>
                 _nextScreen(const ProfileImageGenerator()),
             interestScreen: () => _nextScreen(const InterestScreen()),

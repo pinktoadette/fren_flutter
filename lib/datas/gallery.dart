@@ -1,8 +1,17 @@
 import 'package:machi_app/constants/constants.dart';
 
+class GalleryUser {
+  final String userId;
+  final String photoUrl;
+  final String username;
+
+  GalleryUser(this.userId, this.photoUrl, this.username);
+}
+
 class Gallery {
   final String photoUrl;
   final String caption;
+  final GalleryUser? createdBy;
   final int createdAt;
   final int updatedAt;
 
@@ -10,14 +19,16 @@ class Gallery {
       {required this.photoUrl,
       required this.caption,
       required this.createdAt,
-      required this.updatedAt});
+      required this.updatedAt,
+      this.createdBy});
 
   Gallery copyWith({String? photoUrl, String? caption}) {
     return Gallery(
         photoUrl: photoUrl ?? this.photoUrl,
         caption: caption ?? this.caption,
         createdAt: createdAt,
-        updatedAt: updatedAt);
+        updatedAt: updatedAt,
+        createdBy: createdBy);
   }
 
   Map<String, dynamic> toJSON() {
@@ -25,7 +36,8 @@ class Gallery {
       GALLERY_IMAGE_CAPTION: caption,
       GALLERY_IMAGE_URL: photoUrl,
       CREATED_AT: createdAt,
-      UPDATED_AT: updatedAt
+      UPDATED_AT: updatedAt,
+      GALLERY_CREATED_BY: createdBy
     };
   }
 
