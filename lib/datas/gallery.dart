@@ -5,7 +5,15 @@ class GalleryUser {
   final String photoUrl;
   final String username;
 
-  GalleryUser(this.userId, this.photoUrl, this.username);
+  GalleryUser(
+      {required this.userId, required this.photoUrl, required this.username});
+
+  factory GalleryUser.fromJson(Map<String, dynamic> doc) {
+    return GalleryUser(
+        userId: doc[USER_ID],
+        photoUrl: doc[USER_PROFILE_PHOTO],
+        username: doc[USER_USERNAME]);
+  }
 }
 
 class Gallery {
@@ -42,10 +50,12 @@ class Gallery {
   }
 
   factory Gallery.fromJson(Map<String, dynamic> doc) {
+    GalleryUser user = GalleryUser.fromJson(doc[GALLERY_CREATED_BY]);
     return Gallery(
         caption: doc[GALLERY_IMAGE_CAPTION],
         photoUrl: doc[GALLERY_IMAGE_URL],
         createdAt: doc[CREATED_AT].toInt(),
-        updatedAt: doc[UPDATED_AT].toInt());
+        updatedAt: doc[UPDATED_AT].toInt(),
+        createdBy: user);
   }
 }

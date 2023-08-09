@@ -97,9 +97,11 @@ class TimelineApi {
       bots.add(bot);
     }
 
-    for (var machi in data['mymachi']) {
-      Bot bot = Bot.fromDocument(machi);
-      mybots.add(bot);
+    if (data['mymachi'] != null && data['mymachi'] is List) {
+      for (var machi in data['mymachi']) {
+        Bot bot = Bot.fromDocument(machi);
+        mybots.add(bot);
+      }
     }
 
     for (var gall in data['gallery']) {

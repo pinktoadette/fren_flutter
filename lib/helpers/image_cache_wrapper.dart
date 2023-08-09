@@ -21,8 +21,6 @@ ImageProvider<Object> imageCacheWrapper(String imageUrl) {
 }
 
 bool isValidImageUrl(String imageUrl) {
-  // Your logic to check if the image URL is valid
-  // For example, you can check if the URL is not empty and starts with 'http' or 'https'
   return imageUrl.isNotEmpty &&
       (imageUrl.startsWith('http://') || imageUrl.startsWith('https://'));
 }

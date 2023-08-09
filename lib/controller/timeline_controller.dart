@@ -49,6 +49,13 @@ class TimelineController extends GetxController {
     galleryList.value = items['gallery'];
   }
 
+  /// clear any items when user signs in from public view
+  clear() {
+    machiList.value = [];
+    galleryList.value = [];
+    pagingController.dispose();
+  }
+
   Future<void> fetchPage(int pageKey, bool? refresh) async {
     if (refresh == true) {
       pagingController.itemList?.clear();

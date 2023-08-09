@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
 import 'package:machi_app/screens/first_time/interest_screen.dart';
@@ -14,7 +15,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
 
 class SignInWidget extends StatefulWidget {
   const SignInWidget({Key? key}) : super(key: key);
@@ -24,6 +24,7 @@ class SignInWidget extends StatefulWidget {
 }
 
 class _SignInWidgetState extends State<SignInWidget> {
+  TimelineController timelineController = Get.find(tag: 'timeline');
   late AppLocalizations _i18n;
   User? user = FirebaseAuth.instance.currentUser;
   bool isLoading = false;
@@ -58,7 +59,10 @@ class _SignInWidgetState extends State<SignInWidget> {
         setState(() {
           isLoading = true;
         });
-        if (isLoading) loadingButton(size: 20, color: APP_ACCENT_COLOR);
+
+        /// clear timeline from public view
+        timelineController.clear();
+
         UserModel().signInWithGoogle(checkUserAccount: () {
           /// Authenticate User Account
           UserModel().authUserAccount(

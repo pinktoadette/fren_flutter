@@ -6,13 +6,13 @@ import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
-import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
+import 'package:machi_app/widgets/image/image_expand.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 
@@ -61,100 +61,120 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _i18n = AppLocalizations.of(context);
-    if (timelineController.machiList.isEmpty) {
-      return const Frankloader();
-    }
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const InlineAdaptiveAds(),
-        const SizedBox(height: 20),
+    return Obx(() => timelineController.machiList.isEmpty
+        ? const Frankloader()
+        : Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const InlineAdaptiveAds(),
+              const SizedBox(height: 20),
 
-        Container(
-          alignment: Alignment.bottomLeft,
-          padding: const EdgeInsets.only(left: 20),
-          child: Text(
-            _i18n.translate("latest_machi_for_you"),
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
-            child: Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  ...timelineController.machiList.map((bot) {
-                    return InkWell(
-                        onTap: () {
-                          NavigationHelper.handleGoToPageOrLogin(
-                            context: context,
-                            userController: userController,
-                            navigateAction: () {
-                              SetCurrentRoom().setNewBotRoom(bot, true);
-                            },
-                          );
-                        },
-                        child: SizedBox(
-                            width: size.width / 3.5,
-                            child: Column(
-                              children: [
-                                CircleAvatar(
-                                  radius: 40,
-                                  backgroundImage: bot.profilePhoto != ""
-                                      ? imageCacheWrapper(bot.profilePhoto!)
-                                      : null,
-                                ),
-                                Text(
-                                  bot.name,
-                                  style: Theme.of(context).textTheme.bodyMedium,
-                                ),
-                                Text(
-                                  bot.category,
-                                  style: Theme.of(context).textTheme.labelSmall,
-                                )
-                              ],
-                            )));
-                  })
-                ])),
-        if (userController.user != null)
-          subscriptionController.customer == null
-              ? const SizedBox.shrink()
-              : subscriptionController.customer!.allPurchaseDates.isEmpty
-                  ? const SubscriptionCard()
-                  : const SizedBox.shrink(),
-        const SizedBox(height: 20),
-        Container(
-          alignment: Alignment.bottomLeft,
-          padding: const EdgeInsets.only(left: 20),
-          child: Text(
-            _i18n.translate("latest_gallery"),
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-        ),
-        // 3x3 grid of image placeholders
-        GridView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-            crossAxisCount: 3,
-            childAspectRatio: 1.0,
-          ),
-          itemCount: timelineController.galleryList.length,
-          itemBuilder: (context, index) {
-            Gallery gallery = timelineController.galleryList[index];
-            return Container(
-              color: Colors.grey,
-              child: StoryCover(
-                  radius: 0,
-                  photoUrl: gallery.photoUrl,
-                  title: gallery.caption),
-            );
-          },
-        ),
-        const InlineAdaptiveAds(),
-      ],
-    );
+              Container(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  _i18n.translate("latest_machi_for_you"),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...timelineController.machiList.map((bot) {
+                          return InkWell(
+                              onTap: () {
+                                NavigationHelper.handleGoToPageOrLogin(
+                                  context: context,
+                                  userController: userController,
+                                  navigateAction: () {
+                                    SetCurrentRoom().setNewBotRoom(bot, true);
+                                  },
+                                );
+                              },
+                              child: SizedBox(
+                                  width: size.width / 3.5,
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      CircleAvatar(
+                                        radius: 40,
+                                        backgroundImage: bot.profilePhoto != ""
+                                            ? imageCacheWrapper(
+                                                bot.profilePhoto!)
+                                            : null,
+                                      ),
+                                      Text(
+                                        bot.name,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .bodyMedium,
+                                      ),
+                                      Text(
+                                        bot.category,
+                                        textAlign: TextAlign.center,
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .labelSmall,
+                                      )
+                                    ],
+                                  )));
+                        })
+                      ])),
+              if (userController.user != null)
+                subscriptionController.customer == null
+                    ? const SizedBox.shrink()
+                    : subscriptionController.customer!.allPurchaseDates.isEmpty
+                        ? const SubscriptionCard()
+                        : const SizedBox.shrink(),
+              const SizedBox(height: 20),
+              Container(
+                alignment: Alignment.bottomLeft,
+                padding: const EdgeInsets.only(left: 20),
+                child: Text(
+                  _i18n.translate("latest_gallery"),
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              ),
+              // 3x3 grid of image placeholders
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1.0,
+                ),
+                itemCount: timelineController.galleryList.length,
+                itemBuilder: (context, index) {
+                  Gallery gallery = timelineController.galleryList[index];
+                  return GestureDetector(
+                    onTap: () {
+                      // Navigate to the expanded image page
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              ExpandedImagePage(gallery: gallery),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      color: Colors.grey,
+                      child: StoryCover(
+                        radius: 0,
+                        photoUrl: gallery.photoUrl,
+                        title: gallery.caption,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const InlineAdaptiveAds(),
+            ],
+          ));
   }
 }
