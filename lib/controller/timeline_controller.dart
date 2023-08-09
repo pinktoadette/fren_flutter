@@ -2,6 +2,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:get/get.dart';
@@ -11,6 +13,10 @@ class TimelineController extends GetxController {
   PagingController<int, Storyboard> pagingController =
       PagingController(firstPageKey: 0);
   Rx<Story?> _currentStory = (null).obs;
+
+  /// top part of the timeline
+  RxList<Bot> machiList = <Bot>[].obs;
+  RxList<Gallery> galleryList = <Gallery>[].obs;
 
   final _timelineApi = TimelineApi();
   static const int _pageSize = ALL_PAGE_SIZE;
@@ -30,6 +36,17 @@ class TimelineController extends GetxController {
   void dispose() {
     pagingController.dispose();
     super.dispose();
+  }
+
+  Future<void> fetchHomepageItems(bool isLoggedIn) async {
+    Map<String, dynamic> items = {};
+    if (isLoggedIn) {
+      items = await _timelineApi.getHomepage();
+    } else {
+      items = await _timelineApi.getPublicHomepage();
+    }
+    machiList.value = items['machi'];
+    galleryList.value = items['gallery'];
   }
 
   Future<void> fetchPage(int pageKey, bool? refresh) async {

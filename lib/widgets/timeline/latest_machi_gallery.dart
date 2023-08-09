@@ -1,9 +1,10 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/api/machi/timeline_api.dart';
-import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/gallery.dart';
@@ -24,12 +25,10 @@ class LatestMachiWidget extends StatefulWidget {
 
 class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   UserController userController = Get.find(tag: 'user');
-  ChatController chatController = Get.find(tag: 'chatroom');
   SubscribeController subscriptionController = Get.find(tag: 'subscribe');
-  final _timelineApi = TimelineApi();
+  TimelineController timelineController = Get.find(tag: 'timeline');
   late AppLocalizations _i18n;
 
-  Map<String, dynamic> items = {'machi': <Bot>[], 'gallery': <Gallery>[]};
   @override
   void initState() {
     super.initState();
@@ -42,22 +41,27 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   }
 
   void _getHomePage() async {
-    Map<String, dynamic> homepageItems = items;
-    if (userController.user == null) {
-      homepageItems = await _timelineApi.getPublicHomepage();
-    } else {
-      homepageItems = await _timelineApi.getHomepage();
+    try {
+      bool isLoggedIn = userController.user == null ? false : true;
+      await timelineController.fetchHomepageItems(isLoggedIn);
+    } catch (err, stack) {
+      Get.snackbar(
+        _i18n.translate("Error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Error getting homepage items ${err.toString()}',
+          fatal: false);
     }
-    setState(() {
-      items = homepageItems;
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _i18n = AppLocalizations.of(context);
-    if (items['machi'].isEmpty) {
+    if (timelineController.machiList.isEmpty) {
       return const Frankloader();
     }
 
@@ -81,7 +85,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ...items['machi'].map((bot) {
+                  ...timelineController.machiList.map((bot) {
                     return InkWell(
                         onTap: () {
                           NavigationHelper.handleGoToPageOrLogin(
@@ -137,9 +141,9 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
             crossAxisCount: 3,
             childAspectRatio: 1.0,
           ),
-          itemCount: items['gallery'].length,
+          itemCount: timelineController.galleryList.length,
           itemBuilder: (context, index) {
-            Gallery gallery = items['gallery'][index];
+            Gallery gallery = timelineController.galleryList[index];
             return Container(
               color: Colors.grey,
               child: StoryCover(

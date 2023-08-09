@@ -480,7 +480,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
         backgroundColor: APP_ERROR,
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Error loading more messages in infinite scroll',
+          reason:
+              'Error loading more messages in infinite scroll ${err.toString()}',
           fatal: false);
     }
   }

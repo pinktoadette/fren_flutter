@@ -4,7 +4,6 @@ import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/cache_manager_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:machi_app/constants/secrets.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/gallery.dart';
@@ -24,8 +23,9 @@ class TimelineApi {
       int limit, int page, bool? refresh) async {
     UserController userController = Get.find(tag: 'user');
 
-    // String? refreshKey = refresh == true ? "&refresh=true" : "";
-    String url = '${baseUri}timeline/user_feed?limit=$limit&page=$page';
+    String? refreshKey = refresh == true ? "&refresh=true" : "";
+    String url =
+        '${baseUri}timeline/user_feed?limit=$limit&page=$page$refreshKey';
 
     if (userController.user == null) {
       url = '${baseUri}timeline/public?limit=$limit&page=$page';

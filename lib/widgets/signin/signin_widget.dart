@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:get/get.dart';
+import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
@@ -13,7 +14,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter_signin_button/flutter_signin_button.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:machi_app/screens/sign_in_screen.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
 class SignInWidget extends StatefulWidget {
@@ -47,7 +47,10 @@ class _SignInWidgetState extends State<SignInWidget> {
         _i18n.translate("sign_in"),
         style: Theme.of(context).textTheme.headlineSmall,
       ),
-      if (isLoading) const Frankloader(),
+      if (isLoading == true)
+        Lottie.asset('assets/lottie/loader.json', height: 60)
+      else
+        const SizedBox(height: 60),
       SignInButton(Buttons.Google,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),

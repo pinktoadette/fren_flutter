@@ -10,6 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/announcement/inline_survey.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
@@ -41,7 +42,10 @@ class _TimelineWidgetState extends State<TimelineWidget> {
 
     return RefreshIndicator(
         onRefresh: () async {
-          timelineController.fetchPage(0, true);
+          await Future.wait([
+            timelineController.fetchHomepageItems(userController.user != null),
+            timelineController.fetchPage(0, true),
+          ]);
         },
         child: SingleChildScrollView(
             child: Column(
@@ -55,14 +59,15 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     : subscriptionController.customer!.allPurchaseDates.isEmpty
                         ? const SubscriptionCard()
                         : const SizedBox.shrink(),
-              Container(
-                alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  _i18n.translate("latest_story"),
-                  style: Theme.of(context).textTheme.bodyMedium,
+              if (timelineController.pagingController.itemList != null)
+                Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    _i18n.translate("latest_story"),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
                 ),
-              ),
               PagedListView<int, Storyboard>.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -70,23 +75,14 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 pagingController: timelineController.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Storyboard>(
                     firstPageProgressIndicatorBuilder: (_) =>
-                        const Frankloader(),
+                        const SizedBox.shrink(),
                     newPageProgressIndicatorBuilder: (_) => const Frankloader(),
                     itemBuilder: (context, item, index) {
                       return StoryboardItemWidget(item: item);
                     }),
                 separatorBuilder: (BuildContext context, int index) {
                   if ((index + 1) % 3 == 0) {
-                    return Padding(
-                      padding:
-                          const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                      child: Container(
-                        height: AD_HEIGHT,
-                        width: width,
-                        color: Theme.of(context).colorScheme.background,
-                        child: const InlineAdaptiveAds(),
-                      ),
-                    );
+                    return const InlineAdaptiveAds();
                   } else if ((index + 1) % 2 == 0 && (index == 1)) {
                     return Padding(
                       padding:

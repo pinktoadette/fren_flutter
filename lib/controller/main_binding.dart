@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/comment_controller.dart';
-import 'package:machi_app/controller/interactive_board_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';

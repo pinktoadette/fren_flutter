@@ -12,7 +12,6 @@ import 'package:machi_app/screens/update_app_screen.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
-import 'package:machi_app/screens/sign_in_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 
 class SplashScreen extends StatefulWidget {
