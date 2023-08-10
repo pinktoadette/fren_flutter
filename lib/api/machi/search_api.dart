@@ -16,18 +16,16 @@ class SearchApi {
   Future<List<dynamic>> searchUser(String term) async {
     String url = '${baseUri}search/user?term=$term';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
-    final getData = response.data;
-    return getData;
+    final response = await auth.retryGetRequest(url);
+    final data = response.data;
+    return data;
   }
 
   Future<List<dynamic>> searchMachi(String term) async {
     String url = '${baseUri}search/machi?term=$term';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
-    final getData = response.data;
-    return getData;
+    final response = await auth.retryGetRequest(url);
+    final data = response.data;
+    return data;
   }
 }

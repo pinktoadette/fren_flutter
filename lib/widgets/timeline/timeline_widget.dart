@@ -26,7 +26,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
   SubscribeController subscriptionController = Get.find(tag: 'subscribe');
-  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -44,7 +43,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    _i18n = AppLocalizations.of(context);
 
     return RefreshIndicator(
         onRefresh: () async {

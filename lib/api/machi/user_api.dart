@@ -15,8 +15,7 @@ class UserApi {
   Future<User> getUser() async {
     String url = '${baseUri}user/user';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     final getData = response.data;
     return getData.toJson();
   }
@@ -24,8 +23,7 @@ class UserApi {
   Future<User> getUserById(String userId) async {
     String url = '${baseUri}user/get_userId?userId=$userId';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     final getData = response.data;
 
     User user = User.fromDocument(getData);
@@ -61,8 +59,7 @@ class UserApi {
     try {
       String url = '${baseUri}user/username_available?username=$username';
       debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+      final response = await auth.retryGetRequest(url);
       return response.data;
     } catch (error) {
       debugPrint(error.toString());
@@ -78,6 +75,7 @@ class UserApi {
       await dio.post(url);
     } catch (error) {
       debugPrint(error.toString());
+      rethrow;
     }
   }
 }

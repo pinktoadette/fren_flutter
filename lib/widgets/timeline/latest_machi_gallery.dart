@@ -96,7 +96,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                                 );
                               },
                               child: SizedBox(
-                                  width: size.width / 3.5,
+                                  width: size.width / 4.5,
                                   child: Column(
                                     crossAxisAlignment:
                                         CrossAxisAlignment.center,
@@ -111,9 +111,10 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                                       ),
                                       Text(
                                         bot.name,
+                                        textAlign: TextAlign.center,
                                         style: Theme.of(context)
                                             .textTheme
-                                            .bodyMedium,
+                                            .bodySmall,
                                       ),
                                       Text(
                                         bot.category,

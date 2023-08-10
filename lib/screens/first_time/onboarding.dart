@@ -107,7 +107,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             itemCount: listCaptions.length,
             itemBuilder: (_, index) {
               if (index == 3) {
-                Future.delayed(const Duration(milliseconds: 500), () {
+                Future.delayed(const Duration(milliseconds: 1500), () {
                   Navigator.of(context).pushReplacement(
                     MaterialPageRoute(
                         builder: (context) => const ActivityTab()),

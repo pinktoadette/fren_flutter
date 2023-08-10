@@ -52,13 +52,12 @@ class InteractiveBoardApi {
   Future<List<InteractiveBoard>> getAllInteractive({required int page}) async {
     String url = '${baseUri}interactive/all?page=$page';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
-    final getData = response.data;
+    final response = await auth.retryGetRequest(url);
+    final data = response.data;
 
     List<InteractiveBoard> boards = [];
 
-    for (var board in getData) {
+    for (var board in data) {
       InteractiveTheme theme = themes
           .firstWhere((t) => board[INTERACTIVE_THEME_ID] == t.id.toString());
 
@@ -80,8 +79,7 @@ class InteractiveBoardApi {
     }
 
     try {
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+      final response = await auth.retryGetRequest(url);
       final Map<String, dynamic> responseData = response.data;
 
       final prompts = InteractiveBoardPrompt.fromJson(responseData);

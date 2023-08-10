@@ -17,14 +17,14 @@ class StoryboardApi {
     try {
       String url = '${baseUri}board?storyboardId=$storyboardId';
       debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+      final response = await auth.retryGetRequest(url);
+      final data = response.data;
 
-      Storyboard story = Storyboard.fromJson(response.data);
+      Storyboard story = Storyboard.fromJson(data);
       return story;
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 
@@ -57,7 +57,7 @@ class StoryboardApi {
       return story;
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 
@@ -73,7 +73,7 @@ class StoryboardApi {
       return response.data;
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 
@@ -82,18 +82,18 @@ class StoryboardApi {
       String url =
           '${baseUri}my_storyboards${statusFilter != null ? "?status=$statusFilter" : ""}';
       debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+      final response = await auth.retryGetRequest(url);
+      final data = response.data;
 
       List<Storyboard> stories = [];
-      for (var story in response.data) {
+      for (var story in data) {
         Storyboard s = Storyboard.fromJson(story);
         stories.add(s);
       }
       return stories;
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 
@@ -118,7 +118,7 @@ class StoryboardApi {
       return story;
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 
@@ -137,7 +137,7 @@ class StoryboardApi {
       return story;
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 
@@ -145,12 +145,12 @@ class StoryboardApi {
     try {
       String url = '${baseUri}contributors?storyboardId=$storyboardId';
       debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
-      return response.data['characters'];
+      final response = await auth.retryGetRequest(url);
+      final data = response.data;
+      return data['characters'];
     } catch (error) {
       debugPrint(error.toString());
-      throw error.toString();
+      rethrow;
     }
   }
 }

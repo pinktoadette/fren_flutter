@@ -16,10 +16,10 @@ class GalleryApi {
     try {
       String url = '${baseUri}gallery/gallery?userId=$userId&page=$page';
       debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.get(url);
+      final response = await auth.retryGetRequest(url);
+      final data = response.data;
       List<Gallery> galleries = [];
-      for (Map<String, dynamic> gallery in response.data) {
+      for (Map<String, dynamic> gallery in data) {
         Gallery gal = Gallery.fromJson(gallery);
         galleries.add(gal);
       }

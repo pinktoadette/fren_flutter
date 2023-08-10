@@ -48,8 +48,7 @@ class BotApi {
     required botId,
   }) async {
     String url = '${baseUri}machi?botId=$botId';
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     final getData = response.data;
 
     return Bot.fromDocument(getData);
@@ -74,8 +73,7 @@ class BotApi {
       String? search}) async {
     String url =
         '${baseUri}get_all?page=$page${search != null ? "&search=$search" : ""}';
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     final getData = response.data;
 
     List<Bot> result = [];
@@ -88,8 +86,7 @@ class BotApi {
 
   Future<List<Bot>> getMyCreatedBots() async {
     String url = '${baseUri}get_my_creation';
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     final getData = response.data;
 
     return getData.toJson();
@@ -97,8 +94,7 @@ class BotApi {
 
   Future<List<Bot>> myAddedMachi() async {
     String url = '${baseUri}user_added_machi';
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     final getData = response.data;
 
     List<Bot> botList = [];

@@ -32,11 +32,11 @@ class CommentApi {
       int page, int limit, String storyId) async {
     String url = '${baseUri}comment?storyId=$storyId&limit=$limit&page=$page';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
+    final data = response.data;
 
     List<StoryComment> comments = [];
-    for (var res in response.data) {
+    for (var res in data) {
       StoryComment c = StoryComment.fromDocument(res);
       comments.add(c);
     }

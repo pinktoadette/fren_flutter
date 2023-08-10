@@ -412,7 +412,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     try {
       await _messagesApi.saveUserResponse(
           messageMap: messageMap, tags: _setTags);
-      _getMachiResponse();
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("Error"),
@@ -423,6 +422,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error saving and getting bot response', fatal: true);
     }
+    _getMachiResponse();
   }
 
   Future<void> _getMachiResponse() async {

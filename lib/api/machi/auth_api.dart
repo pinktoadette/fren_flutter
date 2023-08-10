@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/constants/secrets.dart';
 
@@ -44,5 +45,28 @@ class AuthApi {
     dio.options.headers['content-Type'] = 'application/json';
     dio.options.headers["api-key"] = myKey;
     return dio;
+  }
+
+  Future<Response> retryGetRequest(String url,
+      {int retries = 3, bool isPublic = false}) async {
+    Dio dio = isPublic == false ? await getDio() : await getPublicDio();
+
+    for (int retry = 0; retry < retries; retry++) {
+      try {
+        final Response response = await dio.get(url);
+
+        if (response.statusCode! >= 200 && response.statusCode! < 300) {
+          return response;
+        }
+      } catch (error, stack) {
+        await FirebaseCrashlytics.instance.recordError(error, stack,
+            reason: 'retry count $retry on $url: $error', fatal: true);
+        rethrow;
+      }
+
+      // Wait before retrying
+      await Future.delayed(const Duration(seconds: 2));
+    }
+    throw Exception('Failed to fetch data after $retries retries');
   }
 }

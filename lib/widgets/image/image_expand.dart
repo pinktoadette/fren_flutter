@@ -7,7 +7,6 @@ import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 class ExpandedImagePage extends StatelessWidget {
   final Gallery gallery;

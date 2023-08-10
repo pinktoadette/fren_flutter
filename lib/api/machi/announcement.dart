@@ -16,8 +16,7 @@ class AnnouncementApi {
   Future<dynamic> getAnnounce() async {
     String url = '${baseUri}announcement/announce';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
     return response.data;
   }
 

@@ -31,13 +31,12 @@ class TimelineApi {
       url = '${baseUri}timeline/public?limit=$limit&page=$page';
     }
 
-    final dio = userController.user == null
-        ? await auth.getPublicDio()
-        : await auth.getDio();
-    final response = await dio.get(url);
+    final response =
+        await auth.retryGetRequest(url, isPublic: userController.user == null);
+    final result = response.data;
 
     List<Storyboard> timeline = [];
-    for (var data in response.data) {
+    for (var data in result) {
       Storyboard time = Storyboard.fromJson(data);
       timeline.add(time);
     }
@@ -47,11 +46,11 @@ class TimelineApi {
   Future<List<Storyboard>> getTimelineByPageUserId(String userId) async {
     String url = '${baseUri}timeline/user_timeline?userId=$userId';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
+    final result = response.data;
 
     List<Storyboard> timeline = [];
-    for (var data in response.data) {
+    for (var data in result) {
       Storyboard time = Storyboard.fromJson(data);
       timeline.add(time);
     }
@@ -79,8 +78,7 @@ class TimelineApi {
       return result;
     }
 
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
 
     await cachingHelper.cacheUrl(
         url, response.data, const Duration(minutes: 5));
@@ -120,8 +118,7 @@ class TimelineApi {
     String url = '${baseUri}timeline/public_homepage';
     debugPrint("Requesting URL $url");
 
-    final dio = await auth.getPublicDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url, isPublic: true);
     final data = response.data;
 
     List<Bot> bots = [];

@@ -71,10 +71,10 @@ class StoryApi {
     String url = '${baseUri}story?storyId=$storyId';
     debugPrint("Requesting URL $url");
 
-    final dio = await auth.getDio();
-    final response = await dio.get(url);
+    final response = await auth.retryGetRequest(url);
+    final data = response.data;
 
-    Story story = Story.fromJson(response.data);
+    Story story = Story.fromJson(data);
     storyController.setCurrentStory(story);
     return story;
   }
