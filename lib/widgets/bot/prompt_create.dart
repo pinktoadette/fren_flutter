@@ -232,6 +232,14 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       errorMessage = '';
     });
 
+    if (_nameController.text.toLowerCase() == 'frankie') {
+      Get.snackbar(_i18n.translate("validation_warning"), "This name is taken.",
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_WARNING,
+          colorText: Colors.black);
+      return;
+    }
+
     if (_promptController.text.length < 50 || _nameController.text.length < 3) {
       Get.snackbar(_i18n.translate("validation_warning"),
           _i18n.translate("validation_insufficient_caharacter"),
@@ -240,6 +248,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           colorText: Colors.black);
       return;
     }
+
     _pr.show(_i18n.translate("processing"));
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;
