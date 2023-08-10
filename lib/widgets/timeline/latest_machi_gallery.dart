@@ -41,6 +41,9 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   }
 
   void _getHomePage() async {
+    if (!mounted) {
+      return;
+    }
     try {
       bool isLoggedIn = userController.user == null ? false : true;
       await timelineController.fetchHomepageItems(isLoggedIn);

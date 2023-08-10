@@ -23,7 +23,15 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _getCategory() async {
+    if (!mounted) {
+      return;
+    }
     String _cat = await rootBundle.loadString('assets/json/category.json');
     List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
     setState(() {

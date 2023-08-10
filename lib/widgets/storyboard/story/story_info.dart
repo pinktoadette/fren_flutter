@@ -34,7 +34,15 @@ class _StoryInfoState extends State<StoryInfo> {
     _fetchContributors();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   _fetchContributors() async {
+    if (!mounted) {
+      return;
+    }
     Storyboard storyboard = storyboardController.currentStoryboard;
 
     List<dynamic> contribute = await _storyboardApi.getContributors(

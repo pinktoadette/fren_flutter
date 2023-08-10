@@ -31,8 +31,7 @@ class TimelineApi {
       url = '${baseUri}timeline/public?limit=$limit&page=$page';
     }
 
-    final response =
-        await auth.retryGetRequest(url, isPublic: userController.user == null);
+    final response = await auth.retryGetRequest(url);
     final result = response.data;
 
     List<Storyboard> timeline = [];
@@ -118,7 +117,7 @@ class TimelineApi {
     String url = '${baseUri}timeline/public_homepage';
     debugPrint("Requesting URL $url");
 
-    final response = await auth.retryGetRequest(url, isPublic: true);
+    final response = await auth.retryGetRequest(url);
     final data = response.data;
 
     List<Bot> bots = [];

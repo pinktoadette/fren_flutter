@@ -22,6 +22,11 @@ class _StoryStatsActionState extends State<StoryStatsAction> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),

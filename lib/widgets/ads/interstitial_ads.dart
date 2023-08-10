@@ -29,6 +29,9 @@ class _InterstitialAdsState extends State<InterstitialAds> {
   }
 
   void _loadAds() {
+    if (!mounted) {
+      return;
+    }
     InterstitialAd.load(
       adUnitId: AdManager.interstitialAdUnitId,
       request: const AdRequest(),

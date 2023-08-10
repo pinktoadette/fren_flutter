@@ -22,6 +22,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   /// Initialize user settings
   void initUserSettings() async {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
@@ -34,6 +37,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() {
     super.initState();
     initUserSettings();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

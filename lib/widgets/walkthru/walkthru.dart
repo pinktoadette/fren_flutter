@@ -45,6 +45,9 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
   }
 
   void startCarousel() {
+    if (!mounted) {
+      return;
+    }
     _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
       setState(() {
         currentIndex = (currentIndex + 1) % pictures.length;

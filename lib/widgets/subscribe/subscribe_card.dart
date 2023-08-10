@@ -27,7 +27,15 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
     isUserSubscribed = UserModel().user.isSubscribed;
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _fetchSubscription() async {
+    if (!mounted) {
+      return;
+    }
     try {
       CustomerInfo customerInfo = await Purchases.getCustomerInfo();
       setState(() {

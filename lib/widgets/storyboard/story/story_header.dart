@@ -30,6 +30,11 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double storyCoverWidth = 50;
     double padding = 0;

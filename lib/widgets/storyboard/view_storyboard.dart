@@ -28,6 +28,11 @@ class _ViewStoryboardState extends State<ViewStoryboard> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
 

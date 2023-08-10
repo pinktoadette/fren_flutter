@@ -30,7 +30,15 @@ class _InterestScreenState extends State<InterestScreen> {
     _fetchRecommend();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _fetchRecommend() async {
+    if (!mounted) {
+      return;
+    }
     String _cat =
         await rootBundle.loadString('assets/json/shorten_interest.json');
     List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);

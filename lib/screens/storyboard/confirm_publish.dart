@@ -108,7 +108,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                 children: [
                   Text(_i18n.translate("publish_confirm_format"),
                       style: styleLabel),
-                  Text(story!.layout?.name ?? Layout.CONVO.name),
+                  Text(story?.layout?.name ?? Layout.CONVO.name),
                 ],
               ),
               CategoryDropdownWidget(

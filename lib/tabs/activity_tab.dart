@@ -22,6 +22,11 @@ class _ActivityTabState extends State<ActivityTab> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(

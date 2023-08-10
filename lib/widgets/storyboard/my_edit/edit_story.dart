@@ -39,11 +39,8 @@ class _EditPageState extends State<EditPage> {
 
   @override
   void initState() {
-    _setupPages();
     super.initState();
-  }
 
-  void _setupPages() {
     setState(() {
       story = widget.passStory;
       selectedLayout = widget.passStory.layout ?? Layout.CONVO;

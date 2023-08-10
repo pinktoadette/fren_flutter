@@ -24,6 +24,11 @@ class _ImageStudioScreenState extends State<ImageStudioScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 

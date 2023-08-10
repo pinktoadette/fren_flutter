@@ -30,7 +30,15 @@ class _InlineSurveyState extends State<InlineSurvey>
     _getSurvey();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _getSurvey() async {
+    if (!mounted) {
+      return;
+    }
     final res = await _announceApi.getAnnounce();
     if (res.isNotEmpty) {
       setState(() {

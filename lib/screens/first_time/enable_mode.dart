@@ -26,6 +26,11 @@ class _EnableModeState extends State<EnableMode> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   _setSelection(String key, bool value) {
     setState(() {
       values[key] = value;

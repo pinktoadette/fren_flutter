@@ -23,6 +23,9 @@ class AuthApi {
   }
 
   Future<Dio> getDio() async {
+    if (getFirebaseUser == null) {
+      return await getPublicDio();
+    }
     String? token = await getFirebaseUser!.getIdToken();
     final dio = Dio();
     dio.options.headers['Accept'] = '*/*';
@@ -47,9 +50,8 @@ class AuthApi {
     return dio;
   }
 
-  Future<Response> retryGetRequest(String url,
-      {int retries = 3, bool isPublic = false}) async {
-    Dio dio = isPublic == false ? await getDio() : await getPublicDio();
+  Future<Response> retryGetRequest(String url, {int retries = 3}) async {
+    Dio dio = await getDio();
 
     for (int retry = 0; retry < retries; retry++) {
       try {

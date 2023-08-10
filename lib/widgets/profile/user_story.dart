@@ -29,6 +29,11 @@ class _UserStoryState extends State<UserStory> {
     _fetchPage(0);
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Future<void> _fetchPage(int pageKey) async {
     try {
       List<Storyboard> newItems =

@@ -81,6 +81,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;

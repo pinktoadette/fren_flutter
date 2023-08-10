@@ -36,7 +36,16 @@ class GoogleWidgetState extends State<GoogleWidget> {
   @override
   void initState() {
     super.initState();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+    _initializeGoogleSignIn();
+  }
+
+  void _initializeGoogleSignIn() {
+    _googleSignIn.onCurrentUserChanged.listen(_onCurrentUserChanged);
+    _googleSignIn.signInSilently();
+  }
+
+  void _onCurrentUserChanged(GoogleSignInAccount? account) {
+    if (mounted) {
       setState(() {
         _currentUser = account;
       });
@@ -45,8 +54,12 @@ class GoogleWidgetState extends State<GoogleWidget> {
       } else {
         _handleSignIn();
       }
-    });
-    _googleSignIn.signInSilently();
+    }
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   Future<void> _handleGetContact(GoogleSignInAccount user) async {

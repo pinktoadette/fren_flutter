@@ -74,7 +74,6 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
     // Close streams
     _userStream.drain();
-    // _inAppPurchaseStream.cancel();
   }
 
   /// Update selected tab

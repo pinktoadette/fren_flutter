@@ -33,6 +33,11 @@ class _TimelineWidgetState extends State<TimelineWidget> {
     _getContent();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _getContent() async {
     await Future.wait([
       timelineController.fetchHomepageItems(userController.user != null),
@@ -75,7 +80,9 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 separatorBuilder: (BuildContext context, int index) {
                   if ((index + 1) % 3 == 0) {
                     return const InlineAdaptiveAds();
-                  } else if ((index + 1) % 2 == 0 && (index == 1)) {
+                  } else if ((index + 1) % 2 == 0 &&
+                      (index == 1) &&
+                      userController.user != null) {
                     return Padding(
                       padding:
                           const EdgeInsetsDirectional.only(top: 10, bottom: 10),

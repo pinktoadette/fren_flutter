@@ -24,6 +24,11 @@ class _SearchBarState extends State<SearchBarWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _i18n = AppLocalizations.of(context);
     return Padding(

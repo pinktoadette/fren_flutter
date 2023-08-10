@@ -30,6 +30,11 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 

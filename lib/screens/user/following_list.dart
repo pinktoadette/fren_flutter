@@ -33,6 +33,9 @@ class _FollowingListState extends State<FollowingList> {
   }
 
   void _getFollowers() async {
+    if (!mounted) {
+      return;
+    }
     final user = await _friendApi.userFollowing(widget.user.userId);
 
     setState(() {

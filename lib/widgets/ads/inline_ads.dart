@@ -41,6 +41,9 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
   }
 
   void _loadAds() {
+    if (!mounted) {
+      return;
+    }
     BannerAd(
       adUnitId: AdManager.bannerAdUnitId,
       size: AdSize.banner,

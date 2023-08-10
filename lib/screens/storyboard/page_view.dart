@@ -87,6 +87,9 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   void getStoryContent() {
+    if (!mounted) {
+      return;
+    }
     try {
       timelineController.setStoryTimelineControllerCurrent(widget.story);
       setState(() {

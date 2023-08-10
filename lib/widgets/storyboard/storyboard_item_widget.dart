@@ -61,6 +61,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     width = MediaQuery.of(context).size.width;

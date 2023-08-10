@@ -42,6 +42,11 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   void didUpdateWidget(oldWidget) {
     if (_selectedIcon != null && widget.onTagChange == null) {
       setState(() {

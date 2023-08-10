@@ -38,6 +38,9 @@ class _ReportFormState extends State<ReportForm> {
   }
 
   void _getCategory() async {
+    if (!mounted) {
+      return;
+    }
     String _cat = await rootBundle.loadString('assets/json/report.json');
     List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
     setState(() {

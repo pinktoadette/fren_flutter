@@ -39,16 +39,17 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
 
   @override
   void initState() {
-    _setupPages();
     super.initState();
-  }
-
-  void _setupPages() {
     setState(() {
       story = widget.passStory;
       _alphaValue = widget.alpha ?? 0.5;
       galleryImageUrl = widget.backgroundImage;
     });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

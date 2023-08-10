@@ -32,7 +32,15 @@ class _FollowerListState extends State<FollowerList> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _getFollowers() async {
+    if (!mounted) {
+      return;
+    }
     final user = await _friendApi.userFollowers(widget.user.userId);
 
     setState(() {

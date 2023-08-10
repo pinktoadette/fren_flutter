@@ -21,6 +21,9 @@ class _GalleryWidgetState extends State<GalleryWidget> {
   }
 
   void _fetchGallery() async {
+    if (!mounted) {
+      return;
+    }
     List<Gallery> gal =
         await _galleryApi.getUserGallery(userId: widget.userId, page: 0);
     setState(() {

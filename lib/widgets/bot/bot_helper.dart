@@ -34,6 +34,11 @@ class _MachiHelperState extends State<MachiHelper> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
 

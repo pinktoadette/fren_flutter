@@ -33,7 +33,6 @@ class NotificationsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        titleSpacing: 0,
         centerTitle: false,
         title: Text(
           i18n.translate("notifications"),

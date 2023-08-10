@@ -43,7 +43,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   void _isUserFriend() async {
+    if (!mounted) {
+      return;
+    }
     final user = await _userApi.getUserById(widget.user.userId);
     _setUserCount(user);
   }

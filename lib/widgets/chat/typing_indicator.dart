@@ -82,6 +82,9 @@ class _JumpingDotsState extends State<JumpingDots>
   }
 
   void _initAnimation() {
+    if (!mounted) {
+      return;
+    }
     _animationControllers = List.generate(
       widget.numberOfDots,
       (index) {

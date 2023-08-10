@@ -25,6 +25,9 @@ class _FriendListState extends State<FriendListWidget> {
   late AppLocalizations _i18n;
 
   Future<List<dynamic>> _getFriends() async {
+    if (!mounted) {
+      return [];
+    }
     return await _friendApi.getAllFriends();
   }
 
@@ -38,6 +41,11 @@ class _FriendListState extends State<FriendListWidget> {
   void initState() {
     _getFriends();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

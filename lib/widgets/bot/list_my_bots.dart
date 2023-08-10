@@ -19,6 +19,9 @@ class _ListMyBotWidget extends State<ListMyBot> {
   List<Bot> _listBot = [];
 
   Future<void> _fetchAllBots() async {
+    if (!mounted) {
+      return;
+    }
     List<Bot> result = await _botApi.myAddedMachi();
     setState(() => _listBot = result);
   }
@@ -27,6 +30,11 @@ class _ListMyBotWidget extends State<ListMyBot> {
   void initState() {
     _fetchAllBots();
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

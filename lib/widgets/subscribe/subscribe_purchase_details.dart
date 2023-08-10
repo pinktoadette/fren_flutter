@@ -22,19 +22,36 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      customer = subscribeController.customer!;
+    initializeCustomerData();
+  }
 
-      if (customer.activeSubscriptions.isNotEmpty) {
-        /// only one subscription at a time
-        activeSubscription = customer.activeSubscriptions[0];
-        activeExpiredDate =
-            DateTime.parse(customer.allExpirationDates[activeSubscription]!)
-                .toLocal()
-                .toString()
-                .substring(0, 10);
-      }
-    });
+  void initializeCustomerData() {
+    final customer = subscribeController.customer;
+
+    if (customer != null && mounted) {
+      setState(() {
+        this.customer = customer;
+
+        if (customer.activeSubscriptions.isNotEmpty) {
+          activeSubscription = customer.activeSubscriptions[0];
+          final activeExpiredDateRaw =
+              customer.allExpirationDates[activeSubscription];
+          if (activeExpiredDateRaw != null) {
+            activeExpiredDate = formatDate(activeExpiredDateRaw);
+          }
+        }
+      });
+    }
+  }
+
+  String formatDate(String date) {
+    final dateTime = DateTime.parse(date).toLocal();
+    return dateTime.toString().substring(0, 10);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override

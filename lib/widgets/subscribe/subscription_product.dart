@@ -45,6 +45,11 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     _pr = ProgressDialog(context, isDismissible: false);
@@ -77,6 +82,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   Future fetchOffers() async {
+    if (!mounted) {
+      return;
+    }
     try {
       List<Offering> offerings = await PurchasesApi.fetchOffers();
 

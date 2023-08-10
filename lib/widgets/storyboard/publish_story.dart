@@ -32,12 +32,19 @@ class _PublishStoryState extends State<PublishStory> {
 
   @override
   void initState() {
-    _publishStory();
-
     super.initState();
+    _publishStory();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   void _publishStory() async {
+    if (!mounted) {
+      return;
+    }
     try {
       setState(() {
         _isLoading = true;

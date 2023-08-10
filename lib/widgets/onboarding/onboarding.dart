@@ -198,6 +198,11 @@ class _OnboardingWidgetState extends State<OnboardingWidget> {
     index = 0;
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
   Material _skipButton({void Function(int)? setIndex}) {
     return Material(
       borderRadius: defaultSkipButtonBorderRadius,

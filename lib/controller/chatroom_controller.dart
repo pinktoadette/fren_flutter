@@ -64,7 +64,6 @@ class ChatController extends GetxController implements GetxService {
     super.onInit();
 
     initUser();
-    initCurrentRoom();
   }
 
   void initUser() {
@@ -73,9 +72,7 @@ class ChatController extends GetxController implements GetxService {
             firstName: UserModel().user.username,
             imageUrl: UserModel().user.userProfilePhoto)
         .obs;
-  }
 
-  void initCurrentRoom() {
     var date = getDateTimeEpoch();
     _currentRoom = Chatroom(
             chatroomId: '',

@@ -92,13 +92,16 @@ class TimelineController extends GetxController {
         (element) => element.storyboardId == storyboard.storyboardId);
 
     // update the details of page
-    pagingController.itemList![storyboardIndex].story =
-        pagingController.itemList![storyboardIndex].story!.map((e) {
-      if (e.storyId == updateStory.storyId) {
-        return updateStory;
-      }
-      return e;
-    }).toList();
+    if (storyboardIndex != -1) {
+      pagingController.itemList![storyboardIndex].story =
+          pagingController.itemList![storyboardIndex].story!.map((e) {
+        if (e.storyId == updateStory.storyId) {
+          return updateStory;
+        }
+        return e;
+      }).toList();
+    }
+
     _currentStory = updateStory.obs;
 
     pagingController.itemList;
