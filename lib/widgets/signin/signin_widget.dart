@@ -9,6 +9,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/blocked_account_screen.dart';
 import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:machi_app/screens/first_time/onboarding.dart';
+import 'package:machi_app/screens/first_time/profile_image_upload.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:flutter/material.dart';
@@ -73,6 +74,8 @@ class _SignInWidgetState extends State<SignInWidget> {
           UserModel().authUserAccount(
               signInScreen: () => _nextScreen(const SignInScreen()),
               signUpScreen: () => _nextScreen(const SignUpScreen()),
+              profileImageScreen: () =>
+                  _nextScreen(const ProfileImageGenerator()),
               walkthruScreen: () => _nextScreen(const OnboardingScreen()),
               interestScreen: () => _nextScreen(const InterestScreen()),
               homeScreen: () => _nextScreen(const HomeScreen()),
