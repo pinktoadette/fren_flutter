@@ -12,6 +12,7 @@ import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
+import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/chat/add_message_to_storyboard.dart';
 import 'package:machi_app/widgets/chat/header_input.dart';
@@ -174,6 +175,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                           builder: (context) => ProfileScreen(user: user)));
                     }
                   },
+                  listBottomWidget: const InlineAdaptiveAds(),
                   // onAttachmentPressed: _handleAttachmentPressed,
                   onMessageTap: _handleMessageTap,
                   onPreviewDataFetched: _handlePreviewDataFetched,

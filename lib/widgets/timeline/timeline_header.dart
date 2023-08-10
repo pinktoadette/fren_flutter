@@ -27,7 +27,7 @@ class TimelineHeader extends StatefulWidget {
   final StoryComment? comment;
   final Function(String action)? onDeleteComment;
 
-  TimelineHeader({
+  const TimelineHeader({
     Key? key,
     required this.user,
     this.showAvatar = true,

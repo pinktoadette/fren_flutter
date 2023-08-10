@@ -12,7 +12,6 @@ import 'package:machi_app/widgets/announcement/inline_survey.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/timeline/latest_machi_gallery.dart';
 
 class TimelineWidget extends StatefulWidget {

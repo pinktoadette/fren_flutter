@@ -87,7 +87,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
                   _setStateColor('reimagine');
                 }
               },
-              icon: Icon(Iconsax.brush_4,
+              icon: Icon(Icons.lightbulb_outlined,
                   size: 14, color: _selectedIconColor("reimagine"))),
           const Spacer(),
           _displayHint(_i18n),

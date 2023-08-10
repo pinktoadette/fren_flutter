@@ -13,7 +13,7 @@ class AvatarInitials extends StatefulWidget {
   final String username;
   final double? radius;
 
-  AvatarInitials({
+  const AvatarInitials({
     Key? key,
     this.radius,
     this.userId,
