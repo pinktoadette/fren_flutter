@@ -95,6 +95,29 @@ class NotificationsApi {
     });
   }
 
+  void markAllNotificationsAsRead(String userId) {
+    // Reference to the notifications collection
+    CollectionReference notificationsRef =
+        _firestore.collection(C_NOTIFICATIONS);
+
+    // Update the "read" field to true for all notifications with matching "notif_receiver_id"
+    notificationsRef
+        .where(NOTIF_RECEIVER_ID, isEqualTo: userId)
+        .get()
+        .then((querySnapshot) {
+      for (var doc in querySnapshot.docs) {
+        // Update the "read" field for each notification document
+        doc.reference.update({NOTIF_READ: true}).catchError((error) {
+          // Handle error if necessary
+          debugPrint("Error marking notification as read: $error");
+        });
+      }
+    }).catchError((error) {
+      // Handle error if necessary
+      debugPrint("Error fetching notifications: $error");
+    });
+  }
+
   /// Send push notification method
   Future<void> sendPushNotification({
     required String nTitle,

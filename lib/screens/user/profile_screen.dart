@@ -1,9 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/friend_api.dart';
+import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -30,6 +32,8 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   late AppLocalizations _i18n;
   final _userApi = UserApi();
+  final _galleryApi = GalleryApi();
+
   final _friendApi = FriendApi();
   final _cancelToken = CancelToken();
 
@@ -39,10 +43,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool following = false;
   int followings = 0;
   int followers = 0;
+  List<Gallery> gallery = [];
 
   @override
   void initState() {
-    _isUserFriend();
+    _getInitData();
     super.initState();
   }
 
@@ -51,16 +56,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.dispose();
   }
 
-  void _isUserFriend() async {
+  void _getInitData() async {
     if (!mounted) {
       return;
     }
-    final user = await _userApi.getUserById(
-        userId: widget.user.userId, cancelToken: _cancelToken);
-    _setUserCount(user);
+
+    List<dynamic> results = await Future.wait([
+      _userApi.getUserById(
+          userId: widget.user.userId, cancelToken: _cancelToken),
+      _galleryApi.getUserGallery(
+          userId: widget.user.userId, page: 0, cancelToken: _cancelToken),
+    ]);
+
+    User user = results[0];
+    List<Gallery> gal = results[1];
+
+    _setUserCount(user, gal);
   }
 
-  void _setUserCount(User user) {
+  void _setUserCount(User user, List<Gallery> gal) {
     if (!mounted) {
       return;
     }
@@ -68,6 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       following = user.following ?? false;
       followings = user.followings ?? 0;
       followers = user.followers ?? 0;
+      gallery = gal;
     });
   }
 
@@ -258,7 +273,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               ),
             ],
           )),
-      GalleryWidget(userId: widget.user.userId),
+      GalleryWidget(gallery: gallery),
     ];
   }
 
@@ -270,7 +285,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         onPressed: () async {
           try {
             User user = await _friendApi.followRequest(widget.user.userId);
-            _setUserCount(user);
+            _setUserCount(user, gallery);
           } catch (err, s) {
             Get.snackbar(_i18n.translate("error"),
                 _i18n.translate("an_error_has_occurred"),

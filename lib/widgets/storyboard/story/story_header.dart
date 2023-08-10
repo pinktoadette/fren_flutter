@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/storyboard/story/story_edit.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/story/story_info.dart';
 import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
@@ -52,12 +51,12 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  StoryCover(
-                      width: storyCoverWidth,
-                      height: storyCoverWidth,
-                      photoUrl: thisStory.photoUrl ?? "",
-                      title: thisStory.title),
-                  const SizedBox(width: 10),
+                  // StoryCover(
+                  //     width: storyCoverWidth,
+                  //     height: storyCoverWidth,
+                  //     photoUrl: thisStory.photoUrl ?? "",
+                  //     title: thisStory.title),
+                  // const SizedBox(width: 10),
                   Flexible(
                       child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

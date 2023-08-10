@@ -52,39 +52,50 @@ class _BotProfileCardState extends State<BotProfileCard> {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SizedBox(
-            height: 200,
-            child: ListTile(
-                isThreeLine: true,
-                leading: RoundedImage(
+            height: 250,
+            child: Stack(
+              alignment: Alignment.bottomLeft,
+              children: [
+                Positioned.fill(
+                  child: RoundedImage(
                     width: width * 0.15,
                     height: width * 0.15,
                     icon: const Icon(Iconsax.box_add),
-                    photoUrl: widget.bot.profilePhoto ?? ""),
-                dense: true,
-                focusColor: Theme.of(context).secondaryHeaderColor,
-                title: Text(
-                  widget.bot.name,
-                  style: Theme.of(context).textTheme.headlineSmall,
+                    photoUrl: widget.bot.profilePhoto ?? "",
+                  ),
                 ),
-                subtitle: Align(
-                    alignment: Alignment.topLeft,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(widget.bot.modelType.name),
-                        Text(
-                          widget.bot.subdomain,
-                          style: Theme.of(context).textTheme.bodyMedium,
-                        ),
-                        Text(widget.bot.about,
-                            style: Theme.of(context).textTheme.bodySmall)
-                      ],
-                    ))),
+                Container(
+                  color: Colors.black.withOpacity(0.5),
+                  padding: const EdgeInsets.all(20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        widget.bot.name,
+                        style: Theme.of(context).textTheme.headlineSmall,
+                      ),
+                      Text(
+                        widget.bot.modelType.name,
+                        style: Theme.of(context).textTheme.labelSmall,
+                      ),
+                      const Spacer(),
+                      Text(
+                        widget.bot.subdomain,
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      Text(
+                        widget.bot.about,
+                        style: Theme.of(context).textTheme.bodySmall,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
           ),
           isLoading == true
               ? const Frankloader(height: 150, width: 100)
-              : const SizedBox(height: 50),
-          // if (widget.room?.chatroomId == null) _showPricing(),
+              : const SizedBox(height: 10),
         ],
       ),
     );

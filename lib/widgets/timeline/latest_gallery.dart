@@ -7,23 +7,19 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/image/image_expand.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
-class UserGallery extends StatefulWidget {
-  final String userId;
-  final bool disableCaption;
+class LatestGallery extends StatefulWidget {
   final Function(String)? onFileTap;
 
-  const UserGallery(
-      {Key? key,
-      required this.userId,
-      this.onFileTap,
-      this.disableCaption = false})
-      : super(key: key);
+  const LatestGallery({
+    Key? key,
+    this.onFileTap,
+  }) : super(key: key);
 
   @override
-  _GalleryWidgetState createState() => _GalleryWidgetState();
+  _LatestGalleryWidgetState createState() => _LatestGalleryWidgetState();
 }
 
-class _GalleryWidgetState extends State<UserGallery> {
+class _LatestGalleryWidgetState extends State<LatestGallery> {
   final _galleryApi = GalleryApi();
   final PagingController<int, Gallery> _pagingController =
       PagingController(firstPageKey: 0);
@@ -55,8 +51,7 @@ class _GalleryWidgetState extends State<UserGallery> {
 
   Future<void> _fetchGallery(int pageKey) async {
     try {
-      final List<Gallery> gal = await _galleryApi.getUserGallery(
-        userId: widget.userId,
+      final List<Gallery> gal = await _galleryApi.allGallery(
         page: pageKey,
         cancelToken: _cancelToken,
       );
@@ -92,7 +87,7 @@ class _GalleryWidgetState extends State<UserGallery> {
             childAspectRatio: 1,
             crossAxisSpacing: 1,
             mainAxisSpacing: 1,
-            crossAxisCount: 2,
+            crossAxisCount: 3,
           ),
           builderDelegate: PagedChildBuilderDelegate<Gallery>(
               itemBuilder: (context, item, index) => InkWell(

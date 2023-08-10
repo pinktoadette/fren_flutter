@@ -38,6 +38,15 @@ class NotificationsScreen extends StatelessWidget {
           i18n.translate("notifications"),
           style: Theme.of(context).textTheme.headlineLarge,
         ),
+        actions: [
+          TextButton(
+              onPressed: () {
+                // Mark all notifications as read for the current user
+                _notificationsApi
+                    .markAllNotificationsAsRead(UserModel().user.userId);
+              },
+              child: const Text("Mark All Read"))
+        ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
         stream: _notificationsApi.getNotifications(),
@@ -120,42 +129,46 @@ class NotificationListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: InkWell(
-        onTap: onTap,
-        child: AvatarInitials(
-          radius: 20,
-          userId: notification[NOTIF_SENDER_ID],
-          photoUrl: notification[NOTIF_SENDER_PHOTO_LINK] ?? "",
-          username: notification[NOTIF_SENDER_USERNAME],
+    return Column(children: [
+      ListTile(
+        leading: InkWell(
+          onTap: onTap,
+          child: AvatarInitials(
+            radius: 20,
+            userId: notification[NOTIF_SENDER_ID],
+            photoUrl: notification[NOTIF_SENDER_PHOTO_LINK] ?? "",
+            username: notification[NOTIF_SENDER_USERNAME],
+          ),
         ),
+        title: Row(
+          children: [
+            Text(
+              notification[NOTIF_SENDER_USERNAME],
+              style: !notifRead
+                  ? Theme.of(context).textTheme.titleMedium
+                  : Theme.of(context).textTheme.bodyMedium,
+            ),
+            const Spacer(),
+            Text(
+              createdAt,
+              style: !notifRead
+                  ? Theme.of(context).textTheme.bodyMedium
+                  : Theme.of(context).textTheme.labelSmall,
+            ),
+            if (!notifRead)
+              const Icon(Iconsax.info_circle1,
+                  size: 14, color: APP_ACCENT_COLOR),
+          ],
+        ),
+        subtitle: Text(
+          notification[NOTIF_MESSAGE],
+          style: !notifRead
+              ? Theme.of(context).textTheme.bodySmall
+              : Theme.of(context).textTheme.labelSmall,
+        ),
+        onTap: onTap,
       ),
-      title: Row(
-        children: [
-          Text(
-            notification[NOTIF_SENDER_USERNAME],
-            style: !notifRead
-                ? Theme.of(context).textTheme.titleMedium
-                : Theme.of(context).textTheme.bodyMedium,
-          ),
-          const Spacer(),
-          Text(
-            createdAt,
-            style: !notifRead
-                ? Theme.of(context).textTheme.bodyMedium
-                : Theme.of(context).textTheme.labelSmall,
-          ),
-          if (!notifRead)
-            const Icon(Iconsax.info_circle1, size: 14, color: APP_ACCENT_COLOR),
-        ],
-      ),
-      subtitle: Text(
-        notification[NOTIF_MESSAGE],
-        style: !notifRead
-            ? Theme.of(context).textTheme.bodySmall
-            : Theme.of(context).textTheme.labelSmall,
-      ),
-      onTap: onTap,
-    );
+      const Divider()
+    ]);
   }
 }

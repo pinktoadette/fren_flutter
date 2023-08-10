@@ -6,15 +6,16 @@ import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
-import 'package:machi_app/datas/gallery.dart';
+import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:machi_app/widgets/image/image_expand.dart';
-import 'package:machi_app/widgets/story_cover.dart';
+import 'package:machi_app/widgets/bot/bot_profile.dart';
+import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
+import 'package:machi_app/widgets/timeline/latest_gallery.dart';
 
 class LatestMachiWidget extends StatefulWidget {
   const LatestMachiWidget({super.key});
@@ -72,7 +73,6 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
             children: [
               const InlineAdaptiveAds(),
               const SizedBox(height: 20),
-
               Container(
                 alignment: Alignment.bottomLeft,
                 padding: const EdgeInsets.only(left: 20),
@@ -81,6 +81,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
+              const SizedBox(height: 10),
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -90,13 +91,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                         ...timelineController.machiList.map((bot) {
                           return InkWell(
                               onTap: () {
-                                NavigationHelper.handleGoToPageOrLogin(
-                                  context: context,
-                                  userController: userController,
-                                  navigateAction: () {
-                                    SetCurrentRoom().setNewBotRoom(bot, true);
-                                  },
-                                );
+                                _showBotInfo(bot);
                               },
                               child: SizedBox(
                                   width: size.width / 4.5,
@@ -119,17 +114,39 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                                             .textTheme
                                             .bodySmall,
                                       ),
-                                      Text(
-                                        bot.category,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .labelSmall,
-                                      )
+                                      Text(bot.category,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(fontSize: 10))
                                     ],
                                   )));
                         })
                       ])),
+              const SizedBox(height: 20),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      _i18n.translate("latest_gallery"),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    padding: const EdgeInsets.only(right: 10),
+                    child: TextButton(
+                        onPressed: () {
+                          Get.to(() => const LatestGallery());
+                        },
+                        child: Text(_i18n.translate("see_all"),
+                            style: Theme.of(context).textTheme.bodyMedium)),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              GalleryWidget(gallery: timelineController.galleryList),
               if (userController.user != null)
                 subscriptionController.customer == null
                     ? const SizedBox.shrink()
@@ -137,45 +154,36 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                         ? const SubscriptionCard()
                         : const SizedBox.shrink(),
               const SizedBox(height: 20),
-              Container(
-                alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  _i18n.translate("latest_gallery"),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              ),
-              // 3x3 grid of image placeholders
-              GridView.count(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                crossAxisCount: 3,
-                childAspectRatio: 1.0,
-                children: List.generate(
-                  timelineController.galleryList.length,
-                  (index) {
-                    Gallery gallery = timelineController.galleryList[index];
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigate to the expanded image page
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ExpandedImagePage(gallery: gallery),
-                          ),
-                        );
-                      },
-                      child: StoryCover(
-                        radius: 0,
-                        photoUrl: gallery.photoUrl,
-                        title: gallery.caption,
-                      ),
-                    );
-                  },
-                ),
-              ),
-              const InlineAdaptiveAds(),
             ],
           ));
+  }
+
+  void _showBotInfo(Bot bot) {
+    double height = MediaQuery.of(context).size.height;
+
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: 400 / height,
+            child: Column(children: [
+              BotProfileCard(
+                bot: bot,
+              ),
+              TextButton(
+                  onPressed: () {
+                    NavigationHelper.handleGoToPageOrLogin(
+                      context: context,
+                      userController: userController,
+                      navigateAction: () {
+                        SetCurrentRoom().setNewBotRoom(bot, true);
+                      },
+                    );
+                  },
+                  child: Text(_i18n.translate("lets_chat")))
+            ]));
+      },
+    );
   }
 }

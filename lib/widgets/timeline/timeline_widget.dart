@@ -9,6 +9,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/announcement/inline_survey.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
@@ -26,10 +27,13 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
   SubscribeController subscriptionController = Get.find(tag: 'subscribe');
+  late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
+    timelineController.pagingController = PagingController(firstPageKey: 0);
+
     _getContent();
   }
 
@@ -48,6 +52,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
+    _i18n = AppLocalizations.of(context);
 
     return RefreshIndicator(
         onRefresh: () async {
@@ -59,12 +64,19 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
               const LatestMachiWidget(),
-              if (userController.user != null)
-                subscriptionController.customer == null
-                    ? const SizedBox.shrink()
-                    : subscriptionController.customer!.allPurchaseDates.isEmpty
-                        ? const SubscriptionCard()
-                        : const SizedBox.shrink(),
+              Visibility(
+                visible:
+                    timelineController.pagingController.itemList?.isNotEmpty ??
+                        false,
+                child: Container(
+                  alignment: Alignment.bottomLeft,
+                  padding: const EdgeInsets.only(left: 20),
+                  child: Text(
+                    _i18n.translate("latest_story"),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ),
+              ),
               PagedListView<int, Storyboard>.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),
@@ -74,11 +86,13 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     firstPageProgressIndicatorBuilder: (_) =>
                         const SizedBox.shrink(),
                     newPageProgressIndicatorBuilder: (_) => const Frankloader(),
+                    noItemsFoundIndicatorBuilder: (_) =>
+                        const NoData(text: "No stories"),
                     itemBuilder: (context, item, index) {
                       return StoryboardItemWidget(item: item);
                     }),
                 separatorBuilder: (BuildContext context, int index) {
-                  if ((index + 1) % 3 == 0) {
+                  if ((index) % 3 == 0) {
                     return const InlineAdaptiveAds();
                   } else if ((index + 1) % 2 == 0 &&
                       (index == 1) &&

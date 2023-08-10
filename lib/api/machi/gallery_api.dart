@@ -43,4 +43,27 @@ class GalleryApi {
       return Future.error(error.toString());
     }
   }
+
+  Future<List<Gallery>> allGallery(
+      {required int page, bool? refresh, CancelToken? cancelToken}) async {
+    try {
+      String? refreshKey = refresh == true ? "&refresh=true" : "";
+
+      String url =
+          '${baseUri}gallery/all_gallery?page=$page$refreshKey&limit=21';
+      debugPrint("Requesting URL $url");
+      final response =
+          await auth.retryGetRequest(url, cancelToken: cancelToken);
+      final data = response.data;
+      List<Gallery> galleries = [];
+      for (Map<String, dynamic> gallery in data) {
+        Gallery gal = Gallery.fromJson(gallery);
+        galleries.add(gal);
+      }
+
+      return galleries;
+    } catch (error) {
+      return Future.error(error.toString());
+    }
+  }
 }

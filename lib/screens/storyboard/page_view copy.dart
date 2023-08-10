@@ -58,6 +58,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   late AppLocalizations _i18n;
   double bodyHeightPercent = BODY_HEIGHT_PERCENT;
   double headerHeight = 0;
+  static double bottomSheetPadding = 0.05;
 
   bool _userScrolledAgain = false;
   Timer? _scrollTimer;
@@ -121,57 +122,49 @@ class _StoryPageViewState extends State<StoryPageView> {
     }
     return Scaffold(
         extendBodyBehindAppBar: true,
-        appBar: PreferredSize(
-            preferredSize:
-                const Size.fromHeight(80), // Set the desired height here
-            child: AppBar(
-              centerTitle: false,
-              backgroundColor: Colors.black26,
-              title: Padding(
-                padding: const EdgeInsets.only(
-                  top: 20,
-                ),
-                child: StoryHeaderWidget(story: story!),
-              ),
-              leading: BackButton(
-                onPressed: () {
-                  commentController.clearComments();
-                  Get.back();
-                },
-              ),
-              titleSpacing: 0,
-              actions: [
-                if (widget.isPreview == false) _unpublishedTools(),
-                if (widget.isPreview == true)
-                  Container(
-                      padding: const EdgeInsets.all(10.0),
-                      child: OutlinedButton(
-                          onPressed: () {
-                            Get.to(() => ConfirmPublishDetails(
-                                  story: widget.story,
-                                ));
-                          },
-                          child: Text(_i18n.translate("publish_preview")))),
-                if (story?.status.name == StoryStatus.PUBLISHED.name)
-                  PopupMenuButton<String>(
-                      icon: const Icon(Icons.more_vert),
-                      itemBuilder: (context) => <PopupMenuEntry<String>>[
-                            const PopupMenuItem(
-                              child: Text('Report'),
-                              value: 'report',
-                            )
-                          ],
-                      onSelected: (val) {
-                        switch (val) {
-                          case 'report':
-                            _onReport();
-                            break;
-                          default:
-                            break;
-                        }
-                      })
-              ],
-            )),
+        appBar: AppBar(
+          centerTitle: false,
+          backgroundColor: Colors.black26,
+          title: StoryHeaderWidget(story: story!),
+          leading: BackButton(
+            onPressed: () {
+              commentController.clearComments();
+              Get.back();
+            },
+          ),
+          titleSpacing: 0,
+          actions: [
+            if (widget.isPreview == false) _unpublishedTools(),
+            if (widget.isPreview == true)
+              Container(
+                  padding: const EdgeInsets.all(10.0),
+                  child: OutlinedButton(
+                      onPressed: () {
+                        Get.to(() => ConfirmPublishDetails(
+                              story: widget.story,
+                            ));
+                      },
+                      child: Text(_i18n.translate("publish_preview")))),
+            if (story?.status.name == StoryStatus.PUBLISHED.name)
+              PopupMenuButton<String>(
+                  icon: const Icon(Icons.more_vert),
+                  itemBuilder: (context) => <PopupMenuEntry<String>>[
+                        const PopupMenuItem(
+                          child: Text('Report'),
+                          value: 'report',
+                        )
+                      ],
+                  onSelected: (val) {
+                    switch (val) {
+                      case 'report':
+                        _onReport();
+                        break;
+                      default:
+                        break;
+                    }
+                  })
+          ],
+        ),
         body: LayoutBuilder(builder: (context, constraints) {
           return Stack(children: [
             _showPageWidget(constraints),
@@ -236,9 +229,8 @@ class _StoryPageViewState extends State<StoryPageView> {
           return false;
         },
         child: DraggableScrollableSheet(
-          initialChildSize: 0.15,
-          minChildSize: 0.15,
-          maxChildSize: 0.9,
+          initialChildSize: 1 - bodyHeightPercent + bottomSheetPadding,
+          minChildSize: 1 - bodyHeightPercent + bottomSheetPadding,
           expand: true,
           builder: (BuildContext context, ScrollController scrollController) {
             if (controller.hasClients) {}
@@ -305,7 +297,9 @@ class _StoryPageViewState extends State<StoryPageView> {
   Widget _showPageWidget(BoxConstraints constraints) {
     Size size = MediaQuery.of(context).size;
     double footerHeight = 100;
-    double height = size.height;
+    double height = story?.status.name == StoryStatus.PUBLISHED.name
+        ? size.height * bodyHeightPercent - bottomSheetPadding
+        : size.height - footerHeight;
 
     if (story!.pages!.isEmpty) {
       return SizedBox(
@@ -361,86 +355,90 @@ class _StoryPageViewState extends State<StoryPageView> {
 
             return false;
           },
-          child: PageView.builder(
-            controller: controller,
-            scrollDirection: Axis.vertical,
-            itemCount: storyboardController.currentStory.pages!.length,
-            itemBuilder: (_, index) {
-              List<Script>? scripts = story!.pages![index].scripts;
-              String? background = story?.pages?[index].backgroundImageUrl;
+          child: SizedBox(
+              height: story!.status == StoryStatus.PUBLISHED
+                  ? height - footerHeight
+                  : height,
+              width: constraints.maxWidth,
+              child: PageView.builder(
+                controller: controller,
+                scrollDirection: Axis.vertical,
+                itemCount: storyboardController.currentStory.pages!.length,
+                itemBuilder: (_, index) {
+                  List<Script>? scripts = story!.pages![index].scripts;
+                  String? background = story?.pages?[index].backgroundImageUrl;
 
-              String backgroundUrl =
-                  (background != null && background.contains("http"))
-                      ? background
-                      : "";
+                  String backgroundUrl =
+                      (background != null && background.contains("http"))
+                          ? background
+                          : "";
 
-              return Container(
-                height: size.height,
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        colorFilter: ColorFilter.mode(
-                            const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                                story?.pages![index].backgroundAlpha ?? 0.5),
-                            BlendMode.darken),
-                        image: backgroundUrl != ""
-                            ? imageCacheWrapper(backgroundUrl)
-                            : Image.asset(
-                                "assets/images/blank.png",
-                                scale: 0.2,
-                                width: 100,
-                              ).image,
-                        fit: BoxFit.cover)),
-                padding: const EdgeInsets.all(20),
-                child: SingleChildScrollView(
-                  child: ConstrainedBox(
-                      constraints: BoxConstraints(
-                          minWidth: constraints.maxWidth * 0.7,
-                          minHeight: constraints.maxHeight - 200),
-                      child: IntrinsicHeight(
-                          child: Column(
-                              crossAxisAlignment: story!.layout == Layout.CONVO
-                                  ? CrossAxisAlignment.end
-                                  : CrossAxisAlignment.start,
-                              children: [
-                            const SizedBox(
-                              height: 100,
-                            ),
-                            Expanded(
-                                child: Column(
-                                    children: scripts!.map((script) {
-                              CrossAxisAlignment alignment =
-                                  story!.layout == Layout.CONVO
-                                      ? story!.createdBy.userId ==
-                                              script.characterId
+                  return Container(
+                    height: size.height - 250,
+                    decoration: BoxDecoration(
+                        image: DecorationImage(
+                            colorFilter: ColorFilter.mode(
+                                const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                                    story?.pages![index].backgroundAlpha ??
+                                        0.5),
+                                BlendMode.darken),
+                            image: backgroundUrl != ""
+                                ? imageCacheWrapper(backgroundUrl)
+                                : Image.asset(
+                                    "assets/images/blank.png",
+                                    scale: 0.2,
+                                    width: 100,
+                                  ).image,
+                            fit: BoxFit.cover)),
+                    padding: const EdgeInsets.all(20),
+                    child: SingleChildScrollView(
+                      child: ConstrainedBox(
+                          constraints: BoxConstraints(
+                              minWidth: constraints.maxWidth * 0.7,
+                              minHeight: constraints.maxHeight - 200),
+                          child: IntrinsicHeight(
+                              child: Column(
+                                  crossAxisAlignment:
+                                      story!.layout == Layout.CONVO
                                           ? CrossAxisAlignment.end
-                                          : CrossAxisAlignment.start
-                                      : script.type == 'image'
-                                          ? CrossAxisAlignment.center
-                                          : CrossAxisAlignment.start;
-                              return Column(
-                                  crossAxisAlignment: alignment,
+                                          : CrossAxisAlignment.start,
                                   children: [
-                                    _displayScript(script, size),
-                                    if (story!.layout == Layout.CONVO)
-                                      Text(script.characterName ?? ""),
-                                  ]);
-                            }).toList())),
-                            if (((index + 1) % 2 == 0) &
-                                (story!.status == StoryStatus.PUBLISHED))
-                              const Align(
-                                alignment: Alignment.bottomCenter,
-                                child: InlineAdaptiveAds(
+                                Expanded(
+                                    child: Column(
+                                        children: scripts!.map((script) {
+                                  CrossAxisAlignment alignment =
+                                      story!.layout == Layout.CONVO
+                                          ? story!.createdBy.userId ==
+                                                  script.characterId
+                                              ? CrossAxisAlignment.end
+                                              : CrossAxisAlignment.start
+                                          : script.type == 'image'
+                                              ? CrossAxisAlignment.center
+                                              : CrossAxisAlignment.start;
+                                  return Column(
+                                      crossAxisAlignment: alignment,
+                                      children: [
+                                        _displayScript(script, size),
+                                        if (story!.layout == Layout.CONVO)
+                                          Text(script.characterName ?? ""),
+                                      ]);
+                                }).toList())),
+                                if (((index + 1) % 2 == 0) &
+                                    (story!.status == StoryStatus.PUBLISHED))
+                                  const Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: InlineAdaptiveAds(
+                                      height: 50,
+                                    ),
+                                  ),
+                                const SizedBox(
                                   height: 50,
-                                ),
-                              ),
-                            const SizedBox(
-                              height: 50,
-                            )
-                          ]))),
-                ),
-              );
-            },
-          )),
+                                )
+                              ]))),
+                    ),
+                  );
+                },
+              ))),
 
       /// Page indicator
       Positioned(
@@ -477,7 +475,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           child: Container(
               color: Colors.black.withOpacity(0.8),
               width: size.width,
-              height: 180,
+              height: 80,
               padding: const EdgeInsets.only(top: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
