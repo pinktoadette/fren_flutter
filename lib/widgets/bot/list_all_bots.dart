@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
@@ -20,26 +21,9 @@ class _ListPromptBotState extends State<ListPromptBots> {
   final PagingController<int, Bot> _pagingController =
       PagingController(firstPageKey: 0);
   final TextEditingController _searchController = TextEditingController();
+  final _cancelToken = CancelToken();
 
   static const int _pageSize = ALL_PAGE_SIZE;
-
-  Future<void> _fetchAllBots(int pageKey) async {
-    try {
-      List<Bot> newItems = await _botApi.getAllBots(
-          page: pageKey,
-          modelType: BotModelType.prompt,
-          search: _searchController.text);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
-    } catch (error) {
-      _pagingController.error = error;
-    }
-  }
 
   @override
   void initState() {
@@ -51,7 +35,27 @@ class _ListPromptBotState extends State<ListPromptBots> {
   void dispose() {
     _pagingController.dispose();
     _searchController.dispose();
+    _cancelToken.cancel();
     super.dispose();
+  }
+
+  Future<void> _fetchAllBots(int pageKey) async {
+    try {
+      List<Bot> newItems = await _botApi.getAllBots(
+          page: pageKey,
+          modelType: BotModelType.prompt,
+          search: _searchController.text,
+          cancelToken: _cancelToken);
+      final isLastPage = newItems.length < _pageSize;
+      if (isLastPage) {
+        _pagingController.appendLastPage(newItems);
+      } else {
+        final nextPageKey = pageKey + newItems.length;
+        _pagingController.appendPage(newItems, nextPageKey);
+      }
+    } catch (error) {
+      _pagingController.error = error;
+    }
   }
 
   @override

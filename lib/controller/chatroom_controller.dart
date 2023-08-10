@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:math';
 
+import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/message_api.dart';
 import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
@@ -35,6 +36,8 @@ class ChatController extends GetxController implements GetxService {
   bool isInitial = false;
   bool isTest = false;
 
+  final _cancelToken = CancelToken();
+
   final Map<String, WebSocketChannel> _channelMap = {};
 
   types.User get chatUser => _chatUser.value;
@@ -64,6 +67,12 @@ class ChatController extends GetxController implements GetxService {
     super.onInit();
 
     initUser();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
   }
 
   void initUser() {
@@ -263,7 +272,8 @@ class ChatController extends GetxController implements GetxService {
     final _messageApi = MessageMachiApi();
     int index = findRoomIndx(room: room);
     roomlist[index].isTyping = true;
-    Map<String, dynamic> message = await _messageApi.getBotResponse();
+    Map<String, dynamic> message =
+        await _messageApi.getBotResponse(cancelToken: _cancelToken);
     // WebSocketChannel? channel = _channelMap[room.chatroomId];
     // if (channel != null) {
     //   channel.sink.add(json.encode({"message": message}));

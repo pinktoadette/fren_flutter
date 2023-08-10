@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -70,10 +71,11 @@ class BotApi {
   Future<List<Bot>> getAllBots(
       {required int page,
       required BotModelType modelType,
-      String? search}) async {
+      String? search,
+      CancelToken? cancelToken}) async {
     String url =
         '${baseUri}get_all?page=$page${search != null ? "&search=$search" : ""}';
-    final response = await auth.retryGetRequest(url);
+    final response = await auth.retryGetRequest(url, cancelToken: cancelToken);
     final getData = response.data;
 
     List<Bot> result = [];
@@ -105,19 +107,21 @@ class BotApi {
     return botList;
   }
 
-  Future<String> machiHelper({required text, required action}) async {
+  Future<String> machiHelper(
+      {required text, required action, CancelToken? cancelToken}) async {
     String url = '${baseUri}machi_helper';
     final dio = await auth.getDio();
-    final response =
-        await dio.post(url, data: {"text": text, "action": action});
+    final response = await dio.post(url,
+        data: {"text": text, "action": action}, cancelToken: cancelToken);
     return response.data;
   }
 
-  Future<List<dynamic>> machiImage({required text, required numImages}) async {
+  Future<List<dynamic>> machiImage(
+      {required text, required numImages, CancelToken? cancelToken}) async {
     String url = '${baseUri}machi_image';
     final dio = await auth.getDio();
-    final response =
-        await dio.post(url, data: {"text": text, "numImages": numImages});
+    final response = await dio.post(url,
+        data: {"text": text, "numImages": numImages, cancelToken: cancelToken});
     return response.data;
   }
 

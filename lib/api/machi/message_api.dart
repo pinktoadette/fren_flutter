@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/api/machi/auth_api.dart';
@@ -50,14 +51,16 @@ class MessageMachiApi {
 
   /// Gets the bot response. It looks up the last message
   /// and responds to that. Bot is already saved in room document
-  Future<Map<String, dynamic>> getBotResponse() async {
+  Future<Map<String, dynamic>> getBotResponse(
+      {CancelToken? cancelToken}) async {
     String chatroomId = chatController.currentRoom.chatroomId;
 
     // save to machi api
     String url = '${baseUri}chat/machi_response';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: {ROOM_ID: chatroomId});
+    final response = await dio.post(url,
+        data: {ROOM_ID: chatroomId}, cancelToken: cancelToken);
     log("Saved and got bot responses");
 
     return response.data;

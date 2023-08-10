@@ -1,4 +1,5 @@
 import 'package:chips_choice/chips_choice.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -22,10 +23,11 @@ class _MachiHelperState extends State<MachiHelper> {
   String? _response;
   String? tag;
   bool _isLoading = false;
+  final _cancelToken = CancelToken();
   List<Map<String, String>> options = [
     {'action': 'shorten', 'value': 'machi_helper_shortern_text'},
     {'action': 'rephrase', 'value': 'machi_helper_rephrase_text'},
-    {'action': 'ideas to make better', 'value': 'machi_helper_get_ideas'},
+    {'action': 'an idea to make better', 'value': 'machi_helper_get_ideas'},
   ];
 
   @override
@@ -36,6 +38,7 @@ class _MachiHelperState extends State<MachiHelper> {
   @override
   void dispose() {
     super.dispose();
+    _cancelToken.cancel();
   }
 
   @override
@@ -92,19 +95,24 @@ class _MachiHelperState extends State<MachiHelper> {
   }
 
   void _getHelperResponse({required String action}) async {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       _isLoading = true;
     });
     String response = "No text";
     if (widget.text != "") {
       final _botApi = BotApi();
-      response = await _botApi.machiHelper(text: widget.text, action: action);
+      response = await _botApi.machiHelper(
+          text: widget.text, action: action, cancelToken: _cancelToken);
     }
-
-    setState(() {
-      _response = response;
-      _isLoading = false;
-    });
+    if (mounted) {
+      setState(() {
+        _response = response;
+        _isLoading = false;
+      });
+    }
   }
 
   List<Widget> _showResponse() {

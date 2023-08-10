@@ -30,6 +30,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   String _comment = "";
   bool _canType = true;
   bool _isLoading = false;
+  final _cancelToken = CancelToken();
 
   @override
   void initState() {
@@ -40,6 +41,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   void dispose() {
     super.dispose();
     _commentController.dispose();
+    _cancelToken.cancel();
   }
 
   @override
@@ -149,7 +151,6 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                                     backgroundColor: APP_TERTIARY,
                                   );
                                 } else {
-                                  setState(() => _canType = false);
                                   _postComment();
                                   Timer(
                                       const Duration(seconds: 10),
@@ -165,7 +166,12 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   }
 
   void _postComment() async {
+    if (!mounted) {
+      return;
+    }
+
     setState(() {
+      _canType = false;
       _isLoading = true;
     });
 
@@ -177,7 +183,8 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           comment: _comment,
           replyToComment: commentController.replyToComment.commentId == null
               ? null
-              : commentController.replyToComment);
+              : commentController.replyToComment,
+          cancelToken: _cancelToken);
       _formatComment(newComment);
       Get.snackbar(
         _i18n.translate("success"),

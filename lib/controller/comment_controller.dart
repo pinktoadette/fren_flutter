@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -23,6 +24,7 @@ StoryComment initial = StoryComment(
 class CommentController extends GetxController {
   static const int _pageSize = ALL_PAGE_SIZE;
   final _commentApi = CommentApi();
+  final _cancelToken = CancelToken();
 
   final PagingController<int, dynamic> pagingController =
       PagingController(firstPageKey: 0);
@@ -40,6 +42,12 @@ class CommentController extends GetxController {
   void onInit() {
     super.onInit();
     pagingController.addPageRequestListener((pageKey) => _fetchPage(pageKey));
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
   }
 
   // sets which comment the user is replying to.
@@ -63,8 +71,8 @@ class CommentController extends GetxController {
     StoryboardController storyboardController = Get.find(tag: "storyboard");
 
     try {
-      List<StoryComment> newItems = await _commentApi.getComments(
-          pageKey, _pageSize, storyboardController.currentStory.storyId);
+      List<StoryComment> newItems = await _commentApi.getComments(pageKey,
+          _pageSize, storyboardController.currentStory.storyId, _cancelToken);
 
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {

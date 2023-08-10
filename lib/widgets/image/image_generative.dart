@@ -47,6 +47,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   String _selectedUrl = '';
   bool _isLoading = false;
   int _counter = 1;
+  final _cancelToken = CancelToken();
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
     childAspectRatio: 100 / 150,
@@ -67,6 +68,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   void dispose() {
     super.dispose();
     _promptController.dispose();
+    _cancelToken.cancel();
   }
 
   @override
@@ -164,7 +166,9 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     try {
       final _botApi = BotApi();
       List<dynamic> imageUrl = await _botApi.machiImage(
-          text: _promptController.text, numImages: widget.numImages);
+          text: _promptController.text,
+          numImages: widget.numImages,
+          cancelToken: _cancelToken);
       setState(() {
         _items = imageUrl;
         _counter -= 1;
