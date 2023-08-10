@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -21,6 +22,7 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
   late AppLocalizations _i18n;
   double itemHeight = 150;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final _cancelToken = CancelToken();
 
   @override
   void initState() {
@@ -28,8 +30,15 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
     _getMyBoards();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
+  }
+
   void _getMyBoards() async {
-    await storyboardController.getBoards(filter: StoryStatus.PUBLISHED);
+    await storyboardController.getBoards(
+        filter: StoryStatus.PUBLISHED, cancelToken: _cancelToken);
   }
 
   @override

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -12,8 +13,7 @@ import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/report_list.dart';
 
-class TimelineHeader extends StatelessWidget {
-  final _userApi = UserApi();
+class TimelineHeader extends StatefulWidget {
   final StoryUser user;
   final double? radius;
   final double? paddingLeft;
@@ -27,21 +27,40 @@ class TimelineHeader extends StatelessWidget {
   final StoryComment? comment;
   final Function(String action)? onDeleteComment;
 
-  TimelineHeader(
-      {Key? key,
-      required this.user,
-      this.showAvatar = true,
-      this.radius = 10,
-      this.timestamp,
-      this.paddingLeft,
-      this.showMenu,
-      this.showName,
-      this.underNameRow,
-      this.comment,
-      this.fontSize,
-      this.isChild = false,
-      this.onDeleteComment})
-      : super(key: key);
+  TimelineHeader({
+    Key? key,
+    required this.user,
+    this.showAvatar = true,
+    this.radius = 10,
+    this.timestamp,
+    this.paddingLeft,
+    this.showMenu,
+    this.showName,
+    this.underNameRow,
+    this.comment,
+    this.fontSize,
+    this.isChild = false,
+    this.onDeleteComment,
+  }) : super(key: key);
+
+  @override
+  _TimelineHeaderState createState() => _TimelineHeaderState();
+}
+
+class _TimelineHeaderState extends State<TimelineHeader> {
+  final _userApi = UserApi();
+  final _cancelToken = CancelToken();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,20 +68,21 @@ class TimelineHeader extends StatelessWidget {
     AppLocalizations _i18n = AppLocalizations.of(context);
     return InkWell(
         onTap: () async {
-          User u = await _userApi.getUserById(user.userId);
+          User u = await _userApi.getUserById(
+              userId: widget.user.userId, cancelToken: _cancelToken);
           Get.to(() => ProfileScreen(user: u));
         },
         child: Container(
           width: width,
-          padding: EdgeInsets.only(left: paddingLeft ?? 15, right: 15),
+          padding: EdgeInsets.only(left: widget.paddingLeft ?? 15, right: 15),
           child: Row(children: [
-            if (showAvatar == true)
+            if (widget.showAvatar == true)
               AvatarInitials(
-                  radius: radius,
-                  photoUrl: user.photoUrl,
-                  username: user.username),
+                  radius: widget.radius,
+                  photoUrl: widget.user.photoUrl,
+                  username: widget.user.username),
             const SizedBox(width: 5),
-            if (showName == true)
+            if (widget.showName == true)
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,17 +94,20 @@ class TimelineHeader extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(
-                            width: isChild == true ? width - 150 : width - 120,
-                            child: Text(user.username,
-                                style: TextStyle(fontSize: fontSize ?? 16)),
+                            width: widget.isChild == true
+                                ? width - 150
+                                : width - 120,
+                            child: Text(widget.user.username,
+                                style:
+                                    TextStyle(fontSize: widget.fontSize ?? 16)),
                           ),
-                          if (timestamp != null)
-                            Text(formatDate(timestamp!),
+                          if (widget.timestamp != null)
+                            Text(formatDate(widget.timestamp!),
                                 style: const TextStyle(fontSize: 10)),
-                          if (underNameRow != null) underNameRow!
+                          if (widget.underNameRow != null) widget.underNameRow!
                         ],
                       ),
-                      if (showMenu == true)
+                      if (widget.showMenu == true)
                         PopupMenuButton<String>(
                             icon: const Icon(
                               Icons.more_vert,
@@ -99,7 +122,7 @@ class TimelineHeader extends StatelessWidget {
                                     ),
                                     value: 'report_user',
                                   ),
-                                  if (comment != null)
+                                  if (widget.comment != null)
                                     PopupMenuItem(
                                       child: Text(
                                           _i18n.translate("report_comment"),
@@ -108,7 +131,8 @@ class TimelineHeader extends StatelessWidget {
                                               .bodySmall),
                                       value: 'report_comment',
                                     ),
-                                  if ((user.userId == UserModel().user.userId))
+                                  if ((widget.user.userId ==
+                                      UserModel().user.userId))
                                     PopupMenuItem(
                                       child: Text(_i18n.translate("DELETE"),
                                           style: Theme.of(context)
@@ -120,14 +144,15 @@ class TimelineHeader extends StatelessWidget {
                             onSelected: (val) {
                               switch (val) {
                                 case 'delete':
-                                  onDeleteComment!(val);
+                                  widget.onDeleteComment!(val);
                                   break;
                                 case 'report_user':
-                                  _onReport(context, 'user', user.userId);
+                                  _onReport(
+                                      context, 'user', widget.user.userId);
                                   break;
                                 case 'report_comment':
-                                  _onReport(
-                                      context, 'comment', comment!.commentId!);
+                                  _onReport(context, 'comment',
+                                      widget.comment!.commentId!);
                                   break;
                                 default:
                                   break;

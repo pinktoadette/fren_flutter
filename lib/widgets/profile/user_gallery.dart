@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -9,9 +10,14 @@ import 'package:machi_app/widgets/story_cover.dart';
 
 class UserGallery extends StatefulWidget {
   final String userId;
+  final bool disableCaption;
   final Function(String)? onFileTap;
 
-  const UserGallery({Key? key, required this.userId, this.onFileTap})
+  const UserGallery(
+      {Key? key,
+      required this.userId,
+      this.onFileTap,
+      this.disableCaption = false})
       : super(key: key);
 
   @override
@@ -24,7 +30,7 @@ class _GalleryWidgetState extends State<UserGallery> {
       PagingController(firstPageKey: 0);
 
   List<Gallery> galleries = [];
-  static const int _pageSize = ALL_PAGE_SIZE;
+  final _cancelToken = CancelToken();
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
     childAspectRatio: 100 / 150,
@@ -36,29 +42,32 @@ class _GalleryWidgetState extends State<UserGallery> {
   @override
   void initState() {
     super.initState();
-    _fetchGallery(0);
+    _pagingController.addPageRequestListener((pageKey) {
+      _fetchGallery(pageKey);
+    });
   }
 
   @override
   void dispose() {
     super.dispose();
     _pagingController.dispose();
+    _cancelToken.cancel();
   }
 
-  void _fetchGallery(int pageKey) async {
+  Future<void> _fetchGallery(int pageKey) async {
     try {
-      List<Gallery> newItems = await _galleryApi.getUserGallery(
-          userId: widget.userId, page: pageKey);
-      final isLastPage = newItems.length < _pageSize;
+      final List<Gallery> gal = await _galleryApi.getUserGallery(
+        userId: widget.userId,
+        page: pageKey,
+        cancelToken: _cancelToken,
+      );
+      final isLastPage = gal.isEmpty;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
+        _pagingController.appendLastPage(gal);
       } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
+        final nextPageKey = pageKey + 1;
+        _pagingController.appendPage(gal, nextPageKey);
       }
-      setState(() {
-        galleries = newItems;
-      });
     } catch (error) {
       _pagingController.error = error;
     }
@@ -92,23 +101,19 @@ class _GalleryWidgetState extends State<UserGallery> {
                       if (widget.onFileTap != null) {
                         widget.onFileTap!(item.photoUrl);
                         Navigator.pop(context);
-                      }
-                    },
-                    child: GestureDetector(
-                      onTap: () {
-                        // Navigate to the expanded image page
+                      } else {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) =>
                                 ExpandedImagePage(gallery: item),
                           ),
                         );
-                      },
-                      child: StoryCover(
-                        radius: 0,
-                        photoUrl: item.photoUrl,
-                        title: item.caption,
-                      ),
+                      }
+                    },
+                    child: StoryCover(
+                      radius: 0,
+                      photoUrl: item.photoUrl,
+                      title: item.caption,
                     ),
                   )),
         ));

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/datas/gallery.dart';
 import 'package:flutter/material.dart';
@@ -14,18 +15,26 @@ class GalleryWidget extends StatefulWidget {
 class _GalleryWidgetState extends State<GalleryWidget> {
   final _galleryApi = GalleryApi();
   List<Gallery> galleries = [];
+  final _cancelToken = CancelToken();
+
   @override
   void initState() {
     super.initState();
     _fetchGallery();
   }
 
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
+  }
+
   void _fetchGallery() async {
     if (!mounted) {
       return;
     }
-    List<Gallery> gal =
-        await _galleryApi.getUserGallery(userId: widget.userId, page: 0);
+    List<Gallery> gal = await _galleryApi.getUserGallery(
+        userId: widget.userId, page: 0, cancelToken: _cancelToken);
     setState(() {
       galleries = gal;
     });

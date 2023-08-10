@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -12,11 +13,12 @@ class GalleryApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<List<Gallery>> getUserGallery(
-      {required String userId, int? page}) async {
+      {required String userId, int? page, CancelToken? cancelToken}) async {
     try {
       String url = '${baseUri}gallery/gallery?userId=$userId&page=$page';
       debugPrint("Requesting URL $url");
-      final response = await auth.retryGetRequest(url);
+      final response =
+          await auth.retryGetRequest(url, cancelToken: cancelToken);
       final data = response.data;
       List<Gallery> galleries = [];
       for (Map<String, dynamic> gallery in data) {

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -6,26 +7,46 @@ import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:get/get.dart';
 
-class AvatarInitials extends StatelessWidget {
-  final _userApi = UserApi();
+class AvatarInitials extends StatefulWidget {
   final String? userId;
   final String photoUrl;
   final String username;
   final double? radius;
-  AvatarInitials(
-      {Key? key,
-      this.radius,
-      this.userId,
-      required this.photoUrl,
-      required this.username})
-      : super(key: key);
+
+  AvatarInitials({
+    Key? key,
+    this.radius,
+    this.userId,
+    required this.photoUrl,
+    required this.username,
+  }) : super(key: key);
+
+  @override
+  _AvatarInitialsState createState() => _AvatarInitialsState();
+}
+
+class _AvatarInitialsState extends State<AvatarInitials> {
+  final _userApi = UserApi();
+  final _cancelToken = CancelToken();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _cancelToken.cancel();
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
-        if (userId != null) {
-          User user = await _userApi.getUserById(userId!);
+        if (widget.radius != null && widget.userId != null) {
+          User user = await _userApi.getUserById(
+              userId: widget.userId!, cancelToken: _cancelToken);
           Get.to(ProfileScreen(user: user));
         }
       },
@@ -43,15 +64,16 @@ class AvatarInitials extends StatelessWidget {
           ],
         ),
         child: CircleAvatar(
-          radius: radius ?? 50,
-          child: (photoUrl == '')
+          radius: widget.radius ?? 50,
+          child: (widget.photoUrl == '')
               ? Center(
-                  child: Text(username.substring(0, 1).toUpperCase(),
+                  child: Text(widget.username.substring(0, 1).toUpperCase(),
                       style: const TextStyle(
                           color: APP_PRIMARY_COLOR, fontSize: 18)),
                 )
               : null,
-          foregroundImage: photoUrl == '' ? null : imageCacheWrapper(photoUrl),
+          foregroundImage:
+              widget.photoUrl == '' ? null : imageCacheWrapper(widget.photoUrl),
           backgroundColor: APP_INVERSE_PRIMARY_COLOR,
         ),
       ),

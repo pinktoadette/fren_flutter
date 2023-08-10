@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/story.dart';
@@ -48,10 +49,11 @@ class StoryboardController extends GetxController {
   set published(List<Storyboard> value) => _published.value = value;
 
   /// this is your own boards not timeline. Timeline has its own api call
-  Future<void> getBoards({StoryStatus? filter}) async {
+  Future<void> getBoards(
+      {StoryStatus? filter, CancelToken? cancelToken}) async {
     final storyboardApi = StoryboardApi();
-    final List<Storyboard> stories =
-        await storyboardApi.getMyStoryboards(statusFilter: filter?.name);
+    final List<Storyboard> stories = await storyboardApi.getMyStoryboards(
+        statusFilter: filter?.name, cancelToken: cancelToken);
     if (filter == StoryStatus.PUBLISHED) {
       _published = stories.obs;
     } else {

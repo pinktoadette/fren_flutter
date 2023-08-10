@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
@@ -30,6 +31,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   late AppLocalizations _i18n;
   final _userApi = UserApi();
   final _friendApi = FriendApi();
+  final _cancelToken = CancelToken();
+
   ChatController chatController = Get.find(tag: 'chatroom');
 
   List<Storyboard> boards = [];
@@ -52,11 +55,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (!mounted) {
       return;
     }
-    final user = await _userApi.getUserById(widget.user.userId);
+    final user = await _userApi.getUserById(
+        userId: widget.user.userId, cancelToken: _cancelToken);
     _setUserCount(user);
   }
 
   void _setUserCount(User user) {
+    if (!mounted) {
+      return;
+    }
     setState(() {
       following = user.following ?? false;
       followings = user.followings ?? 0;

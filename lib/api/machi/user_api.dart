@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
@@ -20,10 +21,11 @@ class UserApi {
     return getData.toJson();
   }
 
-  Future<User> getUserById(String userId) async {
+  Future<User> getUserById(
+      {required String userId, CancelToken? cancelToken}) async {
     String url = '${baseUri}user/get_userId?userId=$userId';
     debugPrint("Requesting URL $url");
-    final response = await auth.retryGetRequest(url);
+    final response = await auth.retryGetRequest(url, cancelToken: cancelToken);
     final getData = response.data;
 
     User user = User.fromDocument(getData);

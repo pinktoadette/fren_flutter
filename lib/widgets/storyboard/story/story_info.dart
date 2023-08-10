@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
@@ -22,6 +23,7 @@ class _StoryInfoState extends State<StoryInfo> {
   late AppLocalizations _i18n;
   final _storyboardApi = StoryboardApi();
   final _botApi = BotApi();
+  final _cancelToken = CancelToken();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
   @override
@@ -36,6 +38,7 @@ class _StoryInfoState extends State<StoryInfo> {
 
   @override
   void dispose() {
+    _cancelToken.cancel();
     super.dispose();
   }
 
@@ -46,7 +49,8 @@ class _StoryInfoState extends State<StoryInfo> {
     Storyboard storyboard = storyboardController.currentStoryboard;
 
     List<dynamic> contribute = await _storyboardApi.getContributors(
-        storyboardId: storyboard.storyboardId);
+        storyboardId: storyboard.storyboardId, cancelToken: _cancelToken);
+
     setState(() {
       contributors = contribute;
     });
@@ -87,12 +91,6 @@ class _StoryInfoState extends State<StoryInfo> {
                     style: Theme.of(context).textTheme.titleLarge,
                   )),
               Row(children: [
-                Semantics(
-                    label: _i18n.translate("story_contributors"),
-                    child: Text(
-                      "${_i18n.translate("story_contributors")}: ",
-                      style: Theme.of(context).textTheme.labelSmall,
-                    )),
                 ...contributors.map((contribute) => TextButton(
                     onPressed: () async {
                       if (contribute['characterId'].contains(BOT_PREFIX)) {

@@ -36,6 +36,7 @@ class _AddEditTextState extends State<AddEditText> {
   String? galleryImageUrl;
   TextAlign textAlign = TextAlign.left;
   double _alphaValue = 0.5;
+  double yOffset = 80;
 
   @override
   void initState() {
@@ -175,7 +176,7 @@ class _AddEditTextState extends State<AddEditText> {
                       )),
                   Positioned(
                     left: offset.dx,
-                    top: offset.dy,
+                    top: offset.dy + yOffset,
                     child: GestureDetector(
                         onPanUpdate: (details) {
                           setState(() {

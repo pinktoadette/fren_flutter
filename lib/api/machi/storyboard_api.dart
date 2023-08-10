@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -77,12 +78,14 @@ class StoryboardApi {
     }
   }
 
-  Future<List<Storyboard>> getMyStoryboards({String? statusFilter}) async {
+  Future<List<Storyboard>> getMyStoryboards(
+      {String? statusFilter, CancelToken? cancelToken}) async {
     try {
       String url =
           '${baseUri}my_storyboards${statusFilter != null ? "?status=$statusFilter" : ""}';
       debugPrint("Requesting URL $url");
-      final response = await auth.retryGetRequest(url);
+      final response =
+          await auth.retryGetRequest(url, cancelToken: cancelToken);
       final data = response.data;
 
       List<Storyboard> stories = [];
@@ -141,11 +144,13 @@ class StoryboardApi {
     }
   }
 
-  Future<List<dynamic>> getContributors({required String storyboardId}) async {
+  Future<List<dynamic>> getContributors(
+      {required String storyboardId, CancelToken? cancelToken}) async {
     try {
       String url = '${baseUri}contributors?storyboardId=$storyboardId';
       debugPrint("Requesting URL $url");
-      final response = await auth.retryGetRequest(url);
+      final response =
+          await auth.retryGetRequest(url, cancelToken: cancelToken);
       final data = response.data;
       return data['characters'];
     } catch (error) {

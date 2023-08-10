@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -14,10 +15,11 @@ class StoryboardInfo extends StatefulWidget {
 }
 
 class _StoryboardInfoState extends State<StoryboardInfo> {
-  final _storyboardApi = StoryboardApi();
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  late Storyboard storyboard;
   List<dynamic> contributors = [];
+  late Storyboard storyboard;
+  final _cancelToken = CancelToken();
+  final _storyboardApi = StoryboardApi();
 
   @override
   void initState() {
@@ -31,6 +33,7 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
 
   @override
   void dispose() {
+    _cancelToken.cancel();
     super.dispose();
   }
 
@@ -41,7 +44,7 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
     Storyboard storyboard = storyboardController.currentStoryboard;
 
     List<dynamic> contribute = await _storyboardApi.getContributors(
-        storyboardId: storyboard.storyboardId);
+        storyboardId: storyboard.storyboardId, cancelToken: _cancelToken);
     setState(() {
       contributors = contribute;
     });
@@ -81,13 +84,6 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
                     style: Theme.of(context).textTheme.titleLarge,
                   )),
               Row(children: [
-                Semantics(
-                  label: _i18n.translate("story_contributors"),
-                  child: Text(
-                    "${_i18n.translate("story_contributors")}: ",
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                ),
                 ...contributors.map((contribute) => Text(
                     "${contribute['character']} ",
                     style: Theme.of(context).textTheme.labelSmall))

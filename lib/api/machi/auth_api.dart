@@ -50,12 +50,16 @@ class AuthApi {
     return dio;
   }
 
-  Future<Response> retryGetRequest(String url, {int retries = 3}) async {
+  Future<Response> retryGetRequest(String url,
+      {int retries = 3, CancelToken? cancelToken}) async {
     Dio dio = await getDio();
 
     for (int retry = 0; retry < retries; retry++) {
       try {
-        final Response response = await dio.get(url);
+        final Response response = await dio.get(
+          url,
+          cancelToken: cancelToken,
+        );
 
         if (response.statusCode! >= 200 && response.statusCode! < 300) {
           return response;

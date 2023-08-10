@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -22,6 +23,7 @@ class _FollowingListState extends State<FollowingList> {
   late AppLocalizations _i18n;
   final _userApi = UserApi();
   final _friendApi = FriendApi();
+  final _cancelToken = CancelToken();
   ChatController chatController = Get.find(tag: 'chatroom');
 
   List<User> followers = [];
@@ -97,7 +99,9 @@ class _FollowingListState extends State<FollowingList> {
                   ],
                 ),
                 onTap: () async {
-                  User u = await _userApi.getUserById(followers[index].userId);
+                  User u = await _userApi.getUserById(
+                      userId: followers[index].userId,
+                      cancelToken: _cancelToken);
                   Get.to(() => ProfileScreen(user: u));
                 },
               );
