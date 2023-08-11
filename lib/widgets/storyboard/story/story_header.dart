@@ -7,12 +7,13 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/storyboard/story/story_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/story_info.dart';
-import 'package:machi_app/widgets/timeline/timeline_header.dart';
 
 // Story book Onboarding swipe -> child : story_widget
 class StoryHeaderWidget extends StatefulWidget {
   final Story story;
-  const StoryHeaderWidget({Key? key, required this.story}) : super(key: key);
+  final double? width;
+  const StoryHeaderWidget({Key? key, required this.story, this.width})
+      : super(key: key);
   @override
   State<StoryHeaderWidget> createState() => _StoryHeaderWidgetState();
 }
@@ -36,48 +37,27 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   @override
   Widget build(BuildContext context) {
     double padding = 0;
+    double width = MediaQuery.of(context).size.width;
     return InkWell(
       onTap: () async {
         _showEditStory(context);
       },
       child: Container(
           padding: EdgeInsets.only(left: padding, bottom: 5, right: padding),
+          width: widget.width ?? width,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  // StoryCover(
-                  //     width: storyCoverWidth,
-                  //     height: storyCoverWidth,
-                  //     photoUrl: thisStory.photoUrl ?? "",
-                  //     title: thisStory.title),
-                  // const SizedBox(width: 10),
-                  Flexible(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      TimelineHeader(
-                        paddingLeft: 0,
-                        user: thisStory.createdBy,
-                        showAvatar: false,
-                        showName: true,
-                        fontSize: 12,
-                        isChild: true,
-                      ),
-                      Text(thisStory.title,
-                          overflow: TextOverflow.fade,
-                          maxLines: 2,
-                          softWrap: false,
-                          style: Theme.of(context).textTheme.labelMedium),
-                    ],
-                  )),
-                ],
+              Text(
+                thisStory.createdBy.username,
+                style: Theme.of(context).textTheme.bodySmall,
               ),
+              Text(thisStory.title,
+                  overflow: TextOverflow.fade,
+                  maxLines: 2,
+                  softWrap: false,
+                  style: Theme.of(context).textTheme.labelMedium),
             ],
           )),
     );

@@ -15,12 +15,14 @@ import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/downloader.dart';
+import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
+import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
@@ -342,16 +344,23 @@ class _EditPageReorderState extends State<EditPageReorder> {
           ),
         ]);
       case "image":
+        AspectRatioImage adjImage = AspectRatioImage(
+            imageWidth: scripts[index].image!.width.toDouble(),
+            imageHeight: scripts[index].image!.height.toDouble(),
+            imageUrl: scripts[index].image!.uri);
+        AspectRatioImage modifiedImage = adjImage.displayScript(size);
+
         return Column(crossAxisAlignment: alignment, children: <Widget>[
           const SizedBox(
             height: 30,
           ),
           _bubbleOrNot(
-              RoundedImage(
-                  width: size.width * 0.75,
-                  height: size.width * 0.75,
-                  icon: const Icon(Iconsax.image),
-                  photoUrl: scripts[index].image?.uri ?? ""),
+              StoryCover(
+                photoUrl: modifiedImage.imageUrl,
+                title: story.title,
+                width: modifiedImage.imageWidth,
+                height: modifiedImage.imageHeight,
+              ),
               size,
               alignment),
           lay,

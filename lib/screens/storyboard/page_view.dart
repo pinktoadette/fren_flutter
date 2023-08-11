@@ -16,6 +16,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
@@ -105,6 +106,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    Size size = MediaQuery.of(context).size;
 
     if (story == null && pages.isEmpty) {
       return Scaffold(
@@ -125,11 +127,12 @@ class _StoryPageViewState extends State<StoryPageView> {
             child: AppBar(
               centerTitle: false,
               backgroundColor: Colors.black26,
-              title: Padding(
+              title: Container(
                 padding: const EdgeInsets.only(
                   top: 20,
                 ),
-                child: StoryHeaderWidget(story: story!),
+                width: 200,
+                child: StoryHeaderWidget(story: story!, width: 100),
               ),
               leading: BackButton(
                 onPressed: () {
@@ -313,7 +316,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     return Stack(alignment: Alignment.topCenter, children: [
       NotificationListener<UserScrollNotification>(
           onNotification: (notification) {
-            /// @ttodo duplicate function in edit_story.dart
+            /// @todo duplicate function in edit_story.dart
             double currentPos = notification.metrics.pixels;
             double maxScrollExtent = notification.metrics.maxScrollExtent;
             final ScrollDirection direction = notification.direction;
@@ -364,12 +367,8 @@ class _StoryPageViewState extends State<StoryPageView> {
             itemCount: storyboardController.currentStory.pages!.length,
             itemBuilder: (_, index) {
               List<Script>? scripts = story!.pages![index].scripts;
-              String? background = story?.pages?[index].backgroundImageUrl;
-
               String backgroundUrl =
-                  (background != null && background.contains("http"))
-                      ? background
-                      : "";
+                  story?.pages?[index].backgroundImageUrl ?? "";
 
               return Container(
                 height: size.height,
@@ -562,13 +561,19 @@ class _StoryPageViewState extends State<StoryPageView> {
                   ? Colors.black
                   : Theme.of(context).colorScheme.primary));
     } else if (script.type == "image") {
+      AspectRatioImage adjImage = AspectRatioImage(
+          imageWidth: script.image!.width.toDouble(),
+          imageHeight: script.image!.height.toDouble(),
+          imageUrl: script.image!.uri);
+      AspectRatioImage modifiedImage = adjImage.displayScript(size);
+
       widget = Padding(
           padding: const EdgeInsets.only(bottom: 10),
           child: StoryCover(
-            photoUrl: script.image?.uri ?? "",
+            photoUrl: modifiedImage.imageUrl,
             title: story?.title ?? "machi",
-            width: size.width * 0.9,
-            height: size.width * 0.9,
+            width: modifiedImage.imageWidth,
+            height: modifiedImage.imageHeight,
           ));
     }
     Widget widgetScript = story!.layout == Layout.CONVO

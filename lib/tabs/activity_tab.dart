@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
-import 'package:get/get.dart';
 
 class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);

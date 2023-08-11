@@ -4,7 +4,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
 /// Storyboard or story photoUrl cover
@@ -57,39 +56,29 @@ class _StoryCoverState extends State<StoryCover> {
               ])));
     }
 
-    return Container(
-        decoration: BoxDecoration(
-            color: APP_TERTIARY,
-            borderRadius: BorderRadius.circular(widget.radius ?? 20),
-            boxShadow: [
-              BoxShadow(
-                  blurRadius: 8,
-                  offset: const Offset(5, 15),
-                  color: Theme.of(context)
-                      .colorScheme
-                      .tertiaryContainer
-                      .withOpacity(.6),
-                  spreadRadius: -9)
-            ]),
+    return Card(
+        color: Colors.transparent,
         child: SizedBox(
-          height: widget.height ?? 120,
-          width: widget.width ?? 120,
+          height: widget.height ?? 512,
+          width: widget.width ?? 512,
           child: _showImageLocal(context),
         ));
   }
 
   Widget _showImageLocal(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     if (widget.photoUrl != "") {
-      return ClipRRect(
-        borderRadius: BorderRadius.circular(widget.radius ?? 10.0),
-        child: CachedNetworkImage(
-          memCacheWidth: (widget.width ?? 256).toInt(),
-          imageUrl: widget.photoUrl,
-          progressIndicatorBuilder: (context, url, progress) =>
-              loadingButton(size: 20),
-          errorWidget: (context, url, error) =>
-              const Icon(Iconsax.gallery_slash),
-        ),
+      return CachedNetworkImage(
+        fit: BoxFit.cover,
+        width: widget.width ?? 512,
+        height: widget.height ?? 512,
+        memCacheWidth: 512,
+        memCacheHeight: 512,
+        imageUrl: widget.photoUrl,
+        progressIndicatorBuilder: (context, url, progress) =>
+            loadingButton(size: 20),
+        errorWidget: (context, url, error) => const Icon(Iconsax.gallery_slash),
       );
     }
     if (widget.file != null) {
@@ -101,13 +90,13 @@ class _StoryCoverState extends State<StoryCover> {
               fit: BoxFit.cover));
     }
     return Container(
-      height: 190.0,
-      width: MediaQuery.of(context).size.width - 100.0,
+      height: size.height - 100,
+      width: size.width - 100.0,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
           color: Colors.black,
           image: const DecorationImage(
-              image: AssetImage("assets/images/chips.png"), fit: BoxFit.fill)),
+              image: AssetImage("assets/images/blank.png"), fit: BoxFit.fill)),
       child: Center(
           child: Text(widget.title.substring(0, 1).toUpperCase(),
               style: widget.radius == 5
