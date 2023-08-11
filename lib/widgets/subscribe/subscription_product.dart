@@ -110,7 +110,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     Size size = MediaQuery.of(context).size;
     double itemHeight = 410;
     Color backgroundColor = Theme.of(context).colorScheme.background;
-    Color fontColor = Theme.of(context).colorScheme.primary;
+    Color fontColor = Colors.white;
 
     if (offers == null) {
       return const Center(

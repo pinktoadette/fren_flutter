@@ -100,7 +100,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Widget build(BuildContext context) {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
-    Color textColor = Theme.of(context).colorScheme.primary;
+    Color textColor = Colors.black;
 
     if (isLoading) {
       return const Frankloader();
@@ -157,8 +157,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
                         fontWeight: FontWeight.normal,
                       ),
                       primaryColor: Theme.of(context).colorScheme.secondary,
-                      sendButtonIcon: Icon(Iconsax.send_2,
-                          color: Theme.of(context).colorScheme.primary),
+                      sendButtonIcon:
+                          const Icon(Iconsax.send_2, color: Colors.white),
                       backgroundColor:
                           Theme.of(context).colorScheme.background),
                   onEndReached: _loadMoreMessage, //get more messages on top
@@ -495,11 +495,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
       builder: (context) {
         return FractionallySizedBox(
             heightFactor: 400 / height,
-            child: BotProfileCard(
-              bot: botController.bot,
-              room: _room,
-              roomIdx: _roomIdx,
-            ));
+            child: Column(children: [
+              BotProfileCard(
+                bot: botController.bot,
+              ),
+            ]));
       },
     );
   }

@@ -97,7 +97,11 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
               scrollDirection: Axis.vertical,
               itemCount: storyboardController.storyboards.length,
               itemBuilder: (BuildContext ctx, index) {
-                if (index >= storyboardController.storyboards.length) {
+                Storyboard storyboard = storyboardController.storyboards[index];
+                if (storyboard.story!.isEmpty) {
+                  // handles empty boards
+                  return const Divider();
+                } else if (index >= storyboardController.storyboards.length) {
                   /// handle delete out of range
                   return const SizedBox.shrink();
                 } else if ((index + 1) % 3 == 0) {
@@ -111,11 +115,6 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                       child: const InlineAdaptiveAds(),
                     ),
                   );
-                }
-                Storyboard storyboard = storyboardController.storyboards[index];
-                if (storyboard.story!.isEmpty) {
-                  // handles empty boards
-                  return const Divider();
                 }
                 return Dismissible(
                     key: Key(storyboard.storyboardId),
