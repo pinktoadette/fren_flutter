@@ -47,7 +47,7 @@ class _SignInWidgetState extends State<SignInWidget> {
     return Column(children: [
       Text(
         _i18n.translate("sign_in"),
-        style: Theme.of(context).textTheme.headlineSmall,
+        style: Theme.of(context).textTheme.bodyLarge,
       ),
       if (isLoading == true)
         Lottie.asset('assets/lottie/loader.json', height: 60)

@@ -79,13 +79,18 @@ class _StoryCoverState extends State<StoryCover> {
   }
 
   Widget _showImageLocal(BuildContext context) {
-    double w = widget.width ?? 120;
     if (widget.photoUrl != "") {
       return ClipRRect(
-          borderRadius: BorderRadius.circular(widget.radius ?? 10.0),
-          child: Image(
-            image: ImageCacheWrapper(widget.photoUrl),
-          ));
+        borderRadius: BorderRadius.circular(widget.radius ?? 10.0),
+        child: CachedNetworkImage(
+          memCacheWidth: (widget.width ?? 256).toInt(),
+          imageUrl: widget.photoUrl,
+          progressIndicatorBuilder: (context, url, progress) =>
+              loadingButton(size: 20),
+          errorWidget: (context, url, error) =>
+              const Icon(Iconsax.gallery_slash),
+        ),
+      );
     }
     if (widget.file != null) {
       return ClipRRect(

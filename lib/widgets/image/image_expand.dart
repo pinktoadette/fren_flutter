@@ -23,7 +23,7 @@ class ExpandedImagePage extends StatelessWidget {
           GestureDetector(
             // Dismiss the page when tapped
             onTap: () {
-              Navigator.of(context).pop();
+              Get.back();
             },
             child: Center(
               child: Column(
@@ -52,13 +52,14 @@ class ExpandedImagePage extends StatelessWidget {
             child: IconButton(
               icon: const Icon(Icons.close, color: Colors.white),
               onPressed: () {
-                Navigator.of(context).pop();
+                Get.back();
               },
             ),
           ),
           Positioned(
               bottom: 30,
-              left: 0,
+              left: 10,
+              right: 10,
               child: Container(
                   color: Colors.black.withOpacity(0.8),
                   width: size.width,
@@ -71,10 +72,17 @@ class ExpandedImagePage extends StatelessWidget {
                         Row(
                           children: [
                             AvatarInitials(
-                                radius: 16,
+                                radius: 30,
                                 userId: gallery.createdBy!.userId,
                                 photoUrl: gallery.createdBy!.photoUrl,
                                 username: gallery.createdBy!.username),
+                            SizedBox(
+                              width: size.width - 150,
+                              child: Text(
+                                gallery.createdBy!.username,
+                                overflow: TextOverflow.fade,
+                              ),
+                            )
                           ],
                         ),
                       TextButton(

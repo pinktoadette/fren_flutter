@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 // ignore: non_constant_identifier_names
-ImageProvider<Object> ImageCacheWrapper(String imageUrl) {
+ImageProvider<Object> ImageCacheWrapper(String imageUrl,
+    {int? maxHeight, int? maxWidth}) {
   // Your custom logic to check for conditions
   bool isValidUrl = isValidImageUrl(imageUrl);
 
@@ -11,6 +12,8 @@ ImageProvider<Object> ImageCacheWrapper(String imageUrl) {
     try {
       return CachedNetworkImageProvider(
         imageUrl,
+        maxHeight: maxHeight,
+        maxWidth: maxWidth,
         errorListener: () async {
           await _flagImage(imageUrl);
           return;

@@ -1,11 +1,8 @@
-import 'package:machi_app/controller/bot_controller.dart';
-import 'package:machi_app/controller/chatroom_controller.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/chatroom.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:machi_app/widgets/image/image_rounded.dart';
-import 'package:get/get.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:iconsax/iconsax.dart';
 
 class BotProfileCard extends StatefulWidget {
@@ -22,13 +19,7 @@ class BotProfileCard extends StatefulWidget {
 }
 
 class _BotProfileCardState extends State<BotProfileCard> {
-  final _botPrompt = TextEditingController(text: "");
-  ChatController chatController = Get.find(tag: 'chatroom');
-  BotController botController = Get.find(tag: 'bot');
-  bool isLoading = false;
-
   bool disableTextEdit = true;
-  final TextEditingController personalityController = TextEditingController();
 
   @override
   void initState() {
@@ -38,34 +29,37 @@ class _BotProfileCardState extends State<BotProfileCard> {
   @override
   void dispose() {
     super.dispose();
-    _botPrompt.dispose();
-    personalityController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: const EdgeInsets.all(20),
+    return Card(
+      margin: const EdgeInsets.all(20),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           SizedBox(
             height: 250,
+            width: width,
             child: Stack(
               alignment: Alignment.bottomLeft,
               children: [
                 Positioned.fill(
-                  child: RoundedImage(
-                    width: width * 0.15,
-                    height: width * 0.15,
-                    icon: const Icon(Iconsax.box_add),
-                    photoUrl: widget.bot.profilePhoto ?? "",
+                  child: CachedNetworkImage(
+                    fit: BoxFit.cover,
+                    memCacheWidth: width.toInt(),
+                    imageUrl: widget.bot.profilePhoto ?? "",
+                    progressIndicatorBuilder: (context, url, progress) =>
+                        loadingButton(size: 20),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Iconsax.gallery_slash),
                   ),
                 ),
                 Container(
                   color: Colors.black.withOpacity(0.5),
+                  width: width,
                   padding: const EdgeInsets.all(20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -93,9 +87,6 @@ class _BotProfileCardState extends State<BotProfileCard> {
               ],
             ),
           ),
-          isLoading == true
-              ? const Frankloader(height: 150, width: 100)
-              : const SizedBox(height: 10),
         ],
       ),
     );

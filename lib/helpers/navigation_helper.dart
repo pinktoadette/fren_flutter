@@ -14,6 +14,7 @@ class NavigationHelper {
         context: context,
         builder: (context) => FractionallySizedBox(
           heightFactor: 0.45,
+          widthFactor: 1,
           child: Container(
             padding: const EdgeInsets.all(20),
             child: const SignInWidget(),

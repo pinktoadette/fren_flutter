@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/datas/gallery.dart';
@@ -101,12 +102,7 @@ class _GalleryWidgetState extends State<UserGallery> {
                         widget.onFileTap!(item.photoUrl);
                         Navigator.pop(context);
                       } else {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                ExpandedImagePage(gallery: item),
-                          ),
-                        );
+                        Get.to(() => ExpandedImagePage(gallery: item));
                       }
                     },
                     child: StoryCover(

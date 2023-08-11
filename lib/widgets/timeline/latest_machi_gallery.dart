@@ -104,7 +104,8 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                                         radius: 40,
                                         backgroundImage: bot.profilePhoto != ""
                                             ? ImageCacheWrapper(
-                                                bot.profilePhoto!)
+                                                bot.profilePhoto!,
+                                                maxHeight: 100)
                                             : null,
                                       ),
                                       Text(
@@ -167,12 +168,14 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
       builder: (context) {
         return FractionallySizedBox(
             heightFactor: 400 / height,
+            widthFactor: 1,
             child: Column(children: [
               BotProfileCard(
                 bot: bot,
               ),
               TextButton(
                   onPressed: () {
+                    Get.back();
                     NavigationHelper.handleGoToPageOrLogin(
                       context: context,
                       userController: userController,

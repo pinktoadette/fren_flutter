@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
-
-import 'row_bot_info.dart';
+import 'package:machi_app/widgets/bot/bot_profile.dart';
 
 class ListPromptBots extends StatefulWidget {
   const ListPromptBots({Key? key}) : super(key: key);
@@ -80,7 +80,14 @@ class _ListPromptBotState extends State<ListPromptBots> {
                 children: [Text(i18n.translate("bots_not_found"))],
               );
             }, itemBuilder: (context, item, index) {
-              return RowMachiInfo(bot: item);
+              return InkWell(
+                  onTap: () {
+                    Future(() {
+                      SetCurrentRoom().setNewBotRoom(item, true);
+                    });
+                    Navigator.pop(context);
+                  },
+                  child: BotProfileCard(bot: item));
             }),
             separatorBuilder: (BuildContext context, int index) {
               if ((index + 1) % 3 == 0) {
