@@ -66,7 +66,7 @@ class _AvatarInitialsState extends State<AvatarInitials> {
         child: CircleAvatar(
           radius: widget.radius ?? 50,
           foregroundImage:
-              widget.photoUrl == '' ? null : imageCacheWrapper(widget.photoUrl),
+              widget.photoUrl == '' ? null : ImageCacheWrapper(widget.photoUrl),
           backgroundColor: APP_INVERSE_PRIMARY_COLOR,
           child: (widget.photoUrl == '')
               ? Center(

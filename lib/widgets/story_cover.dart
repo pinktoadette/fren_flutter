@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 
 /// Storyboard or story photoUrl cover
@@ -81,19 +82,10 @@ class _StoryCoverState extends State<StoryCover> {
     double w = widget.width ?? 120;
     if (widget.photoUrl != "") {
       return ClipRRect(
-        borderRadius: BorderRadius.circular(widget.radius ?? 10.0),
-        child: CachedNetworkImage(
-          progressIndicatorBuilder: (context, url, progress) =>
-              loadingButton(size: 16, color: Colors.black),
-          imageUrl: widget.photoUrl,
-          fadeInDuration: const Duration(seconds: 1),
-          width: w,
-          height: w,
-          fit: BoxFit.cover,
-          errorWidget: (context, url, error) =>
-              const Icon(Iconsax.gallery_slash),
-        ),
-      );
+          borderRadius: BorderRadius.circular(widget.radius ?? 10.0),
+          child: Image(
+            image: ImageCacheWrapper(widget.photoUrl),
+          ));
     }
     if (widget.file != null) {
       return ClipRRect(

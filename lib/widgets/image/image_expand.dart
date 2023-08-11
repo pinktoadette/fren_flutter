@@ -33,7 +33,7 @@ class ExpandedImagePage extends StatelessWidget {
                     height: size.height * 0.5,
                     child: Hero(
                       tag: gallery.photoUrl,
-                      child: Image(image: imageCacheWrapper(gallery.photoUrl)),
+                      child: Image(image: ImageCacheWrapper(gallery.photoUrl)),
                     ),
                   ),
                   SizedBox(

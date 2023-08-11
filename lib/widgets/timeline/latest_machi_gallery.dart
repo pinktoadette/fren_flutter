@@ -103,7 +103,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                                       CircleAvatar(
                                         radius: 40,
                                         backgroundImage: bot.profilePhoto != ""
-                                            ? imageCacheWrapper(
+                                            ? ImageCacheWrapper(
                                                 bot.profilePhoto!)
                                             : null,
                                       ),

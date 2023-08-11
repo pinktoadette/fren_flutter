@@ -380,7 +380,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 story?.pages![index].backgroundAlpha ?? 0.5),
                             BlendMode.darken),
                         image: backgroundUrl != ""
-                            ? imageCacheWrapper(backgroundUrl)
+                            ? ImageCacheWrapper(backgroundUrl)
                             : Image.asset(
                                 "assets/images/blank.png",
                                 scale: 0.2,

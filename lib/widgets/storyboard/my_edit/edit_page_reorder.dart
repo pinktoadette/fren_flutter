@@ -162,10 +162,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       attachmentPreview!,
                     )
                   : urlPreview != null
-                      ? imageCacheWrapper(urlPreview!)
+                      ? ImageCacheWrapper(urlPreview!)
                       : story.pages![widget.pageIndex].backgroundImageUrl !=
                               null
-                          ? imageCacheWrapper(story
+                          ? ImageCacheWrapper(story
                               .pages![widget.pageIndex].backgroundImageUrl!)
                           : const AssetImage(
                               "assets/images/blank.png",

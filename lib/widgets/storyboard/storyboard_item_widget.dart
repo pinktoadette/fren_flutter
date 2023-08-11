@@ -154,11 +154,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                               story.pages![index].backgroundAlpha ?? 0.5),
                           BlendMode.darken),
                       image: story.pages![index].backgroundImageUrl != null
-                          ? imageCacheWrapper(
+                          ? ImageCacheWrapper(
                               story.pages![index].backgroundImageUrl!,
                             )
                           : story.pages![index].backgroundImageUrl != null
-                              ? imageCacheWrapper(
+                              ? ImageCacheWrapper(
                                   story.pages![index].backgroundImageUrl!)
                               : Image.asset(
                                   "assets/images/blank.png",
@@ -279,7 +279,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             decoration: story.photoUrl != null && story.photoUrl != ""
                 ? BoxDecoration(
                     image: DecorationImage(
-                      image: imageCacheWrapper(story.photoUrl!),
+                      image: ImageCacheWrapper(story.photoUrl!),
                       fit: BoxFit.fitWidth,
                       alignment: Alignment.topCenter,
                       colorFilter: ColorFilter.mode(

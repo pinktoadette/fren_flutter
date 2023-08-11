@@ -168,7 +168,7 @@ class _AddEditTextState extends State<AddEditText> {
                                         .withOpacity(_alphaValue),
                                     BlendMode.darken),
                                 image: galleryImageUrl != null
-                                    ? imageCacheWrapper(
+                                    ? ImageCacheWrapper(
                                         galleryImageUrl!,
                                       )
                                     : FileImage(attachmentPreview!),

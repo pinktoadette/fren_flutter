@@ -118,7 +118,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                                   ? FileImage(_uploadPath!)
                                   : null,
                               backgroundImage: photoUrl != null
-                                  ? imageCacheWrapper(photoUrl!)
+                                  ? ImageCacheWrapper(photoUrl!)
                                   : null,
                               backgroundColor:
                                   Theme.of(context).colorScheme.primary,
