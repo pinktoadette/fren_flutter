@@ -108,13 +108,15 @@ class _AddEditTextState extends State<AddEditTextWidget> {
         _textController.text != "") {
       imageBytes = await screenshotController.capture();
     }
+
     AddEditTextCharacter update = AddEditTextCharacter.fromJson({
       "text": imageBytes == null ? text : null,
       "byteImage": imageBytes,
       "image": imageBytes == null ? attachmentPreview : null,
       "gallery": imageBytes == null ? galleryImageUrl : null,
-      "textAlign": textAlign,
-      "characterId": widget.script?.characterId ?? UserModel().user.userId
+      "textAlign": textAlign.name,
+      "characterId": widget.script?.characterId ?? UserModel().user.userId,
+      "characterName": widget.script?.characterName ?? UserModel().user.username
     });
     widget.onTextComplete(update);
   }
@@ -369,6 +371,8 @@ class _AddEditTextState extends State<AddEditTextWidget> {
     );
 
     Get.snackbar(_i18n.translate("success"), "Text is replaced",
-        snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_SUCCESS,
+        colorText: Colors.black);
   }
 }

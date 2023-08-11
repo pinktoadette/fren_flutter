@@ -186,9 +186,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   ) {
     final photoUrl = storyboard.photoUrl ?? "";
     final title = firstStory.title;
-    final subtitle = truncateText(
+    String subtitle = truncateText(
       maxLength: 200,
-      text: firstStory.summary!,
+      text: firstStory.summary ?? "",
     );
 
     return InkWell(
@@ -199,15 +199,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            if (photoUrl != "")
-              StoryCover(
-                  width: width * 0.4 - padding * 4,
-                  height: width * 0.4 - padding * 4,
-                  photoUrl: photoUrl,
-                  title: title),
             Container(
                 padding: EdgeInsets.only(left: photoUrl != "" ? 10 : 0),
-                width: width * 0.6 - (photoUrl != "" ? padding * 2 : 0),
+                width: width - (photoUrl != "" ? padding * 2 : 0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -220,11 +214,26 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                             fontSize: 14, color: APP_MUTED_COLOR)),
                   ],
                 )),
+            if (photoUrl != "")
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  StoryCover(
+                      width: width * 0.4 - padding * 4,
+                      height: width * 0.4 - padding * 4,
+                      photoUrl: photoUrl,
+                      title: title),
+                  if (subtitle != "")
+                    Container(
+                        padding: EdgeInsets.only(left: photoUrl != "" ? 10 : 0),
+                        width: width * 0.6 - (photoUrl != "" ? padding * 2 : 0),
+                        child:
+                            textLinkPreview(context: context, text: subtitle))
+                ],
+              ),
             const SizedBox(
               height: 5,
             ),
-            if (subtitle != "")
-              textLinkPreview(context: context, text: subtitle)
           ],
         ),
       ),

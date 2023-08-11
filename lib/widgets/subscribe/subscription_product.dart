@@ -273,13 +273,14 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                             const SizedBox(
                                               height: 15,
                                             ),
-                                            Expanded(
+                                            SizedBox(
+                                                width: size.width * 0.5,
                                                 child: Text(
-                                              "Get ${period}ly subscription to $qty images",
-                                              style: Theme.of(context)
-                                                  .textTheme
-                                                  .labelSmall,
-                                            ))
+                                                  "Get ${period}ly subscription to $qty images",
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .labelSmall,
+                                                ))
                                           ],
                                         ),
                                       )
@@ -346,14 +347,13 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
           /// temp
-          subscribeController.credits = int.parse(qty).obs;
+          subscribeController.updateCredits(qty);
           await purchaseApi.purchaseCredits();
-          subscribeController.getCredits();
           Get.snackbar(_i18n.translate("success"),
               _i18n.translate("subscribed_successfully"),
               snackPosition: SnackPosition.TOP,
               backgroundColor: APP_SUCCESS,
-              colorText: APP_INVERSE_PRIMARY_COLOR);
+              colorText: Colors.black);
         } catch (err, s) {
           Get.snackbar(_i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),
@@ -361,10 +361,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await FirebaseCrashlytics.instance.recordError(err, s,
               reason: 'Unable to save purchase offers: ${err.toString()}',
               fatal: true);
-          setState(() {
-            isLoading = false;
-          });
-          _pr.hide();
         }
       }
       Get.back(result: true);

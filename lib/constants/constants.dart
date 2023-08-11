@@ -35,7 +35,8 @@ const Color APP_PRIMARY_BACKGROUND = Colors.white;
 const Color APP_INVERSE_PRIMARY_COLOR = Color.fromARGB(255, 196, 196, 196);
 const Color APP_INPUT_COLOR = Color.fromARGB(255, 26, 26, 26);
 const Color APP_TERTIARY = Color.fromARGB(255, 30, 30, 30);
-const Color APP_SUCCESS = APP_TERTIARY; //Color.fromARGB(255, 33, 202, 137);
+const Color APP_SUCCESS =
+    APP_INVERSE_PRIMARY_COLOR; //Color.fromARGB(255, 33, 202, 137);
 const Color APP_WARNING = Color.fromARGB(255, 236, 185, 85);
 const Color APP_INFO = Color.fromARGB(255, 33, 183, 202);
 const Color APP_ERROR = Color.fromARGB(255, 202, 33, 98);

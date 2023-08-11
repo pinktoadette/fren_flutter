@@ -186,12 +186,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
               : commentController.replyToComment,
           cancelToken: _cancelToken);
       _formatComment(newComment);
-      Get.snackbar(
-        _i18n.translate("success"),
-        _i18n.translate("posted"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar(_i18n.translate("success"), _i18n.translate("posted"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
       _commentController.clear();
       commentController.clearReplyTo();
       FocusManager.instance.primaryFocus?.unfocus();

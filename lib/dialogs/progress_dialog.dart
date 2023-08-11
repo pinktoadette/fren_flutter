@@ -6,7 +6,7 @@ class ProgressDialog {
   bool isDismissible = true;
 
   // Local variables
-  late BuildContext _dismissingContext;
+  BuildContext? _dismissingContext;
 
   // Constructor
   ProgressDialog(this.context, {this.isDismissible = true});
@@ -18,6 +18,7 @@ class ProgressDialog {
         context: context,
         barrierDismissible: isDismissible,
         builder: (BuildContext context) {
+          _dismissingContext = context; // Store the context
           return const SimpleDialog(
             elevation: 8.0,
             shadowColor: Colors.transparent,
@@ -30,8 +31,6 @@ class ProgressDialog {
           );
         },
       );
-      // Delaying the function for 200 milliseconds
-      // [Default transitionDuration of DialogRoute]
       await Future.delayed(const Duration(milliseconds: 200));
       debugPrint('show progress dialog() -> success');
       return true;
@@ -45,7 +44,7 @@ class ProgressDialog {
   // Hide progress dialog
   Future<bool> hide() async {
     try {
-      Navigator.of(_dismissingContext).pop();
+      Navigator.of(_dismissingContext!).pop();
       debugPrint('ProgressDialog dismissed');
       return Future.value(true);
     } catch (err) {

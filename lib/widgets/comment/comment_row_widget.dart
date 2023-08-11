@@ -127,12 +127,10 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
 
     try {
       await commentApi.deleteComment(widget.item.commentId!);
-      Get.snackbar(
-        'DELETE',
-        i18n.translate("comment_deleted"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_SUCCESS,
-      );
+      Get.snackbar('DELETE', i18n.translate("comment_deleted"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err) {
       Get.snackbar('Error', i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);

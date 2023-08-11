@@ -228,11 +228,10 @@ class _BotChatScreenState extends State<BotChatScreen> {
                 final galleryApi = GalleryApi();
                 await galleryApi.addUserGallery(messageId: message.id);
                 Get.snackbar(
-                  _i18n.translate("success"),
-                  _i18n.translate("story_added"),
-                  snackPosition: SnackPosition.TOP,
-                  backgroundColor: APP_SUCCESS,
-                );
+                    _i18n.translate("success"), _i18n.translate("story_added"),
+                    snackPosition: SnackPosition.TOP,
+                    backgroundColor: APP_SUCCESS,
+                    colorText: Colors.black);
               } else {
                 Get.snackbar(
                   _i18n.translate("error"),
@@ -503,28 +502,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
       },
     );
   }
-
-  // void _showFriends() {
-  //   if (_room.users.length >= 2) {
-  //     confirmDialog(context,
-  //         message: _i18n.translate("friend_invite_limit_chat"),
-  //         positiveText: _i18n.translate("OK"), positiveAction: () {
-  //       Navigator.of(context).pop();
-  //     });
-  //   } else {
-  //     showModalBottomSheet<void>(
-  //       context: context,
-  //       isScrollControlled: true,
-  //       builder: (context) {
-  //         return FractionallySizedBox(
-  //             heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-  //             child: FriendListWidget(
-  //               roomIdx: _roomIdx,
-  //             ));
-  //       },
-  //     );
-  //   }
-  // }
 
   /// DO NOT DELETE
   /// tHIS IS USED ON RABBIT

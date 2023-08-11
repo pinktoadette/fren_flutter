@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/account_page.dart';
@@ -19,17 +20,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _hideProfile = false;
   late AppLocalizations _i18n;
+  bool _isDarkMode = false;
 
   /// Initialize user settings
   void initUserSettings() async {
     if (!mounted) {
       return;
     }
+
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
       }
+      _isDarkMode = isDarkMode;
     });
   }
 
@@ -100,6 +106,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           userId: UserModel().user.userId,
                           data: {USER_STATUS: userStatus}).then((_) {
                         debugPrint('Profile hidden: $newValue');
+                      });
+                    },
+                  ),
+                ),
+
+                /// dark mode
+                const SizedBox(height: 15),
+                ListTile(
+                  leading: _isDarkMode
+                      ? Icon(Iconsax.sun,
+                          color: Theme.of(context).primaryColor, size: 30)
+                      : Icon(Iconsax.moon,
+                          color: Theme.of(context).primaryColor, size: 30),
+                  title: Text(_i18n.translate('dark_mode'),
+                      style: const TextStyle(fontSize: 18)),
+                  subtitle: Text(_i18n.translate('enable_mode')),
+                  trailing: Switch(
+                    activeColor: Theme.of(context).colorScheme.secondary,
+                    value: _isDarkMode,
+                    onChanged: (newValue) async {
+                      // Update UI
+                      setState(() {
+                        _isDarkMode = newValue;
+                      });
+
+                      /// GetX storage
+                      ThemeHelper().switchTheme();
+
+                      // Update profile status
+                      UserModel().updateUserData(
+                          userId: UserModel().user.userId,
+                          data: {USER_DARK_MODE: newValue}).then((_) {
+                        debugPrint('dark mode: $newValue');
                       });
                     },
                   ),

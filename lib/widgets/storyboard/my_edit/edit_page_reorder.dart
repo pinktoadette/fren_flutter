@@ -278,12 +278,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
               onPressed: () async {
                 try {
                   await saveImageFromUrl(scripts[index].image!.uri);
-                  Get.snackbar(
-                    _i18n.translate("success"),
-                    _i18n.translate("saved_success"),
-                    snackPosition: SnackPosition.TOP,
-                    backgroundColor: APP_SUCCESS,
-                  );
+                  Get.snackbar(_i18n.translate("success"),
+                      _i18n.translate("saved_success"),
+                      snackPosition: SnackPosition.TOP,
+                      backgroundColor: APP_SUCCESS,
+                      colorText: Colors.black);
                 } catch (err) {
                   Get.snackbar(
                     _i18n.translate("error"),
@@ -502,7 +501,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
       widget.onUpdateSeq(scripts);
       Get.snackbar(
           _i18n.translate("saved_success"), _i18n.translate("story_added_info"),
-          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

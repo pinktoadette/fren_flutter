@@ -179,7 +179,9 @@ class _StoryboardEditState extends State<StoryboardEdit> {
           photoUrl: imageUrl);
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("update_successful"),
-          snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
     } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(

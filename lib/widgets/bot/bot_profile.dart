@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/chatroom.dart';
 import 'package:flutter/material.dart';
@@ -34,6 +35,13 @@ class _BotProfileCardState extends State<BotProfileCard> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    TextStyle header = const TextStyle(
+        color: APP_INVERSE_PRIMARY_COLOR,
+        fontSize: 20,
+        fontWeight: FontWeight.bold);
+    TextStyle body =
+        const TextStyle(color: APP_INVERSE_PRIMARY_COLOR, fontSize: 16);
+
     return Card(
       margin: const EdgeInsets.all(20),
       child: Column(
@@ -64,23 +72,11 @@ class _BotProfileCardState extends State<BotProfileCard> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        widget.bot.name,
-                        style: Theme.of(context).textTheme.headlineSmall,
-                      ),
-                      Text(
-                        widget.bot.modelType.name,
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
+                      Text(widget.bot.name, style: header),
+                      Text(widget.bot.modelType.name, style: body),
                       const Spacer(),
-                      Text(
-                        widget.bot.subdomain,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      Text(
-                        widget.bot.about,
-                        style: Theme.of(context).textTheme.bodySmall,
-                      ),
+                      Text(widget.bot.subdomain, style: body),
+                      Text(widget.bot.about, style: body),
                     ],
                   ),
                 ),
