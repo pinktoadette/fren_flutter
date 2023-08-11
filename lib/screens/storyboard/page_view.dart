@@ -106,7 +106,6 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
 
     if (story == null && pages.isEmpty) {
       return Scaffold(

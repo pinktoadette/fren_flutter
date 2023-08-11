@@ -9,6 +9,7 @@ import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
@@ -21,7 +22,6 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
-import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
@@ -112,7 +112,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.text_block),
                         onPressed: () {
-                          Get.to(() => AddEditText(
+                          Get.to(() => AddEditTextWidget(
                               onTextComplete: (content) =>
                                   _addEditText(newContent: content)));
                         },
@@ -249,7 +249,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         IconButton(
             onPressed: () {
-              Get.to(() => AddEditText(
+              Get.to(() => AddEditTextWidget(
                   script: scripts[index],
                   onTextComplete: (content) =>
                       _addEditText(newContent: content, index: index)));
@@ -469,28 +469,28 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// add or edit texts for individual boxes.
-  void _addEditText({int? index, Map<String, dynamic>? newContent}) async {
+  void _addEditText({int? index, AddEditTextCharacter? newContent}) async {
     try {
       if (index == null) {
         await _saveOrUploadTextImg(newContent!);
       } else {
         ScriptImage? uploadedByte;
-        if (newContent?["byteImage"] != "") {
+        if (newContent?.imageBytes != null) {
           Map<String, dynamic> upload =
-              await _uploadBytes(newContent?["byteImage"]);
+              await _uploadBytes(newContent!.imageBytes!);
           uploadedByte = ScriptImage(
               size: upload['size'],
               height: upload['height'],
               width: upload['width'],
               uri: upload['uri']);
         }
-        String newText = newContent?["text"] ?? "";
+        String newText = newContent?.text ?? "";
         Script newScript = scripts[index].copyWith(
             text: newText,
             image: uploadedByte,
             type: uploadedByte != null ? 'image' : 'text',
-            characterId: newContent?["characterId"],
-            textAlign: newContent?["textAlign"] ?? TextAlign.left);
+            characterId: newContent?.characterId,
+            textAlign: newContent?.textAlign ?? TextAlign.left);
 
         await _scriptApi.updateScript(script: newScript);
 
@@ -518,25 +518,25 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// save any images texts.
-  Future<Script> _saveOrUploadTextImg(Map<String, dynamic> content) async {
+  Future<Script> _saveOrUploadTextImg(AddEditTextCharacter content) async {
     late Script newScript;
-    if (content["text"] != "") {
+    if (content.text != "") {
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
           characterId: UserModel().user.userId,
           type: "text",
           storyId: story.storyId,
-          text: content["text"] ?? "",
-          textAlign: content["textAlign"] ?? TextAlign.left,
+          text: content.text,
+          textAlign: content.textAlign ?? TextAlign.left,
           pageNum: widget.pageIndex + 1);
       newScript = pages.scripts![0];
     }
-    if (content["image"] != "") {
+    if (content.attachmentPreview != null) {
       String uploadImage = await uploadFile(
-          file: content["image"],
+          file: content.attachmentPreview!,
           category: UPLOAD_PATH_SCRIPT_IMAGE,
           categoryId: createUUID());
-      var bytes = content["image"].readAsBytesSync();
+      var bytes = content.attachmentPreview!.readAsBytesSync();
       var result = await decodeImageFromList(bytes);
 
       StoryPages pages = await _scriptApi.addScriptToStory(
@@ -555,9 +555,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
       newScript = pages.scripts![0];
     }
 
-    if (content["byteImage"] != "") {
+    if (content.imageBytes != null) {
       Map<String, dynamic> uploadedBytes =
-          await _uploadBytes(content["byteImages"]);
+          await _uploadBytes(content.imageBytes!);
 
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
@@ -569,7 +569,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       newScript = pages.scripts![0];
     }
 
-    if (content["gallery"] != "") {
+    if (content.galleryUrl != null) {
       StoryPages pages = await _scriptApi.addScriptToStory(
           character: UserModel().user.username,
           characterId: UserModel().user.userId,
@@ -578,8 +578,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
           image: {
             "size": 9800,
             "height": 516,
-            "width": 516,
-            "uri": content['gallery'],
+            "width": 516, //@todo
+            "uri": content.galleryUrl,
             "manual": true
           },
           pageNum: widget.pageIndex + 1);

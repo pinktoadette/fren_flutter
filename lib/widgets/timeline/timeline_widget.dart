@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
-import 'package:machi_app/controller/chatroom_controller.dart';
-import 'package:machi_app/controller/subscription_controller.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
@@ -86,7 +85,9 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     noItemsFoundIndicatorBuilder: (_) =>
                         const NoData(text: "No stories"),
                     itemBuilder: (context, item, index) {
-                      return StoryboardItemWidget(item: item);
+                      return StoryboardItemWidget(
+                          item: timelineController
+                              .pagingController.itemList![index]);
                     }),
                 separatorBuilder: (BuildContext context, int index) {
                   if ((index) % 3 == 0) {
@@ -104,7 +105,9 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                       ),
                     );
                   } else {
-                    return const Divider();
+                    return const Divider(
+                      color: Colors.white12,
+                    );
                   }
                 },
               )

@@ -75,7 +75,9 @@ class _StoriesViewState extends State<StoriesView> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const StoryboardHeaderWidget(),
-                  const Divider(),
+                  const Divider(
+                    color: Colors.white12,
+                  ),
                   if (widget.message != null)
                     Align(
                         alignment: Alignment.center,

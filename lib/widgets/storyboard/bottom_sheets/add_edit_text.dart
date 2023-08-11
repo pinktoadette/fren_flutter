@@ -3,6 +3,7 @@ import 'dart:typed_data';
 
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -13,18 +14,18 @@ import 'package:machi_app/widgets/bot/bot_helper.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:screenshot/screenshot.dart';
 
-class AddEditText extends StatefulWidget {
+class AddEditTextWidget extends StatefulWidget {
   final Script? script;
-  final Function(Map<String, dynamic>?) onTextComplete;
+  final Function(AddEditTextCharacter editText) onTextComplete;
 
-  const AddEditText({Key? key, required this.onTextComplete, this.script})
+  const AddEditTextWidget({Key? key, required this.onTextComplete, this.script})
       : super(key: key);
 
   @override
-  State<AddEditText> createState() => _AddEditTextState();
+  State<AddEditTextWidget> createState() => _AddEditTextState();
 }
 
-class _AddEditTextState extends State<AddEditText> {
+class _AddEditTextState extends State<AddEditTextWidget> {
   late AppLocalizations _i18n;
   late TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
@@ -107,15 +108,15 @@ class _AddEditTextState extends State<AddEditText> {
         _textController.text != "") {
       imageBytes = await screenshotController.capture();
     }
-
-    widget.onTextComplete({
-      "text": imageBytes == null ? text : "",
-      "byteImage": imageBytes ?? "",
-      "image": imageBytes == null ? attachmentPreview ?? "" : "",
-      "gallery": imageBytes == null ? galleryImageUrl ?? "" : "",
+    AddEditTextCharacter update = AddEditTextCharacter.fromJson({
+      "text": imageBytes == null ? text : null,
+      "byteImage": imageBytes,
+      "image": imageBytes == null ? attachmentPreview : null,
+      "gallery": imageBytes == null ? galleryImageUrl : null,
       "textAlign": textAlign,
       "characterId": widget.script?.characterId ?? UserModel().user.userId
     });
+    widget.onTextComplete(update);
   }
 
   void _addImage() async {

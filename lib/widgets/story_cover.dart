@@ -57,12 +57,17 @@ class _StoryCoverState extends State<StoryCover> {
     }
 
     return Card(
-        color: Colors.transparent,
+      color: Colors.transparent,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(
+            widget.radius ?? 20), // Set your dynamic radius value here
         child: SizedBox(
           height: widget.height ?? 512,
           width: widget.width ?? 512,
           child: _showImageLocal(context),
-        ));
+        ),
+      ),
+    );
   }
 
   Widget _showImageLocal(BuildContext context) {

@@ -95,237 +95,168 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             ),
           ),
         _displayType(storyboard, padding, width),
-        if (widget.hideCollection == false) ..._showCollectionFooter()
+        if (widget.hideCollection == false)
+          Row(children: _showCollectionFooter())
       ],
     );
   }
 
   Widget _displayType(Storyboard storyboard, double padding, double width) {
-    String title = storyboard.title;
-    String photoUrl = storyboard.photoUrl ?? "";
-    String subtitle =
-        storyboard.story!.isNotEmpty && storyboard.story!.length == 1
-            ? storyboard.story![0].summary!
-            : "";
-    if (storyboard.story!.isNotEmpty && storyboard.story!.length == 1) {
-      StoryPages? page;
-      try {
-        page = storyboard.story?[0].pages?.firstWhere(
-          (element) => element.scripts?.first.type == "text",
-        );
-      } catch (e) {
-        // Handle the case when no element satisfies the condition
-        page = null;
-      }
+    final firstStory = storyboard.story!.first;
 
-      if (page != null) {
-        subtitle = truncateText(maxLength: 200, text: page.scripts![0].text!);
-      }
+    if (firstStory.layout == Layout.COMIC) {
+      return _buildComicLayout(firstStory, width);
     }
 
-    if (storyboard.story!.length == 1) {
-      title = storyboard.story![0].title;
-      photoUrl = storyboard.story![0].photoUrl ?? "";
-    }
+    return _buildDefaultLayout(storyboard, padding, width, firstStory);
+  }
 
-    if (storyboard.story![0].layout == Layout.COMIC) {
-      /// @todo need to create a common meme layout. See under page_view _displayScript.
-      int index = 0;
-      Story story = storyboard.story![0];
-      double w = width - padding * 2;
-      String displayText = truncateScriptsTo250Chars(
-          scripts: story.pages![0].scripts, length: 300);
-      Script? firstScriptWithImage = story.pages![0].scripts!.firstWhere(
-        (script) => script.type == 'image',
-        orElse: () => Script(image: null),
-      );
-      return InkWell(
-          onTap: () async {
-            _navigateNextPage();
-          },
-          child: Container(
-              margin: const EdgeInsets.only(top: 10),
-              width: w,
-              height: w,
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                      colorFilter: ColorFilter.mode(
-                          const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                              story.pages![index].backgroundAlpha ?? 0.5),
-                          BlendMode.darken),
-                      image: story.pages![index].backgroundImageUrl != null
-                          ? ImageCacheWrapper(
-                              story.pages![index].backgroundImageUrl!,
-                            )
-                          : story.pages![index].backgroundImageUrl != null
-                              ? ImageCacheWrapper(
-                                  story.pages![index].backgroundImageUrl!)
-                              : Image.asset(
-                                  "assets/images/blank.png",
-                                  scale: 0.2,
-                                  width: 100,
-                                ).image,
-                      fit: BoxFit.cover)),
-              child: displayText != ""
-                  ? Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: textLinkPreview(
-                        useBorder: story.layout == Layout.COMIC,
-                        context: context,
-                        text: displayText,
-                        maxLines: 9,
-                        style: const TextStyle(color: Colors.black),
-                      ))
-                  : firstScriptWithImage.image != null
-                      ? StoryCover(
-                          photoUrl: firstScriptWithImage.image!.uri, title: "")
-                      : const SizedBox.shrink()));
-    }
+  Widget _buildComicLayout(Story story, double width) {
+    const index = 0;
+    final displayText = truncateScriptsTo250Chars(
+      scripts: story.pages![0].scripts,
+      length: 300,
+    );
+    final firstScriptWithImage = story.pages![0].scripts!.firstWhere(
+      (script) => script.type == 'image',
+      orElse: () => Script(image: null),
+    );
+    final imageUrl = story.pages![index].backgroundImageUrl;
+    final defaultImage = Image.asset(
+      "assets/images/blank.png",
+      scale: 0.2,
+      width: 100,
+    ).image;
+
     return InkWell(
-        onTap: () async {
-          _navigateNextPage();
-        },
-        child: Container(
-          padding: const EdgeInsets.all(20),
-          width: width - padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  if (photoUrl != "")
-                    StoryCover(
-                        width: width * 0.4 - padding * 4,
-                        height: width * 0.4 - padding * 4,
-                        photoUrl: photoUrl,
-                        title: title),
-                  Container(
-                      padding: EdgeInsets.only(left: photoUrl != "" ? 10 : 0),
-                      width: width * 0.6 - (photoUrl != "" ? padding * 2 : 0),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            title,
-                            style: Theme.of(context).textTheme.headlineSmall,
-                          ),
-                          Text(storyboard.category,
-                              style: const TextStyle(
-                                  fontSize: 14, color: APP_MUTED_COLOR)),
-                        ],
-                      )),
-                ],
+      onTap: _navigateNextPage,
+      child: Container(
+        margin: const EdgeInsets.only(top: 10),
+        width: width,
+        height: width,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+              const Color.fromARGB(255, 0, 0, 0).withOpacity(
+                story.pages![index].backgroundAlpha ?? 0.5,
               ),
-              const SizedBox(
-                height: 5,
-              ),
-              if (subtitle != "")
-                textLinkPreview(context: context, text: subtitle)
-            ],
+              BlendMode.darken,
+            ),
+            image:
+                imageUrl != null ? ImageCacheWrapper(imageUrl) : defaultImage,
+            fit: BoxFit.cover,
           ),
-        ));
+        ),
+        child: _buildComicChild(
+            displayText, firstScriptWithImage, story.layout ?? Layout.COMIC),
+      ),
+    );
+  }
+
+  Widget _buildComicChild(
+    String displayText,
+    Script firstScriptWithImage,
+    Layout layout,
+  ) {
+    if (displayText.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(20),
+        child: textLinkPreview(
+          useBorder: layout == Layout.COMIC,
+          context: context, // Replace with your context source
+          text: displayText,
+          maxLines: 9,
+          style: const TextStyle(color: Colors.black),
+        ),
+      );
+    } else if (firstScriptWithImage.image != null) {
+      return StoryCover(
+        photoUrl: firstScriptWithImage.image!.uri,
+        title: "",
+      );
+    } else {
+      return const SizedBox.shrink();
+    }
+  }
+
+  Widget _buildDefaultLayout(
+    Storyboard storyboard,
+    double padding,
+    double width,
+    Story firstStory,
+  ) {
+    final photoUrl = storyboard.photoUrl ?? "";
+    final title = firstStory.title;
+    final subtitle = truncateText(
+      maxLength: 200,
+      text: firstStory.summary!,
+    );
+
+    return InkWell(
+      onTap: _navigateNextPage,
+      child: Container(
+        padding: const EdgeInsets.all(20),
+        width: width - padding,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            if (photoUrl != "")
+              StoryCover(
+                  width: width * 0.4 - padding * 4,
+                  height: width * 0.4 - padding * 4,
+                  photoUrl: photoUrl,
+                  title: title),
+            Container(
+                padding: EdgeInsets.only(left: photoUrl != "" ? 10 : 0),
+                width: width * 0.6 - (photoUrl != "" ? padding * 2 : 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: Theme.of(context).textTheme.headlineSmall,
+                    ),
+                    Text(storyboard.category,
+                        style: const TextStyle(
+                            fontSize: 14, color: APP_MUTED_COLOR)),
+                  ],
+                )),
+            const SizedBox(
+              height: 5,
+            ),
+            if (subtitle != "")
+              textLinkPreview(context: context, text: subtitle)
+          ],
+        ),
+      ),
+    );
   }
 
   List<Widget> _showCollectionFooter() {
     bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
     return [
       if (hasSeries && userController.user != null)
-        Swiper(
-            itemWidth: width,
-            itemHeight: 250,
-            layout: SwiperLayout.TINDER,
-            fade: 0.8,
-            viewportFraction: 0.7,
-            scale: 0.8,
-            itemCount: storyboard.story!.length,
-            itemBuilder: (context, index) {
-              if (storyboard.story![index].status == StoryStatus.PUBLISHED) {
-                return SizedBox(
-                    width: width,
-                    child: _collectionCards(
-                        index: index, story: storyboard.story![index]));
-              }
-              return const SizedBox.shrink();
+        ...storyboard.story!.take(4).map((s) {
+          return InkWell(
+            onTap: () {
+              storyboardController.setCurrentBoard(storyboard);
+              timelineController.setStoryTimelineControllerCurrent(s);
+              storyboardController.onGoToPageView(s);
+              Get.to(() => StoryPageView(story: s));
             },
-            outer: false,
-            indicatorLayout: PageIndicatorLayout.COLOR,
-            autoplay: false,
-            pagination: const SwiperPagination(
-                alignment: Alignment.bottomCenter,
-                builder: DotSwiperPaginationBuilder(
-                    size: 5,
-                    space: 3,
-                    activeColor: APP_ACCENT_COLOR,
-                    color: Colors.grey)))
+            child: StoryCover(
+                height: 80,
+                width: 80,
+                photoUrl: s.photoUrl ?? "",
+                title: s.title),
+          );
+        })
       else
         _likeItemWidget(storyboard.story![0], false),
       const SizedBox(
         height: 20,
       )
     ];
-  }
-
-  Widget _collectionCards({required index, required Story story}) {
-    return InkWell(
-        onTap: () {
-          storyboardController.setCurrentBoard(storyboard);
-          timelineController.setStoryTimelineControllerCurrent(story);
-          storyboardController.onGoToPageView(story);
-          Get.to(() => StoryPageView(story: story));
-        },
-        child: Container(
-            decoration: story.photoUrl != null && story.photoUrl != ""
-                ? BoxDecoration(
-                    image: DecorationImage(
-                      image: ImageCacheWrapper(story.photoUrl!),
-                      fit: BoxFit.fitWidth,
-                      alignment: Alignment.topCenter,
-                      colorFilter: ColorFilter.mode(
-                          const Color.fromARGB(255, 32, 32, 32)
-                              .withOpacity(0.9),
-                          BlendMode.darken),
-                    ),
-                  )
-                : BoxDecoration(
-                    borderRadius: BorderRadius.circular(25),
-                    shape: BoxShape.rectangle,
-                    border:
-                        Border.all(width: 1, color: APP_INVERSE_PRIMARY_COLOR)),
-            padding: const EdgeInsets.all(15),
-            child:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                "Collection ${index + 1}",
-                style: Theme.of(context).textTheme.labelSmall,
-              ),
-              Text(
-                story.title,
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-              SizedBox(
-                  width: width - 40,
-                  height: width * 0.3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(0),
-                    child: Text(
-                      story.pages?[0].scripts?[0].text ?? "",
-                      style: Theme.of(context).textTheme.bodySmall,
-                      overflow: TextOverflow.fade,
-                    ),
-                  )),
-              const SizedBox(
-                height: 15,
-              ),
-              SizedBox(
-                width: width * 0.9,
-                child: Align(
-                  alignment: Alignment.bottomLeft,
-                  child: _likeItemWidget(story, true),
-                ),
-              )
-            ])));
   }
 
   Future<void> _navigateNextPage() async {
