@@ -369,7 +369,10 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {
         await FirebaseCrashlytics.instance.recordError(err, s,
             reason: 'Unable to purchase offers: ${err.toString()}',
-            fatal: true);
+            fatal: false);
+        Get.snackbar(_i18n.translate("error"),
+            "Payment vendor: ${err.message.toString()}",
+            snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
       }
     } finally {
       setState(() {

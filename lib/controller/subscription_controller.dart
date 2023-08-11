@@ -36,7 +36,6 @@ class SubscribeController extends GetxController {
   void _listenPurchases() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
       _customer = customerInfo.obs;
-      getCredits();
     });
   }
 

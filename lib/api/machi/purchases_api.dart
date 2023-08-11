@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
@@ -29,11 +30,18 @@ class PurchasesApi {
   }
 
   Future<Map<String, dynamic>> purchaseCredits() async {
-    String url = '${baseUri}purchases/credits';
-    debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.post(url);
-    return response.data;
+    try {
+      String url = '${baseUri}purchases/credits';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url);
+      return response.data;
+    } catch (err, stack) {
+      debugPrint(err.toString());
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Purchase credits faile: ${err.toString()}', fatal: true);
+      rethrow;
+    }
   }
 
   Future<Map<String, dynamic>> getCredits() async {
