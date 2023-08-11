@@ -66,6 +66,9 @@ const double AD_HEIGHT = 80;
 const String SURVEY_FORM =
     "https://docs.google.com/forms/d/e/1FAIpQLSes0yj-Puf53h-GAJScJKsTDSoVjkyM1qTrEanFXEEhc767Jg/viewform?usp=sf_link";
 
+const String RELEASE_DOC =
+    "https://docs.google.com/document/d/1pIxTFuqCoa_4kmTVQDRYWHznudyzjBtcdimCVcXr-J8/edit?usp=sharing";
+
 /// Subscription symbol
 const String SUB_TOKEN_IDENTIFIER = "token_";
 

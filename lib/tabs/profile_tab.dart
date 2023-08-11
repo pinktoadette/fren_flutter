@@ -74,6 +74,30 @@ class ProfileTab extends StatelessWidget {
                   ],
                 )),
 
+            Card(
+                clipBehavior: Clip.antiAlias,
+                elevation: 4.0,
+                shape: defaultCardBorder(),
+                child: Column(
+                  children: [
+                    ListTile(
+                      leading: const Icon(Iconsax.note_favorite),
+                      title: Text(
+                        "Release Notes and Upcoming Features",
+                        style: Theme.of(context).textTheme.bodyMedium,
+                      ),
+                      onTap: () async {
+                        final Uri url = Uri.parse(RELEASE_DOC);
+                        if (await canLaunchUrl(url)) {
+                          await launchUrl(url);
+                        } else {
+                          throw "Could not launch url: $url";
+                        }
+                      },
+                    ),
+                  ],
+                )),
+
             /// enable dark mode
             Card(
                 clipBehavior: Clip.antiAlias,
@@ -89,8 +113,7 @@ class ProfileTab extends StatelessWidget {
                       ),
                       onTap: () {
                         /// Go to profile settings
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const SettingsScreen()));
+                        Get.to(() => const SettingsScreen());
                       },
                     ),
                     ListTile(
