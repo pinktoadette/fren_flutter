@@ -48,11 +48,11 @@ class OtpScreen extends StatefulWidget {
       this.keyboardBackgroundColor,
       this.icon})
       : super(key: key) {
-      _isGradientApplied = true;
+    _isGradientApplied = true;
   }
 
   @override
-  _OtpScreenState createState() => _OtpScreenState();
+  State<OtpScreen> createState() => _OtpScreenState();
 }
 
 class _OtpScreenState extends State<OtpScreen>
@@ -283,6 +283,12 @@ class _OtpScreenState extends State<OtpScreen>
       width: 35.0,
       height: 45.0,
       alignment: Alignment.center,
+      decoration: BoxDecoration(
+          border: Border(
+              bottom: BorderSide(
+        width: 2.0,
+        color: widget.titleColor!,
+      ))),
       child: Text(
         digit != null ? digit.toString() : "",
         style: TextStyle(
@@ -290,12 +296,6 @@ class _OtpScreenState extends State<OtpScreen>
           color: widget.titleColor,
         ),
       ),
-      decoration: BoxDecoration(
-          border: Border(
-              bottom: BorderSide(
-        width: 2.0,
-        color: widget.titleColor!,
-      ))),
     );
   }
 
@@ -377,5 +377,4 @@ class _OtpScreenState extends State<OtpScreen>
     otpValues = List<int?>.filled(widget.otpLength!, null, growable: false);
     setState(() {});
   }
-
 }

@@ -8,8 +8,8 @@ Future<List<InteractiveTheme>> loadThemes() async {
   List<dynamic> decodedJson = jsonDecode(jsonContent);
   List<InteractiveTheme> themes = [];
   for (var item in decodedJson) {
-    InteractiveTheme _theme = InteractiveTheme.fromJson(item);
-    themes.add(_theme);
+    InteractiveTheme theme = InteractiveTheme.fromJson(item);
+    themes.add(theme);
   }
   return themes;
 }

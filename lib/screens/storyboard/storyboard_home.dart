@@ -10,7 +10,7 @@ class StoryboardHome extends StatefulWidget {
   const StoryboardHome({Key? key}) : super(key: key);
 
   @override
-  _StoryboardState createState() => _StoryboardState();
+  State<StoryboardHome> createState() => _StoryboardState();
 }
 
 class _StoryboardState extends State<StoryboardHome>

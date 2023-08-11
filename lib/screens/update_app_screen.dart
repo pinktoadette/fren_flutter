@@ -13,10 +13,10 @@ class UpdateAppScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    final i18n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        title: Text(_i18n.translate('update_application')),
+        title: Text(i18n.translate('update_application')),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(25),
@@ -32,22 +32,22 @@ class UpdateAppScreen extends StatelessWidget {
               const Text(APP_NAME,
                   style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
               const SizedBox(height: 20),
-              Text(_i18n.translate('app_new_version'),
+              Text(i18n.translate('app_new_version'),
                   style: TextStyle(
                       fontSize: 20,
                       color: Theme.of(context).primaryColor,
                       fontWeight: FontWeight.bold),
                   textAlign: TextAlign.center),
               const SizedBox(height: 10),
-              Text(_i18n.translate("please_install_it_now"),
+              Text(i18n.translate("please_install_it_now"),
                   style: const TextStyle(fontSize: 18),
                   textAlign: TextAlign.center),
               const SizedBox(height: 5),
-              Text(_i18n.translate("don_worry_your_data_will_not_be_lost"),
+              Text(i18n.translate("don_worry_your_data_will_not_be_lost"),
                   style: const TextStyle(fontSize: 18),
                   textAlign: TextAlign.center),
               const Divider(thickness: 1),
-              Text(_i18n.translate("click_this_button_to_install"),
+              Text(i18n.translate("click_this_button_to_install"),
                   style: const TextStyle(fontSize: 18),
                   textAlign: TextAlign.center),
               GestureDetector(

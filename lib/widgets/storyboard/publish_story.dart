@@ -19,7 +19,7 @@ class PublishStory extends StatefulWidget {
   const PublishStory({Key? key, required this.story}) : super(key: key);
 
   @override
-  _PublishStoryState createState() => _PublishStoryState();
+  State<PublishStory> createState() => _PublishStoryState();
 }
 
 class _PublishStoryState extends State<PublishStory> {

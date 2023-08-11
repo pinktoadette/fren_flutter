@@ -6,6 +6,7 @@ Widget circleButton(
     required Function()? onTap,
     double? padding}) {
   return GestureDetector(
+    onTap: onTap,
     child: Container(
         padding: EdgeInsets.all(padding ?? 5),
         decoration: BoxDecoration(
@@ -13,6 +14,5 @@ Widget circleButton(
           color: bgColor,
         ),
         child: icon),
-    onTap: onTap,
   );
 }

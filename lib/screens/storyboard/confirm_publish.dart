@@ -15,7 +15,7 @@ class ConfirmPublishDetails extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ConfirmPublishDetailsState createState() => _ConfirmPublishDetailsState();
+  State<ConfirmPublishDetails> createState() => _ConfirmPublishDetailsState();
 }
 
 class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {

@@ -43,7 +43,7 @@ class BotChatScreen extends StatefulWidget {
   const BotChatScreen({Key? key}) : super(key: key);
 
   @override
-  _BotChatScreenState createState() => _BotChatScreenState();
+  State<BotChatScreen> createState() => _BotChatScreenState();
 }
 
 class _BotChatScreenState extends State<BotChatScreen> {
@@ -171,8 +171,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                     if (!messageUser.id.contains("Machi_")) {
                       final user =
                           await UserModel().getUserObject(messageUser.id);
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => ProfileScreen(user: user)));
+                      Get.to(() => ProfileScreen(user: user));
                     }
                   },
                   listBottomWidget: const InlineAdaptiveAds(),
@@ -226,8 +225,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
           TextButton(
             onPressed: () async {
               if (message.type == types.MessageType.image) {
-                final _galleryApi = GalleryApi();
-                await _galleryApi.addUserGallery(messageId: message.id);
+                final galleryApi = GalleryApi();
+                await galleryApi.addUserGallery(messageId: message.id);
                 Get.snackbar(
                   _i18n.translate("success"),
                   _i18n.translate("story_added"),

@@ -26,7 +26,7 @@ class CommentRowWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _CommentRowWidgetState createState() => _CommentRowWidgetState();
+  State<CommentRowWidget> createState() => _CommentRowWidgetState();
 }
 
 class _CommentRowWidgetState extends State<CommentRowWidget> {
@@ -35,7 +35,7 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
     return Obx(() => Container(
         color:
             commentController.replyToComment.commentId == widget.item.commentId
@@ -86,7 +86,7 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                       onPressed: () {
                         commentController.replyTo(widget.item);
                       },
-                      child: Text(_i18n.translate("comment_reply"),
+                      child: Text(i18n.translate("comment_reply"),
                           style: Theme.of(context).textTheme.labelSmall)),
                 const SizedBox(
                   width: 5,
@@ -121,28 +121,28 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
   }
 
   void _onDeleteComment(BuildContext context) async {
-    final _commentApi = CommentApi();
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    final commentApi = CommentApi();
+    AppLocalizations i18n = AppLocalizations.of(context);
     widget.onDelete(widget.item);
 
     try {
-      await _commentApi.deleteComment(widget.item.commentId!);
+      await commentApi.deleteComment(widget.item.commentId!);
       Get.snackbar(
         'DELETE',
-        _i18n.translate("comment_deleted"),
+        i18n.translate("comment_deleted"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_SUCCESS,
       );
     } catch (err) {
-      Get.snackbar('Error', _i18n.translate("an_error_has_occurred"),
+      Get.snackbar('Error', i18n.translate("an_error_has_occurred"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
     }
   }
 
   void _onLikePressed(String commentId, bool like) async {
-    final _timelineApi = TimelineApi();
+    final timelineApi = TimelineApi();
     try {
-      await _timelineApi.likeStoryMachi(
+      await timelineApi.likeStoryMachi(
           "comment", widget.item.commentId!, like == true ? 1 : 0);
     } catch (err) {
       Get.snackbar('Error', err.toString(),

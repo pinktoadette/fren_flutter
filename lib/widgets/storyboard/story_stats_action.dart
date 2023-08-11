@@ -10,7 +10,7 @@ class StoryStatsAction extends StatefulWidget {
   const StoryStatsAction({Key? key, required this.story}) : super(key: key);
 
   @override
-  _StoryStatsActionState createState() => _StoryStatsActionState();
+  State<StoryStatsAction> createState() => _StoryStatsActionState();
 }
 
 class _StoryStatsActionState extends State<StoryStatsAction> {

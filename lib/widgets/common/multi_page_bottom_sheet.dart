@@ -10,7 +10,7 @@ class MultiPageBottomSheet extends StatefulWidget {
       : super(key: key);
 
   @override
-  _MultiPageBottomSheetState createState() => _MultiPageBottomSheetState();
+  State<MultiPageBottomSheet> createState() => _MultiPageBottomSheetState();
 }
 
 class _MultiPageBottomSheetState extends State<MultiPageBottomSheet> {

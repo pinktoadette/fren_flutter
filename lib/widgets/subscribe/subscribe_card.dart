@@ -13,7 +13,7 @@ class SubscriptionCard extends StatefulWidget {
   const SubscriptionCard({Key? key}) : super(key: key);
 
   @override
-  _SubscriptionCardState createState() => _SubscriptionCardState();
+  State<SubscriptionCard> createState() => _SubscriptionCardState();
 }
 
 class _SubscriptionCardState extends State<SubscriptionCard> {

@@ -19,8 +19,8 @@ class ProfileTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final AppHelper _appHelper = AppHelper();
-    final _i18n = AppLocalizations.of(context);
+    final AppHelper appHelper = AppHelper();
+    final i18n = AppLocalizations.of(context);
 
     return Container(
       padding: const EdgeInsets.all(8.0),
@@ -40,7 +40,7 @@ class ProfileTab extends StatelessWidget {
               child: ListTile(
                 leading: const Icon(Iconsax.buy_crypto),
                 title: Text(
-                  _i18n.translate("subscription"),
+                  i18n.translate("subscription"),
                   style: Theme.of(context).textTheme.bodyMedium,
                 ),
                 onTap: () async {
@@ -84,7 +84,7 @@ class ProfileTab extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.setting),
                       title: Text(
-                        _i18n.translate("settings"),
+                        i18n.translate("settings"),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onTap: () {
@@ -96,11 +96,11 @@ class ProfileTab extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Icons.share),
                       title: Text(
-                        _i18n.translate("share_with_friends"),
+                        i18n.translate("share_with_friends"),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onTap: () async {
-                        _appHelper.shareApp();
+                        appHelper.shareApp();
                       },
                     ),
                   ],

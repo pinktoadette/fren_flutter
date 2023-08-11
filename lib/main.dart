@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:country_code_picker/country_localizations.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -94,7 +93,7 @@ class MyApp extends StatefulWidget {
   const MyApp({super.key});
 
   @override
-  _MyAppState createState() => _MyAppState();
+  State<MyApp> createState() => _MyAppState();
 }
 
 class _MyAppState extends State<MyApp> {
@@ -151,7 +150,6 @@ class _MyAppState extends State<MyApp> {
           localizationsDelegates: const [
             // AppLocalizations is where the lang translations is loaded
             AppLocalizations.delegate,
-            CountryLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
           ],

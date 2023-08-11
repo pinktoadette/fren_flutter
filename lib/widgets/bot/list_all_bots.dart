@@ -13,7 +13,7 @@ class ListPromptBots extends StatefulWidget {
   const ListPromptBots({Key? key}) : super(key: key);
 
   @override
-  _ListPromptBotState createState() => _ListPromptBotState();
+  State<ListPromptBots> createState() => _ListPromptBotState();
 }
 
 class _ListPromptBotState extends State<ListPromptBots> {
@@ -60,7 +60,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    final i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
     return Stack(alignment: Alignment.topCenter, children: [
       SingleChildScrollView(
@@ -77,7 +77,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
                 noItemsFoundIndicatorBuilder: (_) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text(_i18n.translate("bots_not_found"))],
+                children: [Text(i18n.translate("bots_not_found"))],
               );
             }, itemBuilder: (context, item, index) {
               return RowMachiInfo(bot: item);
@@ -120,7 +120,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
               prefixIcon: const Icon(
                 Icons.search,
               ),
-              hintText: _i18n.translate("search")),
+              hintText: i18n.translate("search")),
         ),
       ),
     ]);

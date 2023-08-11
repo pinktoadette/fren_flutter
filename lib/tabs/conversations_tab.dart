@@ -24,7 +24,7 @@ class ConversationsTab extends StatefulWidget {
   const ConversationsTab({Key? key}) : super(key: key);
 
   @override
-  _ConversationsTabState createState() => _ConversationsTabState();
+  State<ConversationsTab> createState() => _ConversationsTabState();
 }
 
 class _ConversationsTabState extends State<ConversationsTab> {
@@ -269,7 +269,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
   void _onDelete(Chatroom room) async {
     try {
       await _chatroomApi.deleteRoom(room);
-      Navigator.of(context).pop(true);
+      Get.back(result: true);
       Get.snackbar(
         _i18n.translate("DELETE"),
         _i18n.translate("conversation_success_delete"),
@@ -316,7 +316,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
   }
 
   Widget _formatMessages(BuildContext context, Map<String, dynamic> message) {
-    final _i18n = AppLocalizations.of(context);
+    final i18n = AppLocalizations.of(context);
     switch (message["type"]) {
       case 'text':
         String text = message['text'];
@@ -329,7 +329,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
         return SizedBox(
           child: Row(children: [
             const Icon(Iconsax.paperclip, size: 14),
-            Text(_i18n.translate("media_attached"),
+            Text(i18n.translate("media_attached"),
                 style: const TextStyle(fontStyle: FontStyle.italic))
           ]),
         );
@@ -337,7 +337,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
         return SizedBox(
           child: Row(children: [
             const Icon(Iconsax.paperclip, size: 14),
-            Text(_i18n.translate("media_attached"),
+            Text(i18n.translate("media_attached"),
                 style: const TextStyle(fontStyle: FontStyle.italic))
           ]),
         );

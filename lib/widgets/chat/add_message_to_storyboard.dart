@@ -16,7 +16,7 @@ class AddChatMessageToBoard extends StatefulWidget {
   AddChatMessageToBoard({Key? key, required this.message}) : super(key: key);
 
   @override
-  _AddChatMessageToBoardState createState() => _AddChatMessageToBoardState();
+  State<AddChatMessageToBoard> createState() => _AddChatMessageToBoardState();
 }
 
 class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
@@ -110,7 +110,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
             character: widget.message.author.firstName,
             characterId: widget.message.author.id);
       }
-      Navigator.of(context).pop();
+      Get.back(result: true);
       Get.snackbar(
         _i18n.translate("success"),
         _i18n.translate("story_edits_added"),

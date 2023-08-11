@@ -15,7 +15,7 @@ class MachiHelper extends StatefulWidget {
       : super(key: key);
 
   @override
-  _MachiHelperState createState() => _MachiHelperState();
+  State<MachiHelper> createState() => _MachiHelperState();
 }
 
 class _MachiHelperState extends State<MachiHelper> {
@@ -103,8 +103,8 @@ class _MachiHelperState extends State<MachiHelper> {
     });
     String response = "No text";
     if (widget.text != "") {
-      final _botApi = BotApi();
-      response = await _botApi.machiHelper(
+      final botApi = BotApi();
+      response = await botApi.machiHelper(
           text: widget.text, action: action, cancelToken: _cancelToken);
     }
     if (mounted) {

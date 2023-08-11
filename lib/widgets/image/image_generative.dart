@@ -32,7 +32,7 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _ImagePromptGeneratorWidgetState createState() =>
+  State<ImagePromptGeneratorWidget> createState() =>
       _ImagePromptGeneratorWidgetState();
 }
 
@@ -73,6 +73,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
 
@@ -164,8 +165,8 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       _isLoading = true;
     });
     try {
-      final _botApi = BotApi();
-      List<dynamic> imageUrl = await _botApi.machiImage(
+      final botApi = BotApi();
+      List<dynamic> imageUrl = await botApi.machiImage(
           text: _promptController.text,
           numImages: widget.numImages,
           cancelToken: _cancelToken);

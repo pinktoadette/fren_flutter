@@ -7,7 +7,7 @@ class ImportGoogleDriveWidget extends StatefulWidget {
   const ImportGoogleDriveWidget({super.key});
 
   @override
-  _ImportGoogleDriveWidgetState createState() =>
+  State<ImportGoogleDriveWidget> createState() =>
       _ImportGoogleDriveWidgetState();
 }
 
@@ -50,7 +50,7 @@ class _ImportGoogleDriveWidgetState extends State<ImportGoogleDriveWidget> {
   void _readPDF() {}
 
   Future<void> signIntoGoogle() async {
-    GoogleSignIn _googleSignIn = GoogleSignIn(
+    GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: <String>[
         'email',
         'https://www.googleapis.com/auth/documents.readonly',
@@ -58,7 +58,7 @@ class _ImportGoogleDriveWidgetState extends State<ImportGoogleDriveWidget> {
       ],
     );
 
-    await _googleSignIn.signIn();
+    await googleSignIn.signIn();
   }
 
   Widget _importIcons(BuildContext context,

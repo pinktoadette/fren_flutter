@@ -11,7 +11,7 @@ class SubscribeHowToInfo extends StatefulWidget {
   const SubscribeHowToInfo({Key? key}) : super(key: key);
 
   @override
-  _SubscribeHowToInfoState createState() => _SubscribeHowToInfoState();
+  State<SubscribeHowToInfo> createState() => _SubscribeHowToInfoState();
 }
 
 class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
@@ -19,7 +19,7 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
 
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
@@ -35,7 +35,7 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               padding: const EdgeInsets.all(5),
               child: Text(
-                _i18n.translate("subscribe_pro"),
+                i18n.translate("subscribe_pro"),
                 style: const TextStyle(fontSize: 12, color: Colors.black),
               ),
             )
@@ -48,18 +48,18 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    _i18n.translate("subscribe_libraries"),
+                    i18n.translate("subscribe_libraries"),
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
-                    _i18n.translate("subscribe_how_to"),
+                    i18n.translate("subscribe_how_to"),
                     style: Theme.of(context).textTheme.bodyMedium,
                   ),
                   const SizedBox(
                     height: 20,
                   ),
                   Text(
-                    _i18n.translate("subscribe_curent_libraries"),
+                    i18n.translate("subscribe_curent_libraries"),
                     style: Theme.of(context).textTheme.labelMedium,
                   ),
                   const SizedBox(
@@ -110,16 +110,14 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                             onPressed: () {
                               _showSubscription();
                             },
-                            child: Text(_i18n.translate("subscribe_now")))),
+                            child: Text(i18n.translate("subscribe_now")))),
                   const SizedBox(
                     height: 20,
                   ),
                   TextButton(
                     onPressed: () => _launchSiteUrl(SURVEY_FORM),
                     child: Text(
-                      _i18n.translate("subscribe_add_your_own_model"),
-                      style:
-                          const TextStyle(color: APP_MUTED_COLOR, fontSize: 10),
+                      i18n.translate("subscribe_add_your_own_model"),
                     ),
                   )
                 ],

@@ -9,7 +9,7 @@ class AddStoryBoard extends StatefulWidget {
   const AddStoryBoard({Key? key, required this.message}) : super(key: key);
 
   @override
-  _AddStoryBoardState createState() => _AddStoryBoardState();
+  State<AddStoryBoard> createState() => _AddStoryBoardState();
 }
 
 class _AddStoryBoardState extends State<AddStoryBoard> {

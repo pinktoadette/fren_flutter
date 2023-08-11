@@ -17,7 +17,7 @@ import 'package:machi_app/widgets/story_cover.dart';
 class StoryboardEdit extends StatefulWidget {
   const StoryboardEdit({Key? key}) : super(key: key);
   @override
-  _StoryboardEditState createState() => _StoryboardEditState();
+  State<StoryboardEdit> createState() => _StoryboardEditState();
 }
 
 class _StoryboardEditState extends State<StoryboardEdit> {
@@ -95,6 +95,8 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                         title: storyboard.title,
                       ),
                       Positioned(
+                        right: 0,
+                        bottom: 0,
                         child: CircleAvatar(
                           radius: 12,
                           backgroundColor:
@@ -105,8 +107,6 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                             size: 12,
                           ),
                         ),
-                        right: 0,
-                        bottom: 0,
                       ),
                     ],
                   ),

@@ -29,7 +29,7 @@ class StoryItemWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _StoryItemWidgetState createState() => _StoryItemWidgetState();
+  State<StoryItemWidget> createState() => _StoryItemWidgetState();
 }
 
 class _StoryItemWidgetState extends State<StoryItemWidget> {
@@ -149,7 +149,7 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
       storyboardController.addNewScriptToStory(pages);
 
       int count = 0;
-      Navigator.of(context).popUntil((_) => count++ >= 2);
+      Get.until((route) => count++ >= 2);
       Get.snackbar(
           _i18n.translate("story_added"), _i18n.translate("story_added_info"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);

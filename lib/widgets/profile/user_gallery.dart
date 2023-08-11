@@ -20,7 +20,7 @@ class UserGallery extends StatefulWidget {
       : super(key: key);
 
   @override
-  _GalleryWidgetState createState() => _GalleryWidgetState();
+  State<UserGallery> createState() => _GalleryWidgetState();
 }
 
 class _GalleryWidgetState extends State<UserGallery> {
@@ -74,12 +74,12 @@ class _GalleryWidgetState extends State<UserGallery> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
           title: Text(
-            _i18n.translate("gallery"),
+            i18n.translate("gallery"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),

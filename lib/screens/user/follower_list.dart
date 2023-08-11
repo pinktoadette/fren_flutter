@@ -16,7 +16,7 @@ class FollowerList extends StatefulWidget {
   const FollowerList({Key? key, required this.user}) : super(key: key);
 
   @override
-  _FollowerListState createState() => _FollowerListState();
+  State<FollowerList> createState() => _FollowerListState();
 }
 
 class _FollowerListState extends State<FollowerList> {

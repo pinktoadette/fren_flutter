@@ -16,7 +16,7 @@ class LatestGallery extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _LatestGalleryWidgetState createState() => _LatestGalleryWidgetState();
+  State<LatestGallery> createState() => _LatestGalleryWidgetState();
 }
 
 class _LatestGalleryWidgetState extends State<LatestGallery> {
@@ -69,12 +69,12 @@ class _LatestGalleryWidgetState extends State<LatestGallery> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
           title: Text(
-            _i18n.translate("gallery"),
+            i18n.translate("gallery"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),

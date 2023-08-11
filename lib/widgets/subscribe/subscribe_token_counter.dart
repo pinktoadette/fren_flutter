@@ -10,7 +10,7 @@ class SubscribeTokenCounter extends StatefulWidget {
   const SubscribeTokenCounter({Key? key}) : super(key: key);
 
   @override
-  _SubscribeTokenCounterState createState() => _SubscribeTokenCounterState();
+  State<SubscribeTokenCounter> createState() => _SubscribeTokenCounterState();
 }
 
 class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {

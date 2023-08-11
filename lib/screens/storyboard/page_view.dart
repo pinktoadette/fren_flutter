@@ -34,8 +34,6 @@ import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
-/// Need to call pages since storyboard
-/// did not query this in order to increase speed
 class StoryPageView extends StatefulWidget {
   final Story story;
   final bool? isPreview;
@@ -43,7 +41,7 @@ class StoryPageView extends StatefulWidget {
       : super(key: key);
 
   @override
-  _StoryPageViewState createState() => _StoryPageViewState();
+  State<StoryPageView> createState() => _StoryPageViewState();
 }
 
 class _StoryPageViewState extends State<StoryPageView> {
@@ -157,8 +155,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                       icon: const Icon(Icons.more_vert),
                       itemBuilder: (context) => <PopupMenuEntry<String>>[
                             const PopupMenuItem(
-                              child: Text('Report'),
                               value: 'report',
+                              child: Text('Report'),
                             )
                           ],
                       onSelected: (val) {
@@ -304,7 +302,6 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   Widget _showPageWidget(BoxConstraints constraints) {
     Size size = MediaQuery.of(context).size;
-    double footerHeight = 100;
     double height = size.height;
 
     if (story!.pages!.isEmpty) {

@@ -14,7 +14,7 @@ class StoryHeaderWidget extends StatefulWidget {
   final Story story;
   const StoryHeaderWidget({Key? key, required this.story}) : super(key: key);
   @override
-  _StoryHeaderWidgetState createState() => _StoryHeaderWidgetState();
+  State<StoryHeaderWidget> createState() => _StoryHeaderWidgetState();
 }
 
 class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
@@ -35,7 +35,6 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
 
   @override
   Widget build(BuildContext context) {
-    double storyCoverWidth = 50;
     double padding = 0;
     return InkWell(
       onTap: () async {

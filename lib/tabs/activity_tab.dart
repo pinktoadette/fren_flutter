@@ -8,7 +8,7 @@ class ActivityTab extends StatefulWidget {
   const ActivityTab({Key? key}) : super(key: key);
 
   @override
-  _ActivityTabState createState() => _ActivityTabState();
+  State<ActivityTab> createState() => _ActivityTabState();
 }
 
 class _ActivityTabState extends State<ActivityTab> {

@@ -13,7 +13,7 @@ class StoryboardHeaderWidget extends StatefulWidget {
   const StoryboardHeaderWidget({Key? key}) : super(key: key);
 
   @override
-  _StoryboardHeaderWidgetState createState() => _StoryboardHeaderWidgetState();
+  State<StoryboardHeaderWidget> createState() => _StoryboardHeaderWidgetState();
 }
 
 class _StoryboardHeaderWidgetState extends State<StoryboardHeaderWidget> {

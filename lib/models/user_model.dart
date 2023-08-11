@@ -1,10 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/user_api.dart';
-import 'package:machi_app/constants/secrets.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
@@ -16,14 +14,12 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/plugins/geoflutterfire/geoflutterfire.dart';
-import 'package:machi_app/widgets/third_party_signin/github_signin.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import 'package:scoped_model/scoped_model.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
-import 'package:http/http.dart' as http;
 
 class UserModel extends Model {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -380,48 +376,6 @@ class UserModel extends Model {
     }
   }
 
-  /// Sign in with GitHub
-  Future<void> signInWithGitHub(String code,
-      {required Function(fire_auth.UserCredential) checkUserAccount,
-      required VoidCallback onError}) async {
-    Uri url = Uri(
-        scheme: 'https', host: 'github.com', path: '/login/oauth/access_token');
-
-    try {
-      final response = await http.post(
-        url,
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json"
-        },
-        body: jsonEncode(GitHubLoginRequest(
-          clientId: GITHUB_CLIENT_ID,
-          clientSecret: "",
-          code: code,
-        )),
-      );
-
-      GitHubLoginResponse loginResponse =
-          GitHubLoginResponse.fromJson(json.decode(response.body));
-
-      final fire_auth.AuthCredential credential =
-          fire_auth.GithubAuthProvider.credential(loginResponse.accessToken);
-
-      /// Try to sign in with provided credential
-      await _firebaseAuth
-          .signInWithCredential(credential)
-          .then((fire_auth.UserCredential userCredential) {
-        /// Auth user account
-        checkUserAccount(userCredential);
-      }).catchError((error) {
-        // Callback function
-        onError();
-      });
-    } catch (e) {
-      return;
-    }
-  }
-
   ///
   /// Create the User Account method
   ///
@@ -605,10 +559,8 @@ class UserModel extends Model {
     String imageName = userId;
     if (useIDname == false) imageName += getDateTimeEpoch().toString();
     // Upload file
-    final UploadTask uploadTask = _storageRef
-        .ref()
-        .child(path + '/' + userId + '/' + imageName)
-        .putFile(file);
+    final UploadTask uploadTask =
+        _storageRef.ref().child('$path/$userId/$imageName').putFile(file);
     final TaskSnapshot snapshot = await uploadTask;
     String url = await snapshot.ref.getDownloadURL();
     // return file link

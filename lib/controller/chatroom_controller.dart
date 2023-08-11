@@ -269,11 +269,11 @@ class ChatController extends GetxController implements GetxService {
 
   Future<Map<String, dynamic>> getMachiResponse(
       {required Chatroom room}) async {
-    final _messageApi = MessageMachiApi();
+    final messageApi = MessageMachiApi();
     int index = findRoomIndx(room: room);
     roomlist[index].isTyping = true;
     Map<String, dynamic> message =
-        await _messageApi.getBotResponse(cancelToken: _cancelToken);
+        await messageApi.getBotResponse(cancelToken: _cancelToken);
     // WebSocketChannel? channel = _channelMap[room.chatroomId];
     // if (channel != null) {
     //   channel.sink.add(json.encode({"message": message}));

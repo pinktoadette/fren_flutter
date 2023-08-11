@@ -18,7 +18,7 @@ class StoryEdit extends StatefulWidget {
   final Function(Story story) onUpdateStory;
 
   @override
-  _StoryEditState createState() => _StoryEditState();
+  State<StoryEdit> createState() => _StoryEditState();
 }
 
 class _StoryEditState extends State<StoryEdit> {
@@ -95,6 +95,8 @@ class _StoryEditState extends State<StoryEdit> {
                     title: storyboardController.currentStory.title,
                   ),
                 Positioned(
+                  right: 0,
+                  bottom: 0,
                   child: CircleAvatar(
                     radius: 12,
                     backgroundColor: Theme.of(context).colorScheme.background,
@@ -104,8 +106,6 @@ class _StoryEditState extends State<StoryEdit> {
                       size: 12,
                     ),
                   ),
-                  right: 0,
-                  bottom: 0,
                 ),
               ],
             ),
@@ -178,7 +178,7 @@ class _StoryEditState extends State<StoryEdit> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  currentLength.toString() + "/" + maxLength.toString(),
+                  "$currentLength/$maxLength",
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 const Spacer(),

@@ -21,7 +21,7 @@ class AddEditText extends StatefulWidget {
       : super(key: key);
 
   @override
-  _AddEditTextState createState() => _AddEditTextState();
+  State<AddEditText> createState() => _AddEditTextState();
 }
 
 class _AddEditTextState extends State<AddEditText> {
@@ -102,17 +102,17 @@ class _AddEditTextState extends State<AddEditText> {
 
   void _onComplete() async {
     String text = _textController.text;
-    Uint8List? _imageBytes;
+    Uint8List? imageBytes;
     if ((attachmentPreview != null || galleryImageUrl != null) &&
         _textController.text != "") {
-      _imageBytes = await screenshotController.capture();
+      imageBytes = await screenshotController.capture();
     }
 
     widget.onTextComplete({
-      "text": _imageBytes == null ? text : "",
-      "byteImage": _imageBytes ?? "",
-      "image": _imageBytes == null ? attachmentPreview ?? "" : "",
-      "gallery": _imageBytes == null ? galleryImageUrl ?? "" : "",
+      "text": imageBytes == null ? text : "",
+      "byteImage": imageBytes ?? "",
+      "image": imageBytes == null ? attachmentPreview ?? "" : "",
+      "gallery": imageBytes == null ? galleryImageUrl ?? "" : "",
       "textAlign": textAlign,
       "characterId": widget.script?.characterId ?? UserModel().user.userId
     });

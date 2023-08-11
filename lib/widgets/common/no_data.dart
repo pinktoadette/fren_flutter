@@ -14,13 +14,13 @@ class NoData extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Handle icon
-    late Widget _icon;
+    late Widget icon;
     // Check svgName
     if (svgName != null) {
       // Get SVG icon
-      _icon = const Icon(Iconsax.briefcase);
+      icon = const Icon(Iconsax.briefcase);
     } else {
-      _icon = const Frankloader(
+      icon = const Frankloader(
         height: 100,
         width: 100,
       );
@@ -31,7 +31,7 @@ class NoData extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         // Show icon
-        _icon,
+        icon,
         Text(text,
             style: Theme.of(context).textTheme.bodySmall,
             textAlign: TextAlign.center),

@@ -101,27 +101,27 @@ void _buildDialog(
   required VoidCallback? positiveAction,
 }) {
   final i18n = AppLocalizations.of(context);
-  late Widget _icon;
-  late String _title;
+  late Widget icon0;
+  late String title0;
 
   // Control type
   switch (type) {
     case "success":
-      _icon = icon ?? const Icon(Iconsax.tick_circle, color: APP_SUCCESS);
-      _title = title ?? i18n.translate("success");
+      icon0 = icon ?? const Icon(Iconsax.tick_circle, color: APP_SUCCESS);
+      title0 = title ?? i18n.translate("success");
       break;
     case "error":
-      _icon = icon ?? const Icon(Iconsax.flag, color: APP_ERROR);
-      _title = title ?? i18n.translate("error");
+      icon0 = icon ?? const Icon(Iconsax.flag, color: APP_ERROR);
+      title0 = title ?? i18n.translate("error");
       break;
     case "confirm":
-      _icon = icon ?? const Icon(Iconsax.tick_square, color: APP_WARNING);
-      _title = title ?? i18n.translate("are_you_sure");
+      icon0 = icon ?? const Icon(Iconsax.tick_square, color: APP_WARNING);
+      title0 = title ?? i18n.translate("are_you_sure");
       break;
 
     case "info":
-      _icon = icon ?? const Icon(Iconsax.information, color: APP_INFO);
-      _title = title ?? i18n.translate("information");
+      icon0 = icon ?? const Icon(Iconsax.information, color: APP_INFO);
+      title0 = title ?? i18n.translate("information");
       break;
   }
 
@@ -132,10 +132,10 @@ void _buildDialog(
         return AlertDialog(
           title: Row(
             children: [
-              _icon,
+              icon0,
               const SizedBox(width: 10),
               Expanded(
-                  child: Text(_title, style: const TextStyle(fontSize: 20)))
+                  child: Text(title0, style: const TextStyle(fontSize: 20)))
             ],
           ),
           content: Text(

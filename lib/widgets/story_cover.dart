@@ -26,7 +26,7 @@ class StoryCover extends StatefulWidget {
       this.icon})
       : super(key: key);
   @override
-  _StoryCoverState createState() => _StoryCoverState();
+  State<StoryCover> createState() => _StoryCoverState();
 }
 
 class _StoryCoverState extends State<StoryCover> {

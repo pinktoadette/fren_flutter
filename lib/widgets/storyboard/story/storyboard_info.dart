@@ -4,14 +4,13 @@ import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
 class StoryboardInfo extends StatefulWidget {
   const StoryboardInfo({Key? key}) : super(key: key);
 
   @override
-  _StoryboardInfoState createState() => _StoryboardInfoState();
+  State<StoryboardInfo> createState() => _StoryboardInfoState();
 }
 
 class _StoryboardInfoState extends State<StoryboardInfo> {
@@ -52,7 +51,6 @@ class _StoryboardInfoState extends State<StoryboardInfo> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.only(

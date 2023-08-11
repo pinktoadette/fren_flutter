@@ -8,7 +8,7 @@ class AddBotScreen extends StatefulWidget {
   const AddBotScreen({Key? key}) : super(key: key);
 
   @override
-  _AddBotState createState() => _AddBotState();
+  State<AddBotScreen> createState() => _AddBotState();
 }
 
 class _AddBotState extends State<AddBotScreen> {

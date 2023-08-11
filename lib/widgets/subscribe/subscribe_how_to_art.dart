@@ -7,7 +7,7 @@ class SubscribeHowToArt extends StatefulWidget {
   const SubscribeHowToArt({Key? key}) : super(key: key);
 
   @override
-  _SubscribeHowToArtState createState() => _SubscribeHowToArtState();
+  State<SubscribeHowToArt> createState() => _SubscribeHowToArtState();
 }
 
 class _SubscribeHowToArtState extends State<SubscribeHowToArt> {

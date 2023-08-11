@@ -15,7 +15,7 @@ class ListPrivateBoard extends StatefulWidget {
   const ListPrivateBoard({Key? key, this.message}) : super(key: key);
 
   @override
-  _ListPrivateBoardState createState() => _ListPrivateBoardState();
+  State<ListPrivateBoard> createState() => _ListPrivateBoardState();
 }
 
 class _ListPrivateBoardState extends State<ListPrivateBoard> {
@@ -164,7 +164,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
   void _onDelete(Storyboard storyboard) async {
     try {
       await _storyboardApi.deleteBoard(storyboard);
-      Navigator.of(context).pop(true);
+      Get.back(result: true);
       Get.snackbar(
         _i18n.translate("DELETE"),
         _i18n.translate("storyboard_success_delete"),

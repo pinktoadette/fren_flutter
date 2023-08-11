@@ -20,7 +20,7 @@ class PostCommentWidget extends StatefulWidget {
   const PostCommentWidget({Key? key}) : super(key: key);
 
   @override
-  _PostCommentWidgetState createState() => _PostCommentWidgetState();
+  State<PostCommentWidget> createState() => _PostCommentWidgetState();
 }
 
 class _PostCommentWidgetState extends State<PostCommentWidget> {
@@ -176,9 +176,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     });
 
     StoryboardController storyboardController = Get.find(tag: 'storyboard');
-    final _commentApi = CommentApi();
+    final commentApi = CommentApi();
     try {
-      StoryComment newComment = await _commentApi.postComment(
+      StoryComment newComment = await commentApi.postComment(
           storyId: storyboardController.currentStory.storyId,
           comment: _comment,
           replyToComment: commentController.replyToComment.commentId == null

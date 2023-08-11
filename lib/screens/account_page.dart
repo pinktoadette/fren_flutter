@@ -12,8 +12,8 @@ class AccountPage extends StatelessWidget {
 
   void _deactivate() async {
     try {
-      final _userApi = UserApi();
-      await _userApi.deactivateAccount();
+      final userApi = UserApi();
+      await userApi.deactivateAccount();
       await Purchases.logOut();
     } catch (err) {
       Get.snackbar(
@@ -27,24 +27,24 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _scaffoldKey = GlobalKey<ScaffoldState>();
-    late AppLocalizations _i18n;
+    final scaffoldKey = GlobalKey<ScaffoldState>();
+    late AppLocalizations i18n;
 
-    _i18n = AppLocalizations.of(context);
+    i18n = AppLocalizations.of(context);
 
     return Scaffold(
-        key: _scaffoldKey,
+        key: scaffoldKey,
         appBar: AppBar(
           title: Text(
-            _i18n.translate("account"),
+            i18n.translate("account"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
         ),
         body: Column(
           children: [
             ListTile(
-              title: Text(_i18n.translate("deactivate")),
-              subtitle: Text(_i18n.translate("deactivate_info")),
+              title: Text(i18n.translate("deactivate")),
+              subtitle: Text(i18n.translate("deactivate_info")),
             ),
             const Spacer(),
             ElevatedButton(
@@ -60,7 +60,7 @@ class AccountPage extends StatelessWidget {
                     });
                   });
                 },
-                child: Text(_i18n.translate("deactivate"))),
+                child: Text(i18n.translate("deactivate"))),
             const SizedBox(
               height: 50,
             )

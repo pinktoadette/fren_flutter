@@ -23,7 +23,7 @@ class StoriesView extends StatefulWidget {
 
   const StoriesView({Key? key, this.message}) : super(key: key);
   @override
-  _StoriesViewState createState() => _StoriesViewState();
+  State<StoriesView> createState() => _StoriesViewState();
 }
 
 class _StoriesViewState extends State<StoriesView> {
@@ -105,12 +105,12 @@ class _StoriesViewState extends State<StoriesView> {
                           }
                           Story story = storyboardController
                               .currentStoryboard.story![index];
-                          bool _isOwnerUnpub = (story.createdBy.userId ==
+                          bool isOwnerUnpub = (story.createdBy.userId ==
                                   UserModel().user.userId) &&
                               (story.status != StoryStatus.PUBLISHED);
                           return Dismissible(
                               key: Key(story.storyId),
-                              direction: _isOwnerUnpub
+                              direction: isOwnerUnpub
                                   ? DismissDirection.endToStart
                                   : DismissDirection.none,
                               confirmDismiss:
@@ -183,7 +183,8 @@ class _StoriesViewState extends State<StoriesView> {
   void _onDelete(Story story) async {
     try {
       await _storyApi.deletStory(story);
-      Navigator.of(context).pop(true);
+      Get.back(result: true);
+
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("story_success_delete"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
@@ -218,7 +219,7 @@ class _StoriesViewState extends State<StoriesView> {
             photoUrl: message.uri,
             text: "");
       }
-      Navigator.of(context).pop();
+      Get.back(result: true);
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("story_edits_added"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);

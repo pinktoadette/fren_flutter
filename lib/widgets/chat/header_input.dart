@@ -28,7 +28,7 @@ class CustomHeaderInputWidget extends StatefulWidget {
       this.attachmentPreview});
 
   @override
-  _CustomHeaderInputWidgetState createState() =>
+  State<CustomHeaderInputWidget> createState() =>
       _CustomHeaderInputWidgetState();
 }
 
@@ -58,7 +58,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
     return Column(children: [
       _showHeader(context),
       Row(
@@ -90,22 +90,22 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               icon: Icon(Icons.lightbulb_outlined,
                   size: 14, color: _selectedIconColor("reimagine"))),
           const Spacer(),
-          _displayHint(_i18n),
+          _displayHint(i18n),
         ],
       )
     ]);
   }
 
-  Widget _displayHint(AppLocalizations _i18n) {
+  Widget _displayHint(AppLocalizations i18n) {
     switch (_selectedIcon) {
       case "imagine":
         return Text(
-          _i18n.translate("story_header_you_create"),
+          i18n.translate("story_header_you_create"),
           style: const TextStyle(fontSize: 12),
         );
       case "reimagine":
         return Text(
-          _i18n.translate("story_header_I_create"),
+          i18n.translate("story_header_I_create"),
           style: const TextStyle(fontSize: 12),
         );
       default:

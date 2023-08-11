@@ -18,7 +18,7 @@ class BotProfileCard extends StatefulWidget {
       {Key? key, required this.bot, this.showStatus, this.room, this.roomIdx})
       : super(key: key);
   @override
-  _BotProfileCardState createState() => _BotProfileCardState();
+  State<BotProfileCard> createState() => _BotProfileCardState();
 }
 
 class _BotProfileCardState extends State<BotProfileCard> {

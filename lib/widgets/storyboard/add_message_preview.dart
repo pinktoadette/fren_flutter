@@ -8,7 +8,7 @@ class PreviewMessageToAdd extends StatefulWidget {
       : super(key: key);
 
   @override
-  _PreviewMessageToAddState createState() => _PreviewMessageToAddState();
+  State<PreviewMessageToAdd> createState() => _PreviewMessageToAddState();
 }
 
 class _PreviewMessageToAddState extends State<PreviewMessageToAdd> {

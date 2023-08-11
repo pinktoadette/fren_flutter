@@ -13,7 +13,7 @@ class UserStory extends StatefulWidget {
   const UserStory({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _UserStoryState createState() => _UserStoryState();
+  State<UserStory> createState() => _UserStoryState();
 }
 
 class _UserStoryState extends State<UserStory> {

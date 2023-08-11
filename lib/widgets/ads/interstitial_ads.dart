@@ -8,7 +8,7 @@ class InterstitialAds extends StatefulWidget {
   const InterstitialAds({Key? key, required this.onAdStatus}) : super(key: key);
 
   @override
-  _InterstitialAdsState createState() => _InterstitialAdsState();
+  State<InterstitialAds> createState() => _InterstitialAdsState();
 }
 
 class _InterstitialAdsState extends State<InterstitialAds> {

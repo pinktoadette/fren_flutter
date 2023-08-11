@@ -1,4 +1,3 @@
-import 'package:machi_app/dialogs/common_dialogs.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/plugins/otp_screen/otp_screen.dart';
@@ -19,7 +18,7 @@ class VerificationCodeScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _VerificationCodeScreenState createState() => _VerificationCodeScreenState();
+  State<VerificationCodeScreen> createState() => _VerificationCodeScreenState();
 }
 
 class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
@@ -57,9 +56,6 @@ class _VerificationCodeScreenState extends State<VerificationCodeScreen> {
         onError: () async {
           // Hide dialog
           await _pr.hide();
-          // Show error message to user
-          errorDialog(context,
-              message: _i18n.translate("we_were_unable_to_verify_your_number"));
         });
 
     // Hide progress dialog

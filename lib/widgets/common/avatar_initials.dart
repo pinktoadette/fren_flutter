@@ -22,7 +22,7 @@ class AvatarInitials extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _AvatarInitialsState createState() => _AvatarInitialsState();
+  State<AvatarInitials> createState() => _AvatarInitialsState();
 }
 
 class _AvatarInitialsState extends State<AvatarInitials> {
@@ -65,6 +65,9 @@ class _AvatarInitialsState extends State<AvatarInitials> {
         ),
         child: CircleAvatar(
           radius: widget.radius ?? 50,
+          foregroundImage:
+              widget.photoUrl == '' ? null : imageCacheWrapper(widget.photoUrl),
+          backgroundColor: APP_INVERSE_PRIMARY_COLOR,
           child: (widget.photoUrl == '')
               ? Center(
                   child: Text(widget.username.substring(0, 1).toUpperCase(),
@@ -72,9 +75,6 @@ class _AvatarInitialsState extends State<AvatarInitials> {
                           color: APP_PRIMARY_COLOR, fontSize: 18)),
                 )
               : null,
-          foregroundImage:
-              widget.photoUrl == '' ? null : imageCacheWrapper(widget.photoUrl),
-          backgroundColor: APP_INVERSE_PRIMARY_COLOR,
         ),
       ),
     );

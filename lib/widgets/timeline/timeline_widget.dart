@@ -18,7 +18,7 @@ class TimelineWidget extends StatefulWidget {
   const TimelineWidget({Key? key}) : super(key: key);
 
   @override
-  _TimelineWidgetState createState() => _TimelineWidgetState();
+  State<TimelineWidget> createState() => _TimelineWidgetState();
 }
 
 class _TimelineWidgetState extends State<TimelineWidget> {

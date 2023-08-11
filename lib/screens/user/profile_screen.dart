@@ -26,7 +26,7 @@ class ProfileScreen extends StatefulWidget {
   const ProfileScreen({Key? key, required this.user}) : super(key: key);
 
   @override
-  _ProfileScreenState createState() => _ProfileScreenState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
@@ -195,8 +195,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Get.to(() => FollowerList(user: widget.user));
                               },
                               child: Text(
-                                  "$followers \n" +
-                                      _i18n.translate("followers"),
+                                  "$followers \n${_i18n.translate("followers")}",
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodySmall),
                             )),
@@ -209,8 +208,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 Get.to(() => FollowingList(user: widget.user));
                               },
                               child: Text(
-                                  "$followings \n" +
-                                      _i18n.translate("following"),
+                                  "$followings \n${_i18n.translate("following")}",
                                   textAlign: TextAlign.center,
                                   style: Theme.of(context).textTheme.bodySmall),
                             )),

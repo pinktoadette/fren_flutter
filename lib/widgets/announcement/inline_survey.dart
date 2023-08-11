@@ -10,7 +10,7 @@ class InlineSurvey extends StatefulWidget {
   const InlineSurvey({super.key});
 
   @override
-  _InlineSurveyState createState() => _InlineSurveyState();
+  State<InlineSurvey> createState() => _InlineSurveyState();
 }
 
 class _InlineSurveyState extends State<InlineSurvey>
@@ -69,6 +69,7 @@ class _InlineSurveyState extends State<InlineSurvey>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _i18n = AppLocalizations.of(context);
 
     if (survey == null) {

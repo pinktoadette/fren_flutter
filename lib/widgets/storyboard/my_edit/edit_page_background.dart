@@ -27,7 +27,7 @@ class EditPageBackground extends StatefulWidget {
       : super(key: key);
 
   @override
-  _EditPageBackgroundState createState() => _EditPageBackgroundState();
+  State<EditPageBackground> createState() => _EditPageBackgroundState();
 }
 
 class _EditPageBackgroundState extends State<EditPageBackground> {

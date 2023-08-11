@@ -86,11 +86,11 @@ class AppHelper {
     required String locality,
   }) async {
     /// Initialize geoflutterfire instance
-    final _geo = Geoflutterfire();
+    final geo = Geoflutterfire();
 
     /// Set Geolocation point
     final GeoFirePoint geoPoint =
-        _geo.point(latitude: latitude, longitude: longitude);
+        geo.point(latitude: latitude, longitude: longitude);
 
     // Update user location data in database
     await UserModel().updateUserData(userId: userId, data: {

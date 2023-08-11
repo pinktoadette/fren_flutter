@@ -9,7 +9,7 @@ class WalkThruSteps extends StatefulWidget {
       : super(key: key);
 
   @override
-  _WalkThruStepsState createState() => _WalkThruStepsState();
+  State<WalkThruSteps> createState() => _WalkThruStepsState();
 }
 
 class _WalkThruStepsState extends State<WalkThruSteps> {

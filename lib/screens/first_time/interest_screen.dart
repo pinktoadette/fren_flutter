@@ -15,7 +15,7 @@ class InterestScreen extends StatefulWidget {
   const InterestScreen({Key? key}) : super(key: key);
 
   @override
-  _InterestScreenState createState() => _InterestScreenState();
+  State<InterestScreen> createState() => _InterestScreenState();
 }
 
 class _InterestScreenState extends State<InterestScreen> {
@@ -39,9 +39,9 @@ class _InterestScreenState extends State<InterestScreen> {
     if (!mounted) {
       return;
     }
-    String _cat =
+    String cat =
         await rootBundle.loadString('assets/json/shorten_interest.json');
-    List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
+    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
     setState(() {
       _category = category;
     });
@@ -127,9 +127,7 @@ class _InterestScreenState extends State<InterestScreen> {
       await UserModel().updateUserData(
           userId: UserModel().user.userId,
           data: {USER_INTERESTS: _selectedInterest});
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const HomeScreen()),
-          (route) => false);
+      Get.offAll(() => const HomeScreen());
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("Error"),

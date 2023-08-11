@@ -12,7 +12,7 @@ class InlineAdaptiveAds extends StatefulWidget {
   const InlineAdaptiveAds({super.key, this.height});
 
   @override
-  _InlineAdaptiveAdsState createState() => _InlineAdaptiveAdsState();
+  State<InlineAdaptiveAds> createState() => _InlineAdaptiveAdsState();
 }
 
 class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {

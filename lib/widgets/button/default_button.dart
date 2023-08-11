@@ -16,7 +16,6 @@ class DefaultButton extends StatelessWidget {
       width: width,
       height: height ?? 45,
       child: ElevatedButton(
-        child: child,
         style: ButtonStyle(
           backgroundColor: MaterialStateProperty.all<Color>(Theme.of(context).primaryColor),
           textStyle: MaterialStateProperty.all<TextStyle>(
@@ -29,6 +28,7 @@ class DefaultButton extends StatelessWidget {
           )
         ),
         onPressed: onPressed,
+        child: child,
       ),
     );
   }

@@ -14,7 +14,7 @@ class ViewStoryboard extends StatefulWidget {
   const ViewStoryboard({Key? key, this.showName = false}) : super(key: key);
 
   @override
-  _ViewStoryboardState createState() => _ViewStoryboardState();
+  State<ViewStoryboard> createState() => _ViewStoryboardState();
 }
 
 class _ViewStoryboardState extends State<ViewStoryboard> {

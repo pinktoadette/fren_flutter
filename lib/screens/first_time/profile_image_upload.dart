@@ -15,7 +15,7 @@ class ProfileImageGenerator extends StatefulWidget {
   const ProfileImageGenerator({Key? key}) : super(key: key);
 
   @override
-  _ProfileImageGeneratorState createState() => _ProfileImageGeneratorState();
+  State<ProfileImageGenerator> createState() => _ProfileImageGeneratorState();
 }
 
 class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
@@ -136,16 +136,15 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   void _saveSelectedPhoto(String photoUrl) async {
     try {
       /// upload this image
-      final _botApi = BotApi();
+      final botApi = BotApi();
       String url =
-          await _botApi.uploadImageUrl(uri: photoUrl, pathLocation: 'profile');
+          await botApi.uploadImageUrl(uri: photoUrl, pathLocation: 'profile');
 
       /// upload to user model
       await UserModel().updateUserData(
           userId: UserModel().user.userId, data: {USER_PROFILE_PHOTO: url});
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const InterestScreen()),
-          (route) => false);
+
+      Get.offAll(() => const InterestScreen());
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("Error"),

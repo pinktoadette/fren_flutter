@@ -10,7 +10,7 @@ class CategoryDropdownWidget extends StatefulWidget {
       {super.key, required this.notifyParent, this.selectedCategory});
 
   @override
-  _CategoryDropdownWidgetState createState() => _CategoryDropdownWidgetState();
+  State<CategoryDropdownWidget> createState() => _CategoryDropdownWidgetState();
 }
 
 class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
@@ -32,8 +32,8 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
     if (!mounted) {
       return;
     }
-    String _cat = await rootBundle.loadString('assets/json/category.json');
-    List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
+    String cat = await rootBundle.loadString('assets/json/category.json');
+    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
     setState(() {
       _category = category;
       _selectedCategory = widget.selectedCategory ?? category[0];

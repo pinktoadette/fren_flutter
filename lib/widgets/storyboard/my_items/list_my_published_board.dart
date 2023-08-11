@@ -15,7 +15,7 @@ class ListPublishBoard extends StatefulWidget {
   const ListPublishBoard({Key? key, this.message}) : super(key: key);
 
   @override
-  _ListPublishBoardState createState() => _ListPublishBoardState();
+  State<ListPublishBoard> createState() => _ListPublishBoardState();
 }
 
 class _ListPublishBoardState extends State<ListPublishBoard> {

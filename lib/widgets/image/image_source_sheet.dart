@@ -9,16 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/profile/user_gallery.dart';
 
-class ImageSourceSheet extends StatelessWidget {
-  // Constructor
-  ImageSourceSheet(
-      {Key? key,
-      required this.onImageSelected,
-      required this.onGallerySelected,
-      this.includeFile,
-      this.useAIGenerator})
-      : super(key: key);
-
+class ImageSourceSheet extends StatefulWidget {
   // Callback function to return image file
   final Function(File?) onImageSelected;
 
@@ -29,45 +20,35 @@ class ImageSourceSheet extends StatelessWidget {
   final picker = ImagePicker();
 
   final bool? includeFile;
-  final bool? useAIGenerator;
 
-  Future<void> selectedImage(BuildContext context, File? image) async {
-    // init i18n
-    final i18n = AppLocalizations.of(context);
+  ImageSourceSheet({
+    Key? key,
+    required this.onImageSelected,
+    required this.onGallerySelected,
+    this.includeFile,
+  }) : super(key: key);
 
-    // Check file
-    if (image != null) {
-      CroppedFile? croppedFile = await ImageCropper().cropImage(
-          sourcePath: image.path,
-          aspectRatioPresets: [CropAspectRatioPreset.square],
-          maxWidth: 512,
-          maxHeight: 512,
-          uiSettings: [
-            AndroidUiSettings(
-                toolbarTitle: i18n.translate("edit_crop_image"),
-                toolbarColor: Colors.black,
-                toolbarWidgetColor: Colors.white,
-                initAspectRatio: CropAspectRatioPreset.original,
-                lockAspectRatio: false),
-            IOSUiSettings(
-              title: i18n.translate("edit_crop_image"),
-            ),
-          ]);
-      // Hold the file
-      File? imageFile;
-      // Check
-      if (croppedFile != null) {
-        imageFile = File(croppedFile.path);
-      }
-      // Callback
-      onImageSelected(imageFile);
-    }
+  @override
+  State<ImageSourceSheet> createState() => _ImageSourceSheetState();
+}
+
+class _ImageSourceSheetState extends State<ImageSourceSheet> {
+  late AppLocalizations _i18n;
+  final picker = ImagePicker();
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    // Variables
-    final i18n = AppLocalizations.of(context);
+    _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
 
     return Container(
@@ -89,9 +70,9 @@ class ImageSourceSheet extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.only(left: 20),
                 child: Text(
-                  includeFile == true
-                      ? i18n.translate("document")
-                      : i18n.translate('photo'),
+                  widget.includeFile == true
+                      ? _i18n.translate("document")
+                      : _i18n.translate('photo'),
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
@@ -116,14 +97,14 @@ class ImageSourceSheet extends StatelessWidget {
                       source: ImageSource.gallery,
                     );
                     if (pickedFile == null) return;
-                    selectedImage(context, File(pickedFile.path));
+                    selectedImage(File(pickedFile.path));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: Row(
                       children: [
                         const Icon(Iconsax.gallery),
-                        Text(" " + i18n.translate("gallery"),
+                        Text(" ${_i18n.translate("gallery")}",
                             style: const TextStyle(fontSize: 16))
                       ],
                     ),
@@ -139,14 +120,14 @@ class ImageSourceSheet extends StatelessWidget {
                       source: ImageSource.camera,
                     );
                     if (pickedFile == null) return;
-                    selectedImage(context, File(pickedFile.path));
+                    selectedImage(File(pickedFile.path));
                   },
                   child: Padding(
                     padding: const EdgeInsets.all(15),
                     child: Row(
                       children: [
                         const Icon(Iconsax.camera),
-                        Text(" " + i18n.translate("camera"),
+                        Text(" ${_i18n.translate("camera")}",
                             style: const TextStyle(fontSize: 16))
                       ],
                     ),
@@ -163,32 +144,23 @@ class ImageSourceSheet extends StatelessWidget {
                     child: Row(
                       children: [
                         const Icon(Iconsax.gallery_export),
-                        Text(" ${i18n.translate("gallery_machi")}",
+                        Text(" ${_i18n.translate("gallery_machi")}",
                             style: const TextStyle(fontSize: 16))
                       ],
                     ),
                   ))),
           // files for future
-          if (includeFile == true)
+          if (widget.includeFile == true)
             Container(
                 alignment: Alignment.topLeft,
                 width: size.width,
                 padding: const EdgeInsets.only(left: 10.0),
                 child: TextButton.icon(
                   icon: const Icon(Iconsax.folder_open),
-                  label: Text(i18n.translate("file")),
+                  label: Text(_i18n.translate("file")),
                   onPressed: null,
                 )),
-          if (useAIGenerator == true)
-            Container(
-                alignment: Alignment.topLeft,
-                width: size.width,
-                padding: const EdgeInsets.only(left: 10.0),
-                child: TextButton.icon(
-                  icon: const Icon(Iconsax.pen_add),
-                  label: Text(i18n.translate("bot_generator")),
-                  onPressed: null,
-                )),
+
           const SizedBox(height: 30),
         ],
       ),
@@ -205,10 +177,42 @@ class ImageSourceSheet extends StatelessWidget {
             child: UserGallery(
               userId: UserModel().user.userId,
               onFileTap: (val) {
-                onGallerySelected(val);
+                widget.onGallerySelected(val);
               },
             ));
       },
     );
+  }
+
+  Future<void> selectedImage(File? image) async {
+    // init i18n
+
+    // Check file
+    if (image != null) {
+      CroppedFile? croppedFile = await ImageCropper().cropImage(
+          sourcePath: image.path,
+          aspectRatioPresets: [CropAspectRatioPreset.square],
+          maxWidth: 512,
+          maxHeight: 512,
+          uiSettings: [
+            AndroidUiSettings(
+                toolbarTitle: _i18n.translate("edit_crop_image"),
+                toolbarColor: Colors.black,
+                toolbarWidgetColor: Colors.white,
+                initAspectRatio: CropAspectRatioPreset.original,
+                lockAspectRatio: false),
+            IOSUiSettings(
+              title: _i18n.translate("edit_crop_image"),
+            ),
+          ]);
+      // Hold the file
+      File? imageFile;
+      // Check
+      if (croppedFile != null) {
+        imageFile = File(croppedFile.path);
+      }
+      // Callback
+      widget.onImageSelected(imageFile);
+    }
   }
 }

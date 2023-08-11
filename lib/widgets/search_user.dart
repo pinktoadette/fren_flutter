@@ -12,7 +12,7 @@ class SearchBarWidget extends StatefulWidget {
   const SearchBarWidget({Key? key}) : super(key: key);
 
   @override
-  _SearchBarState createState() => _SearchBarState();
+  State<SearchBarWidget> createState() => _SearchBarState();
 }
 
 class _SearchBarState extends State<SearchBarWidget> {
@@ -30,7 +30,7 @@ class _SearchBarState extends State<SearchBarWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    final i18n = AppLocalizations.of(context);
     return Padding(
         padding: const EdgeInsets.only(left: 20),
         child: TypeAheadField(
@@ -40,7 +40,7 @@ class _SearchBarState extends State<SearchBarWidget> {
               decoration: InputDecoration(
                   icon: const Icon(Iconsax.search_normal),
                   border: InputBorder.none,
-                  hintText: _i18n.translate("search_user"),
+                  hintText: i18n.translate("search_user"),
                   hintStyle:
                       TextStyle(color: Theme.of(context).colorScheme.primary)),
             ),
@@ -72,7 +72,7 @@ class _SearchBarState extends State<SearchBarWidget> {
             noItemsFoundBuilder: (BuildContext context) {
               return Padding(
                 padding: const EdgeInsets.all(5),
-                child: Text(_i18n.translate('search_not_found')),
+                child: Text(i18n.translate('search_not_found')),
               );
             }));
   }

@@ -16,7 +16,7 @@ class AddNewStory extends StatefulWidget {
   const AddNewStory({Key? key}) : super(key: key);
 
   @override
-  _AddNewStoryState createState() => _AddNewStoryState();
+  State<AddNewStory> createState() => _AddNewStoryState();
 }
 
 class _AddNewStoryState extends State<AddNewStory> {
@@ -106,6 +106,8 @@ class _AddNewStoryState extends State<AddNewStory> {
                       title: "Cover",
                     ),
                     Positioned(
+                      right: 0,
+                      bottom: 0,
                       child: CircleAvatar(
                         radius: 12,
                         backgroundColor:
@@ -116,8 +118,6 @@ class _AddNewStoryState extends State<AddNewStory> {
                           size: 12,
                         ),
                       ),
-                      right: 0,
-                      bottom: 0,
                     ),
                   ],
                 ),
@@ -151,7 +151,7 @@ class _AddNewStoryState extends State<AddNewStory> {
 
       Get.snackbar(_i18n.translate("posted"), _i18n.translate("story_added"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
-      Navigator.of(context).pop();
+      Get.back(result: true);
     } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(

@@ -8,7 +8,7 @@ class EnableMode extends StatefulWidget {
   const EnableMode({Key? key}) : super(key: key);
 
   @override
-  _EnableModeState createState() => _EnableModeState();
+  State<EnableMode> createState() => _EnableModeState();
 }
 
 class _EnableModeState extends State<EnableMode> {

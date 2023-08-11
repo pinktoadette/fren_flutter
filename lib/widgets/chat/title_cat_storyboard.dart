@@ -14,7 +14,7 @@ class StoryboardTitleCategory extends StatefulWidget {
       : super(key: key);
 
   @override
-  _StoryboardTitleCategoryState createState() =>
+  State<StoryboardTitleCategory> createState() =>
       _StoryboardTitleCategoryState();
 }
 
@@ -103,7 +103,7 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  currentLength.toString() + "/" + maxLength.toString(),
+                  "$currentLength/$maxLength",
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 const Spacer(),

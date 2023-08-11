@@ -7,7 +7,6 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
@@ -15,12 +14,11 @@ class StoryInfo extends StatefulWidget {
   const StoryInfo({Key? key}) : super(key: key);
 
   @override
-  _StoryInfoState createState() => _StoryInfoState();
+  State<StoryInfo> createState() => _StoryInfoState();
 }
 
 class _StoryInfoState extends State<StoryInfo> {
   List<dynamic> contributors = [];
-  late AppLocalizations _i18n;
   final _storyboardApi = StoryboardApi();
   final _botApi = BotApi();
   final _cancelToken = CancelToken();
@@ -59,7 +57,6 @@ class _StoryInfoState extends State<StoryInfo> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    _i18n = AppLocalizations.of(context);
 
     return Obx(() => Container(
           padding: EdgeInsets.only(

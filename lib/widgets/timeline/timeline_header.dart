@@ -44,7 +44,7 @@ class TimelineHeader extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _TimelineHeaderState createState() => _TimelineHeaderState();
+  State<TimelineHeader> createState() => _TimelineHeaderState();
 }
 
 class _TimelineHeaderState extends State<TimelineHeader> {
@@ -65,7 +65,7 @@ class _TimelineHeaderState extends State<TimelineHeader> {
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
     return InkWell(
         onTap: () async {
           User u = await _userApi.getUserById(
@@ -115,30 +115,30 @@ class _TimelineHeaderState extends State<TimelineHeader> {
                             ),
                             itemBuilder: (context) => <PopupMenuEntry<String>>[
                                   PopupMenuItem(
+                                    value: 'report_user',
                                     child: Text(
-                                      _i18n.translate("report_user"),
+                                      i18n.translate("report_user"),
                                       style:
                                           Theme.of(context).textTheme.bodySmall,
                                     ),
-                                    value: 'report_user',
                                   ),
                                   if (widget.comment != null)
                                     PopupMenuItem(
+                                      value: 'report_comment',
                                       child: Text(
-                                          _i18n.translate("report_comment"),
+                                          i18n.translate("report_comment"),
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall),
-                                      value: 'report_comment',
                                     ),
                                   if ((widget.user.userId ==
                                       UserModel().user.userId))
                                     PopupMenuItem(
-                                      child: Text(_i18n.translate("DELETE"),
+                                      value: 'delete',
+                                      child: Text(i18n.translate("DELETE"),
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall),
-                                      value: 'delete',
                                     ),
                                 ],
                             onSelected: (val) {

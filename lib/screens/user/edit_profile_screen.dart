@@ -11,7 +11,7 @@ class EditProfileScreen extends StatefulWidget {
   const EditProfileScreen({Key? key}) : super(key: key);
 
   @override
-  _EditProfileScreenState createState() => _EditProfileScreenState();
+  State<EditProfileScreen> createState() => _EditProfileScreenState();
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
@@ -85,6 +85,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
 
                           /// Edit icon
                           Positioned(
+                            right: 0,
+                            bottom: 0,
                             child: CircleAvatar(
                               radius: 12,
                               backgroundColor: Theme.of(context).primaryColor,
@@ -94,8 +96,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 size: 12,
                               ),
                             ),
-                            right: 0,
-                            bottom: 0,
                           ),
                         ],
                       ),
@@ -153,12 +153,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   /// Update profile image
                   await UserModel().updateProfileImage(
                       imageFile: image, oldImageUrl: imageUrl, path: 'profile');
-                  Navigator.of(context).pop();
+                  Get.back(result: true);
                 }
               },
               onGallerySelected: (imageUrl) async {
                 await UserModel().updateProfileWithAiGallery(imageUrl);
-                Navigator.of(context).pop();
+                Get.back(result: true);
               },
             ));
   }

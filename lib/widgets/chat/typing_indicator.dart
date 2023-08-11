@@ -58,7 +58,7 @@ class JumpingDots extends StatefulWidget {
         super(key: key);
 
   @override
-  _JumpingDotsState createState() => _JumpingDotsState();
+  State<JumpingDots> createState() => _JumpingDotsState();
 }
 
 class _JumpingDotsState extends State<JumpingDots>

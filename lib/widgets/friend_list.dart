@@ -15,7 +15,7 @@ class FriendListWidget extends StatefulWidget {
   const FriendListWidget({Key? key, required this.roomIdx}) : super(key: key);
 
   @override
-  _FriendListState createState() => _FriendListState();
+  State<FriendListWidget> createState() => _FriendListState();
 }
 
 class _FriendListState extends State<FriendListWidget> {
@@ -87,9 +87,7 @@ class _FriendListState extends State<FriendListWidget> {
                                   final User user = await UserModel()
                                       .getUserObject(
                                           snapshot.data[index][USER_ID]);
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: (context) =>
-                                          ProfileScreen(user: user)));
+                                  Get.to(() => ProfileScreen(user: user));
                                 },
                                 child: AvatarInitials(
                                   radius: 20,
@@ -124,9 +122,7 @@ class _FriendListState extends State<FriendListWidget> {
                             onTap: () async {
                               final User user = await UserModel()
                                   .getUserObject(snapshot.data[index][USER_ID]);
-                              Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) =>
-                                      ProfileScreen(user: user)));
+                              Get.to(() => ProfileScreen(user: user));
                             },
                           );
                         }),

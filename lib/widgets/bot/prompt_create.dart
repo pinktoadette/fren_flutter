@@ -21,7 +21,7 @@ class CreateMachiWidget extends StatefulWidget {
   const CreateMachiWidget({Key? key}) : super(key: key);
 
   @override
-  _CreateMachiWidget createState() => _CreateMachiWidget();
+  State<CreateMachiWidget> createState() => _CreateMachiWidget();
 }
 
 class _CreateMachiWidget extends State<CreateMachiWidget> {
@@ -131,6 +131,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
                             /// Edit icon
                             Positioned(
+                              right: 0,
+                              bottom: 0,
                               child: CircleAvatar(
                                 radius: 12,
                                 backgroundColor:
@@ -141,8 +143,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                                   size: 12,
                                 ),
                               ),
-                              right: 0,
-                              bottom: 0,
                             ),
                           ],
                         ),
@@ -294,7 +294,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       child: Container(
           alignment: Alignment.topLeft,
           child: Text(
-            currentLength.toString() + "/" + maxLength.toString(),
+            "$currentLength/$maxLength",
             style: Theme.of(context).textTheme.labelSmall,
           )),
     );

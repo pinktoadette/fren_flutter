@@ -21,7 +21,7 @@ class LatestMachiWidget extends StatefulWidget {
   const LatestMachiWidget({super.key});
 
   @override
-  _LatestMachiWidgetState createState() => _LatestMachiWidgetState();
+  State<LatestMachiWidget> createState() => _LatestMachiWidgetState();
 }
 
 class _LatestMachiWidgetState extends State<LatestMachiWidget> {

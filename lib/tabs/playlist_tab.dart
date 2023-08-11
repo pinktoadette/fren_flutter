@@ -8,18 +8,18 @@ class PlaylistTab extends StatefulWidget {
   const PlaylistTab({Key? key}) : super(key: key);
 
   @override
-  _PlaylistTabState createState() => _PlaylistTabState();
+  State<PlaylistTab> createState() => _PlaylistTabState();
 }
 
 class _PlaylistTabState extends State<PlaylistTab> {
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
     return Scaffold(
         body: CustomScrollView(slivers: [
       FrostedAppBar(
           title: Text(
-            _i18n.translate("storyboard_playlist"),
+            i18n.translate("storyboard_playlist"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: const [],

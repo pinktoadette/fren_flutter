@@ -20,7 +20,7 @@ class EditPage extends StatefulWidget {
   const EditPage({Key? key, required this.passStory}) : super(key: key);
 
   @override
-  _EditPageState createState() => _EditPageState();
+  State<EditPage> createState() => _EditPageState();
 }
 
 class _EditPageState extends State<EditPage> {
@@ -260,10 +260,10 @@ class _EditPageState extends State<EditPage> {
   }
 
   void _updateLayout(Layout layout) async {
-    final _storyApi = StoryApi();
+    final storyApi = StoryApi();
     Story updateStory = story.copyWith(layout: layout);
 
-    await _storyApi.updateStory(story: updateStory, layout: layout.name);
+    await storyApi.updateStory(story: updateStory, layout: layout.name);
     setState(() {
       story = updateStory;
     });

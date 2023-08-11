@@ -18,7 +18,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+64
 
 environment:
-  sdk: ^3.0.0
+  sdk: ^3.0.6
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -46,16 +46,15 @@ dependencies:
   google_mobile_ads: ^3.0.0 #no web 
   # END 
 
-  flutter_native_splash: 2.2.16 # Used to generate the app splash screen for both platforms android and iOS 
-  country_code_picker: 2.0.2 # Used to Select User Country Code
+  flutter_native_splash: ^2.3.1 # Used to generate the app splash screen for both platforms android and iOS 
   scoped_model: 2.0.0 # Used to Manage Application State
-  image_picker: 0.8.7+5 # # Used to select images from the User's device image library or take a new photo using the camera
-  image_cropper: 3.0.3 # Used to Crop/Rotate Selected images from user's device
+  image_picker: ^1.0.2 # # Used to select images from the User's device image library or take a new photo using the camera
+  image_cropper: ^5.0.0 # Used to Crop/Rotate Selected images from user's device
   url_launcher: 6.1.12 # Used to open link schemes in application or browser
   rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
   share: 2.0.4 # Used to share application content in other applications
   flutter_cupertino_datetime_picker: 3.0.0
-  google_fonts: ^4.0.3
+  google_fonts: ^5.1.0
   google_sign_in: ^6.0.1
   iconsax: ^0.0.8
   flutter_signin_button: ^2.0.0
@@ -82,13 +81,16 @@ dependencies:
   chips_choice: ^3.0.0
   cached_network_image: ^3.2.3 #no web
   purchases_flutter: ^5.0.0 #no web
-  card_swiper: ^2.0.4
+  card_swiper: ^3.0.1
   firebase_crashlytics: ^3.3.3
   flutter_cache_manager: ^3.3.1
   screenshot: ^2.1.0
   leak_detector: ^1.0.1+4
   permission_handler: ^10.4.3
   image_gallery_saver: ^2.0.3
+  flutter_chat_types: ^3.6.2
+  http: ^1.1.0
+  path_provider: ^2.1.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre
@@ -103,7 +105,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^1.0.0
+  flutter_lints: ^2.0.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

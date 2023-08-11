@@ -21,7 +21,7 @@ class SubscriptionProduct extends StatefulWidget {
   const SubscriptionProduct({Key? key}) : super(key: key);
 
   @override
-  _SubscriptionProductState createState() => _SubscriptionProductState();
+  State<SubscriptionProduct> createState() => _SubscriptionProductState();
 }
 
 class _SubscriptionProductState extends State<SubscriptionProduct> {
@@ -345,7 +345,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     setState(() {
       isLoading = true;
     });
-    final _purchaseApi = PurchasesApi();
+    final purchaseApi = PurchasesApi();
     String info = await AppHelper().getRevenueCat();
     String qty = _selectedTier.identifier.replaceAll(RegExp(r'[^0-9]'), '');
 
@@ -358,7 +358,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         try {
           /// temp
           subscribeController.credits = int.parse(qty).obs;
-          await _purchaseApi.purchaseCredits();
+          await purchaseApi.purchaseCredits();
           subscribeController.getCredits();
           Get.snackbar(_i18n.translate("success"),
               _i18n.translate("subscribed_successfully"),
@@ -378,7 +378,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           _pr.hide();
         }
       }
-      Navigator.of(context).pop();
+      Get.back(result: true);
     } on PlatformException catch (err, s) {
       var errorCode = PurchasesErrorHelper.getErrorCode(err);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {

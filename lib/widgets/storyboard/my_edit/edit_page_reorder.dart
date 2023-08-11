@@ -51,7 +51,7 @@ class EditPageReorder extends StatefulWidget {
       : super(key: key);
 
   @override
-  _EditPageReorderState createState() => _EditPageReorderState();
+  State<EditPageReorder> createState() => _EditPageReorderState();
 }
 
 class _EditPageReorderState extends State<EditPageReorder> {
@@ -636,7 +636,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   /// update background images on the page.
   void _updateBackground() async {
-    final _storyApi = StoryApi();
+    final storyApi = StoryApi();
     String? url = urlPreview;
     if (attachmentPreview != null) {
       url = await uploadFile(
@@ -656,7 +656,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     Story updateStory =
         story.copyWith(pages: story.pages, pageDirection: _direction);
 
-    await _storyApi.updateStory(story: updateStory);
+    await storyApi.updateStory(story: updateStory);
     setState(() {
       story = updateStory;
     });

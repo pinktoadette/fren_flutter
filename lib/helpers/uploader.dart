@@ -10,11 +10,11 @@ Future<String> uploadFile({
   required String category, // board | room | user | bot
   required String categoryId, // respective Id
 }) async {
-  final _storageRef = FirebaseStorage.instance;
+  final storageRef = FirebaseStorage.instance;
 
   // Upload file
   final UploadTask uploadTask =
-      _storageRef.ref().child(category + '/' + categoryId).putFile(file);
+      storageRef.ref().child('$category/$categoryId').putFile(file);
   final TaskSnapshot snapshot = await uploadTask;
   String url = await snapshot.ref.getDownloadURL();
   // return file link
@@ -26,12 +26,12 @@ Future<String> uploadBytesFile({
   required String category, // board | room | user | bot
   required String categoryId, // respective Id
 }) async {
-  final _storageRef = FirebaseStorage.instance;
+  final storageRef = FirebaseStorage.instance;
 
   // Upload file
-  final UploadTask uploadTask = _storageRef
+  final UploadTask uploadTask = storageRef
       .ref()
-      .child(category + '/' + categoryId)
+      .child('$category/$categoryId')
       .putData(uint8arr); // Convert Uint8List to List<int> before uploading
   final TaskSnapshot snapshot = await uploadTask;
   String url = await snapshot.ref.getDownloadURL();
@@ -45,7 +45,7 @@ Future<String> copyFileToDifferentFolder({
   String contentType = 'image/png',
 }) async {
   try {
-    final _storageRef = FirebaseStorage.instance;
+    final storageRef = FirebaseStorage.instance;
 
     // Get the file name from the source URL
     final List<String> urlSegments = Uri.parse(sourceUrl).pathSegments;
@@ -56,7 +56,7 @@ Future<String> copyFileToDifferentFolder({
     final Uint8List fileBytes = Uint8List.fromList(response.bodyBytes);
 
     // Upload the file to the destination folder
-    final destinationFolderRef = _storageRef.ref().child(destinationCategory);
+    final destinationFolderRef = storageRef.ref().child(destinationCategory);
     final destinationFileRef = destinationFolderRef.child(fileName);
 
     final TaskSnapshot uploadTask = await destinationFileRef.putData(

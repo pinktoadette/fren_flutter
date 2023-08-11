@@ -33,7 +33,7 @@ class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
@@ -120,7 +120,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _handleNotificationClick(Map<String, dynamic>? data) async {
     /// Handle notification click
     await _appNotifications.onNotificationClick(
-      context,
       nType: data?[NOTIF_TYPE] ?? '',
       nSenderId: data?[NOTIF_SENDER_ID] ?? '',
       nMessage: data?[NOTIF_MESSAGE] ?? '',
@@ -320,11 +319,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
   /// Count unread notifications
   Widget _getNotificationCounter() {
-    final _notificationsApi = NotificationsApi();
+    final notificationsApi = NotificationsApi();
 
     const icon = Icon(Iconsax.notification);
     return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: _notificationsApi.getNotifications(),
+        stream: notificationsApi.getNotifications(),
         builder: (context, snapshot) {
           // Check result
           if (!snapshot.hasData) {

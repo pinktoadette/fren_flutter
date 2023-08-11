@@ -15,7 +15,7 @@ class ReportForm extends StatefulWidget {
   const ReportForm({Key? key, required this.itemId, required this.itemType})
       : super(key: key);
   @override
-  _ReportFormState createState() => _ReportFormState();
+  State<ReportForm> createState() => _ReportFormState();
 }
 
 class _ReportFormState extends State<ReportForm> {
@@ -41,8 +41,8 @@ class _ReportFormState extends State<ReportForm> {
     if (!mounted) {
       return;
     }
-    String _cat = await rootBundle.loadString('assets/json/report.json');
-    List<String> category = List.from(jsonDecode(_cat) as List<dynamic>);
+    String cat = await rootBundle.loadString('assets/json/report.json');
+    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
     setState(() {
       _category = category;
     });
@@ -127,7 +127,7 @@ class _ReportFormState extends State<ReportForm> {
 
       Get.snackbar(_i18n.translate("success"), _i18n.translate("submitted"),
           snackPosition: SnackPosition.TOP, backgroundColor: APP_SUCCESS);
-      Navigator.pop(context);
+      Get.back(result: true);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

@@ -13,7 +13,7 @@ class DeleteAccountScreen extends StatefulWidget {
   const DeleteAccountScreen({Key? key}) : super(key: key);
 
   @override
-  _DeleteAccountScreenState createState() => _DeleteAccountScreenState();
+  State<DeleteAccountScreen> createState() => _DeleteAccountScreenState();
 }
 
 class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
@@ -35,13 +35,13 @@ class _DeleteAccountScreenState extends State<DeleteAccountScreen> {
     debugPrint('Profile account -> deleted...');
 
     // Get user uploaded profile image links
-    final List<String> _userImagesRef =
+    final List<String> userImagesRef =
         UserModel().getUserProfileImages(UserModel().user);
 
     /// DELETE PROFILE IMAGE AND GALLERY
     ///
     /// Loop user profile images to be deleted from storage
-    for (var imgUrl in _userImagesRef) {
+    for (var imgUrl in userImagesRef) {
       // Delete profile image and gallery
       await _storageRef.refFromURL(imgUrl).delete();
     }

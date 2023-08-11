@@ -91,19 +91,17 @@ class NotificationsScreen extends StatelessWidget {
 
     if (notifType == "REQUEST" || notifType == "FOLLOWING") {
       final User user = await UserModel().getUserObject(notifSenderId);
-      Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => ProfileScreen(user: user)));
+      Get.offAll(() => ProfileScreen(user: user));
     } else if (notifType.contains("COMMENT")) {
-      final _storyApi = StoryApi();
-      Story story = await _storyApi.getMyStories(notification["itemId"]);
+      final storyApi = StoryApi();
+      Story story = await storyApi.getMyStories(notification["itemId"]);
       timelineController.setStoryTimelineControllerCurrent(story);
       storyboardController.onGoToPageView(story);
       Get.to(() => StoryPageView(story: story));
     }
 
     /// Handle notification click
-    _appNotifications.onNotificationClick(
-      context,
+    await _appNotifications.onNotificationClick(
       nType: notifType,
       nSenderId: notifSenderId,
       nMessage: notifMessage,

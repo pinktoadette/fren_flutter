@@ -11,7 +11,7 @@ class ImageStudioScreen extends StatefulWidget {
       : super(key: key);
 
   @override
-  _ImageStudioScreenState createState() => _ImageStudioScreenState();
+  State<ImageStudioScreen> createState() => _ImageStudioScreenState();
 }
 
 class _ImageStudioScreenState extends State<ImageStudioScreen> {

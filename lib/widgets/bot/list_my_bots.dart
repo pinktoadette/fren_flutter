@@ -11,7 +11,7 @@ class ListMyBot extends StatefulWidget {
   const ListMyBot({Key? key}) : super(key: key);
 
   @override
-  _ListMyBotWidget createState() => _ListMyBotWidget();
+  State<ListMyBot> createState() => _ListMyBotWidget();
 }
 
 class _ListMyBotWidget extends State<ListMyBot> {
@@ -39,16 +39,16 @@ class _ListMyBotWidget extends State<ListMyBot> {
 
   @override
   Widget build(BuildContext context) {
-    final _i18n = AppLocalizations.of(context);
+    final i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     if (_listBot.isEmpty) {
       /// No match
-      return NoData(text: _i18n.translate("no_match"));
+      return NoData(text: i18n.translate("no_match"));
     } else {
       return Scaffold(
           appBar: AppBar(
             title: Text(
-              _i18n.translate("start_chat_with"),
+              i18n.translate("start_chat_with"),
               style: Theme.of(context).textTheme.bodyLarge,
             ),
             automaticallyImplyLeading: false,

@@ -8,7 +8,7 @@ class SignInScreen extends StatefulWidget {
   const SignInScreen({Key? key}) : super(key: key);
 
   @override
-  _SignInScreenState createState() => _SignInScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
 class _SignInScreenState extends State<SignInScreen> {
@@ -37,8 +37,8 @@ class _SignInScreenState extends State<SignInScreen> {
             children: <Widget>[
               Container(
                 padding: const EdgeInsets.only(top: 50, bottom: 50),
-                child: Image.asset("assets/images/logo_machi.png"),
                 width: screenWidth * 0.5,
+                child: Image.asset("assets/images/logo_machi.png"),
               ),
               Semantics(
                 label: _i18n.translate("app_short_description"),

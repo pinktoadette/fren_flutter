@@ -39,7 +39,7 @@ class StoryboardItemWidget extends StatefulWidget {
       : super(key: key);
 
   @override
-  _StoryboardItemWidgettState createState() => _StoryboardItemWidgettState();
+  State<StoryboardItemWidget> createState() => _StoryboardItemWidgettState();
 }
 
 class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
