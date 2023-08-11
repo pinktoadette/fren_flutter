@@ -23,9 +23,7 @@ class TimelineWidget extends StatefulWidget {
 
 class _TimelineWidgetState extends State<TimelineWidget> {
   UserController userController = Get.find(tag: 'user');
-  ChatController chatController = Get.find(tag: 'chatroom');
   TimelineController timelineController = Get.find(tag: 'timeline');
-  SubscribeController subscriptionController = Get.find(tag: 'subscribe');
   late AppLocalizations _i18n;
 
   @override

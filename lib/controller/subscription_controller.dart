@@ -15,7 +15,6 @@ class SubscribeController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    initUser();
     _listenPurchases();
   }
 

@@ -12,8 +12,6 @@ class ActivityTab extends StatefulWidget {
 }
 
 class _ActivityTabState extends State<ActivityTab> {
-  SubscribeController subscriptionController = Get.find(tag: 'subscribe');
-
   ScrollController scrollController = ScrollController();
 
   @override
