@@ -192,7 +192,6 @@ class _HomeScreenState extends State<HomeScreen> {
             type: BottomNavigationBarType.fixed,
             elevation: Platform.isIOS ? 0 : 8,
             currentIndex: _selectedIndex,
-            backgroundColor: Colors.black,
             selectedItemColor: APP_ACCENT_COLOR,
             selectedLabelStyle: const TextStyle(fontSize: 0),
             unselectedLabelStyle: const TextStyle(fontSize: 0),
@@ -228,33 +227,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   label: '', icon: Icon(Iconsax.user)),
             ]),
         body: _showCurrentNavBar(),
-        floatingActionButton:
-
-            // FloatingActionButton(
-            //     elevation: 2,
-            //     backgroundColor: Colors.transparent,
-            //     onPressed: () {
-            //       showModalBottomSheet<void>(
-            //         context: context,
-            //         enableDrag: true,
-            //         isScrollControlled: true,
-            //         builder: (context) {
-            //           return FractionallySizedBox(
-            //               heightFactor: 0.9,
-            //               child: SingleChildScrollView(
-            //                   child: Container(
-            //                       padding: EdgeInsets.only(
-            //                           bottom:
-            //                               MediaQuery.of(context).viewInsets.bottom),
-            //                       child: const PromptContainer())));
-            //         },
-            //       );
-            //     },
-            //     child: const CircleAvatar(
-            //       backgroundImage: AssetImage('assets/images/inverse_logo.jpg'),
-            //     ))
-
-            ExpandableFab(
+        floatingActionButton: ExpandableFab(
           isOpen: isFabOpen,
           distance: 80.0,
           children: [

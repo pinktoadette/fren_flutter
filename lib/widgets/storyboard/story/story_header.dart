@@ -51,13 +51,15 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
             children: [
               Text(
                 thisStory.createdBy.username,
-                style: Theme.of(context).textTheme.bodySmall,
+                style: const TextStyle(color: Colors.white54, fontSize: 14),
               ),
-              Text(thisStory.title,
-                  overflow: TextOverflow.fade,
-                  maxLines: 2,
-                  softWrap: false,
-                  style: Theme.of(context).textTheme.labelMedium),
+              Text(
+                thisStory.title,
+                overflow: TextOverflow.fade,
+                maxLines: 2,
+                softWrap: false,
+                style: const TextStyle(color: Colors.white70, fontSize: 16),
+              )
             ],
           )),
     );

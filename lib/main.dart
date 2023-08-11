@@ -170,7 +170,7 @@ class _MyAppState extends State<MyApp> {
           },
           home: const SplashScreen(),
           darkTheme: _darkTheme(),
-          theme: _darkTheme(),
+          theme: _lightTheme(),
           // themeMode: ThemeHelper().theme
         ),
       ),
@@ -221,7 +221,9 @@ class _MyAppState extends State<MyApp> {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
+          color: APP_PRIMARY_BACKGROUND,
           clipBehavior: Clip.antiAlias,
+          surfaceTintColor: Colors.transparent,
           elevation: 4.0,
           shape: defaultCardBorder()),
       textButtonTheme: TextButtonThemeData(
@@ -240,6 +242,11 @@ class _MyAppState extends State<MyApp> {
         style: ElevatedButton.styleFrom(
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Colors.black12,
+        thickness: 1.0,
+        space: 8.0,
       ),
       bottomSheetTheme: const BottomSheetThemeData(
         modalBackgroundColor: Colors.white,
@@ -298,6 +305,7 @@ class _MyAppState extends State<MyApp> {
         color: APP_PRIMARY_BACKGROUND,
         elevation: 0, //Platform.isIOS ? 0 : 4.0,
         iconTheme: IconThemeData(color: Colors.black),
+        surfaceTintColor: Colors.transparent,
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.white, // Only honored in Android M and above
             statusBarIconBrightness:

@@ -54,7 +54,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
-            _i18n.translate("publish_confirm_title"),
+            _i18n.translate("publish_confirm"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),

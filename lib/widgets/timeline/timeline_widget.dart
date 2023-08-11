@@ -105,9 +105,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                       ),
                     );
                   } else {
-                    return const Divider(
-                      color: Colors.white12,
-                    );
+                    return const Divider();
                   }
                 },
               )

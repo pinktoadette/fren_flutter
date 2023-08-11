@@ -123,7 +123,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
     if (_selectedIcon == item) {
       return APP_ACCENT_COLOR;
     } else {
-      return APP_PRIMARY_BACKGROUND;
+      return Theme.of(context).colorScheme.primary;
     }
   }
 

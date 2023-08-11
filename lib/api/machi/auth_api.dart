@@ -66,7 +66,7 @@ class AuthApi {
         }
       } catch (error, stack) {
         await FirebaseCrashlytics.instance.recordError(error, stack,
-            reason: 'retry count $retry on $url: $error', fatal: true);
+            reason: 'retry count $retry on $url: $error', fatal: false);
         rethrow;
       }
 

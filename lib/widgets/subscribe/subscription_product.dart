@@ -109,6 +109,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   Widget _showTiers(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double itemHeight = 410;
+    Color backgroundColor = Theme.of(context).colorScheme.background;
+    Color fontColor = Theme.of(context).colorScheme.primary;
+
     if (offers == null) {
       return const Center(
           child: NoData(text: "Guess we are not selling today!"));
@@ -180,26 +183,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                           });
                         },
                         child: Card(
-                            surfaceTintColor: Colors.transparent,
                             color: _selectedTier == package
-                                ? APP_PRIMARY_COLOR
-                                : APP_PRIMARY_COLOR.withAlpha(100),
-                            child: Container(
-                                padding: const EdgeInsets.all(0),
-                                margin: const EdgeInsets.all(5),
-                                decoration: BoxDecoration(
-                                    color: Colors.transparent,
-                                    borderRadius: const BorderRadius.all(
-                                        Radius.circular(30)),
-                                    border: Border.all(
-                                        width: 4,
-                                        color: _selectedTier == package
-                                            ? period == "Week"
-                                                ? APP_WARNING
-                                                : APP_ACCENT_COLOR
-                                            : APP_PRIMARY_COLOR.withAlpha(100),
-                                        strokeAlign:
-                                            BorderSide.strokeAlignCenter)),
+                                ? period == "Week"
+                                    ? APP_WARNING
+                                    : APP_ACCENT_COLOR
+                                : backgroundColor,
+                            child: SizedBox(
                                 width: size.width,
                                 height: itemHeight,
                                 child: Row(
@@ -244,16 +233,16 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                                     label: Text(
                                                       _i18n.translate(
                                                           "plans_${qty}_subtitle"),
-                                                      style: const TextStyle(
-                                                          color: Colors.black,
+                                                      style: TextStyle(
+                                                          color:
+                                                              backgroundColor,
                                                           fontWeight:
                                                               FontWeight.bold),
                                                     ),
                                                   ),
                                                 Text(" ${period}ly",
-                                                    style: const TextStyle(
-                                                        color:
-                                                            APP_INVERSE_PRIMARY_COLOR,
+                                                    style: TextStyle(
+                                                        color: fontColor,
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 const SizedBox(

@@ -260,7 +260,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
                             ),
                           );
                         } else {
-                          return const Divider(height: 10);
+                          return const Divider();
                         }
                       },
                     ))));

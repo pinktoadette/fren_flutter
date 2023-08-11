@@ -134,6 +134,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                 child: StoryHeaderWidget(story: story!, width: 100),
               ),
               leading: BackButton(
+                color: Colors.white54,
                 onPressed: () {
                   commentController.clearComments();
                   Get.back();
@@ -145,14 +146,17 @@ class _StoryPageViewState extends State<StoryPageView> {
                   _unpublishedTools()
                 else
                   Container(
-                      padding: const EdgeInsets.all(10.0),
+                      padding: const EdgeInsets.only(top: 15.0, right: 10),
                       child: OutlinedButton(
                           onPressed: () {
                             Get.to(() => ConfirmPublishDetails(
                                   story: widget.story,
                                 ));
                           },
-                          child: Text(_i18n.translate("publish_preview")))),
+                          child: Text(
+                            _i18n.translate("next_step"),
+                            style: const TextStyle(color: Colors.white60),
+                          ))),
                 if (story?.status.name == StoryStatus.PUBLISHED.name)
                   PopupMenuButton<String>(
                       icon: const Icon(Icons.more_vert),
@@ -588,6 +592,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         if ((story?.status != StoryStatus.PUBLISHED) &
             (storyboard.story!.length == 1))
@@ -595,10 +600,16 @@ class _StoryPageViewState extends State<StoryPageView> {
               onPressed: () {
                 Get.to(() => const AddNewStory());
               },
-              icon: const Icon(Iconsax.add),
+              icon: const Icon(
+                Iconsax.add,
+                color: Colors.white60,
+              ),
               label: Text(
                 _i18n.translate("story_collection"),
-                style: Theme.of(context).textTheme.labelSmall,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.white60,
+                ),
               )),
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
@@ -619,6 +630,7 @@ class _StoryPageViewState extends State<StoryPageView> {
               icon: const Icon(
                 Iconsax.edit,
                 size: 20,
+                color: Colors.white60,
               ))
       ],
     );

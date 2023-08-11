@@ -100,6 +100,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   Widget build(BuildContext context) {
     /// Initializationd
     _i18n = AppLocalizations.of(context);
+    Color textColor = Theme.of(context).colorScheme.primary;
 
     if (isLoading) {
       return const Frankloader();
@@ -149,8 +150,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                       isBotTyping: chatController.currentRoom.isTyping,
                       attachmentPreview: attachmentPreview)),
                   theme: DefaultChatTheme(
-                      sentMessageBodyTextStyle:
-                          const TextStyle(color: Colors.black),
+                      sentMessageBodyTextStyle: TextStyle(color: textColor),
                       inputBackgroundColor: APP_INPUT_COLOR,
                       inputTextStyle: GoogleFonts.poppins(
                         fontSize: 16,
