@@ -433,6 +433,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   layout = value;
                 });
                 widget.onLayoutSelection(value);
+                Get.back();
               },
             ));
       },

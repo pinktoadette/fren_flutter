@@ -75,7 +75,6 @@ class StoryLayout extends StatelessWidget {
         child: InkWell(
             onTap: () async {
               onSelection(layout);
-              Navigator.pop(context);
             },
             child: Padding(
               padding: const EdgeInsets.all(15),

@@ -111,6 +111,7 @@ class _EditPageState extends State<EditPage> {
             },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
+              _updateLayout(layout);
             })
       ];
     }
