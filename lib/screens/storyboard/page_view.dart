@@ -141,8 +141,9 @@ class _StoryPageViewState extends State<StoryPageView> {
               ),
               titleSpacing: 0,
               actions: [
-                if (widget.isPreview == false) _unpublishedTools(),
-                if (widget.isPreview == true)
+                if (widget.isPreview == false)
+                  _unpublishedTools()
+                else
                   Container(
                       padding: const EdgeInsets.all(10.0),
                       child: OutlinedButton(

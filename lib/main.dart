@@ -331,6 +331,11 @@ class _MyAppState extends State<MyApp> {
           inversePrimary: APP_PRIMARY_DARK_BACKGROUND,
           inverseSurface: APP_PRIMARY_DARK_COLOR),
       scaffoldBackgroundColor: APP_PRIMARY_DARK_BACKGROUND,
+      dividerTheme: const DividerThemeData(
+        color: Colors.white10,
+        thickness: 1.0,
+        space: 8.0,
+      ),
       tabBarTheme: TabBarTheme(
         indicatorColor: APP_PRIMARY_DARK_COLOR,
         labelColor: APP_PRIMARY_DARK_COLOR,
