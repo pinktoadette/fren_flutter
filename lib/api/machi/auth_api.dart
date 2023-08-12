@@ -4,6 +4,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/constants/secrets.dart';
 
+class ErrorAndStack {
+  final dynamic error;
+  final StackTrace stack;
+
+  ErrorAndStack(this.error, this.stack);
+}
+
 /// Sets headers
 class AuthApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -53,6 +60,7 @@ class AuthApi {
   Future<Response> retryGetRequest(String url,
       {int retries = 3, CancelToken? cancelToken}) async {
     Dio dio = await getDio();
+    List<ErrorAndStack> errorStackList = [];
 
     for (int retry = 0; retry < retries; retry++) {
       try {
@@ -65,14 +73,20 @@ class AuthApi {
           return response;
         }
       } catch (error, stack) {
-        await FirebaseCrashlytics.instance.recordError(error, stack,
-            reason: 'retry count $retry on $url: $error', fatal: false);
-        rethrow;
+        errorStackList.add(ErrorAndStack(error, stack));
       }
 
       // Wait before retrying
       await Future.delayed(const Duration(seconds: 2));
     }
+
+    // Record all errors and stack traces to Firebase Crashlytics
+    for (var errorStack in errorStackList) {
+      await FirebaseCrashlytics.instance
+          .recordError(errorStack.error, errorStack.stack);
+    }
+
+    // If all retries failed, throw an exception
     throw Exception('Failed to fetch data after $retries retries');
   }
 }

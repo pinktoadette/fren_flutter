@@ -16,15 +16,32 @@ import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
-
+import 'dart:async';
 import '../models/user_model.dart';
 
-class NotificationsScreen extends StatelessWidget {
-  // Variables
+class NotificationsScreen extends StatefulWidget {
+  const NotificationsScreen({super.key});
+
+  @override
+  State<NotificationsScreen> createState() => _NotificationsScreenState();
+}
+
+class _NotificationsScreenState extends State<NotificationsScreen> {
   final _notificationsApi = NotificationsApi();
   final _appNotifications = AppNotifications();
+  late Stream<QuerySnapshot<Map<String, dynamic>>> _notificationsStream;
 
-  NotificationsScreen({Key? key}) : super(key: key);
+  @override
+  void initState() {
+    super.initState();
+    _notificationsStream = _notificationsApi.getNotifications();
+  }
+
+  @override
+  void dispose() {
+    _notificationsStream.drain(); // Ensure the stream is closed properly
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,11 +62,11 @@ class NotificationsScreen extends StatelessWidget {
                 _notificationsApi
                     .markAllNotificationsAsRead(UserModel().user.userId);
               },
-              child: const Text("Mark All Read"))
+              child: Text(i18n.translate("mark_all_read")))
         ],
       ),
       body: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-        stream: _notificationsApi.getNotifications(),
+        stream: _notificationsStream,
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return NoData(text: i18n.translate("no_notification"));

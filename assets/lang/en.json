@@ -140,6 +140,7 @@
   "_NotificationsScreen": "*** Notifications Screen Translations ***",
   "notifications": "Notifications",
   "all_notifications_will_be_deleted": "All notifications will be deleted!",
+  "mark_all_read": "Mark All Read",
 
   "_settings_screen": "*** Settings Screen Translations ***",
   "settings": "Settings",
@@ -419,7 +420,8 @@
   "story_add_text_scene": "Add/Edit Content",
   "story_show_names": "Show Names",
   "storybits": "Bits",
-  "storybits_edit": "Edit Messages",
+  "storybits_create": "Create",
+  "storybits_edit": "Edit",
   "storybits_empty": "No bits here",
   "storymods": "pages",
   "story_created_at": "CREATED",
@@ -445,7 +447,7 @@
   "story_collection_subtitle": "Subtitle",
   "story_collection_summary": "Summary",
   "story_collection_create": "Create a new collection",
-  "story_collection_add_comment_post": "Post a Comment",
+  "story_collection_script": "Start writing",
 
   "post_too_fast": "Slow down! Posting too fast.",
 
