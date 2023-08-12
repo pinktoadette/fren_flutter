@@ -221,7 +221,7 @@ class _MyAppState extends State<MyApp> {
         color: APP_PRIMARY_COLOR,
       ),
       cardTheme: CardTheme(
-          color: APP_PRIMARY_BACKGROUND,
+          color: Colors.white,
           clipBehavior: Clip.antiAlias,
           surfaceTintColor: Colors.transparent,
           elevation: 4.0,

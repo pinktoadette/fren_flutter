@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 
 class TextBorder extends StatelessWidget {
   final String text;
@@ -13,6 +14,14 @@ class TextBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    if (isDarkMode == false) {
+      return Text(text,
+          textAlign: textAlign ?? TextAlign.left,
+          maxLines: maxLines,
+          style: Theme.of(context).textTheme.bodyMedium);
+    }
+
     return Text(
       text,
       textAlign: textAlign ?? TextAlign.left,

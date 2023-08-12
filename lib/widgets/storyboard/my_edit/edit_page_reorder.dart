@@ -24,6 +24,7 @@ import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/add_ai_image.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
@@ -121,6 +122,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         icon: const Icon(Iconsax.image),
                         onPressed: () {
                           _editPageImage();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.paintbucket),
+                        onPressed: () {
+                          _aiImage();
                         },
                       ),
                       IconButton(
@@ -433,6 +440,25 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   layout = value;
                 });
                 widget.onLayoutSelection(value);
+                Get.back();
+              },
+            ));
+      },
+    ).whenComplete(() {
+      _updateBackground();
+    });
+  }
+
+  void _aiImage() {
+    // double height = MediaQuery.of(context).size.height;
+    showModalBottomSheet<void>(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return FractionallySizedBox(
+            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+            child: ImageGenerator(
+              onSelection: (value) {
                 Get.back();
               },
             ));

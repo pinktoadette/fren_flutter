@@ -1,6 +1,38 @@
 import 'dart:typed_data';
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:machi_app/datas/script.dart';
+
+class TextUpdate {
+  final String selection;
+  final int indexStart;
+  final int indexEnd;
+  final Script original;
+  final int pageNum;
+
+  TextUpdate(
+      {required this.selection,
+      required this.indexStart,
+      required this.indexEnd,
+      required this.original,
+      required this.pageNum});
+
+  TextUpdate copyWith({
+    String? selection,
+    int? indexStart,
+    int? indexEnd,
+    Script? original,
+    int? pageNum,
+  }) {
+    return TextUpdate(
+      selection: selection ?? this.selection,
+      indexStart: indexStart ?? this.indexStart,
+      indexEnd: indexEnd ?? this.indexEnd,
+      original: original ?? this.original,
+      pageNum: pageNum ?? this.pageNum,
+    );
+  }
+}
 
 extension TextAlignExtension on TextAlign {
   static TextAlign fromString(String value) {

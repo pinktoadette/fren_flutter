@@ -25,7 +25,7 @@ class _MachiHelperState extends State<MachiHelper> {
   bool _isLoading = false;
   final _cancelToken = CancelToken();
   List<Map<String, String>> options = [
-    {'action': 'shorten', 'value': 'machi_helper_shortern_text'},
+    {'action': 'shorten', 'value': 'machi_helper_shorten_text'},
     {'action': 'rephrase', 'value': 'machi_helper_rephrase_text'},
     {'action': 'an idea to make better', 'value': 'machi_helper_get_ideas'},
   ];
@@ -77,11 +77,13 @@ class _MachiHelperState extends State<MachiHelper> {
               children: [
                 _isLoading == true
                     ? loadingButton(size: 20, color: APP_ACCENT_COLOR)
-                    : const SizedBox.shrink(),
+                    : const SizedBox(
+                        width: 20,
+                      ),
                 SizedBox(
                     width: size.width - 60,
                     child: Text(
-                      truncateText(maxLength: 90, text: widget.text),
+                      truncateText(maxLength: 300, text: widget.text),
                       style: Theme.of(context).textTheme.bodySmall,
                     ))
               ],

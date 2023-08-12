@@ -1,8 +1,10 @@
 import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/controller/comment_controller.dart';
+import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:get/get.dart';
 
@@ -163,5 +165,20 @@ class StoryboardController extends GetxController {
     _currentStory = story.obs;
     _currentStory.refresh();
     update();
+  }
+
+  void updateScript({required Script script, required int pageNum}) {
+    Story story = currentStory;
+
+    if (story.pages![pageNum].scripts != null) {
+      int scriptIndex = story.pages![pageNum].scripts!
+          .indexWhere((element) => element.scriptId == script.scriptId);
+      story.pages![pageNum].scripts![scriptIndex] = script;
+    } else {
+      story.pages?.add(StoryPages(scripts: [script], pageNum: 1));
+    }
+
+    currentStory = story;
+    updateStory(story: story);
   }
 }

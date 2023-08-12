@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class WalkThruSteps extends StatefulWidget {
   final VoidCallback onCarouselCompletion;
@@ -61,6 +62,7 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
     return SizedBox(
         height: 400,
         child: Card(
+          surfaceTintColor: Colors.transparent,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
