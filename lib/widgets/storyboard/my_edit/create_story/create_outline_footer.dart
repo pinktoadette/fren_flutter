@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/widgets/bot/bot_helper.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:screenshot/screenshot.dart';
 

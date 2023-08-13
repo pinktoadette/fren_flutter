@@ -4,8 +4,9 @@ import 'package:get/get.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/forms/category_dropdown.dart';
 
 class CreateNewBoard extends StatefulWidget {
   const CreateNewBoard({Key? key}) : super(key: key);
@@ -18,12 +19,17 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
   late AppLocalizations _i18n;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
-
   final _storyboardApi = StoryboardApi();
+  TextEditingController _selectedCategory = TextEditingController();
+
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
+    setState(() {
+      _selectedCategory.text = 'General';
+    });
   }
 
   @override
@@ -91,14 +97,25 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
                   return null;
                 },
               ),
+              CategoryDropdownWidget(
+                notifyParent: (value) {
+                  setState(() {
+                    _selectedCategory = value;
+                  });
+                },
+                selectedCategory: _selectedCategory.text,
+              ),
               const Spacer(),
               Align(
                   alignment: Alignment.bottomCenter,
-                  child: ElevatedButton(
+                  child: ElevatedButton.icon(
+                      icon: _isLoading == true
+                          ? loadingButton(size: 16)
+                          : const SizedBox.shrink(),
                       onPressed: () {
                         _updateChanges();
                       },
-                      child: Text(_i18n.translate("creative_mix_create")))),
+                      label: Text(_i18n.translate("creative_mix_create")))),
               const SizedBox(
                 height: 50,
               ),
@@ -108,14 +125,19 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
   }
 
   void _updateChanges() async {
+    setState(() {
+      _isLoading = true;
+    });
     try {
       await _storyboardApi.createStoryboard(
           text: _aboutController.text,
           title: _titleController.text,
           image: '',
           summary: _aboutController.text,
+          category: _selectedCategory.text,
           character: UserModel().user.username,
           characterId: UserModel().user.userId);
+      Get.back();
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -125,6 +147,10 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error creating manual board', fatal: true);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
     }
   }
 }

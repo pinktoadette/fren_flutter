@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:machi_app/constants/constants.dart';
 
 class WalkThruSteps extends StatefulWidget {
   final VoidCallback onCarouselCompletion;
