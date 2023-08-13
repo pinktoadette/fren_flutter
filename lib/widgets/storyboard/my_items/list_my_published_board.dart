@@ -3,7 +3,6 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
@@ -19,7 +18,6 @@ class ListPublishBoard extends StatefulWidget {
 }
 
 class _ListPublishBoardState extends State<ListPublishBoard> {
-  late AppLocalizations _i18n;
   double itemHeight = 150;
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _cancelToken = CancelToken();
@@ -43,7 +41,6 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
     return RefreshIndicator(
         onRefresh: () async {

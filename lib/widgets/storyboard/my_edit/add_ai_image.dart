@@ -23,7 +23,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showLoading = false;
   int _step = 1;
-  String _selectedDimension = "";
+  String _selectedStyleDimension = "";
 
   @override
   void initState() {
@@ -88,9 +88,11 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           ),
                         ),
                       if (_step == 1)
-                        ImageDimension(onSelectedDimention: (dimension) {
+                        ImageStyleDimension(
+                            onSelectedStyleDimension: (dimension) {
                           setState(() {
                             _step += 1;
+                            _selectedStyleDimension = dimension;
                           });
                         })
                       else
@@ -98,7 +100,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           offstage: _showLoading,
                           child: ImagePromptGeneratorWidget(
                             isProfile: false,
-                            dimension: _selectedDimension,
+                            dimension: _selectedStyleDimension,
                             onButtonClicked: (onclick) {
                               setState(() {
                                 _showLoading = onclick;
@@ -129,6 +131,6 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   }
 
   void _saveSelectedPhoto(String photoUrl) async {
-    print(photoUrl);
+    debugPrint(photoUrl);
   }
 }

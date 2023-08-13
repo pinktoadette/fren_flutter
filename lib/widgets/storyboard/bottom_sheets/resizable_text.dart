@@ -4,7 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 class ResizableBox extends StatefulWidget {
   final String initialText;
 
-  const ResizableBox({required this.initialText});
+  const ResizableBox({super.key, required this.initialText});
 
   @override
   State<ResizableBox> createState() => _ResizableBoxState();
