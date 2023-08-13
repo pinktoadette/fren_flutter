@@ -3,46 +3,33 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/forms/category_dropdown.dart';
-import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
-import 'package:machi_app/widgets/storyboard/publish_story.dart';
+import 'package:machi_app/helpers/create_uuid.dart';
 
-class ConfirmPublishDetails extends StatefulWidget {
-  final Story story;
-  const ConfirmPublishDetails({Key? key, required this.story})
-      : super(key: key);
+class CreateNewBoard extends StatefulWidget {
+  const CreateNewBoard({Key? key}) : super(key: key);
 
   @override
-  State<ConfirmPublishDetails> createState() => _ConfirmPublishDetailsState();
+  State<CreateNewBoard> createState() => _CreateNewBoardState();
 }
 
-class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
+class _CreateNewBoardState extends State<CreateNewBoard> {
   late AppLocalizations _i18n;
-  final _storyApi = StoryApi();
-  Story? story;
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
-  TextEditingController _selectedCategory = TextEditingController();
+
+  final _storyApi = StoryApi();
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      story = widget.story;
-      _titleController.text = widget.story.title;
-      _aboutController.text = widget.story.summary ?? "";
-      _selectedCategory.text = widget.story.category;
-    });
   }
 
   @override
   void dispose() {
-    super.dispose();
     _titleController.dispose();
     _aboutController.dispose();
-    _selectedCategory.dispose();
+    super.dispose();
   }
 
   @override
@@ -53,8 +40,10 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          titleSpacing: 0,
+          centerTitle: false,
           title: Text(
-            _i18n.translate("publish_confirm"),
+            _i18n.translate("creative_mix_new_board"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
@@ -83,15 +72,14 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                   return null;
                 },
               ),
-              Text(_i18n.translate("publish_confirm_summary"),
+              Text(_i18n.translate("creative_mix_description"),
                   style: styleLabel),
               TextFormField(
                 style: styleBody,
                 controller: _aboutController,
-                maxLength: 80,
-                maxLines: 3,
+                maxLength: 120,
                 decoration: InputDecoration(
-                    hintText: _i18n.translate("publish_confirm_summary"),
+                    hintText: _i18n.translate("creative_mix_description"),
                     hintStyle:
                         TextStyle(color: Theme.of(context).colorScheme.primary),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
@@ -102,22 +90,6 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                   return null;
                 },
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(_i18n.translate("publish_confirm_format"),
-                      style: styleLabel),
-                  Text(story?.layout?.name ?? Layout.CONVO.name),
-                ],
-              ),
-              CategoryDropdownWidget(
-                notifyParent: (value) {
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                },
-                selectedCategory: _selectedCategory.text,
-              ),
               const Spacer(),
               Align(
                   alignment: Alignment.bottomCenter,
@@ -125,7 +97,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                       onPressed: () {
                         _updateChanges();
                       },
-                      child: Text(_i18n.translate("publish")))),
+                      child: Text(_i18n.translate("creative_mix_create")))),
               const SizedBox(
                 height: 50,
               ),
@@ -136,14 +108,11 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
 
   void _updateChanges() async {
     try {
-      await _storyApi.updateStory(
-        story: story!,
+      await _storyApi.createStory(
         title: _titleController.text,
-        summary: _aboutController.text,
-        category: _selectedCategory.text,
+        photoUrl: '',
+        storyboardId: createUUID(),
       );
-
-      Get.to(() => PublishStory(story: story!));
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

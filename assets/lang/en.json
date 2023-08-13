@@ -259,6 +259,8 @@
   "creative_mix": "CreativeMix",
   "creative_mix_collection": "Collection",
   "creative_mix_create": "Create",
+  "creative_mix_new_board": "Create Collection",
+  "creative_mix_description": "Description",
   "creative_mix_title": "Title",
   "creative_mix_added": "Added",
   "creative_mix_save_text": "Save message to CreativeMix",
