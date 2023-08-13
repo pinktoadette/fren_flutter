@@ -257,7 +257,7 @@
 
   "_creative_mix_section": "*** Creative Mix Section ***",
   "creative_mix": "CreativeMix",
-  "creative_mix_collection": "CreativeMix Collection",
+  "creative_mix_collection": "Collection",
   "creative_mix_create": "Create",
   "creative_mix_title": "Title",
   "creative_mix_added": "Added",
@@ -269,6 +269,7 @@
   "creative_mix_publishing": "Publishing...",
   "creative_mix_publish_success": "Successfully published!",
   "creative_mix_published": "Published",
+  "creative_mix_private": "Private",
   "creative_mix_nothing_published": "Nothing published",
   "creative_mix_add_edit_content": "Add/Edit Content",
   "creative_mix_bits": "No Creative bits here",

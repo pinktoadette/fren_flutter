@@ -45,54 +45,39 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
     double width = MediaQuery.of(context).size.width;
-    return Scaffold(
-        appBar: AppBar(
-          title: Text(
-            _i18n.translate("creative_mix_published"),
-            style: Theme.of(context).textTheme.bodyMedium,
-          ),
-          titleSpacing: 0,
-          centerTitle: false,
-        ),
-        body: storyboardController.published.isEmpty
-            ? Center(
-                child: Text(
-                  _i18n.translate("creative_mix_nothing_published"),
-                ),
-              )
-            : RefreshIndicator(
-                onRefresh: () async {
-                  _getMyBoards();
-                },
-                child: Obx(() => ListView.separated(
-                    shrinkWrap: true,
-                    scrollDirection: Axis.vertical,
-                    itemCount: storyboardController.published.length,
-                    itemBuilder: (BuildContext ctx, index) {
-                      Storyboard story = storyboardController.published[index];
-                      return InkWell(
-                          onTap: () {
-                            _onStoryClick(index, story);
-                          },
-                          child: StoryboardItemWidget(
-                              item: storyboardController.published[index]));
-                    },
-                    separatorBuilder: (BuildContext context, int index) {
-                      if ((index + 1) % 3 == 0) {
-                        return Padding(
-                          padding: const EdgeInsetsDirectional.only(
-                              top: 10, bottom: 10),
-                          child: Container(
-                            height: AD_HEIGHT,
-                            width: width,
-                            color: Theme.of(context).colorScheme.background,
-                            child: const InlineAdaptiveAds(),
-                          ),
-                        );
-                      } else {
-                        return const Divider();
-                      }
-                    }))));
+    return RefreshIndicator(
+        onRefresh: () async {
+          _getMyBoards();
+        },
+        child: Obx(() => ListView.separated(
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: storyboardController.published.length,
+            itemBuilder: (BuildContext ctx, index) {
+              Storyboard story = storyboardController.published[index];
+              return InkWell(
+                  onTap: () {
+                    _onStoryClick(index, story);
+                  },
+                  child: StoryboardItemWidget(
+                      item: storyboardController.published[index]));
+            },
+            separatorBuilder: (BuildContext context, int index) {
+              if ((index + 1) % 3 == 0) {
+                return Padding(
+                  padding:
+                      const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+                  child: Container(
+                    height: AD_HEIGHT,
+                    width: width,
+                    color: Theme.of(context).colorScheme.background,
+                    child: const InlineAdaptiveAds(),
+                  ),
+                );
+              } else {
+                return const Divider();
+              }
+            })));
   }
 
   void _onStoryClick(int index, Storyboard story) {
