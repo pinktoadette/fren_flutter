@@ -32,6 +32,7 @@ class StoryboardApi {
   Future<Storyboard> createStoryboard(
       {String? text,
       String? image,
+      String? summary,
       String? category,
       String? characterId,
       String? character,
@@ -45,6 +46,7 @@ class StoryboardApi {
         CHAT_TEXT: text ?? "",
         CHAT_IMAGE: image ?? "",
         STORY_CATEGORY: category ?? "",
+        STORYBOARD_SUMMARY: summary ?? "",
         STORY_BITS: {
           SCRIPT_SPEAKER_USER_ID: characterId,
           SCRIPT_SPEAKER_NAME: character,

@@ -1,10 +1,11 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/api/machi/story_api.dart';
+import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/models/user_model.dart';
 
 class CreateNewBoard extends StatefulWidget {
   const CreateNewBoard({Key? key}) : super(key: key);
@@ -18,7 +19,7 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
 
-  final _storyApi = StoryApi();
+  final _storyboardApi = StoryboardApi();
 
   @override
   void initState() {
@@ -108,11 +109,12 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
 
   void _updateChanges() async {
     try {
-      await _storyApi.createStory(
-        title: _titleController.text,
-        photoUrl: '',
-        storyboardId: createUUID(),
-      );
+      await _storyboardApi.createStoryboard(
+          text: _titleController.text,
+          image: '',
+          summary: _aboutController.text,
+          character: UserModel().user.username,
+          characterId: UserModel().user.userId);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -121,7 +123,7 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
         backgroundColor: APP_ERROR,
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Error on publishing story', fatal: true);
+          reason: 'Error creating manual board', fatal: true);
     }
   }
 }
