@@ -57,7 +57,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
   late Chatroom _room;
 
-  late int _roomIdx;
   final _messagesApi = MessageMachiApi();
   final _chatroomApi = ChatroomMachiApi();
   bool _isAttachmentUploading = false;
@@ -82,7 +81,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
     final args = Get.arguments;
     _room = args["room"];
     _user = chatController.chatUser;
-    _roomIdx = args["index"];
 
     // get the messages loaded from the room
     _messages.addAll(_room.messages);

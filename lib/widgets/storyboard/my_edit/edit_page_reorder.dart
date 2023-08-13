@@ -450,9 +450,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
-  void _aiImage() {
+  void _aiImage() async {
     // double height = MediaQuery.of(context).size.height;
-    showModalBottomSheet<void>(
+    await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
       builder: (context) {
@@ -703,15 +703,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
   void _editPageText() async {
     await showModalBottomSheet(
         context: context,
+        isScrollControlled: true,
         barrierColor: Colors.black.withOpacity(_alphaValue),
-        builder: (context) => FractionallySizedBox(
+        builder: (context) {
+          return FractionallySizedBox(
               heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
               child: AddEditTextWidget(
                   onTextComplete: (content) =>
-                      _addEditText(newContent: content)),
-            )).whenComplete(() {
-      _updateBackground();
-    });
+                      _addEditText(newContent: content)));
+        });
   }
 
   /// edit background image of the page.

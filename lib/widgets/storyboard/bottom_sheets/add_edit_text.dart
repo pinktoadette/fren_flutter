@@ -12,6 +12,7 @@ import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
+import 'package:machi_app/widgets/storyboard/bottom_sheets/resizable_text.dart';
 import 'package:screenshot/screenshot.dart';
 
 class AddEditTextWidget extends StatefulWidget {
@@ -63,45 +64,58 @@ class _AddEditTextState extends State<AddEditTextWidget> {
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
-        appBar: AppBar(
-          centerTitle: false,
-          automaticallyImplyLeading: false,
-          title: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                _i18n.translate("creative_mix_add_edit_content"),
-                style: Theme.of(context).textTheme.headlineMedium,
-              ),
-              Text(
-                _i18n.translate("creative_mix_add_text_image_page"),
-                style: Theme.of(context).textTheme.labelMedium,
-              ),
-            ],
-          ),
-          actions: [
-            TextButton(
-                onPressed: () {
-                  _onComplete();
-                },
-                child: widget.script?.text == null
-                    ? Text(
-                        _i18n.translate("add"),
-                      )
-                    : Text(
-                        _i18n.translate("UPDATE"),
-                      ))
-          ],
-          toolbarHeight: 80.0,
-        ),
         body: Container(
           padding: EdgeInsets.only(
-              left: 10,
-              right: 10,
+              top: 20,
+              left: 30,
+              right: 30,
               bottom: MediaQuery.of(context).viewInsets.bottom),
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Semantics(
+                          label:
+                              _i18n.translate("creative_mix_add_edit_content"),
+                          child: Text(
+                            _i18n.translate("creative_mix_add_edit_content"),
+                            style: const TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      Semantics(
+                        label:
+                            _i18n.translate("creative_mix_add_text_image_page"),
+                        child: Text(
+                          _i18n.translate("creative_mix_add_text_image_page"),
+                          style: Theme.of(context).textTheme.labelMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                  TextButton(
+                      onPressed: () {
+                        _onComplete();
+                      },
+                      child: widget.script?.text == null
+                          ? Text(
+                              _i18n.translate("add"),
+                            )
+                          : Text(
+                              _i18n.translate("UPDATE"),
+                            ))
+                ],
+              ),
+              const Divider(height: 5, thickness: 1),
+              const SizedBox(
+                height: 20,
+              ),
               if (attachmentPreview == null && galleryImageUrl == null)
                 ..._showTextEdits()
               else
@@ -188,56 +202,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
                                     : FileImage(attachmentPreview!),
                                 fit: BoxFit.cover)),
                       )),
-                  Positioned(
-                    left: offset.dx,
-                    top: offset.dy + yOffset,
-                    child: GestureDetector(
-                        onPanUpdate: (details) {
-                          setState(() {
-                            offset = Offset(offset.dx + details.delta.dx,
-                                offset.dy + details.delta.dy);
-                          });
-                        },
-                        child: SizedBox(
-                          width: width,
-                          height: width,
-                          child: TextFormField(
-                            maxLines: null,
-                            textAlign: TextAlign.center,
-                            controller: _textController,
-                            decoration: InputDecoration(
-                              border: OutlineInputBorder(
-                                borderSide: BorderSide.none,
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              filled: true,
-                              fillColor: Colors.transparent,
-                              contentPadding: EdgeInsets.zero,
-                            ),
-                            style: const TextStyle(
-                                inherit: true,
-                                color: APP_INVERSE_PRIMARY_COLOR,
-                                shadows: [
-                                  Shadow(
-                                      // bottomLeft
-                                      offset: Offset(-1.0, -1.0),
-                                      color: APP_PRIMARY_COLOR),
-                                  Shadow(
-                                      // bottomRight
-                                      offset: Offset(1.0, -1.0),
-                                      color: APP_PRIMARY_COLOR),
-                                  Shadow(
-                                      // topRight
-                                      offset: Offset(1.0, 1.0),
-                                      color: APP_PRIMARY_COLOR),
-                                  Shadow(
-                                      // topLeft
-                                      offset: Offset(-1.0, 1.0),
-                                      color: APP_PRIMARY_COLOR),
-                                ]),
-                          ),
-                        )),
-                  ),
+                  ResizableBox(initialText: _textController.text),
                 ],
               )),
           SizedBox(
