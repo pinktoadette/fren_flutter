@@ -393,7 +393,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 width: 100,
                               ).image,
                         fit: BoxFit.cover)),
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.only(left: 40, top: 20, right: 40),
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
                       constraints: BoxConstraints(
@@ -464,8 +464,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                       count: story!.pages!.length,
                       axisDirection: Axis.vertical,
                       effect: const ExpandingDotsEffect(
-                          dotHeight: 10,
-                          dotWidth: 18,
+                          dotHeight: 5,
+                          dotWidth: 8,
                           activeDotColor: APP_ACCENT_COLOR),
                     )),
               ],

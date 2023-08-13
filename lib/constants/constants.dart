@@ -93,9 +93,7 @@ const UPLOAD_PATH_INTERACTIVE = "interactive";
 ///
 /// E.g: Locale('fr'), Locale('es'),
 ///
-const List<Locale> SUPPORTED_LOCALES = [
-  Locale('en'),
-];
+const List<Locale> SUPPORTED_LOCALES = [Locale('en'), Locale('zh', 'TW')];
 
 ///
 /// Subscription - Revenue Cat
