@@ -72,11 +72,11 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                   controller: _titleController,
                   maxLength: 80,
                   decoration: InputDecoration(
-                      hintText: _i18n.translate("story_collection_title"),
+                      hintText: _i18n.translate("creative_mix_title"),
                       floatingLabelBehavior: FloatingLabelBehavior.always),
                   validator: (reason) {
                     if (reason?.isEmpty ?? false) {
-                      return _i18n.translate("story_enter_title");
+                      return _i18n.translate("creative_mix_enter_title");
                     }
                     return null;
                   },

@@ -51,7 +51,7 @@ class _StoriesViewState extends State<StoriesView> {
         appBar: AppBar(
             title: widget.message == null
                 ? Text(
-                    _i18n.translate("story_collection"),
+                    _i18n.translate("creative_mix_collection"),
                     style: Theme.of(context).textTheme.bodyMedium,
                   )
                 : Text(
@@ -86,7 +86,7 @@ class _StoriesViewState extends State<StoriesView> {
                               ? loadingButton(size: 16)
                               : const Icon(Iconsax.add),
                           label: Text(
-                            _i18n.translate("add_to_new_story"),
+                            _i18n.translate("add_to_new_creative_mix"),
                           ),
                           onPressed: () async {
                             _addMessage();
@@ -103,7 +103,7 @@ class _StoriesViewState extends State<StoriesView> {
                           if (storyboardController
                               .currentStoryboard.story!.isEmpty) {
                             return NoData(
-                                text: _i18n.translate("storyboard_nothing"));
+                                text: _i18n.translate("creative_mix_nothing"));
                           }
                           Story story = storyboardController
                               .currentStoryboard.story![index];
@@ -128,7 +128,7 @@ class _StoriesViewState extends State<StoriesView> {
                                             .bodyMedium,
                                       ),
                                       content: Text(_i18n
-                                          .translate("story_confirm_delete")),
+                                          .translate("story_delete_confirm")),
                                       actions: <Widget>[
                                         OutlinedButton(
                                             onPressed: () => {
@@ -176,7 +176,7 @@ class _StoriesViewState extends State<StoriesView> {
             },
             icon: const Icon(Iconsax.add),
             label: Text(
-              _i18n.translate("new_story_collection"),
+              _i18n.translate("create_mix_new_collection"),
               style: Theme.of(context).textTheme.labelSmall,
             )),
     ];
@@ -224,8 +224,8 @@ class _StoriesViewState extends State<StoriesView> {
             text: "");
       }
       Get.back(result: true);
-      Get.snackbar(
-          _i18n.translate("success"), _i18n.translate("story_edits_added"),
+      Get.snackbar(_i18n.translate("success"),
+          _i18n.translate("creative_mix_edit_added_messages"),
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);

@@ -227,8 +227,8 @@ class _BotChatScreenState extends State<BotChatScreen> {
               if (message.type == types.MessageType.image) {
                 final galleryApi = GalleryApi();
                 await galleryApi.addUserGallery(messageId: message.id);
-                Get.snackbar(
-                    _i18n.translate("success"), _i18n.translate("story_added"),
+                Get.snackbar(_i18n.translate("success"),
+                    _i18n.translate("creative_mix_added"),
                     snackPosition: SnackPosition.TOP,
                     backgroundColor: APP_SUCCESS,
                     colorText: Colors.black);

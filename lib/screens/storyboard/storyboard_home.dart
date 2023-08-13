@@ -32,7 +32,7 @@ class _StoryboardState extends State<StoryboardHome>
       appBar: AppBar(
           centerTitle: false,
           title: Text(
-            _i18n.translate("storyboard"),
+            _i18n.translate("creative_mix"),
             style: Theme.of(context).textTheme.headlineLarge,
           ),
           automaticallyImplyLeading: false,
@@ -47,7 +47,7 @@ class _StoryboardState extends State<StoryboardHome>
                           filter: StoryStatus.PUBLISHED);
                       Get.to(() => const ListPublishBoard());
                     },
-                    child: Text(_i18n.translate("story_published"))))
+                    child: Text(_i18n.translate("creative_mix_published"))))
           ]),
       body: const ListPrivateBoard(),
     );

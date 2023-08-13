@@ -67,7 +67,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
           centerTitle: false,
           titleSpacing: 0,
           title: Text(
-            _i18n.translate("story_add_text_scene"),
+            _i18n.translate("creative_mix_add_edit_content"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           actions: [

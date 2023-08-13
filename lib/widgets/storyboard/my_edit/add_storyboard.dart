@@ -45,7 +45,7 @@ class _AddStoryBoardState extends State<AddStoryBoard> {
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  hintText: _i18n.translate("story_title"),
+                  hintText: _i18n.translate("creative_mix_title"),
                   hintStyle:
                       TextStyle(color: Theme.of(context).colorScheme.secondary),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -61,7 +61,7 @@ class _AddStoryBoardState extends State<AddStoryBoard> {
               validator: (reason) {
                 // Basic validation
                 if (reason?.isEmpty ?? false) {
-                  return _i18n.translate("story_enter_title");
+                  return _i18n.translate("creative_mix_enter_title");
                 }
                 return null;
               },

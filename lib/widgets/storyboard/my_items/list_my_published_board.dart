@@ -48,7 +48,7 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
     return Scaffold(
         appBar: AppBar(
           title: Text(
-            _i18n.translate("story_published"),
+            _i18n.translate("creative_mix_published"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           titleSpacing: 0,
@@ -57,7 +57,7 @@ class _ListPublishBoardState extends State<ListPublishBoard> {
         body: storyboardController.published.isEmpty
             ? Center(
                 child: Text(
-                  _i18n.translate("story_nothing_published"),
+                  _i18n.translate("creative_mix_nothing_published"),
                 ),
               )
             : RefreshIndicator(

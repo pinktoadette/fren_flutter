@@ -19,7 +19,7 @@ class _PlaylistTabState extends State<PlaylistTab> {
         body: CustomScrollView(slivers: [
       FrostedAppBar(
           title: Text(
-            i18n.translate("storyboard_playlist"),
+            i18n.translate("create_mix_playlist"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           actions: const [],

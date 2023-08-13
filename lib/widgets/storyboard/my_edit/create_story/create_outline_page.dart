@@ -74,7 +74,7 @@ class _CreateOutlinePageState extends State<CreateOutlinePage> {
         centerTitle: false,
         titleSpacing: 0,
         title: Text(
-          _i18n.translate("storybits_create"),
+          _i18n.translate("creative_mix_create"),
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         actions: [
@@ -86,7 +86,7 @@ class _CreateOutlinePageState extends State<CreateOutlinePage> {
                     story: story!,
                     isPreview: true,
                   )),
-              child: Text(_i18n.translate("storyboard_preview"),
+              child: Text(_i18n.translate("creative_mix_preview"),
                   style: Theme.of(context).textTheme.bodyMedium),
             ),
         ],
@@ -166,7 +166,7 @@ class _CreateOutlinePageState extends State<CreateOutlinePage> {
                     maxLines: null,
                     controller: _newTextController,
                     decoration: InputDecoration(
-                        hintText: _i18n.translate("story_collection_script"),
+                        hintText: _i18n.translate("creative_mix_start_writing"),
                         hintStyle: TextStyle(
                             color: Theme.of(context).colorScheme.primary),
                         floatingLabelBehavior: FloatingLabelBehavior.always),

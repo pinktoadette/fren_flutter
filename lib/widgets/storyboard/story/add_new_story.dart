@@ -55,7 +55,7 @@ class _AddNewStoryState extends State<AddNewStory> {
           titleSpacing: 0,
           centerTitle: false,
           title: Text(
-            _i18n.translate("new_story_collection"),
+            _i18n.translate("create_mix_new_collection"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           actions: [
@@ -83,11 +83,11 @@ class _AddNewStoryState extends State<AddNewStory> {
                 style: const TextStyle(fontSize: 16),
                 textCapitalization: TextCapitalization.sentences,
                 decoration: InputDecoration(
-                    hintText: _i18n.translate("story_collection_title"),
+                    hintText: _i18n.translate("creative_mix_title"),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
                 validator: (reason) {
                   if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("story_enter_title");
+                    return _i18n.translate("creative_mix_enter_title");
                   }
                   return null;
                 },
@@ -149,7 +149,8 @@ class _AddNewStoryState extends State<AddNewStory> {
           title: title,
           photoUrl: imageUrl);
 
-      Get.snackbar(_i18n.translate("posted"), _i18n.translate("story_added"),
+      Get.snackbar(
+          _i18n.translate("posted"), _i18n.translate("creative_mix_added"),
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);

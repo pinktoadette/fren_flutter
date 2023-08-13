@@ -51,7 +51,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(
-              _i18n.translate("story_added_info"),
+              _i18n.translate("creative_mix_save_text"),
               style: Theme.of(context).textTheme.labelSmall,
             )
           ]),
@@ -66,7 +66,7 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
                   ? loadingButton(size: 16)
                   : const Icon(Iconsax.add),
               label: Text(
-                _i18n.translate("add_to_new_storyboard"),
+                _i18n.translate("add_to_new_creativemix"),
               ),
               onPressed: () async {
                 _addMessage();
@@ -111,8 +111,8 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
             characterId: widget.message.author.id);
       }
       Get.back(result: true);
-      Get.snackbar(
-          _i18n.translate("success"), _i18n.translate("story_edits_added"),
+      Get.snackbar(_i18n.translate("success"),
+          _i18n.translate("creative_mix_edit_added_messages"),
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);

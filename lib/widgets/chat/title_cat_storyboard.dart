@@ -75,7 +75,7 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    hintText: _i18n.translate("story_title"),
+                    hintText: _i18n.translate("creative_mix_title"),
                     hintStyle: TextStyle(
                         color: Theme.of(context).colorScheme.tertiary),
                     floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -83,7 +83,7 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
                   validator: (reason) {
                     // Basic validation
                     if (reason?.isEmpty ?? false) {
-                      return _i18n.translate("story_enter_title");
+                      return _i18n.translate("creative_mix_enter_title");
                     }
                     return null;
                   },

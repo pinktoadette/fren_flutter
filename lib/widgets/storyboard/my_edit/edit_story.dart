@@ -63,7 +63,7 @@ class _EditPageState extends State<EditPage> {
           centerTitle: false,
           titleSpacing: 0,
           title: Text(
-            _i18n.translate("storybits_edit"),
+            _i18n.translate("creative_mix_edit"),
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           leading: BackButton(
@@ -80,7 +80,7 @@ class _EditPageState extends State<EditPage> {
                       Get.to(
                           () => StoryPageView(story: story, isPreview: true));
                     },
-                    child: Text(_i18n.translate("storyboard_preview"))))
+                    child: Text(_i18n.translate("creative_mix_preview"))))
           ],
         ),
         body: Stack(

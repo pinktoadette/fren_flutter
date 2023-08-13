@@ -66,20 +66,19 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
               const SizedBox(
                 height: 20,
               ),
-              Text(_i18n.translate("story_collection_title"),
-                  style: styleLabel),
+              Text(_i18n.translate("creative_mix_title"), style: styleLabel),
               TextFormField(
                 style: styleBody,
                 controller: _titleController,
                 maxLength: 80,
                 decoration: InputDecoration(
-                    hintText: _i18n.translate("story_collection_title"),
+                    hintText: _i18n.translate("creative_mix_title"),
                     hintStyle:
                         TextStyle(color: Theme.of(context).colorScheme.primary),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
                 validator: (reason) {
                   if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("story_enter_title");
+                    return _i18n.translate("creative_mix_enter_title");
                   }
                   return null;
                 },
@@ -98,7 +97,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                     floatingLabelBehavior: FloatingLabelBehavior.always),
                 validator: (reason) {
                   if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("story_enter_title");
+                    return _i18n.translate("creative_mix_enter_title");
                   }
                   return null;
                 },

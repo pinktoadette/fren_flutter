@@ -400,7 +400,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return PopupMenuItem<int>(
           value: page.pageNum,
           child: Text(
-              " ${_i18n.translate("story_bit_move_page")} ${page.pageNum.toString()}"),
+              " ${_i18n.translate("creative_mix_move_page")} ${page.pageNum.toString()}"),
         );
       }
       return PopupMenuItem<int>(
@@ -408,7 +408,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         child: Row(
           children: [
             const Icon(Iconsax.arrow_right_3),
-            Text(" ${_i18n.translate("story_bit_on_current_page")}")
+            Text(" ${_i18n.translate("creative_mix_on_current_page")}")
           ],
         ),
       );
@@ -418,7 +418,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         child: Row(
           children: [
             const Icon(Iconsax.add),
-            Text(" ${_i18n.translate("story_bit_add_to_new_page")}")
+            Text(" ${_i18n.translate("creative_mix_add_page")}")
           ],
         )));
     return pagesMenu;
@@ -526,8 +526,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
       }
 
       widget.onUpdateSeq(scripts);
-      Get.snackbar(
-          _i18n.translate("saved_success"), _i18n.translate("story_added_info"),
+      Get.snackbar(_i18n.translate("saved_success"),
+          _i18n.translate("creative_mix_save_text"),
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);

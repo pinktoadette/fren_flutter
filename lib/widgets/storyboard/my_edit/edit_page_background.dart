@@ -64,13 +64,13 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  _i18n.translate("story_page_background_title"),
+                  _i18n.translate("creative_mix_background"),
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Text(_i18n.translate("story_page_background_image"),
+                Text(_i18n.translate("creative_mix_background_select"),
                     style: Theme.of(context).textTheme.labelSmall),
                 const Divider(height: 5, thickness: 1),
                 attachmentPreview != null || galleryImageUrl != null

@@ -62,7 +62,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                         width: 10,
                       ),
                       Text(
-                        _i18n.translate("storyboard_nothing"),
+                        _i18n.translate("creative_mix_nothing"),
                         style: Theme.of(context).textTheme.displayMedium,
                       )
                     ],
@@ -71,7 +71,7 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                     height: 30,
                   ),
                   Text(
-                    _i18n.translate("storyboard_noting_instruction"),
+                    _i18n.translate("creative_mix_instruction"),
                     textAlign: TextAlign.left,
                   ),
                 ],
@@ -128,8 +128,8 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                               _i18n.translate("DELETE"),
                               style: Theme.of(context).textTheme.bodyMedium,
                             ),
-                            content: Text(
-                                _i18n.translate("storyboard_confirm_delete")),
+                            content: Text(_i18n
+                                .translate("creative_mix_are_you_sure_delete")),
                             actions: <Widget>[
                               OutlinedButton(
                                   onPressed: () => {
@@ -165,14 +165,14 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
       await _storyboardApi.deleteBoard(storyboard);
       Get.back(result: true);
       Get.snackbar(_i18n.translate("DELETE"),
-          _i18n.translate("storyboard_success_delete"),
+          _i18n.translate("creative_mix_success_delete"),
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
     } catch (err) {
       Get.snackbar(
         _i18n.translate("DELETE"),
-        _i18n.translate("storyboard_delete_error"),
+        _i18n.translate("creative_mix_board_error"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );

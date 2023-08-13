@@ -150,8 +150,8 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
 
       int count = 0;
       Get.until((route) => count++ >= 2);
-      Get.snackbar(
-          _i18n.translate("story_added"), _i18n.translate("story_added_info"),
+      Get.snackbar(_i18n.translate("creative_mix_added"),
+          _i18n.translate("creative_mix_save_text"),
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);

@@ -106,8 +106,9 @@ class _PublishStoryState extends State<PublishStory> {
                   ],
                 ),
                 if (_isLoading == true)
-                  Text(_i18n.translate("story_publishing")),
-                if (_isSuccess == true) Text(_i18n.translate("story_success")),
+                  Text(_i18n.translate("creative_mix_publishing")),
+                if (_isSuccess == true)
+                  Text(_i18n.translate("creative_mix_publish_success")),
               ],
             )));
   }

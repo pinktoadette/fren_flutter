@@ -111,8 +111,8 @@ class _StoryPageViewState extends State<StoryPageView> {
           extendBodyBehindAppBar: true,
           appBar: AppBar(
             title: Text(widget.isPreview == true
-                ? _i18n.translate("storyboard_preview")
-                : _i18n.translate("story_collection")),
+                ? _i18n.translate("creative_mix_preview")
+                : _i18n.translate("creative_mix_collection")),
             backgroundColor: Colors.black12,
           ),
           body: NoData(text: _i18n.translate("loading")));
@@ -318,7 +318,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       return SizedBox(
           height: height,
           width: size.width,
-          child: NoData(text: _i18n.translate("storybits_empty")));
+          child: NoData(text: _i18n.translate("creative_mix_bits")));
     }
     return Stack(alignment: Alignment.topCenter, children: [
       NotificationListener<UserScrollNotification>(
@@ -608,7 +608,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                 color: Colors.white60,
               ),
               label: Text(
-                _i18n.translate("story_collection"),
+                _i18n.translate("creative_mix_collection"),
                 style: const TextStyle(
                   fontSize: 14,
                   color: Colors.white60,

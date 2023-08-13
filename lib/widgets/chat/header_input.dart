@@ -100,12 +100,12 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
     switch (_selectedIcon) {
       case "imagine":
         return Text(
-          i18n.translate("story_header_you_create"),
+          i18n.translate("creative_mix_header_you_create"),
           style: const TextStyle(fontSize: 12),
         );
       case "reimagine":
         return Text(
-          i18n.translate("story_header_I_create"),
+          i18n.translate("creative_mix_header_machi_create"),
           style: const TextStyle(fontSize: 12),
         );
       default:

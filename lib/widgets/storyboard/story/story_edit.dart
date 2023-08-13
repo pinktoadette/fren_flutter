@@ -117,7 +117,7 @@ class _StoryEditState extends State<StoryEdit> {
           const SizedBox(
             height: 20,
           ),
-          Text(_i18n.translate("story_collection_title"),
+          Text(_i18n.translate("creative_mix_title"),
               style: Theme.of(context).textTheme.labelMedium),
           TextFormField(
             controller: _titleController,
@@ -126,13 +126,13 @@ class _StoryEditState extends State<StoryEdit> {
                     {required currentLength, maxLength, required isFocused}) =>
                 _counter(context, currentLength, maxLength),
             decoration: InputDecoration(
-                hintText: _i18n.translate("story_collection_title"),
+                hintText: _i18n.translate("creative_mix_title"),
                 hintStyle:
                     TextStyle(color: Theme.of(context).colorScheme.secondary),
                 floatingLabelBehavior: FloatingLabelBehavior.always),
             validator: (reason) {
               if (reason?.isEmpty ?? false) {
-                return _i18n.translate("story_enter_title");
+                return _i18n.translate("creative_mix_enter_title");
               }
               return null;
             },
