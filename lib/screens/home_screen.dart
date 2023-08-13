@@ -178,7 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
       const StoryboardHome(),
       // const InteractiveBoardList(),
       const ConversationsTab(),
-      NotificationsScreen(),
+      const NotificationsScreen(),
       const ProfileTab()
     ];
 

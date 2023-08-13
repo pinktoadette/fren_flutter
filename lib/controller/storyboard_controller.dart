@@ -4,7 +4,6 @@ import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:get/get.dart';
 

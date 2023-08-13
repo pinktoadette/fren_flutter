@@ -71,7 +71,7 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
                   ),
                 ),
                 Text(_i18n.translate("creative_mix_background_select"),
-                    style: Theme.of(context).textTheme.labelSmall),
+                    style: Theme.of(context).textTheme.labelMedium),
                 const Divider(height: 5, thickness: 1),
                 attachmentPreview != null || galleryImageUrl != null
                     ? _attachmentPreview()

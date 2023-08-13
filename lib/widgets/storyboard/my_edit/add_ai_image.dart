@@ -2,8 +2,8 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/generative_image/walkthru.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
-import 'package:machi_app/widgets/walkthru/walkthru.dart';
 
 class ImageGenerator extends StatefulWidget {
   final String? text;
@@ -47,17 +47,13 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Semantics(
-                        label: _i18n.translate(
+                      Text(
+                        _i18n.translate(
                             "creative_mix_image_generator_instruction"),
-                        child: Text(
-                          _i18n.translate(
-                              "creative_mix_image_generator_instruction"),
-                          style: Theme.of(context).textTheme.labelMedium,
+                        style: const TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
                       ),
                       Semantics(
                         label: _i18n
@@ -65,11 +61,16 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                         child: Text(
                           _i18n.translate(
                               "creative_mix_image_generator_describe"),
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
+                      const Divider(height: 5, thickness: 1),
                       const SizedBox(
                         height: 20,
+                      ),
+                      Text(
+                        _i18n.translate("creative_mix_ai_image_credits"),
+                        style: Theme.of(context).textTheme.labelSmall,
                       ),
                       if (widget.text != null)
                         Semantics(

@@ -19,7 +19,7 @@ class CreateOutlineFooter extends StatefulWidget {
 
 class _CreateOutlineFooterState extends State<CreateOutlineFooter> {
   late AppLocalizations _i18n;
-  late TextEditingController _textController = TextEditingController();
+  late final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
   ScreenshotController screenshotController = ScreenshotController();
 
@@ -78,7 +78,7 @@ class _CreateOutlineFooterState extends State<CreateOutlineFooter> {
           if (image != null) {
             Navigator.pop(context);
             setState(() {
-              attachmentPreview = image as File?;
+              attachmentPreview = image;
               galleryImageUrl = null;
             });
           }

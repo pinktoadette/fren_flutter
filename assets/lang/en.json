@@ -263,6 +263,8 @@
   "creative_mix_description": "Description",
   "creative_mix_title": "Title",
   "creative_mix_added": "Added",
+  "creative_mix_add_text_image_page": "Add or update a text/image to page",
+  "creative_mix_added_page": "Added a new page",
   "creative_mix_save_text": "Save message to CreativeMix",
   "creative_mix_edit_added_messages": "Added message to CreativeMix collections",
   "creative_mix_enter_title": "Enter a title",
@@ -301,6 +303,8 @@
   "creative_mix_are_you_sure_delete": "Are you sure you want to delete this board? All text and images will be deleted",
   "creative_mix_success_delete": "Board is successfully deleted",
   "creative_mix_board_error": "Something went wrong deleting the board",
+
+  "creative_mix_ai_image_credits": "This will use 4 credits each time, generating 4 images to select from.",
 
   "_reporting": "*** Reporting user ***",
   "report_create": "File A Report",

@@ -65,10 +65,19 @@ class _AddEditTextState extends State<AddEditTextWidget> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: false,
-          titleSpacing: 0,
-          title: Text(
-            _i18n.translate("creative_mix_add_edit_content"),
-            style: Theme.of(context).textTheme.bodyMedium,
+          automaticallyImplyLeading: false,
+          title: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                _i18n.translate("creative_mix_add_edit_content"),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              Text(
+                _i18n.translate("creative_mix_add_text_image_page"),
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ],
           ),
           actions: [
             TextButton(
@@ -83,6 +92,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
                         _i18n.translate("UPDATE"),
                       ))
           ],
+          toolbarHeight: 80.0,
         ),
         body: Container(
           padding: EdgeInsets.only(
@@ -119,6 +129,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
       "characterName": widget.script?.characterName ?? UserModel().user.username
     });
     widget.onTextComplete(update);
+    Get.back();
   }
 
   void _addImage() async {

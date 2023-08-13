@@ -9,7 +9,7 @@ import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:machi_app/screens/first_time/steps_counter.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
-import 'package:machi_app/widgets/walkthru/walkthru.dart';
+import 'package:machi_app/widgets/generative_image/walkthru.dart';
 
 class ProfileImageGenerator extends StatefulWidget {
   const ProfileImageGenerator({Key? key}) : super(key: key);

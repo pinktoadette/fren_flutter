@@ -1,8 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:get/get.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
 
 class TextUpdate {
   final String selection;

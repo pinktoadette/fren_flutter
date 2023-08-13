@@ -150,7 +150,6 @@ const BOT_CREATED_BY = "createdBy";
 const String C_APP_INFO = "AppInfo";
 const String C_USERS = "Users";
 const String C_BOT = "Bots";
-const String C_BOT_WALKTHRU = "DiscoverCards";
 const String C_BOT_USER_MATCH = "BotUserMatch";
 const String C_CHATROOM = "Chatroom";
 const String C_BOT_TRIALS = "BotTrials";

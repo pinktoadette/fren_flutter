@@ -235,6 +235,11 @@ class _EditPageState extends State<EditPage> {
             story = story;
           });
         }
+        Get.snackbar(_i18n.translate("success"),
+            _i18n.translate("creative_mix_added_page"),
+            snackPosition: SnackPosition.TOP,
+            backgroundColor: APP_SUCCESS,
+            colorText: Colors.black);
         break;
       case ("move"):
         int moveToPage = data["page"];

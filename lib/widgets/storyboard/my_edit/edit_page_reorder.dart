@@ -113,21 +113,22 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.text_block),
                         onPressed: () {
-                          Get.to(() => AddEditTextWidget(
-                              onTextComplete: (content) =>
-                                  _addEditText(newContent: content)));
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.image),
-                        onPressed: () {
-                          _editPageImage();
+                          // Get.to(() => AddEditTextWidget(
+                          //     onTextComplete: (content) =>
+                          //         _addEditText(newContent: content)));
+                          _editPageText();
                         },
                       ),
                       IconButton(
                         icon: const Icon(Iconsax.paintbucket),
                         onPressed: () {
                           _aiImage();
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Iconsax.image),
+                        onPressed: () {
+                          _editPageImage();
                         },
                       ),
                       IconButton(
@@ -696,6 +697,20 @@ class _EditPageReorderState extends State<EditPageReorder> {
     await storyApi.updateStory(story: updateStory);
     setState(() {
       story = updateStory;
+    });
+  }
+
+  void _editPageText() async {
+    await showModalBottomSheet(
+        context: context,
+        barrierColor: Colors.black.withOpacity(_alphaValue),
+        builder: (context) => FractionallySizedBox(
+              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+              child: AddEditTextWidget(
+                  onTextComplete: (content) =>
+                      _addEditText(newContent: content)),
+            )).whenComplete(() {
+      _updateBackground();
     });
   }
 
