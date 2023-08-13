@@ -31,6 +31,7 @@ class StoryboardApi {
 
   Future<Storyboard> createStoryboard(
       {String? text,
+      String? title,
       String? image,
       String? summary,
       String? category,
@@ -41,19 +42,28 @@ class StoryboardApi {
     try {
       String url = '${baseUri}board';
       debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url, data: {
+      Map<String, dynamic> requestData = {
         CHAT_TEXT: text ?? "",
         CHAT_IMAGE: image ?? "",
         STORY_CATEGORY: category ?? "",
-        STORYBOARD_SUMMARY: summary ?? "",
         STORY_BITS: {
           SCRIPT_SPEAKER_USER_ID: characterId,
           SCRIPT_SPEAKER_NAME: character,
           SCRIPT_PAGE_NUM: 1,
-          SCRIPT_TYPE: text != null ? 'text' : 'image'
-        }
-      });
+          SCRIPT_TYPE: text != null ? 'text' : 'image',
+        },
+      };
+
+      if (summary != null) {
+        requestData[STORYBOARD_SUMMARY] = summary;
+      }
+
+      if (title != null) {
+        requestData[STORYBOARD_TITLE] = title;
+      }
+
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: requestData);
 
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.addNewStoryboard(story);

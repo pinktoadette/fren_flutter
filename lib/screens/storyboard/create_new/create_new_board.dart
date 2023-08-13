@@ -110,7 +110,8 @@ class _CreateNewBoardState extends State<CreateNewBoard> {
   void _updateChanges() async {
     try {
       await _storyboardApi.createStoryboard(
-          text: _titleController.text,
+          text: _aboutController.text,
+          title: _titleController.text,
           image: '',
           summary: _aboutController.text,
           character: UserModel().user.username,
