@@ -1,7 +1,12 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/generative_image/image_dimension.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
@@ -9,7 +14,7 @@ import 'package:machi_app/widgets/image/image_generative.dart';
 class ImageGenerator extends StatefulWidget {
   final String? text;
   final Story? story;
-  final Function(String imageUrl) onSelection;
+  final Function(AddEditTextCharacter imageUrl) onSelection;
   const ImageGenerator(
       {Key? key, required this.onSelection, this.story, this.text})
       : super(key: key);
@@ -24,6 +29,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   bool _showLoading = false;
   int _step = 1;
   String _selectedStyleDimension = "";
+  bool _isUploading = false;
 
   @override
   void initState() {
@@ -124,13 +130,40 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             onPressed: null,
                             icon: loadingButton(
                                 size: 16, color: APP_ACCENT_COLOR),
-                            label: const Text("Generating images"))
+                            label: const Text("Generating images")),
+                      if (_isUploading)
+                        TextButton.icon(
+                            onPressed: null,
+                            icon: loadingButton(
+                                size: 16, color: APP_ACCENT_COLOR),
+                            label: const Text("Transfering Image"))
                     ],
                   ),
                 ))));
   }
 
   void _saveSelectedPhoto(String photoUrl) async {
-    debugPrint(photoUrl);
+    setState(() {
+      _isUploading = true;
+    });
+    try {
+      String newUrl = await uploadUrl(
+          url: photoUrl,
+          category: UPLOAD_PATH_COLLECTION,
+          categoryId: createUUID());
+      AddEditTextCharacter newItem = AddEditTextCharacter(
+          galleryUrl: newUrl,
+          characterId: UserModel().user.userId,
+          characterName: UserModel().user.username);
+
+      widget.onSelection(newItem);
+    } catch (error, stack) {
+      await FirebaseCrashlytics.instance.recordError(error, stack,
+          reason: 'upload new ai image to bucket', fatal: false);
+    } finally {
+      setState(() {
+        _isUploading = false;
+      });
+    }
   }
 }

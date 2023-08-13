@@ -344,6 +344,9 @@ class _MyAppState extends State<MyApp> {
         thickness: 1.0,
         space: 8.0,
       ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: APP_PRIMARY_DARK_BACKGROUND,
+      ),
       tabBarTheme: TabBarTheme(
         indicatorColor: APP_PRIMARY_DARK_COLOR,
         labelColor: APP_PRIMARY_DARK_COLOR,

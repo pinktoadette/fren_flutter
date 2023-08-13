@@ -458,13 +458,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
             child: ImageGenerator(
               story: story,
               onSelection: (value) {
+                _saveOrUploadTextImg(value);
                 Get.back();
               },
             ));
       },
-    ).whenComplete(() {
-      _updateBackground();
-    });
+    );
   }
 
   /// drag and drop individual boxes.

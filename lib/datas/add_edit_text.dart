@@ -60,7 +60,7 @@ class AddEditTextCharacter {
   String characterName;
 
   AddEditTextCharacter({
-    required this.text,
+    this.text,
     this.imageBytes,
     this.attachmentPreview,
     this.galleryUrl,

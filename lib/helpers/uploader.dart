@@ -21,6 +21,28 @@ Future<String> uploadFile({
   return url;
 }
 
+/// upload using URL
+Future<String> uploadUrl({
+  required String url,
+  required String category, // board | room | user | bot
+  required String categoryId, // respective Id
+}) async {
+  final storageRef = FirebaseStorage.instance;
+
+  // Download the file from the provided URL
+  final http.Response response = await http.get(Uri.parse(url));
+  final Uint8List bytes = response.bodyBytes;
+
+  // Upload file
+  final UploadTask uploadTask =
+      storageRef.ref().child('$category/$categoryId').putData(bytes);
+  final TaskSnapshot snapshot = await uploadTask;
+  String uploadedUrl = await snapshot.ref.getDownloadURL();
+
+  // Return the uploaded file link
+  return uploadedUrl;
+}
+
 Future<String> uploadBytesFile({
   required Uint8List uint8arr, // Change the parameter type
   required String category, // board | room | user | bot
