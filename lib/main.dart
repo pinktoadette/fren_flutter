@@ -24,8 +24,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 import 'package:leak_detector/leak_detector.dart';
 
-import 'localization/local_json_localization.dart';
-
 void main() async {
   // Initialized before calling runApp to init firebase app
   WidgetsFlutterBinding.ensureInitialized();
@@ -154,7 +152,7 @@ class _MyAppState extends State<MyApp> {
             AppLocalizations.delegate,
             GlobalMaterialLocalizations.delegate,
             GlobalWidgetsLocalizations.delegate,
-            LocalJsonLocalization.delegate,
+            GlobalCupertinoLocalizations.delegate,
           ],
           supportedLocales: SUPPORTED_LOCALES,
 

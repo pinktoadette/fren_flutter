@@ -1,5 +1,5 @@
 {
-  "@@locale": "zh_TW",
+  "language": "zh_TW",
 
   "_app_information": "*** App 基本資訊 ***",
   "app_short_description": "傾偈。哈哈。滾動。分享。",
@@ -342,7 +342,7 @@
   "post_interactive_hint": "示例：想像您在一個神秘的世界中醒來，四周是魔法森林和神奇生物。當您邁出第一步時，您會在遠處看到一個發光的物體。您接下來該怎麼做？\n\n您即將參加微生物學考試，需要問題。",
   "post_interactive_hidden_hint": "（選填）秘密文字 - 不會顯示，但將參與路徑。\n\n這是您要讓讀者驚喜的地方！",
 
-  "latest_machi_for_you": "適合您的麻吉", 
+  "latest_machi_for_you": "推薦的麻吉", 
   "latest_machi_yours": "您的麻吉",
   "latest_gallery": "最新畫廊",
   "latest_story": "最新收藏",
