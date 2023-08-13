@@ -111,7 +111,7 @@ class StoryApi {
       STORY_CATEGORY: category ?? story.category,
       STORY_SUMMARY: summary ?? story.summary,
       STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
-      STORY_LAYOUT: layout ?? story.layout?.name ?? Layout.PUBLICATION.name,
+      STORY_LAYOUT: layout ?? Layout.PUBLICATION.name,
       STORY_PAGE_DIRECTION: story.pageDirection?.name,
       STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
           ? story.pages!
