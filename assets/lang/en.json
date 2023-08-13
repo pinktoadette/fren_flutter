@@ -276,6 +276,8 @@
   "creative_mix_add_edit_content": "Add/Edit Content",
   "creative_mix_bits": "No Creative bits here",
   "creative_mix_edit": "Edit",
+  "creative_mix_image_generator_instruction": "Let's create an image prompt",
+  "creative_mix_image_generator_describe": "Describe your image in details.",
 
   "add_to_new_creativemix": "Add to new board",
   "add_to_new_creative_mix": "Add message to new CreativeMix",

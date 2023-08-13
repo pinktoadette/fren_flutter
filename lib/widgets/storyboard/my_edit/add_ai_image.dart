@@ -6,8 +6,10 @@ import 'package:machi_app/widgets/image/image_generative.dart';
 import 'package:machi_app/widgets/walkthru/walkthru.dart';
 
 class ImageGenerator extends StatefulWidget {
+  final String? text;
   final Function(String imageUrl) onSelection;
-  const ImageGenerator({Key? key, required this.onSelection}) : super(key: key);
+  const ImageGenerator({Key? key, required this.onSelection, this.text})
+      : super(key: key);
 
   @override
   State<ImageGenerator> createState() => _ImageGeneratorState();
@@ -37,7 +39,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
         child: Scaffold(
             key: _scaffoldKey,
             body: Container(
-                padding: const EdgeInsets.only(left: 40, right: 40),
+                padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -46,22 +48,39 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                         height: 20,
                       ),
                       Semantics(
-                        label: "${_i18n.translate("hello")} ",
+                        label: _i18n.translate(
+                            "creative_mix_image_generator_instruction"),
                         child: Text(
-                          "Let's Draw",
-                          style: Theme.of(context).textTheme.bodyMedium,
+                          _i18n.translate(
+                              "creative_mix_image_generator_instruction"),
+                          style: Theme.of(context).textTheme.labelMedium,
                         ),
+                      ),
+                      const SizedBox(
+                        height: 20,
                       ),
                       Semantics(
-                        label: "${_i18n.translate("hello")} ",
+                        label: _i18n
+                            .translate("creative_mix_image_generator_describe"),
                         child: Text(
-                          "<Text of story> ",
+                          _i18n.translate(
+                              "creative_mix_image_generator_describe"),
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      if (widget.text != null)
+                        Semantics(
+                          label: widget.text,
+                          child: Text(
+                            "Creating image for: ${widget.text}",
+                            style: Theme.of(context).textTheme.bodyMedium,
+                          ),
+                        ),
                       Offstage(
-                        offstage: !(!_walkthruCompleted && !_showLoading) &&
-                            !(_walkthruCompleted && !_showLoading),
+                        offstage: _showLoading,
                         child: ImagePromptGeneratorWidget(
                           isProfile: false,
                           onButtonClicked: (onclick) {
@@ -96,5 +115,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                 ))));
   }
 
-  void _saveSelectedPhoto(String photoUrl) async {}
+  void _saveSelectedPhoto(String photoUrl) async {
+    print(photoUrl);
+  }
 }

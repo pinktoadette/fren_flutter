@@ -60,7 +60,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   void initState() {
     super.initState();
     if (widget.isProfile == false) {
-      _counter = subscribeController.credits.value;
+      _counter = 1; //subscribeController.credits.value;
     }
   }
 
@@ -119,7 +119,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                               ? APP_ACCENT_COLOR
                               : Colors.transparent,
                           child: Container(
-                            margin: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(0),
                             child: StoryCover(
                                 photoUrl: _items[index], title: "image $index"),
                           ),
@@ -178,12 +178,13 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     } on DioException catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
-        err.response?.data["message"] ?? "Sorry, got an error 😕",
+        "Sorry, got an error 😕 generating",
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error in image generator ${err.toString()}', fatal: true);
+      Get.back();
     } finally {
       setState(() {
         _isLoading = false;

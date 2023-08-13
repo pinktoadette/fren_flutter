@@ -121,7 +121,7 @@ class BotApi {
     String url = '${baseUri}machi_image';
     final dio = await auth.getDio();
     final response = await dio.post(url,
-        data: {"text": text, "numImages": numImages, cancelToken: cancelToken});
+        data: {"text": text, "numImages": numImages}, cancelToken: cancelToken);
     return response.data;
   }
 

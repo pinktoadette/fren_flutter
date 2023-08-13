@@ -59,7 +59,7 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 400,
+        height: 500,
         child: Card(
           surfaceTintColor: Colors.transparent,
           child: Column(

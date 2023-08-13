@@ -45,7 +45,6 @@ class StoryboardApi {
       Map<String, dynamic> requestData = {
         CHAT_TEXT: text ?? "",
         CHAT_IMAGE: image ?? "",
-        STORY_CATEGORY: category ?? "",
         STORY_BITS: {
           SCRIPT_SPEAKER_USER_ID: characterId,
           SCRIPT_SPEAKER_NAME: character,
@@ -60,6 +59,10 @@ class StoryboardApi {
 
       if (title != null) {
         requestData[STORYBOARD_TITLE] = title;
+      }
+
+      if (category != null) {
+        requestData[STORY_CATEGORY] = category;
       }
 
       final dio = await auth.getDio();
