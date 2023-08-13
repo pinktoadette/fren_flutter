@@ -113,9 +113,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.text_block),
                         onPressed: () {
-                          // Get.to(() => AddEditTextWidget(
-                          //     onTextComplete: (content) =>
-                          //         _addEditText(newContent: content)));
                           _editPageText();
                         },
                       ),
@@ -459,6 +456,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return FractionallySizedBox(
             heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: ImageGenerator(
+              story: story,
               onSelection: (value) {
                 Get.back();
               },

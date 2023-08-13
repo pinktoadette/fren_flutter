@@ -51,7 +51,7 @@ extension TextAlignExtension on TextAlign {
 }
 
 class AddEditTextCharacter {
-  String text;
+  String? text;
   Uint8List? imageBytes;
   File? attachmentPreview;
   String? galleryUrl;
@@ -70,7 +70,6 @@ class AddEditTextCharacter {
   });
 
   factory AddEditTextCharacter.fromJson(Map<String, dynamic> json) {
-    debugPrint(json.toString());
     return AddEditTextCharacter(
       text: json['text'],
       imageBytes: json['imageBytes'] != null

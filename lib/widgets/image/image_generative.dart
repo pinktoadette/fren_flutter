@@ -13,6 +13,7 @@ import 'package:machi_app/widgets/story_cover.dart';
 class ImagePromptGeneratorWidget extends StatefulWidget {
   int? numImages;
   bool? isProfile;
+  String dimension;
 
   final Function(String url) onImageSelected;
 
@@ -22,14 +23,15 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
   /// notify when the the images are returned
   final Function(bool onImages) onImageReturned;
 
-  ImagePromptGeneratorWidget({
-    Key? key,
-    required this.onImageSelected,
-    required this.onImageReturned,
-    required this.onButtonClicked,
-    this.numImages = 4,
-    this.isProfile = false,
-  }) : super(key: key);
+  ImagePromptGeneratorWidget(
+      {Key? key,
+      required this.onImageSelected,
+      required this.onImageReturned,
+      required this.onButtonClicked,
+      this.numImages = 4,
+      this.isProfile = false,
+      this.dimension = ""})
+      : super(key: key);
 
   @override
   State<ImagePromptGeneratorWidget> createState() =>
@@ -167,7 +169,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     try {
       final botApi = BotApi();
       List<dynamic> imageUrl = await botApi.machiImage(
-          text: _promptController.text,
+          text: "${_promptController.text} ${widget.dimension}",
           numImages: widget.numImages,
           cancelToken: _cancelToken);
       setState(() {

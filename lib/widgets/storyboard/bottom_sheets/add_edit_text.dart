@@ -135,7 +135,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
 
     AddEditTextCharacter update = AddEditTextCharacter.fromJson({
       "text": imageBytes == null ? text : null,
-      "byteImage": imageBytes,
+      "imageBytes": imageBytes,
       "image": imageBytes == null ? attachmentPreview : null,
       "gallery": imageBytes == null ? galleryImageUrl : null,
       "textAlign": textAlign.name,

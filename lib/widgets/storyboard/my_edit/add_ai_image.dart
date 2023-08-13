@@ -1,14 +1,17 @@
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
-import 'package:machi_app/widgets/generative_image/walkthru.dart';
+import 'package:machi_app/widgets/generative_image/image_dimension.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
 
 class ImageGenerator extends StatefulWidget {
   final String? text;
+  final Story? story;
   final Function(String imageUrl) onSelection;
-  const ImageGenerator({Key? key, required this.onSelection, this.text})
+  const ImageGenerator(
+      {Key? key, required this.onSelection, this.story, this.text})
       : super(key: key);
 
   @override
@@ -19,17 +22,21 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   bool _showLoading = false;
-  bool _walkthruCompleted = false;
+  int _step = 1;
+  String _selectedDimension = "";
 
   @override
   void initState() {
     super.initState();
+    _createStoryPreview();
   }
 
   @override
   void dispose() {
     super.dispose();
   }
+
+  void _createStoryPreview() {}
 
   @override
   Widget build(BuildContext context) {
@@ -80,31 +87,36 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
-                      Offstage(
-                        offstage: _showLoading,
-                        child: ImagePromptGeneratorWidget(
-                          isProfile: false,
-                          onButtonClicked: (onclick) {
-                            setState(() {
-                              _showLoading = onclick;
-                            });
-                          },
-                          onImageSelected: (value) {
-                            _saveSelectedPhoto(value);
-                          },
-                          onImageReturned: (bool onImages) {
-                            setState(() {
-                              _showLoading = !onImages;
-                            });
-                          },
+                      if (_step == 1)
+                        ImageDimension(onSelectedDimention: (dimension) {
+                          setState(() {
+                            _step += 1;
+                          });
+                        })
+                      else
+                        Offstage(
+                          offstage: _showLoading,
+                          child: ImagePromptGeneratorWidget(
+                            isProfile: false,
+                            dimension: _selectedDimension,
+                            onButtonClicked: (onclick) {
+                              setState(() {
+                                _showLoading = onclick;
+                              });
+                            },
+                            onImageSelected: (value) {
+                              _saveSelectedPhoto(value);
+                            },
+                            onImageReturned: (bool onImages) {
+                              setState(() {
+                                _showLoading = !onImages;
+                              });
+                            },
+                          ),
                         ),
-                      ),
                       Offstage(
-                        offstage: !_showLoading,
-                        child: WalkThruSteps(onCarouselCompletion: () {
-                          _walkthruCompleted = true;
-                        }),
-                      ),
+                          offstage: !_showLoading,
+                          child: loadingButton(size: 20)),
                       if (_showLoading)
                         TextButton.icon(
                             onPressed: null,
