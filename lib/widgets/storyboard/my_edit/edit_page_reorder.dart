@@ -161,6 +161,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         margin: const EdgeInsets.only(bottom: 100),
         constraints: BoxConstraints(minHeight: size.width),
         decoration: BoxDecoration(
+          color: Theme.of(context).colorScheme.background,
           image: DecorationImage(
               colorFilter: ColorFilter.mode(
                   Colors.black.withOpacity(_alphaValue), BlendMode.darken),
@@ -184,8 +185,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
               for (int index = 0; index < scripts.length; index += 1)
                 Container(
                     key: ValueKey(scripts[index].scriptId),
-                    decoration: const BoxDecoration(
-                      border: Border(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.background,
+                      border: const Border(
                         bottom: BorderSide(width: 1, color: APP_TERTIARY),
                       ),
                     ),

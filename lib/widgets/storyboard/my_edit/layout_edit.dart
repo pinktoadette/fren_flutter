@@ -87,9 +87,7 @@ class StoryLayout extends StatelessWidget {
                   Text(item,
                       style: TextStyle(
                           fontSize: 16,
-                          color: selection == layout
-                              ? APP_ACCENT_COLOR
-                              : APP_INVERSE_PRIMARY_COLOR))
+                          color: selection == layout ? APP_ACCENT_COLOR : null))
                 ],
               ),
             )));

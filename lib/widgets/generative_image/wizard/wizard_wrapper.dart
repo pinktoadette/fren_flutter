@@ -5,9 +5,11 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_step2_style.dar
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step3_prompt.dart';
 
 class ImageWizardWidget extends StatefulWidget {
-  final Function(String prompt) onComplete;
+  final Function(String url) onComplete;
+  final Function(String prompt) onAppendPrompt;
 
-  const ImageWizardWidget({super.key, required this.onComplete});
+  const ImageWizardWidget(
+      {super.key, required this.onComplete, required this.onAppendPrompt});
 
   @override
   State<ImageWizardWidget> createState() => _ImageWizardWidgetState();
@@ -44,6 +46,7 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
       ),
       WizardImageStyle(onSelectedStyle: (onSelectedStyle) {
         _appendPrompt += onSelectedStyle;
+        widget.onAppendPrompt(_appendPrompt);
       }),
       WizardPrompt(
         appendPrompt: _appendPrompt,

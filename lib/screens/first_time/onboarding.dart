@@ -50,6 +50,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           height: double.maxFinite,
           width: double.maxFinite,
           decoration: BoxDecoration(
+            color: Colors.black,
             image: DecorationImage(
               image:
                   AssetImage(listBackgrounds[index % listBackgrounds.length]),

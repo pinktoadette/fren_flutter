@@ -27,6 +27,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late ProgressDialog _pr;
+  String _prompt = "";
 
   @override
   void initState() {
@@ -85,10 +86,12 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           ),
                         ),
                       ImageWizardWidget(
-                        onComplete: (photoUrl) {
-                          _saveSelectedPhoto(photoUrl);
-                        },
-                      )
+                          onComplete: (photoUrl) {
+                            _saveSelectedPhoto(photoUrl);
+                          },
+                          onAppendPrompt: (prompt) => setState(() {
+                                _prompt = prompt;
+                              }))
                     ],
                   ),
                 ))));
@@ -103,11 +106,12 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           categoryId: createUUID());
       AddEditTextCharacter newItem = AddEditTextCharacter(
           galleryUrl: newUrl,
-          isBackground: photoUrl.contains(Dimension.vertical.name),
+          isBackground: _prompt.contains(Dimension.vertical.name),
           characterId: UserModel().user.userId,
           characterName: UserModel().user.username);
 
       widget.onSelection(newItem);
+      _pr.hide();
     } catch (error, stack) {
       await FirebaseCrashlytics.instance.recordError(error, stack,
           reason: 'upload new ai image to bucket', fatal: false);

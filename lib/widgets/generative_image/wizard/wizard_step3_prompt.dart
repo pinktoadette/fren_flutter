@@ -65,10 +65,11 @@ class _WizardPromptState extends State<WizardPrompt> {
             widget.onSelectedImageUrl(value);
           },
           onImageReturned: (bool onImages) {
+            pr.hide();
+
             setState(() {
               _showLoading = !onImages;
             });
-            pr.hide();
           },
         ),
         if (_showLoading)
