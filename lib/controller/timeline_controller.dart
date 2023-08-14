@@ -34,7 +34,7 @@ class TimelineController extends GetxController {
 
   @override
   void dispose() {
-    pagingController.dispose();
+    // pagingController.dispose();
     super.dispose();
   }
 

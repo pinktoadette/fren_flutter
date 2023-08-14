@@ -63,14 +63,14 @@ class ProfileBasicInfoCard extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   SizedBox(
-                    height: 30,
-                    child: OutlinedButton.icon(
+                    height: 35,
+                    child: TextButton.icon(
                         icon: Icon(Iconsax.eye,
                             color: Theme.of(context).colorScheme.background),
                         label: Text(i18n.translate("view"),
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.background,
-                                fontSize: 12)),
+                                fontSize: 14)),
                         onPressed: () {
                           /// Go to profile screen
                           Navigator.of(context).push(MaterialPageRoute(
@@ -85,7 +85,7 @@ class ProfileBasicInfoCard extends StatelessWidget {
                         label: Text(i18n.translate("edit"),
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.background,
-                                fontSize: 12)),
+                                fontSize: 14)),
                         onPressed: () {
                           /// Go to edit profile screen
                           Navigator.of(context).push(MaterialPageRoute(

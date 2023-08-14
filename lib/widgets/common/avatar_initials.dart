@@ -2,8 +2,10 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
+import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:get/get.dart';
 
@@ -28,7 +30,7 @@ class AvatarInitials extends StatefulWidget {
 class _AvatarInitialsState extends State<AvatarInitials> {
   final _userApi = UserApi();
   final _cancelToken = CancelToken();
-
+  UserController userController = Get.find(tag: 'user');
   @override
   void initState() {
     super.initState();
@@ -45,9 +47,15 @@ class _AvatarInitialsState extends State<AvatarInitials> {
     return InkWell(
       onTap: () async {
         if (widget.radius != null && widget.userId != null) {
-          User user = await _userApi.getUserById(
-              userId: widget.userId!, cancelToken: _cancelToken);
-          Get.to(ProfileScreen(user: user));
+          NavigationHelper.handleGoToPageOrLogin(
+            context: context,
+            userController: userController,
+            navigateAction: () async {
+              User user = await _userApi.getUserById(
+                  userId: widget.userId!, cancelToken: _cancelToken);
+              Get.to(ProfileScreen(user: user));
+            },
+          );
         }
       },
       child: Container(

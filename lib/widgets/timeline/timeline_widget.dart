@@ -27,9 +27,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   void initState() {
     super.initState();
-    timelineController.pagingController = PagingController(firstPageKey: 0);
-
-    _getContent();
   }
 
   @override

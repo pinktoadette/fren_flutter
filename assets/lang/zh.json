@@ -169,9 +169,10 @@
   "next_step": "下一步",
   "previous_step": "上一步",
   "dark_mode": "暗模式",
-  "help_us_improve": "Help Us Improve",
-  "release_upcoming_features":  "Release Notes and Upcoming Features",
-
+  "help_us_improve": "幫我們改進",
+  "release_upcoming_features": "版本更新和即將推出的功能",
+  "take_time_to_load": "可能需要一些時間來載入",
+  
   "subscribed_successfully": "訂閱成功！",
   
   "other": "其他",
@@ -199,7 +200,7 @@
   "bot_test_warning": "發佈後，您同意遵守使用條款和條件。",
   "bots_not_found": "\n\n未找到麻吉",
   "start_chat_with": "與以下人物開始對話",
-  "lets_chat": "讓我們聊聊",
+  "lets_chat": "來哈拉",
   "continue": "繼續",
   "my_machi": "我的麻吉",
 
