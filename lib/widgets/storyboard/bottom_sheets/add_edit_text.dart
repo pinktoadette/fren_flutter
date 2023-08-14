@@ -61,6 +61,9 @@ class _AddEditTextState extends State<AddEditTextWidget> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    String title = widget.script == null
+        ? _i18n.translate("creative_mix_add_content")
+        : _i18n.translate("creative_mix_edit_content");
 
     return Scaffold(
         resizeToAvoidBottomInset: false,
@@ -80,10 +83,9 @@ class _AddEditTextState extends State<AddEditTextWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Semantics(
-                          label:
-                              _i18n.translate("creative_mix_add_edit_content"),
+                          label: title,
                           child: Text(
-                            _i18n.translate("creative_mix_add_edit_content"),
+                            title,
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -103,13 +105,14 @@ class _AddEditTextState extends State<AddEditTextWidget> {
                       onPressed: () {
                         _onComplete();
                       },
-                      child: widget.script?.text == null
-                          ? Text(
-                              _i18n.translate("add"),
-                            )
-                          : Text(
-                              _i18n.translate("UPDATE"),
-                            ))
+                      child: Text(
+                        widget.script?.text == null
+                            ? _i18n.translate("add")
+                            : _i18n.translate("update"),
+                        style: const TextStyle(
+                          fontSize: 16,
+                        ),
+                      ))
                 ],
               ),
               const Divider(height: 5, thickness: 1),

@@ -205,9 +205,7 @@ class _EditPageState extends State<EditPage> {
               controller: _pageController,
               count: story.pages?.length ?? 1,
               effect: const ExpandingDotsEffect(
-                  dotHeight: 10,
-                  dotWidth: 18,
-                  activeDotColor: APP_ACCENT_COLOR),
+                  dotHeight: 5, dotWidth: 5, activeDotColor: APP_ACCENT_COLOR),
             ),
           )),
     ];

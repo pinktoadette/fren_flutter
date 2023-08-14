@@ -146,6 +146,7 @@
   "photo": "照片",
   "see_all": "查看全部",
   "UPDATE": "更新",
+  "update": "更新",
   "update_successful": "更新成功",
 
   "sign_out": "登出",
@@ -276,10 +277,11 @@
   "creative_mix_published": "已發佈",
   "creative_mix_private": "私人",
   "creative_mix_nothing_published": "尚未發佈內容",
-  "creative_mix_add_edit_content": "新增/編輯內容",
+  "creative_mix_add_content": "新增內容",
+  "creative_mix_edit_content": "編輯內容",
   "creative_mix_bits": "這裡沒有創意片段",
   "creative_mix_edit": "編輯",
-  "creative_mix_image_generator_instruction": "讓我們創建一個圖像提示",
+  "creative_mix_image_generator_instruction": "讓麻吉創建一個圖像提示",
   "creative_mix_image_generator_describe": "詳細描述您的圖像提示。",
 
   "add_to_new_creativemix": "新增至新創意混搭",

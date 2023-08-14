@@ -254,10 +254,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         IconButton(
             onPressed: () {
-              Get.to(() => AddEditTextWidget(
-                  script: scripts[index],
-                  onTextComplete: (content) =>
-                      _addEditText(newContent: content, index: index)));
+              _editPageText(index: index);
             },
             icon: const Icon(
               Iconsax.edit,
@@ -697,7 +694,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
-  void _editPageText() async {
+  void _editPageText({int? index}) async {
     await showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -706,8 +703,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
           return FractionallySizedBox(
               heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
               child: AddEditTextWidget(
+                  script: index != null ? scripts[index] : null,
                   onTextComplete: (content) =>
-                      _addEditText(newContent: content)));
+                      _addEditText(newContent: content, index: index)));
         });
   }
 

@@ -465,7 +465,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                       axisDirection: Axis.vertical,
                       effect: const ExpandingDotsEffect(
                           dotHeight: 5,
-                          dotWidth: 8,
+                          dotWidth: 5,
                           activeDotColor: APP_ACCENT_COLOR),
                     )),
               ],

@@ -146,6 +146,7 @@
   "photo": "Photo",
   "see_all": "See all",
   "UPDATE": "UPDATE",
+  "update": "Update",
   "update_successful": "Successfully updated",
 
   "sign_out": "Sign out",
@@ -275,7 +276,8 @@
   "creative_mix_published": "Published",
   "creative_mix_private": "Private",
   "creative_mix_nothing_published": "Nothing published",
-  "creative_mix_add_edit_content": "Add/Edit Content",
+  "creative_mix_add_content": "Add Content",
+  "creative_mix_edit_content": "Edit Content",
   "creative_mix_bits": "No Creative bits here",
   "creative_mix_edit": "Edit",
   "creative_mix_image_generator_instruction": "Let's create an image prompt",
