@@ -131,7 +131,7 @@
   "register": "註冊",
   "CANCEL": "取消",
   "OK": "確定",
-  "edit_crop_image": "編輯 / 裁剪圖片",
+  "edit_crop_image": "編輯圖片",
   "gallery": "圖庫",
   "gallery_machi": "麻吉圖庫",
   "camera": "相機",
@@ -139,8 +139,8 @@
   "submit": "提交",
   "submitted": "已提交",
   "DELETE": "刪除",
-  "no_conversation": "沒有對話",
-  "no_notification": "沒有通知",
+  "no_conversation": "沒對話",
+  "no_notification": "沒通知",
   "no_result": "沒有結果",
   "new": "新的",
   "photo": "照片",
@@ -169,7 +169,10 @@
   "next_step": "下一步",
   "previous_step": "上一步",
   "dark_mode": "暗模式",
-
+  "help_us_improve": "幫我們改進",
+  "release_upcoming_features": "版本更新和即將推出的功能",
+  "take_time_to_load": "可能需要一些時間來載入",
+  
   "subscribed_successfully": "訂閱成功！",
   
   "other": "其他",
@@ -197,7 +200,7 @@
   "bot_test_warning": "發佈後，您同意遵守使用條款和條件。",
   "bots_not_found": "\n\n未找到麻吉",
   "start_chat_with": "與以下人物開始對話",
-  "lets_chat": "讓我們聊聊",
+  "lets_chat": "來哈拉",
   "continue": "繼續",
   "my_machi": "我的麻吉",
 
@@ -215,7 +218,7 @@
   "select_up_to_three": "最多選擇 3 個",
   "resricted_to_creator": "只有創作者/管理者可以編輯",
   "required_field": "請填寫必填欄位",
-  "required_2_char": "需要 2 個字元",
+  "required_2_char": "需要2個字元",
 
   "friend_sent": "您已發送請求。",
   "friend_accept_request": "接受好友",
@@ -229,7 +232,7 @@
   "follow": "追蹤",
 
   "replies": "回覆",
-  "comment_none": "目前無回覆。 \n成為第一位。",
+  "comment_none": "目前無回覆。 \n當第一個",
   "comment_reply": "回覆",
   "comment_sent_success": "回覆已發送",
   "comment_reply_to": "回覆給",
@@ -246,7 +249,7 @@
   "story_content_validation": "無內容可發佈",
 
   "story_layout": "版面模式",
-  "story_layout_plaintext": "出版物（書籍、指南、操作指南等）",
+  "story_layout_plaintext": "出版物（書籍、操作指南等）",
   "story_layout_conversation": "對話",
   "story_layout_comic": "漫畫/梗圖",
   "story_layout_comic_note": "背景圖像在預覽中可能不會對齊。",
@@ -328,7 +331,7 @@
   "machi_helper_replace_text": "替換",
 
   "plans_include_gpt": "免費和付費計劃包含 ChatGPT 3.5",
-  "plans_10_subtitle": "僅需 $1",
+  "plans_10_subtitle": "僅需 NT$30",
   "plans_50_subtitle": "超值",
   "plans_100_subtitle": "批量優惠",
   "plans_300_subtitle": "最佳優惠",

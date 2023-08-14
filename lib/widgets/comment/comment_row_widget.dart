@@ -54,6 +54,7 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
               showMenu: true,
               comment: widget.item,
               isChild: widget.hideReply,
+              fontColor: APP_INVERSE_PRIMARY_COLOR,
               onDeleteComment: (action) {
                 _onDeleteComment(context);
               },
@@ -63,7 +64,10 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                 child: textLinkPreview(
                   context: context,
                   text: widget.item.comment,
-                  style: Theme.of(context).textTheme.bodySmall,
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(color: APP_INVERSE_PRIMARY_COLOR),
                 )),
             Row(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -73,11 +77,13 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                   width: 20,
                 ),
                 LikeItemWidget(
-                    onLike: (val) {
-                      _onLikePressed(widget.item.commentId!, val);
-                    },
-                    likes: widget.item.likes ?? 0,
-                    mylikes: widget.item.mylikes ?? 0),
+                  onLike: (val) {
+                    _onLikePressed(widget.item.commentId!, val);
+                  },
+                  likes: widget.item.likes ?? 0,
+                  mylikes: widget.item.mylikes ?? 0,
+                  fontColor: APP_INVERSE_PRIMARY_COLOR,
+                ),
                 const SizedBox(
                   width: 10,
                 ),
@@ -87,7 +93,10 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                         commentController.replyTo(widget.item);
                       },
                       child: Text(i18n.translate("comment_reply"),
-                          style: Theme.of(context).textTheme.labelSmall)),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: APP_INVERSE_PRIMARY_COLOR))),
                 const SizedBox(
                   width: 5,
                 ),
@@ -96,8 +105,12 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
                       onPressed: () => setState(() {
                             toggleReplies = !toggleReplies;
                           }),
-                      child: Text("${widget.item.response!.length} replies ",
-                          style: Theme.of(context).textTheme.labelSmall)),
+                      child: Text(
+                          "${widget.item.response!.length} ${i18n.translate("comment_reply")} ",
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall!
+                              .copyWith(color: APP_INVERSE_PRIMARY_COLOR))),
               ],
             ),
             const Divider(

@@ -162,7 +162,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                           ))),
                 if (story?.status.name == StoryStatus.PUBLISHED.name)
                   PopupMenuButton<String>(
-                      icon: const Icon(Icons.more_vert),
+                      icon: const Icon(
+                        Icons.more_vert,
+                        color: APP_INVERSE_PRIMARY_COLOR,
+                      ),
                       itemBuilder: (context) => <PopupMenuEntry<String>>[
                             const PopupMenuItem(
                               value: 'report',
@@ -285,6 +288,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             const Icon(
                                               Icons.keyboard_double_arrow_up,
                                               size: 14,
+                                              color: APP_INVERSE_PRIMARY_COLOR,
                                             ),
                                             const SizedBox(
                                               width: 10,
@@ -292,7 +296,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                                             Text(_i18n.translate("comments"),
                                                 style: Theme.of(context)
                                                     .textTheme
-                                                    .bodySmall)
+                                                    .bodySmall!
+                                                    .copyWith(
+                                                        color:
+                                                            APP_INVERSE_PRIMARY_COLOR))
                                           ],
                                         ),
                                       )),
@@ -500,6 +507,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                             onLike: (val) {
                               _onLikePressed(widget.story, val);
                             },
+                            fontColor: APP_INVERSE_PRIMARY_COLOR,
                             size: 40,
                             likes: timelineController.currentStory.likes ?? 0,
                             mylikes:
@@ -511,6 +519,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                             const Icon(
                               Iconsax.message,
                               size: 16,
+                              color: APP_INVERSE_PRIMARY_COLOR,
                             ),
                             const SizedBox(
                               width: 20,
@@ -518,7 +527,9 @@ class _StoryPageViewState extends State<StoryPageView> {
                             Obx(() => Text(
                                   timelineController.currentStory.commentCount
                                       .toString(),
-                                  style: const TextStyle(fontSize: 12),
+                                  style: const TextStyle(
+                                      fontSize: 12,
+                                      color: APP_INVERSE_PRIMARY_COLOR),
                                 ))
                           ],
                         ))
@@ -531,6 +542,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                             onPressed: () => {_copyLink(context)},
                             icon: const Icon(Icons.share),
                             iconSize: 16,
+                            color: APP_INVERSE_PRIMARY_COLOR,
                           ),
                         ],
                       ))

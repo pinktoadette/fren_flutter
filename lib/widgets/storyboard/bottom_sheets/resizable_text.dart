@@ -12,7 +12,7 @@ class ResizableBox extends StatefulWidget {
 
 class _ResizableBoxState extends State<ResizableBox> {
   double width = 100.0;
-  Offset offset = Offset(0, 0);
+  Offset offset = const Offset(0, 0);
   bool isFocused = true;
 
   final FocusNode _focusNode = FocusNode();

@@ -2,11 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/api/machi/user_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/date_format.dart';
+import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/user/profile_screen.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
@@ -23,6 +25,7 @@ class TimelineHeader extends StatefulWidget {
   final bool? showMenu;
   final bool? isChild;
   final double? fontSize;
+  final Color? fontColor;
   final Widget? underNameRow;
   final StoryComment? comment;
   final Function(String action)? onDeleteComment;
@@ -39,6 +42,7 @@ class TimelineHeader extends StatefulWidget {
     this.underNameRow,
     this.comment,
     this.fontSize,
+    this.fontColor,
     this.isChild = false,
     this.onDeleteComment,
   }) : super(key: key);
@@ -50,6 +54,7 @@ class TimelineHeader extends StatefulWidget {
 class _TimelineHeaderState extends State<TimelineHeader> {
   final _userApi = UserApi();
   final _cancelToken = CancelToken();
+  UserController userController = Get.find(tag: 'user');
 
   @override
   void initState() {
@@ -68,9 +73,15 @@ class _TimelineHeaderState extends State<TimelineHeader> {
     AppLocalizations i18n = AppLocalizations.of(context);
     return InkWell(
         onTap: () async {
-          User u = await _userApi.getUserById(
-              userId: widget.user.userId, cancelToken: _cancelToken);
-          Get.to(() => ProfileScreen(user: u));
+          NavigationHelper.handleGoToPageOrLogin(
+            context: context,
+            userController: userController,
+            navigateAction: () async {
+              User u = await _userApi.getUserById(
+                  userId: widget.user.userId, cancelToken: _cancelToken);
+              Get.to(() => ProfileScreen(user: u));
+            },
+          );
         },
         child: Container(
           width: width,
@@ -98,20 +109,23 @@ class _TimelineHeaderState extends State<TimelineHeader> {
                                 ? width - 150
                                 : width - 120,
                             child: Text(widget.user.username,
-                                style:
-                                    TextStyle(fontSize: widget.fontSize ?? 16)),
+                                style: TextStyle(
+                                    fontSize: widget.fontSize ?? 16,
+                                    color: widget.fontColor)),
                           ),
                           if (widget.timestamp != null)
                             Text(formatDate(widget.timestamp!),
-                                style: const TextStyle(fontSize: 10)),
+                                style: TextStyle(
+                                    fontSize: 10, color: widget.fontColor)),
                           if (widget.underNameRow != null) widget.underNameRow!
                         ],
                       ),
                       if (widget.showMenu == true)
                         PopupMenuButton<String>(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.more_vert,
                               size: 14,
+                              color: widget.fontColor,
                             ),
                             itemBuilder: (context) => <PopupMenuEntry<String>>[
                                   PopupMenuItem(

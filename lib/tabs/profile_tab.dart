@@ -59,7 +59,7 @@ class ProfileTab extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.document),
                       title: Text(
-                        "Help Us Improve",
+                        i18n.translate("help_us_improve"),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onTap: () async {
@@ -83,7 +83,7 @@ class ProfileTab extends StatelessWidget {
                     ListTile(
                       leading: const Icon(Iconsax.note_favorite),
                       title: Text(
-                        "Release Notes and Upcoming Features",
+                        i18n.translate("release_upcoming_features"),
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       onTap: () async {

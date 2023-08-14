@@ -7,6 +7,7 @@ class LikeItemWidget extends StatelessWidget {
   final int likes;
   final int mylikes;
   final double? size;
+  final Color? fontColor;
   final Function(dynamic data) onLike;
 
   const LikeItemWidget(
@@ -14,6 +15,7 @@ class LikeItemWidget extends StatelessWidget {
       required this.onLike,
       required this.likes,
       required this.mylikes,
+      this.fontColor,
       this.size})
       : super(key: key);
 
@@ -38,7 +40,10 @@ class LikeItemWidget extends StatelessWidget {
       likeCount: likes,
       countDecoration: (count, likeCount) {
         return Text(likeCount.toString(),
-            style: Theme.of(context).textTheme.labelSmall);
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall!
+                .copyWith(color: fontColor));
       },
     );
   }

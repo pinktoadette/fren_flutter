@@ -66,8 +66,9 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                     height: 10,
                   ),
                   Table(
-                      border: TableBorder
-                          .all(), // Allows to add a border decoration around your table
+                      border: TableBorder.all(
+                          color:
+                              APP_MUTED_COLOR), // Allows to add a border decoration around your table
                       children: const [
                         TableRow(children: [
                           Text(
@@ -97,7 +98,7 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                             children: [Text('majicmix*'), Text('majicmix')]),
                       ]),
                   Text(
-                    "* may take time to load",
+                    "* ${i18n.translate("take_time_to_load")}",
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox(

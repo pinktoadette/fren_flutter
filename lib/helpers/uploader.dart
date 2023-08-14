@@ -3,7 +3,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:machi_app/helpers/create_uuid.dart';
-import 'package:path/path.dart' as path;
 
 /// Specify file, path and filename
 /// Images using their respective ids will be overwriting those

@@ -60,52 +60,54 @@ class _ReportFormState extends State<ReportForm> {
           ),
           automaticallyImplyLeading: false,
         ),
-        body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            ListView.builder(
-              scrollDirection: Axis.vertical,
-              shrinkWrap: true,
-              itemCount: _category.length,
-              itemBuilder: (BuildContext context, int index) {
-                return CheckboxListTile(
-                    value: _selectedCategory.contains(_category[index]),
-                    onChanged: (selected) {
-                      if (selected == true) {
-                        setState(() {
-                          _selectedCategory.add(_category[index]);
-                        });
-                      } else {
-                        setState(() {
-                          _selectedCategory.remove(_category[index]);
-                        });
-                      }
-                    },
-                    title: Text(_category[index]));
-              },
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            TextFormField(
-              textCapitalization: TextCapitalization.sentences,
-              controller: _commentController,
-              maxLines: 3,
-              maxLength: 200,
-              decoration: InputDecoration(
-                hintText: _i18n.translate("report_comment"),
-              ),
-            ),
-            Align(
-                alignment: Alignment.topRight,
-                child: ElevatedButton(
-                    onPressed: () {
-                      _submitReport();
-                    },
-                    child: Text(_i18n.translate("submit"))))
-          ],
-        ));
+        body: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: _category.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return CheckboxListTile(
+                        value: _selectedCategory.contains(_category[index]),
+                        onChanged: (selected) {
+                          if (selected == true) {
+                            setState(() {
+                              _selectedCategory.add(_category[index]);
+                            });
+                          } else {
+                            setState(() {
+                              _selectedCategory.remove(_category[index]);
+                            });
+                          }
+                        },
+                        title: Text(_category[index]));
+                  },
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                TextFormField(
+                  textCapitalization: TextCapitalization.sentences,
+                  controller: _commentController,
+                  maxLines: 3,
+                  maxLength: 200,
+                  decoration: InputDecoration(
+                    hintText: _i18n.translate("report_comment"),
+                  ),
+                ),
+                Align(
+                    alignment: Alignment.topRight,
+                    child: ElevatedButton(
+                        onPressed: () {
+                          _submitReport();
+                        },
+                        child: Text(_i18n.translate("submit"))))
+              ],
+            )));
   }
 
   void _submitReport() async {

@@ -17,11 +17,10 @@ class ExpandedImagePage extends StatelessWidget {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.black, // Set background color
+      backgroundColor: Theme.of(context).colorScheme.background,
       body: Stack(
         children: [
           GestureDetector(
-            // Dismiss the page when tapped
             onTap: () {
               Get.back();
             },
@@ -36,10 +35,13 @@ class ExpandedImagePage extends StatelessWidget {
                       child: Image(image: ImageCacheWrapper(gallery.photoUrl)),
                     ),
                   ),
-                  SizedBox(
-                    height: size.height * 0.5 - 110,
-                    child: SingleChildScrollView(
-                      child: Text("Prompt: ${gallery.caption}"),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: SizedBox(
+                      height: size.height * 0.5 - 110,
+                      child: SingleChildScrollView(
+                        child: Text("Prompt: ${gallery.caption}"),
+                      ),
                     ),
                   ),
                 ],
@@ -61,7 +63,7 @@ class ExpandedImagePage extends StatelessWidget {
               left: 10,
               right: 10,
               child: Container(
-                  color: Colors.black.withOpacity(0.8),
+                  color: Theme.of(context).colorScheme.background,
                   width: size.width,
                   height: 50,
                   child: Row(

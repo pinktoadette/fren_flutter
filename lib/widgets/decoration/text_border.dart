@@ -7,19 +7,27 @@ class TextBorder extends StatelessWidget {
   final double? size;
   final TextAlign? textAlign;
   final int? maxLines;
+  final bool? useTheme;
 
   const TextBorder(
-      {Key? key, required this.text, this.size, this.textAlign, this.maxLines})
+      {Key? key,
+      required this.text,
+      this.size,
+      this.textAlign,
+      this.maxLines,
+      this.useTheme = false})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
-    if (isDarkMode == false) {
-      return Text(text,
-          textAlign: textAlign ?? TextAlign.left,
-          maxLines: maxLines,
-          style: Theme.of(context).textTheme.bodyMedium);
+    if (useTheme == true) {
+      bool isDarkMode = ThemeHelper().loadThemeFromBox();
+      if (isDarkMode == false) {
+        return Text(text,
+            textAlign: textAlign ?? TextAlign.left,
+            maxLines: maxLines,
+            style: Theme.of(context).textTheme.bodyMedium);
+      }
     }
 
     return Text(

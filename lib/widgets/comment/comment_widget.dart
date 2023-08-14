@@ -28,7 +28,12 @@ class _CommentWidgetState extends State<CommentWidget> {
           PagedChildBuilderDelegate<dynamic>(noItemsFoundIndicatorBuilder: (_) {
         return Row(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [Text(_i18n.translate("comment_none"))],
+          children: [
+            Text(
+              _i18n.translate("comment_none"),
+              style: const TextStyle(color: APP_INVERSE_PRIMARY_COLOR),
+            )
+          ],
         );
       }, itemBuilder: (context, item, index) {
         return CommentRowWidget(

@@ -37,7 +37,7 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
   void initState() {
     super.initState();
     setState(() {
-      _selectedDimension = Dimension.square.name;
+      _selectedDimension = Dimension.square.value;
     });
   }
 
@@ -65,14 +65,14 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
           GestureDetector(
             onTap: () {
               setState(() {
-                _selectedDimension = Dimension.vertical.name;
+                _selectedDimension = Dimension.vertical.value;
               });
             },
             child: Container(
               width: 120,
               height: 240,
               padding: const EdgeInsets.all(10),
-              color: _selectedDimension == Dimension.vertical.name
+              color: _selectedDimension == Dimension.vertical.value
                   ? APP_ACCENT_COLOR
                   : Colors.grey,
               child: Center(
@@ -89,13 +89,13 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
           GestureDetector(
             onTap: () {
               setState(() {
-                _selectedDimension = Dimension.square.name;
+                _selectedDimension = Dimension.square.value;
               });
             },
             child: Container(
               width: 120,
               height: 120,
-              color: _selectedDimension == Dimension.square.name
+              color: _selectedDimension == Dimension.square.value
                   ? APP_ACCENT_COLOR
                   : Colors.grey,
               child: Center(
