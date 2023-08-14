@@ -92,7 +92,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
             hintStyle: const TextStyle(color: APP_MUTED_COLOR, fontSize: 14),
             hintText: _i18n.translate("sign_up_profile_ai_prompt_hint"),
             isDense: true,
-            contentPadding: const EdgeInsets.all(20.0),
+            contentPadding: const EdgeInsets.all(10.0),
           ),
           controller: _promptController,
           maxLines: 3,
@@ -129,7 +129,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                   },
                 ))
             : const SizedBox(
-                height: 350,
+                height: 300,
               ),
         _counter == 0
             ? ElevatedButton(

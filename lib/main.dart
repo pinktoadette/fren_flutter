@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/models/app_model.dart';
 import 'package:machi_app/widgets/common/default_card_border.dart';
@@ -127,6 +128,8 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+
     return ScopedModel<AppModel>(
       model: AppModel(),
       child: ScopedModel<UserModel>(
@@ -171,7 +174,7 @@ class _MyAppState extends State<MyApp> {
           },
           home: const SplashScreen(),
           darkTheme: _darkTheme(),
-          theme: _lightTheme(),
+          theme: isDarkMode ? _darkTheme() : _lightTheme(),
           // themeMode: ThemeHelper().theme
         ),
       ),
