@@ -13,7 +13,7 @@ import 'package:machi_app/widgets/story_cover.dart';
 class ImagePromptGeneratorWidget extends StatefulWidget {
   int? numImages;
   bool? isProfile;
-  String dimension;
+  String appendPrompt;
 
   final Function(String url) onImageSelected;
 
@@ -30,7 +30,7 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
       required this.onButtonClicked,
       this.numImages = 4,
       this.isProfile = false,
-      this.dimension = ""})
+      this.appendPrompt = ""})
       : super(key: key);
 
   @override
@@ -141,7 +141,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                 alignment: Alignment.bottomCenter,
                 child: TextButton.icon(
                   icon: _isLoading
-                      ? loadingButton(size: 12)
+                      ? loadingButton(size: 12, color: APP_ACCENT_COLOR)
                       : const SizedBox.shrink(),
                   label: Text(
                     _i18n.translate("profile_image_generate_button"),
@@ -169,7 +169,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     try {
       final botApi = BotApi();
       List<dynamic> imageUrl = await botApi.machiImage(
-          text: "${_promptController.text} ${widget.dimension}",
+          text: "${_promptController.text} ${widget.appendPrompt}",
           numImages: widget.numImages,
           cancelToken: _cancelToken);
       setState(() {

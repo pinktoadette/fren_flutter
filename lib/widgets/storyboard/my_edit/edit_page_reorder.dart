@@ -454,8 +454,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
             heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: ImageGenerator(
               story: story,
-              onSelection: (value) {
-                _saveOrUploadTextImg(value);
+              onSelection: (value) async {
+                await _saveOrUploadTextImg(value);
                 Get.back();
               },
             ));

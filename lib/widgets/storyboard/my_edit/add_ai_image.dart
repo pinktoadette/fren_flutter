@@ -2,17 +2,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
-import 'package:machi_app/widgets/generative_image/image_dimension.dart';
-import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension.dart';
-import 'package:machi_app/widgets/generative_image/wizard/wizard_step2_style.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
-import 'package:machi_app/widgets/image/image_generative.dart';
 
 class ImageGenerator extends StatefulWidget {
   final String? text;
@@ -29,10 +25,7 @@ class ImageGenerator extends StatefulWidget {
 class _ImageGeneratorState extends State<ImageGenerator> {
   late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _showLoading = false;
-  int _step = 1;
-  String _selectedStyleDimension = "";
-  bool _isUploading = false;
+  late ProgressDialog _pr;
 
   @override
   void initState() {
@@ -50,6 +43,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
+    _pr = ProgressDialog(context, isDismissible: false);
 
     return SafeArea(
         child: Scaffold(
@@ -81,13 +75,6 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                         ),
                       ),
                       const Divider(height: 5, thickness: 1),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Text(
-                        _i18n.translate("creative_mix_ai_image_credits"),
-                        style: Theme.of(context).textTheme.labelSmall,
-                      ),
                       if (widget.text != null)
                         Semantics(
                           label: widget.text,
@@ -96,68 +83,22 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
-
                       ImageWizardWidget(
-                        onComplete: (p) {},
+                        onComplete: (photoUrl) {
+                          _saveSelectedPhoto(photoUrl);
+                        },
                       )
-
-                      // if (_step == 1)
-                      // ImageStyleDimension(
-                      //     onSelectedStyleDimension: (dimension) {
-                      //   setState(() {
-                      //     _step += 1;
-                      //     _selectedStyleDimension = dimension;
-                      //   });
-                      // })
-
-                      //   Offstage(
-                      //     offstage: _showLoading,
-                      //     child: ImagePromptGeneratorWidget(
-                      //       isProfile: false,
-                      //       dimension: _selectedStyleDimension,
-                      //       onButtonClicked: (onclick) {
-                      //         setState(() {
-                      //           _showLoading = onclick;
-                      //         });
-                      //       },
-                      //       onImageSelected: (value) {
-                      //         _saveSelectedPhoto(value);
-                      //       },
-                      //       onImageReturned: (bool onImages) {
-                      //         setState(() {
-                      //           _showLoading = !onImages;
-                      //         });
-                      //       },
-                      //     ),
-                      //   ),
-                      // Offstage(
-                      //     offstage: !_showLoading,
-                      //     child: loadingButton(size: 20)),
-                      // if (_showLoading)
-                      //   TextButton.icon(
-                      //       onPressed: null,
-                      //       icon: loadingButton(
-                      //           size: 16, color: APP_ACCENT_COLOR),
-                      //       label: const Text("Generating images")),
-                      // if (_isUploading)
-                      //   TextButton.icon(
-                      //       onPressed: null,
-                      //       icon: loadingButton(
-                      //           size: 16, color: APP_ACCENT_COLOR),
-                      //       label: const Text("Transfering Image"))
                     ],
                   ),
                 ))));
   }
 
   void _saveSelectedPhoto(String photoUrl) async {
-    setState(() {
-      _isUploading = true;
-    });
+    _pr.show(_i18n.translate("processing"));
     try {
       String newUrl = await uploadUrl(
           url: photoUrl,
-          category: UPLOAD_PATH_COLLECTION,
+          category: UPLOAD_PATH_SCRIPT_IMAGE,
           categoryId: createUUID());
       AddEditTextCharacter newItem = AddEditTextCharacter(
           galleryUrl: newUrl,
@@ -169,9 +110,8 @@ class _ImageGeneratorState extends State<ImageGenerator> {
       await FirebaseCrashlytics.instance.recordError(error, stack,
           reason: 'upload new ai image to bucket', fatal: false);
     } finally {
-      setState(() {
-        _isUploading = false;
-      });
+      setState(() {});
+      _pr.hide();
     }
   }
 }
