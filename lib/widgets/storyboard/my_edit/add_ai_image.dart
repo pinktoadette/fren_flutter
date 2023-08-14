@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
 
 class ImageGenerator extends StatefulWidget {
@@ -102,6 +103,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           categoryId: createUUID());
       AddEditTextCharacter newItem = AddEditTextCharacter(
           galleryUrl: newUrl,
+          isBackground: photoUrl.contains(Dimension.vertical.name),
           characterId: UserModel().user.userId,
           characterName: UserModel().user.username);
 

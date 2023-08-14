@@ -2,6 +2,8 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:path/path.dart' as path;
 
 /// Specify file, path and filename
 /// Images using their respective ids will be overwriting those
@@ -29,13 +31,24 @@ Future<String> uploadUrl({
 }) async {
   final storageRef = FirebaseStorage.instance;
 
+  // Get the image extension from the URL using regular expressions
+  RegExp regExp = RegExp(r'\.([a-zA-Z0-9]+)$');
+  Match? match = regExp.firstMatch(url);
+  String extension = match?.group(1) ?? 'jpg'; // Extension
+
+  // Remove the leading dot from the extension
+  extension = extension.substring(1);
+
   // Download the file from the provided URL
   final http.Response response = await http.get(Uri.parse(url));
   final Uint8List bytes = response.bodyBytes;
 
-  // Upload file
-  final UploadTask uploadTask =
-      storageRef.ref().child('$category/$categoryId').putData(bytes);
+  // Upload file with the appropriate extension
+  final String uuid = createUUID();
+  final UploadTask uploadTask = storageRef
+      .ref()
+      .child('$category/$categoryId/$uuid.$extension')
+      .putData(bytes);
   final TaskSnapshot snapshot = await uploadTask;
   String uploadedUrl = await snapshot.ref.getDownloadURL();
 

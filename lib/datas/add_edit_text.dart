@@ -56,6 +56,7 @@ class AddEditTextCharacter {
   File? attachmentPreview;
   String? galleryUrl;
   TextAlign? textAlign;
+  bool? isBackground;
   String characterId;
   String characterName;
 
@@ -65,6 +66,7 @@ class AddEditTextCharacter {
     this.attachmentPreview,
     this.galleryUrl,
     this.textAlign,
+    this.isBackground = false,
     required this.characterId,
     required this.characterName,
   });
@@ -79,6 +81,7 @@ class AddEditTextCharacter {
           ? File(json['attachmentPreview'])
           : null,
       galleryUrl: json['galleryUrl'],
+      isBackground: json['isBackground'] ?? false,
       textAlign: json['textAlign'] != null
           ? TextAlignExtension.fromString(json['textAlign']) // Custom method
           : null,

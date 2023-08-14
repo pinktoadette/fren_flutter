@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
@@ -36,6 +37,7 @@ class _WizardPromptState extends State<WizardPrompt> {
   @override
   Widget build(BuildContext context) {
     final AppLocalizations i18n = AppLocalizations.of(context);
+    ProgressDialog pr = ProgressDialog(context, isDismissible: false);
 
     return Column(
       children: [
@@ -50,6 +52,8 @@ class _WizardPromptState extends State<WizardPrompt> {
           isProfile: false,
           appendPrompt: widget.appendPrompt,
           onButtonClicked: (onclick) {
+            pr.show(i18n.translate("processing"));
+
             setState(() {
               _showLoading = onclick;
             });
@@ -64,6 +68,7 @@ class _WizardPromptState extends State<WizardPrompt> {
             setState(() {
               _showLoading = !onImages;
             });
+            pr.hide();
           },
         ),
         if (_showLoading)

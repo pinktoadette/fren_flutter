@@ -190,6 +190,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       ),
                     ),
                     child: Dismissible(
+                        key: UniqueKey(),
                         confirmDismiss: (DismissDirection direction) async {
                           return await showDialog(
                             context: context,
@@ -221,7 +222,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
                             },
                           );
                         },
-                        key: Key(scripts[index].scriptId ?? ""),
                         child: ListTile(
                           isThreeLine: true,
                           title: const SizedBox.shrink(),
@@ -455,7 +455,15 @@ class _EditPageReorderState extends State<EditPageReorder> {
             child: ImageGenerator(
               story: story,
               onSelection: (value) async {
-                await _saveOrUploadTextImg(value);
+                if (value.isBackground == true) {
+                  setState(() {
+                    urlPreview = value.galleryUrl;
+                    attachmentPreview = null;
+                  });
+                  _updateBackground();
+                } else {
+                  await _saveOrUploadTextImg(value);
+                }
                 Get.back();
               },
             ));
