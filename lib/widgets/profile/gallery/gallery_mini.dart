@@ -1,5 +1,8 @@
+import 'package:get/get.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/gallery.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/image/image_expand.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
@@ -12,6 +15,8 @@ class GalleryWidget extends StatefulWidget {
 }
 
 class _GalleryWidgetState extends State<GalleryWidget> {
+  UserController userController = Get.find(tag: 'user');
+
   @override
   void initState() {
     super.initState();
@@ -45,12 +50,13 @@ class _GalleryWidgetState extends State<GalleryWidget> {
                   height: size.width / 3,
                   child: GestureDetector(
                     onTap: () {
-                      // Navigate to the expanded image page
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              ExpandedImagePage(gallery: widget.gallery[index]),
-                        ),
+                      NavigationHelper.handleGoToPageOrLogin(
+                        context: context,
+                        userController: userController,
+                        navigateAction: () async {
+                          Get.to(() => ExpandedImagePage(
+                              gallery: widget.gallery[index]));
+                        },
                       );
                     },
                     child: StoryCover(

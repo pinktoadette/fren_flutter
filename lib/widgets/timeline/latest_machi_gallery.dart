@@ -139,7 +139,13 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                     padding: const EdgeInsets.only(right: 10),
                     child: TextButton(
                         onPressed: () {
-                          Get.to(() => const LatestGallery());
+                          NavigationHelper.handleGoToPageOrLogin(
+                            context: context,
+                            userController: userController,
+                            navigateAction: () async {
+                              Get.to(() => const LatestGallery());
+                            },
+                          );
                         },
                         child: Text(_i18n.translate("see_all"),
                             style: Theme.of(context).textTheme.bodyMedium)),

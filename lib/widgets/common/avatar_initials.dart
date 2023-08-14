@@ -53,7 +53,7 @@ class _AvatarInitialsState extends State<AvatarInitials> {
             navigateAction: () async {
               User user = await _userApi.getUserById(
                   userId: widget.userId!, cancelToken: _cancelToken);
-              Get.to(ProfileScreen(user: user));
+              Get.to(() => ProfileScreen(user: user));
             },
           );
         }
