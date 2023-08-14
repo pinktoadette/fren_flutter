@@ -131,7 +131,7 @@
   "register": "Register",
   "CANCEL": "CANCEL",
   "OK": "OK",
-  "edit_crop_image": "Edit / Crop image",
+  "edit_crop_image": "Edit Image",
   "gallery": "Gallery",
   "gallery_machi": "Machi Gallery",
   "camera": "Camera",
@@ -169,6 +169,8 @@
   "next_step": "Next",
   "previous_step": "Previous",
   "dark_mode": "Dark Mode",
+  "help_us_improve": "Help Us Improve",
+  "release_upcoming_features":  "Release Notes and Upcoming Features",
 
   "subscribed_successfully": "Successfully subscribed!",
   

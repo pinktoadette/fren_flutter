@@ -44,6 +44,7 @@ class _BotProfileCardState extends State<BotProfileCard> {
 
     return Card(
       margin: const EdgeInsets.all(20),
+      elevation: 4,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
