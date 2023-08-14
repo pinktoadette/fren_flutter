@@ -9,6 +9,9 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/generative_image/image_dimension.dart';
+import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension.dart';
+import 'package:machi_app/widgets/generative_image/wizard/wizard_step2_style.dart';
+import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
 import 'package:machi_app/widgets/image/image_generative.dart';
 
 class ImageGenerator extends StatefulWidget {
@@ -93,50 +96,55 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
-                      if (_step == 1)
-                        ImageStyleDimension(
-                            onSelectedStyleDimension: (dimension) {
-                          setState(() {
-                            _step += 1;
-                            _selectedStyleDimension = dimension;
-                          });
-                        })
-                      else
-                        Offstage(
-                          offstage: _showLoading,
-                          child: ImagePromptGeneratorWidget(
-                            isProfile: false,
-                            dimension: _selectedStyleDimension,
-                            onButtonClicked: (onclick) {
-                              setState(() {
-                                _showLoading = onclick;
-                              });
-                            },
-                            onImageSelected: (value) {
-                              _saveSelectedPhoto(value);
-                            },
-                            onImageReturned: (bool onImages) {
-                              setState(() {
-                                _showLoading = !onImages;
-                              });
-                            },
-                          ),
-                        ),
-                      Offstage(
-                          offstage: !_showLoading,
-                          child: loadingButton(size: 20)),
-                      if (_showLoading)
-                        TextButton.icon(
-                            onPressed: null,
-                            icon: loadingButton(
-                                size: 16, color: APP_ACCENT_COLOR),
-                            label: const Text("Generating images")),
-                      if (_isUploading)
-                        TextButton.icon(
-                            onPressed: null,
-                            icon: loadingButton(
-                                size: 16, color: APP_ACCENT_COLOR),
-                            label: const Text("Transfering Image"))
+
+                      ImageWizardWidget(
+                        onComplete: (p) {},
+                      )
+
+                      // if (_step == 1)
+                      // ImageStyleDimension(
+                      //     onSelectedStyleDimension: (dimension) {
+                      //   setState(() {
+                      //     _step += 1;
+                      //     _selectedStyleDimension = dimension;
+                      //   });
+                      // })
+
+                      //   Offstage(
+                      //     offstage: _showLoading,
+                      //     child: ImagePromptGeneratorWidget(
+                      //       isProfile: false,
+                      //       dimension: _selectedStyleDimension,
+                      //       onButtonClicked: (onclick) {
+                      //         setState(() {
+                      //           _showLoading = onclick;
+                      //         });
+                      //       },
+                      //       onImageSelected: (value) {
+                      //         _saveSelectedPhoto(value);
+                      //       },
+                      //       onImageReturned: (bool onImages) {
+                      //         setState(() {
+                      //           _showLoading = !onImages;
+                      //         });
+                      //       },
+                      //     ),
+                      //   ),
+                      // Offstage(
+                      //     offstage: !_showLoading,
+                      //     child: loadingButton(size: 20)),
+                      // if (_showLoading)
+                      //   TextButton.icon(
+                      //       onPressed: null,
+                      //       icon: loadingButton(
+                      //           size: 16, color: APP_ACCENT_COLOR),
+                      //       label: const Text("Generating images")),
+                      // if (_isUploading)
+                      //   TextButton.icon(
+                      //       onPressed: null,
+                      //       icon: loadingButton(
+                      //           size: 16, color: APP_ACCENT_COLOR),
+                      //       label: const Text("Transfering Image"))
                     ],
                   ),
                 ))));

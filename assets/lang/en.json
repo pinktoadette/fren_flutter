@@ -308,6 +308,11 @@
 
   "creative_mix_ai_image_credits": "This will use 4 credits each time, generating 4 images to select from.",
 
+  "creative_mix_ai_select_dimension": "Select Dimension",
+  "creative_mix_aiselect_dimension_background": "For Background",
+  "creative_mix_aiselect_dimension_in_content": "In content",
+  "creative_mix_ai_select_style": "Select Style",
+
   "_reporting": "*** Reporting user ***",
   "report_create": "File A Report",
   "report_comment_reason": "Any comments (optional)",

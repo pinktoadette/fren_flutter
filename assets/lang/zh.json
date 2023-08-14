@@ -309,6 +309,11 @@
 
   "creative_mix_ai_image_credits": "每次使用需要消耗 4 點積分，生成 4 張圖像供選擇。",
 
+  "creative_mix_ai_select_dimension": "選擇尺寸",
+  "creative_mix_aiselect_dimension_background": "背景",
+  "creative_mix_aiselect_dimension_in_content": "內容中",
+  "creative_mix_ai_select_style": "選擇風格",
+
   "_reporting": "*** 舉報使用者 ***",
   "report_create": "提交舉報",
   "report_comment_reason": "任何評論（選填）",
