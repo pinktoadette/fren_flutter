@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -153,6 +154,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                   /// Update profile image
                   await UserModel().updateProfileImage(
                       imageFile: image, oldImageUrl: imageUrl, path: 'profile');
+
+                  await CachedNetworkImage.evictFromCache(imageUrl);
+
                   Get.back(result: true);
                 }
               },

@@ -23,6 +23,7 @@ class TimelineHeader extends StatefulWidget {
   final bool? showMenu;
   final bool? isChild;
   final double? fontSize;
+  final Color? fontColor;
   final Widget? underNameRow;
   final StoryComment? comment;
   final Function(String action)? onDeleteComment;
@@ -39,6 +40,7 @@ class TimelineHeader extends StatefulWidget {
     this.underNameRow,
     this.comment,
     this.fontSize,
+    this.fontColor,
     this.isChild = false,
     this.onDeleteComment,
   }) : super(key: key);
@@ -98,20 +100,23 @@ class _TimelineHeaderState extends State<TimelineHeader> {
                                 ? width - 150
                                 : width - 120,
                             child: Text(widget.user.username,
-                                style:
-                                    TextStyle(fontSize: widget.fontSize ?? 16)),
+                                style: TextStyle(
+                                    fontSize: widget.fontSize ?? 16,
+                                    color: widget.fontColor)),
                           ),
                           if (widget.timestamp != null)
                             Text(formatDate(widget.timestamp!),
-                                style: const TextStyle(fontSize: 10)),
+                                style: TextStyle(
+                                    fontSize: 10, color: widget.fontColor)),
                           if (widget.underNameRow != null) widget.underNameRow!
                         ],
                       ),
                       if (widget.showMenu == true)
                         PopupMenuButton<String>(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.more_vert,
                               size: 14,
+                              color: widget.fontColor,
                             ),
                             itemBuilder: (context) => <PopupMenuEntry<String>>[
                                   PopupMenuItem(

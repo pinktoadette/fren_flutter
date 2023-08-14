@@ -75,8 +75,14 @@ class _BotProfileCardState extends State<BotProfileCard> {
                       Text(widget.bot.name, style: header),
                       Text(widget.bot.modelType.name, style: body),
                       const Spacer(),
-                      Text(widget.bot.subdomain, style: body),
-                      Text(widget.bot.about, style: body),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 100),
+                        child: Text(
+                          widget.bot.about,
+                          style: body,
+                          overflow: TextOverflow.fade,
+                        ),
+                      )
                     ],
                   ),
                 ),

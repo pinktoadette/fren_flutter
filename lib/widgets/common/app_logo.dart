@@ -4,12 +4,17 @@ class AppLogo extends StatelessWidget {
   // Variable
   final double? width;
   final double? height;
+  final bool? useTheme;
 
-  const AppLogo({Key? key, this.width, this.height}) : super(key: key);
+  const AppLogo({Key? key, this.width, this.height, this.useTheme = true})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    bool isDarkMode = true;
+    if (useTheme == true) {
+      isDarkMode = Theme.of(context).brightness == Brightness.dark;
+    }
 
     return Center(
         child: Image.asset(

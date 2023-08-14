@@ -70,7 +70,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                       alignment: Alignment.centerLeft),
                   label: Text(
                     "${_i18n.translate("comment_reply_to")} @${truncateText(maxLength: 30, text: commentController.replyToComment.user.username)}",
-                    style: Theme.of(context).textTheme.labelSmall,
+                    style: Theme.of(context)
+                        .textTheme
+                        .labelSmall!
+                        .copyWith(color: APP_INVERSE_PRIMARY_COLOR),
                     overflow: TextOverflow.fade,
                   ),
                   icon: const Icon(Icons.cancel, size: 14),
@@ -111,14 +114,18 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                             textCapitalization: TextCapitalization.sentences,
                             autocorrect: true,
                             enableSuggestions: true,
-                            style: Theme.of(context).textTheme.bodyMedium,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium!
+                                .copyWith(color: APP_INVERSE_PRIMARY_COLOR),
                             controller: _commentController,
                             maxLines: null,
                             decoration: InputDecoration(
+                              suffixIconColor: APP_INVERSE_PRIMARY_COLOR,
                               fillColor: Colors.transparent,
                               hintText: _i18n.translate("comment_leave"),
-                              hintStyle: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
+                              hintStyle: const TextStyle(
+                                  color: APP_INVERSE_PRIMARY_COLOR,
                                   fontSize: 14),
                               border: InputBorder.none,
                               focusedBorder: InputBorder.none,
@@ -141,6 +148,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                                   : const Icon(
                                       Iconsax.send_2,
                                       size: 24,
+                                      color: APP_INVERSE_PRIMARY_COLOR,
                                     ),
                               onPressed: () {
                                 if (_canType == false) {

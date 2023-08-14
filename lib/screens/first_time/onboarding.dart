@@ -63,7 +63,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               const Spacer(),
-              if (index == 0) const AppLogo(),
+              if (index == 0) const AppLogo(useTheme: false),
               Container(
                 padding: const EdgeInsets.all(30),
                 alignment:
@@ -71,10 +71,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 child: Semantics(
                   label: listCaptions[index],
                   child: TextBorder(
-                    text: listCaptions[index],
-                    textAlign: TextAlign.center,
-                    size: 20,
-                  ),
+                      text: listCaptions[index],
+                      textAlign: TextAlign.center,
+                      size: 24,
+                      useTheme: false),
                 ),
               ),
               const Spacer(),

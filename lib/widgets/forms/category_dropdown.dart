@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:machi_app/helpers/app_localizations.dart';
 
 class CategoryDropdownWidget extends StatefulWidget {
   final Function(dynamic data) notifyParent;
@@ -16,6 +17,7 @@ class CategoryDropdownWidget extends StatefulWidget {
 class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
   List<String> _category = [];
   late String _selectedCategory;
+  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -42,9 +44,11 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
 
   @override
   Widget build(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
+
     return Row(children: [
       Text(
-        "Category",
+        _i18n.translate("publish_confirm_category"),
         style: Theme.of(context).textTheme.labelMedium,
       ),
       const SizedBox(

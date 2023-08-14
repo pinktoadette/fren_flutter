@@ -21,7 +21,7 @@ class WizardPrompt extends StatefulWidget {
 class _WizardPromptState extends State<WizardPrompt> {
   final List<Script> script = [];
   bool _showLoading = false;
-  bool _isUploading = false;
+  final bool _isUploading = false;
   String? _selectedUrl;
 
   @override
