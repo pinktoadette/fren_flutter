@@ -29,19 +29,35 @@ class PurchasesApi {
     }
   }
 
-  Future<Map<String, dynamic>> purchaseCredits() async {
-    try {
-      String url = '${baseUri}purchases/credits';
-      debugPrint("Requesting URL $url");
-      final dio = await auth.getDio();
-      final response = await dio.post(url);
-      return response.data;
-    } catch (err, stack) {
-      debugPrint(err.toString());
-      await FirebaseCrashlytics.instance.recordError(err, stack,
-          reason: 'Purchase credits faile: ${err.toString()}', fatal: true);
-      rethrow;
+  Future<Map<String, dynamic>> purchaseCredits(int maxRetries) async {
+    const initialDelay = Duration(seconds: 1);
+    ErrorAndStack? errorStackList;
+
+    for (int retry = 0; retry < maxRetries; retry++) {
+      try {
+        String url = '${baseUri}purchases/credits';
+        debugPrint("Requesting URL $url");
+        final dio = await auth.getDio();
+        final response = await dio.post(url);
+        return response.data;
+      } catch (err, stack) {
+        debugPrint("Attempt $retry failed: ${err.toString()}");
+        await Future.delayed(initialDelay * (1 << retry));
+        if ((maxRetries - 1) == retry) {
+          errorStackList = ErrorAndStack(err, stack);
+        }
+      }
     }
+
+    if (errorStackList != null) {
+      await FirebaseCrashlytics.instance.recordError(
+          errorStackList.error, errorStackList.stack,
+          reason:
+              'Purchase credits failed (Attempt ${maxRetries.toString()}): ${errorStackList.error.toString()}',
+          fatal: false);
+    }
+    // If all retries fail, rethrow the last error.
+    throw Exception("Failed after $maxRetries retries");
   }
 
   Future<Map<String, dynamic>> getCredits() async {

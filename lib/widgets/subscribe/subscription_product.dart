@@ -175,7 +175,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                         package.storeProduct.subscriptionPeriod ?? '');
                     String qty = package.storeProduct.identifier
                         .replaceAll(RegExp(r'[^0-9]'), ''); // '23'
-
+                    Color color = _selectedTier == package
+                        ? Colors.black
+                        : APP_INVERSE_PRIMARY_COLOR;
                     return InkWell(
                         onTap: () {
                           setState(() {
@@ -204,15 +206,19 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                             children: [
                                               Text(
                                                 qty,
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .headlineLarge,
+                                                style: TextStyle(
+                                                    color: color,
+                                                    fontSize: 24,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               ),
                                               Text(
                                                 "images",
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .labelSmall,
+                                                style: TextStyle(
+                                                    color: color,
+                                                    fontSize: 14,
+                                                    fontWeight:
+                                                        FontWeight.bold),
                                               )
                                             ],
                                           )),
@@ -242,7 +248,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                                   ),
                                                 Text(" ${period}ly",
                                                     style: TextStyle(
-                                                        color: fontColor,
+                                                        color: color,
                                                         fontWeight:
                                                             FontWeight.bold)),
                                                 const SizedBox(
@@ -254,7 +260,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                               text: TextSpan(
                                                 text: package
                                                     .storeProduct.priceString,
-                                                style: const TextStyle(
+                                                style: TextStyle(
+                                                    color: color,
                                                     fontSize: 18,
                                                     fontWeight:
                                                         FontWeight.bold),
@@ -262,8 +269,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                                   TextSpan(
                                                     text:
                                                         ' / ${period.toLowerCase()}',
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         fontSize: 16,
+                                                        color: color,
                                                         fontWeight:
                                                             FontWeight.normal),
                                                   ),
@@ -277,9 +285,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                                 width: size.width * 0.5,
                                                 child: Text(
                                                   "Get ${period}ly subscription to $qty images",
-                                                  style: Theme.of(context)
-                                                      .textTheme
-                                                      .labelSmall,
+                                                  style: TextStyle(
+                                                      fontSize: 12,
+                                                      color: color),
                                                 ))
                                           ],
                                         ),
@@ -346,15 +354,26 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
-          /// temp
-          subscribeController.updateCredits(qty);
-          await purchaseApi.purchaseCredits();
+          /// Need use retries and delay since revenue has race conditions
+          Map<String, dynamic> response = await purchaseApi.purchaseCredits(3);
 
-          Get.snackbar(_i18n.translate("success"),
-              _i18n.translate("subscribed_successfully"),
-              snackPosition: SnackPosition.TOP,
-              backgroundColor: APP_SUCCESS,
-              colorText: Colors.black);
+          /// this is to double check backend and revenue cat are aligned in number of credits
+          int responseQty = response["credit"];
+
+          if (responseQty == int.parse(qty)) {
+            subscribeController.updateCredits(responseQty);
+            Get.snackbar(_i18n.translate("success"),
+                _i18n.translate("subscribed_successfully"),
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: APP_SUCCESS,
+                colorText: Colors.black);
+          } else {
+            Get.snackbar(_i18n.translate("error"),
+                "Unable to credit. Please contact us!",
+                snackPosition: SnackPosition.TOP,
+                backgroundColor: APP_ERROR,
+                colorText: Colors.black);
+          }
         } catch (err, s) {
           Get.snackbar(_i18n.translate("error"),
               _i18n.translate("an_error_has_occurred"),
@@ -364,9 +383,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
               fatal: true);
         } finally {
           _pr.hide();
+          Get.back(result: true);
         }
       }
-      Get.back(result: true);
     } on PlatformException catch (err, s) {
       var errorCode = PurchasesErrorHelper.getErrorCode(err);
       if (errorCode != PurchasesErrorCode.purchaseCancelledError) {

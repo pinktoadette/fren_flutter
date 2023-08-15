@@ -39,7 +39,7 @@ class SubscribeController extends GetxController {
     });
   }
 
-  void updateCredits(String qty) {
-    credits.value = int.parse(qty);
+  void updateCredits(int qty) {
+    credits.value = qty;
   }
 }
