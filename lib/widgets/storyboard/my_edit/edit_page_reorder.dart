@@ -647,7 +647,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
   /// delete individual boxes.
   void _deleteBit(int index) async {
     try {
-      await _scriptApi.deleteScript(script: scripts[index]);
+      try {
+        await _scriptApi.deleteScript(script: scripts[index]);
+      } catch (err, s) {
+        await FirebaseCrashlytics.instance.recordError(err, s,
+            reason: 'Unable to delete message in delete bits', fatal: true);
+      }
+
       scripts
           .removeWhere((script) => script.scriptId == scripts[index].scriptId);
       setState(() {
@@ -662,7 +668,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         backgroundColor: APP_ERROR,
       );
       await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Unable to delete message in edit bits', fatal: true);
+          reason: 'Unable to delete message in edit bits state', fatal: false);
     }
   }
 

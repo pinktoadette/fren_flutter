@@ -122,12 +122,10 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           characterName: UserModel().user.username);
 
       widget.onSelection(newItem);
-      _pr.hide();
     } catch (error, stack) {
       await FirebaseCrashlytics.instance.recordError(error, stack,
           reason: 'upload new ai image to bucket', fatal: false);
     } finally {
-      setState(() {});
       _pr.hide();
     }
   }

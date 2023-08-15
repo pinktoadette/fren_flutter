@@ -35,19 +35,13 @@ Future<String> uploadUrl({
   Match? match = regExp.firstMatch(url);
   String extension = match?.group(1) ?? 'jpg'; // Extension
 
-  // Remove the leading dot from the extension
-  extension = extension.substring(1);
-
   // Download the file from the provided URL
   final http.Response response = await http.get(Uri.parse(url));
   final Uint8List bytes = response.bodyBytes;
 
   // Upload file with the appropriate extension
-  final String uuid = createUUID();
-  final UploadTask uploadTask = storageRef
-      .ref()
-      .child('$category/$categoryId/$uuid.$extension')
-      .putData(bytes);
+  final UploadTask uploadTask =
+      storageRef.ref().child('$category/$categoryId.$extension').putData(bytes);
   final TaskSnapshot snapshot = await uploadTask;
   String uploadedUrl = await snapshot.ref.getDownloadURL();
 
