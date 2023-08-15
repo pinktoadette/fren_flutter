@@ -185,12 +185,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
               for (int index = 0; index < scripts.length; index += 1)
                 Container(
                     key: ValueKey(scripts[index].scriptId),
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.background,
-                      border: const Border(
-                        bottom: BorderSide(width: 1, color: APP_TERTIARY),
-                      ),
-                    ),
+                    margin: const EdgeInsets.only(left: 20, top: 0, bottom: 10),
                     child: Dismissible(
                         key: UniqueKey(),
                         confirmDismiss: (DismissDirection direction) async {
@@ -318,9 +313,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
     switch (scripts[index].type) {
       case "text":
         return Column(crossAxisAlignment: alignment, children: [
-          const SizedBox(
-            height: 30,
-          ),
           _bubbleOrNot(
               layout != Layout.CONVO
                   ? SizedBox(
@@ -342,9 +334,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
               alignment),
           lay,
           icons,
-          const SizedBox(
-            height: 30,
-          ),
         ]);
       case "image":
         AspectRatioImage adjImage = AspectRatioImage(
@@ -354,9 +343,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
         AspectRatioImage modifiedImage = adjImage.displayScript(size);
 
         return Column(crossAxisAlignment: alignment, children: <Widget>[
-          const SizedBox(
-            height: 30,
-          ),
           _bubbleOrNot(
               StoryCover(
                 photoUrl: modifiedImage.imageUrl,
@@ -368,9 +354,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
               alignment),
           lay,
           icons,
-          const SizedBox(
-            height: 30,
-          ),
         ]);
       default:
         return const Icon(Iconsax.activity);

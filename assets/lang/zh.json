@@ -12,6 +12,11 @@
   "contact_us": "聯絡我們",
   "send_your_message_to_our_email_address": "將您的訊息寄送至我們的電子郵件地址：",
 
+  "onboarding_step1": "準備好與麻吉一同展開一場LOL之旅",
+  "onboarding_step2": "與能媲美喜劇演員的機器人進行幽默對話",
+  "onboarding_step3": "創作或瀏覽史詩般的故事和漫畫，讓連莎士比亞和超人也讚嘆不已",
+  "onboarding_step4": "歡迎來到麻吉",
+
   "_HomeScreen": "*** 主畫面翻譯 ***",
   "profile": "個人資料",
 
@@ -23,7 +28,7 @@
   "validation_warning": "驗證錯誤",
   "validation_3_characters": "至少需要3個字",
   "validation_1_character": "寫多一點內容吧",
-  "validation_insufficient_caharacter": "至少寫一些內容，提示至少需要 50 個字元，名稱需至少 3 個字",
+  "validation_insufficient_caharacter": "至少寫一些內容，提示至少需要 50 個字，名稱需至少 3 個字",
   "validation_select_1": "至少選擇一項",
   "validation_username": "用戶匿名已被使用",
 
@@ -215,10 +220,10 @@
   "search_not_found": "未找到相關內容",
   "select_industry": "選擇您的主修或行業",
   "select_interest": "讓我們尋找您可能有興趣的主題",
-  "select_up_to_three": "最多選擇 3 個",
+  "select_three": "選擇3項",
   "resricted_to_creator": "只有創作者/管理者可以編輯",
   "required_field": "請填寫必填欄位",
-  "required_2_char": "需要2個字元",
+  "required_2_char": "需要2個字",
 
   "friend_sent": "您已發送請求。",
   "friend_accept_request": "接受好友",

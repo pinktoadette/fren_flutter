@@ -19,6 +19,7 @@ import 'package:get/get.dart';
 import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
@@ -105,7 +106,8 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    Color textColor = isDarkMode ? Colors.white54 : Colors.black;
     if (story == null && pages.isEmpty) {
       return Scaffold(
           extendBodyBehindAppBar: true,
@@ -124,16 +126,17 @@ class _StoryPageViewState extends State<StoryPageView> {
                 const Size.fromHeight(80), // Set the desired height here
             child: AppBar(
               centerTitle: false,
-              backgroundColor: Colors.black26,
+              backgroundColor: isDarkMode ? Colors.black26 : Colors.white24,
               title: Container(
                 padding: const EdgeInsets.only(
                   top: 20,
                 ),
-                width: 200,
-                child: StoryHeaderWidget(story: story!, width: 100),
+                child: StoryHeaderWidget(
+                    story: story!,
+                    width: widget.isPreview == true ? 200 : null),
               ),
               leading: BackButton(
-                color: Colors.white54,
+                color: textColor,
                 onPressed: () {
                   if (widget.isPreview == false) {
                     CommentController commentController =
@@ -150,7 +153,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                 else
                   Container(
                       padding: const EdgeInsets.only(top: 15.0, right: 10),
-                      child: OutlinedButton(
+                      child: TextButton(
                           onPressed: () {
                             Get.to(() => ConfirmPublishDetails(
                                   story: widget.story,
@@ -158,7 +161,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                           },
                           child: Text(
                             _i18n.translate("next_step"),
-                            style: const TextStyle(color: Colors.white60),
+                            style: TextStyle(color: textColor),
                           ))),
                 if (story?.status.name == StoryStatus.PUBLISHED.name)
                   PopupMenuButton<String>(
@@ -280,8 +283,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                                     controller: scrollController,
                                     slivers: [
                                       SliverToBoxAdapter(
-                                          child: Padding(
-                                        padding: const EdgeInsets.only(
+                                          child: Container(
+                                        margin: const EdgeInsets.only(
                                             left: 20, top: 10, bottom: 10),
                                         child: Row(
                                           children: [
@@ -430,7 +433,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                               return Column(
                                   crossAxisAlignment: alignment,
                                   children: [
-                                    _displayScript(script, size),
+                                    _displayScript(
+                                        script, size, backgroundUrl != ""),
                                     if (story!.layout == Layout.CONVO)
                                       Text(script.characterName ?? ""),
                                   ]);
@@ -444,7 +448,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 ),
                               ),
                             const SizedBox(
-                              height: 50,
+                              height: 210,
                             )
                           ]))),
                 ),
@@ -564,21 +568,23 @@ class _StoryPageViewState extends State<StoryPageView> {
     );
   }
 
-  Widget _displayScript(Script script, Size size) {
+  Widget _displayScript(Script script, Size size, bool hasBackground) {
     /// @todo need to create a common meme layout. See under storyboard_item_widget the display creates two separate layouts.
 
     Widget widget = const SizedBox.shrink();
     if (script.type == "text") {
-      widget = textLinkPreview(
-          useBorder: story!.layout == Layout.COMIC,
-          context: context,
-          width: story!.layout != Layout.CONVO ? size.width : null,
-          text: script.text ?? "",
-          textAlign: script.textAlign ?? TextAlign.left,
-          style: TextStyle(
-              color: story!.layout == Layout.CONVO
-                  ? Colors.black
-                  : Theme.of(context).colorScheme.primary));
+      widget = Padding(
+          padding: const EdgeInsets.only(bottom: 20),
+          child: textLinkPreview(
+              useBorder: !hasBackground ? false : story!.layout == Layout.COMIC,
+              context: context,
+              width: story!.layout != Layout.CONVO ? size.width : null,
+              text: script.text ?? "",
+              textAlign: script.textAlign ?? TextAlign.left,
+              style: TextStyle(
+                  color: story!.layout == Layout.CONVO
+                      ? Colors.black
+                      : Theme.of(context).colorScheme.primary)));
     } else if (script.type == "image") {
       AspectRatioImage adjImage = AspectRatioImage(
           imageWidth: script.image!.width.toDouble(),
@@ -587,7 +593,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       AspectRatioImage modifiedImage = adjImage.displayScript(size);
 
       widget = Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.only(bottom: 20),
           child: StoryCover(
             photoUrl: modifiedImage.imageUrl,
             title: story?.title ?? "machi",

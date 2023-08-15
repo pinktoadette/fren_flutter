@@ -53,6 +53,8 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
+          centerTitle: false,
+          titleSpacing: 0,
           title: Text(
             _i18n.translate("publish_confirm"),
             style: Theme.of(context).textTheme.headlineMedium,

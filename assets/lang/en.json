@@ -12,6 +12,11 @@
   "contact_us": "Contact us",
   "send_your_message_to_our_email_address": "Send your message to our e-mail address:",
 
+  "onboarding_step1": "Prepare for a LOL escapade with machi",
+  "onboarding_step2": "Engage in witty banter with bots that rival a stand-up comedian",
+  "onboarding_step3": "Create or scroll thru epic stories and comics that would leave Shakespeare and Superman in awe",
+  "onboarding_step4": "Welcome to Machi",
+
   "_HomeScreen": "*** Home Screen Translations ***",
   "profile": "Profile",
 
@@ -215,7 +220,7 @@
   "search_not_found": "Nothing found",
   "select_industry": "Select your major or industry",
   "select_interest": "Let's find some topics that may interest you",
-  "select_up_to_three": "Select up to 3",
+  "select_three": "Select 3 interests",
   "resricted_to_creator": "Only creator/admin can edit",
   "required_field": "Please input required field",
   "required_2_char": "Requires 2 characters",

@@ -4,6 +4,7 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
@@ -64,7 +65,7 @@ class _InterestScreenState extends State<InterestScreen> {
             style: Theme.of(context).textTheme.headlineMedium,
           ),
           Text(
-            _i18n.translate("select_up_to_three"),
+            _i18n.translate("select_three"),
             style: Theme.of(context).textTheme.labelMedium,
           ),
           Text(
@@ -127,6 +128,11 @@ class _InterestScreenState extends State<InterestScreen> {
       await UserModel().updateUserData(
           userId: UserModel().user.userId,
           data: {USER_INTERESTS: _selectedInterest});
+
+      /// ensure all controllers are placed
+      MainBinding mainBinding = MainBinding();
+      await mainBinding.dependencies();
+
       Get.offAll(() => const HomeScreen());
     } catch (err, s) {
       Get.snackbar(

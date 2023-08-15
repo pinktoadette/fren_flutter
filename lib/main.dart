@@ -237,7 +237,7 @@ class _MyAppState extends State<MyApp> {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-            backgroundColor: APP_ACCENT_COLOR,
+            backgroundColor: APP_PRIMARY_BACKGROUND,
             foregroundColor: Colors.black,
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(50))),
@@ -270,21 +270,26 @@ class _MyAppState extends State<MyApp> {
         selectionHandleColor: APP_ACCENT_COLOR,
       ),
       textTheme: TextTheme(
-        displayLarge: GoogleFonts.poppins(fontSize: 25),
-        displayMedium: GoogleFonts.poppins(fontSize: 22),
-        displaySmall: GoogleFonts.poppins(fontSize: 18),
+        displayLarge:
+            GoogleFonts.poppins(fontSize: 25, fontWeight: FontWeight.w700),
+        displayMedium:
+            GoogleFonts.poppins(fontSize: 22, fontWeight: FontWeight.w600),
+        displaySmall: GoogleFonts.poppins(
+            fontSize: 18, fontWeight: FontWeight.w500, color: APP_ACCENT_COLOR),
         headlineLarge:
-            GoogleFonts.poppins(fontSize: 35, fontWeight: FontWeight.w700),
+            GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700),
         headlineMedium:
-            GoogleFonts.poppins(fontSize: 30, fontWeight: FontWeight.bold),
-        headlineSmall:
-            GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.bold),
+            GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w500),
+        headlineSmall: GoogleFonts.poppins(
+            color: APP_PRIMARY_COLOR,
+            fontSize: 16,
+            fontWeight: FontWeight.bold),
         titleLarge: GoogleFonts.poppins(
           fontSize: 24,
           fontWeight: FontWeight.bold,
         ),
-        titleMedium: GoogleFonts.poppins(fontSize: 14),
-        titleSmall: GoogleFonts.poppins(fontSize: 12),
+        titleMedium: GoogleFonts.poppins(fontSize: 18),
+        titleSmall: GoogleFonts.poppins(fontSize: 16),
         bodyLarge:
             GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.normal),
         bodyMedium: GoogleFonts.poppins(fontSize: 16),
@@ -303,6 +308,7 @@ class _MyAppState extends State<MyApp> {
         displayColor: APP_PRIMARY_COLOR,
       ),
       popupMenuTheme: PopupMenuThemeData(
+          elevation: 3,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
       appBarTheme: const AppBarTheme(

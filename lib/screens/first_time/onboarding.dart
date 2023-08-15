@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
@@ -21,12 +22,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     'assets/images/onboard/onboard3.png',
     'assets/images/blank.png'
   ];
-  final listCaptions = [
-    "Prepare for a LOL escapade with machi",
-    "Engage in witty banter with bots that rival a stand-up comedian",
-    "Create or scroll thru epic stories and comics that would leave Shakespeare and Superman in awe",
-    "Welcome to Machi"
-  ];
+  final steps = [1, 2, 3, 4];
+
   int currentPageIndex = 0;
 
   @override
@@ -43,9 +40,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    AppLocalizations i18n = AppLocalizations.of(context);
 
     final pages = List.generate(
-      listCaptions.length,
+      steps.length,
       (index) => Container(
           height: double.maxFinite,
           width: double.maxFinite,
@@ -70,19 +68,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 alignment:
                     index == 0 ? Alignment.center : Alignment.bottomCenter,
                 child: Semantics(
-                  label: listCaptions[index],
+                  label: i18n.translate("onboarding_step${index + 1}"),
                   child: TextBorder(
-                      text: listCaptions[index],
+                      text: i18n.translate("onboarding_step${index + 1}"),
                       textAlign: TextAlign.center,
                       size: 24,
                       useTheme: false),
                 ),
               ),
               const Spacer(),
-              const Align(
-                alignment: Alignment.bottomCenter,
-                child: Icon(Iconsax.arrow_down_1, size: 20),
-              ),
+              if (index != steps.length - 1)
+                const Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Icon(Iconsax.arrow_down_1, size: 20),
+                ),
               const SizedBox(
                 height: 30,
               )
@@ -105,7 +104,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 ? const NeverScrollableScrollPhysics()
                 : const AlwaysScrollableScrollPhysics(),
             controller: _controller,
-            itemCount: listCaptions.length,
+            itemCount: steps.length,
             itemBuilder: (_, index) {
               if (index == 3) {
                 Future.delayed(const Duration(milliseconds: 1500), () {

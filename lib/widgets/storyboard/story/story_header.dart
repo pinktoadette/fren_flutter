@@ -4,6 +4,7 @@ import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/storyboard/story/story_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/story_info.dart';
@@ -38,6 +39,8 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   Widget build(BuildContext context) {
     double padding = 0;
     double width = MediaQuery.of(context).size.width;
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    Color textColor = isDarkMode ? Colors.white54 : Colors.black;
     return InkWell(
       onTap: () async {
         _showEditStory(context);
@@ -51,14 +54,14 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
             children: [
               Text(
                 thisStory.createdBy.username,
-                style: const TextStyle(color: Colors.white54, fontSize: 14),
+                style: TextStyle(color: textColor, fontSize: 14),
               ),
               Text(
                 thisStory.title,
                 overflow: TextOverflow.fade,
                 maxLines: 2,
                 softWrap: false,
-                style: const TextStyle(color: Colors.white70, fontSize: 16),
+                style: TextStyle(color: textColor, fontSize: 16),
               )
             ],
           )),
