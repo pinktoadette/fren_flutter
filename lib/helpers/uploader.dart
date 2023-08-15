@@ -40,8 +40,10 @@ Future<String> uploadUrl({
   final Uint8List bytes = response.bodyBytes;
 
   // Upload file with the appropriate extension
-  final UploadTask uploadTask =
-      storageRef.ref().child('$category/$categoryId.$extension').putData(bytes);
+  final UploadTask uploadTask = storageRef
+      .ref()
+      .child('$category/$categoryId.$extension')
+      .putData(bytes, SettableMetadata(contentType: 'image/$extension'));
   final TaskSnapshot snapshot = await uploadTask;
   String uploadedUrl = await snapshot.ref.getDownloadURL();
 
