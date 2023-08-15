@@ -2,7 +2,6 @@ import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:machi_app/helpers/create_uuid.dart';
 
 /// Specify file, path and filename
 /// Images using their respective ids will be overwriting those
@@ -62,7 +61,7 @@ Future<String> uploadBytesFile({
   final UploadTask uploadTask = storageRef
       .ref()
       .child('$category/$categoryId')
-      .putData(uint8arr); // Convert Uint8List to List<int> before uploading
+      .putData(uint8arr, SettableMetadata(contentType: 'image/png'));
   final TaskSnapshot snapshot = await uploadTask;
   String url = await snapshot.ref.getDownloadURL();
   // Return file link
