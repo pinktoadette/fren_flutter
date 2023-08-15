@@ -44,12 +44,14 @@ class ProgressDialog {
   // Hide progress dialog
   Future<bool> hide() async {
     try {
-      Navigator.of(_dismissingContext!).pop();
-      debugPrint('ProgressDialog dismissed');
-      return Future.value(true);
+      if (_dismissingContext != null) {
+        Navigator.of(_dismissingContext!).pop();
+        debugPrint('ProgressDialog dismissed');
+        return Future.value(true);
+      }
+      return Future.value(false);
     } catch (err) {
       debugPrint('Seems there is an issue hiding dialog');
-      debugPrint(err.toString());
       return Future.value(false);
     }
   }

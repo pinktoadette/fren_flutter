@@ -7,9 +7,13 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_step3_prompt.da
 class ImageWizardWidget extends StatefulWidget {
   final Function(String url) onComplete;
   final Function(String prompt) onAppendPrompt;
+  final Function(bool isLoading) onLoading;
 
   const ImageWizardWidget(
-      {super.key, required this.onComplete, required this.onAppendPrompt});
+      {super.key,
+      required this.onComplete,
+      required this.onAppendPrompt,
+      required this.onLoading});
 
   @override
   State<ImageWizardWidget> createState() => _ImageWizardWidgetState();
@@ -51,6 +55,9 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
         appendPrompt: _appendPrompt,
         onSelectedImageUrl: (imageUrl) {
           widget.onComplete(imageUrl);
+        },
+        onLoading: (isLoading) {
+          widget.onLoading(isLoading);
         },
       )
     ];

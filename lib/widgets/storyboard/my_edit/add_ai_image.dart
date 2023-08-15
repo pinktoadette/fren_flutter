@@ -89,12 +89,23 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           onComplete: (photoUrl) {
                             _saveSelectedPhoto(photoUrl);
                           },
+                          onLoading: (isLoading) {
+                            _loadProgress(isLoading);
+                          },
                           onAppendPrompt: (prompt) => setState(() {
                                 _prompt = prompt;
                               }))
                     ],
                   ),
                 ))));
+  }
+
+  void _loadProgress(bool isLoading) {
+    if (isLoading == true) {
+      _pr.show(_i18n.translate("processing"));
+    } else {
+      _pr.hide();
+    }
   }
 
   void _saveSelectedPhoto(String photoUrl) async {

@@ -35,7 +35,7 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
     },
     {
       "model": "dall-e",
-      "name": "Dall-E \n\nreturns square only",
+      "name": "Dall-E \n\n ** square only",
       "imagePath": "assets/images/ai_style/dall-e.png",
     },
   ];
