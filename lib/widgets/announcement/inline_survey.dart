@@ -40,7 +40,7 @@ class _InlineSurveyState extends State<InlineSurvey>
       return;
     }
     final res = await _announceApi.getAnnounce();
-    if (res.isNotEmpty) {
+    if (res.isNotEmpty && mounted) {
       setState(() {
         survey = res[0];
       });

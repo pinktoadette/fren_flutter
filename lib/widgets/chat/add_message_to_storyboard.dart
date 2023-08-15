@@ -38,16 +38,17 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
+    Size size = MediaQuery.of(context).size;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Container(
           padding: const EdgeInsets.only(left: 15, top: 15),
+          width: size.width,
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(
-              _i18n.translate("storyboard"),
+              _i18n.translate("creative_mix"),
               style: Theme.of(context).textTheme.headlineMedium,
             ),
             Text(
@@ -75,12 +76,13 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
         const SizedBox(
           height: 5,
         ),
+        const Divider(),
         SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: Column(
             children: <Widget>[
               SizedBox(
-                height: height - 345,
+                height: size.height - 345,
                 child: ListPrivateBoard(message: widget.message),
               )
             ],
