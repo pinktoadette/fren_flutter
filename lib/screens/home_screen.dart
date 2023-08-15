@@ -55,13 +55,9 @@ class _HomeScreenState extends State<HomeScreen> {
 
     super.initState();
 
-    /// Revenue Cat init in activity_tab
-    // _fetchUserPlans();
-
     /// Init streams
     _getCurrentUserUpdates();
 
-    // _handlePurchaseUpdates();
     _initFirebaseMessage();
 
     /// Request permission for IOS

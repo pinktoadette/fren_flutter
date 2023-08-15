@@ -80,7 +80,7 @@ dependencies:
   any_link_preview: ^3.0.0
   chips_choice: ^3.0.0
   cached_network_image: ^3.2.3 #no web
-  purchases_flutter: ^5.0.0 #no web
+  purchases_flutter: ^5.6.0 #no web
   card_swiper: ^3.0.1
   firebase_crashlytics: ^3.3.3
   flutter_cache_manager: ^3.3.1

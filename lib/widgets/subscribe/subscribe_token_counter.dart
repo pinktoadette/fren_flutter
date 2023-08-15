@@ -17,6 +17,16 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return TextButton.icon(
         onPressed: () {
