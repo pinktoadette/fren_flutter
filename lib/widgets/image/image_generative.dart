@@ -47,6 +47,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   late AppLocalizations _i18n;
   List<dynamic> _items = [];
   String _selectedUrl = '';
+  String _appendPrompt = '';
   bool _isLoading = false;
   int _counter = 1;
   final _cancelToken = CancelToken();
@@ -71,6 +72,16 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     super.dispose();
     _promptController.dispose();
     _cancelToken.cancel();
+  }
+
+  @override
+  void didUpdateWidget(oldWidget) {
+    if (widget.appendPrompt != "") {
+      setState(() {
+        _appendPrompt = widget.appendPrompt;
+      });
+    }
+    super.didUpdateWidget(oldWidget);
   }
 
   @override
@@ -123,7 +134,12 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                           child: Container(
                             margin: const EdgeInsets.all(0),
                             child: StoryCover(
-                                photoUrl: _items[index], title: "image $index"),
+                                width: _appendPrompt.contains("480v")
+                                    ? size.width / 4
+                                    : size.width,
+                                height: size.width,
+                                photoUrl: _items[index],
+                                title: "image $index"),
                           ),
                         ));
                   },
@@ -169,7 +185,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     try {
       final botApi = BotApi();
       List<dynamic> imageUrl = await botApi.machiImage(
-          text: "${_promptController.text} ${widget.appendPrompt}",
+          text: "${_promptController.text} $_appendPrompt",
           numImages: widget.numImages,
           cancelToken: _cancelToken);
       setState(() {

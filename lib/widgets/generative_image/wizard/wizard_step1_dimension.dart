@@ -64,9 +64,7 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
         children: [
           GestureDetector(
             onTap: () {
-              setState(() {
-                _selectedDimension = Dimension.vertical.value;
-              });
+              _setDimension(Dimension.vertical);
             },
             child: Container(
               width: 120,
@@ -88,9 +86,7 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
           ),
           GestureDetector(
             onTap: () {
-              setState(() {
-                _selectedDimension = Dimension.square.value;
-              });
+              _setDimension(Dimension.square);
             },
             child: Container(
               width: 120,
@@ -108,5 +104,12 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
         ],
       ),
     ]);
+  }
+
+  void _setDimension(Dimension dim) {
+    setState(() {
+      _selectedDimension = dim.value;
+    });
+    widget.onSelectedDimension(dim.value);
   }
 }

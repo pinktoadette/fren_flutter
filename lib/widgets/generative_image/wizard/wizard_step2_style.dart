@@ -29,14 +29,14 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
       "imagePath": "assets/images/ai_style/epic-realism.png",
     },
     {
-      "model": "anytingv3",
+      "model": "anime", // anythingv3
       "name": "anime",
       "imagePath": "assets/images/ai_style/anime.png",
     },
     {
       "model": "dall-e",
-      "name": "Dall-E",
-      "imagePath": "assets/images/blank.png",
+      "name": "Dall-E \n\nreturns square only",
+      "imagePath": "assets/images/ai_style/dall-e.png",
     },
   ];
 
@@ -63,7 +63,7 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Text(
-                "Example prompt: close up, girl with pink sundress walking in the green fields, detailed eyes \n*may be slow to load",
+                "Example prompt: close up, girl with pink sundress walking in the green fields, detailed eyes",
                 style: TextStyle(fontSize: 14),
               ),
               GridView.builder(
@@ -77,6 +77,10 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
                   var styleInfo = imageKeyLookup[index];
                   return _imageSelect(styleInfo: styleInfo);
                 },
+              ),
+              Text(
+                "* ${i18n.translate("take_time_to_load")}",
+                style: Theme.of(context).textTheme.labelSmall,
               ),
               OutlinedButton(
                 onPressed: () {
@@ -98,7 +102,7 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
                   ),
                 ),
                 child: const Text("None. I'll input it manually"),
-              ),
+              )
             ],
           ),
         ],
@@ -111,14 +115,14 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
 
     return GestureDetector(
         onTap: () {
-          widget.onSelectedStyle(styleInfo["model"]);
           setState(() {
             _selectedStyle = styleInfo["model"];
           });
+          widget.onSelectedStyle(styleInfo["model"]);
         },
         child: Card(
           elevation: _selectedStyle == styleInfo["model"] ? 8 : 0,
-          color: Colors.transparent, // Set the card color to transparent
+          color: Colors.black, // Set the card color to transparent
           shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.circular(8.0), // Add border radius to the card

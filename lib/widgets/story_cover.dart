@@ -74,12 +74,15 @@ class _StoryCoverState extends State<StoryCover> {
     Size size = MediaQuery.of(context).size;
 
     if (widget.photoUrl != "") {
+      int width = (widget.width ?? 512).toInt();
+      int height = (widget.height ?? 512).toInt();
+
       return CachedNetworkImage(
         fit: BoxFit.cover,
         width: widget.width ?? 512,
         height: widget.height ?? 512,
-        memCacheWidth: 512,
-        memCacheHeight: 512,
+        memCacheWidth: width,
+        memCacheHeight: height,
         imageUrl: widget.photoUrl,
         progressIndicatorBuilder: (context, url, progress) =>
             loadingButton(size: 20),

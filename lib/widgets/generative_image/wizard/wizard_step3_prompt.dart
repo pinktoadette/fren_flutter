@@ -23,10 +23,12 @@ class _WizardPromptState extends State<WizardPrompt> {
   bool _showLoading = false;
   final bool _isUploading = false;
   String? _selectedUrl;
+  String _appendPrompt = "";
 
   @override
   void initState() {
     super.initState();
+    _appendPrompt = widget.appendPrompt;
   }
 
   @override
@@ -50,7 +52,7 @@ class _WizardPromptState extends State<WizardPrompt> {
         ),
         ImagePromptGeneratorWidget(
           isProfile: false,
-          appendPrompt: widget.appendPrompt,
+          appendPrompt: _appendPrompt,
           onButtonClicked: (onclick) {
             pr.show(i18n.translate("processing"));
 

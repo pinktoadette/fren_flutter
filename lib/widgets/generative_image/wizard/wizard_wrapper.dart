@@ -17,14 +17,12 @@ class ImageWizardWidget extends StatefulWidget {
 
 class _ImageWizardWidgetState extends State<ImageWizardWidget> {
   String _appendPrompt = "";
-  List<Widget> pages = [];
   int _step = 0;
   late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
-    _getPages();
   }
 
   @override
@@ -32,11 +30,10 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
     super.dispose();
   }
 
-  void _getPages() {
-    if (!mounted) {
-      return;
-    }
-    pages = [
+  @override
+  Widget build(BuildContext context) {
+    _i18n = AppLocalizations.of(context);
+    List<Widget> pages = [
       WizardImageDimension(
         onSelectedDimension: (dimension) {
           setState(() {
@@ -45,23 +42,18 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
         },
       ),
       WizardImageStyle(onSelectedStyle: (onSelectedStyle) {
-        _appendPrompt += onSelectedStyle;
+        setState(() {
+          _appendPrompt += " $onSelectedStyle";
+        });
         widget.onAppendPrompt(_appendPrompt);
       }),
       WizardPrompt(
         appendPrompt: _appendPrompt,
         onSelectedImageUrl: (imageUrl) {
-          /// upload image
           widget.onComplete(imageUrl);
         },
       )
     ];
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
     return Container(
       padding: const EdgeInsets.only(top: 20),
       child: Column(

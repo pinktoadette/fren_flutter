@@ -123,13 +123,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Iconsax.paintbucket),
+                        icon: const Icon(Iconsax.image),
                         onPressed: () {
                           _aiImage();
                         },
                       ),
                       IconButton(
-                        icon: const Icon(Iconsax.image),
+                        icon: const Icon(Iconsax.gallery),
                         onPressed: () {
                           _editPageImage();
                         },
