@@ -356,6 +356,8 @@
   "post_board_info": "從您的收藏中發佈",
   "post_interactive_hint": "示例：想像您在一個神秘的世界中醒來，四周是魔法森林和神奇生物。當您邁出第一步時，您會在遠處看到一個發光的物體。您接下來該怎麼做？\n\n您即將參加微生物學考試，需要問題。",
   "post_interactive_hidden_hint": "（選填）秘密文字 - 不會顯示，但將參與路徑。\n\n這是您要讓讀者驚喜的地方！",
+  "post_published_on": "發佈於",
+  "post_last_updated": "最後更新",
 
   "latest_machi_for_you": "推薦的麻吉", 
   "latest_machi_yours": "您的麻吉",
@@ -364,7 +366,7 @@
   
   "interactive": "互動式",
   "interactive_number_of_paths": "總序列",
-  "interactive_complete": "不錯！要再試一次嗎？",
+  "interactive_complete": "好棒！要再試一次嗎？",
   "interactive_try_again_button": "再試一次！",
   "interactive_read_comments_below": "在下方分享您的評論。",
   "interactive_mode_action_info": "問題是根據創作者的提示動態生成的。問題和回覆不會保存，除非您在對話中繼續。",

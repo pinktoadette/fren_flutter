@@ -71,8 +71,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     double padding = 15;
 
     String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
-        ? "Published on "
-        : "Last Updated ";
+        ? _i18n.translate("post_published_on")
+        : _i18n.translate("post_last_updated");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

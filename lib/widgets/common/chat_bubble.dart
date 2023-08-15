@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 
 class Bubble extends CustomPainter {
   bool isRight;
+
   final double _radius = 15.0;
   final double _x = 10.0;
   Bubble(this.isRight);
 
   @override
   void paint(Canvas canvas, Size size) {
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    Color rightBubble =
+        isDarkMode == true ? APP_INVERSE_PRIMARY_COLOR : Colors.white;
+
     canvas.drawRRect(
         RRect.fromLTRBAndCorners(
           0,
@@ -23,7 +29,7 @@ class Bubble extends CustomPainter {
           topLeft: Radius.circular(_radius),
         ),
         Paint()
-          ..color = isRight ? APP_ACCENT_COLOR : APP_INVERSE_PRIMARY_COLOR
+          ..color = isRight ? APP_ACCENT_COLOR : rightBubble
           ..style = PaintingStyle.fill);
   }
 

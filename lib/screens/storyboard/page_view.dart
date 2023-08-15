@@ -131,9 +131,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                 padding: const EdgeInsets.only(
                   top: 20,
                 ),
-                child: StoryHeaderWidget(
-                    story: story!,
-                    width: widget.isPreview == true ? 200 : null),
+                child: StoryHeaderWidget(story: story!),
               ),
               leading: BackButton(
                 color: textColor,
@@ -613,6 +611,9 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    Color color = isDarkMode == true ? APP_INVERSE_PRIMARY_COLOR : Colors.black;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
@@ -622,15 +623,15 @@ class _StoryPageViewState extends State<StoryPageView> {
               onPressed: () {
                 Get.to(() => const AddNewStory());
               },
-              icon: const Icon(
+              icon: Icon(
                 Iconsax.add,
-                color: Colors.white60,
+                color: color,
               ),
               label: Text(
                 _i18n.translate("creative_mix_collection"),
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
-                  color: Colors.white60,
+                  color: color,
                 ),
               )),
         if (story?.status != StoryStatus.PUBLISHED)
@@ -649,10 +650,10 @@ class _StoryPageViewState extends State<StoryPageView> {
                   });
                 });
               },
-              icon: const Icon(
+              icon: Icon(
                 Iconsax.edit,
                 size: 20,
-                color: Colors.white60,
+                color: color,
               ))
       ],
     );
