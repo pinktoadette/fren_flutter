@@ -1,11 +1,9 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:machi_app/screens/first_time/steps_counter.dart';

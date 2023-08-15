@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:machi_app/controller/user_controller.dart';
-import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';

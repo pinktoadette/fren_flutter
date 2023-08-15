@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/friend_api.dart';
 import 'package:machi_app/api/machi/user_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';

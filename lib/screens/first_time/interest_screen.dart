@@ -5,7 +5,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/main_binding.dart';
-import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -132,6 +131,10 @@ class _InterestScreenState extends State<InterestScreen> {
       User user = UserModel().user;
       await UserModel().updateUserData(
           userId: user.userId, data: {USER_INTERESTS: _selectedInterest});
+
+      MainBinding mainBinding = MainBinding();
+      await mainBinding.dependencies();
+
       UserModel().authUserAccount(
           homeScreen: () => _nextScreen(const HomeScreen()),
           signUpScreen: () => _nextScreen(const SignUpScreen()));

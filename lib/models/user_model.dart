@@ -186,10 +186,17 @@ class UserModel extends Model {
   }) async {
     /// Check user auth
     if (getFirebaseUser != null) {
+      UserController userController;
+
       /// Get current user in database
       await getUser(getFirebaseUser!.uid).then((userDoc) async {
         /// if exists check status and take action
         if (userDoc.exists) {
+          if (!GetInstance().isRegistered<UserController>()) {
+            userController = Get.put(UserController(), tag: 'user');
+          } else {
+            userController = Get.find(tag: 'user');
+          }
           // Get User's latitude & longitude
           // final GeoPoint userGeoPoint = userDoc[USER_GEO_POINT]['geopoint'];
           // final double latitude = userGeoPoint.latitude;
@@ -225,13 +232,11 @@ class UserModel extends Model {
               interestScreen!();
               return;
             }
+            userController.initUser();
 
             // Go to home screen
             homeScreen();
           }
-          // @todo need to remove this
-          UserController userController = Get.find(tag: 'user');
-          userController.initUser();
 
           // Debug
           debugPrint("firebaseUser exists");

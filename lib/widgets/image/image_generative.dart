@@ -92,23 +92,24 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
 
     return Column(
       children: [
-        TextField(
-          onTapOutside: (b) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          scrollPadding:
-              EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          style: const TextStyle(fontSize: 14),
-          decoration: InputDecoration(
-            hintStyle: const TextStyle(color: APP_MUTED_COLOR, fontSize: 14),
-            hintText: _i18n.translate("sign_up_profile_ai_prompt_hint"),
-            isDense: true,
-            contentPadding: const EdgeInsets.all(10.0),
+        if (_items.isEmpty)
+          TextField(
+            onTapOutside: (b) {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            scrollPadding: EdgeInsets.only(
+                bottom: MediaQuery.of(context).viewInsets.bottom),
+            style: const TextStyle(fontSize: 14),
+            decoration: InputDecoration(
+              hintStyle: const TextStyle(color: APP_MUTED_COLOR, fontSize: 14),
+              hintText: _i18n.translate("sign_up_profile_ai_prompt_hint"),
+              isDense: true,
+              contentPadding: const EdgeInsets.all(10.0),
+            ),
+            controller: _promptController,
+            maxLines: 3,
+            maxLength: 200,
           ),
-          controller: _promptController,
-          maxLines: 3,
-          maxLength: 200,
-        ),
         _items.isNotEmpty
             ? SizedBox(
                 width: size.width,
