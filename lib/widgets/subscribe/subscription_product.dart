@@ -349,6 +349,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           /// temp
           subscribeController.updateCredits(qty);
           await purchaseApi.purchaseCredits();
+
           Get.snackbar(_i18n.translate("success"),
               _i18n.translate("subscribed_successfully"),
               snackPosition: SnackPosition.TOP,
@@ -361,6 +362,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           await FirebaseCrashlytics.instance.recordError(err, s,
               reason: 'Unable to save purchase offers: ${err.toString()}',
               fatal: true);
+        } finally {
+          _pr.hide();
         }
       }
       Get.back(result: true);

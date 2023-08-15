@@ -491,12 +491,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 400 / height,
-            child: Column(children: [
-              BotProfileCard(
-                bot: botController.bot,
-              ),
-            ]));
+          heightFactor: 400 / height,
+          child: BotProfileCard(
+            bot: botController.bot,
+          ),
+        );
       },
     );
   }

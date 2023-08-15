@@ -135,48 +135,47 @@ class _MyAppState extends State<MyApp> {
       child: ScopedModel<UserModel>(
         model: UserModel(),
         child: GetMaterialApp(
-          navigatorKey: navigatorKey,
-          navigatorObservers: [
-            //used the LeakNavigatorObserver
-            LeakNavigatorObserver(
-              shouldCheck: (route) {
-                return route.settings.name != null &&
-                    route.settings.name != '/';
-              },
-            ),
-          ],
-          scaffoldMessengerKey: scaffoldMessengerKey,
-          title: APP_NAME,
-          debugShowCheckedModeBanner: false,
+            navigatorKey: navigatorKey,
+            navigatorObservers: [
+              //used the LeakNavigatorObserver
+              LeakNavigatorObserver(
+                shouldCheck: (route) {
+                  return route.settings.name != null &&
+                      route.settings.name != '/';
+                },
+              ),
+            ],
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            title: APP_NAME,
+            debugShowCheckedModeBanner: false,
 
-          /// Setup translations
-          localizationsDelegates: const [
-            // AppLocalizations is where the lang translations is loaded
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: SUPPORTED_LOCALES,
+            /// Setup translations
+            localizationsDelegates: const [
+              // AppLocalizations is where the lang translations is loaded
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: SUPPORTED_LOCALES,
 
-          /// Returns a locale which will be used by the app
-          localeResolutionCallback: (locale, supportedLocales) {
-            // Check if the current device locale is supported
-            for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale!.languageCode) {
-                return supportedLocale;
+            /// Returns a locale which will be used by the app
+            localeResolutionCallback: (locale, supportedLocales) {
+              // Check if the current device locale is supported
+              for (var supportedLocale in supportedLocales) {
+                if (supportedLocale.languageCode == locale!.languageCode) {
+                  return supportedLocale;
+                }
               }
-            }
 
-            /// If the locale of the device is not supported, use the first one
-            /// from the list (English, in this case).
-            return supportedLocales.first;
-          },
-          home: const SplashScreen(),
-          darkTheme: _darkTheme(),
-          theme: isDarkMode ? _darkTheme() : _lightTheme(),
-          // themeMode: ThemeHelper().theme
-        ),
+              /// If the locale of the device is not supported, use the first one
+              /// from the list (English, in this case).
+              return supportedLocales.first;
+            },
+            home: const SplashScreen(),
+            darkTheme: _darkTheme(),
+            theme: isDarkMode ? _darkTheme() : _lightTheme(),
+            themeMode: ThemeHelper().theme),
       ),
     );
   }

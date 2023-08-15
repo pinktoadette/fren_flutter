@@ -151,11 +151,13 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
                     },
                     background: Container(
                         color: APP_ERROR, child: const Icon(Iconsax.trash)),
-                    child: StoryboardItemWidget(
-                        message: widget.message,
-                        item: storyboard,
-                        hideCollection: true,
-                        showHeader: false));
+                    child: widget.message != null
+                        ? StoryboardItemWidget(
+                            message: widget.message,
+                            item: storyboard,
+                            hideCollection: true,
+                            showHeader: false)
+                        : const SizedBox.shrink());
               })),
     );
   }

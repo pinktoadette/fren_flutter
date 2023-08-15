@@ -62,6 +62,7 @@ class _EditPageState extends State<EditPage> {
         appBar: AppBar(
           centerTitle: false,
           titleSpacing: 0,
+          toolbarHeight: 80,
           title: Text(
             _i18n.translate("creative_mix_edit"),
             style: Theme.of(context).textTheme.bodyMedium,
@@ -75,7 +76,7 @@ class _EditPageState extends State<EditPage> {
           actions: [
             Container(
                 padding: const EdgeInsets.all(10.0),
-                child: OutlinedButton(
+                child: TextButton(
                     onPressed: () {
                       Get.to(
                           () => StoryPageView(story: story, isPreview: true));

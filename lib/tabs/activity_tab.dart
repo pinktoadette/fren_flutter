@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:machi_app/controller/user_controller.dart';
+import 'package:machi_app/datas/user.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 
@@ -11,7 +14,6 @@ class ActivityTab extends StatefulWidget {
 
 class _ActivityTabState extends State<ActivityTab> {
   ScrollController scrollController = ScrollController();
-
   @override
   void initState() {
     super.initState();
@@ -24,6 +26,7 @@ class _ActivityTabState extends State<ActivityTab> {
 
   @override
   Widget build(BuildContext context) {
+    UserModel user = UserModel();
     return Scaffold(
       appBar: AppBar(
         centerTitle: false,
@@ -32,7 +35,9 @@ class _ActivityTabState extends State<ActivityTab> {
           style: Theme.of(context).textTheme.headlineLarge,
         ),
         automaticallyImplyLeading: false,
-        actions: const [SubscribeTokenCounter()],
+        actions: [
+          if (user.getFirebaseUser != null) const SubscribeTokenCounter()
+        ],
       ),
       body: const TimelineWidget(),
     );

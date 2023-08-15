@@ -124,10 +124,12 @@ class _StoryInfoState extends State<StoryInfo> {
       isScrollControlled: true,
       builder: (context) {
         return FractionallySizedBox(
-            heightFactor: 400 / height,
-            child: BotProfileCard(
-              bot: bot,
-            ));
+          heightFactor: 400 / height,
+          child: BotProfileCard(
+            bot: bot,
+            showChatbuttom: true,
+          ),
+        );
       },
     );
   }

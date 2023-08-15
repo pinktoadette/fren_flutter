@@ -18,6 +18,7 @@ import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
@@ -70,8 +71,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
   String? urlPreview;
   double _alphaValue = 0.25;
   late ProgressDialog _pr;
-
   final PageDirection _direction = PageDirection.VERTICAL;
+
+  bool _isDarkMode = false;
 
   @override
   void initState() {
@@ -81,6 +83,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
       story = storyboardController.currentStory;
       layout = widget.layout;
       urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
+    });
+    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    setState(() {
+      _isDarkMode = isDarkMode;
     });
   }
 
@@ -241,6 +247,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
   /// such as text alignment
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
+    Color textColor = _isDarkMode ? Colors.white54 : Colors.black;
+
     CrossAxisAlignment alignment = layout == Layout.CONVO
         ? story.createdBy.userId == scripts[index].characterId
             ? CrossAxisAlignment.end
@@ -314,20 +322,19 @@ class _EditPageReorderState extends State<EditPageReorder> {
       case "text":
         return Column(crossAxisAlignment: alignment, children: [
           _bubbleOrNot(
-              layout != Layout.CONVO
+              layout == Layout.COMIC
                   ? SizedBox(
                       width: size.width,
                       child: TextBorder(
                           text: scripts[index].text ?? "",
-                          size: layout == Layout.COMIC ? 20 : 16,
+                          size: 20,
                           textAlign: scripts[index].textAlign))
                   : Text(
                       scripts[index].text ?? "",
                       textAlign: scripts[index].textAlign,
                       style: TextStyle(
-                          color: layout == Layout.CONVO
-                              ? Colors.black
-                              : APP_INVERSE_PRIMARY_COLOR,
+                          color:
+                              layout == Layout.CONVO ? Colors.black : textColor,
                           fontSize: layout == Layout.COMIC ? 20 : 16),
                     ),
               size,

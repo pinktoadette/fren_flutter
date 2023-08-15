@@ -388,7 +388,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                   story?.pages?[index].backgroundImageUrl ?? "";
 
               return Container(
-                height: size.height,
+                height: size.height - 100,
+                margin: const EdgeInsets.only(bottom: 100),
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         colorFilter: ColorFilter.mode(
@@ -403,7 +404,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 width: 100,
                               ).image,
                         fit: BoxFit.cover)),
-                padding: const EdgeInsets.only(left: 40, top: 20, right: 40),
+                padding: const EdgeInsets.only(left: 40, top: 20, right: 20),
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
                       constraints: BoxConstraints(

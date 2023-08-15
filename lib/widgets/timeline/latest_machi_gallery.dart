@@ -175,23 +175,10 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
         return FractionallySizedBox(
             heightFactor: 400 / height,
             widthFactor: 1,
-            child: Column(children: [
-              BotProfileCard(
-                bot: bot,
-              ),
-              TextButton(
-                  onPressed: () {
-                    Get.back();
-                    NavigationHelper.handleGoToPageOrLogin(
-                      context: context,
-                      userController: userController,
-                      navigateAction: () {
-                        SetCurrentRoom().setNewBotRoom(bot, true);
-                      },
-                    );
-                  },
-                  child: Text(_i18n.translate("lets_chat")))
-            ]));
+            child: BotProfileCard(
+              bot: bot,
+              showChatbuttom: true,
+            ));
       },
     );
   }

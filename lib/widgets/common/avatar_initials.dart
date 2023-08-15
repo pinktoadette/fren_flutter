@@ -64,10 +64,10 @@ class _AvatarInitialsState extends State<AvatarInitials> {
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
-              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.5),
+              color: const Color.fromARGB(255, 0, 0, 0).withOpacity(0.2),
               spreadRadius: 1,
               blurRadius: 6,
-              offset: const Offset(2, 4),
+              offset: const Offset(2, 2),
             ),
           ],
         ),
