@@ -5,10 +5,13 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/main_binding.dart';
+import 'package:machi_app/controller/timeline_controller.dart';
+import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/screens/first_time/steps_counter.dart';
 import 'package:machi_app/screens/home_screen.dart';
 
@@ -55,6 +58,7 @@ class _InterestScreenState extends State<InterestScreen> {
 
     return SafeArea(
         child: Container(
+      color: Theme.of(context).colorScheme.background,
       padding: const EdgeInsets.only(left: 40, right: 40),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -106,7 +110,7 @@ class _InterestScreenState extends State<InterestScreen> {
                 onPressed: () {
                   if (_selectedInterest.length != _numSelection) {
                     Get.snackbar(_i18n.translate("validation_warning"),
-                        _i18n.translate("select_up_to_three"),
+                        _i18n.translate("select_three_interest"),
                         snackPosition: SnackPosition.TOP,
                         backgroundColor: APP_WARNING,
                         colorText: Colors.black);
@@ -125,24 +129,29 @@ class _InterestScreenState extends State<InterestScreen> {
 
   void _saveUserInterest() async {
     try {
+      User user = UserModel().user;
       await UserModel().updateUserData(
-          userId: UserModel().user.userId,
-          data: {USER_INTERESTS: _selectedInterest});
-
-      /// ensure all controllers are placed
-      MainBinding mainBinding = MainBinding();
-      await mainBinding.dependencies();
-
-      Get.offAll(() => const HomeScreen());
+          userId: user.userId, data: {USER_INTERESTS: _selectedInterest});
+      UserModel().authUserAccount(
+          homeScreen: () => _nextScreen(const HomeScreen()),
+          signUpScreen: () => _nextScreen(const SignUpScreen()));
     } catch (err, s) {
       Get.snackbar(
-        _i18n.translate("Error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
+          _i18n.translate("Error"), _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+          colorText: Colors.black);
       await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Error saving users interest', fatal: true);
+          reason: 'Error saving users interest', fatal: false);
     }
+  }
+
+  /// Navigate to next page
+  void _nextScreen(screen) {
+    // Go to next page route
+    Future(() {
+      Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => screen), (route) => false);
+    });
   }
 }
