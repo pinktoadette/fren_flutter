@@ -27,7 +27,6 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
   @override
   void initState() {
     super.initState();
-    _getMyBoards();
   }
 
   @override
@@ -48,117 +47,84 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
       onRefresh: () async {
         _getMyBoards();
       },
-      child: storyboardController.storyboards.isEmpty
-          ? Container(
-              padding: const EdgeInsets.only(left: 20, right: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Iconsax.book),
-                      const SizedBox(
-                        width: 10,
-                      ),
-                      Text(
-                        _i18n.translate("creative_mix_nothing"),
-                        style: Theme.of(context).textTheme.displayMedium,
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 30,
-                  ),
-                  Text(
-                    _i18n.translate("creative_mix_instruction"),
-                    textAlign: TextAlign.left,
-                  ),
-                ],
-              ))
-          : Obx(() => ListView.separated(
-              separatorBuilder: (BuildContext context, int index) {
-                if ((index + 1) % 3 == 0) {
-                  return Padding(
-                    padding:
-                        const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                    child: Container(
-                      height: AD_HEIGHT,
-                      width: width,
-                      color: Theme.of(context).colorScheme.background,
-                      child: const InlineAdaptiveAds(),
-                    ),
-                  );
-                } else {
-                  return const Divider();
-                }
-              },
-              shrinkWrap: true,
-              scrollDirection: Axis.vertical,
-              itemCount: storyboardController.storyboards.length,
-              itemBuilder: (BuildContext ctx, index) {
-                Storyboard storyboard = storyboardController.storyboards[index];
-                if (storyboard.story!.isEmpty) {
-                  // handles empty boards
-                  return const Divider();
-                } else if (index >= storyboardController.storyboards.length) {
-                  /// handle delete out of range
-                  return const SizedBox.shrink();
-                } else if ((index + 1) % 3 == 0) {
-                  return Padding(
-                    padding:
-                        const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                    child: Container(
-                      height: AD_HEIGHT,
-                      width: width,
-                      color: Theme.of(context).colorScheme.background,
-                      child: const InlineAdaptiveAds(),
-                    ),
-                  );
-                }
-                return Dismissible(
-                    key: Key(storyboard.storyboardId),
-                    direction: DismissDirection.endToStart,
-                    confirmDismiss: (DismissDirection direction) async {
-                      return await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: Text(
-                              _i18n.translate("DELETE"),
-                              style: Theme.of(context).textTheme.bodyMedium,
-                            ),
-                            content: Text(_i18n
-                                .translate("creative_mix_are_you_sure_delete")),
-                            actions: <Widget>[
-                              OutlinedButton(
-                                  onPressed: () => {
-                                        Navigator.of(context).pop(false),
-                                      },
-                                  child: Text(_i18n.translate("CANCEL"))),
-                              const SizedBox(
-                                width: 50,
-                              ),
-                              ElevatedButton(
-                                  onPressed: () => {
-                                        _onDelete(storyboard),
-                                      },
-                                  child: Text(_i18n.translate("DELETE"))),
-                            ],
-                          );
-                        },
+      child: Obx(() => ListView.separated(
+          separatorBuilder: (BuildContext context, int index) {
+            if ((index + 1) % 3 == 0) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+                child: Container(
+                  height: AD_HEIGHT,
+                  width: width,
+                  color: Theme.of(context).colorScheme.background,
+                  child: const InlineAdaptiveAds(),
+                ),
+              );
+            } else {
+              return const Divider();
+            }
+          },
+          shrinkWrap: true,
+          scrollDirection: Axis.vertical,
+          itemCount: storyboardController.storyboards.length,
+          itemBuilder: (BuildContext ctx, index) {
+            Storyboard storyboard = storyboardController.storyboards[index];
+            if (storyboard.story!.isEmpty) {
+              return const SizedBox.shrink();
+            } else if (index >= storyboardController.storyboards.length) {
+              /// handle delete out of range
+              return const SizedBox.shrink();
+            } else if ((index + 1) % 3 == 0) {
+              return Padding(
+                padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+                child: Container(
+                  height: AD_HEIGHT,
+                  width: width,
+                  color: Theme.of(context).colorScheme.background,
+                  child: const InlineAdaptiveAds(),
+                ),
+              );
+            }
+            return Dismissible(
+                key: Key(storyboard.storyboardId),
+                direction: DismissDirection.endToStart,
+                confirmDismiss: (DismissDirection direction) async {
+                  return await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return AlertDialog(
+                        title: Text(
+                          _i18n.translate("DELETE"),
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
+                        content: Text(_i18n
+                            .translate("creative_mix_are_you_sure_delete")),
+                        actions: <Widget>[
+                          OutlinedButton(
+                              onPressed: () => {
+                                    Navigator.of(context).pop(false),
+                                  },
+                              child: Text(_i18n.translate("CANCEL"))),
+                          const SizedBox(
+                            width: 50,
+                          ),
+                          ElevatedButton(
+                              onPressed: () => {
+                                    _onDelete(storyboard),
+                                  },
+                              child: Text(_i18n.translate("DELETE"))),
+                        ],
                       );
                     },
-                    background: Container(
-                        color: APP_ERROR, child: const Icon(Iconsax.trash)),
-                    child: widget.message != null
-                        ? StoryboardItemWidget(
-                            message: widget.message,
-                            item: storyboard,
-                            hideCollection: true,
-                            showHeader: false)
-                        : const SizedBox.shrink());
-              })),
+                  );
+                },
+                background: Container(
+                    color: APP_ERROR, child: const Icon(Iconsax.trash)),
+                child: StoryboardItemWidget(
+                    message: widget.message,
+                    item: storyboard,
+                    hideCollection: true,
+                    showHeader: false));
+          })),
     );
   }
 
