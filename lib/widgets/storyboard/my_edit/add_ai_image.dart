@@ -10,6 +10,7 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 
 class ImageGenerator extends StatefulWidget {
   final String? text;
@@ -56,8 +57,9 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 20,
+                      const Align(
+                        alignment: Alignment.topRight,
+                        child: SubscribeTokenCounter(),
                       ),
                       Text(
                         _i18n.translate(

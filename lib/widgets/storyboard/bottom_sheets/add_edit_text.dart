@@ -37,7 +37,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
   File? attachmentPreview;
   String? galleryImageUrl;
   TextAlign textAlign = TextAlign.left;
-  double _alphaValue = 0.5;
+  double _alphaValue = 0;
   double yOffset = 80;
 
   @override
@@ -46,8 +46,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
     setState(() {
       galleryImageUrl = widget.script?.image?.uri;
     });
-    _textController =
-        TextEditingController(text: widget.script?.text ?? "Text");
+    _textController = TextEditingController(text: widget.script?.text ?? "");
     textAlign = widget.script?.textAlign ?? TextAlign.left;
   }
 
@@ -139,8 +138,8 @@ class _AddEditTextState extends State<AddEditTextWidget> {
     AddEditTextCharacter update = AddEditTextCharacter.fromJson({
       "text": imageBytes == null ? text : null,
       "imageBytes": imageBytes,
-      "image": imageBytes == null ? attachmentPreview : null,
-      "gallery": imageBytes == null ? galleryImageUrl : null,
+      "attachmentPreview": imageBytes == null ? attachmentPreview : null,
+      "galleryUrl": imageBytes == null ? galleryImageUrl : null,
       "textAlign": textAlign.name,
       "characterId": widget.script?.characterId ?? UserModel().user.userId,
       "characterName": widget.script?.characterName ?? UserModel().user.username

@@ -46,7 +46,7 @@ void main() async {
 
   if (Platform.isAndroid | Platform.isIOS) {
     /// Revenue cat for subscription and payments
-    await Purchases.setLogLevel(LogLevel.debug);
+    await Purchases.setLogLevel(LogLevel.info);
 
     /// Revenue cat
     configuration = PurchasesConfiguration('goog_EutdJZovasmfuBudvjOKZpEkGcx');

@@ -9,6 +9,7 @@ import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
@@ -30,6 +31,9 @@ import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'dart:ui' as ui;
+
+import 'package:machi_app/widgets/subscribe/subscribe_purchase_details.dart';
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 // ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
@@ -65,6 +69,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   late AppLocalizations _i18n;
 
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
 
   Layout? layout;
   File? attachmentPreview;
@@ -125,7 +130,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.image),
                         onPressed: () {
-                          _aiImage();
+                          /// check if there's a subscription
+                          _generateOrSubscribe();
                         },
                       ),
                       IconButton(
@@ -434,6 +440,21 @@ class _EditPageReorderState extends State<EditPageReorder> {
     ).whenComplete(() {
       _updateBackground();
     });
+  }
+
+  void _generateOrSubscribe() {
+    if (subscribeController.credits <= 0) {
+      showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => Obx(() => FractionallySizedBox(
+              heightFactor: subscribeController.credits.value > 0
+                  ? MODAL_HEIGHT_SMALL_FACTOR
+                  : MODAL_HEIGHT_LARGE_FACTOR,
+              child: const SubscriptionProduct())));
+    } else {
+      _aiImage();
+    }
   }
 
   void _aiImage() async {
