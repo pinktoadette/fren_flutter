@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:dio/dio.dart';
@@ -20,9 +19,8 @@ Future<String> saveImageFromUrl(String imageUrl) async {
     if (response.statusCode == 200) {
       final result = await ImageGallerySaver.saveImage(
         Uint8List.fromList(response.data),
-        quality: 60,
-        name:
-            "machi_${DateTime.now().millisecondsSinceEpoch}", // Generate a unique name
+        quality: 80,
+        name: "machi_${DateTime.now().millisecondsSinceEpoch}",
       );
 
       if (result['isSuccess']) {

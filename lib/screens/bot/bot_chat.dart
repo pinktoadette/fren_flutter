@@ -255,7 +255,14 @@ class _BotChatScreenState extends State<BotChatScreen> {
           TextButton(
             onPressed: () async {
               try {
-                await saveImageFromUrl((message as types.ImageMessage).uri);
+                String response =
+                    await saveImageFromUrl((message as types.ImageMessage).uri);
+                Get.snackbar(
+                  _i18n.translate("success"),
+                  response,
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: APP_SUCCESS,
+                );
               } catch (err) {
                 Get.snackbar(
                   _i18n.translate("error"),
