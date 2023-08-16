@@ -19,14 +19,16 @@ class ProgressDialog {
         barrierDismissible: isDismissible,
         builder: (BuildContext context) {
           _dismissingContext = context; // Store the context
-          return const SimpleDialog(
+          return SimpleDialog(
             elevation: 8.0,
             shadowColor: Colors.transparent,
             backgroundColor: Colors.transparent,
+            surfaceTintColor: Colors.transparent,
             children: <Widget>[
               Center(
-                child: Frankloader(),
-              )
+                  child: Column(
+                children: [const Frankloader(), Text(message)],
+              ))
             ],
           );
         },

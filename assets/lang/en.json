@@ -125,6 +125,10 @@
   "add": "Add",
   "hello": "Hello",
   "processing": "Processing...",
+  "creating_image": "creating image",
+  "uploading_image": "uploading image",
+  "adding_credits": "adding credits",
+
   "loading": "Loading...",
   "success": "Success",
   "posted": "Posted",
@@ -290,6 +294,7 @@
   "creative_mix_edit": "Edit",
   "creative_mix_image_generator_instruction": "Let's create an image prompt",
   "creative_mix_image_generator_describe": "Describe your image in details.",
+  "creative_mix_image_long_process": "This may take some time. You may need to refresh the chatroom later", 
 
   "add_to_new_creativemix": "Add to new board",
   "add_to_new_creative_mix": "Add message to new CreativeMix",

@@ -104,14 +104,14 @@ class _ImageGeneratorState extends State<ImageGenerator> {
 
   void _loadProgress(bool isLoading) {
     if (isLoading == true) {
-      _pr.show(_i18n.translate("processing"));
+      _pr.show(_i18n.translate("creating_image"));
     } else {
       _pr.hide();
     }
   }
 
   void _saveSelectedPhoto(String photoUrl) async {
-    _pr.show(_i18n.translate("processing"));
+    _pr.show(_i18n.translate("uploading_image"));
     try {
       String newUrl = await uploadUrl(
           url: photoUrl,

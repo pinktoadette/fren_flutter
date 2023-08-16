@@ -125,6 +125,10 @@
   "add": "新增",
   "hello": "您好",
   "processing": "處理中...",
+  "creating_image": "創建圖片中",
+  "uploading_image": "上傳中",
+  "adding_credits": "加點數中",
+
   "loading": "載入中...",
   "success": "成功",
   "posted": "已發佈",
@@ -291,6 +295,7 @@
   "creative_mix_edit": "編輯",
   "creative_mix_image_generator_instruction": "讓麻吉創建一個圖像提示",
   "creative_mix_image_generator_describe": "詳細描述您的圖像提示。",
+  "creative_mix_image_long_process": "這可能需要一些時間。請稍後刷新聊天室。", 
 
   "add_to_new_creativemix": "新增至新創意混搭",
   "add_to_new_creative_mix": "將訊息新增至新創意混搭",

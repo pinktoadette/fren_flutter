@@ -249,7 +249,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       return;
     }
 
-    _pr.show(_i18n.translate("processing"));
+    _pr.show("");
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;
     String prompt = _promptController.text;

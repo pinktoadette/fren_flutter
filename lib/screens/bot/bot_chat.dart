@@ -69,6 +69,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   // bool? isBotTyping;
   File? file;
   bool _hasNewMessages = false;
+  bool _isLongImageProcess = false;
   String? _setTags;
   types.PartialImage? attachmentPreview;
 
@@ -366,6 +367,16 @@ class _BotChatScreenState extends State<BotChatScreen> {
       _hasNewMessages = true;
     });
 
+    /// flag if takes too long
+    /// @todo need db
+    if (message.text.contains("epic-realism") ||
+        message.text.contains("funko") ||
+        message.text.contains("majicmix")) {
+      setState(() {
+        _isLongImageProcess = true;
+      });
+    }
+
     String lastMessageId = "";
     if (attachmentPreview != null) {
       try {
@@ -432,6 +443,12 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
   Future<void> _getMachiResponse() async {
     try {
+      if (_setTags != null && _isLongImageProcess == true) {
+        String message = _i18n.translate("creative_mix_image_long_process");
+        Map<String, dynamic> response = _botResponseMap(message);
+        _addMessages(response);
+      }
+
       chatController.typingStatus(room: _room, isTyping: true);
       Map<String, dynamic> newMessage =
           await chatController.getMachiResponse(room: _room);
@@ -445,15 +462,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           error.response?.data) {
         errorMessage = error.response!.data["message"];
       }
-      dynamic response = {
-        CHAT_AUTHOR_ID: _room.bot.botId,
-        CHAT_AUTHOR: _room.bot.name,
-        BOT_ID: _room.bot.botId,
-        CHAT_MESSAGE_ID: createUUID(),
-        CHAT_TEXT: errorMessage,
-        CHAT_TYPE: "text",
-        CREATED_AT: getDateTimeEpoch()
-      };
+      Map<String, dynamic> response = _botResponseMap(errorMessage);
       _addMessages(response);
     } finally {
       chatController.typingStatus(room: _room, isTyping: false);
@@ -465,6 +474,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
     if (mounted) {
       setState(() {
         _setTags = null;
+        _isLongImageProcess = false;
       });
     }
   }
@@ -564,5 +574,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
         _messages.insert(0, newMessage);
       });
     }
+  }
+
+  Map<String, dynamic> _botResponseMap(String text) {
+    return {
+      CHAT_AUTHOR_ID: _room.bot.botId,
+      CHAT_AUTHOR: _room.bot.name,
+      BOT_ID: _room.bot.botId,
+      CHAT_MESSAGE_ID: createUUID(),
+      CHAT_TEXT: text,
+      CHAT_TYPE: "text",
+      CREATED_AT: getDateTimeEpoch()
+    };
   }
 }

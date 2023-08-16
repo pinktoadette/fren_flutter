@@ -348,12 +348,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     String qty = _selectedTier.identifier.replaceAll(RegExp(r'[^0-9]'), '');
 
     try {
-      _pr.show(_i18n.translate("processing"));
-
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
+          _pr.show(_i18n.translate("adding_credits"));
+
           /// Need use retries and delay since revenue has race conditions
           Map<String, dynamic> response = await purchaseApi.purchaseCredits(3);
 
