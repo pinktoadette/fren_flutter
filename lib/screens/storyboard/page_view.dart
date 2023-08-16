@@ -387,7 +387,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
               return Container(
                 height: size.height - 100,
-                margin: const EdgeInsets.only(bottom: 100),
+                margin: const EdgeInsets.only(bottom: 0),
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         colorFilter: ColorFilter.mode(

@@ -108,7 +108,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             _pr.hide();
                           },
                           onAppendPrompt: (prompt) => setState(() {
-                                _prompt = prompt;
+                                _prompt += prompt;
                               }))
                     ],
                   ),
@@ -132,7 +132,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           categoryId: createUUID());
       AddEditTextCharacter newItem = AddEditTextCharacter(
           galleryUrl: newUrl,
-          isBackground: _prompt.contains(Dimension.vertical.name),
+          isBackground: _prompt.contains(Dimension.vertical.value),
           characterId: UserModel().user.userId,
           characterName: UserModel().user.username);
 

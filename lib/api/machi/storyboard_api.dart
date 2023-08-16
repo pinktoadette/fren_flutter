@@ -115,10 +115,12 @@ class StoryboardApi {
     }
   }
 
-  Future<Storyboard> updateStoryboard(
-      {required String storyboardId,
-      required String title,
-      String? photoUrl}) async {
+  Future<Storyboard> updateStoryboard({
+    required String storyboardId,
+    required String title,
+    required String category,
+    String? photoUrl,
+  }) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     try {
       String url = '${baseUri}board';
@@ -128,6 +130,7 @@ class StoryboardApi {
         STORYBOARD_ID: storyboardId,
         STORYBOARD_TITLE: title,
         STORYBOARD_PHOTO_URL: photoUrl ?? "",
+        STORYBOARD_CATEGORY: category
       });
 
       Storyboard story = Storyboard.fromJson(response.data);

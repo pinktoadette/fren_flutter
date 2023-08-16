@@ -74,6 +74,7 @@ class StoryboardController extends GetxController {
         .indexWhere((element) => element.storyboardId == story.storyboardId);
     _storyboards[index] = story;
     _storyboards.refresh();
+    update();
   }
 
   Storyboard findStoryboardByStory(Story story) {

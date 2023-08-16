@@ -9,9 +9,12 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/forms/category_dropdown.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
+///@todo need to combine with story_edit.dart
 /// Edit and delete storyboard, including title and images
 /// Swipe to delete individual stories
 class StoryboardEdit extends StatefulWidget {
@@ -26,7 +29,10 @@ class _StoryboardEditState extends State<StoryboardEdit> {
   final _storyboardApi = StoryboardApi();
   File? _uploadPath;
   String? photoUrl;
+  String? _selectedCategory;
   final _titleController = TextEditingController();
+  final _aboutController = TextEditingController();
+
   bool isLoading = false;
   late AppLocalizations _i18n;
 
@@ -36,6 +42,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
     setState(() {
       storyboard = storyboardController.currentStoryboard;
       _titleController.text = storyboard.title;
+      _selectedCategory = storyboard.category;
     });
   }
 
@@ -43,36 +50,45 @@ class _StoryboardEditState extends State<StoryboardEdit> {
   void dispose() {
     super.dispose();
     _titleController.dispose();
+    _aboutController.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     _i18n = AppLocalizations.of(context);
-    return Container(
-      padding: EdgeInsets.only(
-        bottom: MediaQuery.of(context).viewInsets.bottom,
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Align(
-              alignment: Alignment.centerRight,
-              child: TextButton(
-                child: Text(_i18n.translate("SAVE")),
-                onPressed: () {
-                  _saveStoryboard();
-                },
-              )),
-          Padding(
+    TextStyle? styleLabel = Theme.of(context).textTheme.labelMedium;
+    TextStyle? styleBody = Theme.of(context).textTheme.bodyMedium;
+
+    return Obx(() => Container(
+          padding: EdgeInsets.only(
+            bottom: MediaQuery.of(context).viewInsets.bottom,
+          ),
+          child: Padding(
             padding: const EdgeInsets.all(20),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                Align(
+                    alignment: Alignment.centerRight,
+                    child: ElevatedButton.icon(
+                      label: Text(_i18n.translate("SAVE")),
+                      icon: isLoading == true
+                          ? loadingButton(size: 16, color: Colors.black)
+                          : const SizedBox.shrink(),
+                      onPressed: () {
+                        _saveStoryboard();
+                      },
+                    )),
+                Text(_i18n.translate("creative_mix_title"), style: styleLabel),
                 TextFormField(
+                  style: styleBody,
                   controller: _titleController,
                   maxLength: 80,
                   decoration: InputDecoration(
                       hintText: _i18n.translate("creative_mix_title"),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.primary),
                       floatingLabelBehavior: FloatingLabelBehavior.always),
                   validator: (reason) {
                     if (reason?.isEmpty ?? false) {
@@ -81,19 +97,45 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                     return null;
                   },
                 ),
+                CategoryDropdownWidget(
+                  notifyParent: (value) {
+                    setState(() {
+                      _selectedCategory = value;
+                    });
+                  },
+                  selectedCategory: _selectedCategory,
+                ),
                 const SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
+                Center(
+                    child: GestureDetector(
                   child: Stack(
                     children: [
-                      StoryCover(
-                        width: size.width * 0.9,
-                        height: size.width * 0.9,
-                        photoUrl: photoUrl ?? storyboard.photoUrl ?? "",
-                        file: _uploadPath,
-                        title: storyboard.title,
-                      ),
+                      if (_uploadPath != null && photoUrl == null)
+                        StoryCover(
+                          width: size.width * 0.9,
+                          height: size.width * 0.9,
+                          photoUrl: "",
+                          file: _uploadPath,
+                          title: storyboardController.currentStoryboard.title,
+                        ),
+                      if (_uploadPath == null && photoUrl != null)
+                        StoryCover(
+                          width: size.width * 0.9,
+                          height: size.width * 0.9,
+                          photoUrl: photoUrl ?? "",
+                          title: storyboardController.currentStoryboard.title,
+                        ),
+                      if (_uploadPath == null && photoUrl == null)
+                        StoryCover(
+                          width: size.width * 0.9,
+                          height: size.width * 0.9,
+                          photoUrl:
+                              storyboardController.currentStoryboard.photoUrl ??
+                                  "",
+                          title: storyboardController.currentStoryboard.title,
+                        ),
                       Positioned(
                         right: 0,
                         bottom: 0,
@@ -114,16 +156,11 @@ class _StoryboardEditState extends State<StoryboardEdit> {
                     /// Update story image
                     _selectImage(path: 'collection');
                   },
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
+                )),
               ],
             ),
           ),
-        ],
-      ),
-    );
+        ));
   }
 
   void _selectImage({required String path}) async {
@@ -176,6 +213,7 @@ class _StoryboardEditState extends State<StoryboardEdit> {
       await _storyboardApi.updateStoryboard(
           storyboardId: storyboard.storyboardId,
           title: _titleController.text,
+          category: _selectedCategory ?? "General",
           photoUrl: imageUrl);
       Get.snackbar(
           _i18n.translate("success"), _i18n.translate("update_successful"),
@@ -183,7 +221,6 @@ class _StoryboardEditState extends State<StoryboardEdit> {
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
     } catch (err, s) {
-      debugPrint(err.toString());
       Get.snackbar(
         _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),

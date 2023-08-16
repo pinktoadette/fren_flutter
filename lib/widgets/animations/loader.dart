@@ -16,8 +16,8 @@ class Frankloader extends StatelessWidget {
       children: [
         Lottie.asset(
           'assets/lottie/loader.json',
-          width: height ?? 200,
-          height: width ?? 500,
+          width: width ?? 200,
+          height: height ?? 500,
         ),
         Text(text ?? "")
       ],

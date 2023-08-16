@@ -9,6 +9,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/widgets/forms/category_dropdown.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:get/get.dart';
@@ -26,6 +27,7 @@ class _StoryEditState extends State<StoryEdit> {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
   File? _uploadPath;
+  String? _selectedCategory;
   String? photoUrl;
 
   final _titleController = TextEditingController();
@@ -36,6 +38,7 @@ class _StoryEditState extends State<StoryEdit> {
     super.initState();
     setState(() {
       _titleController.text = storyboardController.currentStory.title;
+      _selectedCategory = storyboardController.currentStory.category;
     });
   }
 
@@ -60,13 +63,49 @@ class _StoryEditState extends State<StoryEdit> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            storyboardController.currentStory.title,
-            style: Theme.of(context).textTheme.headlineMedium,
-            textAlign: TextAlign.left,
+          Align(
+              alignment: Alignment.centerRight,
+              child: ElevatedButton.icon(
+                  icon: isLoading == true
+                      ? loadingButton(size: 16, color: Colors.black)
+                      : const SizedBox.shrink(),
+                  onPressed: () {
+                    _saveStory();
+                  },
+                  label: Text(_i18n.translate("SAVE")))),
+          Text(_i18n.translate("creative_mix_title"),
+              style: Theme.of(context).textTheme.labelMedium),
+          TextFormField(
+            controller: _titleController,
+            maxLength: 80,
+            buildCounter: (_,
+                    {required currentLength, maxLength, required isFocused}) =>
+                _counter(context, currentLength, maxLength),
+            decoration: InputDecoration(
+                hintText: _i18n.translate("creative_mix_title"),
+                hintStyle:
+                    TextStyle(color: Theme.of(context).colorScheme.secondary),
+                floatingLabelBehavior: FloatingLabelBehavior.always),
+            validator: (reason) {
+              if (reason?.isEmpty ?? false) {
+                return _i18n.translate("creative_mix_enter_title");
+              }
+              return null;
+            },
+          ),
+          SizedBox(
+            height: MediaQuery.of(context).viewInsets.bottom,
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
+          ),
+          CategoryDropdownWidget(
+            notifyParent: (value) {
+              setState(() {
+                _selectedCategory = value;
+              });
+            },
+            selectedCategory: _selectedCategory,
           ),
           Center(
               child: GestureDetector(
@@ -114,32 +153,6 @@ class _StoryEditState extends State<StoryEdit> {
               _selectImage(path: 'collection');
             },
           )),
-          const SizedBox(
-            height: 20,
-          ),
-          Text(_i18n.translate("creative_mix_title"),
-              style: Theme.of(context).textTheme.labelMedium),
-          TextFormField(
-            controller: _titleController,
-            maxLength: 80,
-            buildCounter: (_,
-                    {required currentLength, maxLength, required isFocused}) =>
-                _counter(context, currentLength, maxLength),
-            decoration: InputDecoration(
-                hintText: _i18n.translate("creative_mix_title"),
-                hintStyle:
-                    TextStyle(color: Theme.of(context).colorScheme.secondary),
-                floatingLabelBehavior: FloatingLabelBehavior.always),
-            validator: (reason) {
-              if (reason?.isEmpty ?? false) {
-                return _i18n.translate("creative_mix_enter_title");
-              }
-              return null;
-            },
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).viewInsets.bottom,
-          ),
         ],
       ),
     );
@@ -182,14 +195,6 @@ class _StoryEditState extends State<StoryEdit> {
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
                 const Spacer(),
-                ElevatedButton.icon(
-                    icon: isLoading == true
-                        ? loadingButton(size: 16, color: Colors.black)
-                        : const SizedBox.shrink(),
-                    onPressed: () {
-                      _saveStory();
-                    },
-                    label: Text(_i18n.translate("SAVE")))
               ],
             )
           ])),
@@ -223,9 +228,14 @@ class _StoryEditState extends State<StoryEdit> {
       }
 
       await _storyApi.updateStory(
-          story: story, title: _titleController.text, photoUrl: imageUrl);
-      Story s =
-          story.copyWith(title: _titleController.text, photoUrl: imageUrl);
+          story: story,
+          title: _titleController.text,
+          photoUrl: imageUrl,
+          category: _selectedCategory);
+      Story s = story.copyWith(
+          title: _titleController.text,
+          photoUrl: imageUrl,
+          category: _selectedCategory);
       widget.onUpdateStory(s);
 
       Get.snackbar(
