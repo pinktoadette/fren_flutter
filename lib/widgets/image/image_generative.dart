@@ -63,7 +63,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   void initState() {
     super.initState();
     if (widget.isProfile == false) {
-      _counter = 1; //subscribeController.credits.value;
+      _counter = subscribeController.credits.value;
     }
   }
 
@@ -187,7 +187,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       final botApi = BotApi();
       List<dynamic> imageUrl = await botApi.machiImage(
           text: "${_promptController.text} $_appendPrompt",
-          numImages: widget.numImages,
+          numImages: widget.numImages ?? 1,
           cancelToken: _cancelToken);
       setState(() {
         _items = imageUrl;

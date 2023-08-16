@@ -117,11 +117,19 @@ class BotApi {
   }
 
   Future<List<dynamic>> machiImage(
-      {required text, required numImages, CancelToken? cancelToken}) async {
+      {required String text,
+      required int numImages,
+      bool? isSubscribed,
+      CancelToken? cancelToken}) async {
     String url = '${baseUri}machi_image';
     final dio = await auth.getDio();
     final response = await dio.post(url,
-        data: {"text": text, "numImages": numImages}, cancelToken: cancelToken);
+        data: {
+          "text": text,
+          "numImages": numImages,
+          "subscribe": isSubscribed ?? false
+        },
+        cancelToken: cancelToken);
     return response.data;
   }
 

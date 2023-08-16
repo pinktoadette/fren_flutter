@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/api/machi/chatroom_api.dart';
@@ -8,6 +9,7 @@ import 'package:machi_app/api/machi/gallery_api.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/downloader.dart';
+import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
@@ -163,6 +165,11 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   showUserNames: true,
                   showUserAvatars: true,
                   isAttachmentUploading: _isAttachmentUploading,
+                  imageProviderBuilder: (
+                      {required conditional, imageHeaders, required uri}) {
+                    return ImageCacheWrapper(uri,
+                        maxHeight: 512, maxWidth: 512);
+                  },
                   messages: _messages,
                   onSendPressed: _handleSendPressed,
                   onAvatarTap: (messageUser) async {
