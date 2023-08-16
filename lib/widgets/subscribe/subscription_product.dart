@@ -355,6 +355,8 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
+        _pr.hide();
+
         try {
           _pr.show(_i18n.translate("adding_credits"));
           await Future.delayed(const Duration(seconds: 1));

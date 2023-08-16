@@ -166,8 +166,12 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                     _i18n.translate("profile_image_generate_button"),
                   ),
                   onPressed: () {
-                    widget.onButtonClicked(true);
-                    _generatePhoto();
+                    if (_promptController.text == "") {
+                      null;
+                    } else {
+                      widget.onButtonClicked(true);
+                      _generatePhoto();
+                    }
                   },
                 )),
         const SizedBox(
