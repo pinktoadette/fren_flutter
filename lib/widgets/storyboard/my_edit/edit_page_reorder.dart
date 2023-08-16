@@ -32,7 +32,6 @@ import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'dart:ui' as ui;
 
-import 'package:machi_app/widgets/subscribe/subscribe_purchase_details.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 // ignore: must_be_immutable

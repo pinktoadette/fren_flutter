@@ -61,11 +61,7 @@ class _StoryCoverState extends State<StoryCover> {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(
             widget.radius ?? 20), // Set your dynamic radius value here
-        child: SizedBox(
-          height: widget.height ?? 512,
-          width: widget.width ?? 512,
-          child: _showImageLocal(context),
-        ),
+        child: _showImageLocal(context),
       ),
     );
   }

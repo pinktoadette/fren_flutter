@@ -110,7 +110,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     Size size = MediaQuery.of(context).size;
     double itemHeight = 410;
     Color backgroundColor = Theme.of(context).colorScheme.background;
-    Color fontColor = Colors.white;
 
     if (offers == null) {
       return const Center(
@@ -340,19 +339,25 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   void _makePurchase() async {
-    setState(() {
-      isLoading = true;
-    });
+    if (mounted) {
+      setState(() {
+        isLoading = true;
+      });
+    }
+
     final purchaseApi = PurchasesApi();
     String info = await AppHelper().getRevenueCat();
     String qty = _selectedTier.identifier.replaceAll(RegExp(r'[^0-9]'), '');
 
     try {
+      _pr.show(_i18n.translate("processing"));
+
       CustomerInfo purchaserInfo =
           await Purchases.purchasePackage(_selectedTier);
       if (purchaserInfo.entitlements.all[info]!.isActive) {
         try {
           _pr.show(_i18n.translate("adding_credits"));
+          await Future.delayed(const Duration(seconds: 1));
 
           /// Need use retries and delay since revenue has race conditions
           Map<String, dynamic> response = await purchaseApi.purchaseCredits(3);
@@ -397,9 +402,12 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
             snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
       }
     } finally {
-      setState(() {
-        isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+        });
+      }
+
       _pr.hide();
     }
   }

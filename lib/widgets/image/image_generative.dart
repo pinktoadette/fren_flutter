@@ -23,11 +23,15 @@ class ImagePromptGeneratorWidget extends StatefulWidget {
   /// notify when the the images are returned
   final Function(bool onImages) onImageReturned;
 
+  /// notify when there's an error
+  final Function(String errorMessage) onError;
+
   ImagePromptGeneratorWidget(
       {Key? key,
       required this.onImageSelected,
       required this.onImageReturned,
       required this.onButtonClicked,
+      required this.onError,
       this.numImages = 4,
       this.isProfile = false,
       this.appendPrompt = ""})
@@ -89,7 +93,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     super.build(context);
     _i18n = AppLocalizations.of(context);
     Size size = MediaQuery.of(context).size;
-
+    final bool is480v = _appendPrompt.contains("480v");
     return Column(
       children: [
         if (_items.isEmpty)
@@ -115,11 +119,11 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                 width: size.width,
                 height: size.width,
                 child: GridView.builder(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisSpacing: 0,
-                    mainAxisSpacing: 0,
-                    crossAxisCount: 2,
-                  ),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 0,
+                      crossAxisCount: 2,
+                      mainAxisExtent: is480v ? 300 : 100),
                   itemCount: _items.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -135,9 +139,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                           child: Container(
                             margin: const EdgeInsets.all(0),
                             child: StoryCover(
-                                width: _appendPrompt.contains("480v")
-                                    ? size.width / 4
-                                    : size.width,
+                                width: is480v ? size.width / 2 : size.width,
                                 height: size.width,
                                 photoUrl: _items[index],
                                 title: "image $index"),
@@ -193,14 +195,10 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         _items = imageUrl;
         _counter -= 1;
       });
+      subscribeController.getCredits();
       widget.onImageReturned(true);
     } on DioException catch (err, s) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        "Sorry, got an error 😕 generating",
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
+      widget.onError(err.toString());
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error in image generator ${err.toString()}', fatal: true);
       Get.back();

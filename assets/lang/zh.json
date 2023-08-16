@@ -320,7 +320,7 @@
   "creative_mix_success_delete": "收藏已成功刪除",
   "creative_mix_board_error": "刪除收藏時出現了問題",
 
-  "creative_mix_ai_image_credits": "每次使用需要消耗 4 點積分，生成 4 張圖像供選擇。",
+  "creative_mix_ai_image_credits": "每次使用需要消耗2點數。",
 
   "creative_mix_ai_select_dimension": "選擇尺寸",
   "creative_mix_aiselect_dimension_background": "背景",

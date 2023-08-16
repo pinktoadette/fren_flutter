@@ -319,7 +319,7 @@
   "creative_mix_success_delete": "Board is successfully deleted",
   "creative_mix_board_error": "Something went wrong deleting the board",
 
-  "creative_mix_ai_image_credits": "This will use 4 credits each time, generating 4 images to select from.",
+  "creative_mix_ai_image_credits": "This will use 2 credits each time.",
 
   "creative_mix_ai_select_dimension": "Select Dimension",
   "creative_mix_aiselect_dimension_background": "For Background",

@@ -1,4 +1,5 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
@@ -93,6 +94,15 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           },
                           onLoading: (isLoading) {
                             _loadProgress(isLoading);
+                          },
+                          onError: (errorMessage) {
+                            Get.snackbar(
+                              _i18n.translate("error"),
+                              _i18n.translate(errorMessage),
+                              snackPosition: SnackPosition.TOP,
+                              backgroundColor: APP_ERROR,
+                            );
+                            _pr.hide();
                           },
                           onAppendPrompt: (prompt) => setState(() {
                                 _prompt = prompt;

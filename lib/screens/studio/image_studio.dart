@@ -58,6 +58,7 @@ class _ImageStudioScreenState extends State<ImageStudioScreen> {
                 onButtonClicked: (onclick) {},
                 onImageSelected: (value) => {widget.onImageSelect(value)},
                 onImageReturned: (bool onImages) {},
+                onError: (errorMessage) {},
               ),
               const SizedBox(
                 height: 100,

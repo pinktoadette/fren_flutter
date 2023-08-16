@@ -8,12 +8,14 @@ class ImageWizardWidget extends StatefulWidget {
   final Function(String url) onComplete;
   final Function(String prompt) onAppendPrompt;
   final Function(bool isLoading) onLoading;
+  final Function(String errorMessage) onError;
 
   const ImageWizardWidget(
       {super.key,
       required this.onComplete,
       required this.onAppendPrompt,
-      required this.onLoading});
+      required this.onLoading,
+      required this.onError});
 
   @override
   State<ImageWizardWidget> createState() => _ImageWizardWidgetState();
@@ -55,6 +57,9 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
         appendPrompt: _appendPrompt,
         onSelectedImageUrl: (imageUrl) {
           widget.onComplete(imageUrl);
+        },
+        onError: (errorMessage) {
+          widget.onError(errorMessage);
         },
         onLoading: (isLoading) {
           widget.onLoading(isLoading);

@@ -9,12 +9,14 @@ class WizardPrompt extends StatefulWidget {
   final String appendPrompt;
   final Function(String image) onSelectedImageUrl;
   final Function(bool isLoading) onLoading;
+  final Function(String errorMessage) onError;
 
   const WizardPrompt(
       {Key? key,
       required this.onSelectedImageUrl,
       required this.appendPrompt,
-      required this.onLoading})
+      required this.onLoading,
+      required this.onError})
       : super(key: key);
 
   @override
@@ -24,7 +26,6 @@ class WizardPrompt extends StatefulWidget {
 class _WizardPromptState extends State<WizardPrompt> {
   final List<Script> script = [];
   bool _showLoading = false;
-  final bool _isUploading = false;
   String? _selectedUrl;
   String _appendPrompt = "";
 
@@ -55,6 +56,9 @@ class _WizardPromptState extends State<WizardPrompt> {
         ImagePromptGeneratorWidget(
           isProfile: false,
           appendPrompt: _appendPrompt,
+          onError: (errorMessage) {
+            widget.onError(errorMessage);
+          },
           onButtonClicked: (onclick) {
             setState(() {
               _showLoading = onclick;

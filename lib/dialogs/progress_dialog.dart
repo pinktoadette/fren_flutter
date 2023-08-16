@@ -25,10 +25,14 @@ class ProgressDialog {
             backgroundColor: Colors.transparent,
             surfaceTintColor: Colors.transparent,
             children: <Widget>[
-              Center(
-                  child: Column(
-                children: [const Frankloader(), Text(message)],
-              ))
+              Column(
+                children: [
+                  Text(message),
+                  const Frankloader(
+                    height: 100,
+                  )
+                ],
+              )
             ],
           );
         },
