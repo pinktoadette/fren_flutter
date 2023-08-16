@@ -1,15 +1,16 @@
-import 'dart:typed_data';
-import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:image_gallery_saver/image_gallery_saver.dart';
-import 'package:machi_app/helpers/create_uuid.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:dio/dio.dart';
+import 'dart:typed_data';
 
 Future<String> saveImageFromUrl(String imageUrl) async {
-  PermissionStatus status = await Permission.accessMediaLocation.status;
+  PermissionStatus status =
+      await Permission.photos.status; // Use photos permission for iOS
 
   if (status.isDenied) {
     // Request permission if not granted previously
-    status = await Permission.accessMediaLocation.request();
+    status = await Permission.photos.request();
   }
 
   if (status.isGranted) {
@@ -17,13 +18,22 @@ Future<String> saveImageFromUrl(String imageUrl) async {
         .get(imageUrl, options: Options(responseType: ResponseType.bytes));
 
     if (response.statusCode == 200) {
-      await ImageGallerySaver.saveImage(Uint8List.fromList(response.data),
-          quality: 60, name: "machi ${createUUID()}");
-      return "Saved";
+      final result = await ImageGallerySaver.saveImage(
+        Uint8List.fromList(response.data),
+        quality: 60,
+        name:
+            "machi_${DateTime.now().millisecondsSinceEpoch}", // Generate a unique name
+      );
+
+      if (result['isSuccess']) {
+        return "Saved";
+      } else {
+        throw "Failed to save";
+      }
     }
-    throw "Failed to save";
+    throw "Failed to fetch image";
   } else {
-    await openAppSettings();
+    // You can also guide the user to enable the permission in the app settings
+    throw "Need to enable permission to access photos.";
   }
-  throw "Need to enable permission to access media location.";
 }
