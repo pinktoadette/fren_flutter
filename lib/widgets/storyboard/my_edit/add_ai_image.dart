@@ -17,8 +17,14 @@ class ImageGenerator extends StatefulWidget {
   final String? text;
   final Story? story;
   final Function(AddEditTextCharacter imageUrl) onSelection;
+  final Function(String errorMessage)? onError;
+
   const ImageGenerator(
-      {Key? key, required this.onSelection, this.story, this.text})
+      {Key? key,
+      required this.onSelection,
+      this.story,
+      this.text,
+      this.onError})
       : super(key: key);
 
   @override
@@ -96,12 +102,9 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             _loadProgress(isLoading);
                           },
                           onError: (errorMessage) {
-                            Get.snackbar(
-                              _i18n.translate("error"),
-                              _i18n.translate(errorMessage),
-                              snackPosition: SnackPosition.TOP,
-                              backgroundColor: APP_ERROR,
-                            );
+                            if (widget.onError != null) {
+                              widget.onError!(errorMessage);
+                            }
                             _pr.hide();
                           },
                           onAppendPrompt: (prompt) => setState(() {

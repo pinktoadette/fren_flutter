@@ -466,6 +466,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
             heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
             child: ImageGenerator(
               story: story,
+              onError: (errorMessage) {
+                Get.snackbar(
+                  _i18n.translate("error"),
+                  _i18n.translate(errorMessage),
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: APP_ERROR,
+                );
+              },
               onSelection: (value) async {
                 if (value.isBackground == true) {
                   setState(() {

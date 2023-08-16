@@ -27,10 +27,9 @@ class ProgressDialog {
             children: <Widget>[
               Column(
                 children: [
-                  const Frankloader(
-                    height: 80,
+                  Frankloader(
+                    text: message,
                   ),
-                  Text(message),
                 ],
               )
             ],

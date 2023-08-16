@@ -123,7 +123,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 0,
                       crossAxisCount: 2,
-                      mainAxisExtent: is480v ? 300 : 100),
+                      mainAxisExtent: is480v ? 300 : size.width / 2),
                   itemCount: _items.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -150,7 +150,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
             : const SizedBox(
                 height: 300,
               ),
-        _counter == 0
+        _items.isNotEmpty
             ? ElevatedButton(
                 onPressed: () {
                   widget.onImageSelected(_selectedUrl);
