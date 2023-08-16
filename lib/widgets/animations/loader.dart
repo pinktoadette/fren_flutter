@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:machi_app/constants/constants.dart';
 
 class Frankloader extends StatelessWidget {
   final double? height;
@@ -17,9 +18,12 @@ class Frankloader extends StatelessWidget {
         Lottie.asset(
           'assets/lottie/loader.json',
           width: width ?? 200,
-          height: height ?? 500,
+          height: height ?? 200,
         ),
-        Text(text ?? "")
+        Text(
+          text ?? "",
+          style: const TextStyle(color: APP_ACCENT_COLOR, fontSize: 16),
+        )
       ],
     ));
   }

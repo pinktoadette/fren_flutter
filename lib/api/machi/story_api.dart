@@ -105,13 +105,9 @@ class StoryApi {
     String url = '${baseUri}story';
     debugPrint("Requesting URL $url");
     final dio = await auth.getDio();
-    await dio.put(url, data: {
+
+    Map<String, dynamic> payload = {
       STORY_ID: story.storyId,
-      STORY_TITLE: title ?? story.title,
-      STORY_CATEGORY: category ?? story.category,
-      STORY_SUMMARY: summary ?? story.summary,
-      STORY_PHOTO_URL: photoUrl ?? story.photoUrl,
-      STORY_LAYOUT: layout ?? Layout.PUBLICATION.name,
       STORY_PAGE_DIRECTION: story.pageDirection?.name,
       STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
           ? story.pages!
@@ -122,7 +118,17 @@ class StoryApi {
                   })
               .toList()
           : []
-    });
+    };
+    Map<String, dynamic> filter = {
+      if (title != null) STORY_TITLE: title,
+      if (category != null) STORY_CATEGORY: category,
+      if (summary != null) STORY_SUMMARY: summary,
+      if (photoUrl != null) STORY_PHOTO_URL: photoUrl,
+      if (layout != null) STORY_LAYOUT: layout,
+    };
+
+    await dio.put(url, data: {...payload, ...filter});
+
     Story updatedStory = story.copyWith(
         layout: Layout.values
             .byName(layout ?? story.layout?.name ?? Layout.PUBLICATION.name),
