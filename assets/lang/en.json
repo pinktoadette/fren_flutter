@@ -331,6 +331,8 @@
   "creative_mix_aiselect_dimension_in_content": "In content",
   "creative_mix_ai_select_style": "Select Style",
 
+  "creative_mix_quick_description": "Tell me briefly what content you want to see",
+  
   "_reporting": "*** Reporting user ***",
   "report_create": "File A Report",
   "report_comment_reason": "Any comments (optional)",

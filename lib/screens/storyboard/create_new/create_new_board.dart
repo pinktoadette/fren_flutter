@@ -50,7 +50,7 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
           titleSpacing: 0,
           centerTitle: false,
           title: Text(
-            _i18n.translate("creative_mix_new_board"),
+            _i18n.translate("creative_mix_manual"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
@@ -59,9 +59,6 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
               Text(_i18n.translate("creative_mix_title"), style: styleLabel),
               TextFormField(
                 style: styleBody,

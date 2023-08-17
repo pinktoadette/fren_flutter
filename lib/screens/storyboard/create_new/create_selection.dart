@@ -5,6 +5,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/screens/storyboard/create_new/create_new_board.dart';
 import 'package:machi_app/screens/storyboard/create_new/quick_create.dart';
+import 'package:machi_app/widgets/bot/prompt_create.dart';
 
 class CreateNewSelection extends StatelessWidget {
   const CreateNewSelection({super.key});
@@ -35,12 +36,17 @@ class CreateNewSelection extends StatelessWidget {
                   context,
                   i18n.translate("creative_mix_help_me"),
                   i18n.translate("creative_mix_help_me_info"),
-                  Iconsax.cloud_lightning),
+                  Iconsax.cloud_lightning,
+                  const QuickCreateNewBoard()),
               const SizedBox(
                 height: 20,
               ),
-              _buttonSelection(context, i18n.translate("creative_mix_manual"),
-                  i18n.translate("creative_mix_manual_info"), Iconsax.activity),
+              _buttonSelection(
+                  context,
+                  i18n.translate("creative_mix_manual"),
+                  i18n.translate("creative_mix_manual_info"),
+                  Iconsax.activity,
+                  const ManaulCreateNewBoard()),
               const SizedBox(
                 height: 100,
               ),
@@ -50,15 +56,15 @@ class CreateNewSelection extends StatelessWidget {
         ));
   }
 
-  Widget _buttonSelection(
-      BuildContext context, String title, String subtitle, IconData icon) {
+  Widget _buttonSelection(BuildContext context, String title, String subtitle,
+      IconData icon, Widget widget) {
     double buttonSize = 200;
     return SizedBox(
       width: buttonSize,
       height: buttonSize,
       child: OutlinedButton.icon(
         onPressed: () {
-          Get.to(() => const ManaulCreateNewBoard());
+          Get.to(() => widget);
         },
         label: Column(
           mainAxisAlignment: MainAxisAlignment.center,

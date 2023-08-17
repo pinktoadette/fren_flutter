@@ -43,7 +43,7 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
           titleSpacing: 0,
           centerTitle: false,
           title: Text(
-            _i18n.translate("creative_mix_new_board"),
+            _i18n.translate("creative_mix_help_me"),
             style: Theme.of(context).textTheme.headlineMedium,
           ),
         ),
@@ -52,15 +52,13 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(
-                height: 20,
-              ),
-              Text(_i18n.translate("creative_mix_description"),
+              Text(_i18n.translate("creative_mix_quick_description"),
                   style: styleLabel),
               TextFormField(
                 style: styleBody,
                 controller: _aboutController,
-                maxLength: 120,
+                maxLength: 300,
+                maxLines: 3,
                 decoration: InputDecoration(
                     hintText: _i18n.translate("creative_mix_description"),
                     hintStyle:
