@@ -134,7 +134,7 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
           category: _selectedCategory.text,
           character: UserModel().user.username,
           characterId: UserModel().user.userId);
-      Get.back();
+      Get.until((route) => route.isFirst);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
