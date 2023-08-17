@@ -36,7 +36,7 @@ class _StoryCoverState extends State<StoryCover> {
       return Container(
           decoration: BoxDecoration(
               color: APP_ACCENT_COLOR,
-              borderRadius: BorderRadius.circular(widget.radius ?? 20),
+              borderRadius: BorderRadius.circular(widget.radius ?? 10),
               boxShadow: [
                 BoxShadow(
                     blurRadius: 8,
@@ -59,8 +59,7 @@ class _StoryCoverState extends State<StoryCover> {
     return Card(
       color: Colors.transparent,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(
-            widget.radius ?? 20), // Set your dynamic radius value here
+        borderRadius: BorderRadius.circular(widget.radius ?? 10),
         child: SizedBox(
           height: widget.height ?? 512,
           width: widget.width ?? 512,

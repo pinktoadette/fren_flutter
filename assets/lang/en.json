@@ -270,6 +270,11 @@
 
   "_creative_mix_section": "*** Creative Mix Section ***",
   "creative_mix": "CreativeMix",
+  "creative_mix_help_me": "Quick Create",
+  "creative_mix_help_me_info": "Create a story for me.",
+  "creative_mix_manual": "Manual Create",
+  "creative_mix_manual_info": "Create an empty collection with title",
+
   "creative_mix_collection": "Collection",
   "creative_mix_create": "Create",
   "creative_mix_new_board": "Create Collection",

@@ -5,7 +5,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/screens/storyboard/create_new/create_new_board.dart';
+import 'package:machi_app/screens/storyboard/create_new/create_selection.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_board.dart';
 import 'package:machi_app/widgets/storyboard/my_items/list_my_published_board.dart';
 
@@ -60,7 +60,7 @@ class _StoryboardState extends State<StoryboardHome>
                 textStyle: Theme.of(context).textTheme.bodyMedium,
               ),
               onPressed: () async {
-                Get.to(() => const CreateNewBoard());
+                Get.to(() => const CreateNewSelection());
               },
               label: Text(_i18n.translate("creative_mix_collection")),
               icon: const Icon(Iconsax.add),

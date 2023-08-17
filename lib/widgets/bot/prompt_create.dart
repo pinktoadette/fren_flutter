@@ -273,7 +273,8 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           photoUrl: botImgUrl);
       await _chatroomApi.createNewRoom();
       _clear();
-      SetCurrentRoom().setNewBotRoom(bot, true);
+      SetCurrentRoom()
+          .setNewBotRoom(bot: bot, createNew: true, closeBack: true);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

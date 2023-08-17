@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
-import 'package:iconsax/iconsax.dart';
 
 class NoData extends StatelessWidget {
   // Variables

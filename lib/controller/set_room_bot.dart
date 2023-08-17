@@ -11,7 +11,8 @@ class SetCurrentRoom {
   BotController botController = Get.find(tag: 'bot');
   final _chatroomApi = ChatroomMachiApi();
 
-  void setNewBotRoom(Bot bot, bool createNew) async {
+  void setNewBotRoom(
+      {required Bot bot, required bool createNew, bool? closeBack}) async {
     /// create new room and bot
     /// Adds to the end of the list
     botController.bot = bot;
@@ -20,6 +21,10 @@ class SetCurrentRoom {
     }
     chatController.addEmptyRoomToList();
     chatController.onLoadCurrentRoom(chatController.emptyRoom);
+
+    if (closeBack == true) {
+      Get.back();
+    }
 
     Get.to(() => const BotChatScreen(), arguments: {
       "room": chatController.currentRoom,

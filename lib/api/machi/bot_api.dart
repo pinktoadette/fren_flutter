@@ -32,7 +32,7 @@ class BotApi {
       BOT_NAME: name,
       BOT_MODEL_TYPE: modelType.toString().split(".")[1],
       BOT_PROMPT: prompt,
-      BOT_TEMPERATURE: 0.3,
+      BOT_TEMPERATURE: 0.5,
       BOT_IS_PRIVATE: isPrivate ?? true,
       BOT_ACTIVE: true,
       BOT_PROFILE_PHOTO: photoUrl,

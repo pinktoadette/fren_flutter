@@ -6,35 +6,28 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
-import 'package:machi_app/widgets/forms/category_dropdown.dart';
 
-class ManaulCreateNewBoard extends StatefulWidget {
-  const ManaulCreateNewBoard({Key? key}) : super(key: key);
+class QuickCreateNewBoard extends StatefulWidget {
+  const QuickCreateNewBoard({Key? key}) : super(key: key);
 
   @override
-  State<ManaulCreateNewBoard> createState() => _ManaulCreateNewBoardState();
+  State<QuickCreateNewBoard> createState() => _QuickCreateNewBoardState();
 }
 
-class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
+class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
   late AppLocalizations _i18n;
-  final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
   final _storyboardApi = StoryboardApi();
-  TextEditingController _selectedCategory = TextEditingController();
 
   bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _selectedCategory.text = 'General';
-    });
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
     _aboutController.dispose();
     super.dispose();
   }
@@ -62,23 +55,6 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
               const SizedBox(
                 height: 20,
               ),
-              Text(_i18n.translate("creative_mix_title"), style: styleLabel),
-              TextFormField(
-                style: styleBody,
-                controller: _titleController,
-                maxLength: 80,
-                decoration: InputDecoration(
-                    hintText: _i18n.translate("creative_mix_title"),
-                    hintStyle:
-                        TextStyle(color: Theme.of(context).colorScheme.primary),
-                    floatingLabelBehavior: FloatingLabelBehavior.always),
-                validator: (reason) {
-                  if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("creative_mix_enter_title");
-                  }
-                  return null;
-                },
-              ),
               Text(_i18n.translate("creative_mix_description"),
                   style: styleLabel),
               TextFormField(
@@ -96,14 +72,6 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
                   }
                   return null;
                 },
-              ),
-              CategoryDropdownWidget(
-                notifyParent: (value) {
-                  setState(() {
-                    _selectedCategory = value;
-                  });
-                },
-                selectedCategory: _selectedCategory.text,
               ),
               const Spacer(),
               Align(
@@ -131,10 +99,8 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
     try {
       await _storyboardApi.createStoryboard(
           text: _aboutController.text,
-          title: _titleController.text,
           image: '',
           summary: _aboutController.text,
-          category: _selectedCategory.text,
           character: UserModel().user.username,
           characterId: UserModel().user.userId);
       Get.back();

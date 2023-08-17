@@ -85,7 +85,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
             IconButton(
                 onPressed: () async {
                   Bot bot = await _botApi.getBot(botId: DEFAULT_BOT_ID);
-                  SetCurrentRoom().setNewBotRoom(bot, true);
+                  SetCurrentRoom().setNewBotRoom(bot: bot, createNew: true);
                 },
                 icon: const Icon(Iconsax.message_edit))
           ],

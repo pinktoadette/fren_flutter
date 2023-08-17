@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart' show SchedulerBinding;
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:flutter/material.dart';
 import 'package:machi_app/screens/account_page.dart';
 import 'package:machi_app/widgets/sign_out_button_card.dart';
 import 'package:scoped_model/scoped_model.dart';
@@ -22,6 +23,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late AppLocalizations _i18n;
   bool _isDarkMode = false;
 
+  @override
+  void initState() {
+    super.initState();
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      initUserSettings();
+    });
+  }
+
   /// Initialize user settings
   void initUserSettings() async {
     if (!mounted) {
@@ -30,19 +39,18 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
     bool isDarkMode = ThemeHelper().loadThemeFromBox();
 
+    // Get system's brightness mode
+    var brightness = MediaQuery.of(context).platformBrightness;
+    bool systemIsDarkMode = brightness == Brightness.dark;
+
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
       }
-      _isDarkMode = isDarkMode;
+      // Use system dark mode
+      _isDarkMode = isDarkMode || systemIsDarkMode;
     });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    initUserSettings();
   }
 
   @override

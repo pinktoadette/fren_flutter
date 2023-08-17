@@ -108,7 +108,8 @@ class _BotProfileCardState extends State<BotProfileCard> {
                 context: context,
                 userController: userController,
                 navigateAction: () {
-                  SetCurrentRoom().setNewBotRoom(widget.bot, true);
+                  SetCurrentRoom()
+                      .setNewBotRoom(bot: widget.bot, createNew: true);
                 },
               );
             },

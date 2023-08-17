@@ -86,7 +86,8 @@ class _ListPromptBotState extends State<ListPromptBots> {
                   return InkWell(
                       onTap: () {
                         Future(() {
-                          SetCurrentRoom().setNewBotRoom(item, true);
+                          SetCurrentRoom()
+                              .setNewBotRoom(bot: item, createNew: true);
                         });
                         Navigator.pop(context);
                       },

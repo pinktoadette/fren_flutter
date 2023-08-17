@@ -38,3 +38,7 @@ String truncateScriptsTo250Chars(
 
   return aggregatedText;
 }
+
+bool isEmptyString(String? value) {
+  return value == null || value.isEmpty;
+}

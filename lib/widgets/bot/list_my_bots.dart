@@ -81,7 +81,8 @@ class _ListMyBotWidget extends State<ListMyBot> {
               itemBuilder: (context, index) => InkWell(
                   onTap: () {
                     Future(() {
-                      SetCurrentRoom().setNewBotRoom(_listBot[index], true);
+                      SetCurrentRoom()
+                          .setNewBotRoom(bot: _listBot[index], createNew: true);
                     });
                     Navigator.pop(context);
                   },
