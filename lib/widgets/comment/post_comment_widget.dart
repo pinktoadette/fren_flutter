@@ -62,14 +62,15 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
             borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(24), topRight: Radius.circular(24))),
         child: Stack(children: [
-          Obx(() => commentController.replyToComment.commentId != null
+          Obx(() => commentController.replyToComment?.commentId != null
               ? TextButton.icon(
                   style: TextButton.styleFrom(
+                      iconColor: APP_INVERSE_PRIMARY_COLOR,
                       padding: EdgeInsets.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                       alignment: Alignment.centerLeft),
                   label: Text(
-                    "${_i18n.translate("comment_reply_to")} @${truncateText(maxLength: 30, text: commentController.replyToComment.user.username)}",
+                    "${_i18n.translate("comment_reply_to")} @${truncateText(maxLength: 30, text: commentController.replyToComment?.user.username ?? "")}",
                     style: Theme.of(context)
                         .textTheme
                         .labelSmall!
@@ -87,9 +88,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
           Container(
             margin: const EdgeInsets.only(top: 10, bottom: 10),
             padding: EdgeInsets.only(
-                top: commentController.replyToComment.commentId != null
-                    ? 20
-                    : 10),
+                top: commentController.replyToComment != null ? 20 : 10),
             child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 physics: const AlwaysScrollableScrollPhysics(),
@@ -189,7 +188,7 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
       StoryComment newComment = await commentApi.postComment(
           storyId: storyboardController.currentStory.storyId,
           comment: _comment,
-          replyToComment: commentController.replyToComment.commentId == null
+          replyToComment: commentController.replyToComment?.commentId == null
               ? null
               : commentController.replyToComment,
           cancelToken: _cancelToken);
@@ -221,9 +220,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
     StoryboardController storyboardController = Get.find(tag: 'storyboard');
     TimelineController timelineController = Get.find(tag: 'timeline');
     StoryComment? replyTo = commentController.replyToComment;
-    if (replyTo.commentId != null) {
-      replyTo.response!.add(value);
-      commentController.updateItem(replyTo);
+    if (replyTo?.commentId != null) {
+      replyTo?.response!.add(value);
+      commentController.updateItem(replyTo!);
       return;
     }
 

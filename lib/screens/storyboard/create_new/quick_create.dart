@@ -1,12 +1,13 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/api/machi/storyboard_api.dart';
+import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
+import 'package:machi_app/screens/storyboard/page_view.dart';
 
 class QuickCreateNewBoard extends StatefulWidget {
   const QuickCreateNewBoard({Key? key}) : super(key: key);
@@ -16,11 +17,11 @@ class QuickCreateNewBoard extends StatefulWidget {
 }
 
 class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
+  StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late AppLocalizations _i18n;
   final TextEditingController _aboutController = TextEditingController();
-  final _storyboardApi = StoryboardApi();
+  final _storyApi = StoryApi();
   late ProgressDialog _pr;
-  bool _isLoading = false;
 
   @override
   void initState() {
@@ -77,14 +78,11 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
               const Spacer(),
               Align(
                   alignment: Alignment.bottomCenter,
-                  child: ElevatedButton.icon(
-                      icon: _isLoading == true
-                          ? loadingButton(size: 16)
-                          : const SizedBox.shrink(),
+                  child: ElevatedButton(
                       onPressed: () {
                         _updateChanges();
                       },
-                      label: Text(_i18n.translate("creative_mix_create")))),
+                      child: Text(_i18n.translate("creative_mix_create")))),
               const SizedBox(
                 height: 50,
               ),
@@ -97,13 +95,17 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
     _pr.show(_i18n.translate("creating"));
 
     try {
-      await _storyboardApi.createStoryboard(
-          text: _aboutController.text,
-          image: '',
-          summary: _aboutController.text,
-          character: UserModel().user.username,
-          characterId: UserModel().user.userId);
+      Storyboard storyboard = await _storyApi.quickStory(_aboutController.text);
+      storyboardController.addNewStoryboard(storyboard);
+
+      storyboardController.setCurrentBoard(storyboard);
+      storyboardController.setCurrentStory(storyboard.story![0]);
+
       Get.back();
+
+      Get.to(() => StoryPageView(
+            story: storyboard.story![0],
+          ));
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

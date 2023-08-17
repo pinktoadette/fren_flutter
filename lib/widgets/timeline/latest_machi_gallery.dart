@@ -12,7 +12,10 @@ import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
+import 'package:machi_app/widgets/bot/prompt_create.dart';
+import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
+import 'package:machi_app/widgets/storyboard/new_story_card.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:machi_app/widgets/timeline/latest_gallery.dart';
 
@@ -25,7 +28,6 @@ class LatestMachiWidget extends StatefulWidget {
 
 class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   UserController userController = Get.find(tag: 'user');
-  SubscribeController subscriptionController = Get.find(tag: 'subscribe');
   TimelineController timelineController = Get.find(tag: 'timeline');
   late AppLocalizations _i18n;
 
@@ -62,8 +64,8 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
 
   @override
   Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
     _i18n = AppLocalizations.of(context);
+    Size size = MediaQuery.of(context).size;
 
     return Obx(() => timelineController.machiList.isEmpty
         ? const Frankloader()
@@ -84,84 +86,144 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        _addBot(),
                         ...timelineController.machiList.map((bot) {
-                          return InkWell(
-                              onTap: () {
-                                _showBotInfo(bot);
-                              },
-                              child: SizedBox(
-                                  width: size.width / 4.5,
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      CircleAvatar(
-                                        radius: 40,
-                                        backgroundImage: bot.profilePhoto != ""
-                                            ? ImageCacheWrapper(
-                                                bot.profilePhoto!,
-                                                maxHeight: 100)
-                                            : null,
-                                      ),
-                                      Text(
-                                        bot.name,
-                                        textAlign: TextAlign.center,
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodySmall,
-                                      ),
-                                      Text(bot.category,
-                                          textAlign: TextAlign.center,
-                                          style: const TextStyle(fontSize: 10))
-                                    ],
-                                  )));
+                          return _showBotAvatar(bot: bot);
                         })
                       ])),
               const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      _i18n.translate("latest_gallery"),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(right: 10),
-                    child: TextButton(
-                        onPressed: () {
-                          NavigationHelper.handleGoToPageOrLogin(
-                            context: context,
-                            userController: userController,
-                            navigateAction: () async {
-                              Get.to(() => const LatestGallery());
-                            },
-                          );
-                        },
-                        child: Text(_i18n.translate("see_all"),
-                            style: Theme.of(context).textTheme.bodyMedium)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
-              GalleryWidget(gallery: timelineController.galleryList),
-              if (userController.user != null)
-                subscriptionController.customer == null
-                    ? const SizedBox.shrink()
-                    : subscriptionController.customer!.allPurchaseDates.isEmpty
-                        ? const SubscriptionCard()
-                        : const SizedBox.shrink(),
+              const CreateStoryCard(),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   children: [
+              //     Container(
+              //       alignment: Alignment.bottomLeft,
+              //       padding: const EdgeInsets.only(left: 20),
+              //       child: Text(
+              //         _i18n.translate("latest_gallery"),
+              //         style: Theme.of(context).textTheme.bodyMedium,
+              //       ),
+              //     ),
+              //     Container(
+              //       alignment: Alignment.bottomLeft,
+              //       padding: const EdgeInsets.only(right: 10),
+              //       child: TextButton(
+              //           onPressed: () {
+              //             NavigationHelper.handleGoToPageOrLogin(
+              //               context: context,
+              //               userController: userController,
+              //               navigateAction: () async {
+              //                 Get.to(() => const LatestGallery());
+              //               },
+              //             );
+              //           },
+              //           child: Text(_i18n.translate("see_all"),
+              //               style: Theme.of(context).textTheme.bodyMedium)),
+              //     ),
+              //   ],
+              // ),
+              // const SizedBox(height: 10),
+              // GalleryWidget(gallery: timelineController.galleryList),
+
+              if (userController.user != null) _showSubscriptionCard(),
               const SizedBox(height: 20),
             ],
           ));
+  }
+
+  Widget _showSubscriptionCard() {
+    SubscribeController subscriptionController = Get.find(tag: 'subscribe');
+    return subscriptionController.customer!.allPurchaseDates.isEmpty
+        ? const SubscriptionCard()
+        : const SizedBox.shrink();
+  }
+
+  Widget _addBot() {
+    Size size = MediaQuery.of(context).size;
+
+    return InkWell(
+        onTap: () {
+          showModalBottomSheet<void>(
+              context: context,
+              isScrollControlled: true,
+              builder: (context) => FractionallySizedBox(
+                  heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+                  child: DraggableScrollableSheet(
+                    snap: true,
+                    initialChildSize: 1,
+                    minChildSize: 1,
+                    builder: (context, scrollController) =>
+                        SingleChildScrollView(
+                      controller: scrollController,
+                      child: const CreateMachiWidget(),
+                    ),
+                  )));
+        },
+        child: SizedBox(
+            width: size.width / 4.5,
+            child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                    width: size.width / 4.5,
+                    height: size.width / 4.5,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: APP_ACCENT_COLOR,
+                        width: 2.0, // Adjust the border width as needed
+                      ),
+                    ),
+                    child: const Center(
+                      child: Icon(Icons.add, color: APP_ACCENT_COLOR),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  Text(
+                    _i18n.translate("add"),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                  Text(_i18n.translate("create_me"),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(fontSize: 10))
+                ])));
+  }
+
+  Widget _showBotAvatar({required Bot bot}) {
+    Size size = MediaQuery.of(context).size;
+
+    return InkWell(
+        onTap: () {
+          _showBotInfo(bot);
+        },
+        child: SizedBox(
+            width: size.width / 4.5,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AvatarInitials(
+                    photoUrl: bot.profilePhoto ?? "", username: bot.name),
+                Text(
+                  bot.name,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodySmall,
+                ),
+                Text(bot.category,
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(fontSize: 10))
+              ],
+            )));
   }
 
   void _showBotInfo(Bot bot) {

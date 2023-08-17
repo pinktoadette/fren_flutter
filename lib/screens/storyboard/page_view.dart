@@ -126,7 +126,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                 const Size.fromHeight(80), // Set the desired height here
             child: AppBar(
               centerTitle: false,
-              backgroundColor: isDarkMode ? Colors.black26 : Colors.white24,
+              backgroundColor: Colors.white24,
               title: Container(
                 padding: const EdgeInsets.only(
                   top: 20,
@@ -395,7 +395,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                     image: DecorationImage(
                         colorFilter: ColorFilter.mode(
                             const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                                story?.pages![index].backgroundAlpha ?? 0.5),
+                                story?.pages![index].backgroundAlpha ?? 0),
                             BlendMode.darken),
                         image: backgroundUrl != ""
                             ? ImageCacheWrapper(backgroundUrl)

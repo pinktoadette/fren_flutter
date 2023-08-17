@@ -38,7 +38,7 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
     AppLocalizations i18n = AppLocalizations.of(context);
     return Obx(() => Container(
         color:
-            commentController.replyToComment.commentId == widget.item.commentId
+            commentController.replyToComment?.commentId == widget.item.commentId
                 ? APP_TERTIARY
                 : null,
         child: Column(

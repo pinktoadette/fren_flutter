@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -146,5 +147,21 @@ class StoryApi {
     final response = await dio.post(url, data: {STORY_ID: storyId});
 
     return response.data;
+  }
+
+  Future<Storyboard> quickStory(String text) async {
+    try {
+      String url = '${baseUri}quick';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {SCRIPT_TEXT: text});
+      Storyboard story = Storyboard.fromJson(response.data);
+
+      return story;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to create quick story', fatal: true);
+      rethrow;
+    }
   }
 }

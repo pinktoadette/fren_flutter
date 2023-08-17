@@ -123,8 +123,10 @@
 
   "_CommonWords": "*** Common Words Translations ***",
   "add": "Add",
+  "create_me": "Create Me",
   "hello": "Hello",
   "processing": "Processing...",
+  "thinking": "Thinking...",
   "creating_image": "creating image",
   "uploading_image": "uploading image",
   "adding_credits": "adding credits",
@@ -270,6 +272,8 @@
 
   "_creative_mix_section": "*** Creative Mix Section ***",
   "creative_mix": "CreativeMix",
+  "creative_mix_quickly_create_story": "Create a New Story",
+  "creative_mix_quickly_create_story_info": "Get a story and create your own images",
   "creative_mix_help_me": "Quick Create",
   "creative_mix_help_me_info": "Create a story for me.",
   "creative_mix_manual": "Manual Create",

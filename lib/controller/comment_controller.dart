@@ -5,19 +5,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/models/user_model.dart';
-
-StoryComment initial = StoryComment(
-  comment: '',
-  createdAt: getDateTimeEpoch(),
-  updatedAt: getDateTimeEpoch(),
-  user: StoryUser(
-      userId: UserModel().user.userId,
-      photoUrl: UserModel().user.userProfilePhoto,
-      username: UserModel().user.username),
-);
 
 /// tracks replies to who
 /// listens for list of comment widget for pagination
@@ -30,13 +17,11 @@ class CommentController extends GetxController {
       PagingController(firstPageKey: 0);
 
   RxList<StoryComment> comments = <StoryComment>[].obs;
-  // ignore: prefer_final_fields
-  // can't make it null!. idk
-  final Rx<StoryComment> _replyToComment = initial.obs;
+  final Rx<StoryComment?> _replyToComment = Rx<StoryComment?>(null);
 
   // sets who the user is posting comment to.
-  StoryComment get replyToComment => _replyToComment.value;
-  set replyToComment(StoryComment value) => _replyToComment.value = value;
+  StoryComment? get replyToComment => _replyToComment.value;
+  set replyToComment(StoryComment? value) => _replyToComment.value = value;
 
   @override
   void onInit() {
@@ -58,7 +43,7 @@ class CommentController extends GetxController {
   // clears out reply to in post comment.
   // will not take null. idk?
   void clearReplyTo() {
-    _replyToComment.value = initial;
+    _replyToComment.value = null;
   }
 
   // clear when exit story

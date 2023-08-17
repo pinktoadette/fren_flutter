@@ -124,7 +124,8 @@
   "_CommonWords": "*** 常用詞彙翻譯 ***",
   "add": "新增",
   "hello": "您好",
-  "processing": "處理中...",
+  "processing": "處理中。。。",
+  "thinking": "正在想。。。",
   "creating_image": "創建圖片中",
   "uploading_image": "上傳中",
   "adding_credits": "加點數中",
@@ -271,6 +272,14 @@
 
   "_creative_mix_section": "*** 創意混搭區 ***",
   "creative_mix": "創意混搭",
+  "creative_mix_quickly_create_story": "快速創建新故事",
+  "creative_mix_quickly_create_story_info": "獲取故事，創建您自己的圖片",
+  "creative_mix_help_me": "快速創建",
+  "creative_mix_help_me_info": "幫我創建一個故事。",
+  "creative_mix_manual": "自己創建",
+  "creative_mix_manual_info": "創建只有標題的空集合",
+
+
   "creative_mix_collection": "收藏",
   "creative_mix_create": "創建",
   "creative_mix_new_board": "創建收藏",

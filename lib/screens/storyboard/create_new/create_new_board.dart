@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
@@ -22,7 +23,7 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
   final _storyboardApi = StoryboardApi();
   TextEditingController _selectedCategory = TextEditingController();
 
-  bool _isLoading = false;
+  late ProgressDialog _pr;
 
   @override
   void initState() {
@@ -44,6 +45,8 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
     _i18n = AppLocalizations.of(context);
     TextStyle? styleLabel = Theme.of(context).textTheme.labelMedium;
     TextStyle? styleBody = Theme.of(context).textTheme.bodyMedium;
+    _pr = ProgressDialog(context, isDismissible: true);
+
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -105,14 +108,11 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
               const Spacer(),
               Align(
                   alignment: Alignment.bottomCenter,
-                  child: ElevatedButton.icon(
-                      icon: _isLoading == true
-                          ? loadingButton(size: 16)
-                          : const SizedBox.shrink(),
+                  child: ElevatedButton(
                       onPressed: () {
                         _updateChanges();
                       },
-                      label: Text(_i18n.translate("creative_mix_create")))),
+                      child: Text(_i18n.translate("creative_mix_create")))),
               const SizedBox(
                 height: 50,
               ),
@@ -122,9 +122,8 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
   }
 
   void _updateChanges() async {
-    setState(() {
-      _isLoading = true;
-    });
+    _pr.show(_i18n.translate("creating"));
+
     try {
       await _storyboardApi.createStoryboard(
           text: _aboutController.text,
@@ -145,9 +144,7 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error creating manual board', fatal: true);
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      _pr.hide();
     }
   }
 }
