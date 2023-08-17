@@ -86,7 +86,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
       scripts = widget.scriptList;
       story = storyboardController.currentStory;
       layout = widget.layout;
-      urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
+      if (story.pages?.isNotEmpty == true) {
+        urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
+      }
     });
     bool isDarkMode = ThemeHelper().loadThemeFromBox();
     setState(() {

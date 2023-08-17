@@ -18,7 +18,7 @@ class NoData extends StatelessWidget {
     // Check svgName
     if (svgName != null) {
       // Get SVG icon
-      icon = const Icon(Iconsax.briefcase);
+      icon = const Icon(Icons.error);
     } else {
       icon = const Frankloader(
         height: 100,

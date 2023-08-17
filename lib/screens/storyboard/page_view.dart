@@ -326,7 +326,10 @@ class _StoryPageViewState extends State<StoryPageView> {
       return SizedBox(
           height: height,
           width: size.width,
-          child: NoData(text: _i18n.translate("creative_mix_bits")));
+          child: NoData(
+            text: _i18n.translate("creative_mix_bits"),
+            svgName: "error",
+          ));
     }
     return Stack(alignment: Alignment.topCenter, children: [
       NotificationListener<UserScrollNotification>(

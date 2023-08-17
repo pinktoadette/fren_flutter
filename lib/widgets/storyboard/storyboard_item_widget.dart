@@ -112,9 +112,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   Widget _buildComicLayout(Story story, double width) {
     const index = 0;
-    final displayText = truncateScriptsTo250Chars(
-      scripts: story.pages![0].scripts,
-      length: 300,
+    final title = truncateText(
+      text: story.title,
+      maxLength: 100,
+    );
+    final subtitle = truncateText(
+      text: story.summary ?? "",
+      maxLength: 300,
     );
     final firstScriptWithImage = story.pages![0].scripts!.firstWhere(
       (script) => script.type == 'image',
@@ -146,28 +150,31 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             fit: BoxFit.cover,
           ),
         ),
-        child: _buildComicChild(
-            displayText, firstScriptWithImage, story.layout ?? Layout.COMIC),
+        child: _buildComicChild(title, subtitle, firstScriptWithImage,
+            story.layout ?? Layout.COMIC),
       ),
     );
   }
 
   Widget _buildComicChild(
-    String displayText,
+    String title,
+    String subtitle,
     Script firstScriptWithImage,
     Layout layout,
   ) {
-    if (displayText.isNotEmpty) {
+    if (title.isNotEmpty) {
       return Padding(
-        padding: const EdgeInsets.all(20),
-        child: textLinkPreview(
-          useBorder: layout == Layout.COMIC,
-          context: context, // Replace with your context source
-          text: displayText,
-          maxLines: 9,
-          style: const TextStyle(color: Colors.black),
-        ),
-      );
+          padding: const EdgeInsets.all(20),
+          child: Align(
+            alignment: Alignment.bottomLeft,
+            child: textLinkPreview(
+              useBorder: layout == Layout.COMIC,
+              context: context, // Replace with your context source
+              text: title,
+              maxLines: 9,
+              style: const TextStyle(color: Colors.black),
+            ),
+          ));
     } else if (firstScriptWithImage.image != null) {
       return StoryCover(
         photoUrl: firstScriptWithImage.image!.uri,
