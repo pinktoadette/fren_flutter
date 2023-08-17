@@ -6,6 +6,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/screens/storyboard/page_view.dart';
 
@@ -22,6 +23,7 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
   final TextEditingController _aboutController = TextEditingController();
   final _storyApi = StoryApi();
   late ProgressDialog _pr;
+  final _appHelper = AppHelper();
 
   @override
   void initState() {
@@ -58,19 +60,21 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
             children: [
               Text(_i18n.translate("creative_mix_quick_description"),
                   style: styleLabel),
+              Text(_i18n.translate("creative_mix_quick_sub_desc"),
+                  style: styleBody),
               TextFormField(
                 style: styleBody,
                 controller: _aboutController,
                 maxLength: 300,
-                maxLines: 3,
+                maxLines: 10,
                 decoration: InputDecoration(
-                    hintText: _i18n.translate("creative_mix_description"),
+                    hintText: _i18n.translate("creative_mix_quick_hint"),
                     hintStyle:
                         TextStyle(color: Theme.of(context).colorScheme.primary),
                     floatingLabelBehavior: FloatingLabelBehavior.always),
                 validator: (reason) {
                   if (reason?.isEmpty ?? false) {
-                    return _i18n.translate("creative_mix_enter_title");
+                    return _i18n.translate("creative_mix_quick_hint");
                   }
                   return null;
                 },
@@ -84,7 +88,17 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
                       },
                       child: Text(_i18n.translate("creative_mix_create")))),
               const SizedBox(
-                height: 50,
+                height: 80,
+              ),
+              GestureDetector(
+                child: Text(
+                  _i18n.translate("bot_test_warning"),
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                onTap: () {
+                  // Open terms of service page in browser
+                  _appHelper.openTermsPage();
+                },
               ),
             ],
           ),

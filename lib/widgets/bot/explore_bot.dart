@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/bot/list_all_bots.dart';
 
 /// Gets recent new bots
@@ -9,6 +10,18 @@ class ExploreMachi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListPromptBots();
+    AppLocalizations _i18n = AppLocalizations.of(context);
+
+    return SafeArea(
+        child: Scaffold(
+            appBar: AppBar(
+              titleSpacing: 0,
+              centerTitle: false,
+              title: Text(
+                _i18n.translate("search"),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+            ),
+            body: const ListPromptBots()));
   }
 }

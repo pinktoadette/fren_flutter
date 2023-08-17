@@ -12,6 +12,7 @@ import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
+import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
@@ -65,7 +66,6 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
 
     return Obx(() => timelineController.machiList.isEmpty
         ? const Frankloader()
@@ -74,14 +74,37 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
             children: [
               const InlineAdaptiveAds(),
               const SizedBox(height: 20),
-              Container(
-                alignment: Alignment.bottomLeft,
-                padding: const EdgeInsets.only(left: 20),
-                child: Text(
-                  _i18n.translate("latest_machi_for_you"),
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    padding: const EdgeInsets.only(left: 20),
+                    child: Text(
+                      _i18n.translate("latest_machi_for_you"),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.bottomLeft,
+                    padding: const EdgeInsets.only(right: 10),
+                    child: TextButton(
+                        onPressed: () {
+                          NavigationHelper.handleGoToPageOrLogin(
+                            context: context,
+                            userController: userController,
+                            navigateAction: () async {
+                              Get.to(() => const ExploreMachi());
+                            },
+                          );
+                        },
+                        child: Text(_i18n.translate("see_all"),
+                            style: Theme.of(context).textTheme.bodyMedium)),
+                  ),
+                ],
               ),
+
               const SizedBox(height: 10),
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,

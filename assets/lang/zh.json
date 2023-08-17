@@ -336,6 +336,10 @@
   "creative_mix_aiselect_dimension_in_content": "內容中",
   "creative_mix_ai_select_style": "選擇風格",
 
+  "creative_mix_quick_description": "簡單告訴我您想創作的內容",
+  "creative_mix_quick_sub_desc": "你可以講虛構的或非虛構的（教育性）內容。",
+  "creative_mix_quick_hint": "例如: 超級瑪利歐變成了超人 或 細胞質如何運作",
+
   "_reporting": "*** 舉報使用者 ***",
   "report_create": "提交舉報",
   "report_comment_reason": "任何評論（選填）",
