@@ -8,7 +8,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/screens/storyboard/page_view.dart';
+import 'package:machi_app/screens/storyboard/storyboard_home.dart';
 
 class QuickCreateNewBoard extends StatefulWidget {
   const QuickCreateNewBoard({Key? key}) : super(key: key);
@@ -63,6 +63,9 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
               Text(_i18n.translate("creative_mix_quick_sub_desc"),
                   style: styleBody),
               TextFormField(
+                onTapOutside: (b) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                },
                 style: styleBody,
                 controller: _aboutController,
                 maxLength: 300,
@@ -106,20 +109,16 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
   }
 
   void _updateChanges() async {
-    _pr.show(_i18n.translate("creating"));
+    _pr.show(_i18n.translate("thinking"));
 
     try {
       Storyboard storyboard = await _storyApi.quickStory(_aboutController.text);
       storyboardController.addNewStoryboard(storyboard);
 
-      storyboardController.setCurrentBoard(storyboard);
-      storyboardController.setCurrentStory(storyboard.story![0]);
-
+      _pr.hide();
       Get.back();
 
-      Get.to(() => StoryPageView(
-            story: storyboard.story![0],
-          ));
+      Get.to(() => const StoryboardHome());
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
