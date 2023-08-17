@@ -249,7 +249,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       return;
     }
 
-    _pr.show("");
+    _pr.show("beepboop");
     String name = _nameController.text;
     BotModelType modelType = BotModelType.prompt;
     String prompt = _promptController.text;
@@ -260,7 +260,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
           category: UPLOAD_PATH_BOT_IMAGE,
           categoryId: createUUID());
     }
-    if (photoUrl != "") {
+    if (photoUrl != null) {
       botImgUrl = await copyFileToDifferentFolder(
           sourceUrl: photoUrl!, destinationCategory: 'machi/');
     }

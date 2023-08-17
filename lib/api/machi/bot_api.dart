@@ -18,21 +18,21 @@ class BotApi {
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
   Future<Bot> createBot(
-      {required name,
-      prompt,
-      temperature,
-      isPrivate,
-      photoUrl,
-      required modelType}) async {
+      {required String name,
+      required String prompt,
+      int? temperature,
+      bool? isPrivate,
+      String? photoUrl,
+      required BotModelType modelType}) async {
     String url = '${baseUri}machi';
     String uuid = const Uuid().v4().replaceAll("[\\s\\-()]", "");
 
-    var data = {
+    Map<String, dynamic> payload = {
       BOT_ID: "Machi_${uuid.substring(0, 10)}", // external botId
       BOT_NAME: name,
       BOT_MODEL_TYPE: modelType.toString().split(".")[1],
       BOT_PROMPT: prompt,
-      BOT_TEMPERATURE: temperature,
+      BOT_TEMPERATURE: 0.3,
       BOT_IS_PRIVATE: isPrivate ?? true,
       BOT_ACTIVE: true,
       BOT_PROFILE_PHOTO: photoUrl,
@@ -41,7 +41,7 @@ class BotApi {
     };
 
     final dio = await auth.getDio();
-    final response = await dio.post(url, data: {...data});
+    final response = await dio.post(url, data: payload);
     return Bot.fromDocument(response.data);
   }
 
