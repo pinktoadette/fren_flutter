@@ -114,10 +114,9 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
     try {
       Storyboard storyboard = await _storyApi.quickStory(_aboutController.text);
       storyboardController.addNewStoryboard(storyboard);
+      _pr.show(_i18n.translate("success"));
 
       _pr.hide();
-      Get.back();
-
       Get.to(() => const StoryboardHome());
     } catch (err, s) {
       Get.snackbar(
