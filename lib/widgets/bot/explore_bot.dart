@@ -10,7 +10,7 @@ class ExploreMachi extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    AppLocalizations _i18n = AppLocalizations.of(context);
+    AppLocalizations i18n = AppLocalizations.of(context);
 
     return SafeArea(
         child: Scaffold(
@@ -18,7 +18,7 @@ class ExploreMachi extends StatelessWidget {
               titleSpacing: 0,
               centerTitle: false,
               title: Text(
-                _i18n.translate("search"),
+                i18n.translate("search"),
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),

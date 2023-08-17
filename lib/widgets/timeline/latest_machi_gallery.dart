@@ -7,7 +7,6 @@ import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
@@ -15,10 +14,8 @@ import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/common/avatar_initials.dart';
-import 'package:machi_app/widgets/profile/gallery/gallery_mini.dart';
 import 'package:machi_app/widgets/storyboard/new_story_card.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
-import 'package:machi_app/widgets/timeline/latest_gallery.dart';
 
 class LatestMachiWidget extends StatefulWidget {
   const LatestMachiWidget({super.key});

@@ -5,7 +5,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/screens/storyboard/create_new/create_new_board.dart';
 import 'package:machi_app/screens/storyboard/create_new/quick_create.dart';
-import 'package:machi_app/widgets/bot/prompt_create.dart';
 
 class CreateNewSelection extends StatelessWidget {
   const CreateNewSelection({super.key});

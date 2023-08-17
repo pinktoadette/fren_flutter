@@ -6,7 +6,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/forms/category_dropdown.dart';
 
 class ManaulCreateNewBoard extends StatefulWidget {

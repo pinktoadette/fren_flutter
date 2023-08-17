@@ -1,15 +1,9 @@
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
-import 'package:machi_app/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/screens/storyboard/create_new/quick_create.dart';
-import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
