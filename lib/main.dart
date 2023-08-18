@@ -144,6 +144,7 @@ class _MyAppState extends State<MyApp> {
       child: ScopedModel<UserModel>(
         model: UserModel(),
         child: GetMaterialApp(
+          color: Colors.transparent,
           navigatorKey: navigatorKey,
           navigatorObservers: [
             //used the LeakNavigatorObserver

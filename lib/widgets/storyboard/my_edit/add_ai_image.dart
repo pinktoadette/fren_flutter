@@ -4,7 +4,7 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
-import 'package:machi_app/dialogs/progress_dialog.dart';
+import 'package:machi_app/dialogs/fullscreen_loading.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
@@ -35,10 +35,10 @@ class ImageGenerator extends StatefulWidget {
 class _ImageGeneratorState extends State<ImageGenerator> {
   late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late ProgressDialog _pr;
   String _prompt = "";
   bool _isLoading = false;
   Timer? _timer;
+  FullScreenLoading? _pr;
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    _pr = ProgressDialog(context, isDismissible: false);
+    _pr = FullScreenLoading(context);
 
     return SafeArea(
         child: Scaffold(
@@ -109,7 +109,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             if (widget.onError != null) {
                               widget.onError!(errorMessage);
                             }
-                            _pr.hide();
+                            _pr!.hide();
                           },
                           onAppendPrompt: (prompt) => setState(() {
                                 _prompt += prompt;
@@ -125,11 +125,12 @@ class _ImageGeneratorState extends State<ImageGenerator> {
         _isLoading = true;
       });
 
-      _pr.show(_i18n.translate("creating_image"));
-
       _timer = Timer(const Duration(seconds: 120), () {
         if (_isLoading) {
-          _pr.hide();
+          _pr!.hide();
+          setState(() {
+            _isLoading = false;
+          });
           AlertDialog(
             title: Text(
               _i18n.translate("error"),
@@ -153,13 +154,12 @@ class _ImageGeneratorState extends State<ImageGenerator> {
       setState(() {
         _isLoading = false;
       });
-      _pr.hide();
-      _timer?.cancel(); // Cancel the timer when loading is done
+      _timer?.cancel();
     }
   }
 
   void _saveSelectedPhoto(String photoUrl) async {
-    _pr.show(_i18n.translate("uploading_image"));
+    _pr!.show(_i18n.translate("uploading_image"));
     try {
       String newUrl = await uploadUrl(
           url: photoUrl,
@@ -176,7 +176,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
       await FirebaseCrashlytics.instance.recordError(error, stack,
           reason: 'upload new ai image to bucket', fatal: false);
     } finally {
-      _pr.hide();
+      _pr!.hide();
     }
   }
 }
