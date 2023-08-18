@@ -108,6 +108,9 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        const SizedBox(
+                          width: 20,
+                        ),
                         _addBot(size),
                         ...timelineController.machiList.map((bot) {
                           return SizedBox(

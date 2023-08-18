@@ -50,6 +50,16 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
     super.dispose();
   }
 
+  void _setStyle(String styleInfo) {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _selectedStyle = styleInfo;
+    });
+    widget.onSelectedStyle(styleInfo);
+  }
+
   @override
   Widget build(BuildContext context) {
     final AppLocalizations i18n = AppLocalizations.of(context);
@@ -115,10 +125,7 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
 
     return GestureDetector(
         onTap: () {
-          setState(() {
-            _selectedStyle = styleInfo["model"];
-          });
-          widget.onSelectedStyle(styleInfo["model"]);
+          _setStyle(styleInfo["model"]);
         },
         child: Card(
           elevation: _selectedStyle == styleInfo["model"] ? 8 : 0,

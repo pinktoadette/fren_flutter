@@ -42,12 +42,18 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
     List<Widget> pages = [
       WizardImageDimension(
         onSelectedDimension: (dimension) {
+          if (!mounted) {
+            return;
+          }
           setState(() {
             _appendPrompt += dimension;
           });
         },
       ),
       WizardImageStyle(onSelectedStyle: (onSelectedStyle) {
+        if (!mounted) {
+          return;
+        }
         setState(() {
           _appendPrompt += " $onSelectedStyle";
         });
@@ -57,6 +63,7 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
         appendPrompt: _appendPrompt,
         onSelectedImageUrl: (imageUrl) {
           widget.onComplete(imageUrl);
+          widget.onAppendPrompt(_appendPrompt);
         },
         onError: (errorMessage) {
           widget.onError(errorMessage);

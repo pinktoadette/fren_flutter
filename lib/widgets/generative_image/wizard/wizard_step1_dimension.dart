@@ -36,9 +36,7 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _selectedDimension = Dimension.square.value;
-    });
+    _selectedDimension = Dimension.square.value;
   }
 
   @override

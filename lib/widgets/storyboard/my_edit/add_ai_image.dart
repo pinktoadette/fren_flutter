@@ -5,6 +5,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/dialogs/fullscreen_loading.dart';
+import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
@@ -38,7 +39,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   String _prompt = "";
   bool _isLoading = false;
   Timer? _timer;
-  FullScreenLoading? _pr;
+  late ProgressDialog _pr;
 
   @override
   void initState() {
@@ -57,7 +58,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    _pr = FullScreenLoading(context);
+    _pr = ProgressDialog(context, isDismissible: false);
 
     return SafeArea(
         child: Scaffold(
@@ -127,7 +128,6 @@ class _ImageGeneratorState extends State<ImageGenerator> {
 
       _timer = Timer(const Duration(seconds: 120), () {
         if (_isLoading) {
-          _pr!.hide();
           setState(() {
             _isLoading = false;
           });
