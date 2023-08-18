@@ -329,7 +329,7 @@
   "creative_mix_success_delete": "收藏已成功刪除",
   "creative_mix_board_error": "刪除收藏時出現了問題",
 
-  "creative_mix_ai_image_credits": "每次使用需要消耗2點數。",
+  "creative_mix_ai_image_credits": "每次使用需要消耗3個點數。",
 
   "creative_mix_ai_select_dimension": "選擇尺寸",
   "creative_mix_aiselect_dimension_background": "背景",
@@ -340,6 +340,8 @@
   "creative_mix_quick_sub_desc": "你可以講虛構的或非虛構的（教育性）內容。",
   "creative_mix_quick_hint": "例如: 超級瑪利歐變成了超人 或 細胞質如何運作",
 
+  "creative_mix_turn_machine_on": "看起來機器沒開。請在2分鐘後回來。",
+
   "_reporting": "*** 舉報使用者 ***",
   "report_create": "提交舉報",
   "report_comment_reason": "任何評論（選填）",
@@ -349,7 +351,7 @@
 
   "machi_helper_shorten_text": "縮短",
   "machi_helper_rephrase_text": "✏️ 改寫",
-  "machi_helper_get_ideas": "💡 獲得靈感",
+  "machi_helper_get_ideas": "💡 給我靈感",
   "machi_helper_custom_question": "自訂問題",
   "machi_helper_replace_text": "替換",
 

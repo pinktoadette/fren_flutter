@@ -694,7 +694,7 @@ class UserModel extends Model {
       notifyListeners();
       debugPrint("signOut() -> success");
       Get.deleteAll();
-      ThemeHelper().delete();
+      ThemeHelper().deleteThemePreference();
 
       /// Need to reassign
       MainBinding mainBinding = MainBinding();

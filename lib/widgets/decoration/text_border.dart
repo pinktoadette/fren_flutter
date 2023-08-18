@@ -21,7 +21,7 @@ class TextBorder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (useTheme == true) {
-      bool isDarkMode = ThemeHelper().loadThemeFromBox();
+      bool isDarkMode = ThemeHelper().isDark;
       if (isDarkMode == false) {
         return Text(text,
             textAlign: textAlign ?? TextAlign.left,

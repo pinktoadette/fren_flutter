@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
@@ -35,6 +37,8 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late ProgressDialog _pr;
   String _prompt = "";
+  bool _isLoading = false;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -44,6 +48,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
 
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
@@ -115,10 +120,41 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   }
 
   void _loadProgress(bool isLoading) {
-    if (isLoading == true) {
+    if (isLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+
       _pr.show(_i18n.translate("creating_image"));
+
+      _timer = Timer(const Duration(seconds: 120), () {
+        if (_isLoading) {
+          _pr.hide();
+          AlertDialog(
+            title: Text(
+              _i18n.translate("error"),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            content: Text(_i18n.translate("creative_mix_turn_machine_on")),
+            actions: <Widget>[
+              OutlinedButton(
+                  onPressed: () => {
+                        Navigator.of(context).pop(false),
+                      },
+                  child: Text(_i18n.translate("OK"))),
+              const SizedBox(
+                width: 50,
+              ),
+            ],
+          );
+        }
+      });
     } else {
+      setState(() {
+        _isLoading = false;
+      });
       _pr.hide();
+      _timer?.cancel(); // Cancel the timer when loading is done
     }
   }
 

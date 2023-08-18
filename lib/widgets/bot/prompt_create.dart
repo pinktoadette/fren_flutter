@@ -95,6 +95,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                         controller: _nameController,
                         decoration: InputDecoration(
                           hintText: _i18n.translate("bot_name_hint"),
+                          hintStyle: Theme.of(context).textTheme.bodySmall,
                         ),
                         validator: (name) {
                           // Basic validation
@@ -166,6 +167,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
                   controller: _promptController,
                   decoration: InputDecoration(
                     hintText: _i18n.translate("bot_prompt_hint"),
+                    hintStyle: Theme.of(context).textTheme.bodySmall,
                   ),
                   maxLines: 10,
                   validator: (name) {

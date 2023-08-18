@@ -39,7 +39,7 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   Widget build(BuildContext context) {
     double padding = 0;
     double width = MediaQuery.of(context).size.width;
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    bool isDarkMode = ThemeHelper().isDark;
     Color textColor = isDarkMode ? Colors.white54 : Colors.black;
     return InkWell(
       onTap: () async {

@@ -8,7 +8,7 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/screens/storyboard/storyboard_home.dart';
+import 'package:machi_app/screens/storyboard/story_view.dart';
 
 class QuickCreateNewBoard extends StatefulWidget {
   const QuickCreateNewBoard({Key? key}) : super(key: key);
@@ -103,6 +103,9 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
                   _appHelper.openTermsPage();
                 },
               ),
+              const SizedBox(
+                height: 80,
+              ),
             ],
           ),
         ));
@@ -113,11 +116,13 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
 
     try {
       Storyboard storyboard = await _storyApi.quickStory(_aboutController.text);
+      _aboutController.clear();
+
       storyboardController.addNewStoryboard(storyboard);
-      _pr.show(_i18n.translate("success"));
+      storyboardController.setCurrentBoard(storyboard);
 
       _pr.hide();
-      Get.to(() => const StoryboardHome());
+      Get.off(() => const StoriesView());
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

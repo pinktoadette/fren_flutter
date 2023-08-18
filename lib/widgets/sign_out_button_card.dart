@@ -12,6 +12,7 @@ class SignOutButtonCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final i18n = AppLocalizations.of(context);
+
     return Card(
       clipBehavior: Clip.antiAlias,
       elevation: 4.0,

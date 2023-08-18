@@ -25,12 +25,12 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
     },
     {
       "model": "epic-realism",
-      "name": "realism*",
+      "name": "realism *",
       "imagePath": "assets/images/ai_style/epic-realism.png",
     },
     {
       "model": "anime", // anythingv3
-      "name": "anime",
+      "name": "anime *",
       "imagePath": "assets/images/ai_style/anime.png",
     },
     {

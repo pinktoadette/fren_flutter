@@ -11,17 +11,19 @@ class ExploreMachi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     AppLocalizations i18n = AppLocalizations.of(context);
-
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              titleSpacing: 0,
-              centerTitle: false,
-              title: Text(
-                i18n.translate("search"),
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            ),
-            body: const ListPromptBots()));
+    return Scaffold(
+      appBar: AppBar(
+        titleSpacing: 0,
+        centerTitle: false,
+        title: Text(
+          i18n.translate("search"),
+          style: Theme.of(context).textTheme.bodyMedium,
+        ),
+        // Customize AppBar color, text color, etc. here
+      ),
+      body: const SafeArea(
+        child: ListPromptBots(),
+      ),
+    );
   }
 }

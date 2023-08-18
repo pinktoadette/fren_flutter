@@ -66,6 +66,7 @@ class StoryboardController extends GetxController {
   void addNewStoryboard(Storyboard story) async {
     _storyboards.insert(0, story);
     _storyboards.refresh();
+    update();
   }
 
   void updateStoryboard(Storyboard story) async {

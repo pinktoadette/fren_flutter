@@ -13,6 +13,7 @@ import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
@@ -90,7 +91,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
       }
     });
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    bool isDarkMode = ThemeHelper().isDark;
     setState(() {
       _isDarkMode = isDarkMode;
     });
@@ -536,12 +537,17 @@ class _EditPageReorderState extends State<EditPageReorder> {
               uri: upload['uri']);
         }
         String newText = newContent?.text ?? "";
+        StoryUser createdBy = StoryUser(
+            userId: newContent!.characterId,
+            photoUrl: "",
+            username: newContent.characterName);
         Script newScript = scripts[index].copyWith(
             text: newText,
             image: uploadedByte,
+            createdBy: createdBy,
             type: uploadedByte != null ? 'image' : 'text',
-            characterId: newContent?.characterId,
-            textAlign: newContent?.textAlign ?? TextAlign.left);
+            characterId: newContent.characterId,
+            textAlign: newContent.textAlign ?? TextAlign.left);
 
         await _scriptApi.updateScript(script: newScript);
 

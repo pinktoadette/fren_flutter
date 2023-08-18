@@ -3,7 +3,6 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/announcement/inline_survey.dart';
@@ -22,7 +21,6 @@ class TimelineWidget extends StatefulWidget {
 class _TimelineWidgetState extends State<TimelineWidget> {
   UserController userController = Get.find(tag: 'user');
   TimelineController timelineController = Get.find(tag: 'timeline');
-  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -44,7 +42,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    _i18n = AppLocalizations.of(context);
 
     return RefreshIndicator(
         onRefresh: () async {
@@ -56,19 +53,6 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
               const LatestMachiWidget(),
-              Visibility(
-                visible:
-                    timelineController.pagingController.itemList?.isNotEmpty ??
-                        false,
-                child: Container(
-                  alignment: Alignment.bottomLeft,
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Text(
-                    _i18n.translate("latest_story"),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ),
-              ),
               PagedListView<int, Storyboard>.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

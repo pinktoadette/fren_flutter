@@ -106,7 +106,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   Widget build(BuildContext context) {
     _i18n = AppLocalizations.of(context);
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    bool isDarkMode = ThemeHelper().isDark;
     Color textColor = isDarkMode ? Colors.white54 : Colors.black;
     if (story == null && pages.isEmpty) {
       return Scaffold(
@@ -418,7 +418,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   : CrossAxisAlignment.start,
                               children: [
                             const SizedBox(
-                              height: 100,
+                              height: 110,
                             ),
                             Expanded(
                                 child: Column(
@@ -614,7 +614,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    bool isDarkMode = ThemeHelper().isDark;
     Color color = isDarkMode == true ? APP_INVERSE_PRIMARY_COLOR : Colors.black;
 
     return Row(
@@ -622,21 +622,15 @@ class _StoryPageViewState extends State<StoryPageView> {
       children: [
         if ((story?.status != StoryStatus.PUBLISHED) &
             (storyboard.story!.length == 1))
-          TextButton.icon(
-              onPressed: () {
-                Get.to(() => const AddNewStory());
-              },
-              icon: Icon(
-                Iconsax.add,
-                color: color,
-              ),
-              label: Text(
-                _i18n.translate("creative_mix_collection"),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: color,
-                ),
-              )),
+          IconButton(
+            onPressed: () {
+              Get.to(() => const AddNewStory());
+            },
+            icon: Icon(
+              Iconsax.add,
+              color: color,
+            ),
+          ),
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
               onPressed: () async {

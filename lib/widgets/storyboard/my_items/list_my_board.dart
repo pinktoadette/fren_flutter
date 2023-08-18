@@ -70,19 +70,6 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
             Storyboard storyboard = storyboardController.storyboards[index];
             if (storyboard.story!.isEmpty) {
               return const SizedBox.shrink();
-            } else if (index >= storyboardController.storyboards.length) {
-              /// handle delete out of range
-              return const SizedBox.shrink();
-            } else if ((index + 1) % 3 == 0) {
-              return Padding(
-                padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                child: Container(
-                  height: AD_HEIGHT,
-                  width: width,
-                  color: Theme.of(context).colorScheme.background,
-                  child: const InlineAdaptiveAds(),
-                ),
-              );
             }
             return Dismissible(
                 key: Key(storyboard.storyboardId),

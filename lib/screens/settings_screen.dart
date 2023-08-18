@@ -37,19 +37,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
       return;
     }
 
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
-
-    // Get system's brightness mode
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool systemIsDarkMode = brightness == Brightness.dark;
+    ThemeMode themeMode = ThemeHelper().themeMode;
+    bool isDarkMode = themeMode == ThemeMode.dark;
 
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
       }
-      // Use system dark mode
-      _isDarkMode = isDarkMode || systemIsDarkMode;
+      _isDarkMode = isDarkMode;
     });
   }
 
@@ -123,9 +119,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 15),
                 ListTile(
                   leading: _isDarkMode
-                      ? Icon(Iconsax.sun,
+                      ? Icon(Iconsax.moon,
                           color: Theme.of(context).primaryColor, size: 30)
-                      : Icon(Iconsax.moon,
+                      : Icon(Iconsax.sun,
                           color: Theme.of(context).primaryColor, size: 30),
                   title: Text(_i18n.translate('dark_mode'),
                       style: const TextStyle(fontSize: 18)),
@@ -140,7 +136,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       });
 
                       /// GetX storage
-                      ThemeHelper().switchTheme();
+                      ThemeHelper().toggleTheme();
 
                       // Update profile status
                       UserModel().updateUserData(
