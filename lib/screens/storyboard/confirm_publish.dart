@@ -54,7 +54,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: false,
-          titleSpacing: 0,
+          leadingWidth: 20,
           title: Text(
             _i18n.translate("publish_confirm"),
             style: Theme.of(context).textTheme.headlineMedium,
@@ -90,8 +90,8 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
               TextFormField(
                 style: styleBody,
                 controller: _aboutController,
-                maxLength: 80,
-                maxLines: 3,
+                maxLength: 150,
+                maxLines: 5,
                 decoration: InputDecoration(
                     hintText: _i18n.translate("publish_confirm_summary"),
                     hintStyle:

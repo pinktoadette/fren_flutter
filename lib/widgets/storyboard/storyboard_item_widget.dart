@@ -137,7 +137,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     if (storyboard.story!.length == 1) {
       title = firstStory.title;
       subtitle = truncateText(
-        maxLength: 200,
+        maxLength: 140,
         text: firstStory.summary ?? "",
       );
       category = firstStory.category;
@@ -177,7 +177,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             child: Container(
               color: Colors.black.withOpacity(0.6),
               width: width,
-              height: min(220, width * 0.40),
+              height: min(260, width * 0.45),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,

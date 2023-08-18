@@ -78,11 +78,6 @@ class _WizardPromptState extends State<WizardPrompt> {
             widget.onLoading(!onImages);
           },
         ),
-        if (_showLoading)
-          TextButton.icon(
-              onPressed: null,
-              icon: loadingButton(size: 16, color: APP_ACCENT_COLOR),
-              label: const Text("Generating images")),
         if (_selectedUrl != null && _showLoading == false)
           TextButton.icon(
               onPressed: null,

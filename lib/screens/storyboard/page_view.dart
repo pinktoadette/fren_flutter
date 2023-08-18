@@ -144,7 +144,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                   Get.back();
                 },
               ),
-              titleSpacing: 0,
+              leadingWidth: 20,
               actions: [
                 if (widget.isPreview == false)
                   _unpublishedTools()
@@ -562,12 +562,10 @@ class _StoryPageViewState extends State<StoryPageView> {
     String textToCopy =
         "${APP_WEBSITE}post/${story!.storyId.substring(0, 5)}-${story!.slug}";
     Clipboard.setData(ClipboardData(text: textToCopy));
-    Get.snackbar(
-      "Link",
-      'Copied to clipboard: $textToCopy',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: APP_TERTIARY,
-    );
+    Get.snackbar("Link", 'Copied to clipboard: $textToCopy',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_TERTIARY,
+        colorText: Colors.white);
   }
 
   Widget _displayScript(Script script, Size size, bool hasBackground) {

@@ -52,7 +52,7 @@ class _AddNewStoryState extends State<AddNewStory> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Text(
             _i18n.translate("create_mix_new_collection"),

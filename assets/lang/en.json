@@ -302,7 +302,7 @@
   "creative_mix_edit_content": "Edit Content",
   "creative_mix_bits": "No creative bits here",
   "creative_mix_edit": "Edit",
-  "creative_mix_image_generator_instruction": "Let's create an image prompt",
+  "creative_mix_image_create":"Image Prompt",
   "creative_mix_image_generator_describe": "Describe your image in details.",
   "creative_mix_image_long_process": "This may take some time. You may need to refresh the chatroom later", 
 

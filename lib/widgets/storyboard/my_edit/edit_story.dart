@@ -62,10 +62,10 @@ class _EditPageState extends State<EditPage> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
-          titleSpacing: 0,
+          leadingWidth: 20,
           title: Text(
             _i18n.translate("creative_mix_edit"),
-            style: Theme.of(context).textTheme.bodyMedium,
+            style: Theme.of(context).textTheme.headlineMedium,
           ),
           leading: BackButton(
             color: Theme.of(context).primaryColor,

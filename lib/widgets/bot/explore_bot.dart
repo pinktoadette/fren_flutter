@@ -13,7 +13,7 @@ class ExploreMachi extends StatelessWidget {
     AppLocalizations i18n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        titleSpacing: 0,
+        leadingWidth: 20,
         centerTitle: false,
         title: Text(
           i18n.translate("search"),

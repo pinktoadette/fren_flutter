@@ -49,7 +49,7 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Text(
             _i18n.translate("creative_mix_manual"),

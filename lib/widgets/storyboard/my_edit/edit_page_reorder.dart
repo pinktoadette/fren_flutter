@@ -445,53 +445,46 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _generateOrSubscribe() {
-    if (subscribeController.credits <= 0) {
-      showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => Obx(() => FractionallySizedBox(
-              heightFactor: subscribeController.credits.value > 0
-                  ? MODAL_HEIGHT_SMALL_FACTOR
-                  : MODAL_HEIGHT_LARGE_FACTOR,
-              child: const SubscriptionProduct())));
-    } else {
-      _aiImage();
-    }
+    _aiImage();
+
+    // if (subscribeController.credits <= 0) {
+    //   showModalBottomSheet<void>(
+    //       context: context,
+    //       isScrollControlled: true,
+    //       builder: (context) => Obx(() => FractionallySizedBox(
+    //           heightFactor: subscribeController.credits.value > 0
+    //               ? MODAL_HEIGHT_SMALL_FACTOR
+    //               : MODAL_HEIGHT_LARGE_FACTOR,
+    //           child: const SubscriptionProduct())));
+    // } else {
+    //   _aiImage();
+    // }
   }
 
-  void _aiImage() async {
-    // double height = MediaQuery.of(context).size.height;
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-            child: ImageGenerator(
-              story: story,
-              onError: (errorMessage) {
-                Get.snackbar(
-                  _i18n.translate("error"),
-                  _i18n.translate(errorMessage),
-                  snackPosition: SnackPosition.TOP,
-                  backgroundColor: APP_ERROR,
-                );
-              },
-              onSelection: (value) async {
-                if (value.isBackground == true) {
-                  setState(() {
-                    urlPreview = value.galleryUrl;
-                    attachmentPreview = null;
-                  });
-                  _updateBackground();
-                } else {
-                  await _saveOrUploadTextImg(value);
-                }
-                Get.back();
-              },
-            ));
-      },
-    );
+  void _aiImage() {
+    Get.to(() => ImageGenerator(
+          story: story,
+          onError: (errorMessage) {
+            Get.snackbar(
+              _i18n.translate("error"),
+              _i18n.translate(errorMessage),
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_ERROR,
+            );
+          },
+          onSelection: (value) async {
+            if (value.isBackground == true) {
+              setState(() {
+                urlPreview = value.galleryUrl;
+                attachmentPreview = null;
+              });
+              _updateBackground();
+            } else {
+              await _saveOrUploadTextImg(value);
+            }
+            Get.back();
+          },
+        ));
   }
 
   /// drag and drop individual boxes.
@@ -737,18 +730,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _editPageText({int? index}) async {
-    await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        barrierColor: Colors.black.withOpacity(_alphaValue),
-        builder: (context) {
-          return FractionallySizedBox(
-              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-              child: AddEditTextWidget(
-                  script: index != null ? scripts[index] : null,
-                  onTextComplete: (content) =>
-                      _addEditText(newContent: content, index: index)));
-        });
+    Get.to(() => AddEditTextWidget(
+        script: index != null ? scripts[index] : null,
+        onTextComplete: (content) =>
+            _addEditText(newContent: content, index: index)));
   }
 
   /// edit background image of the page.

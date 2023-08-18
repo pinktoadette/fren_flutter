@@ -56,6 +56,9 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
 
     return Column(children: [
       Text(i18n.translate("creative_mix_ai_select_dimension")),
+      const SizedBox(
+        height: 20,
+      ),
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

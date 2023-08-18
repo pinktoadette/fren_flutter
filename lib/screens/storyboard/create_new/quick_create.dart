@@ -46,7 +46,7 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Text(
             _i18n.translate("creative_mix_help_me"),
@@ -120,9 +120,17 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
 
       storyboardController.addNewStoryboard(storyboard);
       storyboardController.setCurrentBoard(storyboard);
-
+      await Future.delayed(const Duration(seconds: 1));
       _pr.hide();
-      Get.off(() => const StoriesView());
+      if (context.mounted) {
+        Navigator.pop(context);
+        await Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const StoriesView(),
+          ),
+        );
+      }
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

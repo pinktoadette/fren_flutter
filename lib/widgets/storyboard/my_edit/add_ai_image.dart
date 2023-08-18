@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
-import 'package:machi_app/dialogs/fullscreen_loading.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -16,17 +16,12 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 
 class ImageGenerator extends StatefulWidget {
-  final String? text;
   final Story? story;
   final Function(AddEditTextCharacter imageUrl) onSelection;
   final Function(String errorMessage)? onError;
 
   const ImageGenerator(
-      {Key? key,
-      required this.onSelection,
-      this.story,
-      this.text,
-      this.onError})
+      {Key? key, required this.onSelection, this.story, this.onError})
       : super(key: key);
 
   @override
@@ -60,27 +55,24 @@ class _ImageGeneratorState extends State<ImageGenerator> {
     _i18n = AppLocalizations.of(context);
     _pr = ProgressDialog(context, isDismissible: false);
 
-    return SafeArea(
-        child: Scaffold(
-            key: _scaffoldKey,
-            body: Container(
-                padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
+    return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          centerTitle: false,
+          leadingWidth: 20,
+          title: Text(
+            _i18n.translate("creative_mix_image_create"),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: const [SubscribeTokenCounter()],
+        ),
+        body: SafeArea(
+            child: Container(
+                padding: const EdgeInsets.only(left: 30, right: 30),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Align(
-                        alignment: Alignment.topRight,
-                        child: SubscribeTokenCounter(),
-                      ),
-                      Text(
-                        _i18n.translate(
-                            "creative_mix_image_generator_instruction"),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       Semantics(
                         label: _i18n
                             .translate("creative_mix_image_generator_describe"),
@@ -90,15 +82,9 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
-                      const Divider(height: 5, thickness: 1),
-                      if (widget.text != null)
-                        Semantics(
-                          label: widget.text,
-                          child: Text(
-                            "Creating image for: ${widget.text}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       ImageWizardWidget(
                           onComplete: (photoUrl) {
                             _saveSelectedPhoto(photoUrl);
@@ -110,7 +96,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             if (widget.onError != null) {
                               widget.onError!(errorMessage);
                             }
-                            _pr!.hide();
+                            _pr.hide();
                           },
                           onAppendPrompt: (prompt) => setState(() {
                                 _prompt += prompt;
@@ -159,7 +145,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   }
 
   void _saveSelectedPhoto(String photoUrl) async {
-    _pr!.show(_i18n.translate("uploading_image"));
+    _pr.show(_i18n.translate("uploading_image"));
     try {
       String newUrl = await uploadUrl(
           url: photoUrl,
@@ -172,11 +158,12 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           characterName: UserModel().user.username);
 
       widget.onSelection(newItem);
+      Get.back();
     } catch (error, stack) {
       await FirebaseCrashlytics.instance.recordError(error, stack,
           reason: 'upload new ai image to bucket', fatal: false);
     } finally {
-      _pr!.hide();
+      _pr.hide();
     }
   }
 }

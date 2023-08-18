@@ -182,9 +182,9 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   }
 
   void _generatePhoto() async {
-    if (_counter == 0) {
-      return;
-    }
+    // if (_counter == 0) {
+    //   return;
+    // }
 
     setState(() {
       _isLoading = true;
