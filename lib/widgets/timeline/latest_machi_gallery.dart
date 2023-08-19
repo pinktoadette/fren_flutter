@@ -71,7 +71,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                   ),
                   Container(
                     alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(right: 10),
+                    padding: const EdgeInsets.only(right: 10, left: 10),
                     child: TextButton(
                         onPressed: () {
                           NavigationHelper.handleGoToPageOrLogin(
@@ -99,8 +99,9 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                         ),
                         _addBot(size),
                         ...timelineController.machiList.map((bot) {
-                          return SizedBox(
+                          return Container(
                               width: size.width / 4.5,
+                              margin: const EdgeInsets.only(left: 10),
                               child: _showBotAvatar(bot: bot, size: size));
                         })
                       ])),
