@@ -70,7 +70,7 @@ class _StoriesViewState extends State<StoriesView> {
                 Navigator.pop(context);
               },
             ),
-            leadingWidth: 20,
+            leadingWidth: 50,
             centerTitle: false,
             actions: _listOfActions()),
         body: SingleChildScrollView(

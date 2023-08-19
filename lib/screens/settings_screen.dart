@@ -67,7 +67,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          leadingWidth: 20,
+          leadingWidth: 50,
           centerTitle: false,
           title: Text(
             _i18n.translate("settings"),

@@ -151,7 +151,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                           if (_comment.isNotEmpty)
                             IconButton(
                               icon: _isLoading
-                                  ? loadingButton(size: 16)
+                                  ? loadingButton(
+                                      size: 16,
+                                      color: APP_INVERSE_PRIMARY_COLOR)
                                   : const Icon(
                                       Iconsax.send_2,
                                       size: 24,

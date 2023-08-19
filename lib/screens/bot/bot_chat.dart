@@ -122,7 +122,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                     _leaveChatroom();
                   },
                 ),
-                leadingWidth: 20,
+                leadingWidth: 50,
                 title: GestureDetector(
                   child: Obx(() => Text(botController.bot.name,
                       overflow: TextOverflow.fade,

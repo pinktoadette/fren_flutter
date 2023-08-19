@@ -20,42 +20,30 @@ class TextBorder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (useTheme == true) {
-      bool isDarkMode = ThemeHelper().isDark;
-      if (isDarkMode == false) {
-        return Text(text,
-            textAlign: textAlign ?? TextAlign.left,
-            maxLines: maxLines,
-            style: Theme.of(context).textTheme.bodyMedium);
-      }
-    }
-
-    return Text(
-      text,
-      textAlign: textAlign ?? TextAlign.left,
-      maxLines: maxLines,
-      style: TextStyle(
-          inherit: true,
-          color: APP_INVERSE_PRIMARY_COLOR,
-          fontSize: size ?? 16,
-          shadows: const [
-            Shadow(
-                // bottomLeft
-                offset: Offset(-1.0, -1.0),
-                color: APP_PRIMARY_COLOR),
-            Shadow(
-                // bottomRight
-                offset: Offset(1.0, -1.0),
-                color: APP_PRIMARY_COLOR),
-            Shadow(
-                // topRight
-                offset: Offset(1.0, 1.0),
-                color: APP_PRIMARY_COLOR),
-            Shadow(
-                // topLeft
-                offset: Offset(-1.0, 1.0),
-                color: APP_PRIMARY_COLOR),
-          ]),
+    return Stack(
+      children: [
+        Text(
+          text,
+          textAlign: textAlign,
+          maxLines: maxLines,
+          style: TextStyle(
+            fontSize: size ?? 16,
+            foreground: Paint()
+              ..style = PaintingStyle.stroke
+              ..strokeWidth = 2
+              ..color = Colors.black,
+          ),
+        ),
+        Text(
+          text,
+          textAlign: textAlign,
+          maxLines: maxLines,
+          style: TextStyle(
+            fontSize: size ?? 16,
+            color: APP_INVERSE_PRIMARY_COLOR,
+          ),
+        ),
+      ],
     );
   }
 }

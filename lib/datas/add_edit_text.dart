@@ -55,6 +55,7 @@ class AddEditTextCharacter {
   Uint8List? imageBytes;
   File? attachmentPreview;
   String? galleryUrl;
+  String? thumbnail;
   TextAlign? textAlign;
   bool? isBackground;
   String characterId;
@@ -65,6 +66,7 @@ class AddEditTextCharacter {
     this.imageBytes,
     this.attachmentPreview,
     this.galleryUrl,
+    this.thumbnail,
     this.textAlign,
     this.isBackground = false,
     required this.characterId,
@@ -81,6 +83,7 @@ class AddEditTextCharacter {
           ? File(json['attachmentPreview'])
           : null,
       galleryUrl: json['galleryUrl'],
+      thumbnail: json['thumbnail'],
       isBackground: json['isBackground'] ?? false,
       textAlign: json['textAlign'] != null
           ? TextAlignExtension.fromString(json['textAlign']) // Custom method

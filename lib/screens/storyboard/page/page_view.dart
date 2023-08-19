@@ -143,7 +143,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                   Get.back();
                 },
               ),
-              leadingWidth: 20,
+              leadingWidth: 50,
               actions: [
                 if (widget.isPreview == false)
                   _unpublishedTools()

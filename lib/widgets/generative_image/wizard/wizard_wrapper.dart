@@ -54,6 +54,7 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
           setState(() {
             _appendPrompt += dimension;
           });
+          widget.onAppendPrompt(_appendPrompt);
         },
       ),
       WizardImageStyle(onSelectedStyle: (onSelectedStyle) {

@@ -74,7 +74,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           centerTitle: false,
-          leadingWidth: 20,
+          leadingWidth: 50,
           title: Text(
             title,
             style: Theme.of(context).textTheme.headlineMedium,

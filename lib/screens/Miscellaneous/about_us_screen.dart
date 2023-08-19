@@ -15,7 +15,7 @@ class AboutScreen extends StatelessWidget {
     final i18n = AppLocalizations.of(context);
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 20,
+        leadingWidth: 50,
         centerTitle: false,
         title: Text(i18n.translate('about_us')),
       ),

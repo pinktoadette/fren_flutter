@@ -109,11 +109,11 @@ class StoryApi {
 
     Map<String, dynamic> payload = {
       STORY_ID: story.storyId,
-      STORY_PAGE_DIRECTION: story.pageDirection?.name,
       STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
           ? story.pages!
               .map((page) => {
                     STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
+                    STORY_PAGES_THUMBNAIL: page.thumbnail,
                     SCRIPT_PAGE_NUM: page.pageNum,
                     STORY_PAGES_ALPHA: page.backgroundAlpha
                   })

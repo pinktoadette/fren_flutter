@@ -64,7 +64,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           automaticallyImplyLeading: false,
-          leadingWidth: 20,
+          leadingWidth: 50,
           centerTitle: false,
           title: Row(children: [
             const AppLogo(),

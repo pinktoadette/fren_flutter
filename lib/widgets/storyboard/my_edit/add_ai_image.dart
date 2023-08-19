@@ -61,7 +61,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
         key: _scaffoldKey,
         appBar: AppBar(
           centerTitle: false,
-          leadingWidth: 20,
+          leadingWidth: 50,
           title: Text(
             _i18n.translate("creative_mix_image_create"),
             style: Theme.of(context).textTheme.headlineMedium,
@@ -148,14 +148,17 @@ class _ImageGeneratorState extends State<ImageGenerator> {
 
   void _saveSelectedPhoto(String photoUrl) async {
     _pr.show(_i18n.translate("uploading_image"));
+    bool isBackground = _prompt.contains(Dimension.vertical.value);
     try {
-      String newUrl = await uploadUrl(
+      Map<String, String> newUrl = await uploadUrl(
           url: photoUrl,
-          category: UPLOAD_PATH_SCRIPT_IMAGE,
+          category:
+              isBackground ? UPLOAD_PATH_COLLECTION : UPLOAD_PATH_SCRIPT_IMAGE,
           categoryId: createUUID());
       AddEditTextCharacter newItem = AddEditTextCharacter(
-          galleryUrl: newUrl,
-          isBackground: _prompt.contains(Dimension.vertical.value),
+          galleryUrl: newUrl["original"],
+          thumbnail: newUrl["thumbnail"],
+          isBackground: isBackground,
           characterId: UserModel().user.userId,
           characterName: UserModel().user.username);
 

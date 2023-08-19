@@ -7,6 +7,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/interstitial_ads.dart';
+import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
@@ -127,7 +128,8 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
           SizedBox(
               height: 200,
               width: 200,
-              child: InterstitialAds(
+              child: RewardAds(
+                text: _i18n.translate("watch_ads_waiting"),
                 onAdStatus: (data) {
                   /// Give token
                 },
@@ -158,7 +160,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                             margin: const EdgeInsets.all(0),
                             child: StoryCover(
                                 width: is480v ? size.width / 2 : size.width,
-                                height: size.width,
+                                height: size.width / 1.5,
                                 photoUrl: _items[index],
                                 title: "image $index"),
                           ),
@@ -200,6 +202,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   }
 
   void _generatePhoto() async {
+    // @todo remove image, search this text.
     // if (_counter == 0) {
     //   return;
     // }

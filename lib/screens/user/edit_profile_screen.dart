@@ -49,7 +49,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       key: _scaffoldKey,
       appBar: AppBar(
         title: Text(_i18n.translate("edit_profile")),
-        leadingWidth: 20,
+        leadingWidth: 50,
         centerTitle: false,
         actions: [
           // Save changes button

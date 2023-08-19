@@ -33,6 +33,7 @@ import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'dart:ui' as ui;
 
+import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 // ignore: must_be_immutable
 class EditPageReorder extends StatefulWidget {
@@ -76,6 +77,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Layout? layout;
   File? attachmentPreview;
   String? urlPreview;
+  String? thumbnail;
   double _alphaValue = 0.25;
   bool _isDarkMode = false;
 
@@ -449,6 +451,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _generateOrSubscribe() {
+    // @todo remove image, search this text.
     _aiImage();
 
     // if (subscribeController.credits <= 0) {
@@ -480,6 +483,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
             if (value.isBackground == true) {
               setState(() {
                 urlPreview = value.galleryUrl;
+                thumbnail = value.thumbnail;
                 attachmentPreview = null;
               });
               _updateBackground();
@@ -711,14 +715,24 @@ class _EditPageReorderState extends State<EditPageReorder> {
     if (attachmentPreview != null) {
       url = await uploadFile(
           file: attachmentPreview!,
-          category: UPLOAD_PATH_SCRIPT_IMAGE,
+          category: UPLOAD_PATH_COLLECTION,
           categoryId: createUUID());
-
-      /// delete last uploadfile
     }
+
     StoryPages storyPages = story.pages![widget.pageIndex];
+
+    /// delete last uploadfile
+    if (storyPages.backgroundImageUrl != null) {
+      deleteFileByUrl(storyPages.backgroundImageUrl!);
+    }
+    if (storyPages.thumbnail != null) {
+      deleteFileByUrl(storyPages.thumbnail!);
+    }
+
+    ///  reassign new image url
     storyPages.backgroundImageUrl = url;
     storyPages.backgroundAlpha = _alphaValue;
+    storyPages.thumbnail = thumbnail;
     story.pages![story.pages!
             .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
         storyPages;

@@ -57,7 +57,7 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        leadingWidth: 20,
+        leadingWidth: 50,
         centerTitle: false,
         title: Text(
           _i18n.translate("creative_mix_help_me"),

@@ -206,9 +206,9 @@ class Story {
               (page) => page["pageNum"] == s.pageNum,
               orElse: () => null);
           s = s.copyWith(
-              thumbnail: item?[STORY_PAGES_THUMBNAIL] ?? "",
-              backgroundImageUrl: item?[STORY_PAGES_BACKGROUND] ?? "",
-              backgroundAlpha: item?[STORY_PAGES_ALPHA] ?? 0.8);
+              thumbnail: item?[STORY_PAGES_THUMBNAIL],
+              backgroundImageUrl: item?[STORY_PAGES_BACKGROUND],
+              backgroundAlpha: item?[STORY_PAGES_ALPHA] ?? 0.5);
         }
         pages.add(s);
       });
