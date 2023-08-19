@@ -62,11 +62,14 @@ class _StoryPageViewState extends State<StoryPageView> {
   Timer? _scrollTimer;
 
   Story? story;
+  late Color textColor;
   var pages = [];
 
   @override
   void initState() {
     super.initState();
+    bool isDarkMode = ThemeHelper().isDark;
+    textColor = isDarkMode ? Colors.white54 : Colors.black;
 
     if (widget.isPreview == true) {
       setState(() {
@@ -104,10 +107,13 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
-    bool isDarkMode = ThemeHelper().isDark;
-    Color textColor = isDarkMode ? Colors.white54 : Colors.black;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (story == null && pages.isEmpty) {
       return Scaffold(
           extendBodyBehindAppBar: true,

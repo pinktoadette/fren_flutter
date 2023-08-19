@@ -16,11 +16,28 @@ class MultiPageBottomSheet extends StatefulWidget {
 class _MultiPageBottomSheetState extends State<MultiPageBottomSheet> {
   int _currentPage = 0;
   late AppLocalizations _i18n;
+  late Size size;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+  }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
     return SizedBox(
         height: size.height * 0.8,
         child: Column(

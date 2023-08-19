@@ -35,6 +35,9 @@ class _StoryboardEditState extends State<StoryboardEdit> {
 
   bool isLoading = false;
   late AppLocalizations _i18n;
+  late Size size;
+  late TextStyle? styleLabel;
+  late TextStyle? styleBody;
 
   @override
   void initState() {
@@ -54,12 +57,17 @@ class _StoryboardEditState extends State<StoryboardEdit> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    _i18n = AppLocalizations.of(context);
-    TextStyle? styleLabel = Theme.of(context).textTheme.labelMedium;
-    TextStyle? styleBody = Theme.of(context).textTheme.bodyMedium;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+    styleLabel = Theme.of(context).textTheme.labelMedium;
+    styleBody = Theme.of(context).textTheme.bodyMedium;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Obx(() => Container(
           padding: EdgeInsets.only(
             bottom: MediaQuery.of(context).viewInsets.bottom,

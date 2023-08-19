@@ -20,10 +20,11 @@ class AddChatMessageToBoard extends StatefulWidget {
 }
 
 class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
-  late AppLocalizations _i18n;
   String errorMessage = '';
   bool isLoading = false;
   final _storyboardApi = StoryboardApi();
+  late Size size;
+  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -36,9 +37,15 @@ class _AddChatMessageToBoardState extends State<AddChatMessageToBoard> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
+    size = MediaQuery.of(context).size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

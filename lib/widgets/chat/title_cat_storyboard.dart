@@ -23,6 +23,7 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
   final _titleController = TextEditingController();
   String errorMessage = '';
   String _selectedCategory = "";
+  late double width;
 
   @override
   void initState() {
@@ -37,9 +38,15 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
+    width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
         child: Container(
             padding: const EdgeInsets.all(10.0),

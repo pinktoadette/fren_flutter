@@ -25,17 +25,19 @@ class EditPage extends StatefulWidget {
 }
 
 class _EditPageState extends State<EditPage> {
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   final PageController _pageController =
       PageController(viewportFraction: 1, keepPage: true);
 
-  late AppLocalizations _i18n;
-  double itemHeight = 120;
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
   late Story story;
-  Layout selectedLayout = Layout.CONVO;
+  late AppLocalizations _i18n;
 
+  double itemHeight = 120;
+  Layout selectedLayout = Layout.CONVO;
   int pageIndex = 0;
   bool _userScrolledAgain = false;
+
   Timer? _scrollTimer;
 
   @override
@@ -56,9 +58,14 @@ class _EditPageState extends State<EditPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,

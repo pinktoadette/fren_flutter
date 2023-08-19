@@ -50,6 +50,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   late AppLocalizations _i18n;
   late double width;
   final _timelineApi = TimelineApi();
+  double padding = 15;
+  late String timestampLabel;
 
   @override
   void initState() {
@@ -65,14 +67,18 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
     width = MediaQuery.of(context).size.width;
-    double padding = 15;
-
-    String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
+    timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? _i18n.translate("post_published_on")
         : _i18n.translate("post_last_updated");
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.center,

@@ -37,20 +37,15 @@ class _ReportFormState extends State<ReportForm> {
     _commentController.dispose();
   }
 
-  void _getCategory() async {
-    if (!mounted) {
-      return;
-    }
-    String cat = await rootBundle.loadString('assets/json/report.json');
-    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
-    setState(() {
-      _category = category;
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -108,6 +103,17 @@ class _ReportFormState extends State<ReportForm> {
                         child: Text(_i18n.translate("submit"))))
               ],
             )));
+  }
+
+  void _getCategory() async {
+    if (!mounted) {
+      return;
+    }
+    String cat = await rootBundle.loadString('assets/json/report.json');
+    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
+    setState(() {
+      _category = category;
+    });
   }
 
   void _submitReport() async {

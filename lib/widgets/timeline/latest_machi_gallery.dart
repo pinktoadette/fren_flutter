@@ -28,6 +28,7 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   UserController userController = Get.find(tag: 'user');
   TimelineController timelineController = Get.find(tag: 'timeline');
   late AppLocalizations _i18n;
+  late Size size;
 
   @override
   void initState() {
@@ -40,31 +41,16 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
     super.dispose();
   }
 
-  void _getHomePage() async {
-    if (!mounted) {
-      return;
-    }
-    try {
-      bool isLoggedIn = userController.user == null ? false : true;
-      await timelineController.fetchHomepageItems(isLoggedIn);
-    } catch (err, stack) {
-      Get.snackbar(
-        _i18n.translate("Error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
-      await FirebaseCrashlytics.instance.recordError(err, stack,
-          reason: 'Error getting homepage items ${err.toString()}',
-          fatal: false);
-    }
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
   }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
-
     return Obx(() => timelineController.machiList.isEmpty
         ? const Frankloader()
         : Column(
@@ -234,5 +220,25 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
                 style: const TextStyle(fontSize: 10))
           ],
         ));
+  }
+
+  void _getHomePage() async {
+    if (!mounted) {
+      return;
+    }
+    try {
+      bool isLoggedIn = userController.user == null ? false : true;
+      await timelineController.fetchHomepageItems(isLoggedIn);
+    } catch (err, stack) {
+      Get.snackbar(
+        _i18n.translate("Error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Error getting homepage items ${err.toString()}',
+          fatal: false);
+    }
   }
 }

@@ -34,6 +34,7 @@ class ImageSourceSheet extends StatefulWidget {
 
 class _ImageSourceSheetState extends State<ImageSourceSheet> {
   late AppLocalizations _i18n;
+  late Size size;
   final picker = ImagePicker();
 
   @override
@@ -47,10 +48,15 @@ class _ImageSourceSheetState extends State<ImageSourceSheet> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.background,

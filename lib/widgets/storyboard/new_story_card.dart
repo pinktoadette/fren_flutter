@@ -19,6 +19,7 @@ class _CreateStoryCardState extends State<CreateStoryCard> {
   UserController userController = Get.find(tag: 'user');
 
   late AppLocalizations _i18n;
+  late double width;
   CustomerInfo? customer;
   @override
   void initState() {
@@ -31,9 +32,15 @@ class _CreateStoryCardState extends State<CreateStoryCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
+    width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Card(
         elevation: 6,
         shape: const RoundedRectangleBorder(

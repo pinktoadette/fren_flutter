@@ -25,6 +25,8 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _aboutController = TextEditingController();
   TextEditingController _selectedCategory = TextEditingController();
+  late TextStyle _styleLabel;
+  late TextStyle _styleBody;
 
   @override
   void initState() {
@@ -46,10 +48,16 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    TextStyle? styleLabel = Theme.of(context).textTheme.labelMedium;
-    TextStyle? styleBody = Theme.of(context).textTheme.bodyMedium;
+    _styleLabel = Theme.of(context).textTheme.labelMedium!;
+    _styleBody = Theme.of(context).textTheme.bodyMedium!;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
@@ -68,9 +76,9 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
               const SizedBox(
                 height: 20,
               ),
-              Text(_i18n.translate("creative_mix_title"), style: styleLabel),
+              Text(_i18n.translate("creative_mix_title"), style: _styleLabel),
               TextFormField(
-                style: styleBody,
+                style: _styleBody,
                 controller: _titleController,
                 maxLength: 80,
                 decoration: InputDecoration(
@@ -86,9 +94,9 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                 },
               ),
               Text(_i18n.translate("publish_confirm_summary"),
-                  style: styleLabel),
+                  style: _styleLabel),
               TextFormField(
-                style: styleBody,
+                style: _styleBody,
                 controller: _aboutController,
                 maxLength: 150,
                 maxLines: 5,
@@ -108,7 +116,7 @@ class _ConfirmPublishDetailsState extends State<ConfirmPublishDetails> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(_i18n.translate("publish_confirm_format"),
-                      style: styleLabel),
+                      style: _styleLabel),
                   Text(story?.layout?.name ?? Layout.CONVO.name),
                 ],
               ),

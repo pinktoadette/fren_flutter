@@ -31,6 +31,7 @@ class _ConversationsTabState extends State<ConversationsTab> {
   ChatController chatController = Get.find(tag: 'chatroom');
   int pageNum = 1;
   late AppLocalizations _i18n;
+  late double width;
   final _chatroomApi = ChatroomMachiApi();
   final _botApi = BotApi();
   User self = UserModel().user;
@@ -60,10 +61,15 @@ class _ConversationsTabState extends State<ConversationsTab> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    final width = MediaQuery.of(context).size.width;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,

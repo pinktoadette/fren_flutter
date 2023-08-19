@@ -20,11 +20,13 @@ class AddNewStory extends StatefulWidget {
 }
 
 class _AddNewStoryState extends State<AddNewStory> {
-  late AppLocalizations _i18n;
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
   final _titleController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+
+  late AppLocalizations _i18n;
+  late double width;
 
   File? _uploadPath;
   String? photoUrl;
@@ -45,10 +47,15 @@ class _AddNewStoryState extends State<AddNewStory> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(

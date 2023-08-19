@@ -30,22 +30,15 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
     super.dispose();
   }
 
-  void _getCategory() async {
-    if (!mounted) {
-      return;
-    }
-    String cat = await rootBundle.loadString('assets/json/category.json');
-    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
-    setState(() {
-      _category = category;
-      _selectedCategory = widget.selectedCategory ?? category[0];
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
     return Row(children: [
       Text(
         _i18n.translate("publish_confirm_category"),
@@ -81,5 +74,17 @@ class _CategoryDropdownWidgetState extends State<CategoryDropdownWidget> {
                   }).toList()))
           : const SizedBox.shrink()
     ]);
+  }
+
+  void _getCategory() async {
+    if (!mounted) {
+      return;
+    }
+    String cat = await rootBundle.loadString('assets/json/category.json');
+    List<String> category = List.from(jsonDecode(cat) as List<dynamic>);
+    setState(() {
+      _category = category;
+      _selectedCategory = widget.selectedCategory ?? category[0];
+    });
   }
 }

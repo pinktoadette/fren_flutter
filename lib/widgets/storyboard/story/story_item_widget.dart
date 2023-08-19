@@ -33,16 +33,27 @@ class StoryItemWidget extends StatefulWidget {
 }
 
 class _StoryItemWidgetState extends State<StoryItemWidget> {
-  late AppLocalizations _i18n;
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  TimelineController timelineController = Get.find(tag: 'timeline');
-
-  List<PageModel>? pageList;
   final _scriptApi = ScriptApi();
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final TimelineController timelineController = Get.find(tag: 'timeline');
 
+  double storyCoverWidth = 80;
+  double padding = 15;
+  List<PageModel>? pageList;
+  late double width;
+  late AppLocalizations _i18n;
+  late String timestampLabel;
+  late double playWidth;
+  late double contentWidth;
   @override
   void initState() {
     super.initState();
+    playWidth =
+        widget.story.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
+    timestampLabel = widget.story.status == StoryStatus.PUBLISHED
+        ? "Published on "
+        : "Last Updated ";
+    contentWidth = width - (storyCoverWidth + playWidth + padding * 3);
   }
 
   @override
@@ -51,17 +62,15 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-    double storyCoverWidth = 80;
-    double padding = 15;
-    double playWidth =
-        widget.story.status == StoryStatus.PUBLISHED ? PLAY_BUTTON_WIDTH : 0;
-    String timestampLabel = widget.story.status == StoryStatus.PUBLISHED
-        ? "Published on "
-        : "Last Updated ";
-    double contentWidth = width - (storyCoverWidth + playWidth + padding * 3);
+    width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return InkWell(
         onTap: () {
           if (widget.disablePress == true) {

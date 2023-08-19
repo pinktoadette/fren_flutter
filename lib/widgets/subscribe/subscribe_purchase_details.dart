@@ -17,6 +17,8 @@ class SubscribePurchaseDetails extends StatefulWidget {
 class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
   late CustomerInfo customer;
+  late AppLocalizations _i18n;
+
   String activeSubscription = '';
   String activeExpiredDate = '';
   @override
@@ -55,9 +57,14 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    AppLocalizations i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
@@ -72,7 +79,7 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
                   borderRadius: BorderRadius.all(Radius.circular(10))),
               padding: const EdgeInsets.all(5),
               child: Text(
-                i18n.translate("subscribe_pro"),
+                _i18n.translate("subscribe_pro"),
                 style: const TextStyle(fontSize: 12, color: Colors.black),
               ),
             )
@@ -84,11 +91,11 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                i18n.translate("subscribed_credits"),
+                _i18n.translate("subscribed_credits"),
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
               Text(
-                  "${i18n.translate("subscribed_plan")} on $activeSubscription"),
+                  "${_i18n.translate("subscribed_plan")} on $activeSubscription"),
 
               Obx(() => RichText(
                       text: TextSpan(
@@ -101,14 +108,15 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
                               "${subscribeController.credits.value.toString()} ",
                           style: const TextStyle(fontWeight: FontWeight.bold)),
                       TextSpan(
-                          text: i18n.translate("subscribed_credits_remaining")),
+                          text:
+                              _i18n.translate("subscribed_credits_remaining")),
                     ],
                   ))),
               const SizedBox(
                 height: 10,
               ),
               Text(
-                  "${i18n.translate("subscribed_expires_on")} $activeExpiredDate"),
+                  "${_i18n.translate("subscribed_expires_on")} $activeExpiredDate"),
               const SizedBox(
                 height: 80,
               ),
@@ -118,7 +126,7 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
               const SizedBox(
                 height: 40,
               ),
-              Text(i18n.translate("subscribed_credits_expired_footnote"),
+              Text(_i18n.translate("subscribed_credits_expired_footnote"),
                   style: const TextStyle(fontSize: 10)),
             ],
           ),

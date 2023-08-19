@@ -37,8 +37,14 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     List<Widget> pages = [
       WizardImageDimension(
         onSelectedDimension: (dimension) {

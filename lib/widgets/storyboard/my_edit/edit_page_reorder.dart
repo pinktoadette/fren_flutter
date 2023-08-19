@@ -64,20 +64,20 @@ class EditPageReorder extends StatefulWidget {
 
 class _EditPageReorderState extends State<EditPageReorder> {
   final _scriptApi = ScriptApi();
+  final PageDirection _direction = PageDirection.VERTICAL;
+  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   late List<Script> scripts;
   late Story story;
   late AppLocalizations _i18n;
-
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+  late ProgressDialog _pr;
+  late Size size;
 
   Layout? layout;
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.25;
-  late ProgressDialog _pr;
-  final PageDirection _direction = PageDirection.VERTICAL;
-
   bool _isDarkMode = false;
 
   @override
@@ -103,11 +103,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
-    _pr = ProgressDialog(context, isDismissible: false);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+    _pr = ProgressDialog(context, isDismissible: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         _reorderListWidget(),

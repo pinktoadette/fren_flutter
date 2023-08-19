@@ -27,18 +27,20 @@ class CreateMachiWidget extends StatefulWidget {
 class _CreateMachiWidget extends State<CreateMachiWidget> {
   final _botApi = BotApi();
   final _chatroomApi = ChatroomMachiApi();
-  String errorMessage = '';
-  BotController botController = Get.find(tag: 'bot');
 
   final _nameController = TextEditingController();
   final _promptController = TextEditingController();
+  final _appHelper = AppHelper();
+
   // final bool _isPrivate = false;
+  File? _uploadPath;
+  String? photoUrl;
+  String errorMessage = '';
+  BotController botController = Get.find(tag: 'bot');
 
   late ProgressDialog _pr;
   late AppLocalizations _i18n;
-  File? _uploadPath;
-  String? photoUrl;
-  final _appHelper = AppHelper();
+  late double width;
 
   @override
   void initState() {
@@ -53,11 +55,16 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-    _pr = ProgressDialog(context, isDismissible: false);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    _pr = ProgressDialog(context, isDismissible: false);
+    width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [

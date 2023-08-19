@@ -36,6 +36,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
 
   File? attachmentPreview;
   String? galleryImageUrl;
+  late String title;
   TextAlign textAlign = TextAlign.left;
   double _alphaValue = 0;
   double yOffset = 80;
@@ -58,12 +59,17 @@ class _AddEditTextState extends State<AddEditTextWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    String title = widget.script == null
+    title = widget.script == null
         ? _i18n.translate("creative_mix_add_content")
         : _i18n.translate("creative_mix_edit_content");
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(

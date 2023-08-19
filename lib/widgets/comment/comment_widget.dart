@@ -17,11 +17,27 @@ class CommentWidget extends StatefulWidget {
 class _CommentWidgetState extends State<CommentWidget> {
   CommentController commentController = Get.find(tag: "comment");
   late AppLocalizations _i18n;
+  late double width;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    width = MediaQuery.of(context).size.width;
+  }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
     return PagedSliverList<int, dynamic>.separated(
       pagingController: commentController.pagingController,
       builderDelegate:

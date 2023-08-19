@@ -19,8 +19,9 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _hideProfile = false;
   late AppLocalizations _i18n;
+  late double _height;
+  bool _hideProfile = false;
   bool _isDarkMode = false;
 
   @override
@@ -29,6 +30,13 @@ class _SettingsScreenState extends State<SettingsScreen> {
     SchedulerBinding.instance.addPostFrameCallback((_) {
       initUserSettings();
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
+    _height = MediaQuery.of(context).size.height;
   }
 
   /// Initialize user settings
@@ -56,10 +64,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
-    _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
-
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -71,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         body: Container(
-          height: height,
+          height: _height,
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: ScopedModelDescendant<UserModel>(
               builder: (context, child, userModel) {

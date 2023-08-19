@@ -29,17 +29,16 @@ class ImageGenerator extends StatefulWidget {
 }
 
 class _ImageGeneratorState extends State<ImageGenerator> {
-  late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String _prompt = "";
   bool _isLoading = false;
   Timer? _timer;
   late ProgressDialog _pr;
+  late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
-    _createStoryPreview();
   }
 
   @override
@@ -48,13 +47,16 @@ class _ImageGeneratorState extends State<ImageGenerator> {
     super.dispose();
   }
 
-  void _createStoryPreview() {}
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    _pr = ProgressDialog(context, isDismissible: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    _pr = ProgressDialog(context, isDismissible: false);
-
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(

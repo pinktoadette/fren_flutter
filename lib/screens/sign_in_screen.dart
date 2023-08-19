@@ -15,13 +15,22 @@ class _SignInScreenState extends State<SignInScreen> {
   // Variables
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   late AppLocalizations _i18n;
+  late double _screenWidth;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
+    _screenWidth = MediaQuery.of(context).size.width;
+  }
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
-    _i18n = AppLocalizations.of(context);
-    double screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
@@ -31,13 +40,13 @@ class _SignInScreenState extends State<SignInScreen> {
       body: Container(
         alignment: Alignment.topCenter,
         child: SizedBox(
-          width: screenWidth * 0.7,
+          width: _screenWidth * 0.7,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
               Container(
                 padding: const EdgeInsets.only(top: 50, bottom: 50),
-                width: screenWidth * 0.5,
+                width: _screenWidth * 0.5,
                 child: Image.asset("assets/images/logo_machi.png"),
               ),
               Semantics(

@@ -19,10 +19,12 @@ class ListPrivateBoard extends StatefulWidget {
 }
 
 class _ListPrivateBoardState extends State<ListPrivateBoard> {
-  late AppLocalizations _i18n;
-  double itemHeight = 120;
   final _storyboardApi = StoryboardApi();
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
+  late AppLocalizations _i18n;
+  late double width;
+  double itemHeight = 120;
 
   @override
   void initState() {
@@ -34,15 +36,20 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    width = MediaQuery.of(context).size.width;
+  }
+
   void _getMyBoards() async {
     await storyboardController.getBoards(filter: StoryStatus.UNPUBLISHED);
   }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    final width = MediaQuery.of(context).size.width;
-
     return RefreshIndicator(
       onRefresh: () async {
         _getMyBoards();

@@ -46,15 +46,16 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  final _promptController = TextEditingController();
   SubscribeController subscribeController = Get.find(tag: 'subscribe');
-  late AppLocalizations _i18n;
   List<dynamic> _items = [];
   String _selectedUrl = '';
   String _appendPrompt = '';
   bool _isLoading = false;
   int _counter = 1;
+  late AppLocalizations _i18n;
+  late Size size;
   final _cancelToken = CancelToken();
+  final _promptController = TextEditingController();
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
     childAspectRatio: 100 / 150,
@@ -89,10 +90,17 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
+
     final bool is480v = _appendPrompt.contains("480v");
     return Column(
       children: [
