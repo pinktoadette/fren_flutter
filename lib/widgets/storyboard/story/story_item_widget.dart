@@ -10,7 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/helpers/date_format.dart';
-import 'package:machi_app/screens/storyboard/page_view.dart';
+import 'package:machi_app/screens/storyboard/page/page_view.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:onboarding/onboarding.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;

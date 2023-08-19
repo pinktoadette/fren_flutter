@@ -52,7 +52,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-              const LatestMachiWidget(),
+              const LatestWidget(),
               PagedListView<int, Storyboard>.separated(
                 shrinkWrap: true,
                 physics: const NeverScrollableScrollPhysics(),

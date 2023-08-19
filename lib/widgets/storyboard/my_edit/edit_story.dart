@@ -10,7 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/storyboard/page_view.dart';
+import 'package:machi_app/screens/storyboard/page/page_view.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';

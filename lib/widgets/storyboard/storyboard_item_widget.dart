@@ -15,7 +15,7 @@ import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
-import 'package:machi_app/screens/storyboard/page_view.dart';
+import 'package:machi_app/screens/storyboard/page/page_view.dart';
 import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/screens/storyboard/story_view.dart';
 import 'package:get/get.dart';

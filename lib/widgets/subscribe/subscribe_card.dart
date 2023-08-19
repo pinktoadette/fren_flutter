@@ -40,7 +40,6 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
     super.didChangeDependencies();
 
     _i18n = AppLocalizations.of(context);
-    screenWidth = MediaQuery.of(context).size.width;
   }
 
   void _fetchSubscription() async {
@@ -70,7 +69,6 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
     if (!isUserSubscribed) {
       return Container(
           color: APP_ACCENT_COLOR,
-          width: screenWidth,
           child: InkWell(
               onTap: () {
                 _showSubscription();

@@ -1,11 +1,7 @@
 import 'dart:async';
-import 'dart:math';
 
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/rendering.dart';
-import 'package:flutter/services.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -21,17 +17,15 @@ import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
+import 'package:machi_app/screens/storyboard/page/page_comment.dart';
+import 'package:machi_app/screens/storyboard/page/page_info.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
-import 'package:machi_app/widgets/common/avatar_initials.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
-import 'package:machi_app/widgets/like_widget.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
-import 'package:machi_app/widgets/comment/post_comment_widget.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
-import 'package:machi_app/widgets/comment/comment_widget.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
 import 'package:machi_app/widgets/storyboard/story/story_header.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
@@ -51,7 +45,6 @@ class _StoryPageViewState extends State<StoryPageView> {
   TimelineController timelineController = Get.find(tag: 'timeline');
 
   final controller = PageController(viewportFraction: 1, keepPage: true);
-  final _timelineApi = TimelineApi();
   // ignore: non_constant_identifier_names
   static double BODY_HEIGHT_PERCENT = 1;
   late AppLocalizations _i18n;
@@ -194,7 +187,7 @@ class _StoryPageViewState extends State<StoryPageView> {
           return Stack(children: [
             _showPageWidget(constraints),
             if (story?.status.name == StoryStatus.PUBLISHED.name)
-              _commentSheet()
+              const PageCommentSheet()
           ]);
         }));
   }
@@ -212,116 +205,6 @@ class _StoryPageViewState extends State<StoryPageView> {
             ));
       },
     );
-  }
-
-  Future<void> _onLikePressed(Story item, bool value) async {
-    try {
-      String response = await _timelineApi.likeStoryMachi(
-          "story", item.storyId, value == true ? 1 : 0);
-      if (response == "OK") {
-        Story update = item.copyWith(
-            mylikes: value == true ? 1 : 0,
-            likes:
-                value == true ? (item.likes! + 1) : max(0, (item.likes! - 1)));
-        timelineController.updateStoryboard(
-            storyboard: storyboardController.currentStoryboard,
-            updateStory: update);
-      }
-    } catch (err, s) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
-
-      await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Cannot like storyboard item', fatal: false);
-    }
-  }
-
-  Widget _commentSheet() {
-    return NotificationListener<DraggableScrollableNotification>(
-        onNotification:
-            (DraggableScrollableNotification scrollableNotification) {
-          if (scrollableNotification.extent ==
-              scrollableNotification.minExtent) {
-            setState(() {
-              bodyHeightPercent = BODY_HEIGHT_PERCENT;
-            });
-          }
-
-          return false;
-        },
-        child: DraggableScrollableSheet(
-          initialChildSize: 0.15,
-          minChildSize: 0.15,
-          maxChildSize: 0.9,
-          expand: true,
-          builder: (BuildContext context, ScrollController scrollController) {
-            if (controller.hasClients) {}
-            return AnimatedBuilder(
-                animation: controller,
-                builder: (context, child) {
-                  return Container(
-                      decoration: BoxDecoration(
-                        boxShadow: [
-                          BoxShadow(
-                              color: Theme.of(context)
-                                  .colorScheme
-                                  .tertiary
-                                  .withOpacity(0.5)
-                                  .withAlpha(50),
-                              blurRadius: 15,
-                              offset: const Offset(0, -10)),
-                        ],
-                      ),
-                      child: ClipRRect(
-                          borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(24),
-                              topRight: Radius.circular(24)),
-                          child: Container(
-                              color: const Color.fromARGB(255, 20, 20, 20),
-                              child: Stack(children: [
-                                CustomScrollView(
-                                    controller: scrollController,
-                                    slivers: [
-                                      SliverToBoxAdapter(
-                                          child: Container(
-                                        margin: const EdgeInsets.only(
-                                            left: 20, top: 10, bottom: 10),
-                                        child: Row(
-                                          children: [
-                                            const Icon(
-                                              Icons.keyboard_double_arrow_up,
-                                              size: 14,
-                                              color: APP_INVERSE_PRIMARY_COLOR,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(_i18n.translate("comments"),
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodySmall!
-                                                    .copyWith(
-                                                        color:
-                                                            APP_INVERSE_PRIMARY_COLOR))
-                                          ],
-                                        ),
-                                      )),
-                                      const CommentWidget(),
-                                      const SliverToBoxAdapter(
-                                          child: SizedBox(
-                                        height: 100,
-                                      ))
-                                    ]),
-                                const Positioned(
-                                    bottom: 0, child: PostCommentWidget())
-                              ]))));
-                });
-          },
-        ));
   }
 
   Widget _showPageWidget(BoxConstraints constraints) {
@@ -468,110 +351,27 @@ class _StoryPageViewState extends State<StoryPageView> {
       Positioned(
           left: 10,
           width: 10,
-          top: size.height / 4,
+          top: size.height / 3,
           child: SizedBox(
             height: 50,
             width: size.width,
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Padding(
-                    padding: const EdgeInsets.only(bottom: 10),
-                    child: SmoothPageIndicator(
-                      controller: controller,
-                      count: story!.pages!.length,
-                      axisDirection: Axis.vertical,
-                      effect: const ExpandingDotsEffect(
-                          dotHeight: 5,
-                          dotWidth: 5,
-                          activeDotColor: APP_ACCENT_COLOR),
-                    )),
-              ],
+            child: SmoothPageIndicator(
+              controller: controller,
+              count: story!.pages!.length,
+              axisDirection: Axis.vertical,
+              effect: const ExpandingDotsEffect(
+                  dotHeight: 5, dotWidth: 5, activeDotColor: APP_ACCENT_COLOR),
             ),
           )),
 
       /// creator of content and stats
       if (story!.status == StoryStatus.PUBLISHED)
-        Positioned(
+        const Positioned(
           bottom: 0,
           left: 0,
-          child: Container(
-              color: Colors.black.withOpacity(0.8),
-              width: size.width,
-              height: 180,
-              padding: const EdgeInsets.only(top: 10),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                    Padding(
-                        padding: const EdgeInsets.only(left: 20),
-                        child: AvatarInitials(
-                            radius: 16,
-                            userId: story!.createdBy.userId,
-                            photoUrl: story!.createdBy.photoUrl,
-                            username: story!.createdBy.username)),
-                    Container(
-                        padding: const EdgeInsets.only(left: 0),
-                        child: Obx(() => LikeItemWidget(
-                            onLike: (val) {
-                              _onLikePressed(widget.story, val);
-                            },
-                            fontColor: APP_INVERSE_PRIMARY_COLOR,
-                            size: 40,
-                            likes: timelineController.currentStory.likes ?? 0,
-                            mylikes:
-                                timelineController.currentStory.mylikes ?? 0))),
-                    Container(
-                        padding: const EdgeInsets.only(left: 30, top: 12),
-                        child: Row(
-                          children: [
-                            const Icon(
-                              Iconsax.message,
-                              size: 16,
-                              color: APP_INVERSE_PRIMARY_COLOR,
-                            ),
-                            const SizedBox(
-                              width: 20,
-                            ),
-                            Obx(() => Text(
-                                  timelineController.currentStory.commentCount
-                                      .toString(),
-                                  style: const TextStyle(
-                                      fontSize: 12,
-                                      color: APP_INVERSE_PRIMARY_COLOR),
-                                ))
-                          ],
-                        ))
-                  ]),
-                  Container(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: Row(
-                        children: [
-                          IconButton(
-                            onPressed: () => {_copyLink(context)},
-                            icon: const Icon(Icons.share),
-                            iconSize: 16,
-                            color: APP_INVERSE_PRIMARY_COLOR,
-                          ),
-                        ],
-                      ))
-                ],
-              )),
+          child: StoryPageInfoWidget(),
         )
     ]);
-  }
-
-  void _copyLink(BuildContext context) {
-    String textToCopy =
-        "${APP_WEBSITE}post/${story!.storyId.substring(0, 5)}-${story!.slug}";
-    Clipboard.setData(ClipboardData(text: textToCopy));
-    Get.snackbar("Link", 'Copied to clipboard: $textToCopy',
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_TERTIARY,
-        colorText: Colors.white);
   }
 
   Widget _displayScript(Script script, Size size, bool hasBackground) {

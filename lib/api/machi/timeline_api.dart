@@ -6,7 +6,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
-import 'package:machi_app/datas/gallery.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
 class TimelineApi {
@@ -88,7 +87,6 @@ class TimelineApi {
   Map<String, dynamic> _homeDatafromJson(Map<String, dynamic> data) {
     List<Bot> bots = [];
     List<Bot> mybots = [];
-    List<Gallery> galleries = [];
     for (var machi in data['machi']) {
       Bot bot = Bot.fromDocument(machi);
       bots.add(bot);

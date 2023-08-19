@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:iconsax/iconsax.dart';
@@ -7,15 +6,17 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/ad_helper.dart'; // Make sure to import your AdManager with interstitialAdUnitId defined
 
 class RewardAds extends StatefulWidget {
+  final String text;
   final Function(dynamic data) onAdStatus;
-  const RewardAds({Key? key, required this.onAdStatus}) : super(key: key);
+  const RewardAds({Key? key, required this.text, required this.onAdStatus})
+      : super(key: key);
 
   @override
   State<RewardAds> createState() => _RewardAdsState();
 }
 
 class _RewardAdsState extends State<RewardAds> {
-  RewardedInterstitialAd? _ad;
+  RewardedAd? _ad;
   bool _isAdLoaded = false;
   int _numRewardedInterstitialLoadAttempts = 0;
   static int maxFailedLoadAttempts = 3;
@@ -43,10 +44,10 @@ class _RewardAdsState extends State<RewardAds> {
     if (!mounted) {
       return;
     }
-    RewardedInterstitialAd.load(
+    RewardedAd.load(
         adUnitId: AdManager.rewardAds,
         request: const AdRequest(),
-        rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
+        rewardedAdLoadCallback: RewardedAdLoadCallback(
           onAdLoaded: (ad) {
             setState(() {
               _ad = ad;
@@ -76,7 +77,7 @@ class _RewardAdsState extends State<RewardAds> {
             _numRewardedInterstitialLoadAttempts = 0;
           },
           onAdFailedToLoad: (LoadAdError error) {
-            debugPrint('RewardedInterstitialAd failed to load: $error');
+            debugPrint('Rewarded Ad failed to load: $error');
             _ad = null;
             _numRewardedInterstitialLoadAttempts += 1;
             if (_numRewardedInterstitialLoadAttempts < maxFailedLoadAttempts) {
@@ -105,30 +106,33 @@ class _RewardAdsState extends State<RewardAds> {
 
   @override
   Widget build(BuildContext context) {
-    double buttonSize = 150;
-
-    return Center(
-        child: SizedBox(
-            width: buttonSize + 100,
-            height: buttonSize,
-            child: OutlinedButton.icon(
-              icon: const Icon(
-                Iconsax.coin,
-                color: APP_ACCENT_COLOR,
-              ),
-              label: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    _i18n.translate("watch_ads"),
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
-              onPressed: () {
-                _showRewardAd();
-              },
-            )));
+    return TextButton.icon(
+      icon: const Icon(
+        Iconsax.coin,
+        color: APP_ACCENT_COLOR,
+      ),
+      label: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              widget.text,
+              style: TextStyle(
+                  color: Theme.of(context).colorScheme.primary,
+                  fontWeight: FontWeight.bold),
+            ),
+            Text(_i18n.translate("watch_ads_earn_10"),
+                style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 14)),
+          ],
+        ),
+      ),
+      onPressed: () {
+        _showRewardAd();
+      },
+    );
   }
 }

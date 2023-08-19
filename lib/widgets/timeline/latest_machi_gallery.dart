@@ -10,6 +10,7 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
+import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
@@ -17,14 +18,14 @@ import 'package:machi_app/widgets/bot/prompt_create.dart';
 import 'package:machi_app/widgets/storyboard/new_story_card.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 
-class LatestMachiWidget extends StatefulWidget {
-  const LatestMachiWidget({super.key});
+class LatestWidget extends StatefulWidget {
+  const LatestWidget({super.key});
 
   @override
-  State<LatestMachiWidget> createState() => _LatestMachiWidgetState();
+  State<LatestWidget> createState() => _LatestMachiWidgetState();
 }
 
-class _LatestMachiWidgetState extends State<LatestMachiWidget> {
+class _LatestMachiWidgetState extends State<LatestWidget> {
   UserController userController = Get.find(tag: 'user');
   TimelineController timelineController = Get.find(tag: 'timeline');
   late AppLocalizations _i18n;
@@ -108,6 +109,10 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
               const SizedBox(height: 20),
               const CreateStoryCard(),
               if (userController.user != null) _showSubscriptionCard(),
+              RewardAds(
+                text: _i18n.translate("watch_ads_earn"),
+                onAdStatus: (data) {},
+              ),
               const SizedBox(height: 20),
             ],
           ));

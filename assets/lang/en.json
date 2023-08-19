@@ -103,7 +103,9 @@
   "subscribed_manage_plan": "Manage Plan",
   "subscribed_credits_expired_footnote": "Use your credits before end of expiration or your credits will be lost.",
 
-  "watch_ads": "While you wait, watch ad to earn 1 token",
+  "watch_ads_earn": "Earn Tokens",
+  "watch_ads_earn_10": "Watch ads earn 10 tokens",
+  "watch_ads_waiting": "While you wait, watch ad to earn 1 token",
   "_NotificationsScreen": "*** Notifications Screen Translations ***",
   "notifications": "Notifications",
   "mark_all_read": "Mark All Read",

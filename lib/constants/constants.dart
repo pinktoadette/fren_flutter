@@ -56,8 +56,8 @@ const String GOOGLE_INTERSTI_ADS_ANDROID =
 const String IOS_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/6978759866";
 
 /// TEST REWARDS
-const String ANDROID_REWARD_ADS = "ca-app-pub-3940256099942544/5224354917";
-const String IOS_REWARD_ADS = "ca-app-pub-3940256099942544/1712485313";
+const String ANDROID_REWARD_ADS = "ca-app-pub-8475595365680681/1547961013";
+const String IOS_REWARD_ADS = "ca-app-pub-8475595365680681/7482813973";
 
 //
 // Add Google Maps - API KEY required for Passport feature
