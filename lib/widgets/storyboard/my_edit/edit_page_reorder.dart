@@ -487,7 +487,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
             } else {
               await _saveOrUploadTextImg(value);
             }
-            Get.back();
           },
         ));
   }

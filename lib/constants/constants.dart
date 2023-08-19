@@ -44,14 +44,20 @@ const String APP_VERSION_NAME = "Android v1.0.0 & iOS v1.0.0";
 const int ANDROID_APP_VERSION_NUMBER = 1; // Google Play Version Number
 const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
 
+/// BANNER ADS
 const String GOOGLE_BANNER_ADS_ANDROID =
     'ca-app-pub-8475595365680681/9246193145';
 const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 // test: 'ca-app-pub-3940256099942544/6300978111'; //live: ca-app-pub-8475595365680681/9246193145
+
+/// INTERSTITIAL ADS
 const String GOOGLE_INTERSTI_ADS_ANDROID =
     'ca-app-pub-8475595365680681~6477088834';
-// For IOS Platform
-const String IOS_INTERSTITIAL_ID = "ca-app-pub-8475595365680681~1405545735";
+const String IOS_INTERSTITIAL_ID = "ca-app-pub-3940256099942544/4411468910";
+
+/// TEST REWARDS
+const String ANDROID_REWARD_ADS = "ca-app-pub-3940256099942544/5354046379";
+const String IOS_REWARD_ADS = "ca-app-pub-3940256099942544/6978759866";
 
 //
 // Add Google Maps - API KEY required for Passport feature
