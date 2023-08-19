@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
+import 'package:iconsax/iconsax.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/ad_helper.dart'; // Make sure to import your AdManager with interstitialAdUnitId defined
 
 class RewardAds extends StatefulWidget {
@@ -16,18 +19,24 @@ class _RewardAdsState extends State<RewardAds> {
   bool _isAdLoaded = false;
   int _numRewardedInterstitialLoadAttempts = 0;
   static int maxFailedLoadAttempts = 3;
-
+  late AppLocalizations _i18n;
   @override
   void initState() {
     super.initState();
     _loadAds();
-    _showInterstitialAd();
   }
 
   @override
   void dispose() {
-    _ad!.dispose();
+    _ad?.dispose();
+    _numRewardedInterstitialLoadAttempts = 0;
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
   }
 
   void _loadAds() {
@@ -35,11 +44,34 @@ class _RewardAdsState extends State<RewardAds> {
       return;
     }
     RewardedInterstitialAd.load(
-        adUnitId: AdManager.interstitialAdUnitId,
+        adUnitId: AdManager.rewardAds,
         request: const AdRequest(),
         rewardedInterstitialAdLoadCallback: RewardedInterstitialAdLoadCallback(
-          onAdLoaded: (RewardedInterstitialAd ad) {
+          onAdLoaded: (ad) {
+            setState(() {
+              _ad = ad;
+              _isAdLoaded = true;
+            });
+            ad.fullScreenContentCallback = FullScreenContentCallback(
+                // Called when the ad showed the full screen content.
+                onAdShowedFullScreenContent: (ad) {},
+                // Called when an impression occurs on the ad.
+                onAdImpression: (ad) {},
+                // Called when the ad failed to show full screen content.
+                onAdFailedToShowFullScreenContent: (ad, err) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when the ad dismissed full screen content.
+                onAdDismissedFullScreenContent: (ad) {
+                  // Dispose the ad here to free resources.
+                  ad.dispose();
+                },
+                // Called when a click is recorded for an ad.
+                onAdClicked: (ad) {});
+
             debugPrint('$ad loaded.');
+            // Keep a reference to the ad so you can show it later.
             _ad = ad;
             _numRewardedInterstitialLoadAttempts = 0;
           },
@@ -54,30 +86,49 @@ class _RewardAdsState extends State<RewardAds> {
         ));
   }
 
-  void _showInterstitialAd() {
+  void _showRewardAd() {
     if (_isAdLoaded) {
       _isAdLoaded = false;
 
-      // Schedule a timer to load a new ad after a certain time (e.g., 5 seconds)
-      Timer(const Duration(seconds: 1), () {
-        _loadAds();
+      _ad!.show(onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) {
+        // Reward the user for watching an ad.
+        debugPrint(rewardItem.amount.toString());
       });
     } else {
       _loadAds();
+      _numRewardedInterstitialLoadAttempts = 0;
+
       debugPrint(
-          'InterstitialAd is not loaded yet. Please wait or try again later.');
-      // Handle the case when the ad is not loaded yet.
-      // You might want to show an alternative ad or a placeholder.
+          'Reward ads is not loaded yet. Please wait or try again later.');
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return TextButton(
-      child: const Text("Watch ads and get 1 token."),
-      onPressed: () {
-        _showInterstitialAd();
-      },
-    );
+    double buttonSize = 150;
+
+    return Center(
+        child: SizedBox(
+            width: buttonSize + 100,
+            height: buttonSize,
+            child: OutlinedButton.icon(
+              icon: const Icon(
+                Iconsax.coin,
+                color: APP_ACCENT_COLOR,
+              ),
+              label: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    _i18n.translate("watch_ads"),
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                ],
+              ),
+              onPressed: () {
+                _showRewardAd();
+              },
+            )));
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/ads/interstitial_ads.dart';
-import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension.dart';
+import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step2_style.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step3_prompt.dart';
 
@@ -47,7 +46,7 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
   @override
   Widget build(BuildContext context) {
     List<Widget> pages = [
-      InterstitialAds(onAdStatus: (data) {}),
+      RewardAds(onAdStatus: (data) {}),
       // WizardImageDimension(
       //   onSelectedDimension: (dimension) {
       //     if (!mounted) {
