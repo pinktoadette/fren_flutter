@@ -122,21 +122,27 @@ class _LatestMachiWidgetState extends State<LatestMachiWidget> {
   Widget _addBot(Size size) {
     return InkWell(
         onTap: () {
-          showModalBottomSheet<void>(
-              context: context,
-              isScrollControlled: true,
-              builder: (context) => FractionallySizedBox(
-                  heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-                  child: DraggableScrollableSheet(
-                    snap: true,
-                    initialChildSize: 1,
-                    minChildSize: 1,
-                    builder: (context, scrollController) =>
-                        SingleChildScrollView(
-                      controller: scrollController,
-                      child: const CreateMachiWidget(),
-                    ),
-                  )));
+          NavigationHelper.handleGoToPageOrLogin(
+            context: context,
+            userController: userController,
+            navigateAction: () {
+              showModalBottomSheet<void>(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (context) => FractionallySizedBox(
+                      heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+                      child: DraggableScrollableSheet(
+                        snap: true,
+                        initialChildSize: 1,
+                        minChildSize: 1,
+                        builder: (context, scrollController) =>
+                            SingleChildScrollView(
+                          controller: scrollController,
+                          child: const CreateMachiWidget(),
+                        ),
+                      )));
+            },
+          );
         },
         child: SizedBox(
             width: size.width / 4.5,
