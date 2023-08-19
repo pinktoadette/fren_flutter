@@ -40,11 +40,9 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
   double storyCoverWidth = 80;
   double padding = 15;
   List<PageModel>? pageList;
-  late double width;
   late AppLocalizations _i18n;
   late String timestampLabel;
   late double playWidth;
-  late double contentWidth;
   @override
   void initState() {
     super.initState();
@@ -53,7 +51,6 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
     timestampLabel = widget.story.status == StoryStatus.PUBLISHED
         ? "Published on "
         : "Last Updated ";
-    contentWidth = width - (storyCoverWidth + playWidth + padding * 3);
   }
 
   @override
@@ -66,75 +63,82 @@ class _StoryItemWidgetState extends State<StoryItemWidget> {
     super.didChangeDependencies();
 
     _i18n = AppLocalizations.of(context);
-    width = MediaQuery.of(context).size.width;
   }
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-        onTap: () {
-          if (widget.disablePress == true) {
-            null;
-          } else {
-            timelineController.setStoryTimelineControllerCurrent(widget.story);
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
+      double contentWidth = width - (storyCoverWidth + playWidth + padding * 3);
 
-            if (widget.message != null) {
-              _addMessage();
+      return InkWell(
+          onTap: () {
+            if (widget.disablePress == true) {
+              null;
             } else {
-              storyboardController.onGoToPageView(widget.story);
-              Get.to(() => StoryPageView(story: widget.story));
+              timelineController
+                  .setStoryTimelineControllerCurrent(widget.story);
+
+              if (widget.message != null) {
+                _addMessage();
+              } else {
+                storyboardController.onGoToPageView(widget.story);
+                Get.to(() => StoryPageView(story: widget.story));
+              }
             }
-          }
-        },
-        child: Column(children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: EdgeInsets.all(padding),
-                child: StoryCover(
-                    height: storyCoverWidth,
-                    width: storyCoverWidth,
-                    photoUrl: widget.story.photoUrl ?? "",
-                    title: widget.story.title),
-              ),
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                        width: contentWidth,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Text(
-                                "$timestampLabel ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
-                                style: const TextStyle(fontSize: 10)),
-                            Text(
-                              widget.story.title,
-                              style: TextStyle(
-                                  color: Theme.of(context).colorScheme.primary,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                          ],
-                        )),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    if (widget.story.status == StoryStatus.UNPUBLISHED)
-                      const Icon(
-                        Iconsax.lock,
-                        size: 16,
+          },
+          child: Column(children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.all(padding),
+                  child: StoryCover(
+                      height: storyCoverWidth,
+                      width: storyCoverWidth,
+                      photoUrl: widget.story.photoUrl ?? "",
+                      title: widget.story.title),
+                ),
+                Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                          width: contentWidth,
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              const SizedBox(
+                                height: 15,
+                              ),
+                              Text(
+                                  "$timestampLabel ${formatDate(widget.story.updatedAt ?? getDateTimeEpoch())}",
+                                  style: const TextStyle(fontSize: 10)),
+                              Text(
+                                widget.story.title,
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            ],
+                          )),
+                      const SizedBox(
+                        height: 10,
                       ),
-                  ]),
-            ],
-          ),
-        ]));
+                      if (widget.story.status == StoryStatus.UNPUBLISHED)
+                        const Icon(
+                          Iconsax.lock,
+                          size: 16,
+                        ),
+                    ]),
+              ],
+            ),
+          ]));
+    });
   }
 
   void _addMessage() async {

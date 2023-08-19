@@ -40,7 +40,6 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
   late ProgressDialog _pr;
   late AppLocalizations _i18n;
-  late double width;
 
   @override
   void initState() {
@@ -60,180 +59,186 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
 
     _i18n = AppLocalizations.of(context);
     _pr = ProgressDialog(context, isDismissible: false);
-    width = MediaQuery.of(context).size.width;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-        padding: const EdgeInsets.all(10),
-        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                _i18n.translate("my_machi"),
-                style: Theme.of(context).textTheme.headlineMedium,
-                textAlign: TextAlign.left,
-              )
-            ],
-          ),
-          const SizedBox(height: 10),
-          SizedBox(
-            width: width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    SizedBox(
-                      width: width * 0.7,
-                      height: 80,
-                      child: TextFormField(
-                        maxLength: 40,
-                        style: Theme.of(context).textTheme.bodyMedium,
-                        buildCounter: (_,
-                                {required currentLength,
-                                maxLength,
-                                required isFocused}) =>
-                            _counter(context, currentLength, maxLength),
-                        controller: _nameController,
-                        decoration: InputDecoration(
-                          hintText: _i18n.translate("bot_name_hint"),
-                          hintStyle: Theme.of(context).textTheme.bodySmall,
-                        ),
-                        validator: (name) {
-                          // Basic validation
-                          if (name?.isEmpty ?? false) {
-                            return _i18n.translate("required_field");
-                          }
-                          if (name?.isNotEmpty == true && name!.length < 2) {
-                            return _i18n.translate("required_2_char");
-                          }
-                          return null;
-                        },
-                      ),
-                    ),
-                    GestureDetector(
-                      child: Center(
-                        child: Stack(
-                          children: <Widget>[
-                            CircleAvatar(
-                              radius: 40,
-                              foregroundImage: _uploadPath != null
-                                  ? FileImage(_uploadPath!)
-                                  : null,
-                              backgroundImage: photoUrl != null
-                                  ? ImageCacheWrapper(photoUrl!)
-                                  : null,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.primary,
-                              child: Text(_nameController.text.length > 1
-                                  ? photoUrl == null
-                                      ? _nameController.text.substring(0, 1)
-                                      : ""
-                                  : "MA"),
-                            ),
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
 
-                            /// Edit icon
-                            Positioned(
-                              right: 0,
-                              bottom: 0,
-                              child: CircleAvatar(
-                                radius: 12,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.background,
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Theme.of(context).colorScheme.primary,
-                                  size: 12,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      onTap: () async {
-                        /// Update profile image
-                        _selectImage(path: 'machi');
-                      },
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                TextFormField(
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  maxLength: 500,
-                  buildCounter: (_,
-                          {required currentLength,
-                          maxLength,
-                          required isFocused}) =>
-                      _counter(context, currentLength, maxLength),
-                  controller: _promptController,
-                  decoration: InputDecoration(
-                    hintText: _i18n.translate("bot_prompt_hint"),
-                    hintStyle: Theme.of(context).textTheme.bodySmall,
-                  ),
-                  maxLines: 10,
-                  validator: (name) {
-                    // Basic validation
-                    if (name?.isEmpty ?? false) {
-                      return _i18n.translate("required_field");
-                    }
-                    return null;
-                  },
-                ),
+      return Padding(
+          padding: const EdgeInsets.all(10),
+          child:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  _i18n.translate("my_machi"),
+                  style: Theme.of(context).textTheme.headlineMedium,
+                  textAlign: TextAlign.left,
+                )
               ],
             ),
-          ),
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          //   children: [
-          //     Text(_i18n.translate("bot_is_private")),
-          //     Switch(
-          //       activeColor: Theme.of(context).colorScheme.secondary,
-          //       value: _isPrivate,
-          //       onChanged: (newValue) {
-          //         setState(() {
-          //           _isPrivate = newValue;
-          //         });
-          //       },
-          //     ),
-          //   ],
-          // ),
-          errorMessage != ''
-              ? Text(
-                  errorMessage,
-                  style: Theme.of(context).textTheme.labelSmall,
-                  selectionColor: APP_ERROR,
-                )
-              : const SizedBox(height: 50),
-          const SizedBox(
-            height: 30,
-          ),
-          Center(
-            child: ElevatedButton(
-                onPressed: () {
-                  _onHandleSubmitBot(context);
-                },
-                child: Text(_i18n.translate("publish"))),
-          ),
-          const SizedBox(
-            height: 80,
-          ),
-          GestureDetector(
-            child: Text(
-              _i18n.translate("bot_test_warning"),
-              style: Theme.of(context).textTheme.labelSmall,
+            const SizedBox(height: 10),
+            SizedBox(
+              width: width,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(
+                        width: width * 0.7,
+                        height: 80,
+                        child: TextFormField(
+                          maxLength: 40,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                          buildCounter: (_,
+                                  {required currentLength,
+                                  maxLength,
+                                  required isFocused}) =>
+                              _counter(context, currentLength, maxLength),
+                          controller: _nameController,
+                          decoration: InputDecoration(
+                            hintText: _i18n.translate("bot_name_hint"),
+                            hintStyle: Theme.of(context).textTheme.bodySmall,
+                          ),
+                          validator: (name) {
+                            // Basic validation
+                            if (name?.isEmpty ?? false) {
+                              return _i18n.translate("required_field");
+                            }
+                            if (name?.isNotEmpty == true && name!.length < 2) {
+                              return _i18n.translate("required_2_char");
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      GestureDetector(
+                        child: Center(
+                          child: Stack(
+                            children: <Widget>[
+                              CircleAvatar(
+                                radius: 40,
+                                foregroundImage: _uploadPath != null
+                                    ? FileImage(_uploadPath!)
+                                    : null,
+                                backgroundImage: photoUrl != null
+                                    ? ImageCacheWrapper(photoUrl!)
+                                    : null,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
+                                child: Text(_nameController.text.length > 1
+                                    ? photoUrl == null
+                                        ? _nameController.text.substring(0, 1)
+                                        : ""
+                                    : "MA"),
+                              ),
+
+                              /// Edit icon
+                              Positioned(
+                                right: 0,
+                                bottom: 0,
+                                child: CircleAvatar(
+                                  radius: 12,
+                                  backgroundColor:
+                                      Theme.of(context).colorScheme.background,
+                                  child: Icon(
+                                    Icons.edit,
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    size: 12,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        onTap: () async {
+                          /// Update profile image
+                          _selectImage(path: 'machi');
+                        },
+                      )
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  TextFormField(
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    maxLength: 500,
+                    buildCounter: (_,
+                            {required currentLength,
+                            maxLength,
+                            required isFocused}) =>
+                        _counter(context, currentLength, maxLength),
+                    controller: _promptController,
+                    decoration: InputDecoration(
+                      hintText: _i18n.translate("bot_prompt_hint"),
+                      hintStyle: Theme.of(context).textTheme.bodySmall,
+                    ),
+                    maxLines: 10,
+                    validator: (name) {
+                      // Basic validation
+                      if (name?.isEmpty ?? false) {
+                        return _i18n.translate("required_field");
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              ),
             ),
-            onTap: () {
-              // Open terms of service page in browser
-              _appHelper.openTermsPage();
-            },
-          ),
-        ]));
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Text(_i18n.translate("bot_is_private")),
+            //     Switch(
+            //       activeColor: Theme.of(context).colorScheme.secondary,
+            //       value: _isPrivate,
+            //       onChanged: (newValue) {
+            //         setState(() {
+            //           _isPrivate = newValue;
+            //         });
+            //       },
+            //     ),
+            //   ],
+            // ),
+            errorMessage != ''
+                ? Text(
+                    errorMessage,
+                    style: Theme.of(context).textTheme.labelSmall,
+                    selectionColor: APP_ERROR,
+                  )
+                : const SizedBox(height: 50),
+            const SizedBox(
+              height: 30,
+            ),
+            Center(
+              child: ElevatedButton(
+                  onPressed: () {
+                    _onHandleSubmitBot(context);
+                  },
+                  child: Text(_i18n.translate("publish"))),
+            ),
+            const SizedBox(
+              height: 80,
+            ),
+            GestureDetector(
+              child: Text(
+                _i18n.translate("bot_test_warning"),
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              onTap: () {
+                // Open terms of service page in browser
+                _appHelper.openTermsPage();
+              },
+            ),
+          ]));
+    });
   }
 
   void _onHandleSubmitBot(BuildContext context) async {

@@ -23,7 +23,6 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
   final _titleController = TextEditingController();
   String errorMessage = '';
   String _selectedCategory = "";
-  late double width;
 
   @override
   void initState() {
@@ -42,61 +41,65 @@ class _StoryboardTitleCategoryState extends State<StoryboardTitleCategory> {
     super.didChangeDependencies();
 
     _i18n = AppLocalizations.of(context);
-    width = MediaQuery.of(context).size.width;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        child: Container(
-            padding: const EdgeInsets.all(10.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  width: width,
-                  child: widget.category == ""
-                      ? CategoryDropdownWidget(notifyParent: (value) {
-                          setState(() {
-                            _selectedCategory = value;
-                          });
-                        })
-                      : CategoryDropdownWidget(
-                          selectedCategory: widget.category,
-                          notifyParent: (value) {
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
+
+      return Card(
+          child: Container(
+              padding: const EdgeInsets.all(10.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: width,
+                    child: widget.category == ""
+                        ? CategoryDropdownWidget(notifyParent: (value) {
                             setState(() {
                               _selectedCategory = value;
                             });
-                          }),
-                ),
-                TextFormField(
-                  maxLength: 80,
-                  buildCounter: (_,
-                          {required currentLength,
-                          maxLength,
-                          required isFocused}) =>
-                      _counter(context, currentLength, maxLength),
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    hintText: _i18n.translate("creative_mix_title"),
-                    hintStyle: TextStyle(
-                        color: Theme.of(context).colorScheme.tertiary),
-                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                          })
+                        : CategoryDropdownWidget(
+                            selectedCategory: widget.category,
+                            notifyParent: (value) {
+                              setState(() {
+                                _selectedCategory = value;
+                              });
+                            }),
                   ),
-                  validator: (reason) {
-                    // Basic validation
-                    if (reason?.isEmpty ?? false) {
-                      return _i18n.translate("creative_mix_enter_title");
-                    }
-                    return null;
-                  },
-                ),
-              ],
-            )));
+                  TextFormField(
+                    maxLength: 80,
+                    buildCounter: (_,
+                            {required currentLength,
+                            maxLength,
+                            required isFocused}) =>
+                        _counter(context, currentLength, maxLength),
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      hintText: _i18n.translate("creative_mix_title"),
+                      hintStyle: TextStyle(
+                          color: Theme.of(context).colorScheme.tertiary),
+                      floatingLabelBehavior: FloatingLabelBehavior.always,
+                    ),
+                    validator: (reason) {
+                      // Basic validation
+                      if (reason?.isEmpty ?? false) {
+                        return _i18n.translate("creative_mix_enter_title");
+                      }
+                      return null;
+                    },
+                  ),
+                ],
+              )));
+    });
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {

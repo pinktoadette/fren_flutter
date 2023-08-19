@@ -17,7 +17,6 @@ class CommentWidget extends StatefulWidget {
 class _CommentWidgetState extends State<CommentWidget> {
   CommentController commentController = Get.find(tag: "comment");
   late AppLocalizations _i18n;
-  late double width;
   @override
   void initState() {
     super.initState();
@@ -33,47 +32,51 @@ class _CommentWidgetState extends State<CommentWidget> {
     super.didChangeDependencies();
 
     _i18n = AppLocalizations.of(context);
-    width = MediaQuery.of(context).size.width;
   }
 
   @override
   Widget build(BuildContext context) {
-    return PagedSliverList<int, dynamic>.separated(
-      pagingController: commentController.pagingController,
-      builderDelegate:
-          PagedChildBuilderDelegate<dynamic>(noItemsFoundIndicatorBuilder: (_) {
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              _i18n.translate("comment_none"),
-              style: const TextStyle(color: APP_INVERSE_PRIMARY_COLOR),
-            )
-          ],
-        );
-      }, itemBuilder: (context, item, index) {
-        return CommentRowWidget(
-            item: item,
-            onDelete: (item) {
-              removeItem(item);
-            });
-      }),
-      separatorBuilder: (BuildContext context, int index) {
-        if ((index + 1) % 5 == 0) {
-          return Padding(
-            padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-            child: Container(
-              height: AD_HEIGHT,
-              width: width,
-              color: Theme.of(context).colorScheme.background,
-              child: const InlineAdaptiveAds(),
-            ),
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
+
+      return PagedSliverList<int, dynamic>.separated(
+        pagingController: commentController.pagingController,
+        builderDelegate: PagedChildBuilderDelegate<dynamic>(
+            noItemsFoundIndicatorBuilder: (_) {
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                _i18n.translate("comment_none"),
+                style: const TextStyle(color: APP_INVERSE_PRIMARY_COLOR),
+              )
+            ],
           );
-        } else {
-          return const SizedBox.shrink();
-        }
-      },
-    );
+        }, itemBuilder: (context, item, index) {
+          return CommentRowWidget(
+              item: item,
+              onDelete: (item) {
+                removeItem(item);
+              });
+        }),
+        separatorBuilder: (BuildContext context, int index) {
+          if ((index + 1) % 5 == 0) {
+            return Padding(
+              padding: const EdgeInsetsDirectional.only(top: 10, bottom: 10),
+              child: Container(
+                height: AD_HEIGHT,
+                width: width,
+                color: Theme.of(context).colorScheme.background,
+                child: const InlineAdaptiveAds(),
+              ),
+            );
+          } else {
+            return const SizedBox.shrink();
+          }
+        },
+      );
+    });
   }
 
   void removeItem(dynamic item) {

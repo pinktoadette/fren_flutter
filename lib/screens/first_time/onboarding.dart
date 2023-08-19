@@ -120,7 +120,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Positioned(
             left: 10,
             width: 10,
-            top: size.height / 2,
+            top: size.height / 3,
             child: SmoothPageIndicator(
               controller: _controller,
               count: pages.length,

@@ -48,7 +48,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   late Storyboard storyboard;
   late AppLocalizations _i18n;
-  late double width;
   final _timelineApi = TimelineApi();
   double padding = 15;
   late String timestampLabel;
@@ -71,7 +70,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     super.didChangeDependencies();
 
     _i18n = AppLocalizations.of(context);
-    width = MediaQuery.of(context).size.width;
     timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? _i18n.translate("post_published_on")
         : _i18n.translate("post_last_updated");
@@ -79,35 +77,40 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (widget.showHeader == true)
-          Container(
-            padding: EdgeInsets.only(top: padding, bottom: padding),
-            width: width,
-            child: TimelineHeader(
-              radius: 24,
-              user: storyboard.createdBy,
-              showName: true,
-              showMenu: false,
-              underNameRow:
-                  Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                      )),
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (widget.showHeader == true)
+            Container(
+              padding: EdgeInsets.only(top: padding, bottom: padding),
+              width: width,
+              child: TimelineHeader(
+                radius: 24,
+                user: storyboard.createdBy,
+                showName: true,
+                showMenu: false,
+                underNameRow:
+                    Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                        style: const TextStyle(
+                          fontSize: 12,
+                        )),
+              ),
             ),
+          _buildDefaultLayout(
+            storyboard,
+            padding,
+            width,
           ),
-        _buildDefaultLayout(
-          storyboard,
-          padding,
-          width,
-        ),
-        if (widget.hideCollection == false)
-          Row(children: _showCollectionFooter())
-      ],
-    );
+          if (widget.hideCollection == false)
+            Row(children: _showCollectionFooter())
+        ],
+      );
+    });
   }
 
   bool isEmptyString(String? value) {
@@ -157,7 +160,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               category: category,
               subtitle: subtitle,
               photoUrl: photoUrl ?? "",
-              padding: padding));
+              padding: padding,
+              width: width));
     }
 
     return InkWell(
@@ -193,7 +197,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       category: category,
                       subtitle: subtitle,
                       photoUrl: photoUrl!,
-                      padding: padding)
+                      padding: padding,
+                      width: width)
                 ],
               ),
             ),
@@ -208,7 +213,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       required String subtitle,
       required String category,
       required String photoUrl,
-      required padding}) {
+      required double padding,
+      required double width}) {
     Color textColor = photoUrl == ""
         ? Theme.of(context).colorScheme.primary
         : APP_INVERSE_PRIMARY_COLOR;
