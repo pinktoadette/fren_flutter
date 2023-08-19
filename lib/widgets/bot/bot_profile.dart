@@ -25,6 +25,12 @@ class _BotProfileCardState extends State<BotProfileCard> {
   bool disableTextEdit = true;
   UserController userController = Get.find(tag: 'user');
   late AppLocalizations _i18n;
+  TextStyle header = const TextStyle(
+      color: APP_INVERSE_PRIMARY_COLOR,
+      fontSize: 20,
+      fontWeight: FontWeight.bold);
+  TextStyle body =
+      const TextStyle(color: APP_INVERSE_PRIMARY_COLOR, fontSize: 16);
 
   @override
   void initState() {
@@ -37,16 +43,15 @@ class _BotProfileCardState extends State<BotProfileCard> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+  }
+
+  @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
-    _i18n = AppLocalizations.of(context);
-
-    TextStyle header = const TextStyle(
-        color: APP_INVERSE_PRIMARY_COLOR,
-        fontSize: 20,
-        fontWeight: FontWeight.bold);
-    TextStyle body =
-        const TextStyle(color: APP_INVERSE_PRIMARY_COLOR, fontSize: 16);
 
     return Column(children: [
       Card(

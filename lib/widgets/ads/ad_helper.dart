@@ -36,7 +36,6 @@ class AdManager {
       // 31712 test
       return 'ca-app-pub-3940256099942544/1033173712'; //GOOGLE_INTERSTI_ADS_ANDROID;
     } else if (Platform.isIOS) {
-      /// should be different
       return IOS_INTERSTITIAL_ID;
     }
     throw UnsupportedError("Unsupported platform");
@@ -47,6 +46,15 @@ class AdManager {
       return 'ca-app-pub-3940256099942544/2247696110';
     } else if (Platform.isIOS) {
       return 'ca-app-pub-3940256099942544/3986624511';
+    }
+    throw UnsupportedError("Unsupported platform");
+  }
+
+  static String get rewardAds {
+    if (Platform.isAndroid) {
+      return ANDROID_REWARD_ADS;
+    } else if (Platform.isIOS) {
+      return IOS_REWARD_ADS;
     }
     throw UnsupportedError("Unsupported platform");
   }

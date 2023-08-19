@@ -35,6 +35,13 @@ class _InlineSurveyState extends State<InlineSurvey>
     super.dispose();
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+  }
+
   void _getSurvey() async {
     if (!mounted) {
       return;
@@ -70,7 +77,6 @@ class _InlineSurveyState extends State<InlineSurvey>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    _i18n = AppLocalizations.of(context);
 
     if (survey == null) {
       return const SizedBox.shrink();

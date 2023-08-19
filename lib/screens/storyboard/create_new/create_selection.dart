@@ -16,7 +16,7 @@ class CreateNewSelection extends StatelessWidget {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Text(
             i18n.translate("creative_mix_new_board"),

@@ -25,12 +25,12 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
     },
     {
       "model": "epic-realism",
-      "name": "realism*",
+      "name": "realism *",
       "imagePath": "assets/images/ai_style/epic-realism.png",
     },
     {
       "model": "anime", // anythingv3
-      "name": "anime",
+      "name": "anime *",
       "imagePath": "assets/images/ai_style/anime.png",
     },
     {
@@ -48,6 +48,16 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  void _setStyle(String styleInfo) {
+    if (!mounted) {
+      return;
+    }
+    setState(() {
+      _selectedStyle = styleInfo;
+    });
+    widget.onSelectedStyle(styleInfo);
   }
 
   @override
@@ -115,10 +125,7 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
 
     return GestureDetector(
         onTap: () {
-          setState(() {
-            _selectedStyle = styleInfo["model"];
-          });
-          widget.onSelectedStyle(styleInfo["model"]);
+          _setStyle(styleInfo["model"]);
         },
         child: Card(
           elevation: _selectedStyle == styleInfo["model"] ? 8 : 0,

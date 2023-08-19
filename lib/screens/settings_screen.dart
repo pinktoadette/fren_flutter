@@ -19,8 +19,9 @@ class SettingsScreen extends StatefulWidget {
 
 class _SettingsScreenState extends State<SettingsScreen> {
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _hideProfile = false;
   late AppLocalizations _i18n;
+  late double _height;
+  bool _hideProfile = false;
   bool _isDarkMode = false;
 
   @override
@@ -31,25 +32,28 @@ class _SettingsScreenState extends State<SettingsScreen> {
     });
   }
 
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
+    _height = MediaQuery.of(context).size.height;
+  }
+
   /// Initialize user settings
   void initUserSettings() async {
     if (!mounted) {
       return;
     }
 
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
-
-    // Get system's brightness mode
-    var brightness = MediaQuery.of(context).platformBrightness;
-    bool systemIsDarkMode = brightness == Brightness.dark;
+    ThemeMode themeMode = ThemeHelper().themeMode;
+    bool isDarkMode = themeMode == ThemeMode.dark;
 
     setState(() {
       // Check profile status
       if (UserModel().user.userStatus == 'hidden') {
         _hideProfile = true;
       }
-      // Use system dark mode
-      _isDarkMode = isDarkMode || systemIsDarkMode;
+      _isDarkMode = isDarkMode;
     });
   }
 
@@ -60,14 +64,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
-    _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
-
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Text(
             _i18n.translate("settings"),
@@ -75,7 +75,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           ),
         ),
         body: Container(
-          height: height,
+          height: _height,
           padding: const EdgeInsets.symmetric(vertical: 20),
           child: ScopedModelDescendant<UserModel>(
               builder: (context, child, userModel) {
@@ -123,9 +123,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 const SizedBox(height: 15),
                 ListTile(
                   leading: _isDarkMode
-                      ? Icon(Iconsax.sun,
+                      ? Icon(Iconsax.moon,
                           color: Theme.of(context).primaryColor, size: 30)
-                      : Icon(Iconsax.moon,
+                      : Icon(Iconsax.sun,
                           color: Theme.of(context).primaryColor, size: 30),
                   title: Text(_i18n.translate('dark_mode'),
                       style: const TextStyle(fontSize: 18)),
@@ -140,7 +140,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       });
 
                       /// GetX storage
-                      ThemeHelper().switchTheme();
+                      ThemeHelper().toggleTheme();
 
                       // Update profile status
                       UserModel().updateUserData(

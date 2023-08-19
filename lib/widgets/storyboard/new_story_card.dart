@@ -31,58 +31,68 @@ class _CreateStoryCardState extends State<CreateStoryCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-    return Card(
-        elevation: 6,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        child: Container(
-            color: Colors.white,
-            width: width,
-            padding: const EdgeInsets.only(bottom: 20, top: 20),
-            child: InkWell(
-                onTap: () {
-                  NavigationHelper.handleGoToPageOrLogin(
-                    context: context,
-                    userController: userController,
-                    navigateAction: () {
-                      Get.to(() => const QuickCreateNewBoard());
-                    },
-                  );
-                },
-                child: Container(
-                    padding: const EdgeInsets.all(5),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: <Widget>[
-                          const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Icon(
-                              Iconsax.book,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                _i18n.translate(
-                                    "creative_mix_quickly_create_story"),
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold),
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
+
+      return Card(
+          elevation: 6,
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.zero,
+          ),
+          child: Container(
+              color: Colors.white,
+              width: width,
+              padding: const EdgeInsets.only(bottom: 20, top: 20),
+              child: InkWell(
+                  onTap: () {
+                    NavigationHelper.handleGoToPageOrLogin(
+                      context: context,
+                      userController: userController,
+                      navigateAction: () {
+                        Get.to(() => const QuickCreateNewBoard());
+                      },
+                    );
+                  },
+                  child: Container(
+                      padding: const EdgeInsets.all(5),
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            const SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Icon(
+                                Iconsax.book,
+                                color: Colors.black,
                               ),
-                              Text(
+                            ),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
                                   _i18n.translate(
-                                      "creative_mix_quickly_create_story_info"),
+                                      "creative_mix_quickly_create_story"),
                                   style: const TextStyle(
-                                      color: Colors.black, fontSize: 14)),
-                            ],
-                          )
-                        ])))));
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                    _i18n.translate(
+                                        "creative_mix_quickly_create_story_info"),
+                                    style: const TextStyle(
+                                        color: Colors.black, fontSize: 14)),
+                              ],
+                            )
+                          ])))));
+    });
   }
 }

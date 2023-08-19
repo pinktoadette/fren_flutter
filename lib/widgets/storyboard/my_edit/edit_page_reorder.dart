@@ -13,6 +13,7 @@ import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
+import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
@@ -63,20 +64,20 @@ class EditPageReorder extends StatefulWidget {
 
 class _EditPageReorderState extends State<EditPageReorder> {
   final _scriptApi = ScriptApi();
+  final PageDirection _direction = PageDirection.VERTICAL;
+  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
   late List<Script> scripts;
   late Story story;
   late AppLocalizations _i18n;
-
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
-  final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+  late ProgressDialog _pr;
+  late Size size;
 
   Layout? layout;
   File? attachmentPreview;
   String? urlPreview;
   double _alphaValue = 0.25;
-  late ProgressDialog _pr;
-  final PageDirection _direction = PageDirection.VERTICAL;
-
   bool _isDarkMode = false;
 
   @override
@@ -90,7 +91,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
         urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
       }
     });
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    bool isDarkMode = ThemeHelper().isDark;
     setState(() {
       _isDarkMode = isDarkMode;
     });
@@ -102,11 +103,16 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
-    _pr = ProgressDialog(context, isDismissible: false);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+    _pr = ProgressDialog(context, isDismissible: false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(
       children: [
         _reorderListWidget(),
@@ -444,53 +450,45 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _generateOrSubscribe() {
-    if (subscribeController.credits <= 0) {
-      showModalBottomSheet<void>(
-          context: context,
-          isScrollControlled: true,
-          builder: (context) => Obx(() => FractionallySizedBox(
-              heightFactor: subscribeController.credits.value > 0
-                  ? MODAL_HEIGHT_SMALL_FACTOR
-                  : MODAL_HEIGHT_LARGE_FACTOR,
-              child: const SubscriptionProduct())));
-    } else {
-      _aiImage();
-    }
+    _aiImage();
+
+    // if (subscribeController.credits <= 0) {
+    //   showModalBottomSheet<void>(
+    //       context: context,
+    //       isScrollControlled: true,
+    //       builder: (context) => Obx(() => FractionallySizedBox(
+    //           heightFactor: subscribeController.credits.value > 0
+    //               ? MODAL_HEIGHT_SMALL_FACTOR
+    //               : MODAL_HEIGHT_LARGE_FACTOR,
+    //           child: const SubscriptionProduct())));
+    // } else {
+    //   _aiImage();
+    // }
   }
 
-  void _aiImage() async {
-    // double height = MediaQuery.of(context).size.height;
-    await showModalBottomSheet<void>(
-      context: context,
-      isScrollControlled: true,
-      builder: (context) {
-        return FractionallySizedBox(
-            heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-            child: ImageGenerator(
-              story: story,
-              onError: (errorMessage) {
-                Get.snackbar(
-                  _i18n.translate("error"),
-                  _i18n.translate(errorMessage),
-                  snackPosition: SnackPosition.TOP,
-                  backgroundColor: APP_ERROR,
-                );
-              },
-              onSelection: (value) async {
-                if (value.isBackground == true) {
-                  setState(() {
-                    urlPreview = value.galleryUrl;
-                    attachmentPreview = null;
-                  });
-                  _updateBackground();
-                } else {
-                  await _saveOrUploadTextImg(value);
-                }
-                Get.back();
-              },
-            ));
-      },
-    );
+  void _aiImage() {
+    Get.to(() => ImageGenerator(
+          story: story,
+          onError: (errorMessage) {
+            Get.snackbar(
+              _i18n.translate("error"),
+              _i18n.translate(errorMessage),
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_ERROR,
+            );
+          },
+          onSelection: (value) async {
+            if (value.isBackground == true) {
+              setState(() {
+                urlPreview = value.galleryUrl;
+                attachmentPreview = null;
+              });
+              _updateBackground();
+            } else {
+              await _saveOrUploadTextImg(value);
+            }
+          },
+        ));
   }
 
   /// drag and drop individual boxes.
@@ -536,12 +534,17 @@ class _EditPageReorderState extends State<EditPageReorder> {
               uri: upload['uri']);
         }
         String newText = newContent?.text ?? "";
+        StoryUser createdBy = StoryUser(
+            userId: newContent!.characterId,
+            photoUrl: "",
+            username: newContent.characterName);
         Script newScript = scripts[index].copyWith(
             text: newText,
             image: uploadedByte,
+            createdBy: createdBy,
             type: uploadedByte != null ? 'image' : 'text',
-            characterId: newContent?.characterId,
-            textAlign: newContent?.textAlign ?? TextAlign.left);
+            characterId: newContent.characterId,
+            textAlign: newContent.textAlign ?? TextAlign.left);
 
         await _scriptApi.updateScript(script: newScript);
 
@@ -731,18 +734,10 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _editPageText({int? index}) async {
-    await showModalBottomSheet(
-        context: context,
-        isScrollControlled: true,
-        barrierColor: Colors.black.withOpacity(_alphaValue),
-        builder: (context) {
-          return FractionallySizedBox(
-              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-              child: AddEditTextWidget(
-                  script: index != null ? scripts[index] : null,
-                  onTextComplete: (content) =>
-                      _addEditText(newContent: content, index: index)));
-        });
+    Get.to(() => AddEditTextWidget(
+        script: index != null ? scripts[index] : null,
+        onTextComplete: (content) =>
+            _addEditText(newContent: content, index: index)));
   }
 
   /// edit background image of the page.

@@ -18,8 +18,11 @@ class SubscriptionCard extends StatefulWidget {
 
 class _SubscriptionCardState extends State<SubscriptionCard> {
   bool isUserSubscribed = false;
-  late AppLocalizations _i18n;
   CustomerInfo? customer;
+
+  late AppLocalizations _i18n;
+  late double screenWidth;
+
   @override
   void initState() {
     super.initState();
@@ -30,6 +33,14 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    screenWidth = MediaQuery.of(context).size.width;
   }
 
   void _fetchSubscription() async {
@@ -56,10 +67,6 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-
-    double screenWidth = MediaQuery.of(context).size.width;
-
     if (!isUserSubscribed) {
       return Container(
           color: APP_ACCENT_COLOR,

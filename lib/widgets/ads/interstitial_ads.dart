@@ -75,7 +75,7 @@ class _InterstitialAdsState extends State<InterstitialAds> {
       _isAdLoaded = false;
 
       // Schedule a timer to load a new ad after a certain time (e.g., 5 seconds)
-      Timer(const Duration(seconds: 5), () {
+      Timer(const Duration(seconds: 1), () {
         _loadAds();
       });
     } else {
@@ -90,7 +90,7 @@ class _InterstitialAdsState extends State<InterstitialAds> {
   @override
   Widget build(BuildContext context) {
     return TextButton(
-      child: const Text("Ads"),
+      child: const Text("Watch ads and get 1 token."),
       onPressed: () {
         _showInterstitialAd();
       },

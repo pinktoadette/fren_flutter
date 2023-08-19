@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
 // ignore: non_constant_identifier_names
 ImageProvider<Object> ImageCacheWrapper(String imageUrl,
@@ -14,6 +15,12 @@ ImageProvider<Object> ImageCacheWrapper(String imageUrl,
         imageUrl,
         maxHeight: maxHeight,
         maxWidth: maxWidth,
+        cacheManager: CacheManager(
+          Config(
+            'imageCache',
+            stalePeriod: const Duration(days: 7),
+          ),
+        ),
         errorListener: () async {
           await _flagImage(imageUrl);
           return;

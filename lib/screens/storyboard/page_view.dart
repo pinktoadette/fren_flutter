@@ -62,11 +62,14 @@ class _StoryPageViewState extends State<StoryPageView> {
   Timer? _scrollTimer;
 
   Story? story;
+  late Color textColor;
   var pages = [];
 
   @override
   void initState() {
     super.initState();
+    bool isDarkMode = ThemeHelper().isDark;
+    textColor = isDarkMode ? Colors.white54 : Colors.black;
 
     if (widget.isPreview == true) {
       setState(() {
@@ -104,10 +107,13 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
-    Color textColor = isDarkMode ? Colors.white54 : Colors.black;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (story == null && pages.isEmpty) {
       return Scaffold(
           extendBodyBehindAppBar: true,
@@ -144,7 +150,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                   Get.back();
                 },
               ),
-              titleSpacing: 0,
+              leadingWidth: 20,
               actions: [
                 if (widget.isPreview == false)
                   _unpublishedTools()
@@ -418,7 +424,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                   : CrossAxisAlignment.start,
                               children: [
                             const SizedBox(
-                              height: 100,
+                              height: 110,
                             ),
                             Expanded(
                                 child: Column(
@@ -562,12 +568,10 @@ class _StoryPageViewState extends State<StoryPageView> {
     String textToCopy =
         "${APP_WEBSITE}post/${story!.storyId.substring(0, 5)}-${story!.slug}";
     Clipboard.setData(ClipboardData(text: textToCopy));
-    Get.snackbar(
-      "Link",
-      'Copied to clipboard: $textToCopy',
-      snackPosition: SnackPosition.TOP,
-      backgroundColor: APP_TERTIARY,
-    );
+    Get.snackbar("Link", 'Copied to clipboard: $textToCopy',
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_TERTIARY,
+        colorText: Colors.white);
   }
 
   Widget _displayScript(Script script, Size size, bool hasBackground) {
@@ -614,7 +618,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    bool isDarkMode = ThemeHelper().isDark;
     Color color = isDarkMode == true ? APP_INVERSE_PRIMARY_COLOR : Colors.black;
 
     return Row(
@@ -622,21 +626,15 @@ class _StoryPageViewState extends State<StoryPageView> {
       children: [
         if ((story?.status != StoryStatus.PUBLISHED) &
             (storyboard.story!.length == 1))
-          TextButton.icon(
-              onPressed: () {
-                Get.to(() => const AddNewStory());
-              },
-              icon: Icon(
-                Iconsax.add,
-                color: color,
-              ),
-              label: Text(
-                _i18n.translate("creative_mix_collection"),
-                style: TextStyle(
-                  fontSize: 14,
-                  color: color,
-                ),
-              )),
+          IconButton(
+            onPressed: () {
+              Get.to(() => const AddNewStory());
+            },
+            icon: Icon(
+              Iconsax.add,
+              color: color,
+            ),
+          ),
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
               onPressed: () async {

@@ -1,4 +1,7 @@
+import 'dart:async';
+
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
@@ -13,17 +16,12 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 
 class ImageGenerator extends StatefulWidget {
-  final String? text;
   final Story? story;
   final Function(AddEditTextCharacter imageUrl) onSelection;
   final Function(String errorMessage)? onError;
 
   const ImageGenerator(
-      {Key? key,
-      required this.onSelection,
-      this.story,
-      this.text,
-      this.onError})
+      {Key? key, required this.onSelection, this.story, this.onError})
       : super(key: key);
 
   @override
@@ -31,50 +29,52 @@ class ImageGenerator extends StatefulWidget {
 }
 
 class _ImageGeneratorState extends State<ImageGenerator> {
-  late AppLocalizations _i18n;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  late ProgressDialog _pr;
   String _prompt = "";
+  bool _isLoading = false;
+  Timer? _timer;
+  late ProgressDialog _pr;
+  late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
-    _createStoryPreview();
   }
 
   @override
   void dispose() {
+    _timer?.cancel();
     super.dispose();
   }
 
-  void _createStoryPreview() {}
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    _pr = ProgressDialog(context, isDismissible: false);
+  }
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    _pr = ProgressDialog(context, isDismissible: false);
-
-    return SafeArea(
-        child: Scaffold(
-            key: _scaffoldKey,
-            body: Container(
-                padding: const EdgeInsets.only(top: 20, left: 30, right: 30),
+    return Scaffold(
+        key: _scaffoldKey,
+        appBar: AppBar(
+          centerTitle: false,
+          leadingWidth: 20,
+          title: Text(
+            _i18n.translate("creative_mix_image_create"),
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: const [SubscribeTokenCounter()],
+        ),
+        body: SafeArea(
+            child: Container(
+                padding: const EdgeInsets.only(left: 30, right: 30),
                 child: SingleChildScrollView(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Align(
-                        alignment: Alignment.topRight,
-                        child: SubscribeTokenCounter(),
-                      ),
-                      Text(
-                        _i18n.translate(
-                            "creative_mix_image_generator_instruction"),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
                       Semantics(
                         label: _i18n
                             .translate("creative_mix_image_generator_describe"),
@@ -84,15 +84,9 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                           style: Theme.of(context).textTheme.labelMedium,
                         ),
                       ),
-                      const Divider(height: 5, thickness: 1),
-                      if (widget.text != null)
-                        Semantics(
-                          label: widget.text,
-                          child: Text(
-                            "Creating image for: ${widget.text}",
-                            style: Theme.of(context).textTheme.bodyMedium,
-                          ),
-                        ),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       ImageWizardWidget(
                           onComplete: (photoUrl) {
                             _saveSelectedPhoto(photoUrl);
@@ -115,10 +109,40 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   }
 
   void _loadProgress(bool isLoading) {
-    if (isLoading == true) {
-      _pr.show(_i18n.translate("creating_image"));
+    if (isLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      _timer = Timer(const Duration(seconds: 120), () {
+        if (_isLoading) {
+          setState(() {
+            _isLoading = false;
+          });
+          AlertDialog(
+            title: Text(
+              _i18n.translate("error"),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            content: Text(_i18n.translate("creative_mix_turn_machine_on")),
+            actions: <Widget>[
+              OutlinedButton(
+                  onPressed: () => {
+                        Navigator.of(context).pop(false),
+                      },
+                  child: Text(_i18n.translate("OK"))),
+              const SizedBox(
+                width: 50,
+              ),
+            ],
+          );
+        }
+      });
     } else {
-      _pr.hide();
+      setState(() {
+        _isLoading = false;
+      });
+      _timer?.cancel();
     }
   }
 
@@ -136,6 +160,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           characterName: UserModel().user.username);
 
       widget.onSelection(newItem);
+      Get.back();
     } catch (error, stack) {
       await FirebaseCrashlytics.instance.recordError(error, stack,
           reason: 'upload new ai image to bucket', fatal: false);

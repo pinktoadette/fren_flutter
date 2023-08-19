@@ -11,7 +11,8 @@ class Bubble extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    bool isDarkMode = ThemeHelper().loadThemeFromBox();
+    ThemeMode themeMode = ThemeHelper().themeMode;
+    bool isDarkMode = themeMode == ThemeMode.dark;
     Color rightBubble =
         isDarkMode == true ? APP_INVERSE_PRIMARY_COLOR : Colors.white;
 

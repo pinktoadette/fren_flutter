@@ -44,9 +44,14 @@ class _StoriesViewState extends State<StoriesView> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
             title: widget.message == null
@@ -65,7 +70,7 @@ class _StoriesViewState extends State<StoriesView> {
                 Navigator.pop(context);
               },
             ),
-            titleSpacing: 0,
+            leadingWidth: 20,
             centerTitle: false,
             actions: _listOfActions()),
         body: SingleChildScrollView(

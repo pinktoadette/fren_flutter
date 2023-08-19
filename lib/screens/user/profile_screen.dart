@@ -44,6 +44,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   int followings = 0;
   int followers = 0;
   List<Gallery> gallery = [];
+  double avatar = 80;
+  late Size size;
 
   @override
   void initState() {
@@ -54,6 +56,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
   }
 
   void _getInitData() async {
@@ -88,11 +98,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    /// Initialization
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
-    double avatar = 80;
-
     return Scaffold(
         body: CustomScrollView(
       physics: const BouncingScrollPhysics(),

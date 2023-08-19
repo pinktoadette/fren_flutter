@@ -30,6 +30,9 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   String _comment = "";
   bool _canType = true;
   bool _isLoading = false;
+  double padding = 20;
+  late MediaQueryData query;
+
   final _cancelToken = CancelToken();
 
   @override
@@ -45,10 +48,15 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    final query = MediaQuery.of(context);
-    double padding = 20;
+    query = MediaQuery.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.fromLTRB(
           padding,

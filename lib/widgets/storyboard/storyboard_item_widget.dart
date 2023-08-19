@@ -48,8 +48,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
 
   late Storyboard storyboard;
   late AppLocalizations _i18n;
-  late double width;
   final _timelineApi = TimelineApi();
+  double padding = 15;
+  late String timestampLabel;
 
   @override
   void initState() {
@@ -65,43 +66,51 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    width = MediaQuery.of(context).size.width;
-    double padding = 15;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    String timestampLabel = storyboard.status == StoryStatus.PUBLISHED
+    _i18n = AppLocalizations.of(context);
+    timestampLabel = storyboard.status == StoryStatus.PUBLISHED
         ? _i18n.translate("post_published_on")
         : _i18n.translate("post_last_updated");
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        if (widget.showHeader == true)
-          Container(
-            padding: EdgeInsets.only(top: padding, bottom: padding),
-            width: width,
-            child: TimelineHeader(
-              radius: 24,
-              user: storyboard.createdBy,
-              showName: true,
-              showMenu: false,
-              underNameRow:
-                  Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
-                      style: const TextStyle(
-                        fontSize: 12,
-                      )),
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+        builder: (BuildContext context, BoxConstraints constraints) {
+      double width = MediaQuery.of(context).size.width;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          if (widget.showHeader == true)
+            Container(
+              padding: EdgeInsets.only(top: padding, bottom: padding),
+              width: width,
+              child: TimelineHeader(
+                radius: 24,
+                user: storyboard.createdBy,
+                showName: true,
+                showMenu: false,
+                underNameRow:
+                    Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
+                        style: const TextStyle(
+                          fontSize: 12,
+                        )),
+              ),
             ),
+          _buildDefaultLayout(
+            storyboard,
+            padding,
+            width,
           ),
-        _buildDefaultLayout(
-          storyboard,
-          padding,
-          width,
-        ),
-        if (widget.hideCollection == false)
-          Row(children: _showCollectionFooter())
-      ],
-    );
+          if (widget.hideCollection == false)
+            Row(children: _showCollectionFooter())
+        ],
+      );
+    });
   }
 
   bool isEmptyString(String? value) {
@@ -127,7 +136,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     if (storyboard.story!.length == 1) {
       title = firstStory.title;
       subtitle = truncateText(
-        maxLength: 200,
+        maxLength: 140,
         text: firstStory.summary ?? "",
       );
       category = firstStory.category;
@@ -141,7 +150,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               category: category,
               subtitle: subtitle,
               photoUrl: photoUrl ?? "",
-              padding: padding));
+              padding: padding,
+              width: width));
     }
 
     return InkWell(
@@ -167,7 +177,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             child: Container(
               color: Colors.black.withOpacity(0.6),
               width: width,
-              height: min(220, width * 0.40),
+              height: min(260, width * 0.45),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -177,7 +187,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       category: category,
                       subtitle: subtitle,
                       photoUrl: photoUrl!,
-                      padding: padding)
+                      padding: padding,
+                      width: width)
                 ],
               ),
             ),
@@ -192,7 +203,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       required String subtitle,
       required String category,
       required String photoUrl,
-      required padding}) {
+      required double padding,
+      required double width}) {
     Color textColor = photoUrl == ""
         ? Theme.of(context).colorScheme.primary
         : APP_INVERSE_PRIMARY_COLOR;

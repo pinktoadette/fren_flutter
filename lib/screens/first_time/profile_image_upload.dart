@@ -35,9 +35,13 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
             key: _scaffoldKey,

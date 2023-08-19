@@ -31,6 +31,14 @@ class StoryUser {
         photoUrl: doc[USER_PROFILE_PHOTO] ?? "",
         username: doc[USER_USERNAME]);
   }
+
+  Map<String, dynamic> toJson() {
+    return <String, dynamic>{
+      USER_ID: userId,
+      USER_USERNAME: username,
+      USER_PROFILE_PHOTO: photoUrl
+    };
+  }
 }
 
 class Storyboard {

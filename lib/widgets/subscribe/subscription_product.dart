@@ -50,16 +50,21 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
     _pr = ProgressDialog(context, isDismissible: false);
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.background,
         appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.background,
           automaticallyImplyLeading: false,
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Row(children: [
             const AppLogo(),
@@ -112,8 +117,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
     Color backgroundColor = Theme.of(context).colorScheme.background;
 
     if (offers == null) {
-      return const Center(
-          child: NoData(text: "Guess we are not selling today!"));
+      return const Center(child: NoData(text: "OOPS, something went wrong!"));
     }
     return SingleChildScrollView(
         child: Column(
@@ -212,7 +216,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                                         FontWeight.bold),
                                               ),
                                               Text(
-                                                "images",
+                                                _i18n.translate("tokens"),
                                                 style: TextStyle(
                                                     color: color,
                                                     fontSize: 14,
@@ -283,7 +287,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                                             SizedBox(
                                                 width: size.width * 0.5,
                                                 child: Text(
-                                                  "Get ${period}ly subscription to $qty images",
+                                                  "Get ${period.toLowerCase()}ly subscription to $qty images",
                                                   style: TextStyle(
                                                       fontSize: 12,
                                                       color: color),

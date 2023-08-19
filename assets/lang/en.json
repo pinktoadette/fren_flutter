@@ -103,7 +103,7 @@
   "subscribed_manage_plan": "Manage Plan",
   "subscribed_credits_expired_footnote": "Use your credits before end of expiration or your credits will be lost.",
 
-
+  "watch_ads": "While you wait, watch ad to earn 1 token",
   "_NotificationsScreen": "*** Notifications Screen Translations ***",
   "notifications": "Notifications",
   "mark_all_read": "Mark All Read",
@@ -135,6 +135,7 @@
   "success": "Success",
   "posted": "Posted",
   "error": "Error",
+  "tokens": "tokens",
   "are_you_sure": "Are you sure?",
   "information": "Information",
   "ENABLE": "ENABLE",
@@ -301,7 +302,7 @@
   "creative_mix_edit_content": "Edit Content",
   "creative_mix_bits": "No creative bits here",
   "creative_mix_edit": "Edit",
-  "creative_mix_image_generator_instruction": "Let's create an image prompt",
+  "creative_mix_image_create":"Image Prompt",
   "creative_mix_image_generator_describe": "Describe your image in details.",
   "creative_mix_image_long_process": "This may take some time. You may need to refresh the chatroom later", 
 
@@ -328,7 +329,7 @@
   "creative_mix_success_delete": "Board is successfully deleted",
   "creative_mix_board_error": "Something went wrong deleting the board",
 
-  "creative_mix_ai_image_credits": "This will use 2 credits each time.",
+  "creative_mix_ai_image_credits": "This will use 3 credits each time.",
 
   "creative_mix_ai_select_dimension": "Select Dimension",
   "creative_mix_aiselect_dimension_background": "For Background",
@@ -338,6 +339,8 @@
   "creative_mix_quick_description": "Tell me briefly what content you want to create",
   "creative_mix_quick_sub_desc": "You can say fictional or non-fictional (educational) content.",
   "creative_mix_quick_hint": "If super mario became superman or how does the cytoplasm work",
+
+  "creative_mix_turn_machine_on": "Looks like the machine is not turned on. Come back in 2 minutes.",
 
   "_reporting": "*** Reporting user ***",
   "report_create": "File A Report",

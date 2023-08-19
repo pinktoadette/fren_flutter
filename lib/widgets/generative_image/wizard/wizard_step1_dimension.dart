@@ -36,9 +36,7 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
   @override
   void initState() {
     super.initState();
-    setState(() {
-      _selectedDimension = Dimension.square.value;
-    });
+    _selectedDimension = Dimension.square.value;
   }
 
   @override
@@ -58,6 +56,9 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
 
     return Column(children: [
       Text(i18n.translate("creative_mix_ai_select_dimension")),
+      const SizedBox(
+        height: 20,
+      ),
       Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

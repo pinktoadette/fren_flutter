@@ -23,6 +23,7 @@ class InterestScreen extends StatefulWidget {
 
 class _InterestScreenState extends State<InterestScreen> {
   late AppLocalizations _i18n;
+  late double _width;
   List<String> _category = [];
   List<String> _selectedInterest = [];
   final usersMemoizer = C2ChoiceMemoizer<String>();
@@ -36,6 +37,13 @@ class _InterestScreenState extends State<InterestScreen> {
   @override
   void dispose() {
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
+    _width = MediaQuery.of(context).size.height;
   }
 
   void _fetchRecommend() async {
@@ -52,9 +60,6 @@ class _InterestScreenState extends State<InterestScreen> {
 
   @override
   Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    double width = MediaQuery.of(context).size.width;
-
     return SafeArea(
         child: Container(
       color: Theme.of(context).colorScheme.background,
@@ -80,7 +85,7 @@ class _InterestScreenState extends State<InterestScreen> {
           ),
           if (_category.isNotEmpty)
             SizedBox(
-                width: width,
+                width: _width,
                 child: ChipsChoice<String>.multiple(
                   value: _selectedInterest,
                   onChanged: (val) => setState(() => _selectedInterest = val),

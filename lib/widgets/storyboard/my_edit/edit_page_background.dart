@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -53,9 +54,14 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(20),
         child: SingleChildScrollView(
@@ -157,6 +163,12 @@ class _EditPageBackgroundState extends State<EditPageBackground> {
                                 loadingButton(size: 16, color: Colors.black),
                             imageUrl: galleryImageUrl!,
                             fadeInDuration: const Duration(seconds: 1),
+                            cacheManager: CacheManager(
+                              Config(
+                                'imageCache',
+                                stalePeriod: const Duration(days: 14),
+                              ),
+                            ),
                             width: 120,
                             height: 120,
                             fit: BoxFit.cover,

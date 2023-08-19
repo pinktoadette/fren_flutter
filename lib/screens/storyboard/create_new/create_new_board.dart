@@ -21,7 +21,8 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
   final TextEditingController _aboutController = TextEditingController();
   final _storyboardApi = StoryboardApi();
   TextEditingController _selectedCategory = TextEditingController();
-
+  late TextStyle styleLabel;
+  late TextStyle styleBody;
   late ProgressDialog _pr;
 
   @override
@@ -40,16 +41,21 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    TextStyle? styleLabel = Theme.of(context).textTheme.labelMedium;
-    TextStyle? styleBody = Theme.of(context).textTheme.bodyMedium;
-    _pr = ProgressDialog(context, isDismissible: true);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    styleLabel = Theme.of(context).textTheme.labelMedium!;
+    styleBody = Theme.of(context).textTheme.bodyMedium!;
+    _pr = ProgressDialog(context, isDismissible: true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
-          titleSpacing: 0,
+          leadingWidth: 20,
           centerTitle: false,
           title: Text(
             _i18n.translate("creative_mix_manual"),

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
@@ -83,6 +84,12 @@ class _StoryCoverState extends State<StoryCover> {
         memCacheWidth: width,
         memCacheHeight: height,
         imageUrl: widget.photoUrl,
+        cacheManager: CacheManager(
+          Config(
+            'imageCache',
+            stalePeriod: const Duration(days: 7),
+          ),
+        ),
         progressIndicatorBuilder: (context, url, progress) =>
             loadingButton(size: 20),
         errorWidget: (context, url, error) => const Icon(Iconsax.gallery_slash),
@@ -101,14 +108,8 @@ class _StoryCoverState extends State<StoryCover> {
       width: size.width - 100.0,
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
-          color: Colors.black,
-          image: const DecorationImage(
-              image: AssetImage("assets/images/blank.png"), fit: BoxFit.fill)),
-      child: Center(
-          child: Text(widget.title.substring(0, 1).toUpperCase(),
-              style: widget.radius == 5
-                  ? Theme.of(context).textTheme.labelSmall
-                  : Theme.of(context).textTheme.headlineSmall)),
+          color: Theme.of(context).colorScheme.background),
+      child: const Center(child: Icon(Iconsax.gallery)),
     );
   }
 }

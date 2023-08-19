@@ -20,10 +20,11 @@ class MachiHelper extends StatefulWidget {
 
 class _MachiHelperState extends State<MachiHelper> {
   late AppLocalizations _i18n;
+  late Size size;
+  final _cancelToken = CancelToken();
   String? _response;
   String? tag;
   bool _isLoading = false;
-  final _cancelToken = CancelToken();
   List<Map<String, String>> options = [
     {'action': 'shorten', 'value': 'machi_helper_shorten_text'},
     {'action': 'rephrase', 'value': 'machi_helper_rephrase_text'},
@@ -42,11 +43,15 @@ class _MachiHelperState extends State<MachiHelper> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
-    /// Initialization
-    Size size = MediaQuery.of(context).size;
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
         padding: const EdgeInsets.all(5),
         width: size.width,

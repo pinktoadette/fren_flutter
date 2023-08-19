@@ -36,6 +36,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
 
   File? attachmentPreview;
   String? galleryImageUrl;
+  late String title;
   TextAlign textAlign = TextAlign.left;
   double _alphaValue = 0;
   double yOffset = 80;
@@ -58,63 +59,53 @@ class _AddEditTextState extends State<AddEditTextWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
-    String title = widget.script == null
+    title = widget.script == null
         ? _i18n.translate("creative_mix_add_content")
         : _i18n.translate("creative_mix_edit_content");
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         resizeToAvoidBottomInset: false,
+        appBar: AppBar(
+          centerTitle: false,
+          leadingWidth: 20,
+          title: Text(
+            title,
+            style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          actions: [
+            TextButton(
+                onPressed: () {
+                  _onComplete();
+                },
+                child: Text(
+                  widget.script?.text == null
+                      ? _i18n.translate("add")
+                      : _i18n.translate("update"),
+                  style: const TextStyle(
+                    fontSize: 16,
+                  ),
+                ))
+          ],
+        ),
         body: Container(
           padding: EdgeInsets.only(
-              top: 20,
               left: 30,
               right: 30,
               bottom: MediaQuery.of(context).viewInsets.bottom),
           child: ListView(
             // crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Semantics(
-                          label: title,
-                          child: Text(
-                            title,
-                            style: const TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )),
-                      Semantics(
-                        label:
-                            _i18n.translate("creative_mix_add_text_image_page"),
-                        child: Text(
-                          _i18n.translate("creative_mix_add_text_image_page"),
-                          style: Theme.of(context).textTheme.labelMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                  TextButton(
-                      onPressed: () {
-                        _onComplete();
-                      },
-                      child: Text(
-                        widget.script?.text == null
-                            ? _i18n.translate("add")
-                            : _i18n.translate("update"),
-                        style: const TextStyle(
-                          fontSize: 16,
-                        ),
-                      ))
-                ],
+              Text(
+                _i18n.translate("creative_mix_add_text_image_page"),
+                style: Theme.of(context).textTheme.labelMedium,
               ),
-              const Divider(height: 5, thickness: 1),
               const SizedBox(
                 height: 20,
               ),

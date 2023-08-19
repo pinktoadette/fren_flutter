@@ -88,8 +88,14 @@ class _PublishStoryState extends State<PublishStory> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
     _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
             padding: const EdgeInsets.all(10.0),

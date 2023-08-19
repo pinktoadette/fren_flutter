@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/cache_manager.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/models/app_model.dart';
@@ -87,6 +88,12 @@ void main() async {
   MainBinding mainBinding = MainBinding();
   await mainBinding.dependencies();
 
+  // Load Theme
+  await ThemeHelper().initialize();
+
+  /// Schedule and Clear Cache
+  await initializeCacheTimestampAndSchedule();
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
 }
@@ -108,16 +115,23 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     LeakDetector().init(maxRetainingPath: 300);
     LeakDetector().onLeakedStream.listen((LeakedInfo info) {
-      //print to console
+      // Print to console
+      debugPrint("=============== LeakedInfo Start *********************");
+      debugPrint("gcRootType: ${info.gcRootType}");
+      debugPrint("retainingPathJson: ${info.retainingPathJson}");
+
+      debugPrint("Retaining Path:");
       for (var node in info.retainingPath) {
-        debugPrint("=============== LeakedInfo *********************");
         debugPrint(node.toString());
       }
-      //show preview page
+      debugPrint("=============== LeakedInfo End ***********************");
+
+      // Show preview page
       showLeakedInfoPage(navigatorKey.currentContext!, info);
     });
+
     LeakDetector().onEventStream.listen((DetectorEvent event) {
-      debugPrint("=============== DetectorEVENT *********************");
+      debugPrint("=============== Detector EVENT *********************");
       debugPrint(event.toString());
       if (event.type == DetectorEventType.startAnalyze) {
         debugPrint("=============== Detector Started *********************");
@@ -134,6 +148,7 @@ class _MyAppState extends State<MyApp> {
       child: ScopedModel<UserModel>(
         model: UserModel(),
         child: GetMaterialApp(
+          color: Colors.transparent,
           navigatorKey: navigatorKey,
           navigatorObservers: [
             //used the LeakNavigatorObserver
@@ -172,7 +187,7 @@ class _MyAppState extends State<MyApp> {
             return supportedLocales.first;
           },
           home: const SplashScreen(),
-          themeMode: ThemeHelper().theme,
+          themeMode: ThemeHelper().themeMode,
           theme: _lightTheme(),
           darkTheme: _darkTheme(),
         ),
@@ -291,7 +306,7 @@ class _MyAppState extends State<MyApp> {
         titleSmall: GoogleFonts.poppins(fontSize: 16),
         bodyLarge:
             GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.normal),
-        bodyMedium: GoogleFonts.poppins(fontSize: 16),
+        bodyMedium: GoogleFonts.poppins(fontSize: 16, color: APP_PRIMARY_COLOR),
         bodySmall: GoogleFonts.poppins(fontSize: 14),
         labelLarge:
             GoogleFonts.poppins(fontSize: 16, wordSpacing: 0, letterSpacing: 0),

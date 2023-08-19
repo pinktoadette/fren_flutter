@@ -41,13 +41,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
-    /// Initialization
     _i18n = AppLocalizations.of(context);
   }
 
   @override
   Widget build(BuildContext context) {
-    // @todo should really be loop by step
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,

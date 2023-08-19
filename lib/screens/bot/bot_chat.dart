@@ -71,6 +71,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
   bool _isLongImageProcess = false;
   String? _setTags;
   types.PartialImage? attachmentPreview;
+  Color textColor = Colors.black;
 
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
@@ -97,11 +98,13 @@ class _BotChatScreenState extends State<BotChatScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    /// Initializationd
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
-    Color textColor = Colors.black;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     if (isLoading) {
       return const Frankloader();
     } else {
@@ -119,7 +122,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                     _leaveChatroom();
                   },
                 ),
-                titleSpacing: 0,
+                leadingWidth: 20,
                 title: GestureDetector(
                   child: Obx(() => Text(botController.bot.name,
                       overflow: TextOverflow.fade,

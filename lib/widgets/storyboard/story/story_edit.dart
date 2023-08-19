@@ -23,15 +23,17 @@ class StoryEdit extends StatefulWidget {
 }
 
 class _StoryEditState extends State<StoryEdit> {
-  late AppLocalizations _i18n;
-  StoryboardController storyboardController = Get.find(tag: 'storyboard');
+  final StoryboardController storyboardController = Get.find(tag: 'storyboard');
   final _storyApi = StoryApi();
+  final _titleController = TextEditingController();
+
   File? _uploadPath;
   String? _selectedCategory;
   String? photoUrl;
 
-  final _titleController = TextEditingController();
   bool isLoading = false;
+  late Size size;
+  late AppLocalizations _i18n;
 
   @override
   void initState() {
@@ -49,10 +51,15 @@ class _StoryEditState extends State<StoryEdit> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    _i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(
           bottom: MediaQuery.of(context).viewInsets.bottom,

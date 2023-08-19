@@ -23,6 +23,7 @@ class _FriendListState extends State<FriendListWidget> {
   final _chatroomApi = ChatroomMachiApi();
   ChatController chatController = Get.find(tag: 'chatroom');
   late AppLocalizations _i18n;
+  late double height;
 
   Future<List<dynamic>> _getFriends() async {
     if (!mounted) {
@@ -49,10 +50,15 @@ class _FriendListState extends State<FriendListWidget> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    _i18n = AppLocalizations.of(context);
-    double height = MediaQuery.of(context).size.height;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    height = MediaQuery.of(context).size.height;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     // need container for the top padding, then add back the scroll
     return SingleChildScrollView(
         child: SizedBox(

@@ -6,6 +6,7 @@ import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/widgets/ads/interstitial_ads.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 
@@ -46,15 +47,16 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     with AutomaticKeepAliveClientMixin {
   @override
   bool get wantKeepAlive => true;
-  final _promptController = TextEditingController();
   SubscribeController subscribeController = Get.find(tag: 'subscribe');
-  late AppLocalizations _i18n;
   List<dynamic> _items = [];
   String _selectedUrl = '';
   String _appendPrompt = '';
   bool _isLoading = false;
   int _counter = 1;
+  late AppLocalizations _i18n;
+  late Size size;
   final _cancelToken = CancelToken();
+  final _promptController = TextEditingController();
 
   final gridDelegate = const SliverGridDelegateWithFixedCrossAxisCount(
     childAspectRatio: 100 / 150,
@@ -89,14 +91,21 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    _i18n = AppLocalizations.of(context);
+    size = MediaQuery.of(context).size;
+  }
+
+  @override
   Widget build(BuildContext context) {
     super.build(context);
-    _i18n = AppLocalizations.of(context);
-    Size size = MediaQuery.of(context).size;
+
     final bool is480v = _appendPrompt.contains("480v");
     return Column(
       children: [
-        if (_items.isEmpty)
+        if (_items.isEmpty && _isLoading == false)
           TextField(
             onTapOutside: (b) {
               FocusManager.instance.primaryFocus?.unfocus();
@@ -114,6 +123,15 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
             maxLines: 3,
             maxLength: 200,
           ),
+        if (_items.isEmpty && _isLoading == true)
+          SizedBox(
+              height: 200,
+              width: 200,
+              child: InterstitialAds(
+                onAdStatus: (data) {
+                  /// Give token
+                },
+              )),
         _items.isNotEmpty
             ? SizedBox(
                 width: size.width,
@@ -123,7 +141,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                       crossAxisSpacing: 0,
                       mainAxisSpacing: 0,
                       crossAxisCount: 2,
-                      mainAxisExtent: is480v ? 300 : size.width / 2),
+                      mainAxisExtent: is480v ? size.width / 2 : null),
                   itemCount: _items.length,
                   itemBuilder: (context, index) {
                     return InkWell(
@@ -182,9 +200,9 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   }
 
   void _generatePhoto() async {
-    if (_counter == 0) {
-      return;
-    }
+    // if (_counter == 0) {
+    //   return;
+    // }
 
     setState(() {
       _isLoading = true;

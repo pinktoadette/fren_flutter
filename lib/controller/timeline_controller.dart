@@ -12,6 +12,8 @@ class TimelineController extends GetxController {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   PagingController<int, Storyboard> pagingController =
       PagingController(firstPageKey: 0);
+  final Map<int, List<Storyboard>> _cachedPages = {};
+
   Rx<Story?> _currentStory = (null).obs;
 
   /// top part of the timeline
@@ -27,7 +29,7 @@ class TimelineController extends GetxController {
   void onInit() {
     super.onInit();
     pagingController.addPageRequestListener((pageKey) {
-      fetchPage(pageKey, false);
+      fetchPage(pageKey, refresh: false);
     });
   }
 
@@ -53,19 +55,24 @@ class TimelineController extends GetxController {
     pagingController.itemList?.clear();
   }
 
-  Future<void> fetchPage(int pageKey, bool? refresh) async {
-    if (refresh == true) {
-      pagingController.itemList?.clear();
-    }
+  Future<void> fetchPage(int pageKey, {bool refresh = false}) async {
     try {
-      List<Storyboard> newItems =
-          await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
-      var isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        pagingController.appendLastPage(newItems);
+      if (_cachedPages.containsKey(pageKey) && !refresh) {
+        // Use cached data if available and not refreshing
+        pagingController.appendPage(_cachedPages[pageKey]!, pageKey);
       } else {
-        var nextPageKey = pageKey + newItems.length;
-        pagingController.appendPage(newItems, nextPageKey);
+        final newItems =
+            await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
+        final isLastPage = newItems.length < _pageSize;
+
+        if (isLastPage) {
+          pagingController.appendLastPage(newItems);
+        } else {
+          pagingController.appendPage(newItems, pageKey + 1);
+        }
+
+        // Cache the fetched data
+        _cachedPages[pageKey] = newItems;
       }
     } catch (error) {
       pagingController.error = error;

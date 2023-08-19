@@ -49,10 +49,14 @@ class _FollowerListState extends State<FollowerList> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    /// Initialization
-    _i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           centerTitle: false,
