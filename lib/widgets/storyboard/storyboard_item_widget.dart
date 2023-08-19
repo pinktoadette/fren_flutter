@@ -116,21 +116,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     /// if there is only one story, display first cover
     /// if there are many stories, display storyboard cover
     final firstStory = storyboard.story!.first;
-    String? photoUrl = storyboard.photoUrl;
-    String? firstPhotoUrl = firstStory.photoUrl;
-    String? firstBackgroundImageUrl = firstStory.pages?.isNotEmpty == true
-        ? firstStory.pages![0].backgroundImageUrl
-        : null;
+    String? photoUrl = firstStory.photoUrl ??
+        (firstStory.pages?.isNotEmpty == true
+            ? firstStory.pages![0].thumbnail
+            : storyboard.photoUrl);
 
-    if (isEmptyString(photoUrl)) {
-      if (isEmptyString(firstPhotoUrl)) {
-        if (!isEmptyString(firstBackgroundImageUrl)) {
-          photoUrl = firstBackgroundImageUrl;
-        }
-      } else {
-        photoUrl = firstPhotoUrl;
-      }
-    }
     String title = storyboard.title;
     String subtitle = storyboard.summary ?? "";
     String category = storyboard.category;
@@ -237,6 +227,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     return [
       if (hasSeries && userController.user != null)
         ...storyboard.story!.take(4).map((s) {
+          String thumbnail = s.pages
+                  ?.firstWhere(
+                    (element) => element.thumbnail != "",
+                  )
+                  .thumbnail ??
+              "";
+
           return InkWell(
             onTap: () {
               storyboardController.setCurrentBoard(storyboard);
@@ -248,7 +245,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                 height: 80,
                 width: 80,
                 radius: 0,
-                photoUrl: s.photoUrl ?? "",
+                photoUrl: thumbnail,
                 title: s.title),
           );
         })

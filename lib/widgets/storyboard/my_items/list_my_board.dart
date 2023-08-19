@@ -144,8 +144,6 @@ class _ListPrivateBoardState extends State<ListPrivateBoard> {
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
       );
-
-      Navigator.of(context).pop();
     }
   }
 }

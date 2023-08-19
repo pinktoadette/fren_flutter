@@ -63,11 +63,13 @@ class StoryPages {
   final List<Script>? scripts;
   final int? pageNum;
   String? backgroundImageUrl;
+  String? thumbnail;
   double? backgroundAlpha;
   StoryPages(
       {this.scripts,
       this.pageNum,
       this.backgroundImageUrl,
+      this.thumbnail,
       this.backgroundAlpha});
 
   factory StoryPages.fromJson(Map<String, dynamic> doc) {
@@ -90,11 +92,13 @@ class StoryPages {
       {List<Script>? scripts,
       int? pageNum,
       String? backgroundImageUrl,
-      double? backgroundAlpha}) {
+      double? backgroundAlpha,
+      String? thumbnail}) {
     return StoryPages(
         pageNum: pageNum ?? this.pageNum,
         scripts: scripts ?? this.scripts,
         backgroundImageUrl: backgroundImageUrl ?? this.backgroundImageUrl,
+        thumbnail: thumbnail ?? this.thumbnail,
         backgroundAlpha: backgroundAlpha ?? this.backgroundAlpha);
   }
 }
@@ -202,6 +206,7 @@ class Story {
               (page) => page["pageNum"] == s.pageNum,
               orElse: () => null);
           s = s.copyWith(
+              thumbnail: item?[STORY_PAGES_THUMBNAIL] ?? "",
               backgroundImageUrl: item?[STORY_PAGES_BACKGROUND] ?? "",
               backgroundAlpha: item?[STORY_PAGES_ALPHA] ?? 0.8);
         }

@@ -101,15 +101,9 @@ class TimelineApi {
       }
     }
 
-    for (var gall in data['gallery']) {
-      Gallery gallery = Gallery.fromJson(gall);
-      galleries.add(gallery);
-    }
-
     return {
       'machi': bots.toList(),
       'mymachi': mybots.toList(),
-      'gallery': galleries.toList(),
     };
   }
 
@@ -121,20 +115,13 @@ class TimelineApi {
     final data = response.data;
 
     List<Bot> bots = [];
-    List<Gallery> galleries = [];
     for (var machi in data['machi']) {
       Bot bot = Bot.fromDocument(machi);
       bots.add(bot);
     }
 
-    for (var gall in data['gallery']) {
-      Gallery gallery = Gallery.fromJson(gall);
-      galleries.add(gallery);
-    }
-
     return {
       'machi': bots.toList(),
-      'gallery': galleries.toList(),
     };
   }
 }

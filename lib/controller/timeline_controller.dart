@@ -16,7 +16,6 @@ class TimelineController extends GetxController {
 
   /// top part of the timeline
   RxList<Bot> machiList = <Bot>[].obs;
-  RxList<Gallery> galleryList = <Gallery>[].obs;
 
   final _timelineApi = TimelineApi();
   static const int _pageSize = ALL_PAGE_SIZE;
@@ -46,13 +45,11 @@ class TimelineController extends GetxController {
       items = await _timelineApi.getPublicHomepage();
     }
     machiList.value = items['machi'];
-    galleryList.value = items['gallery'];
   }
 
   /// clear any items when user signs in from public view
   clear() {
     machiList.value = [];
-    galleryList.value = [];
     pagingController.itemList?.clear();
   }
 

@@ -295,6 +295,7 @@ const String STORY_BITS = "bits";
 const String STORY_COVER_PAGES = "coverPages";
 const String STORY_PAGES_BACKGROUND = "backgroundUrl";
 const String STORY_PAGES_ALPHA = "backgroundAlpha";
+const String STORY_PAGES_THUMBNAIL = "thumbnail";
 
 /// Script
 const String STORY_SCRIPT_PAGES = "pages";
