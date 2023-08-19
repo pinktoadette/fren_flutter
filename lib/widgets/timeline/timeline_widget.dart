@@ -35,7 +35,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   void _getContent() async {
     await Future.wait([
       timelineController.fetchHomepageItems(userController.user != null),
-      timelineController.fetchPage(0, true),
+      timelineController.fetchPage(0, refresh: true),
     ]);
   }
 
