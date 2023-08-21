@@ -28,7 +28,6 @@ class SetCurrentRoom {
 
     Get.to(() => const BotChatScreen(), arguments: {
       "room": chatController.currentRoom,
-      "index": chatController.roomlist.length - 1
     });
   }
 
@@ -40,7 +39,6 @@ class SetCurrentRoom {
     botController.bot = room.bot;
     chatController.updateRoom(room);
 
-    Get.to(() => (const BotChatScreen()),
-        arguments: {"room": room, 'index': index});
+    Get.to(() => (const BotChatScreen()), arguments: {"room": room});
   }
 }

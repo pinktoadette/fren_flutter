@@ -173,7 +173,9 @@ class ChatController extends GetxController implements GetxService {
   void updateRoom(Chatroom room) {
     botController.bot = room.bot;
     int index = findRoomIndx(room: room);
-    roomlist[index] = room;
+    if (index != -1) {
+      roomlist[index] = room;
+    }
 
     if (room.read == true) {
       int unread = unreadCounter.value - 1;
@@ -271,24 +273,29 @@ class ChatController extends GetxController implements GetxService {
       {required Chatroom room}) async {
     final messageApi = MessageMachiApi();
     int index = findRoomIndx(room: room);
-    roomlist[index].isTyping = true;
-    Map<String, dynamic> message =
-        await messageApi.getBotResponse(cancelToken: _cancelToken);
-    // WebSocketChannel? channel = _channelMap[room.chatroomId];
-    // if (channel != null) {
-    //   channel.sink.add(json.encode({"message": message}));
-    // }
-    types.Message newMessage = messageFromJson(message);
-    roomlist[index].messages.insert(0, newMessage);
-    roomlist[index].isTyping = false;
-    _addUpdateResponse(newMessage, index);
-    return message;
+
+    if (index != -1) {
+      roomlist[index].isTyping = true;
+      Map<String, dynamic> message =
+          await messageApi.getBotResponse(cancelToken: _cancelToken);
+      // WebSocketChannel? channel = _channelMap[room.chatroomId];
+      // if (channel != null) {
+      //   channel.sink.add(json.encode({"message": message}));
+      // }
+      types.Message newMessage = messageFromJson(message);
+      roomlist[index].messages.insert(0, newMessage);
+      roomlist[index].isTyping = false;
+      _addUpdateResponse(newMessage, index);
+      return message;
+    }
+    return {};
   }
 
   void loadOldMessages({required List<types.Message> messages}) {
-    int index = roomlist.indexWhere(
-        (thisRoom) => thisRoom.chatroomId == currentRoom.chatroomId);
-    roomlist[index].messages.addAll(messages);
+    int index = findRoomIndx(room: currentRoom);
+    if (index != -1) {
+      roomlist[index].messages.addAll(messages);
+    }
   }
 
   int findRoomIndx({required Chatroom room}) {
@@ -299,8 +306,10 @@ class ChatController extends GetxController implements GetxService {
 
   void typingStatus({required Chatroom room, required bool isTyping}) {
     int index = findRoomIndx(room: room);
-    roomlist[index].isTyping = isTyping;
-    currentRoom.isTyping = isTyping;
+    if (index != -1) {
+      roomlist[index].isTyping = isTyping;
+      currentRoom.isTyping = isTyping;
+    }
   }
 
   void _addUpdateResponse(types.Message message, int index) {

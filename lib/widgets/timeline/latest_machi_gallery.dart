@@ -102,21 +102,19 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
   List<Widget> _showSubscriptionCard() {
     SubscribeController subscriptionController = Get.find(tag: 'subscribe');
     return [
+      RewardAds(
+        text: _i18n.translate("watch_ads_earn"),
+        onAdStatus: (data) {
+          Get.snackbar(_i18n.translate("success"), "Rewarded $data tokens",
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_SUCCESS,
+              colorText: Colors.black);
+        },
+      ),
       const SubscriptionCard(),
       subscriptionController.customer!.allPurchaseDates.isEmpty
           ? const SubscriptionCard()
           : const SizedBox.shrink(),
-      RewardAds(
-        text: _i18n.translate("watch_ads_earn"),
-        onAdStatus: (data) {
-          Get.snackbar(
-            _i18n.translate("success"),
-            "Rewarded $data",
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: APP_SUCCESS,
-          );
-        },
-      ),
       const SizedBox(height: 20),
     ];
   }

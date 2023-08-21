@@ -129,7 +129,8 @@ class _RewardAdsState extends State<RewardAds> {
           label: Container(
             padding: const EdgeInsets.only(left: 15),
             width: MediaQuery.of(context).size.width,
-            child: Column(
+            child: Center(
+                child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -144,7 +145,7 @@ class _RewardAdsState extends State<RewardAds> {
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 14)),
               ],
-            ),
+            )),
           ),
           onPressed: () {
             _showRewardAd();

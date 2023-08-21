@@ -73,7 +73,9 @@ class StoryboardController extends GetxController {
     // find storyboard index when there are changes
     int index = _storyboards
         .indexWhere((element) => element.storyboardId == story.storyboardId);
-    _storyboards[index] = story;
+    if (index != -1) {
+      _storyboards[index] = story;
+    }
     _storyboards.refresh();
     update();
   }
@@ -143,7 +145,7 @@ class StoryboardController extends GetxController {
     int index = stories
         .indexWhere((element) => element.storyId == currentStory.storyId);
 
-    if (currentStoryboard.story![index].pages!.isEmpty) {
+    if (index != -1 && currentStoryboard.story![index].pages!.isEmpty) {
       currentStoryboard.story![index].pages!.add(page);
     } else {
       currentStoryboard.story![index].pages![page.pageNum! - 1].scripts!
@@ -159,13 +161,15 @@ class StoryboardController extends GetxController {
     int storyIndex =
         stories.indexWhere((element) => element.storyId == story.storyId);
 
-    // update the details of page
-    currentStoryboard.story![storyIndex] = story;
-    setCurrentStory(story);
-    updateStoryboard(currentStoryboard);
-    _currentStory = story.obs;
-    _currentStory.refresh();
-    update();
+    if (storyIndex != -1) {
+      // update the details of page
+      currentStoryboard.story![storyIndex] = story;
+      setCurrentStory(story);
+      updateStoryboard(currentStoryboard);
+      _currentStory = story.obs;
+      _currentStory.refresh();
+      update();
+    }
   }
 
   void updateScript({required Script script, required int pageNum}) {
@@ -174,7 +178,10 @@ class StoryboardController extends GetxController {
     if (story.pages![pageNum].scripts != null) {
       int scriptIndex = story.pages![pageNum].scripts!
           .indexWhere((element) => element.scriptId == script.scriptId);
-      story.pages![pageNum].scripts![scriptIndex] = script;
+
+      if (scriptIndex != -1) {
+        story.pages![pageNum].scripts![scriptIndex] = script;
+      }
     } else {
       story.pages?.add(StoryPages(scripts: [script], pageNum: 1));
     }

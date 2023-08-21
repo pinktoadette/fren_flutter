@@ -333,14 +333,17 @@ class _BotChatScreenState extends State<BotChatScreen> {
         } finally {
           final index =
               _messages.indexWhere((element) => element.id == message.id);
-          final updatedMessage =
-              (_messages[index] as types.FileMessage).copyWith(
-            isLoading: null,
-          );
 
-          setState(() {
-            _messages[index] = updatedMessage;
-          });
+          if (index != -1) {
+            final updatedMessage =
+                (_messages[index] as types.FileMessage).copyWith(
+              isLoading: null,
+            );
+
+            setState(() {
+              _messages[index] = updatedMessage;
+            });
+          }
         }
       }
 

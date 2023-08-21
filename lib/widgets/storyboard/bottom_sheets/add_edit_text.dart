@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -12,8 +11,6 @@ import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/bot/bot_helper.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
-import 'package:machi_app/widgets/storyboard/bottom_sheets/resizable_text.dart';
-import 'package:screenshot/screenshot.dart';
 
 class AddEditTextWidget extends StatefulWidget {
   final Script? script;
@@ -30,7 +27,6 @@ class _AddEditTextState extends State<AddEditTextWidget> {
   late AppLocalizations _i18n;
   late TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
-  ScreenshotController screenshotController = ScreenshotController();
 
   Offset offset = Offset.zero;
 
@@ -38,7 +34,6 @@ class _AddEditTextState extends State<AddEditTextWidget> {
   String? galleryImageUrl;
   late String title;
   TextAlign textAlign = TextAlign.left;
-  double _alphaValue = 0;
   double yOffset = 80;
 
   @override
@@ -120,17 +115,13 @@ class _AddEditTextState extends State<AddEditTextWidget> {
 
   void _onComplete() async {
     String text = _textController.text;
-    Uint8List? imageBytes;
-    if ((attachmentPreview != null || galleryImageUrl != null) &&
-        _textController.text != "") {
-      imageBytes = await screenshotController.capture();
-    }
 
     AddEditTextCharacter update = AddEditTextCharacter.fromJson({
-      "text": imageBytes == null ? text : null,
-      "imageBytes": imageBytes,
-      "attachmentPreview": imageBytes == null ? attachmentPreview : null,
-      "galleryUrl": imageBytes == null ? galleryImageUrl : null,
+      "text":
+          galleryImageUrl == null && attachmentPreview == null ? text : null,
+      "imageBytes": null,
+      "attachmentPreview": attachmentPreview,
+      "galleryUrl": galleryImageUrl,
       "textAlign": textAlign.name,
       "characterId": widget.script?.characterId ?? UserModel().user.userId,
       "characterName": widget.script?.characterName ?? UserModel().user.username
@@ -169,50 +160,19 @@ class _AddEditTextState extends State<AddEditTextWidget> {
     Size size = MediaQuery.of(context).size;
     double width = size.width - 40;
 
-    return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Screenshot(
-              controller: screenshotController,
-              child: Stack(
-                children: <Widget>[
-                  ClipRRect(
-                      borderRadius: BorderRadius.circular(20.0),
-                      child: Container(
-                        height: width,
-                        width: width,
-                        decoration: BoxDecoration(
-                            image: DecorationImage(
-                                colorFilter: ColorFilter.mode(
-                                    const Color.fromARGB(255, 0, 0, 0)
-                                        .withOpacity(_alphaValue),
-                                    BlendMode.darken),
-                                image: galleryImageUrl != null
-                                    ? ImageCacheWrapper(
-                                        galleryImageUrl!,
-                                      )
-                                    : FileImage(attachmentPreview!),
-                                fit: BoxFit.cover)),
-                      )),
-                  ResizableBox(initialText: _textController.text),
-                ],
-              )),
-          SizedBox(
-            width: width,
-            child: Slider(
-              value: _alphaValue,
-              max: 1,
-              divisions: 100,
-              label: _alphaValue.toString(),
-              onChanged: (double value) {
-                setState(() {
-                  _alphaValue = value;
-                });
-              },
-            ),
-          )
-        ]);
+    return Card(
+        child: Container(
+      height: width,
+      width: width,
+      decoration: BoxDecoration(
+          image: DecorationImage(
+              image: galleryImageUrl != null
+                  ? ImageCacheWrapper(
+                      galleryImageUrl!,
+                    )
+                  : FileImage(attachmentPreview!),
+              fit: BoxFit.cover)),
+    ));
   }
 
   List<Widget> _showTextEdits() {
