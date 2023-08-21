@@ -30,7 +30,6 @@ class _RewardAdsState extends State<RewardAds> {
   @override
   void initState() {
     super.initState();
-    _loadAds();
   }
 
   @override
@@ -90,7 +89,11 @@ class _RewardAdsState extends State<RewardAds> {
               _loadAds();
             } else if (_numRewardedInterstitialLoadAttempts ==
                 maxFailedLoadAttempts) {
-              Get.snackbar(_i18n.translate("error"), "Unable to load ads",
+              String message = error.message;
+              if (error.code == 3) {
+                message = _i18n.translate("watch_ads_limit");
+              }
+              Get.snackbar(_i18n.translate("error"), message,
                   snackPosition: SnackPosition.TOP,
                   backgroundColor: APP_ERROR,
                   colorText: Colors.black);
@@ -122,39 +125,41 @@ class _RewardAdsState extends State<RewardAds> {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-        elevation: 6,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero,
-        ),
-        child: TextButton.icon(
-          icon: const Icon(
-            Iconsax.coin,
-            color: APP_ACCENT_COLOR,
-          ),
-          label: Container(
-            padding: const EdgeInsets.only(left: 15),
-            width: MediaQuery.of(context).size.width,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  widget.text,
-                  style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontWeight: FontWeight.bold),
-                ),
-                Text(_i18n.translate("watch_ads_earn_10"),
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 14)),
-              ],
+    return InkWell(
+        onTap: () => _showRewardAd(),
+        child: Card(
+            elevation: 6,
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.zero,
             ),
-          ),
-          onPressed: () {
-            _showRewardAd();
-          },
-        ));
+            child: Container(
+                padding: const EdgeInsets.only(left: 15),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    const Padding(
+                        padding: EdgeInsets.all(20),
+                        child: Icon(
+                          Iconsax.coin,
+                          color: APP_ACCENT_COLOR,
+                        )),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          widget.text,
+                          style: TextStyle(
+                              color: Theme.of(context).colorScheme.primary,
+                              fontWeight: FontWeight.bold),
+                        ),
+                        Text(_i18n.translate("watch_ads_earn_10"),
+                            style: TextStyle(
+                                color: Theme.of(context).colorScheme.primary,
+                                fontSize: 14)),
+                      ],
+                    ),
+                  ],
+                ))));
   }
 }

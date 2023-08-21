@@ -103,7 +103,11 @@
   "subscribed_manage_plan": "管理方案",
   "subscribed_credits_expired_footnote": "請在到期日之前使用您的點數，否則點數將被清除。",
 
-  "watch_ads": "等待中，觀看廣告獲取1個點數。",
+  "watch_ads": "獲取10個點數。",
+  "watch_ads_earn": "Earn Tokens",
+  "watch_ads_earn_10": "觀看廣告獲取10個點數",
+  "watch_ads_waiting": "等待中。。。",
+  "watch_ads_limit": "您已經超過今天可獲取的限制。",
 
   "_NotificationsScreen": "*** 通知畫面翻譯 ***",
   "notifications": "通知",
