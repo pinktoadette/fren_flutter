@@ -6,7 +6,6 @@ import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/ads/interstitial_ads.dart';
 import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/story_cover.dart';
@@ -185,7 +184,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                     _i18n.translate("profile_image_generate_button"),
                   ),
                   onPressed: () {
-                    if (_promptController.text == "") {
+                    if (_isLoading) {
                       null;
                     } else {
                       widget.onButtonClicked(true);
