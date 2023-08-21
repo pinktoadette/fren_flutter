@@ -88,6 +88,12 @@ class _RewardAdsState extends State<RewardAds> {
             _numRewardedInterstitialLoadAttempts += 1;
             if (_numRewardedInterstitialLoadAttempts < maxFailedLoadAttempts) {
               _loadAds();
+            } else if (_numRewardedInterstitialLoadAttempts ==
+                maxFailedLoadAttempts) {
+              Get.snackbar(_i18n.translate("error"), "Unable to load ads",
+                  snackPosition: SnackPosition.TOP,
+                  backgroundColor: APP_ERROR,
+                  colorText: Colors.black);
             }
           },
         ));
@@ -129,9 +135,8 @@ class _RewardAdsState extends State<RewardAds> {
           label: Container(
             padding: const EdgeInsets.only(left: 15),
             width: MediaQuery.of(context).size.width,
-            child: Center(
-                child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
@@ -145,7 +150,7 @@ class _RewardAdsState extends State<RewardAds> {
                         color: Theme.of(context).colorScheme.primary,
                         fontSize: 14)),
               ],
-            )),
+            ),
           ),
           onPressed: () {
             _showRewardAd();

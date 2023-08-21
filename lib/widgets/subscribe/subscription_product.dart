@@ -80,6 +80,9 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
               ),
             )
           ]),
+          actions: [
+            TextButton(onPressed: () {}, child: const Text("Earn Ads"))
+          ],
         ),
         body: SingleChildScrollView(
             padding: const EdgeInsets.only(top: 0, left: 20, right: 20),

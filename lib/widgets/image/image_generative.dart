@@ -127,7 +127,6 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         if (_items.isEmpty && _isLoading == true)
           SizedBox(
               height: 200,
-              width: 200,
               child: RewardAds(
                 text: _i18n.translate("watch_ads_waiting"),
                 onAdStatus: (data) {
@@ -203,9 +202,9 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
 
   void _generatePhoto() async {
     // @todo remove image, search this text.
-    // if (_counter == 0) {
-    //   return;
-    // }
+    if (_counter == 0) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;

@@ -57,7 +57,6 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const InlineAdaptiveAds(),
               _botHeader(_i18n.translate("latest_machi_for_you"),
                   goTo: const ExploreMachi()),
               SingleChildScrollView(

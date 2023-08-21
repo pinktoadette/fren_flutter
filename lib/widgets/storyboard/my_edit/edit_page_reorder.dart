@@ -452,20 +452,20 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   void _generateOrSubscribe() {
     // @todo remove image, search this text.
-    _aiImage();
+    // _aiImage();
 
-    // if (subscribeController.credits <= 0) {
-    //   showModalBottomSheet<void>(
-    //       context: context,
-    //       isScrollControlled: true,
-    //       builder: (context) => Obx(() => FractionallySizedBox(
-    //           heightFactor: subscribeController.credits.value > 0
-    //               ? MODAL_HEIGHT_SMALL_FACTOR
-    //               : MODAL_HEIGHT_LARGE_FACTOR,
-    //           child: const SubscriptionProduct())));
-    // } else {
-    //   _aiImage();
-    // }
+    if (subscribeController.credits <= 0) {
+      showModalBottomSheet<void>(
+          context: context,
+          isScrollControlled: true,
+          builder: (context) => Obx(() => FractionallySizedBox(
+              heightFactor: subscribeController.credits.value > 0
+                  ? MODAL_HEIGHT_SMALL_FACTOR
+                  : MODAL_HEIGHT_LARGE_FACTOR,
+              child: const SubscriptionProduct())));
+    } else {
+      _aiImage();
+    }
   }
 
   void _aiImage() {
