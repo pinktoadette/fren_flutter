@@ -9,7 +9,6 @@ import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
-import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
@@ -30,6 +29,7 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
   TimelineController timelineController = Get.find(tag: 'timeline');
   late AppLocalizations _i18n;
   late Size size;
+  double botWidth = 5.5;
 
   @override
   void initState() {
@@ -71,7 +71,7 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
                         _addBot(size),
                         ...timelineController.machiList.map((bot) {
                           return Container(
-                              width: size.width / 4.5,
+                              width: size.width / botWidth,
                               margin: const EdgeInsets.only(left: 10),
                               child: _showBotAvatar(bot: bot, size: size));
                         })
@@ -100,6 +100,8 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
 
   List<Widget> _showSubscriptionCard() {
     SubscribeController subscriptionController = Get.find(tag: 'subscribe');
+    bool showPurchase = subscriptionController.customer != null &&
+        subscriptionController.customer!.allPurchaseDates.isEmpty;
     return [
       RewardAds(
         text: _i18n.translate("watch_ads_earn"),
@@ -110,10 +112,7 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
               colorText: Colors.black);
         },
       ),
-      const SubscriptionCard(),
-      subscriptionController.customer!.allPurchaseDates.isEmpty
-          ? const SubscriptionCard()
-          : const SizedBox.shrink(),
+      showPurchase ? const SubscriptionCard() : const SizedBox.shrink(),
       const SizedBox(height: 20),
     ];
   }
@@ -144,7 +143,7 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
           );
         },
         child: SizedBox(
-            width: size.width / 4.5,
+            width: size.width / botWidth,
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,

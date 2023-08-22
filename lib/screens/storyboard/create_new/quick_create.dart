@@ -10,7 +10,6 @@ import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/screens/storyboard/page/page_view.dart';
-import 'package:machi_app/screens/storyboard/story_view.dart';
 
 class QuickCreateNewBoard extends StatefulWidget {
   const QuickCreateNewBoard({Key? key}) : super(key: key);

@@ -112,7 +112,9 @@ class _RewardAdsState extends State<RewardAds> {
         debugPrint(rewardItem.amount.toString());
         widget.onAdStatus(rewardItem.amount);
         await _purchaseApi.getRewards();
-        subscribeController.updateCredits(rewardItem.amount.toInt());
+        int rewards =
+            subscribeController.credits.value + rewardItem.amount.toInt();
+        subscribeController.updateCredits(rewards);
       });
     } else {
       _loadAds();

@@ -35,6 +35,7 @@ void main() async {
   /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   await Firebase.initializeApp();
+  await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = (errorDetails) {
     // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
     FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);

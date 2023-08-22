@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
@@ -8,6 +9,7 @@ import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
+import 'package:machi_app/widgets/common/no_data.dart';
 
 class ListPromptBots extends StatefulWidget {
   const ListPromptBots({Key? key}) : super(key: key);
@@ -23,6 +25,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
   final TextEditingController _searchController = TextEditingController();
   final _cancelToken = CancelToken();
   static const int _pageSize = ALL_PAGE_SIZE;
+  final Map<int, List<Bot>> _cachedBots = {};
 
   @override
   void initState() {
@@ -42,20 +45,46 @@ class _ListPromptBotState extends State<ListPromptBots> {
 
   Future<void> _fetchAllBots(int pageKey) async {
     try {
-      List<Bot> newItems = await _botApi.getAllBots(
+      // Check if data for the current pageKey is already cached
+      if (_cachedBots.containsKey(pageKey)) {
+        // Data is cached, load it from cache
+        final cachedData = _cachedBots[pageKey]!;
+        final isLastPage = cachedData.length < _pageSize;
+        if (isLastPage) {
+          _pagingController.appendLastPage(cachedData);
+        } else {
+          final nextPageKey = pageKey + cachedData.length;
+          _pagingController.appendPage(cachedData, nextPageKey);
+        }
+      } else {
+        // Data is not cached, fetch it from the API
+        final newItems = await _botApi.getAllBots(
           page: pageKey,
           modelType: BotModelType.prompt,
           search: _searchController.text,
-          cancelToken: _cancelToken);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
+          cancelToken: _cancelToken,
+        );
+
+        if (mounted && newItems.isNotEmpty) {
+          // Cache the fetched data
+          _cachedBots[pageKey] = newItems;
+
+          final isLastPage = newItems.length < _pageSize;
+          if (isLastPage) {
+            _pagingController.appendLastPage(newItems);
+          } else {
+            final nextPageKey = pageKey + newItems.length;
+            _pagingController.appendPage(newItems, nextPageKey);
+          }
+        }
       }
-    } catch (error) {
-      _pagingController.error = error;
+    } catch (error, stack) {
+      await FirebaseCrashlytics.instance.recordError(
+        error,
+        stack,
+        reason: 'Listing machi failed: ${error.toString()}',
+        fatal: true,
+      );
     }
   }
 
@@ -63,6 +92,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
   Widget build(BuildContext context) {
     final i18n = AppLocalizations.of(context);
     final width = MediaQuery.of(context).size.width;
+
     return Stack(alignment: Alignment.topCenter, children: [
       SingleChildScrollView(
           child: Column(
@@ -112,7 +142,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
       )),
       Container(
         color: Theme.of(context).colorScheme.background,
-        padding: const EdgeInsets.all(20),
+        padding: const EdgeInsets.all(10),
         width: width,
         child: TextField(
           controller: _searchController,
@@ -125,7 +155,6 @@ class _ListPromptBotState extends State<ListPromptBots> {
           },
           style: TextStyle(color: Theme.of(context).colorScheme.primary),
           decoration: InputDecoration(
-              filled: true,
               prefixIcon: const Icon(
                 Icons.search,
               ),

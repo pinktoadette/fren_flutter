@@ -56,7 +56,10 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
         },
         onAdFailedToLoad: (ad, error) async {
           // Releases an ad resource when it fails to load
-          ad.dispose();
+          if (mounted) {
+            ad.dispose();
+          }
+
           debugPrint(
               'Ad load failed (code=${error.code} message=${error.message})');
         },
