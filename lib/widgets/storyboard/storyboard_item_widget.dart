@@ -113,10 +113,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     });
   }
 
-  bool isEmptyString(String? value) {
-    return value == null || value.isEmpty;
-  }
-
   Widget _buildDefaultLayout(
     Storyboard storyboard,
     double padding,
@@ -125,10 +121,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     /// if there is only one story, display first cover
     /// if there are many stories, display storyboard cover
     final firstStory = storyboard.story!.first;
-    String? photoUrl = firstStory.photoUrl ??
-        (firstStory.pages?.isNotEmpty == true
+    String? photoUrl = !isEmptyString(firstStory.photoUrl)
+        ? firstStory.photoUrl
+        : firstStory.pages?.isNotEmpty == true
             ? firstStory.pages![0].thumbnail
-            : storyboard.photoUrl);
+            : null;
 
     String title = storyboard.title;
     String subtitle = storyboard.summary ?? "";
@@ -142,7 +139,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
       category = firstStory.category;
     }
 
-    if (photoUrl == "") {
+    if (photoUrl == null) {
       return InkWell(
           onTap: _navigateNextPage,
           child: _textDisplay(
@@ -160,17 +157,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         children: [
           // Main Container with Background Image
           Container(
-            width: width,
-            height: photoUrl != "" ? width : 200,
-            decoration: photoUrl != ""
-                ? BoxDecoration(
-                    image: DecorationImage(
-                      image: ImageCacheWrapper(photoUrl!),
-                      fit: BoxFit.cover,
-                    ),
-                  )
-                : null,
-          ),
+              width: width,
+              height: width,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: ImageCacheWrapper(photoUrl!),
+                  fit: BoxFit.cover,
+                ),
+              )),
           // Dark Overlay Footer with Content
           Positioned(
             bottom: 0,
