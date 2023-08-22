@@ -217,6 +217,7 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
             Text(
               bot.name,
               textAlign: TextAlign.center,
+              maxLines: 2,
               style: Theme.of(context).textTheme.bodySmall,
             ),
             Text(bot.category,

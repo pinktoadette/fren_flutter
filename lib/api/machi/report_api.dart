@@ -18,12 +18,16 @@ class ReportApi {
       required reason,
       required comments}) async {
     String url = '$baseUri/report';
-    final dio = await auth.getDio();
-    await dio.post(url, data: {
-      REPORT_ITEM_ID: itemId,
-      REPORT_ITEM_TYPE: itemType,
-      REPORT_REASON: reason,
-      REPORT_COMMENTS: comments
-    });
+    try {
+      final dio = await auth.getDio();
+      await dio.post(url, data: {
+        REPORT_ITEM_ID: itemId,
+        REPORT_ITEM_TYPE: itemType,
+        REPORT_REASON: reason,
+        REPORT_COMMENTS: comments
+      });
+    } catch (err) {
+      rethrow;
+    }
   }
 }

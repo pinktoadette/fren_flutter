@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -23,8 +24,9 @@ class StoryboardApi {
 
       Storyboard story = Storyboard.fromJson(data);
       return story;
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to get api storyboard', fatal: false);
       rethrow;
     }
   }
@@ -71,8 +73,9 @@ class StoryboardApi {
       Storyboard story = Storyboard.fromJson(response.data);
       storyController.addNewStoryboard(story);
       return story;
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to create api storyboard', fatal: false);
       rethrow;
     }
   }
@@ -87,8 +90,9 @@ class StoryboardApi {
           await dio.delete(url, data: {STORYBOARD_ID: storyboard.storyboardId});
       storyController.removeStoryboardfromList(storyboard);
       return response.data;
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to delete api storyboard', fatal: false);
       rethrow;
     }
   }
@@ -109,8 +113,9 @@ class StoryboardApi {
         stories.add(s);
       }
       return stories;
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to get api my storyboard', fatal: false);
       rethrow;
     }
   }
@@ -137,8 +142,9 @@ class StoryboardApi {
       storyController.updateStoryboard(story);
       storyController.setCurrentBoard(story);
       return story;
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to update api storyboard', fatal: false);
       rethrow;
     }
   }
@@ -171,8 +177,9 @@ class StoryboardApi {
           await auth.retryGetRequest(url, cancelToken: cancelToken);
       final data = response.data;
       return data['characters'];
-    } catch (error) {
-      debugPrint(error.toString());
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to get contributors to storyboard', fatal: false);
       rethrow;
     }
   }

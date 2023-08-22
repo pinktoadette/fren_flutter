@@ -1,3 +1,4 @@
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
@@ -59,10 +60,16 @@ class TimelineApi {
       String itemType, String itemId, int actionValue) async {
     String url = '${baseUri}storyboard/like';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.post(url,
-        data: {'itemType': itemType, 'itemId': itemId, 'value': actionValue});
-    return response.data;
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(url,
+          data: {'itemType': itemType, 'itemId': itemId, 'value': actionValue});
+      return response.data;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance
+          .recordError(err, stack, reason: 'Failed  like story ', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Map<String, dynamic>> getHomepage() async {

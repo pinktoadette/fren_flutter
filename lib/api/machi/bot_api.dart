@@ -40,20 +40,27 @@ class BotApi {
       CREATED_AT: getDateTimeEpoch(),
       UPDATED_AT: getDateTimeEpoch(),
     };
-
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: payload);
-    return Bot.fromDocument(response.data);
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: payload);
+      return Bot.fromDocument(response.data);
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<Bot> getBot({
     required botId,
   }) async {
-    String url = '${baseUri}machi?botId=$botId';
-    final response = await auth.retryGetRequest(url);
-    final getData = response.data;
+    try {
+      String url = '${baseUri}machi?botId=$botId';
+      final response = await auth.retryGetRequest(url);
+      final getData = response.data;
 
-    return Bot.fromDocument(getData);
+      return Bot.fromDocument(getData);
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<Bot> updateBot({
@@ -62,11 +69,15 @@ class BotApi {
     required ValueSetter onSuccess,
     required Function(String) onError,
   }) async {
-    String url = '${baseUri}bot';
-    final dio = await auth.getDio();
-    final response = await dio.put(url, data: {...data, botId: botId});
-    final getData = response.data;
-    return Bot.fromDocument(getData);
+    try {
+      String url = '${baseUri}bot';
+      final dio = await auth.getDio();
+      final response = await dio.put(url, data: {...data, botId: botId});
+      final getData = response.data;
+      return Bot.fromDocument(getData);
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<List<Bot>> getAllBots(
@@ -88,11 +99,14 @@ class BotApi {
   }
 
   Future<List<Bot>> getMyCreatedBots() async {
-    String url = '${baseUri}get_my_creation';
-    final response = await auth.retryGetRequest(url);
-    final getData = response.data;
-
-    return getData.toJson();
+    try {
+      String url = '${baseUri}get_my_creation';
+      final response = await auth.retryGetRequest(url);
+      final getData = response.data;
+      return getData.toJson();
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<List<Bot>> myAddedMachi() async {
@@ -111,10 +125,14 @@ class BotApi {
   Future<String> machiHelper(
       {required text, required action, CancelToken? cancelToken}) async {
     String url = '${baseUri}machi_helper';
-    final dio = await auth.getDio();
-    final response = await dio.post(url,
-        data: {"text": text, "action": action}, cancelToken: cancelToken);
-    return response.data;
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(url,
+          data: {"text": text, "action": action}, cancelToken: cancelToken);
+      return response.data;
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<List<dynamic>> machiImage(
@@ -122,23 +140,31 @@ class BotApi {
       required int numImages,
       bool? isSubscribed,
       CancelToken? cancelToken}) async {
-    String url = '${baseUri}machi_image';
-    final dio = await auth.getDio();
-    final response = await dio.post(url,
-        data: {
-          "text": text,
-          "numImages": numImages,
-          "subscribe": isSubscribed ?? false
-        },
-        cancelToken: cancelToken);
-    return response.data;
+    try {
+      String url = '${baseUri}machi_image';
+      final dio = await auth.getDio();
+      final response = await dio.post(url,
+          data: {
+            "text": text,
+            "numImages": numImages,
+            "subscribe": isSubscribed ?? false
+          },
+          cancelToken: cancelToken);
+      return response.data;
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<String> uploadImageUrl({required uri, required pathLocation}) async {
     String url = '${baseUri}upload_url';
-    final dio = await auth.getDio();
-    final response =
-        await dio.post(url, data: {"url": uri, "path": pathLocation});
-    return response.data;
+    try {
+      final dio = await auth.getDio();
+      final response =
+          await dio.post(url, data: {"url": uri, "path": pathLocation});
+      return response.data;
+    } catch (err) {
+      rethrow;
+    }
   }
 }
