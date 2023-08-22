@@ -9,7 +9,6 @@ import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
-import 'package:machi_app/widgets/common/no_data.dart';
 
 class ListPromptBots extends StatefulWidget {
   const ListPromptBots({Key? key}) : super(key: key);
