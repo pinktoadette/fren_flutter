@@ -24,7 +24,8 @@ class _ListPromptBotState extends State<ListPromptBots> {
   final TextEditingController _searchController = TextEditingController();
   final _cancelToken = CancelToken();
   static const int _pageSize = ALL_PAGE_SIZE;
-  final Map<int, List<Bot>> _cachedBots = {};
+  late AppLocalizations _i18n;
+  late double _width;
 
   @override
   void initState() {
@@ -45,36 +46,20 @@ class _ListPromptBotState extends State<ListPromptBots> {
   Future<void> _fetchAllBots(int pageKey) async {
     try {
       // Check if data for the current pageKey is already cached
-      if (_cachedBots.containsKey(pageKey)) {
-        // Data is cached, load it from cache
-        final cachedData = _cachedBots[pageKey]!;
-        final isLastPage = cachedData.length < _pageSize;
+      final newItems = await _botApi.getAllBots(
+        page: pageKey,
+        modelType: BotModelType.prompt,
+        search: _searchController.text,
+        cancelToken: _cancelToken,
+      );
+
+      if (mounted && newItems.isNotEmpty) {
+        final isLastPage = newItems.length < _pageSize;
         if (isLastPage) {
-          _pagingController.appendLastPage(cachedData);
+          _pagingController.appendLastPage(newItems);
         } else {
-          final nextPageKey = pageKey + cachedData.length;
-          _pagingController.appendPage(cachedData, nextPageKey);
-        }
-      } else {
-        // Data is not cached, fetch it from the API
-        final newItems = await _botApi.getAllBots(
-          page: pageKey,
-          modelType: BotModelType.prompt,
-          search: _searchController.text,
-          cancelToken: _cancelToken,
-        );
-
-        if (mounted && newItems.isNotEmpty) {
-          // Cache the fetched data
-          _cachedBots[pageKey] = newItems;
-
-          final isLastPage = newItems.length < _pageSize;
-          if (isLastPage) {
-            _pagingController.appendLastPage(newItems);
-          } else {
-            final nextPageKey = pageKey + newItems.length;
-            _pagingController.appendPage(newItems, nextPageKey);
-          }
+          final nextPageKey = pageKey + newItems.length;
+          _pagingController.appendPage(newItems, nextPageKey);
         }
       }
     } catch (error, stack) {
@@ -88,10 +73,15 @@ class _ListPromptBotState extends State<ListPromptBots> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final i18n = AppLocalizations.of(context);
-    final width = MediaQuery.of(context).size.width;
+  void didChangeDependencies() {
+    super.didChangeDependencies();
 
+    _i18n = AppLocalizations.of(context);
+    _width = MediaQuery.of(context).size.width;
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Stack(alignment: Alignment.topCenter, children: [
       SingleChildScrollView(
           child: Column(
@@ -102,12 +92,12 @@ class _ListPromptBotState extends State<ListPromptBots> {
           PagedListView<int, dynamic>.separated(
             pagingController: _pagingController,
             shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
+            scrollDirection: Axis.vertical,
             builderDelegate: PagedChildBuilderDelegate<dynamic>(
                 noItemsFoundIndicatorBuilder: (_) {
               return Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [Text(i18n.translate("bots_not_found"))],
+                children: [Text(_i18n.translate("bots_not_found"))],
               );
             }, itemBuilder: (context, item, index) {
               return InkWell(
@@ -122,16 +112,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
             }),
             separatorBuilder: (BuildContext context, int index) {
               if ((index + 1) % 3 == 0) {
-                return Padding(
-                  padding:
-                      const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                  child: Container(
-                    height: AD_HEIGHT,
-                    width: width,
-                    color: Theme.of(context).colorScheme.background,
-                    child: const InlineAdaptiveAds(),
-                  ),
-                );
+                return const InlineAdaptiveAds();
               } else {
                 return const SizedBox.shrink();
               }
@@ -142,7 +123,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
       Container(
         color: Theme.of(context).colorScheme.background,
         padding: const EdgeInsets.all(10),
-        width: width,
+        width: _width,
         child: TextField(
           controller: _searchController,
           onChanged: (pattern) async {
@@ -157,7 +138,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
               prefixIcon: const Icon(
                 Icons.search,
               ),
-              hintText: i18n.translate("search")),
+              hintText: _i18n.translate("search")),
         ),
       ),
     ]);

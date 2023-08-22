@@ -18,12 +18,12 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/create_uuid.dart';
+import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/helpers/uploader.dart';
-import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/story_cover.dart';
@@ -42,7 +42,6 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
   final Function(Layout data) onLayoutSelection;
-  final Function(PageDirection direct) onPageAxisDirection;
   Layout? layout;
 
   EditPageReorder(
@@ -52,7 +51,6 @@ class EditPageReorder extends StatefulWidget {
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
       required this.onLayoutSelection,
-      required this.onPageAxisDirection,
       this.pageIndex = 0,
       this.layout})
       : super(key: key);
@@ -62,6 +60,8 @@ class EditPageReorder extends StatefulWidget {
 }
 
 class _EditPageReorderState extends State<EditPageReorder> {
+  /// api calls here are related to delete/move script.
+  /// adding, editing of scripts are saved when user swipes to next page and change is detected.
   final _scriptApi = ScriptApi();
   final PageDirection _direction = PageDirection.VERTICAL;
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
@@ -487,7 +487,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
               });
               _updateBackground();
             } else {
-              await _saveOrUploadTextImg(value);
+              await _addNewTextImage(value);
             }
           },
         ));
@@ -523,7 +523,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   void _addEditText({int? index, AddEditTextCharacter? newContent}) async {
     try {
       if (index == null) {
-        await _saveOrUploadTextImg(newContent!);
+        await _addNewTextImage(newContent!);
       } else {
         ScriptImage? uploadedByte;
         if (newContent?.imageBytes != null) {
@@ -548,14 +548,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
             characterId: newContent.characterId,
             textAlign: newContent.textAlign ?? TextAlign.left);
 
-        await _scriptApi.updateScript(script: newScript);
+        // await _scriptApi.updateScript(script: newScript);
 
         setState(() {
           scripts[index] = newScript;
         });
       }
 
-      widget.onUpdateSeq(scripts);
+      _updateSequence();
       Get.snackbar(_i18n.translate("saved_success"),
           _i18n.translate("creative_mix_save_text"),
           snackPosition: SnackPosition.TOP,
@@ -576,18 +576,19 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// save any images texts.
-  Future<Script> _saveOrUploadTextImg(AddEditTextCharacter content) async {
+  Future<Script> _addNewTextImage(AddEditTextCharacter content) async {
     late Script newScript;
+    Script newItem = Script.fromJson({
+      "character": content.characterName,
+      "characterId": content.characterId,
+      "textAlign": content.textAlign?.name,
+      "storyId": story.storyId,
+      "pageNum": widget.pageIndex + 1,
+      "createdAt": getDateTimeEpoch(),
+      "updatedAt": getDateTimeEpoch(),
+    });
     if (content.text != "") {
-      StoryPages pages = await _scriptApi.addScriptToStory(
-          character: UserModel().user.username,
-          characterId: UserModel().user.userId,
-          type: "text",
-          storyId: story.storyId,
-          text: content.text,
-          textAlign: content.textAlign ?? TextAlign.left,
-          pageNum: widget.pageIndex + 1);
-      newScript = pages.scripts![0];
+      newScript = newItem.copyWith(text: content.text, type: "text");
     }
     if (content.attachmentPreview != null) {
       String uploadImage = await uploadFile(
@@ -597,86 +598,63 @@ class _EditPageReorderState extends State<EditPageReorder> {
       var bytes = content.attachmentPreview!.readAsBytesSync();
       var result = await decodeImageFromList(bytes);
 
-      StoryPages pages = await _scriptApi.addScriptToStory(
-          character: UserModel().user.username,
-          characterId: UserModel().user.userId,
+      newScript = newItem.copyWith(
+          text: content.text,
           type: "image",
-          storyId: story.storyId,
-          image: {
-            "size": bytes.length,
-            "height": result.height.toDouble(),
-            "width": result.width.toDouble(),
-            "uri": uploadImage,
-            "manual": true
-          },
-          pageNum: widget.pageIndex + 1);
-      newScript = pages.scripts![0];
+          image: ScriptImage(
+            size: bytes.length,
+            height: result.height.toInt(),
+            width: result.width.toInt(),
+            uri: uploadImage,
+          ));
     }
 
     if (content.imageBytes != null) {
       Map<String, dynamic> uploadedBytes =
           await _uploadBytes(content.imageBytes!);
 
-      StoryPages pages = await _scriptApi.addScriptToStory(
-          character: UserModel().user.username,
-          characterId: UserModel().user.userId,
+      newScript = newItem.copyWith(
+          text: content.text,
           type: "image",
-          storyId: story.storyId,
-          image: uploadedBytes,
-          pageNum: widget.pageIndex + 1);
-      newScript = pages.scripts![0];
+          image: ScriptImage(
+            size: uploadedBytes['size'],
+            height: uploadedBytes['height'],
+            width: uploadedBytes['width'],
+            uri: uploadedBytes['uri'],
+          ));
     }
 
     if (content.galleryUrl != null) {
-      StoryPages pages = await _scriptApi.addScriptToStory(
-          character: UserModel().user.username,
-          characterId: UserModel().user.userId,
+      newScript = newItem.copyWith(
+          text: content.text,
           type: "image",
-          storyId: story.storyId,
-          image: {
-            "size": 9800,
-            "height": 516,
-            "width": 516, //@todo
-            "uri": content.galleryUrl,
-            "manual": true
-          },
-          pageNum: widget.pageIndex + 1);
-      newScript = pages.scripts![0];
+          image: ScriptImage(
+            size: 9800,
+            height: 512,
+            width: 512,
+            uri: content.galleryUrl!,
+          ));
     }
+
     setState(() {
       scripts = [...scripts, newScript];
     });
-    widget.onUpdateSeq(scripts);
+    _updateSequence();
     return newScript;
   }
 
-  /// updates the sequence of the individual boxes when dragged and dropped.
+  /// updates the sequence of the individual script when dragged/dropped and moved to other pages.
   void _updateSequence() async {
     List<Script> newSequence = [];
-    List<Map<String, dynamic>> saveSequence = [];
     int i = 1;
 
     for (Script script in scripts) {
       Script updateSeq = script.copyWith(seqNum: i);
       newSequence.add(updateSeq);
-      saveSequence.add({"seqNum": i, "scriptId": updateSeq.scriptId});
       i++;
     }
     // update parent
     widget.onUpdateSeq(newSequence);
-
-    try {
-      await _scriptApi.updateSequence(scripts: saveSequence);
-    } catch (err, s) {
-      Get.snackbar(
-        _i18n.translate("error"),
-        _i18n.translate("an_error_has_occurred"),
-        snackPosition: SnackPosition.TOP,
-        backgroundColor: APP_ERROR,
-      );
-      await FirebaseCrashlytics.instance.recordError(err, s,
-          reason: 'Unable to update sequence', fatal: true);
-    }
   }
 
   /// delete individual boxes.
@@ -694,7 +672,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       setState(() {
         scripts = [...scripts];
       });
-      widget.onUpdateSeq(scripts);
+      _updateSequence();
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -801,7 +779,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
       "height": frameInfo.image.height,
       "width": frameInfo.image.width,
       "uri": uploadImage,
-      "manual": true
     };
   }
 }

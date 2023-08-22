@@ -1,19 +1,20 @@
 import 'dart:async';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:get/get.dart';
+import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/script.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/storyboard/page/page_view.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_reorder.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
-import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class EditPage extends StatefulWidget {
@@ -32,11 +33,14 @@ class _EditPageState extends State<EditPage> {
 
   late Story story;
   late AppLocalizations _i18n;
+  final _scriptApi = ScriptApi();
 
   double itemHeight = 120;
   Layout selectedLayout = Layout.CONVO;
   int pageIndex = 0;
   bool _userScrolledAgain = false;
+  bool _hasChanges = false;
+  bool _isLoading = false;
 
   Timer? _scrollTimer;
 
@@ -60,7 +64,6 @@ class _EditPageState extends State<EditPage> {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-
     _i18n = AppLocalizations.of(context);
   }
 
@@ -77,6 +80,7 @@ class _EditPageState extends State<EditPage> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
+              _saveAllSeqMove(); // on last page, if page didn't move
               Navigator.pop(context, story);
             },
           ),
@@ -116,10 +120,6 @@ class _EditPageState extends State<EditPage> {
             },
             onUpdateSeq: (update) {
               _updateSequence(update);
-            },
-            onPageAxisDirection: (direction) {
-              // update
-              _updatePageDirection(direction);
             },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
@@ -194,10 +194,8 @@ class _EditPageState extends State<EditPage> {
                             _moveInsertPages(data);
                           },
                           onUpdateSeq: (update) {
+                            /// will save if there is updated sequence on exit
                             _updateSequence(update);
-                          },
-                          onPageAxisDirection: (direction) {
-                            _updatePageDirection(direction);
                           },
                           onLayoutSelection: (layout) {
                             selectedLayout = layout;
@@ -223,15 +221,6 @@ class _EditPageState extends State<EditPage> {
     ];
   }
 
-  void _updatePageDirection(PageDirection direction) {
-    Story update = story.copyWith(pageDirection: direction);
-    storyboardController.updateStory(story: update);
-
-    setState(() {
-      story = update;
-    });
-  }
-
   /// update / delete sequence
   /// EditPage for child, story for parent state
   void _moveInsertPages(Map<String, dynamic> data) {
@@ -241,15 +230,12 @@ class _EditPageState extends State<EditPage> {
         if (story.pages![pageNum - 1].scripts!.isNotEmpty) {
           StoryPages storyPage = StoryPages(pageNum: pageNum + 1, scripts: []);
           story.pages!.add(storyPage);
+          storyboardController.updateStory(story: story);
+
           setState(() {
             story = story;
           });
         }
-        Get.snackbar(_i18n.translate("success"),
-            _i18n.translate("creative_mix_added_page"),
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: APP_SUCCESS,
-            colorText: Colors.black);
         break;
       case ("move"):
         int moveToPage = data["page"];
@@ -260,7 +246,6 @@ class _EditPageState extends State<EditPage> {
               .removeWhere((script) => script.scriptId == moveScript.scriptId);
         }
         story.pages![moveToPage - 1].scripts!.add(moveScript);
-
         storyboardController.updateStory(story: story);
         break;
 
@@ -273,6 +258,9 @@ class _EditPageState extends State<EditPage> {
     StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
     story.pages![pageIndex] = newPages;
     storyboardController.updateStory(story: story);
+    setState(() {
+      _hasChanges = true;
+    });
   }
 
   void _updateLayout(Layout layout) async {
@@ -286,8 +274,33 @@ class _EditPageState extends State<EditPage> {
   }
 
   void _onPageChange(int index) {
+    _saveAllSeqMove();
+
     setState(() {
       pageIndex = index;
     });
+  }
+
+  void _saveAllSeqMove() async {
+    if (_hasChanges == true) {
+      try {
+        List<Script> scripts =
+            storyboardController.currentStory.pages![pageIndex].scripts!;
+        await _scriptApi.updateScripts(scripts: scripts);
+      } catch (err, s) {
+        Get.snackbar(
+          _i18n.translate("error"),
+          _i18n.translate("an_error_has_occurred"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+        );
+        await FirebaseCrashlytics.instance.recordError(err, s,
+            reason: 'Unable to update sequence', fatal: true);
+      } finally {
+        setState(() {
+          _hasChanges = false;
+        });
+      }
+    }
   }
 }

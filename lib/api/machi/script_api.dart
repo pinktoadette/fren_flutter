@@ -77,6 +77,24 @@ class ScriptApi {
     }
   }
 
+  Future<Map<String, dynamic>> updateScripts(
+      {required List<Script> scripts}) async {
+    try {
+      List<Map<String, dynamic>> updates = [];
+      for (int i = 0; i < scripts.length; i++) {
+        updates.add(scripts[i].toJSON());
+      }
+      String url = '${baseUri}scripts';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.put(url, data: updates);
+      return response.data;
+    } catch (error) {
+      debugPrint(error.toString());
+      throw error.toString();
+    }
+  }
+
   Future<List<StoryPages>> deleteScript({required Script script}) async {
     try {
       String url = '${baseUri}script';
