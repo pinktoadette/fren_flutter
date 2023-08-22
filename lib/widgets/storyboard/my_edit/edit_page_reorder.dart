@@ -22,10 +22,11 @@ import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
+import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
+import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
-import 'package:machi_app/widgets/decoration/text_border.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/add_ai_image.dart';
@@ -333,15 +334,22 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
     switch (scripts[index].type) {
       case "text":
+        bool useBorder =
+            isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl);
+
         return Column(crossAxisAlignment: alignment, children: [
           _bubbleOrNot(
               layout == Layout.COMIC
-                  ? SizedBox(
-                      width: size.width,
-                      child: TextBorder(
-                          text: scripts[index].text ?? "",
-                          size: 20,
-                          textAlign: scripts[index].textAlign))
+                  ? textLinkPreview(
+                      useBorder: useBorder,
+                      width: story.layout != Layout.CONVO ? size.width : null,
+                      text: scripts[index].text ?? "",
+                      textAlign: scripts[index].textAlign ?? TextAlign.left,
+                      style: TextStyle(
+                          color: story.layout == Layout.CONVO
+                              ? Colors.black
+                              : null,
+                          fontSize: story.layout == Layout.CONVO ? 16 : 20))
                   : Text(
                       scripts[index].text ?? "",
                       textAlign: scripts[index].textAlign,

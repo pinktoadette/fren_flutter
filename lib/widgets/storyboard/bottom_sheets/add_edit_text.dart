@@ -78,6 +78,7 @@ class _AddEditTextState extends State<AddEditTextWidget> {
             TextButton(
                 onPressed: () {
                   _onComplete();
+                  Navigator.of(context).pop();
                 },
                 child: Text(
                   widget.script?.text == null
@@ -127,7 +128,6 @@ class _AddEditTextState extends State<AddEditTextWidget> {
       "characterName": widget.script?.characterName ?? UserModel().user.username
     });
     widget.onTextComplete(update);
-    Get.back();
   }
 
   void _addImage() async {

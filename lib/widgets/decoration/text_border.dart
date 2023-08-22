@@ -29,7 +29,7 @@ class TextBorder extends StatelessWidget {
             fontSize: size ?? 16,
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 2
+              ..strokeWidth = 5
               ..color = Colors.black,
           ),
         ),
