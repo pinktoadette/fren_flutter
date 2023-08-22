@@ -37,63 +37,59 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons:
 
-  # FIREBASE Packages Section
-  firebase_core: ^2.8.0
-  firebase_auth: ^4.3.0
-  cloud_firestore: ^4.4.5
-  firebase_messaging: ^14.3.0
-  firebase_storage: ^11.0.16  
-  google_mobile_ads: ^3.0.0 #no web 
-  # END 
-
-  flutter_native_splash: ^2.3.1 # Used to generate the app splash screen for both platforms android and iOS 
-  scoped_model: 2.0.0 # Used to Manage Application State
-  image_picker: ^1.0.2 # # Used to select images from the User's device image library or take a new photo using the camera
-  image_cropper: ^5.0.0 # Used to Crop/Rotate Selected images from user's device
-  url_launcher: 6.1.12 # Used to open link schemes in application or browser
-  rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
-  share: 2.0.4 # Used to share application content in other applications
-  flutter_cupertino_datetime_picker: 3.0.0
-  google_fonts: ^5.1.0
-  google_sign_in: ^6.0.1
-  iconsax: ^0.0.8
-  flutter_signin_button: ^2.0.0
-  flutter_chat_types: ^3.6.2
-  onboarding: ^3.1.0
-  lottie: ^2.2.0
-  uuid: ^3.0.7
-  dio: ^5.0.1 
-  open_filex: ^4.3.2 # no web
-  get: ^4.6.5
-  web_socket_channel: ^2.3.0
-  flutter_typeahead: ^4.3.7
-  get_storage: ^2.1.1
-  like_button: ^2.0.5
-  infinite_scroll_pagination: ^4.0.0
-  # just_audio: ^0.9.32
   # audio_service: ^0.18.9
-  smooth_page_indicator: ^1.1.0
-
+  # just_audio: ^0.9.32
+  any_link_preview: ^3.0.0
+  cached_network_image: ^3.2.3 #no web
+  card_swiper: ^3.0.1
+  chips_choice: ^3.0.0
+  cloud_firestore: ^4.4.5
+  dio: ^5.0.1
+  firebase_auth: ^4.3.0
+  firebase_core: ^2.8.0
+  firebase_crashlytics: ^3.3.3
+  firebase_messaging: ^14.3.0
+  firebase_performance: ^0.9.2+5
+  firebase_storage: ^11.0.16
+  flutter_cache_manager: ^3.3.1
+  flutter_chat_types: ^3.6.2
   flutter_chat_ui:
     git:
       url: https://github.com/pinktoadette/flutter_chat_ui.git
       ref: main
-  any_link_preview: ^3.0.0
-  chips_choice: ^3.0.0
-  cached_network_image: ^3.2.3 #no web
-  purchases_flutter: ^5.6.0 #no web
-  card_swiper: ^3.0.1
-  firebase_crashlytics: ^3.3.3
-  flutter_cache_manager: ^3.3.1
-  screenshot: ^2.1.0
-  permission_handler: ^10.4.3
-  image_gallery_saver: ^2.0.3
-  image: ^4.0.17
+  flutter_cupertino_datetime_picker: 3.0.0
+  flutter_native_splash: ^2.3.1 # Used to generate the app splash screen for both platforms android and iOS
+  flutter_signin_button: ^2.0.0
+  flutter_typeahead: ^4.3.7
+  get: ^4.6.5
+  get_storage: ^2.1.1
+  google_fonts: ^5.1.0
+  google_mobile_ads: ^3.0.0 #no web
+  google_sign_in: ^6.0.1
   http: ^1.1.0
-  path_provider: ^2.1.0
+  iconsax: ^0.0.8
+  image: ^4.0.17
+  image_cropper: ^5.0.0 # Used to Crop/Rotate Selected images from user's device
+  image_gallery_saver: ^2.0.3
+  image_picker: ^1.0.2 # # Used to select images from the User's device image library or take a new photo using the camera
+  infinite_scroll_pagination: ^4.0.0
   leak_detector: ^1.1.0
-  firebase_performance: ^0.9.2+5
+  like_button: ^2.0.5
+  lottie: ^2.2.0
+  onboarding: ^3.1.0
+  open_filex: ^4.3.2 # no web
+  path_provider: ^2.1.0
+  permission_handler: ^10.4.3
+  purchases_flutter: ^5.6.0 #no web
+  rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
+  scoped_model: 2.0.0 # Used to Manage Application State
+  screenshot: ^2.1.0
+  share: 2.0.4 # Used to share application content in other applications
   shared_preferences: ^2.2.0
+  smooth_page_indicator: ^1.1.0
+  url_launcher: 6.1.12 # Used to open link schemes in application or browser
+  uuid: ^3.0.7
+  web_socket_channel: ^2.3.0
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre
