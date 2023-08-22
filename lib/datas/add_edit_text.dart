@@ -79,9 +79,7 @@ class AddEditTextCharacter {
       imageBytes: json['imageBytes'] != null
           ? Uint8List.fromList(json['imageBytes'].cast<int>())
           : null,
-      attachmentPreview: json['attachmentPreview'] != null
-          ? File(json['attachmentPreview'])
-          : null,
+      attachmentPreview: json['attachmentPreview'],
       galleryUrl: json['galleryUrl'],
       thumbnail: json['thumbnail'],
       isBackground: json['isBackground'] ?? false,

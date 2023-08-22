@@ -17,6 +17,7 @@ class TimelineController extends GetxController {
 
   /// top part of the timeline
   RxList<Bot> machiList = <Bot>[].obs;
+  RxList<Bot> mymachiList = <Bot>[].obs;
 
   final _timelineApi = TimelineApi();
   static const int _pageSize = ALL_PAGE_SIZE;
@@ -42,6 +43,7 @@ class TimelineController extends GetxController {
     Map<String, dynamic> items = {};
     if (isLoggedIn) {
       items = await _timelineApi.getHomepage();
+      mymachiList.value = items['mymachi'];
     } else {
       items = await _timelineApi.getPublicHomepage();
     }
@@ -51,6 +53,7 @@ class TimelineController extends GetxController {
   /// clear any items when user signs in from public view
   clear() {
     machiList.value = [];
+    mymachiList.value = [];
     pagingController.itemList?.clear();
   }
 

@@ -8,6 +8,7 @@ import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/image/image_rounded.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
@@ -326,6 +327,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ))),
           const SizedBox(height: 30),
+          RewardAds(text: "Earn Ads", onAdStatus: (e) {}),
         ]));
   }
 

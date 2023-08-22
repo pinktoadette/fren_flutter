@@ -47,7 +47,7 @@ class _ManaulCreateNewBoardState extends State<ManaulCreateNewBoard> {
     _i18n = AppLocalizations.of(context);
     styleLabel = Theme.of(context).textTheme.labelMedium!;
     styleBody = Theme.of(context).textTheme.bodyMedium!;
-    _pr = ProgressDialog(context, isDismissible: true);
+    _pr = ProgressDialog(context, isDismissible: false);
   }
 
   @override

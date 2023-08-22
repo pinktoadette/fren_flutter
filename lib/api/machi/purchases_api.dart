@@ -1,9 +1,11 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 class PurchasesApi {
@@ -66,5 +68,13 @@ class PurchasesApi {
     final response = await auth.retryGetRequest(url);
     Map<String, dynamic> credits = response.data;
     return credits;
+  }
+
+  Future<Map<String, dynamic>> getRewards() async {
+    String url = '${baseUri}rewards/credits';
+    debugPrint("Requesting URL $url");
+    final dio = await auth.getDio();
+    final response = await dio.post(url);
+    return response.data;
   }
 }

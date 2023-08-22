@@ -6,7 +6,6 @@ import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/ads/interstitial_ads.dart';
 import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/story_cover.dart';
@@ -127,7 +126,6 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         if (_items.isEmpty && _isLoading == true)
           SizedBox(
               height: 200,
-              width: 200,
               child: RewardAds(
                 text: _i18n.translate("watch_ads_waiting"),
                 onAdStatus: (data) {
@@ -186,7 +184,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                     _i18n.translate("profile_image_generate_button"),
                   ),
                   onPressed: () {
-                    if (_promptController.text == "") {
+                    if (_isLoading) {
                       null;
                     } else {
                       widget.onButtonClicked(true);
@@ -203,9 +201,9 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
 
   void _generatePhoto() async {
     // @todo remove image, search this text.
-    // if (_counter == 0) {
-    //   return;
-    // }
+    if (_counter == 0) {
+      return;
+    }
 
     setState(() {
       _isLoading = true;

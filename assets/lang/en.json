@@ -106,6 +106,7 @@
   "watch_ads_earn": "Earn Tokens",
   "watch_ads_earn_10": "Watch ads earn 10 tokens",
   "watch_ads_waiting": "While You Wait...",
+  "watch_ads_limit": "You have reached the number of times to earn for the day.",
   "_NotificationsScreen": "*** Notifications Screen Translations ***",
   "notifications": "Notifications",
   "mark_all_read": "Mark All Read",

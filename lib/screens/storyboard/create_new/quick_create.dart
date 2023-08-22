@@ -4,10 +4,12 @@ import 'package:get/get.dart';
 import 'package:machi_app/api/machi/story_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
+import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/screens/storyboard/page/page_view.dart';
 import 'package:machi_app/screens/storyboard/story_view.dart';
 
 class QuickCreateNewBoard extends StatefulWidget {
@@ -32,7 +34,7 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
   void initState() {
     super.initState();
     _aboutController = TextEditingController();
-    _pr = ProgressDialog(context, isDismissible: true);
+    _pr = ProgressDialog(context, isDismissible: false);
   }
 
   @override
@@ -120,16 +122,18 @@ class _QuickCreateNewBoardState extends State<QuickCreateNewBoard> {
       Storyboard storyboard = await _storyApi.quickStory(_aboutController.text);
       _aboutController.clear();
 
+      Story story = storyboard.story![0];
       storyboardController.addNewStoryboard(storyboard);
       storyboardController.setCurrentBoard(storyboard);
+      storyboardController.setCurrentStory(story);
       await Future.delayed(const Duration(seconds: 1));
       _pr.hide();
-      if (context.mounted) {
+      if (mounted && context.mounted) {
         Navigator.pop(context);
         await Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => const StoriesView(),
+            builder: (context) => StoryPageView(story: story),
           ),
         );
       }

@@ -57,38 +57,8 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
         : Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const InlineAdaptiveAds(),
-              const SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(left: 20),
-                    child: Text(
-                      _i18n.translate("latest_machi_for_you"),
-                      style: Theme.of(context).textTheme.bodyMedium,
-                    ),
-                  ),
-                  Container(
-                    alignment: Alignment.bottomLeft,
-                    padding: const EdgeInsets.only(right: 10, left: 10),
-                    child: TextButton(
-                        onPressed: () {
-                          NavigationHelper.handleGoToPageOrLogin(
-                            context: context,
-                            userController: userController,
-                            navigateAction: () async {
-                              Get.to(() => const ExploreMachi());
-                            },
-                          );
-                        },
-                        child: Text(_i18n.translate("see_all"),
-                            style: Theme.of(context).textTheme.bodyMedium)),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 10),
+              _botHeader(_i18n.translate("latest_machi_for_you"),
+                  goTo: const ExploreMachi()),
               SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Row(
@@ -106,23 +76,46 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
                               child: _showBotAvatar(bot: bot, size: size));
                         })
                       ])),
+              if (timelineController.mymachiList.isNotEmpty)
+                _botHeader(_i18n.translate("latest_machi_yours")),
+              SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ...timelineController.mymachiList.map((bot) {
+                          return Container(
+                              width: size.width / 4.5,
+                              margin: const EdgeInsets.only(left: 10),
+                              child: _showBotAvatar(bot: bot, size: size));
+                        })
+                      ])),
               const SizedBox(height: 20),
               const CreateStoryCard(),
-              if (userController.user != null) _showSubscriptionCard(),
-              RewardAds(
-                text: _i18n.translate("watch_ads_earn"),
-                onAdStatus: (data) {},
-              ),
-              const SizedBox(height: 20),
+              if (userController.user != null) ..._showSubscriptionCard(),
             ],
           ));
   }
 
-  Widget _showSubscriptionCard() {
+  List<Widget> _showSubscriptionCard() {
     SubscribeController subscriptionController = Get.find(tag: 'subscribe');
-    return subscriptionController.customer!.allPurchaseDates.isEmpty
-        ? const SubscriptionCard()
-        : const SizedBox.shrink();
+    return [
+      RewardAds(
+        text: _i18n.translate("watch_ads_earn"),
+        onAdStatus: (data) {
+          Get.snackbar(_i18n.translate("success"), "Rewarded $data tokens",
+              snackPosition: SnackPosition.TOP,
+              backgroundColor: APP_SUCCESS,
+              colorText: Colors.black);
+        },
+      ),
+      const SubscriptionCard(),
+      subscriptionController.customer!.allPurchaseDates.isEmpty
+          ? const SubscriptionCard()
+          : const SizedBox.shrink(),
+      const SizedBox(height: 20),
+    ];
   }
 
   Widget _addBot(Size size) {
@@ -252,5 +245,38 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
           reason: 'Error getting homepage items ${err.toString()}',
           fatal: false);
     }
+  }
+
+  Widget _botHeader(String title, {Widget? goTo}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          alignment: Alignment.bottomLeft,
+          padding: const EdgeInsets.only(left: 20),
+          child: Text(
+            title,
+            style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+        if (goTo != null)
+          Container(
+            alignment: Alignment.bottomLeft,
+            padding: const EdgeInsets.only(right: 10, left: 10),
+            child: TextButton(
+                onPressed: () {
+                  NavigationHelper.handleGoToPageOrLogin(
+                    context: context,
+                    userController: userController,
+                    navigateAction: () async {
+                      Get.to(() => goTo);
+                    },
+                  );
+                },
+                child: Text(_i18n.translate("see_all"),
+                    style: Theme.of(context).textTheme.bodyMedium)),
+          ),
+      ],
+    );
   }
 }
