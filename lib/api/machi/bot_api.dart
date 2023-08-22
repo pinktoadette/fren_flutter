@@ -20,6 +20,7 @@ class BotApi {
   Future<Bot> createBot(
       {required String name,
       required String prompt,
+      String? botId,
       int? temperature,
       bool? isPrivate,
       String? photoUrl,
@@ -28,7 +29,7 @@ class BotApi {
     String uuid = const Uuid().v4().replaceAll("[\\s\\-()]", "");
 
     Map<String, dynamic> payload = {
-      BOT_ID: "Machi_${uuid.substring(0, 10)}", // external botId
+      BOT_ID: botId ?? "Machi_${uuid.substring(0, 10)}", // external botId
       BOT_NAME: name,
       BOT_MODEL_TYPE: modelType.toString().split(".")[1],
       BOT_PROMPT: prompt,

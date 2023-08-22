@@ -268,19 +268,23 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
     BotModelType modelType = BotModelType.prompt;
     String prompt = _promptController.text;
     String botImgUrl = photoUrl ?? "";
+    String botId = createUUID();
     if (_uploadPath != null) {
       botImgUrl = await uploadFile(
           file: _uploadPath!,
           category: UPLOAD_PATH_BOT_IMAGE,
-          categoryId: createUUID());
+          categoryId: botId);
     }
     if (photoUrl != null) {
       botImgUrl = await copyFileToDifferentFolder(
-          sourceUrl: photoUrl!, destinationCategory: 'machi/');
+          sourceUrl: photoUrl!,
+          destinationCategory: 'machi/$botId/',
+          customName: botId);
     }
 
     try {
       Bot bot = await _botApi.createBot(
+          botId: botId,
           name: name,
           modelType: modelType,
           prompt: prompt,

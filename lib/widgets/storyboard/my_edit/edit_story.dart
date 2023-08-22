@@ -40,7 +40,6 @@ class _EditPageState extends State<EditPage> {
   int pageIndex = 0;
   bool _userScrolledAgain = false;
   bool _hasChanges = false;
-  bool _isLoading = false;
 
   Timer? _scrollTimer;
 

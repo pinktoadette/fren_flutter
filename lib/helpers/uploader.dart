@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:image/image.dart' as imglib;
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 Future<void> deleteFileByUrl(String fileUrl) async {
   try {
@@ -126,28 +127,34 @@ Future<String> uploadBytesFile({
   }
 }
 
-Future<String> copyFileToDifferentFolder({
-  required String sourceUrl,
-  required String destinationCategory,
-  String contentType = 'image/png',
-}) async {
+Future<String> copyFileToDifferentFolder(
+    {required String sourceUrl,
+    required String destinationCategory,
+    String contentType = 'image/jpg',
+    String? customName}) async {
   try {
     final storageRef = FirebaseStorage.instance;
 
     // Get the file name from the source URL
     final List<String> urlSegments = Uri.parse(sourceUrl).pathSegments;
-    final String fileName = urlSegments.last;
+    final String fileName = customName ?? urlSegments.last;
 
     // Download the file from the source URL
     final http.Response response = await http.get(Uri.parse(sourceUrl));
     final Uint8List fileBytes = Uint8List.fromList(response.bodyBytes);
+
+    final compressedBytes = await FlutterImageCompress.compressWithList(
+      fileBytes,
+      minHeight: 300,
+      minWidth: 300,
+    );
 
     // Upload the file to the destination folder
     final destinationFolderRef = storageRef.ref().child(destinationCategory);
     final destinationFileRef = destinationFolderRef.child(fileName);
 
     final TaskSnapshot uploadTask = await destinationFileRef.putData(
-      fileBytes,
+      compressedBytes,
       SettableMetadata(contentType: contentType), // Set the content type
     );
     final String newUrl = await uploadTask.ref.getDownloadURL();

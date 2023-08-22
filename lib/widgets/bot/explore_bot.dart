@@ -37,7 +37,6 @@ class _ExploreMachiState extends State<ExploreMachi> {
           _i18n.translate("search"),
           style: Theme.of(context).textTheme.bodyMedium,
         ),
-        // Customize AppBar color, text color, etc. here
       ),
       body: const ListPromptBots(),
     );

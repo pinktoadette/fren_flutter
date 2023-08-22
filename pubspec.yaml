@@ -61,6 +61,7 @@ dependencies:
   flutter_native_splash: ^2.3.1 # Used to generate the app splash screen for both platforms android and iOS
   flutter_signin_button: ^2.0.0
   flutter_typeahead: ^4.3.7
+  flutter_image_compress: ^2.0.4
   get: ^4.6.5
   get_storage: ^2.1.1
   google_fonts: ^5.1.0
@@ -72,7 +73,7 @@ dependencies:
   image_cropper: ^5.0.0 # Used to Crop/Rotate Selected images from user's device
   image_gallery_saver: ^2.0.3
   image_picker: ^1.0.2 # # Used to select images from the User's device image library or take a new photo using the camera
-  infinite_scroll_pagination: ^3.1.0
+  infinite_scroll_pagination: ^4.0.0
   leak_detector: ^1.1.0
   like_button: ^2.0.5
   lottie: ^2.2.0
