@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
 
 Widget textLinkPreview(
-    {required BuildContext context,
-    required String text,
+    {required String text,
     TextAlign? textAlign = TextAlign.left,
     bool? useBorder = false,
     double? width,
@@ -36,7 +35,7 @@ Widget textLinkPreview(
               : Text(
                   urls.isNotEmpty ? text.replaceAll(urls[0], "") : text,
                   textAlign: textAlign,
-                  style: style ?? Theme.of(context).textTheme.bodySmall,
+                  style: style,
                   overflow: TextOverflow.fade,
                 ),
           if (urls.isNotEmpty)

@@ -379,18 +379,17 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     Widget widget = const SizedBox.shrink();
     if (script.type == "text") {
+      bool useBorder = !hasBackground ? false : story!.layout == Layout.COMIC;
       widget = Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: textLinkPreview(
-              useBorder: !hasBackground ? false : story!.layout == Layout.COMIC,
-              context: context,
+              useBorder: useBorder,
               width: story!.layout != Layout.CONVO ? size.width : null,
               text: script.text ?? "",
               textAlign: script.textAlign ?? TextAlign.left,
               style: TextStyle(
-                  color: story!.layout == Layout.CONVO
-                      ? Colors.black
-                      : Theme.of(context).colorScheme.primary)));
+                  color: story!.layout == Layout.CONVO ? Colors.black : null,
+                  fontSize: story!.layout == Layout.CONVO ? 16 : 20)));
     } else if (script.type == "image") {
       AspectRatioImage adjImage = AspectRatioImage(
           imageWidth: script.image!.width.toDouble(),

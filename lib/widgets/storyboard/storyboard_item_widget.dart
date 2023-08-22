@@ -227,7 +227,6 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               style: const TextStyle(fontSize: 14, color: APP_MUTED_COLOR),
             ),
             textLinkPreview(
-                context: context,
                 text: subtitle,
                 style: TextStyle(fontSize: 14, color: textColor)),
           ],

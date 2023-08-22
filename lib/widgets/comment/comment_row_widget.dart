@@ -62,7 +62,6 @@ class _CommentRowWidgetState extends State<CommentRowWidget> {
             Padding(
                 padding: const EdgeInsets.only(left: 15, right: 15),
                 child: textLinkPreview(
-                  context: context,
                   text: widget.item.comment,
                   style: Theme.of(context)
                       .textTheme
