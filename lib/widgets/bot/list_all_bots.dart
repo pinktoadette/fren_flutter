@@ -56,6 +56,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
       if (mounted && newItems.isNotEmpty) {
         final isLastPage = newItems.length < _pageSize;
         if (isLastPage) {
+          _pagingController.appendLastPage(newItems);
         } else {
           final nextPageKey = pageKey + newItems.length;
           _pagingController.appendPage(newItems, nextPageKey);
@@ -78,7 +79,8 @@ class _ListPromptBotState extends State<ListPromptBots> {
   }
 
   void _updateSearchTerm(String searchTerm) {
-    _searchTerm = searchTerm;
+    _searchTerm = searchTerm.trim();
+    _fetchAllBots(0);
     _pagingController.refresh();
   }
 
