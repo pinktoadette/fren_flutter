@@ -928,12 +928,12 @@ PODS:
   - PromisesObjC (2.3.1)
   - PromisesSwift (2.3.1):
     - PromisesObjC (= 2.3.1)
-  - purchases_flutter (5.6.1):
+  - purchases_flutter (5.6.2):
     - Flutter
-    - PurchasesHybridCommon (= 5.6.1)
-  - PurchasesHybridCommon (5.6.1):
-    - RevenueCat (= 4.25.4)
-  - RevenueCat (4.25.4)
+    - PurchasesHybridCommon (= 5.6.3)
+  - PurchasesHybridCommon (5.6.3):
+    - RevenueCat (= 4.25.6)
+  - RevenueCat (4.25.6)
   - share (0.0.1):
     - Flutter
   - shared_preferences_foundation (0.0.1):
@@ -1121,9 +1121,9 @@ SPEC CHECKSUMS:
   permission_handler_apple: e76247795d700c14ea09e3a2d8855d41ee80a2e6
   PromisesObjC: c50d2056b5253dadbd6c2bea79b0674bd5a52fa4
   PromisesSwift: 28dca69a9c40779916ac2d6985a0192a5cb4a265
-  purchases_flutter: bb88c411e5d46bbe97a3294d3e9ca877667d6321
-  PurchasesHybridCommon: 10e615602355d9df294295e0e8d63d3a532944cc
-  RevenueCat: 77f863268cfb1819cd0119749d488f3a50576b97
+  purchases_flutter: 1fd037093309808e55fd5f30298371ec52a44b51
+  PurchasesHybridCommon: 009e27a22f3fd34924cede31eece27a5c10049e9
+  RevenueCat: 9726d792ed47b41dfe83754c1391fa3d08e1bbdf
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
   shared_preferences_foundation: 5b919d13b803cadd15ed2dc053125c68730e5126
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
