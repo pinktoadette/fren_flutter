@@ -1,7 +1,7 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/story_cover.dart';

@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'dart:ui' as ui;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -31,8 +32,6 @@ import 'package:machi_app/widgets/storyboard/my_edit/add_ai_image.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
-import 'dart:ui' as ui;
-
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 // ignore: must_be_immutable

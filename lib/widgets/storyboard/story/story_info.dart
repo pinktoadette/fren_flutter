@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/api/machi/storyboard_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
-import 'package:flutter/material.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
