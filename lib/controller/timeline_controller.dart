@@ -11,7 +11,6 @@ class TimelineController extends GetxController {
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
   PagingController<int, Storyboard> pagingController =
       PagingController(firstPageKey: 0);
-  final Map<int, List<Storyboard>> _cachedPages = {};
 
   Rx<Story?> _currentStory = (null).obs;
 

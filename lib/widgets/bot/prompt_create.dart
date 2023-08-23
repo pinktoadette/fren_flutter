@@ -254,7 +254,7 @@ class _CreateMachiWidget extends State<CreateMachiWidget> {
       return;
     }
 
-    if (_promptController.text.length < 50 || _nameController.text.length < 3) {
+    if (_promptController.text.length < 20 || _nameController.text.length < 3) {
       Get.snackbar(_i18n.translate("validation_warning"),
           _i18n.translate("validation_insufficient_caharacter"),
           snackPosition: SnackPosition.TOP,

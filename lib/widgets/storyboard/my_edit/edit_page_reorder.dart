@@ -339,25 +339,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
         return Column(crossAxisAlignment: alignment, children: [
           _bubbleOrNot(
-              layout == Layout.COMIC
-                  ? textLinkPreview(
-                      useBorder: hasBackground && story.layout != Layout.CONVO,
-                      width: story.layout != Layout.CONVO ? size.width : null,
-                      text: scripts[index].text ?? "",
-                      textAlign: scripts[index].textAlign ?? TextAlign.left,
-                      style: TextStyle(
-                          color: story.layout == Layout.CONVO
-                              ? Colors.black
-                              : null,
-                          fontSize: story.layout == Layout.CONVO ? 16 : 20))
-                  : Text(
-                      scripts[index].text ?? "",
-                      textAlign: scripts[index].textAlign,
-                      style: TextStyle(
-                          color:
-                              layout == Layout.CONVO ? Colors.black : textColor,
-                          fontSize: layout == Layout.COMIC ? 20 : 16),
-                    ),
+              textLinkPreview(
+                  useBorder: hasBackground && story.layout != Layout.CONVO,
+                  width: story.layout != Layout.CONVO ? size.width : null,
+                  text: scripts[index].text ?? "",
+                  textAlign: scripts[index].textAlign ?? TextAlign.left,
+                  style: TextStyle(
+                      color: story.layout == Layout.CONVO ? Colors.black : null,
+                      fontSize: story.layout == Layout.CONVO ? 16 : 20)),
               size,
               alignment),
           lay,

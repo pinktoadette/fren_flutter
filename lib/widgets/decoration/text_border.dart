@@ -26,7 +26,7 @@ class TextBorder extends StatelessWidget {
           textAlign: textAlign,
           maxLines: maxLines,
           style: TextStyle(
-            fontSize: size ?? 16,
+            fontSize: (size ?? 16),
             foreground: Paint()
               ..style = PaintingStyle.stroke
               ..strokeWidth = 5
@@ -39,7 +39,7 @@ class TextBorder extends StatelessWidget {
           maxLines: maxLines,
           style: TextStyle(
             fontSize: size ?? 16,
-            color: APP_INVERSE_PRIMARY_COLOR,
+            color: APP_INVERSE_PRIMARY_COLOR.withAlpha(100),
           ),
         ),
       ],

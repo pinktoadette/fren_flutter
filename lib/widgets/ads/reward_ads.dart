@@ -85,7 +85,7 @@ class _RewardAdsState extends State<RewardAds> {
             debugPrint('Rewarded Ad failed to load: $error');
             _ad = null;
             _numRewardedInterstitialLoadAttempts += 1;
-            if (_numRewardedInterstitialLoadAttempts < maxFailedLoadAttempts) {
+            if (_numRewardedInterstitialLoadAttempts <= maxFailedLoadAttempts) {
               _loadAds();
             } else if (_numRewardedInterstitialLoadAttempts ==
                 maxFailedLoadAttempts) {

@@ -166,7 +166,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               height: width,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: ImageCacheWrapper(photoUrl!),
+                  image: ImageCacheWrapper(photoUrl),
                   fit: BoxFit.cover,
                 ),
               )),
@@ -185,7 +185,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
                       title: title,
                       category: category,
                       subtitle: subtitle,
-                      photoUrl: photoUrl!,
+                      photoUrl: photoUrl,
                       padding: padding,
                       width: width)
                 ],

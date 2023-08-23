@@ -16,7 +16,6 @@ import 'package:machi_app/api/machi/message_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
-import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/chatroom.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
