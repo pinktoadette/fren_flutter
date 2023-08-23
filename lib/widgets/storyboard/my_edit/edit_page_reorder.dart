@@ -689,11 +689,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
     StoryPages storyPages = story.pages![widget.pageIndex];
 
     /// delete last uploadfile
-    if (storyPages.backgroundImageUrl != null) {
-      deleteFileByUrl(storyPages.backgroundImageUrl!);
-    }
-    if (storyPages.thumbnail != null) {
-      deleteFileByUrl(storyPages.thumbnail!);
+    if (url != null) {
+      if (storyPages.backgroundImageUrl != url) {
+        deleteFileByUrl(storyPages.backgroundImageUrl!);
+        if (storyPages.thumbnail != null) {
+          deleteFileByUrl(storyPages.thumbnail!);
+        }
+      }
     }
 
     ///  reassign new image url
