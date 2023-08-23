@@ -66,6 +66,8 @@ class PurchasesApi {
       debugPrint("Requesting URL $url");
       final response = await auth.retryGetRequest(url);
       Map<String, dynamic> credits = response.data;
+
+      /// returns credits and rewards key
       return credits;
     } catch (err) {
       rethrow;

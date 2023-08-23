@@ -90,12 +90,13 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              if (activeSubscription != "")
+                Text(
+                    "${_i18n.translate("subscribed_plan")} on $activeSubscription"),
               Text(
                 _i18n.translate("subscribed_credits"),
                 style: Theme.of(context).textTheme.headlineMedium,
               ),
-              Text(
-                  "${_i18n.translate("subscribed_plan")} on $activeSubscription"),
 
               Obx(() => RichText(
                       text: TextSpan(
@@ -105,18 +106,22 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
                     children: <TextSpan>[
                       TextSpan(
                           text:
-                              "${subscribeController.credits.value.toString()} ",
-                          style: const TextStyle(fontWeight: FontWeight.bold)),
+                              "${subscribeController.getTotal().toString()} tokens ",
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              color: APP_ACCENT_COLOR)),
                       TextSpan(
-                          text:
-                              _i18n.translate("subscribed_credits_remaining")),
+                          text: _i18n.translate("subscribed_credits_remaining"),
+                          style: Theme.of(context).textTheme.labelSmall),
                     ],
                   ))),
               const SizedBox(
                 height: 10,
               ),
-              Text(
-                  "${_i18n.translate("subscribed_expires_on")} $activeExpiredDate"),
+              if (activeSubscription != "")
+                Text(
+                    "${_i18n.translate("subscribed_expires_on")} $activeExpiredDate"),
               const SizedBox(
                 height: 80,
               ),

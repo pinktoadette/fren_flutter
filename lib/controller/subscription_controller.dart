@@ -8,6 +8,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 class SubscribeController extends GetxController {
   Rx<CustomerInfo?> _customer = (null).obs;
   RxInt credits = 0.obs;
+  RxInt rewards = 0.obs;
 
   CustomerInfo? get customer => _customer.value;
   set customer(CustomerInfo? value) => _customer.value = value!;
@@ -30,9 +31,12 @@ class SubscribeController extends GetxController {
   Future<int> getCredits() async {
     final purchaseApi = PurchasesApi();
     Map<String, dynamic> result = await purchaseApi.getCredits();
-    credits.value = result["credit"] ?? 0;
-    debugPrint("${credits.value.toString()} credits ");
-    return credits.value;
+    int subscribe = result["credit"] ?? 0;
+    int earn = result["rewards"] ?? 0;
+    credits.value = subscribe;
+    rewards.value = earn;
+    debugPrint("${credits.toString()} credits. ${rewards.toString()} rewards ");
+    return subscribe + earn;
   }
 
   void _listenPurchases() {
@@ -43,5 +47,13 @@ class SubscribeController extends GetxController {
 
   void updateCredits(int qty) {
     credits.value = qty;
+  }
+
+  void updateRewards(int qty) {
+    rewards.value = qty;
+  }
+
+  int getTotal() {
+    return rewards.value + credits.value;
   }
 }
