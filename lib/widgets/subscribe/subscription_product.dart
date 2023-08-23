@@ -374,7 +374,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           int responseQty = response["credit"] ?? "0";
 
           if (responseQty == int.parse(qty)) {
-            subscribeController.updateCredits(responseQty);
+            subscribeController.addCredits(responseQty);
             Get.snackbar(_i18n.translate("success"),
                 _i18n.translate("subscribed_successfully"),
                 snackPosition: SnackPosition.TOP,

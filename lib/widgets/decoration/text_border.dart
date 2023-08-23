@@ -29,7 +29,7 @@ class TextBorder extends StatelessWidget {
             fontSize: (size ?? 16),
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 5
+              ..strokeWidth = 3
               ..color = Colors.black,
           ),
         ),
@@ -39,7 +39,7 @@ class TextBorder extends StatelessWidget {
           maxLines: maxLines,
           style: TextStyle(
             fontSize: size ?? 16,
-            color: APP_INVERSE_PRIMARY_COLOR.withAlpha(100),
+            color: APP_INVERSE_PRIMARY_COLOR,
           ),
         ),
       ],

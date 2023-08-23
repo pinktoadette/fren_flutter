@@ -23,7 +23,6 @@ import 'package:machi_app/helpers/downloader.dart';
 import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
@@ -79,7 +78,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   String? urlPreview;
   String? thumbnail;
   double _alphaValue = 0.25;
-  bool _isDarkMode = false;
 
   @override
   void initState() {
@@ -91,10 +89,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
       if (story.pages?.isNotEmpty == true) {
         urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
       }
-    });
-    bool isDarkMode = ThemeHelper().isDark;
-    setState(() {
-      _isDarkMode = isDarkMode;
     });
   }
 
@@ -261,7 +255,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   /// such as text alignment
   Widget _showScript(int index) {
     Size size = MediaQuery.of(context).size;
-    Color textColor = _isDarkMode ? Colors.white54 : Colors.black;
 
     CrossAxisAlignment alignment = layout == Layout.CONVO
         ? story.createdBy.userId == scripts[index].characterId
@@ -450,12 +443,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
     // @todo remove image, search this text.
     // _aiImage();
 
-    if (subscribeController.credits <= 0) {
+    if (subscribeController.token.netCredits <= 0) {
       showModalBottomSheet<void>(
           context: context,
           isScrollControlled: true,
           builder: (context) => Obx(() => FractionallySizedBox(
-              heightFactor: subscribeController.credits.value > 0
+              heightFactor: subscribeController.token.netCredits > 0
                   ? MODAL_HEIGHT_SMALL_FACTOR
                   : MODAL_HEIGHT_LARGE_FACTOR,
               child: const SubscriptionProduct())));

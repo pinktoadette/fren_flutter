@@ -76,7 +76,8 @@ class _RewardAdsState extends State<RewardAds> {
                 // Called when a click is recorded for an ad.
                 onAdClicked: (ad) {});
 
-            debugPrint('$ad loaded.');
+            debugPrint(
+                '================================================================== $ad loaded.');
             // Keep a reference to the ad so you can show it later.
             _ad = ad;
             _numRewardedInterstitialLoadAttempts = 0;
@@ -86,7 +87,9 @@ class _RewardAdsState extends State<RewardAds> {
             _ad = null;
             _numRewardedInterstitialLoadAttempts += 1;
             if (_numRewardedInterstitialLoadAttempts <= maxFailedLoadAttempts) {
-              _loadAds();
+              Future.delayed(const Duration(seconds: 2), () {
+                _loadAds();
+              });
             } else if (_numRewardedInterstitialLoadAttempts ==
                 maxFailedLoadAttempts) {
               String message = error.message;
@@ -103,7 +106,7 @@ class _RewardAdsState extends State<RewardAds> {
   }
 
   void _showRewardAd() {
-    if (_isAdLoaded) {
+    if (_isAdLoaded && _ad != null) {
       _isAdLoaded = false;
 
       _ad!.show(
@@ -112,9 +115,7 @@ class _RewardAdsState extends State<RewardAds> {
         debugPrint(rewardItem.amount.toString());
         widget.onAdStatus(rewardItem.amount);
         await _purchaseApi.getRewards();
-        int rewards =
-            subscribeController.credits.value + rewardItem.amount.toInt();
-        subscribeController.updateCredits(rewards);
+        subscribeController.addCredits(rewardItem.amount.toInt());
       });
     } else {
       _loadAds();

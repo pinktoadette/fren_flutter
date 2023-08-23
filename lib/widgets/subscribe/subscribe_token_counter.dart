@@ -36,7 +36,8 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
           Iconsax.coin,
           size: 16,
         ),
-        label: Obx(() => Text(subscribeController.credits.value.toString())));
+        label:
+            Obx(() => Text(subscribeController.token.netCredits.toString())));
   }
 
   void _showSubscription(BuildContext context) {
@@ -44,10 +45,10 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
         context: context,
         isScrollControlled: true,
         builder: (context) => Obx(() => FractionallySizedBox(
-            heightFactor: subscribeController.credits.value > 0
+            heightFactor: subscribeController.token.netCredits > 0
                 ? MODAL_HEIGHT_SMALL_FACTOR
                 : MODAL_HEIGHT_LARGE_FACTOR,
-            child: subscribeController.credits.value > 0
+            child: subscribeController.token.netCredits > 0
                 ? const SubscribePurchaseDetails()
                 : const SubscriptionProduct())));
   }

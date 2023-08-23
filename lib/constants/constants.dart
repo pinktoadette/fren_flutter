@@ -356,11 +356,18 @@ const String REPORT_COMMENTS = "comments";
 
 /// subscription
 const String SUBSCRIBED_AT = "subscribedAt";
+const String EXPIRED_DATE = "expiredDate";
 const String IS_SUBSCRIBED = "subscribed";
 const String SUBSCRIBED_MACHI = "mymachi";
 const String UPSELL_AFFORDABLE = "imaginfy10";
 const String SELL_300_UNITS = "300";
 const String SELL_10_UNITS = "10";
+
+const String TOTAL_SUBSCRIBE_CREDITS = "subscribeTotal";
+const String TOTAL_REWARDS_CREDITS = "rewardTotal";
+const String TOTAL_CREDITS = "creditTotal";
+const String TOTAL_DEBIT = "debitTotal";
+const String NET_CREDITS = "netCredits";
 
 /// INTERACTIVE
 const String INTERACTIVE_ID = "interactiveId";

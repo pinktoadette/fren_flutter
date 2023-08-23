@@ -106,7 +106,7 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
                     children: <TextSpan>[
                       TextSpan(
                           text:
-                              "${subscribeController.getTotal().toString()} tokens ",
+                              "${subscribeController.token.netCredits} tokens ",
                           style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 24,

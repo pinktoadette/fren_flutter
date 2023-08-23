@@ -1,17 +1,26 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/purchases_api.dart';
+import 'package:machi_app/datas/token_amount.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
+
+TokenAccounting initial = TokenAccounting(
+    subscribeTotal: 0,
+    rewardTotal: 0,
+    debitTotal: 0,
+    creditTotal: 0,
+    netCredits: 0);
 
 //@todo remove scope model to getX
 class SubscribeController extends GetxController {
   Rx<CustomerInfo?> _customer = (null).obs;
-  RxInt credits = 0.obs;
-  RxInt rewards = 0.obs;
+  Rx<TokenAccounting> _token = initial.obs;
 
   CustomerInfo? get customer => _customer.value;
   set customer(CustomerInfo? value) => _customer.value = value!;
+
+  TokenAccounting get token => _token.value;
+  set token(TokenAccounting value) => _token.value = value;
 
   @override
   void onInit() async {
@@ -31,12 +40,10 @@ class SubscribeController extends GetxController {
   Future<int> getCredits() async {
     final purchaseApi = PurchasesApi();
     Map<String, dynamic> result = await purchaseApi.getCredits();
-    int subscribe = result["credit"] ?? 0;
-    int earn = result["rewards"] ?? 0;
-    credits.value = subscribe;
-    rewards.value = earn;
-    debugPrint("${credits.toString()} credits. ${rewards.toString()} rewards ");
-    return subscribe + earn;
+    TokenAccounting token = TokenAccounting.fromJson(result);
+
+    _token = token.obs;
+    return token.netCredits;
   }
 
   void _listenPurchases() {
@@ -45,15 +52,17 @@ class SubscribeController extends GetxController {
     });
   }
 
-  void updateCredits(int qty) {
-    credits.value = qty;
+  void addCredits(int qty) {
+    int netTotal = token.netCredits + qty;
+    int creditTotal = token.creditTotal + qty;
+    _token.value =
+        _token.value.copyWith(creditTotal: creditTotal, netCredits: netTotal);
   }
 
   void updateRewards(int qty) {
-    rewards.value = qty;
-  }
-
-  int getTotal() {
-    return rewards.value + credits.value;
+    int netTotal = token.netCredits + qty;
+    int rewardTotal = token.rewardTotal + qty;
+    _token.value =
+        _token.value.copyWith(rewardTotal: rewardTotal, netCredits: netTotal);
   }
 }

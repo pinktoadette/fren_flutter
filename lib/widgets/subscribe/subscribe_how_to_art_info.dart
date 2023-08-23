@@ -104,7 +104,7 @@ class _SubscribeHowToInfoState extends State<SubscribeHowToInfo> {
                   const SizedBox(
                     height: 20,
                   ),
-                  if (subscribeController.credits.value == 0)
+                  if (subscribeController.token.netCredits == 0)
                     Align(
                         alignment: Alignment.center,
                         child: ElevatedButton(

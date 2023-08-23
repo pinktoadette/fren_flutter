@@ -69,7 +69,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   void initState() {
     super.initState();
     if (widget.isProfile == false) {
-      _counter = subscribeController.credits.value;
+      _counter = subscribeController.token.netCredits;
     }
   }
 

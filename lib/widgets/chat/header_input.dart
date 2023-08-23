@@ -66,7 +66,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
         children: [
           IconButton(
               onPressed: () {
-                if (subscribeController.credits.value == 0) {
+                if (subscribeController.token.netCredits == 0) {
                   _showSubscription(context);
                 } else {
                   widget.onImageSelect(SLASH_IMAGINE);
@@ -80,7 +80,7 @@ class _CustomHeaderInputWidgetState extends State<CustomHeaderInputWidget> {
               )),
           IconButton(
               onPressed: () {
-                if (subscribeController.credits.value == 0) {
+                if (subscribeController.token.netCredits == 0) {
                   _showSubscription(context);
                 } else {
                   widget.onImageSelect(SLASH_REIMAGINE);
