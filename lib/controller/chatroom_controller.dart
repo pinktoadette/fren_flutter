@@ -165,7 +165,6 @@ class ChatController extends GetxController implements GetxService {
   // loads current room's message to message controller
   void onLoadCurrentRoom(Chatroom room) {
     currentRoom = room;
-    messageController.onCurrentRoom(room.messages);
     roomlist.refresh();
   }
 
