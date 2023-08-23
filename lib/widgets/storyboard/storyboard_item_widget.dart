@@ -29,12 +29,16 @@ class StoryboardItemWidget extends StatefulWidget {
   final types.Message? message;
   final bool? hideCollection;
   final bool? showHeader;
+  final bool? showName;
+  final bool? showAvatar;
   const StoryboardItemWidget(
       {Key? key,
       required this.item,
       this.message,
       this.hideCollection = false,
-      this.showHeader = true})
+      this.showHeader = true,
+      this.showAvatar = true,
+      this.showName = true})
       : super(key: key);
 
   @override
@@ -92,7 +96,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
               child: TimelineHeader(
                 radius: 24,
                 user: storyboard.createdBy,
-                showName: true,
+                showName: widget.showName,
+                showAvatar: widget.showAvatar,
                 showMenu: false,
                 underNameRow:
                     Text("$timestampLabel ${formatDate(storyboard.updatedAt)}",
