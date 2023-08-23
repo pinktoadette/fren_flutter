@@ -59,22 +59,14 @@ class TimelineController extends GetxController {
 
   Future<void> fetchPage(int pageKey, {bool refresh = false}) async {
     try {
-      if (_cachedPages.containsKey(pageKey) && !refresh) {
-        // Use cached data if available and not refreshing
-        pagingController.appendPage(_cachedPages[pageKey]!, pageKey);
+      final newItems =
+          await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
+      final isLastPage = newItems.length < _pageSize;
+
+      if (isLastPage) {
+        pagingController.appendLastPage(newItems);
       } else {
-        final newItems =
-            await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
-        final isLastPage = newItems.length < _pageSize;
-
-        if (isLastPage) {
-          pagingController.appendLastPage(newItems);
-        } else {
-          pagingController.appendPage(newItems, pageKey + 1);
-        }
-
-        // Cache the fetched data
-        _cachedPages[pageKey] = newItems;
+        pagingController.appendPage(newItems, pageKey + 1);
       }
     } catch (error) {
       pagingController.error = error;

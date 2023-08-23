@@ -8,6 +8,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/message_controller.dart';
+import 'package:machi_app/datas/chatroom.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -18,7 +19,6 @@ class MessageMachiApi {
   final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
   ChatController chatController = Get.find(tag: 'chatroom');
-  MessageController messageController = Get.find(tag: 'message');
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
 
@@ -69,17 +69,17 @@ class MessageMachiApi {
   /// Get paginations for old messages
   Future<List<types.Message>> getMessages() async {
     ChatController chatController = Get.find(tag: 'chatroom');
-    int offset = messageController.offset;
-    int limit = messageController.limitPage;
+    Chatroom room = chatController.currentRoom;
+    int offset = room.pageOffset;
 
     String url = '${baseUri}chat/messages'; // get last n messages
     debugPrint(
-        "Requesting URL $url  Query params: chatroomId: ${chatController.currentRoom.chatroomId}, offset: $offset, limit: $limit");
+        "Requesting URL $url  Query params: chatroomId: ${room.chatroomId}, offset: $offset, limit: $PAGE_CHAT_LIMIT");
     final dioRequest = await auth.getDio();
     final response = await dioRequest.get(url, queryParameters: {
       "chatroomId": chatController.currentRoom.chatroomId,
       "offset": offset,
-      "limit": limit
+      "limit": PAGE_CHAT_LIMIT
     });
     List<dynamic> oldMessages = response.data;
     List<types.Message> oldList = [];
@@ -92,7 +92,7 @@ class MessageMachiApi {
           oldList.add(msg);
         }
         //set the next start page
-        messageController.offset += 1;
+        chatController.currentRoom.pageOffset += 1;
       }
     }
     chatController.loadOldMessages(messages: oldList);

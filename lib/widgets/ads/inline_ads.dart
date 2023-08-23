@@ -21,15 +21,7 @@ class _InlineAdaptiveAdsState extends State<InlineAdaptiveAds> {
   double get _adWidth => MediaQuery.of(context).size.width - (2 * _insets);
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _loadAds();
-  }
-
-  @override
   void initState() {
-    MobileAds.instance.initialize();
-
     _loadAds();
     super.initState();
   }

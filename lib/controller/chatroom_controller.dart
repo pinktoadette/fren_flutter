@@ -3,7 +3,6 @@ import 'dart:math';
 
 import 'package:dio/dio.dart';
 import 'package:machi_app/api/machi/message_api.dart';
-import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/chatroom.dart';
@@ -17,8 +16,6 @@ import 'package:web_socket_channel/web_socket_channel.dart';
 // Chat controller controls the roomlist and the room
 // the user is currently in. Messages will be in message controller
 class ChatController extends GetxController implements GetxService {
-  final MessageController messageController =
-      Get.find(tag: 'message'); // current messages in this room
   final BotController botController = Get.find(tag: 'bot'); // current bot
   late Rx<types.User> _chatUser;
   late Rx<types.User> _chatBot;
@@ -51,16 +48,6 @@ class ChatController extends GetxController implements GetxService {
 
   Chatroom get emptyRoom => _emptyRoom.value;
   set emptyRoom(Chatroom value) => _emptyRoom.value = value;
-
-  // current chatroom
-  Stream<Chatroom> get streamRoom async* {
-    yield currentRoom;
-  }
-
-  // shows a list of chatrooms in convo tab
-  Stream<List<Chatroom>> get streamRoomlist async* {
-    yield roomlist;
-  }
 
   @override
   void onInit() async {

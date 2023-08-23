@@ -49,7 +49,6 @@ class BotChatScreen extends StatefulWidget {
 class _BotChatScreenState extends State<BotChatScreen> {
   final BotController botController = Get.find(tag: 'bot');
   final ChatController chatController = Get.find(tag: 'chatroom');
-  final MessageController messageController = Get.find(tag: 'message');
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
   late final List<types.Message> _messages = [];
 
@@ -137,6 +136,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   isLastPage: isLastPage,
                   keyboardDismissBehavior:
                       ScrollViewKeyboardDismissBehavior.onDrag,
+                  hideBackgroundOnEmojiMessages: false,
                   inputHeader: Obx(() => CustomHeaderInputWidget(
                       onUpdateWidget: (e) {
                         setState(() {
@@ -169,8 +169,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
                   isAttachmentUploading: _isAttachmentUploading,
                   imageProviderBuilder: (
                       {required conditional, imageHeaders, required uri}) {
-                    return ImageCacheWrapper(uri,
-                        maxHeight: 512, maxWidth: 512);
+                    return ImageCacheWrapper(uri);
                   },
                   messages: _messages,
                   onSendPressed: _handleSendPressed,
@@ -348,15 +347,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       await OpenFilex.open(localPath);
     }
-    // for audio
-    // if (message is types.TextMessage) {
-    //   String key = await _streamApi.getAuthToken();
-    //   http.StreamedResponse streamedResponse =
-    //       await _streamApi.streamAudio(key, message.text, 'eastus');
-    //   Uint8List data = await streamedResponse.stream.toBytes();
-    //   await _player.setAudioSource(BytesSource(data));
-    //   _player.play();
-    // }
   }
 
   void _handlePreviewDataFetched(
@@ -441,7 +431,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
           messageMap: messageMap, tags: _setTags);
     } catch (err, s) {
       Get.snackbar(
-        _i18n.translate("Error"),
+        _i18n.translate("error"),
         _i18n.translate("an_error_has_occurred"),
         snackPosition: SnackPosition.TOP,
         backgroundColor: APP_ERROR,
@@ -571,7 +561,6 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       chatController.sortRoomExit();
     }
-    messageController.offset = 1;
 
     botController.fetchCurrentBot(DEFAULT_BOT_ID);
 

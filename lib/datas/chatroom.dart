@@ -5,18 +5,19 @@ import 'package:machi_app/datas/bot.dart';
 
 class Chatroom {
   /// Using types and Chatroom together
-  final String chatroomId;
-  final String? title;
-  final String creatorUser;
   final Bot bot;
-  final String roomType;
-  final List<types.Message> messages;
-  final List<types.User> users;
   final List<types.User>? blockedUsers;
-  bool? isTyping;
+  final String chatroomId;
+  final String creatorUser;
   final int createdAt;
-  final int updatedAt;
+  final String roomType;
+  bool? isTyping;
+  final List<types.Message> messages;
+  final String? title;
   final bool? read;
+  final int updatedAt;
+  final List<types.User> users;
+  int pageOffset;
 
   Chatroom(
       {required this.chatroomId,
@@ -30,7 +31,8 @@ class Chatroom {
       this.isTyping,
       this.read,
       this.blockedUsers,
-      this.title});
+      this.title,
+      this.pageOffset = 1});
 
   Chatroom copyWith(
       {String? chatroomId,

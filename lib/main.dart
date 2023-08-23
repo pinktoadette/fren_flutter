@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/cache_manager.dart';
@@ -62,7 +63,7 @@ void main() async {
         .enablePersistence(const PersistenceSettings(synchronizeTabs: true));
   }
   // Initialize Google Mobile Ads SDK
-  // await MobileAds.instance.initialize();
+  await MobileAds.instance.initialize();
 
   /// Update the iOS foreground notification presentation options to allow
   /// heads up notifications.

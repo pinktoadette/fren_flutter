@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/controller/chatroom_controller.dart';
 import 'package:machi_app/controller/comment_controller.dart';
-import 'package:machi_app/controller/message_controller.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
@@ -17,7 +16,6 @@ class MainBinding implements Bindings {
     Get.lazyPut<SubscribeController>(() => SubscribeController(),
         tag: "subscribe");
     Get.lazyPut<UserController>(() => UserController(), tag: "user");
-    Get.lazyPut<MessageController>(() => MessageController(), tag: "message");
     Get.lazyPut<ChatController>(() => ChatController(), tag: "chatroom");
     Get.lazyPut<TimelineController>(() => TimelineController(),
         tag: "timeline");

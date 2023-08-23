@@ -27,11 +27,12 @@ class SubscribeController extends GetxController {
     });
   }
 
-  void getCredits() async {
+  Future<int> getCredits() async {
     final purchaseApi = PurchasesApi();
     Map<String, dynamic> result = await purchaseApi.getCredits();
     credits.value = result["credit"] ?? 0;
     debugPrint("${credits.value.toString()} credits ");
+    return credits.value;
   }
 
   void _listenPurchases() {
