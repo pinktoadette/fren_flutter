@@ -334,14 +334,14 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
     switch (scripts[index].type) {
       case "text":
-        bool useBorder =
-            isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl);
+        bool hasBackground =
+            !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl);
 
         return Column(crossAxisAlignment: alignment, children: [
           _bubbleOrNot(
               layout == Layout.COMIC
                   ? textLinkPreview(
-                      useBorder: useBorder,
+                      useBorder: hasBackground && story.layout != Layout.CONVO,
                       width: story.layout != Layout.CONVO ? size.width : null,
                       text: scripts[index].text ?? "",
                       textAlign: scripts[index].textAlign ?? TextAlign.left,

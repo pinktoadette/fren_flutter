@@ -382,7 +382,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       widget = Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: textLinkPreview(
-              useBorder: hasBackground,
+              useBorder: hasBackground && story!.layout != Layout.CONVO,
               width: story!.layout != Layout.CONVO ? size.width : null,
               text: script.text ?? "",
               textAlign: script.textAlign ?? TextAlign.left,

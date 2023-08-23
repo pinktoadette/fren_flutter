@@ -155,7 +155,7 @@ class _RewardAdsState extends State<RewardAds> {
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(_i18n.translate("watch_ads_earn_10"),
+                        Text(_i18n.translate("watch_ads_earn_3"),
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontSize: 14)),

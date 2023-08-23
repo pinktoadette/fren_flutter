@@ -77,8 +77,7 @@ class ScriptApi {
     }
   }
 
-  Future<Map<String, dynamic>> updateScripts(
-      {required List<Script> scripts}) async {
+  Future<String> updateScripts({required List<Script> scripts}) async {
     try {
       List<Map<String, dynamic>> updates = [];
       for (int i = 0; i < scripts.length; i++) {
