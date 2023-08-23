@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 
@@ -17,10 +19,12 @@ class _SearchTextFieldState extends State<SearchMachiField> {
   final TextEditingController _searchController = TextEditingController();
   late AppLocalizations _i18n;
   late double _width;
+  Timer? _debounce;
 
   @override
   void dispose() {
     _searchController.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
@@ -42,8 +46,10 @@ class _SearchTextFieldState extends State<SearchMachiField> {
         controller: _searchController,
         onChanged: (pattern) async {
           if (pattern.length >= 3) {
-            await Future.delayed(const Duration(seconds: 2));
-            widget.onInputChanged(pattern);
+            _debounce?.cancel();
+            _debounce = Timer(const Duration(seconds: 2), () {
+              widget.onInputChanged(pattern);
+            });
           }
         },
         style: TextStyle(color: Theme.of(context).colorScheme.primary),

@@ -29,17 +29,23 @@ class StoryApi {
 
     String url = '${baseUri}story';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: {
-      STORYBOARD_ID: storyboardId,
-      STORY_TITLE: title,
-      STORY_PHOTO_URL: photoUrl,
-      CHAT_TEXT: text ?? "",
-    });
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {
+        STORYBOARD_ID: storyboardId,
+        STORY_TITLE: title,
+        STORY_PHOTO_URL: photoUrl,
+        CHAT_TEXT: text ?? "",
+      });
 
-    Story story = Story.fromJson(response.data);
-    storyController.addNewStory(story);
-    return story;
+      Story story = Story.fromJson(response.data);
+      storyController.addNewStory(story);
+      return story;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to create api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Storyboard> addItemToStory(
@@ -48,12 +54,18 @@ class StoryApi {
 
     String url = '${baseUri}story';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: {STORY_ID: storyboardId});
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {STORY_ID: storyboardId});
 
-    Storyboard story = Storyboard.fromJson(response.data);
-    storyController.updateStoryboard(story);
-    return story;
+      Storyboard story = Storyboard.fromJson(response.data);
+      storyController.updateStoryboard(story);
+      return story;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to add item api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<String> deletStory(Story story) async {
@@ -61,23 +73,34 @@ class StoryApi {
 
     String url = '${baseUri}story';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.delete(url, data: {STORY_ID: story.storyId});
-    storyController.removeStory(story);
-    return response.data;
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.delete(url, data: {STORY_ID: story.storyId});
+      storyController.removeStory(story);
+      return response.data;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to delete api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Story> getMyStories(String storyId) async {
     StoryboardController storyController = Get.find(tag: 'storyboard');
     String url = '${baseUri}story?storyId=$storyId';
     debugPrint("Requesting URL $url");
+    try {
+      final response = await auth.retryGetRequest(url);
+      final data = response.data;
 
-    final response = await auth.retryGetRequest(url);
-    final data = response.data;
-
-    Story story = Story.fromJson(data);
-    storyController.setCurrentStory(story);
-    return story;
+      Story story = Story.fromJson(data);
+      storyController.setCurrentStory(story);
+      return story;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to get api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Storyboard> updateScriptSequence(
@@ -86,12 +109,18 @@ class StoryApi {
 
     String url = '${baseUri}script/update_seq';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    log(stories.toString());
-    final response = await dio.post(url, data: stories);
-    Storyboard story = Storyboard.fromJson(response.data);
-    storyController.updateStoryboard(story);
-    return story;
+    try {
+      final dio = await auth.getDio();
+      log(stories.toString());
+      final response = await dio.post(url, data: stories);
+      Storyboard story = Storyboard.fromJson(response.data);
+      storyController.updateStoryboard(story);
+      return story;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to update sequence api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Story> updateStory(
@@ -105,48 +134,58 @@ class StoryApi {
 
     String url = '${baseUri}story';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
+    try {
+      final dio = await auth.getDio();
+      Map<String, dynamic> payload = {
+        STORY_ID: story.storyId,
+        STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
+            ? story.pages!
+                .map((page) => {
+                      STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
+                      STORY_PAGES_THUMBNAIL: page.thumbnail,
+                      SCRIPT_PAGE_NUM: page.pageNum,
+                      STORY_PAGES_ALPHA: page.backgroundAlpha
+                    })
+                .toList()
+            : []
+      };
+      Map<String, dynamic> filter = {
+        if (title != null) STORY_TITLE: title,
+        if (category != null) STORY_CATEGORY: category,
+        if (summary != null) STORY_SUMMARY: summary,
+        if (photoUrl != null) STORY_PHOTO_URL: photoUrl,
+        if (layout != null) STORY_LAYOUT: layout,
+      };
 
-    Map<String, dynamic> payload = {
-      STORY_ID: story.storyId,
-      STORY_COVER_PAGES: story.pages?.isNotEmpty ?? false
-          ? story.pages!
-              .map((page) => {
-                    STORY_PAGES_BACKGROUND: page.backgroundImageUrl,
-                    STORY_PAGES_THUMBNAIL: page.thumbnail,
-                    SCRIPT_PAGE_NUM: page.pageNum,
-                    STORY_PAGES_ALPHA: page.backgroundAlpha
-                  })
-              .toList()
-          : []
-    };
-    Map<String, dynamic> filter = {
-      if (title != null) STORY_TITLE: title,
-      if (category != null) STORY_CATEGORY: category,
-      if (summary != null) STORY_SUMMARY: summary,
-      if (photoUrl != null) STORY_PHOTO_URL: photoUrl,
-      if (layout != null) STORY_LAYOUT: layout,
-    };
+      await dio.put(url, data: {...payload, ...filter});
 
-    await dio.put(url, data: {...payload, ...filter});
-
-    Story updatedStory = story.copyWith(
-        layout: Layout.values
-            .byName(layout ?? story.layout?.name ?? Layout.PUBLICATION.name),
-        title: title ?? story.title,
-        pageDirection: story.pageDirection,
-        photoUrl: photoUrl ?? story.photoUrl);
-    storyController.updateStory(story: updatedStory);
-    return updatedStory;
+      Story updatedStory = story.copyWith(
+          layout: Layout.values
+              .byName(layout ?? story.layout?.name ?? Layout.PUBLICATION.name),
+          title: title ?? story.title,
+          pageDirection: story.pageDirection,
+          photoUrl: photoUrl ?? story.photoUrl);
+      storyController.updateStory(story: updatedStory);
+      return updatedStory;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to update api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Map<String, dynamic>> publishStory(String storyId) async {
     String url = '${baseUri}publish';
     debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.post(url, data: {STORY_ID: storyId});
-
-    return response.data;
+    try {
+      final dio = await auth.getDio();
+      final response = await dio.post(url, data: {STORY_ID: storyId});
+      return response.data;
+    } catch (err, stack) {
+      await FirebaseCrashlytics.instance.recordError(err, stack,
+          reason: 'Failed to public api story', fatal: false);
+      rethrow;
+    }
   }
 
   Future<Storyboard> quickStory(String text) async {
@@ -160,7 +199,7 @@ class StoryApi {
       return story;
     } catch (err, stack) {
       await FirebaseCrashlytics.instance.recordError(err, stack,
-          reason: 'Failed to create quick story', fatal: true);
+          reason: 'Failed to create quick api story', fatal: true);
       rethrow;
     }
   }

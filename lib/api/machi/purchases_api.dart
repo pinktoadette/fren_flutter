@@ -61,18 +61,26 @@ class PurchasesApi {
   }
 
   Future<Map<String, dynamic>> getCredits() async {
-    String url = '${baseUri}subscriber/credits';
-    debugPrint("Requesting URL $url");
-    final response = await auth.retryGetRequest(url);
-    Map<String, dynamic> credits = response.data;
-    return credits;
+    try {
+      String url = '${baseUri}subscriber/credits';
+      debugPrint("Requesting URL $url");
+      final response = await auth.retryGetRequest(url);
+      Map<String, dynamic> credits = response.data;
+      return credits;
+    } catch (err) {
+      rethrow;
+    }
   }
 
   Future<Map<String, dynamic>> getRewards() async {
-    String url = '${baseUri}rewards/credits';
-    debugPrint("Requesting URL $url");
-    final dio = await auth.getDio();
-    final response = await dio.post(url);
-    return response.data;
+    try {
+      String url = '${baseUri}rewards/credits';
+      debugPrint("Requesting URL $url");
+      final dio = await auth.getDio();
+      final response = await dio.post(url);
+      return response.data;
+    } catch (err) {
+      rethrow;
+    }
   }
 }

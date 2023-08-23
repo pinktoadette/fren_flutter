@@ -379,11 +379,10 @@ class _StoryPageViewState extends State<StoryPageView> {
 
     Widget widget = const SizedBox.shrink();
     if (script.type == "text") {
-      bool useBorder = !hasBackground ? false : story!.layout == Layout.COMIC;
       widget = Padding(
           padding: const EdgeInsets.only(bottom: 20),
           child: textLinkPreview(
-              useBorder: useBorder,
+              useBorder: hasBackground,
               width: story!.layout != Layout.CONVO ? size.width : null,
               text: script.text ?? "",
               textAlign: script.textAlign ?? TextAlign.left,
