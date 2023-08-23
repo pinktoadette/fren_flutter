@@ -95,7 +95,7 @@
   "subscribe_add_your_own_model": "想要新增自己的模型嗎？給我們一些回饋。",
   "subscribe_now": "立即訂閱",
   
-  "subscribed_credits": "點數",
+  "subscribed_credits": "您的點數",
   "subscribed_active": "您目前已訂閱",
   "subscribed_expires_on": "到期日：",
   "subscribed_plan": "您的方案為",
@@ -103,11 +103,10 @@
   "subscribed_manage_plan": "管理方案",
   "subscribed_credits_expired_footnote": "請在到期日之前使用您的點數，否則點數將被清除。",
 
-  "watch_ads": "獲取10個點數。",
-  "watch_ads_earn": "Earn Tokens",
+  "watch_ads_earn": "獲取點數",
   "watch_ads_earn_3": "觀看廣告獲取3個點數",
   "watch_ads_earn_10": "觀看廣告獲取10個點數",
-  "watch_ads_waiting": "等待中。。。",
+  "watch_ads_waiting": "請稍等。。。",
   "watch_ads_limit": "您已經超過今天可獲取的限制。",
 
   "_NotificationsScreen": "*** 通知畫面翻譯 ***",
