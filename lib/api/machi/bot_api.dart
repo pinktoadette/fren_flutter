@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
@@ -12,7 +13,8 @@ import 'package:uuid/uuid.dart';
 /// Interactions with ChatGPT or AI image models or creation of prompts.
 class BotApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = "${PY_API}bot/";
+  final ApiConfiguration apiConfig = ApiConfiguration();
+  late final String baseUri = "${apiConfig.getApiUrl()}bot/";
   final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
 

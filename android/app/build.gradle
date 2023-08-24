@@ -80,6 +80,21 @@ android {
             signingConfig signingConfigs.release
         }
     }
+
+    flavorDimensions "environment"
+    productFlavors {
+        dev {
+            dimension "environment"
+            applicationIdSuffix ".dev"
+        }
+        uat {
+            dimension "environment"
+            applicationIdSuffix ".uat"
+        }
+        prod {
+            dimension "environment"
+        }
+    }
     
 }
 
