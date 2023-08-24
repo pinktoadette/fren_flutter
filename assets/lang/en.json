@@ -102,7 +102,7 @@
   "subscribed_plan": "Your plan is on",
   "subscribed_credits_remaining": "tokens remaining.",
   "subscribed_manage_plan": "Manage Plan",
-  "subscribed_credits_expired_footnote": "Use your tokens before end of expiration or your credits will be lost.",
+  "subscribed_credits_expired_footnote": "Use your tokens before end of expiration or your credits will be lost. \nReward tokens expire in 24 hours.",
 
   "watch_ads_earn": "Earn Tokens",
   "watch_ads_earn_2": "Watch ads earn 2 tokens",
