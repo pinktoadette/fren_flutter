@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 
+/// Displays screenshots of the app as tutorial.
+/// This is displayed when user signs up and needs a profile picture.
 class WalkThruSteps extends StatefulWidget {
   final VoidCallback onCarouselCompletion;
 
@@ -59,7 +61,7 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 500,
+        height: 415,
         child: Card(
           surfaceTintColor: Colors.transparent,
           child: Column(

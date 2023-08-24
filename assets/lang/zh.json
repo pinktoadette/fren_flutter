@@ -31,6 +31,7 @@
   "validation_insufficient_caharacter": "至少寫一些內容，提示至少需要 50 個字，名稱需至少 3 個字",
   "validation_select_1": "至少選擇一項",
   "validation_username": "用戶匿名已被使用",
+  "validation_prompt": "多寫一些內容吧",
 
   "VerificationCodeScreen": "*** 驗證碼畫面翻譯 ***",
   "verification_code": "驗證碼",

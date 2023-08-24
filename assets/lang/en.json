@@ -31,6 +31,7 @@
   "validation_insufficient_caharacter":"Write something sufficient at least 50 characters for prompt and 3 for name",
   "validation_select_1": "Select at least one",
   "validation_username": "Username is taken",
+  "validation_prompt": "Write something sufficient so I can create it",
 
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",
@@ -41,9 +42,9 @@
   "sign_in": "Sign In",
   "sign_up_step_1_title": "Hey fren 👋, let's start with a username",
   "sign_up_step_2_title": "let's create a profile picture using prompts",
-  "sign_up_step_2_direction": "You can describe yourself, your pet, your favorite vacay spot. Be specific.",
+  "sign_up_step_2_direction": "You can describe yourself, your pet, your dream vacay spot. Be specific. \n",
   "sign_up_profile_ai_prompt_hint": "girl with brown hair with black aviator glasses, close up",
-  "sign_up_profile_generate_once": "You can generate only this once but you can change the photo later.",
+  "sign_up_profile_generate_once": "You can generate this only once but you can change the photo later.",
   
   "username": "Username",
   "enter_your_fullname": "Enter username",

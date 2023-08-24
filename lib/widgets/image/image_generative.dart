@@ -184,6 +184,9 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                     _i18n.translate("profile_image_generate_button"),
                   ),
                   onPressed: () {
+                    if (_promptController.text.length < 10) {
+                      return _insufficientPrompt();
+                    }
                     if (_isLoading) {
                       null;
                     } else {
@@ -197,6 +200,21 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         )
       ],
     );
+  }
+
+  void _insufficientPrompt() async {
+    return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: Text(_i18n.translate("validation_warning")),
+              content: Text(_i18n.translate("validation_prompt")),
+              actions: <Widget>[
+                TextButton(
+                  child: Text(_i18n.translate('OK')),
+                  onPressed: () => {Navigator.pop(context)},
+                ),
+              ],
+            ));
   }
 
   void _generatePhoto() async {
@@ -221,9 +239,11 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       widget.onImageReturned(true);
     } on DioException catch (err, s) {
       widget.onError(err.toString());
+      setState(() {
+        _isLoading = false;
+      });
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error in image generator ${err.toString()}', fatal: true);
-      Get.back();
     } finally {
       setState(() {
         _isLoading = false;

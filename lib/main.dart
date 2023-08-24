@@ -289,6 +289,7 @@ class _MyAppState extends State<MyApp> {
         modalBackgroundColor: Colors.white,
         backgroundColor: Colors.white70,
         clipBehavior: Clip.antiAlias,
+        surfaceTintColor: Colors.transparent,
         // set shape to make top corners rounded
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.only(
