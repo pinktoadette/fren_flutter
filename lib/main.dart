@@ -184,7 +184,11 @@ class _MyAppState extends State<MyApp> {
           localeResolutionCallback: (locale, supportedLocales) {
             // Check if the current device locale is supported
             for (var supportedLocale in supportedLocales) {
-              if (supportedLocale.languageCode == locale!.languageCode) {
+              /// disable simplified chinese
+              if (locale!.scriptCode == 'Hans') {
+                return supportedLocales.first;
+              }
+              if (supportedLocale.languageCode == locale.languageCode) {
                 return supportedLocale;
               }
             }

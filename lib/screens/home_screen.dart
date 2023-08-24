@@ -182,92 +182,67 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-          type: BottomNavigationBarType.fixed,
-          elevation: Platform.isIOS ? 0 : 8,
-          currentIndex: _selectedIndex,
-          selectedItemColor: APP_ACCENT_COLOR,
-          selectedLabelStyle: const TextStyle(fontSize: 0),
-          unselectedLabelStyle: const TextStyle(fontSize: 0),
-          unselectedItemColor:
-              Theme.of(context).colorScheme.primary.withAlpha(155),
-          onTap: _onTappedNavBar,
-          items: [
-            /// Discover Tab
-            const BottomNavigationBarItem(
-                label: '',
-                icon: Icon(
-                  Iconsax.activity,
-                )),
+    return WillPopScope(
+        onWillPop: () => onBackPress(context),
+        child: Scaffold(
+          bottomNavigationBar: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              elevation: Platform.isIOS ? 0 : 8,
+              currentIndex: _selectedIndex,
+              selectedItemColor: APP_ACCENT_COLOR,
+              selectedLabelStyle: const TextStyle(fontSize: 0),
+              unselectedLabelStyle: const TextStyle(fontSize: 0),
+              unselectedItemColor:
+                  Theme.of(context).colorScheme.primary.withAlpha(155),
+              onTap: _onTappedNavBar,
+              items: [
+                /// Discover Tab
+                const BottomNavigationBarItem(
+                    label: '',
+                    icon: Icon(
+                      Iconsax.activity,
+                    )),
 
-            /// Discover new machi
-            const BottomNavigationBarItem(label: '', icon: Icon(Iconsax.book)),
+                /// Discover new machi
+                const BottomNavigationBarItem(
+                    label: '', icon: Icon(Iconsax.book)),
 
-            /// Conversations Tab
-            BottomNavigationBarItem(
-              label: '',
-              icon: _getConversationCounter(),
-            ),
+                /// Conversations Tab
+                BottomNavigationBarItem(
+                  label: '',
+                  icon: _getConversationCounter(),
+                ),
 
-            /// Notification Tab
-            BottomNavigationBarItem(
-              label: '',
-              icon: _getNotificationCounter(),
-            ),
+                /// Notification Tab
+                BottomNavigationBarItem(
+                  label: '',
+                  icon: _getNotificationCounter(),
+                ),
 
-            /// Profile Tab
-            const BottomNavigationBarItem(label: '', icon: Icon(Iconsax.user)),
-          ]),
-      body: _showCurrentNavBar(),
-      // floatingActionButton: ExpandableFab(
-      //   isOpen: isFabOpen,
-      //   distance: 80.0,
-      //   children: [
-      //     ActionButton(
-      //       onPressed: () => {
-      //         showModalBottomSheet<void>(
-      //             context: context,
-      //             isScrollControlled: true,
-      //             builder: (context) => FractionallySizedBox(
-      //                 heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-      //                 child: DraggableScrollableSheet(
-      //                   snap: true,
-      //                   initialChildSize: 1,
-      //                   minChildSize: 1,
-      //                   builder: (context, scrollController) =>
-      //                       SingleChildScrollView(
-      //                     controller: scrollController,
-      //                     child: const CreateMachiWidget(),
-      //                   ),
-      //                 ))),
-      //         setState(() {
-      //           isFabOpen = false;
-      //         })
-      //       },
-      //       icon: const Icon(Iconsax.pen_add),
-      //     ),
-      //     ActionButton(
-      //       onPressed: () => {
-      //         showModalBottomSheet<void>(
-      //           context: context,
-      //           enableDrag: true,
-      //           isScrollControlled: true,
-      //           builder: (context) {
-      //             return const FractionallySizedBox(
-      //                 heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
-      //                 child: ListPromptBots());
-      //           },
-      //         ),
-      //         setState(() {
-      //           isFabOpen = false;
-      //         })
-      //       },
-      //       icon: const Icon(Iconsax.note),
-      //     ),
-      //   ],
-      // )
-    );
+                /// Profile Tab
+                const BottomNavigationBarItem(
+                    label: '', icon: Icon(Iconsax.user)),
+              ]),
+          body: _showCurrentNavBar(),
+        ));
+  }
+
+  Future<bool> onBackPress(context) async {
+    return await showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+              title: const Text('Exit App'),
+              content: const Text('Are you sure you want to exit the app?'),
+              actions: <Widget>[
+                TextButton(
+                  child: const Text('Cancel'),
+                  onPressed: () => {Navigator.pop(context, false)},
+                ),
+                TextButton(
+                    onPressed: () => {Navigator.pop(context, true)},
+                    child: const Text('Exit'))
+              ],
+            ));
   }
 
   /// Count unread conversations
