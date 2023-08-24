@@ -4,10 +4,19 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step2_style.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step3_prompt.dart';
 
+/// AI image wizard that walks through in creating an ai image.
+/// This wizard contains 3 steps.
 class ImageWizardWidget extends StatefulWidget {
+  /// The url that user selects.
   final Function(String url) onComplete;
+
+  /// Determines the model type and the dimension.
   final Function(String prompt) onAppendPrompt;
+
+  /// Shows loading indicator when AI image model is processing.
   final Function(bool isLoading) onLoading;
+
+  /// Any errors thrown back.
   final Function(String errorMessage) onError;
 
   const ImageWizardWidget(

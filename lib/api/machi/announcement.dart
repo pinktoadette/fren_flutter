@@ -5,6 +5,7 @@ import 'package:machi_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
+/// Gets announcement from admin.
 class AnnouncementApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

@@ -42,20 +42,28 @@ class StoryPageView extends StatefulWidget {
 }
 
 class _StoryPageViewState extends State<StoryPageView> {
+  /// Gets the current story in storyboard controller.
   StoryboardController storyboardController = Get.find(tag: 'storyboard');
+
+  /// Updates likes and comment counts in timeline controller.
   TimelineController timelineController = Get.find(tag: 'timeline');
 
+  /// Comment pagination on scroll.
   final controller = PageController(viewportFraction: 1, keepPage: true);
-  // ignore: non_constant_identifier_names
-  static double BODY_HEIGHT_PERCENT = 1;
-  late AppLocalizations _i18n;
-  double bodyHeightPercent = BODY_HEIGHT_PERCENT;
-  double headerHeight = 0;
 
+  /// language localization.
+  late AppLocalizations _i18n;
+
+  /// Use to determine if user scrolled the content and if next page should be scroll to or continue on current page scroll.
   bool _userScrolledAgain = false;
+
+  /// Tracks how user scrolls the page. This is in conjunction with _userScrolledAgain.
   Timer? _scrollTimer;
 
+  /// Current story.
   Story? story;
+
+  /// Textcolor is determined by the theme of the app.
   late Color textColor;
   var pages = [];
 
@@ -81,6 +89,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     controller.dispose();
   }
 
+  /// Sets the timeline of the story. Use to update comment counts and likes.
   void getStoryContent() {
     if (!mounted) {
       return;
@@ -193,6 +202,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         }));
   }
 
+  /// Report the content of the story.
   void _onReport() {
     showModalBottomSheet<void>(
       context: context,
@@ -208,6 +218,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     );
   }
 
+  /// Displays the structure scaffold of the story.
   Widget _showPageWidget(BoxConstraints constraints) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
@@ -254,10 +265,6 @@ class _StoryPageViewState extends State<StoryPageView> {
                 duration: const Duration(milliseconds: 500),
                 curve: Curves.easeIn,
               );
-              // if comment is open, and user scrolls down, then collapse it.
-              setState(() {
-                bodyHeightPercent = BODY_HEIGHT_PERCENT;
-              });
             } else {
               if (currentPos < 0 && direction == ScrollDirection.reverse) {
                 controller.nextPage(
@@ -378,6 +385,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     ]);
   }
 
+  /// Displays how the content should be layed out.
   Widget _displayScript(Script script, Size size, bool hasBackground) {
     /// @todo need to create a common layout. See under storyboard_item_widget the display creates two separate layouts.
     /// edit_page_reorder also shares same logic

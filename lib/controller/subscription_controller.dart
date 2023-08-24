@@ -11,7 +11,7 @@ TokenAccounting initial = TokenAccounting(
     creditTotal: 0,
     netCredits: 0);
 
-//@todo remove scope model to getX
+/// Subscription controller tracks the tokens earned and used.
 class SubscribeController extends GetxController {
   Rx<CustomerInfo?> _customer = (null).obs;
   Rx<TokenAccounting> _token = initial.obs;
@@ -29,6 +29,7 @@ class SubscribeController extends GetxController {
     _listenPurchases();
   }
 
+  /// Get revenue cat's user info.
   void initUser() async {
     String userId = UserModel().user.userId;
     Purchases.logIn(userId).then((loginResult) async {
@@ -37,21 +38,24 @@ class SubscribeController extends GetxController {
     });
   }
 
+  /// Get the credits the user current has.
   Future<int> getCredits() async {
     final purchaseApi = PurchasesApi();
     Map<String, dynamic> result = await purchaseApi.getCredits();
     TokenAccounting token = TokenAccounting.fromJson(result);
 
-    _token = token.obs;
+    _token.value = token;
     return token.netCredits;
   }
 
+  /// Listens for any updates from customer purchases.
   void _listenPurchases() {
     Purchases.addCustomerInfoUpdateListener((customerInfo) {
       _customer = customerInfo.obs;
     });
   }
 
+  /// Add credits from purchasing and adjust the credit total.
   void addCredits(int qty) {
     int netTotal = token.netCredits + qty;
     int creditTotal = token.creditTotal + qty;
@@ -59,6 +63,7 @@ class SubscribeController extends GetxController {
         _token.value.copyWith(creditTotal: creditTotal, netCredits: netTotal);
   }
 
+  /// Adds credits from earning via ads and adjust the rewards total.
   void updateRewards(int qty) {
     int netTotal = token.netCredits + qty;
     int rewardTotal = token.rewardTotal + qty;

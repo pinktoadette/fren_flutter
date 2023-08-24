@@ -346,6 +346,8 @@
   "creative_mix_quick_hint": "例如: 超級瑪利歐變成了超人 或 細胞質如何運作",
 
   "creative_mix_turn_machine_on": "看起來機器沒開。請在2分鐘後回來。",
+  "creative_mix_ai_is_loading": "圖像將在你退出後會停止生成。",
+  "creative_mix_ai_not_enough_tokens": "點數不夠",
 
   "_reporting": "*** 舉報使用者 ***",
   "report_create": "提交舉報",

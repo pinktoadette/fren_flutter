@@ -2,6 +2,8 @@ import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/widgets/decoration/text_border.dart';
 
+/// Textlink Preview combines text border and URL link preview.
+/// Text border is determined by the parent widget.
 Widget textLinkPreview(
     {required String text,
     TextAlign? textAlign = TextAlign.left,

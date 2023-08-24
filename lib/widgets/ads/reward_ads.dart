@@ -23,6 +23,7 @@ class _RewardAdsState extends State<RewardAds> {
 
   RewardedAd? _ad;
   bool _isAdLoaded = false;
+  bool _isAdShown = false;
   int _numRewardedInterstitialLoadAttempts = 0;
   static int maxFailedLoadAttempts = 3;
   late AppLocalizations _i18n;
@@ -62,7 +63,9 @@ class _RewardAdsState extends State<RewardAds> {
                 // Called when the ad showed the full screen content.
                 onAdShowedFullScreenContent: (ad) {},
                 // Called when an impression occurs on the ad.
-                onAdImpression: (ad) {},
+                onAdImpression: (ad) {
+                  _isAdShown = true;
+                },
                 // Called when the ad failed to show full screen content.
                 onAdFailedToShowFullScreenContent: (ad, err) {
                   // Dispose the ad here to free resources.
@@ -71,11 +74,14 @@ class _RewardAdsState extends State<RewardAds> {
                 // Called when the ad dismissed full screen content.
                 onAdDismissedFullScreenContent: (ad) {
                   // Dispose the ad here to free resources.
+                  _isAdShown = false;
                   ad.dispose();
                 },
                 // Called when a click is recorded for an ad.
                 onAdClicked: (ad) {});
-
+            if (_isAdShown == false) {
+              _loadAds();
+            }
             debugPrint(
                 '================================================================== $ad loaded.');
             // Keep a reference to the ad so you can show it later.
@@ -87,7 +93,7 @@ class _RewardAdsState extends State<RewardAds> {
             _ad = null;
             _numRewardedInterstitialLoadAttempts += 1;
             if (_numRewardedInterstitialLoadAttempts <= maxFailedLoadAttempts) {
-              Future.delayed(const Duration(seconds: 2), () {
+              Future.delayed(const Duration(seconds: 1), () {
                 _loadAds();
               });
             } else if (_numRewardedInterstitialLoadAttempts ==
@@ -136,12 +142,13 @@ class _RewardAdsState extends State<RewardAds> {
               borderRadius: BorderRadius.zero,
             ),
             child: Container(
-                padding: const EdgeInsets.only(left: 15),
+                padding: const EdgeInsets.only(left: 10, right: 10),
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
                     const Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: EdgeInsets.only(
+                            top: 20, bottom: 20, left: 10, right: 10),
                         child: Icon(
                           Iconsax.coin,
                           color: APP_ACCENT_COLOR,
@@ -156,7 +163,7 @@ class _RewardAdsState extends State<RewardAds> {
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(_i18n.translate("watch_ads_earn_3"),
+                        Text(_i18n.translate("watch_ads_earn_2"),
                             style: TextStyle(
                                 color: Theme.of(context).colorScheme.primary,
                                 fontSize: 14)),

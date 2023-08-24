@@ -25,6 +25,7 @@ import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/helpers/uploader.dart';
+import 'package:machi_app/widgets/ads/reward_ads.dart';
 import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
@@ -465,10 +466,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
     });
   }
 
+  /// Determine if user has enough tokens to generate images.
   void _generateOrSubscribe() {
-    // @todo remove image, search this text.
-    // _aiImage();
-
     if (subscribeController.token.netCredits <= 0) {
       showModalBottomSheet<void>(
           context: context,
@@ -479,8 +478,50 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   : MODAL_HEIGHT_LARGE_FACTOR,
               child: const SubscriptionProduct())));
     } else {
-      _aiImage();
+      if (subscribeController.token.netCredits <= 2) {
+        _showAlert();
+      } else {
+        _aiImage();
+      }
     }
+  }
+
+  /// Show alerts when not enough tokens.
+  void _showAlert() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              _i18n.translate("creative_mix_ai_not_enough_tokens"),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            content: SizedBox(
+                height: 150,
+                child: Column(
+                  children: [
+                    Text(_i18n.translate("creative_mix_ai_image_credits")),
+                    const SizedBox(height: 20),
+                    RewardAds(
+                      text: _i18n.translate("watch_ads_earn"),
+                      onAdStatus: (data) {
+                        Get.snackbar(
+                            _i18n.translate("success"), "Rewarded $data tokens",
+                            snackPosition: SnackPosition.TOP,
+                            backgroundColor: APP_SUCCESS,
+                            colorText: Colors.black);
+                      },
+                    ),
+                  ],
+                )),
+            actions: <Widget>[
+              ElevatedButton(
+                  onPressed: () =>
+                      {Navigator.of(context).pop(false), Get.back()},
+                  child: Text(_i18n.translate("OK"))),
+            ],
+          );
+        });
   }
 
   void _aiImage() {
@@ -715,19 +756,18 @@ class _EditPageReorderState extends State<EditPageReorder> {
     StoryPages storyPages = story.pages![widget.pageIndex];
 
     /// delete last uploadfile
-    if (url != null) {
-      if (storyPages.backgroundImageUrl != url) {
-        deleteFileByUrl(storyPages.backgroundImageUrl!);
-        if (storyPages.thumbnail != null) {
-          deleteFileByUrl(storyPages.thumbnail!);
-        }
+    if (storyPages.backgroundImageUrl != null && url != null) {
+      deleteFileByUrl(storyPages.backgroundImageUrl!);
+      if (storyPages.thumbnail != null) {
+        deleteFileByUrl(storyPages.thumbnail!);
       }
+
+      ///  reassign new image url
+      storyPages.backgroundImageUrl = url;
+      storyPages.thumbnail = thumbnail;
     }
 
-    ///  reassign new image url
-    storyPages.backgroundImageUrl = url;
     storyPages.backgroundAlpha = _alphaValue;
-    storyPages.thumbnail = thumbnail;
     story.pages![story.pages!
             .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
         storyPages;

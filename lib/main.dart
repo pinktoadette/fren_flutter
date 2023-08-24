@@ -242,6 +242,14 @@ class _MyAppState extends State<MyApp> {
             borderRadius: BorderRadius.circular(10),
             borderSide: const BorderSide(color: APP_ACCENT_COLOR, width: 2.0),
           )),
+      dialogTheme: const DialogTheme(
+          titleTextStyle: TextStyle(color: APP_PRIMARY_COLOR),
+          surfaceTintColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          contentTextStyle: TextStyle(
+              fontSize: 16, fontFamily: 'poppins', color: APP_PRIMARY_COLOR),
+          backgroundColor: APP_PRIMARY_BACKGROUND),
       progressIndicatorTheme: const ProgressIndicatorThemeData(
         color: APP_PRIMARY_COLOR,
       ),

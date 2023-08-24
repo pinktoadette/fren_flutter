@@ -104,6 +104,7 @@
   "subscribed_credits_expired_footnote": "Use your tokens before end of expiration or your credits will be lost.",
 
   "watch_ads_earn": "Earn Tokens",
+  "watch_ads_earn_2": "Watch ads earn 2 tokens",
   "watch_ads_earn_3": "Watch ads earn 3 tokens",
   "watch_ads_earn_10": "Watch ads earn 10 tokens",
   "watch_ads_waiting": "While You Wait...",
@@ -345,6 +346,8 @@
   "creative_mix_quick_hint": "If super mario became superman or how does the cytoplasm work",
 
   "creative_mix_turn_machine_on": "Looks like the machine is not turned on. Come back in 2 minutes.",
+  "creative_mix_ai_is_loading": "Images will stop generating once you exit.",
+  "creative_mix_ai_not_enough_tokens": "Not enough tokens",
 
   "_reporting": "*** Reporting user ***",
   "report_create": "File A Report",

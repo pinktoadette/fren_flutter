@@ -28,7 +28,7 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
 
   @override
   Widget build(BuildContext context) {
-    return TextButton.icon(
+    return Obx(() => TextButton.icon(
         onPressed: () {
           _showSubscription(context);
         },
@@ -36,8 +36,7 @@ class _SubscribeTokenCounterState extends State<SubscribeTokenCounter> {
           Iconsax.coin,
           size: 16,
         ),
-        label:
-            Obx(() => Text(subscribeController.token.netCredits.toString())));
+        label: Text(subscribeController.token.netCredits.toString())));
   }
 
   void _showSubscription(BuildContext context) {

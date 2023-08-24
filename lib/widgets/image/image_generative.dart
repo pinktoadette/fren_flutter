@@ -200,7 +200,6 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   }
 
   void _generatePhoto() async {
-    // @todo remove image, search this text.
     if (_counter == 0) {
       return;
     }

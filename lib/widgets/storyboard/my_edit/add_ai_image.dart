@@ -15,6 +15,7 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension
 import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 
+/// AI image generator.
 class ImageGenerator extends StatefulWidget {
   final Story? story;
   final Function(AddEditTextCharacter imageUrl) onSelection;
@@ -65,6 +66,16 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           title: Text(
             _i18n.translate("creative_mix_image_create"),
             style: Theme.of(context).textTheme.headlineMedium,
+          ),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (_isLoading) {
+                _alertUser();
+              } else {
+                Get.back();
+              }
+            },
           ),
           actions: const [SubscribeTokenCounter()],
         ),
@@ -146,6 +157,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
     }
   }
 
+  /// Uploads selected url. Selected url will create 2 images, one that is fullsize and another thumbnail (for timeline/storyboard_item_widget).
   void _saveSelectedPhoto(String photoUrl) async {
     _pr.show(_i18n.translate("uploading_image"));
     bool isBackground = _prompt.contains(Dimension.vertical.value);
@@ -170,5 +182,34 @@ class _ImageGeneratorState extends State<ImageGenerator> {
     } finally {
       _pr.hide();
     }
+  }
+
+  void _alertUser() {
+    showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text(
+              _i18n.translate("are_you_sure"),
+              style: Theme.of(context).textTheme.bodyMedium,
+            ),
+            content: Text(_i18n.translate("creative_mix_ai_is_loading")),
+            actions: <Widget>[
+              OutlinedButton(
+                  onPressed: () => {
+                        /// close popup
+                        Navigator.of(context).pop(false),
+                      },
+                  child: Text(_i18n.translate("CANCEL"))),
+              const SizedBox(
+                width: 50,
+              ),
+              ElevatedButton(
+                  onPressed: () =>
+                      {Navigator.of(context).pop(false), Get.back()},
+                  child: Text(_i18n.translate("OK"))),
+            ],
+          );
+        });
   }
 }
