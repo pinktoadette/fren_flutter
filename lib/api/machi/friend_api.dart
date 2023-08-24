@@ -8,6 +8,7 @@ import 'package:machi_app/datas/user.dart';
 
 enum FriendStatus { request, active, block, unfriend }
 
+/// Handles all follow and unfollow response and requests.
 class FriendApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

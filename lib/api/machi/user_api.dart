@@ -6,6 +6,8 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
+/// Handles all user response and requests.
+/// UserModel communicates with firebase, this communicates to api.machi
 class UserApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

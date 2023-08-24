@@ -7,6 +7,7 @@ import 'package:machi_app/datas/chatroom.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
+/// Handles all chatroom response and requests.
 class ChatroomMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

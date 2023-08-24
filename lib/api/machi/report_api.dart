@@ -4,6 +4,7 @@ import 'package:machi_app/controller/bot_controller.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
+/// Handles all reports made by user.
 class ReportApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = "${PY_API}report";

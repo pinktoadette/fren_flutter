@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:machi_app/helpers/app_helper.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/screens/Miscellaneous/about_us_screen.dart';
 import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:iconsax/iconsax.dart';
@@ -35,15 +34,6 @@ class AppSectionCard extends StatelessWidget {
             child: Text(i18n.translate("application"),
                 style: const TextStyle(fontSize: 20, color: Colors.grey),
                 textAlign: TextAlign.left),
-          ),
-          ListTile(
-            leading: const Icon(Icons.info_outline),
-            title: Text(i18n.translate("about_us"), style: _textStyle),
-            onTap: () {
-              /// Go to About us screen
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const AboutScreen()));
-            },
           ),
           const Divider(height: 0),
           ListTile(

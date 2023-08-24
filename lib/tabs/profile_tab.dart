@@ -129,9 +129,6 @@ class ProfileTab extends StatelessWidget {
                   ],
                 )),
 
-            /// App Section Card
-            // AppSectionCard(),
-
             /// Delete Account Button
             // const DeleteAccountButton(),
           ],

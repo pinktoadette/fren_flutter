@@ -6,6 +6,8 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:purchases_flutter/purchases_flutter.dart';
 
+/// Handles all debits and credits response and requests.
+/// Actual purchases are made via revenue cat.
 class PurchasesApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

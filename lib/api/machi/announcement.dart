@@ -21,6 +21,7 @@ class AnnouncementApi {
     return response.data;
   }
 
+  /// An announcement may contain surveys.
   Future<String> responseToSurvey(
       {required String announceId, required String choiceId}) async {
     String url = '${baseUri}announcement/user_respond';

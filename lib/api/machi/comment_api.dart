@@ -6,6 +6,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
+/// Handles all comments response and requests.
 class CommentApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = '${PY_API}story/';

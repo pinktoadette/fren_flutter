@@ -14,69 +14,6 @@ class AppHelper {
   /// Local variables
   final _firestore = FirebaseFirestore.instance;
 
-  /// Check and request location permission
-  // Future<void> checkLocationPermission(
-  //     {required VoidCallback onGpsDisabled,
-  //     required VoidCallback onDenied,
-  //     required VoidCallback onGranted}) async {
-  //   /// Check if GPS is enabled
-  //   if (!(await Geolocator.isLocationServiceEnabled())) {
-  //     // Callback function
-  //     onGpsDisabled();
-  //     debugPrint('onGpsDisabled() -> disabled');
-  //     return Future.value();
-  //   } else {
-  //     /// Get permission status
-  //     LocationPermission permission = await Geolocator.checkPermission();
-
-  //     // This is the initial state on both Android and iOS
-  //     if (permission == LocationPermission.denied) {
-  //       /// Request permission
-  //       permission = await Geolocator.requestPermission();
-  //       // Check the result
-  //       if (permission == LocationPermission.denied) {
-  //         onDenied();
-  //         debugPrint('permission: denied');
-  //         return Future.value();
-  //       }
-  //     }
-
-  //     // Location permissions are permanently denied, we cannot request permissions.
-  //     if (permission == LocationPermission.deniedForever) {
-  //       onDenied();
-  //       debugPrint('permission: deniedForever');
-  //       return Future.value();
-  //     }
-
-  //     // Location permissions are granted, we can get current user location
-  //     if (permission == LocationPermission.whileInUse ||
-  //         permission == LocationPermission.always) {
-  //       onGranted();
-  //       debugPrint('Permission: granted -> status: $permission');
-  //       return Future.value();
-  //     }
-  //   }
-  // }
-
-  // Get User current location
-  // Future<void> getUserCurrentLocation({
-  //   required Function(Position) onSuccess,
-  //   required Function(Object) onFail,
-  //   required Function(TimeoutException) onTimeoutException,
-  // }) async {
-  //   try {
-  //     final Position position = await Geolocator.getCurrentPosition(
-  //         timeLimit: const Duration(seconds: 10));
-  //     // Call success function
-  //     onSuccess(position);
-  //   } on TimeoutException catch (e) {
-  //     // Call timeout exception function
-  //     onTimeoutException(e);
-  //   } catch (e) {
-  //     onFail(e);
-  //   }
-  // }
-
   // Update User location data in database
   Future<void> updateUserLocation({
     required String userId,
@@ -98,20 +35,6 @@ class AppHelper {
       USER_COUNTRY: country,
       USER_LOCALITY: locality
     });
-  }
-
-  /// Get distance between current user and another user
-  /// Returns distance in (Kilometers - KM)
-  int getDistanceBetweenUsers(
-      {required double userLat, required double userLong}) {
-    /// Get instance of [Geoflutterfire]
-    final Geoflutterfire geo = Geoflutterfire();
-
-    /// Set current user location [GeoFirePoint]
-    final GeoFirePoint center = geo.point(latitude: 0, longitude: 0);
-
-    /// Return distance (double) between users then round to int
-    return center.kmDistance(lat: userLat, lng: userLong).round();
   }
 
   /// Get app store URL - Google Play / Apple Store

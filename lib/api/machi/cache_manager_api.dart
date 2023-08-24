@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
 
+/// Caches url where needed.
 class CachingHelper {
   final CacheManager _cacheManager = DefaultCacheManager();
 

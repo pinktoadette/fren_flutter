@@ -9,6 +9,7 @@ import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
 import 'package:machi_app/datas/storyboard.dart';
 
+/// Handles all timeline response and requests.
 class TimelineApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

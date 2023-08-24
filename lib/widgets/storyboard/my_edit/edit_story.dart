@@ -35,10 +35,13 @@ class _EditPageState extends State<EditPage> {
   late AppLocalizations _i18n;
   final _scriptApi = ScriptApi();
 
-  double itemHeight = 120;
   Layout selectedLayout = Layout.CONVO;
   int pageIndex = 0;
+
+  /// Detects if user is trying to continue to the same page or go on to the next page.
   bool _userScrolledAgain = false;
+
+  /// Determines if there are any changes that needs to be called to api.
   bool _hasChanges = false;
 
   Timer? _scrollTimer;
@@ -79,7 +82,7 @@ class _EditPageState extends State<EditPage> {
           leading: BackButton(
             color: Theme.of(context).primaryColor,
             onPressed: () async {
-              _saveAllSeqMove(); // on last page, if page didn't move
+              _onSaveAllSequence(); // on last page, if page didn't move
               Navigator.pop(context, story);
             },
           ),
@@ -115,14 +118,14 @@ class _EditPageState extends State<EditPage> {
             pageIndex: pageIndex,
             layout: selectedLayout,
             onMoveInsertPages: (data) {
-              _moveInsertPages(data);
+              _onMoveInsertPages(data);
             },
             onUpdateSeq: (update) {
-              _updateSequence(update);
+              _onUpdateSequence(update);
             },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
-              _updateLayout(layout);
+              _onUpdateLayout(layout);
             })
       ];
     }
@@ -190,15 +193,15 @@ class _EditPageState extends State<EditPage> {
                           pageIndex: index,
                           layout: selectedLayout,
                           onMoveInsertPages: (data) {
-                            _moveInsertPages(data);
+                            _onMoveInsertPages(data);
                           },
                           onUpdateSeq: (update) {
                             /// will save if there is updated sequence on exit
-                            _updateSequence(update);
+                            _onUpdateSequence(update);
                           },
                           onLayoutSelection: (layout) {
                             selectedLayout = layout;
-                            _updateLayout(layout);
+                            _onUpdateLayout(layout);
                           });
                     },
                   )))),
@@ -222,7 +225,7 @@ class _EditPageState extends State<EditPage> {
 
   /// update / delete sequence
   /// EditPage for child, story for parent state
-  void _moveInsertPages(Map<String, dynamic> data) {
+  void _onMoveInsertPages(Map<String, dynamic> data) {
     switch (data["action"]) {
       case ("add"):
         int pageNum = story.pages!.length;
@@ -253,7 +256,7 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
-  void _updateSequence(List<Script> scripts) async {
+  void _onUpdateSequence(List<Script> scripts) async {
     StoryPages newPages = story.pages![pageIndex].copyWith(scripts: scripts);
     story.pages![pageIndex] = newPages;
     storyboardController.updateStory(story: story);
@@ -262,7 +265,8 @@ class _EditPageState extends State<EditPage> {
     });
   }
 
-  void _updateLayout(Layout layout) async {
+  /// Save any layout updates.
+  void _onUpdateLayout(Layout layout) async {
     final storyApi = StoryApi();
     Story updateStory = story.copyWith(layout: layout);
 
@@ -272,15 +276,17 @@ class _EditPageState extends State<EditPage> {
     });
   }
 
+  /// When the user swipes to another page, indicate a chage.
   void _onPageChange(int index) {
-    _saveAllSeqMove();
+    _onSaveAllSequence();
 
     setState(() {
       pageIndex = index;
     });
   }
 
-  void _saveAllSeqMove() async {
+  /// Save the sequence on the page.
+  void _onSaveAllSequence() async {
     if (_hasChanges == true) {
       try {
         List<Script> scripts =

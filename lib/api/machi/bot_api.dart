@@ -9,6 +9,7 @@ import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
 
+/// Interactions with ChatGPT or AI image models or creation of prompts.
 class BotApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = "${PY_API}bot/";

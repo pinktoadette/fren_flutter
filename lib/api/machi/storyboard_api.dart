@@ -8,6 +8,8 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:get/get.dart';
 
+/// Handles all storyboard response and requests in a story.
+/// Storyboard -> Story -> Scripts.
 class StoryboardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = "${PY_API}storyboard/";

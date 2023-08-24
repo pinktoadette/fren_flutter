@@ -11,7 +11,7 @@ class ErrorAndStack {
   ErrorAndStack(this.error, this.stack);
 }
 
-/// Sets headers
+/// Setup auth headers for API and firebase communication.
 class AuthApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

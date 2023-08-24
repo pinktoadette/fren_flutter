@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/datas/interactive.dart';
 import 'package:machi_app/helpers/load_theme.dart';
 
+/// Handles all interactive response and requests.
+/// This is an interactive story feature. Not used.
 class InteractiveBoardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
   final baseUri = PY_API;

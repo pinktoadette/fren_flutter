@@ -55,21 +55,39 @@ class _BotChatScreenState extends State<BotChatScreen> {
   late AppLocalizations _i18n;
   late Chatroom _room;
 
+  /// Api for the messages.
   final _messagesApi = MessageMachiApi();
+
+  /// Api for the chatroom
   final _chatroomApi = ChatroomMachiApi();
+
+  /// loads attachinment
   bool _isAttachmentUploading = false;
+
   bool isLoading = false;
+
+  /// End of message indicator.
   bool isLastPage = false;
 
   late FocusNode _focusNode;
-  // bool? isBotTyping;
+
+  /// User can attach file but currently feature is hidden.
   File? file;
+
+  /// Flag to mark if there is a message that is not read. This is not really stable.
   bool _hasNewMessages = false;
+
+  /// Long process allows users to know that this image will take longer time than expected.
   bool _isLongImageProcess = false;
+
+  /// setTags is used as a flag to indicate if there is an image tag that needs to be generated.
   String? _setTags;
+
   types.PartialImage? attachmentPreview;
+
   Color textColor = Colors.black;
 
+  /// Options in text message from flutter_chat_ui.
   final TextMessageOptions textMessageOptions = const TextMessageOptions(
     isTextSelectable: true,
   );
