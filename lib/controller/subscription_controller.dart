@@ -14,6 +14,7 @@ TokenAccounting initial = TokenAccounting(
 /// Subscription controller tracks the tokens earned and used.
 class SubscribeController extends GetxController {
   Rx<CustomerInfo?> _customer = (null).obs;
+  // ignore: prefer_final_fields
   Rx<TokenAccounting> _token = initial.obs;
 
   CustomerInfo? get customer => _customer.value;

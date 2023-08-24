@@ -6,7 +6,6 @@ import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/set_room_bot.dart';
 import 'package:machi_app/datas/bot.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/bot/search_bot.dart';
@@ -25,7 +24,6 @@ class _ListPromptBotState extends State<ListPromptBots> {
   final TextEditingController _searchController = TextEditingController();
   final _cancelToken = CancelToken();
   static const int _pageSize = ALL_PAGE_SIZE;
-  late AppLocalizations _i18n;
   String? _searchTerm;
 
   @override
@@ -70,12 +68,6 @@ class _ListPromptBotState extends State<ListPromptBots> {
         fatal: true,
       );
     }
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    _i18n = AppLocalizations.of(context);
   }
 
   void _updateSearchTerm(String searchTerm) {

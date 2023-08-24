@@ -32,7 +32,6 @@ import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/add_ai_image.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
-import 'package:machi_app/widgets/storyboard/my_edit/page_direction_edit.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
 // ignore: must_be_immutable
@@ -64,9 +63,6 @@ class _EditPageReorderState extends State<EditPageReorder> {
   /// api calls here are related to delete/move script.
   /// adding, editing of scripts are saved when user swipes to next page and change is detected.
   final _scriptApi = ScriptApi();
-
-  /// Vertical scroll of page. Removed Horizontal for now.
-  final PageDirection _direction = PageDirection.VERTICAL;
 
   /// Subscribe controller to update token counter if user uses AI image.
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
@@ -748,6 +744,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
   void _onBackgroundUpdate() async {
     final storyApi = StoryApi();
     String? url = urlPreview;
+    bool hasChanges = false;
+
     if (attachmentPreview != null) {
       url = await uploadFile(
           file: attachmentPreview!,
@@ -755,31 +753,42 @@ class _EditPageReorderState extends State<EditPageReorder> {
           categoryId: createUUID());
     }
 
-    StoryPages storyPages = story.pages![widget.pageIndex];
+    /// Get the original background
+    StoryPages storyPages =
+        storyboardController.currentStory.pages![widget.pageIndex];
 
     /// delete last uploadfile
-    if (storyPages.backgroundImageUrl != null && url != null) {
+    if (storyPages.backgroundImageUrl != null &&
+        url != null &&
+        storyPages.backgroundImageUrl != url) {
       deleteFileByUrl(storyPages.backgroundImageUrl!);
       if (storyPages.thumbnail != null) {
         deleteFileByUrl(storyPages.thumbnail!);
       }
     }
 
-    ///  reassign new image url
-    storyPages.backgroundImageUrl = url;
-    storyPages.thumbnail = thumbnail;
+    if (storyPages.backgroundImageUrl != url) {
+      ///  reassign new image url
+      storyPages.backgroundImageUrl = url;
+      storyPages.thumbnail = thumbnail;
+      hasChanges = true;
+    }
+    if (storyPages.backgroundAlpha != _alphaValue) {
+      hasChanges = true;
+      storyPages.backgroundAlpha = _alphaValue;
+    }
 
-    storyPages.backgroundAlpha = _alphaValue;
-    story.pages![story.pages!
-            .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
-        storyPages;
+    if (hasChanges == true) {
+      story.pages![story.pages!.indexWhere(
+          (element) => element.pageNum == widget.pageIndex + 1)] = storyPages;
 
-    Story updateStory = story.copyWith(pages: story.pages);
-    storyboardController.updateStory(story: updateStory);
-    await storyApi.updateStory(story: updateStory);
-    setState(() {
-      story = updateStory;
-    });
+      Story updateStory = story.copyWith(pages: story.pages);
+      storyboardController.updateStory(story: updateStory);
+      await storyApi.updateStory(story: updateStory);
+      setState(() {
+        story = updateStory;
+      });
+    }
   }
 
   void _onPageEditText({int? index}) async {

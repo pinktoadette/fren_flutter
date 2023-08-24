@@ -10,7 +10,6 @@ import 'package:machi_app/datas/storyboard.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:get/get.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;

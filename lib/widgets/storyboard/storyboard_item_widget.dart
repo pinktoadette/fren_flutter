@@ -126,11 +126,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     /// if there is only one story, display first cover
     /// if there are many stories, display storyboard cover
     final firstStory = storyboard.story!.first;
-    String? photoUrl = !isEmptyString(firstStory.photoUrl)
-        ? firstStory.photoUrl
-        : firstStory.pages?.isNotEmpty == true
-            ? firstStory.pages![0].thumbnail
-            : null;
+    String? photoUrl = !isEmptyString(firstStory.pages![0].thumbnail)
+        ? firstStory.pages![0].thumbnail
+        : null;
 
     String title = storyboard.title;
     String subtitle = storyboard.summary ?? "";

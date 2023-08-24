@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -8,12 +6,11 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/forms/category_dropdown.dart';
-import 'package:machi_app/widgets/image/image_source_sheet.dart';
-import 'package:machi_app/widgets/story_cover.dart';
 
+/// StoryInfo's edit
+/// Note: Image is removed. Too complicated when displaying.
 class StoryEdit extends StatefulWidget {
   const StoryEdit({Key? key, required this.onUpdateStory}) : super(key: key);
   final Function(Story story) onUpdateStory;
@@ -27,9 +24,7 @@ class _StoryEditState extends State<StoryEdit> {
   final _storyApi = StoryApi();
   final _titleController = TextEditingController();
 
-  File? _uploadPath;
   String? _selectedCategory;
-  String? photoUrl;
 
   bool isLoading = false;
   late Size size;
@@ -114,78 +109,9 @@ class _StoryEditState extends State<StoryEdit> {
             },
             selectedCategory: _selectedCategory,
           ),
-          Center(
-              child: GestureDetector(
-            child: Stack(
-              children: [
-                if (_uploadPath != null && photoUrl == null)
-                  StoryCover(
-                    width: size.width * 0.75,
-                    height: size.width * 0.75,
-                    photoUrl: "",
-                    file: _uploadPath,
-                    title: storyboardController.currentStory.title,
-                  ),
-                if (_uploadPath == null && photoUrl != null)
-                  StoryCover(
-                    width: size.width * 0.75,
-                    height: size.width * 0.75,
-                    photoUrl: photoUrl ?? "",
-                    title: storyboardController.currentStory.title,
-                  ),
-                if (_uploadPath == null && photoUrl == null)
-                  StoryCover(
-                    width: size.width * 0.75,
-                    height: size.width * 0.75,
-                    photoUrl: storyboardController.currentStory.photoUrl ?? "",
-                    title: storyboardController.currentStory.title,
-                  ),
-                Positioned(
-                  right: 0,
-                  bottom: 0,
-                  child: CircleAvatar(
-                    radius: 12,
-                    backgroundColor: Theme.of(context).colorScheme.background,
-                    child: Icon(
-                      Icons.edit,
-                      color: Theme.of(context).colorScheme.primary,
-                      size: 12,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            onTap: () async {
-              /// Update story image
-              _selectImage(path: 'collection');
-            },
-          )),
         ],
       ),
     );
-  }
-
-  void _selectImage({required String path}) async {
-    await showModalBottomSheet(
-        context: context,
-        builder: (context) => ImageSourceSheet(
-              onImageSelected: (image) async {
-                if (image != null) {
-                  setState(() {
-                    _uploadPath = image;
-                    photoUrl = null;
-                  });
-                  Navigator.of(context).pop();
-                }
-              },
-              onGallerySelected: (imageUrl) async {
-                setState(() {
-                  photoUrl = imageUrl;
-                  _uploadPath = null;
-                });
-                Navigator.of(context).pop();
-              },
-            ));
   }
 
   Widget _counter(BuildContext context, int currentLength, int? maxLength) {
@@ -212,18 +138,8 @@ class _StoryEditState extends State<StoryEdit> {
     setState(() {
       isLoading = true;
     });
-    String imageUrl =
-        photoUrl ?? storyboardController.currentStory.photoUrl ?? "";
     Story story = storyboardController.currentStory;
     try {
-      if (_uploadPath != null) {
-        imageUrl = await uploadFile(
-          file: _uploadPath!,
-          category: UPLOAD_PATH_COLLECTION,
-          categoryId: story.storyId,
-        );
-      }
-
       if (_titleController.text.isEmpty) {
         Get.snackbar(
           _i18n.translate("error"),
@@ -237,12 +153,11 @@ class _StoryEditState extends State<StoryEdit> {
       await _storyApi.updateStory(
           story: story,
           title: _titleController.text,
-          photoUrl: imageUrl,
           category: _selectedCategory);
       Story s = story.copyWith(
-          title: _titleController.text,
-          photoUrl: imageUrl,
-          category: _selectedCategory);
+          title: _titleController.text, category: _selectedCategory);
+
+      storyboardController.updateStory(story: s);
       widget.onUpdateStory(s);
 
       Get.snackbar(
@@ -250,6 +165,7 @@ class _StoryEditState extends State<StoryEdit> {
           snackPosition: SnackPosition.TOP,
           backgroundColor: APP_SUCCESS,
           colorText: Colors.black);
+      Get.back();
     } catch (err, s) {
       debugPrint(err.toString());
       Get.snackbar(
