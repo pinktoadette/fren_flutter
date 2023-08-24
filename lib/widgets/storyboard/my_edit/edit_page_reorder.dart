@@ -149,26 +149,26 @@ class _EditPageReorderState extends State<EditPageReorder> {
                       IconButton(
                         icon: const Icon(Iconsax.text_block),
                         onPressed: () {
-                          _editPageText();
+                          _onPageEditText();
                         },
                       ),
                       IconButton(
                         icon: const Icon(Iconsax.image),
                         onPressed: () {
                           /// check if there's a subscription
-                          _generateOrSubscribe();
+                          _onGenerateClick();
                         },
                       ),
                       IconButton(
                         icon: const Icon(Iconsax.gallery),
                         onPressed: () {
-                          _editPageImage();
+                          _onPageImageEdit();
                         },
                       ),
                       IconButton(
                         icon: const Icon(Iconsax.grid_3),
                         onPressed: () {
-                          _showLayOutSelection();
+                          _onShowLayoutSelection();
                         },
                       ),
                       IconButton(
@@ -194,7 +194,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
       );
     }
     bool hasBackground =
-        !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl);
+        !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl) ||
+            !isEmptyString(urlPreview) ||
+            !isEmptyString(attachmentPreview?.path ?? "");
     double alphaValue = hasBackground ? _alphaValue : 0;
 
     return Container(
@@ -292,7 +294,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       children: [
         IconButton(
             onPressed: () {
-              _editPageText(index: index);
+              _onPageEditText(index: index);
             },
             icon: const Icon(
               Iconsax.edit,
@@ -354,13 +356,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
     // Scaffold text and image structure.
     switch (scripts[index].type) {
       case "text":
-        bool hasBackground =
-            !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl);
+        String? background = _selectFirstImageNotNull();
 
         return Column(crossAxisAlignment: alignment, children: [
           _bubbleOrNot(
               textLinkPreview(
-                  useBorder: hasBackground && layout != Layout.CONVO,
+                  useBorder:
+                      !isEmptyString(background) && layout != Layout.CONVO,
                   width: layout != Layout.CONVO ? size.width : null,
                   text: scripts[index].text ?? "",
                   textAlign: scripts[index].textAlign ?? TextAlign.left,
@@ -442,7 +444,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// select layouy format. Three choices.
-  void _showLayOutSelection() {
+  void _onShowLayoutSelection() {
     // double height = MediaQuery.of(context).size.height;
     showModalBottomSheet<void>(
       context: context,
@@ -462,12 +464,12 @@ class _EditPageReorderState extends State<EditPageReorder> {
             ));
       },
     ).whenComplete(() {
-      _updateBackground();
+      _onBackgroundUpdate();
     });
   }
 
   /// Determine if user has enough tokens to generate images.
-  void _generateOrSubscribe() {
+  void _onGenerateClick() {
     if (subscribeController.token.netCredits <= 0) {
       showModalBottomSheet<void>(
           context: context,
@@ -542,7 +544,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 thumbnail = value.thumbnail;
                 attachmentPreview = null;
               });
-              _updateBackground();
+              _onBackgroundUpdate();
             } else {
               await _addNewTextImage(value);
             }
@@ -743,7 +745,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// update background images on the page.
-  void _updateBackground() async {
+  void _onBackgroundUpdate() async {
     final storyApi = StoryApi();
     String? url = urlPreview;
     if (attachmentPreview != null) {
@@ -761,27 +763,26 @@ class _EditPageReorderState extends State<EditPageReorder> {
       if (storyPages.thumbnail != null) {
         deleteFileByUrl(storyPages.thumbnail!);
       }
-
-      ///  reassign new image url
-      storyPages.backgroundImageUrl = url;
-      storyPages.thumbnail = thumbnail;
     }
+
+    ///  reassign new image url
+    storyPages.backgroundImageUrl = url;
+    storyPages.thumbnail = thumbnail;
 
     storyPages.backgroundAlpha = _alphaValue;
     story.pages![story.pages!
             .indexWhere((element) => element.pageNum == widget.pageIndex + 1)] =
         storyPages;
 
-    Story updateStory =
-        story.copyWith(pages: story.pages, pageDirection: _direction);
-
+    Story updateStory = story.copyWith(pages: story.pages);
+    storyboardController.updateStory(story: updateStory);
     await storyApi.updateStory(story: updateStory);
     setState(() {
       story = updateStory;
     });
   }
 
-  void _editPageText({int? index}) async {
+  void _onPageEditText({int? index}) async {
     Get.to(() => AddEditTextWidget(
         script: index != null ? scripts[index] : null,
         onTextComplete: (content) =>
@@ -789,7 +790,8 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   /// edit background image of the page.
-  void _editPageImage() async {
+  void _onPageImageEdit() async {
+    String? backgroundImage = _selectFirstImageNotNull();
     await showModalBottomSheet(
         context: context,
         barrierColor: Colors.black.withOpacity(_alphaValue),
@@ -798,8 +800,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
               child: EditPageBackground(
                   passStory: story,
                   alpha: _alphaValue,
-                  backgroundImage:
-                      story.pages![widget.pageIndex].backgroundImageUrl,
+                  backgroundImage: backgroundImage,
                   onGallerySelect: (value) => {
                         setState(() {
                           urlPreview = value;
@@ -818,7 +819,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                         }),
                       }),
             )).whenComplete(() {
-      _updateBackground();
+      _onBackgroundUpdate();
     });
   }
 
@@ -838,5 +839,18 @@ class _EditPageReorderState extends State<EditPageReorder> {
       "width": frameInfo.image.width,
       "uri": uploadImage,
     };
+  }
+
+  /// selects image that is not empty or null
+  String? _selectFirstImageNotNull() {
+    List<String?> items = [
+      urlPreview,
+      story.pages?[widget.pageIndex].backgroundImageUrl
+    ];
+
+    String? selectedString = items.firstWhere(
+        (item) => item != null && item.isNotEmpty,
+        orElse: () => null);
+    return selectedString;
   }
 }

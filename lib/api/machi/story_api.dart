@@ -130,8 +130,6 @@ class StoryApi {
       String? summary,
       String? category,
       String? layout}) async {
-    StoryboardController storyController = Get.find(tag: 'storyboard');
-
     String url = '${baseUri}story';
     debugPrint("Requesting URL $url");
     try {
@@ -159,14 +157,7 @@ class StoryApi {
 
       await dio.put(url, data: {...payload, ...filter});
 
-      Story updatedStory = story.copyWith(
-          layout: Layout.values
-              .byName(layout ?? story.layout?.name ?? Layout.PUBLICATION.name),
-          title: title ?? story.title,
-          pageDirection: story.pageDirection,
-          photoUrl: photoUrl ?? story.photoUrl);
-      storyController.updateStory(story: updatedStory);
-      return updatedStory;
+      return story;
     } catch (err, stack) {
       await FirebaseCrashlytics.instance.recordError(err, stack,
           reason: 'Failed to update api story', fatal: false);
