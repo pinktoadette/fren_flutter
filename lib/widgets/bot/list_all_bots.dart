@@ -58,7 +58,7 @@ class _ListPromptBotState extends State<ListPromptBots> {
         if (isLastPage) {
           _pagingController.appendLastPage(newItems);
         } else {
-          final nextPageKey = pageKey + newItems.length;
+          final nextPageKey = pageKey + 1;
           _pagingController.appendPage(newItems, nextPageKey);
         }
       }
@@ -93,11 +93,8 @@ class _ListPromptBotState extends State<ListPromptBots> {
       PagedSliverList<int, dynamic>.separated(
         pagingController: _pagingController,
         builderDelegate: PagedChildBuilderDelegate<dynamic>(
-            noItemsFoundIndicatorBuilder: (_) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [Text(_i18n.translate("bots_not_found"))],
-          );
+            noMoreItemsIndicatorBuilder: (_) {
+          return const SizedBox.shrink();
         }, itemBuilder: (context, item, index) {
           return InkWell(
               onTap: () {

@@ -26,10 +26,10 @@ class TextBorder extends StatelessWidget {
           textAlign: textAlign,
           maxLines: maxLines,
           style: TextStyle(
-            fontSize: (size ?? 16),
+            fontSize: size ?? 16,
             foreground: Paint()
               ..style = PaintingStyle.stroke
-              ..strokeWidth = 3
+              ..strokeWidth = 2
               ..color = Colors.black,
           ),
         ),

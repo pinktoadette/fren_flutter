@@ -63,20 +63,42 @@ class _EditPageReorderState extends State<EditPageReorder> {
   /// api calls here are related to delete/move script.
   /// adding, editing of scripts are saved when user swipes to next page and change is detected.
   final _scriptApi = ScriptApi();
+
+  /// Vertical scroll of page. Removed Horizontal for now.
   final PageDirection _direction = PageDirection.VERTICAL;
+
+  /// Subscribe controller to update token counter if user uses AI image.
   final SubscribeController subscribeController = Get.find(tag: 'subscribe');
+
+  /// Update storyboard and story in the controller.
   final StoryboardController storyboardController = Get.find(tag: 'storyboard');
 
+  /// Individual scripts in the story.
   late List<Script> scripts;
+
+  /// The story of the content.
   late Story story;
+
+  /// Language localization.
   late AppLocalizations _i18n;
   late ProgressDialog _pr;
+
+  /// Media size screen to determine width of script.
   late Size size;
 
+  /// Updates to changes of layout on selection.
   Layout? layout;
+
+  /// Attach user's image from devide.
   File? attachmentPreview;
+
+  /// Image url from user's gallery.
   String? urlPreview;
+
+  /// Thumbnail for large background images when user attaches image or gallery url.
   String? thumbnail;
+
+  /// Adjusting background alpha color to see text.
   double _alphaValue = 0.25;
 
   @override
@@ -170,6 +192,9 @@ class _EditPageReorderState extends State<EditPageReorder> {
         width: size.width,
       );
     }
+    bool hasBackground =
+        !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl);
+    double alphaValue = hasBackground ? _alphaValue : 0;
 
     return Container(
         margin: const EdgeInsets.only(bottom: 100),
@@ -178,7 +203,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
           color: Theme.of(context).colorScheme.background,
           image: DecorationImage(
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(_alphaValue), BlendMode.darken),
+                  Colors.black.withOpacity(alphaValue), BlendMode.darken),
               image: attachmentPreview != null
                   ? FileImage(
                       attachmentPreview!,
@@ -313,7 +338,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       ],
     );
 
-    // layout
+    // Showing user's name on convo layout
     Widget lay = (layout == Layout.CONVO)
         ? Row(
             mainAxisAlignment: alignment == CrossAxisAlignment.end
@@ -325,6 +350,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
           )
         : const SizedBox.shrink();
 
+    // Scaffold text and image structure.
     switch (scripts[index].type) {
       case "text":
         bool hasBackground =
@@ -333,13 +359,13 @@ class _EditPageReorderState extends State<EditPageReorder> {
         return Column(crossAxisAlignment: alignment, children: [
           _bubbleOrNot(
               textLinkPreview(
-                  useBorder: hasBackground && story.layout != Layout.CONVO,
-                  width: story.layout != Layout.CONVO ? size.width : null,
+                  useBorder: hasBackground && layout != Layout.CONVO,
+                  width: layout != Layout.CONVO ? size.width : null,
                   text: scripts[index].text ?? "",
                   textAlign: scripts[index].textAlign ?? TextAlign.left,
                   style: TextStyle(
-                      color: story.layout == Layout.CONVO ? Colors.black : null,
-                      fontSize: story.layout == Layout.CONVO ? 16 : 20)),
+                      color: layout == Layout.CONVO ? Colors.black : null,
+                      fontSize: layout != Layout.COMIC ? 16 : 20)),
               size,
               alignment),
           lay,

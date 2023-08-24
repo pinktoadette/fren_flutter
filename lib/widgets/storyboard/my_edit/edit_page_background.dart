@@ -6,6 +6,7 @@ import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/widgets/button/loading_button.dart';
 import 'package:machi_app/widgets/image/image_source_sheet.dart';
 

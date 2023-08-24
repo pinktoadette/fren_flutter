@@ -16,6 +16,7 @@ import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
+import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/screens/storyboard/page/page_comment.dart';
 import 'package:machi_app/screens/storyboard/page/page_info.dart';
@@ -276,6 +277,9 @@ class _StoryPageViewState extends State<StoryPageView> {
               List<Script>? scripts = story!.pages![index].scripts;
               String backgroundUrl =
                   story?.pages?[index].backgroundImageUrl ?? "";
+              bool hasBackground = !isEmptyString(backgroundUrl);
+              double alphaValue =
+                  hasBackground ? story?.pages![index].backgroundAlpha ?? 0 : 0;
 
               return Container(
                 height: size.height - 100,
@@ -283,8 +287,8 @@ class _StoryPageViewState extends State<StoryPageView> {
                 decoration: BoxDecoration(
                     image: DecorationImage(
                         colorFilter: ColorFilter.mode(
-                            const Color.fromARGB(255, 0, 0, 0).withOpacity(
-                                story?.pages![index].backgroundAlpha ?? 0),
+                            const Color.fromARGB(255, 0, 0, 0)
+                                .withOpacity(alphaValue),
                             BlendMode.darken),
                         image: backgroundUrl != ""
                             ? ImageCacheWrapper(backgroundUrl)
@@ -375,36 +379,42 @@ class _StoryPageViewState extends State<StoryPageView> {
   }
 
   Widget _displayScript(Script script, Size size, bool hasBackground) {
-    /// @todo need to create a common meme layout. See under storyboard_item_widget the display creates two separate layouts.
-
+    /// @todo need to create a common layout. See under storyboard_item_widget the display creates two separate layouts.
+    /// edit_page_reorder also shares same logic
     Widget widget = const SizedBox.shrink();
-    if (script.type == "text") {
-      widget = Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: textLinkPreview(
-              useBorder: hasBackground && story!.layout != Layout.CONVO,
-              width: story!.layout != Layout.CONVO ? size.width : null,
-              text: script.text ?? "",
-              textAlign: script.textAlign ?? TextAlign.left,
-              style: TextStyle(
-                  color: story!.layout == Layout.CONVO ? Colors.black : null,
-                  fontSize: story!.layout == Layout.CONVO ? 16 : 20)));
-    } else if (script.type == "image") {
-      AspectRatioImage adjImage = AspectRatioImage(
-          imageWidth: script.image!.width.toDouble(),
-          imageHeight: script.image!.height.toDouble(),
-          imageUrl: script.image!.uri);
-      AspectRatioImage modifiedImage = adjImage.displayScript(size);
+    switch (script.type) {
+      case "text":
+        widget = Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: textLinkPreview(
+                useBorder: hasBackground && story!.layout != Layout.CONVO,
+                width: story!.layout != Layout.CONVO ? size.width : null,
+                text: script.text ?? "",
+                textAlign: script.textAlign ?? TextAlign.left,
+                style: TextStyle(
+                    color: story!.layout == Layout.CONVO ? Colors.black : null,
+                    fontSize: story!.layout != Layout.COMIC ? 16 : 20)));
+        break;
+      case "image":
+        AspectRatioImage adjImage = AspectRatioImage(
+            imageWidth: script.image!.width.toDouble(),
+            imageHeight: script.image!.height.toDouble(),
+            imageUrl: script.image!.uri);
+        AspectRatioImage modifiedImage = adjImage.displayScript(size);
 
-      widget = Padding(
-          padding: const EdgeInsets.only(bottom: 20),
-          child: StoryCover(
-            photoUrl: modifiedImage.imageUrl,
-            title: story?.title ?? "machi",
-            width: modifiedImage.imageWidth,
-            height: modifiedImage.imageHeight,
-          ));
+        widget = Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: StoryCover(
+              photoUrl: modifiedImage.imageUrl,
+              title: story?.title ?? "machi",
+              width: modifiedImage.imageWidth,
+              height: modifiedImage.imageHeight,
+            ));
+        break;
+      default:
+        break;
     }
+
     Widget widgetScript = story!.layout == Layout.CONVO
         ? StoryBubble(
             isRight: story!.createdBy.userId == script.characterId,
@@ -414,6 +424,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     return widgetScript;
   }
 
+  /// Shows action tools when story status is not published.
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
     bool isDarkMode = ThemeHelper().isDark;

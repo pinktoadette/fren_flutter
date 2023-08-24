@@ -37,9 +37,14 @@ void main() async {
   /// in order to fix it and generate the required [firebase_options.dart] for your app.
   await Firebase.initializeApp();
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
-  FlutterError.onError = (errorDetails) {
-    // If you wish to record a "non-fatal" exception, please use `FirebaseCrashlytics.instance.recordFlutterError` instead
-    FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
+  FlutterError.onError = (errorDetails) async {
+    if (errorDetails.library == "image resource service" &&
+        errorDetails.exception
+            .toString()
+            .startsWith("HttpException: Invalid statusCode: 404, uri")) {
+      return;
+    }
+    await FirebaseCrashlytics.instance.recordFlutterFatalError(errorDetails);
   };
 
   FirebaseMessaging.instance.requestPermission();
