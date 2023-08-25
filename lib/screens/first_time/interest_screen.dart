@@ -4,7 +4,7 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/controller/main_binding.dart';
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -137,8 +137,10 @@ class _InterestScreenState extends State<InterestScreen> {
       await UserModel().updateUserData(
           userId: user.userId, data: {USER_INTERESTS: _selectedInterest});
 
-      MainBinding mainBinding = MainBinding();
-      await mainBinding.dependencies();
+      Get.lazyPut(() => UserController());
+
+      UserController userController = Get.find(tag: 'user');
+      userController.updateUser(user);
 
       UserModel().authUserAccount(
           homeScreen: () => _nextScreen(const HomeScreen()),

@@ -10,7 +10,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
 import 'package:machi_app/widgets/ads/reward_ads.dart';
-import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/bot/bot_profile.dart';
 import 'package:machi_app/widgets/bot/explore_bot.dart';
 import 'package:machi_app/widgets/bot/prompt_create.dart';
@@ -52,50 +51,48 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => timelineController.machiList.isEmpty
-        ? const Frankloader()
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _botHeader(_i18n.translate("latest_machi_for_you"),
-                  goTo: const ExploreMachi()),
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        _addBot(size),
-                        ...timelineController.machiList.map((bot) {
-                          return Container(
-                              width: size.width / botWidth,
-                              margin: const EdgeInsets.only(left: 10),
-                              child: _showBotAvatar(bot: bot, size: size));
-                        })
-                      ])),
-              if (timelineController.mymachiList.isNotEmpty)
-                _botHeader(_i18n.translate("latest_machi_yours")),
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ...timelineController.mymachiList.map((bot) {
-                          return Container(
-                              width: size.width / 4.5,
-                              margin: const EdgeInsets.only(left: 10),
-                              child: _showBotAvatar(bot: bot, size: size));
-                        })
-                      ])),
-              const SizedBox(height: 20),
-              const CreateStoryCard(),
-              if (userController.user != null) ..._showSubscriptionCard(),
-            ],
-          ));
+    return Obx(() => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _botHeader(_i18n.translate("latest_machi_for_you"),
+                goTo: const ExploreMachi()),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      _addBot(size),
+                      ...timelineController.machiList.map((bot) {
+                        return Container(
+                            width: size.width / botWidth,
+                            margin: const EdgeInsets.only(left: 10),
+                            child: _showBotAvatar(bot: bot, size: size));
+                      })
+                    ])),
+            if (timelineController.mymachiList.isNotEmpty)
+              _botHeader(_i18n.translate("latest_machi_yours")),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      ...timelineController.mymachiList.map((bot) {
+                        return Container(
+                            width: size.width / 4.5,
+                            margin: const EdgeInsets.only(left: 10),
+                            child: _showBotAvatar(bot: bot, size: size));
+                      })
+                    ])),
+            const SizedBox(height: 20),
+            const CreateStoryCard(),
+            if (userController.user != null) ..._showSubscriptionCard(),
+          ],
+        ));
   }
 
   List<Widget> _showSubscriptionCard() {

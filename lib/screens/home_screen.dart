@@ -51,6 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
     /// initialize states
     _initializeState();
 
+    // /// @todo Not sure why after registering, keeps asking even when its already put in user model.
+    // if (!GetInstance().isRegistered<UserController>()) {
+    //   Get.put(UserController(), tag: 'user');
+    // } else {
+    //   Get.find(tag: 'user');
+    // }
+
     super.initState();
 
     /// Init streams
