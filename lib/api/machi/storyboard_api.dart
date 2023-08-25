@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -12,7 +13,7 @@ import 'package:get/get.dart';
 /// Storyboard -> Story -> Scripts.
 class StoryboardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = "${PY_API}storyboard/";
+  final baseUri = "${ApiConfiguration().getApiUrl()}storyboard/";
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

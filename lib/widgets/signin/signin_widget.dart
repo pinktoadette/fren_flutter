@@ -95,7 +95,7 @@ class _SignInWidgetState extends State<SignInWidget> {
               interestScreen: () => _nextScreen(const InterestScreen()),
               homeScreen: () => _nextScreen(const HomeScreen()),
               blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
-        }, onError: () async {
+        }, onError: (error) async {
           // Show error message to user
           Get.snackbar(
             _i18n.translate("Error"),

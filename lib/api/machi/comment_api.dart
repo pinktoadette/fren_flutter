@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/story.dart';
@@ -9,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 /// Handles all comments response and requests.
 class CommentApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = '${PY_API}story/';
+  final baseUri = '${ApiConfiguration().getApiUrl()}story/';
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

@@ -104,7 +104,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       : const SizedBox.shrink(),
                   label: Text(
                     _i18n.translate("register"),
-                    style: const TextStyle(color: Colors.white),
                   )),
               const SizedBox(height: 20),
               _agreePrivacy(),
@@ -192,7 +191,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
               Text(_i18n.translate("i_agree_with"),
                   style: const TextStyle(fontSize: 10)),
               // Terms of Service and Privacy Policy
-              TermsOfServiceRow(),
+              TermsOfServiceRow(
+                color: Theme.of(context).colorScheme.primary,
+              ),
             ],
           ),
         ],

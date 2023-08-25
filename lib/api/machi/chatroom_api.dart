@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
@@ -10,7 +11,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 /// Handles all chatroom response and requests.
 class ChatroomMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
 
   final auth = AuthApi();
 

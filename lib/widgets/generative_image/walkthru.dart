@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
 
 /// Displays screenshots of the app as tutorial.
 /// This is displayed when user signs up and needs a profile picture.
@@ -15,20 +16,15 @@ class WalkThruSteps extends StatefulWidget {
 }
 
 class _WalkThruStepsState extends State<WalkThruSteps> {
+  late AppLocalizations _i18n;
+
   final List<String> pictures = [
+    '',
     '',
     'walk1.jpg',
     'walk2.jpg',
     'walk4.jpg',
     'walk5.jpg'
-  ];
-
-  final List<String> caption = [
-    'Let\'s do a quick walkthrough as we wait.',
-    'Save your messages in the chatroom to a collection.',
-    'Craft custom drawing or text prompts.',
-    'Generate your own text prompts.',
-    'Transform collections into stories or comics.'
   ];
 
   int currentIndex = 0;
@@ -44,6 +40,12 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
   void dispose() {
     _timer.cancel();
     super.dispose();
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
   }
 
   void startCarousel() {
@@ -72,12 +74,12 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
                   "assets/images/walkthru/${pictures[currentIndex]}",
                   fit: BoxFit.cover,
                 ),
-              if (currentIndex == 0)
+              if (currentIndex < 2)
                 Center(
                     child: Padding(
                   padding: const EdgeInsets.all(20),
                   child: Text(
-                    caption[currentIndex],
+                    _i18n.translate("walkthru_${currentIndex + 1}"),
                     style: const TextStyle(fontSize: 20),
                   ),
                 ))
@@ -86,7 +88,7 @@ class _WalkThruStepsState extends State<WalkThruSteps> {
                   alignment: Alignment.bottomLeft,
                   padding: const EdgeInsets.all(12.0),
                   child: Text(
-                    caption[currentIndex],
+                    _i18n.translate("walkthru_${currentIndex + 1}"),
                     style: const TextStyle(fontSize: 20),
                   ),
                 ),

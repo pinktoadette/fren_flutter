@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/widgets/signin/signin_widget.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
 
@@ -34,7 +35,23 @@ class _ActivityTabState extends State<ActivityTab> {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          if (user.getFirebaseUser != null) const SubscribeTokenCounter()
+          if (user.getFirebaseUser != null) const SubscribeTokenCounter(),
+          if (user.getFirebaseUser == null)
+            TextButton(
+                onPressed: () {
+                  showModalBottomSheet<void>(
+                    context: context,
+                    builder: (context) => FractionallySizedBox(
+                      heightFactor: 0.45,
+                      widthFactor: 1,
+                      child: Container(
+                        padding: const EdgeInsets.all(20),
+                        child: const SignInWidget(),
+                      ),
+                    ),
+                  );
+                },
+                child: const Text("Login"))
         ],
       ),
       body: const TimelineWidget(),

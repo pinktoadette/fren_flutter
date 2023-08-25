@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/cache_manager_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -10,7 +11,7 @@ import 'package:machi_app/helpers/load_theme.dart';
 /// This is an interactive story feature. Not used.
 class InteractiveBoardApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
   final auth = AuthApi();
   CachingHelper cachingHelper = CachingHelper();
 

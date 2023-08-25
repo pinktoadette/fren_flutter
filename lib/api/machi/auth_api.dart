@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
-import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/constants/secrets.dart';
 
 class ErrorAndStack {
@@ -14,7 +14,7 @@ class ErrorAndStack {
 /// Setup auth headers for API and firebase communication.
 class AuthApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
   final myKey = MACHI_KEY;
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

@@ -217,6 +217,7 @@ class UserModel extends Model {
             };
             updateUserObject(userDoc.data()!);
             updateExternalApi(userId: userDoc[USER_ID], data: update);
+            userController.updateUser(user);
 
             // Update user device token and subscribe to fcm topic
             updateUserDeviceToken();
@@ -232,7 +233,6 @@ class UserModel extends Model {
               interestScreen!();
               return;
             }
-            userController.initUser();
 
             // Go to home screen
             homeScreen();
@@ -346,7 +346,7 @@ class UserModel extends Model {
   /// Sign in with Google
   Future<void> signInWithGoogle(
       {required Function() checkUserAccount,
-      required VoidCallback onError}) async {
+      required Function(String error) onError}) async {
     try {
       final GoogleSignInAccount? googleSignInAccount =
           await _googleSignIn.signIn();
@@ -370,9 +370,13 @@ class UserModel extends Model {
           .then((fire_auth.UserCredential userCredential) {
         /// Auth user account
         checkUserAccount();
-      }).catchError((error) {
+      }).catchError((error, stack) async {
         // Callback function
-        onError();
+        onError(error);
+
+        await FirebaseCrashlytics.instance.recordError(error, stack,
+            reason: 'Error signing in from google: ${error.toString()} ',
+            fatal: true);
       });
     } catch (err, s) {
       await FirebaseCrashlytics.instance
@@ -651,36 +655,6 @@ class UserModel extends Model {
     return images;
   }
 
-  /// Get or create temp user by email
-  Future<User> getCreateUser(fire_auth.User user) async {
-    DocumentSnapshot<Map<String, dynamic>> usr;
-    final String userId = user.uid;
-    usr = await _firestore.collection(C_USERS).doc(userId).get();
-
-    if (!usr.exists) {
-      await _firestore.collection(C_USERS).doc(user.uid).set(<String, dynamic>{
-        USER_ID: user.uid,
-        USER_PROFILE_FILLED: false,
-        USER_PROFILE_PHOTO: user.photoURL,
-        USER_FULLNAME: user.displayName,
-        USER_LAST_LOGIN: FieldValue.serverTimestamp(),
-        CREATED_AT: FieldValue.serverTimestamp(),
-        UPDATED_AT: FieldValue.serverTimestamp(),
-        USER_ENABLE_MODE: {USER_ENABLE_DATE: true, USER_ENABLE_SERV: true},
-        USER_SETTINGS: {
-          USER_MIN_AGE: 18, // int
-          USER_MAX_AGE: 100, // int
-          //USER_SHOW_ME: 'everyone',
-          USER_MAX_DISTANCE: AppModel().appInfo.freeAccountMaxDistance,
-        }
-      });
-      usr = await _firestore.collection(C_USERS).doc(userId).get();
-    }
-    final User u = User.fromDocument(usr.data()!);
-
-    return u;
-  }
-
   // Sign out
   Future<void> signOut() async {
     try {
@@ -702,40 +676,5 @@ class UserModel extends Model {
     } catch (e) {
       debugPrint(e.toString());
     }
-  }
-
-  // Filter the User Gender @todo
-  Query<Map<String, dynamic>> filterUserGender(
-      Query<Map<String, dynamic>> query) {
-    // Get the opposite gender
-    final String oppositeGender = user.userGender == "Male" ? "Female" : "Male";
-
-    /// Get user settings
-    final Map<String, dynamic>? settings = user.userSettings;
-    // Debug
-    // debugPrint('userSettings: $settings');
-
-    // Handle Show Me option
-    if (settings != null) {
-      // Check show me option
-      if (settings[USER_SHOW_ME] != null) {
-        // Control show me option
-        switch (settings[USER_SHOW_ME]) {
-          case 'men':
-            query = query.where(USER_GENDER, isEqualTo: 'Male');
-            break;
-          case 'women':
-            query = query.where(USER_GENDER, isEqualTo: 'Female');
-            break;
-          case 'everyone':
-            // Do nothing - app will get everyone
-            break;
-        }
-      } else {
-        query = query.where(USER_GENDER, isEqualTo: oppositeGender);
-      }
-    }
-    // Returns the result query
-    return query;
   }
 }

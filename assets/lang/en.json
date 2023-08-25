@@ -391,6 +391,13 @@
   "latest_machi_yours": "Your Machi",
   "latest_gallery": "Latest Gallery",
   "latest_story": "Latest Story",
+
+  "walkthru_1": "Generating AI images can take a couple of seconds to minutes.",
+  "walkthru_2": "Let's do a quick walkthrough while we wait.",
+  "walkthru_3": "Save your messages in the chatroom to a collection.",
+  "walkthru_4": "Craft custom drawing or text prompts.",
+  "walkthru_5": "Generate your own text prompts.",
+  "walkthru_6": "Transform collections into stories or comics.",
   
   "interactive": "Interactive",
   "interactive_number_of_paths": "Total Seq",

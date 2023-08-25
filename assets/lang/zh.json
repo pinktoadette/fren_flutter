@@ -391,6 +391,13 @@
   "latest_machi_yours": "您的麻吉",
   "latest_gallery": "最新畫廊",
   "latest_story": "最新收藏",
+
+  "walkthru_1": "生成AI圖像可能需要幾秒鐘到幾分鐘的時間",
+  "walkthru_2": "在等待期間，讓我們快速進行一次導覽",
+  "walkthru_3": "將聊天室中的消息保存到收藏夾中",
+  "walkthru_4": "製作自定義的繪畫或文字提示",
+  "walkthru_5": "生成您自己的文字提示",
+  "walkthru_6": "將收藏夾轉變為故事或漫畫",
   
   "interactive": "互動式",
   "interactive_number_of_paths": "總序列",

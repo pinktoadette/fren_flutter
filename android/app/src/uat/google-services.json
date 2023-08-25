@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "607537888382",
+    "project_id": "machi-uat",
+    "storage_bucket": "machi-uat.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607537888382:android:cb899d9248deaf8f4aac2f",
+        "android_client_info": {
+          "package_name": "app.machi.uat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "607537888382-nuusk888e146sak9klehshrc6nvpr0op.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.machi.uat",
+            "certificate_hash": "1666c8701c5f185f742f2031f031036ab587d64a"
+          }
+        },
+        {
+          "client_id": "607537888382-9a6eo8s76go3m4nn2fk7fnhp4l845v2b.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAofE7Uf9UTcTnrfPJMyYZPN1deC5rdBH8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "607537888382-9a6eo8s76go3m4nn2fk7fnhp4l845v2b.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
