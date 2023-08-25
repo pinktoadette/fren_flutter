@@ -124,8 +124,8 @@ class _AddEditTextState extends State<AddEditTextWidget> {
       "attachmentPreview": attachmentPreview,
       "galleryUrl": galleryImageUrl,
       "textAlign": textAlign.name,
-      "characterId": widget.script?.characterId ?? UserModel().user.userId,
-      "characterName": widget.script?.characterName ?? UserModel().user.username
+      "characterId": UserModel().user.userId,
+      "characterName": UserModel().user.username
     });
     widget.onTextComplete(update);
   }

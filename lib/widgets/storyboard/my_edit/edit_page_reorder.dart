@@ -603,19 +603,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
             characterId: newContent.characterId,
             textAlign: newContent.textAlign ?? TextAlign.left);
 
-        // await _scriptApi.updateScript(script: newScript);
-
         setState(() {
           scripts[index] = newScript;
         });
+        _updateSequence();
       }
-
-      _updateSequence();
-      Get.snackbar(_i18n.translate("saved_success"),
-          _i18n.translate("creative_mix_save_text"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),
@@ -694,7 +686,24 @@ class _EditPageReorderState extends State<EditPageReorder> {
     setState(() {
       scripts = [...scripts, newScript];
     });
-    _updateSequence();
+
+    StoryPages pages = await _scriptApi.addScriptToStory(
+        type: newScript.type!,
+        character: newScript.characterName ?? "",
+        text: newScript.text,
+        characterId: content.characterId, // ?? @todo should get rid of these
+        image: newScript.image != null
+            ? {
+                "uri": newScript.image!.uri,
+                "size": newScript.image!.size,
+                "height": newScript.image!.height,
+                "width": newScript.image!.width
+              }
+            : null,
+        pageNum: widget.pageIndex + 1,
+        storyId: widget.story.storyId);
+    storyboardController.addNewScriptToStory(pages);
+
     return newScript;
   }
 

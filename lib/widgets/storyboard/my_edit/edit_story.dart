@@ -302,9 +302,11 @@ class _EditPageState extends State<EditPage> {
         await FirebaseCrashlytics.instance.recordError(err, s,
             reason: 'Unable to update sequence', fatal: true);
       } finally {
-        setState(() {
-          _hasChanges = false;
-        });
+        if (mounted) {
+          setState(() {
+            _hasChanges = false;
+          });
+        }
       }
     }
   }
