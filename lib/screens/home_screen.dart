@@ -20,7 +20,7 @@ import 'package:flutter/material.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:get/get.dart';
 import 'package:iconsax/iconsax.dart';
-
+import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 
 import '../api/notifications_api.dart';
@@ -51,12 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
     /// initialize states
     _initializeState();
 
-    // /// @todo Not sure why after registering, keeps asking even when its already put in user model.
-    // if (!GetInstance().isRegistered<UserController>()) {
-    //   Get.put(UserController(), tag: 'user');
-    // } else {
-    //   Get.find(tag: 'user');
-    // }
+    /// @todo Not sure why after registering, keeps asking even when its already put in user model.
+    if (!GetInstance().isRegistered<UserController>()) {
+      Get.put(UserController(), tag: 'user');
+    } else {
+      Get.find(tag: 'user');
+    }
 
     super.initState();
 
