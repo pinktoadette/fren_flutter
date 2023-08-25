@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/bot_controller.dart';
@@ -15,7 +16,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 /// Handles all chat messages response and requests.
 class MessageMachiApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
   final BotController botControl = Get.find(tag: 'bot');
   final auth = AuthApi();
   ChatController chatController = Get.find(tag: 'chatroom');

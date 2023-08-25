@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/script.dart';
@@ -9,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 /// Storyboard -> Story -> Scripts.
 class ScriptApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = "${PY_API}script/";
+  final baseUri = "${ApiConfiguration().getApiUrl()}script/";
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

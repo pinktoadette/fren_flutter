@@ -4,27 +4,41 @@
         {
             "name": "machi (dev)",
             "request": "launch",
+            "program": "lib/main_dev.dart",
             "type": "dart",
+            "flutterMode":"debug",
             "args": [
-                "--dart-define=FLAVOR=dev"
+                "--flavor=dev"
             ]
         },
         {
             "name": "machi (profile mode)",
             "request": "launch",
+            "program": "lib/main_dev.dart",
             "type": "dart",
             "flutterMode": "profile",
             "args": [
-                "--dart-define=FLAVOR=dev"
+                "--flavor=dev"
+            ]
+        },
+        {
+            "name": "machi (uat)",
+            "request": "launch",
+            "program": "lib/main_uat.dart",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--flavor=uat"
             ]
         },
         {
             "name": "machi (release mode)",
             "request": "launch",
+            "program": "lib/main.dart",
             "type": "dart",
             "flutterMode": "release",
             "args": [
-                "--dart-define=FLAVOR=prod"
+                "--flavor=prod"
             ]
         }
     ]

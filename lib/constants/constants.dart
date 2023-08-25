@@ -2,20 +2,6 @@
 
 import 'package:flutter/material.dart';
 
-const String env = 'prod';
-
-const PY_LOCAL = "http://localhost:8000/api/";
-const PY_DEV = "https://machi-dev-yiuw6.ondigitalocean.app/api/";
-const PY_UAT = "https://machi-uat-onn4q.ondigitalocean.app/api/";
-const PY_PROD = "https://api.mymachi.app/api/";
-
-const PY_API = env == 'prod'
-    ? PY_PROD
-    : env == 'uat'
-        ? PY_UAT
-        : env == 'dev'
-            ? PY_DEV
-            : PY_LOCAL;
 const SOCKET_WS_DEV = "wss://machi-dev-yiuw6.ondigitalocean.app/";
 
 // const SOCKET_WS = "wss://api.mymachi.app/";
@@ -48,8 +34,8 @@ const int IOS_APP_VERSION_NUMBER = 1; // App Store Version Number
 const String GOOGLE_BANNER_ANDROID_DEV =
     'ca-app-pub-3940256099942544/6300978111';
 const String GOOGLE_BANNER_ANDROID = 'ca-app-pub-8475595365680681/9246193145';
-const String GOOGLE_BANNER_ADS_ANDROID =
-    env == 'prod' ? GOOGLE_BANNER_ANDROID : GOOGLE_BANNER_ANDROID_DEV;
+const String GOOGLE_BANNER_ADS_ANDROID = GOOGLE_BANNER_ANDROID;
+// GOOGLE_BANNER_ANDROID_DEV;
 
 const String GOOGLE_BANNER_ADS_IOS = 'ca-app-pub-8475595365680681/3096803874';
 

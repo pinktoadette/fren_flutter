@@ -1,9 +1,9 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/api/machi/cache_manager_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/bot.dart';
@@ -12,7 +12,7 @@ import 'package:machi_app/datas/storyboard.dart';
 /// Handles all timeline response and requests.
 class TimelineApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
   final auth = AuthApi();
   CachingHelper cachingHelper = CachingHelper();
 

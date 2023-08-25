@@ -158,7 +158,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                             margin: const EdgeInsets.all(0),
                             child: StoryCover(
                                 width: is480v ? size.width / 2 : size.width,
-                                height: size.width / 1.5,
+                                height: is480v ? size.width / 1.5 : size.width,
                                 photoUrl: _items[index],
                                 title: "image $index"),
                           ),

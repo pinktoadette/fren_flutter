@@ -1,8 +1,8 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:purchases_flutter/purchases_flutter.dart';
 
@@ -10,7 +10,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 /// Actual purchases are made via revenue cat.
 class PurchasesApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
-import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
@@ -10,7 +10,7 @@ import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 /// UserModel communicates with firebase, this communicates to api.machi
 class UserApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = PY_API;
+  final baseUri = ApiConfiguration().getApiUrl();
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;

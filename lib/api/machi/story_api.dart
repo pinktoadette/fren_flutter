@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:machi_app/api/api_env.dart';
 import 'package:machi_app/api/machi/auth_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
@@ -15,7 +16,8 @@ import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 /// Storyboard -> Story -> Scripts.
 class StoryApi {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
-  final baseUri = "${PY_API}story/";
+  final baseUri = "${ApiConfiguration().getApiUrl()}story/";
+
   final auth = AuthApi();
 
   fire_auth.User? get getFirebaseUser => _firebaseAuth.currentUser;
