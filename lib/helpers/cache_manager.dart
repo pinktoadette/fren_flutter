@@ -1,5 +1,5 @@
+import 'package:encrypt_shared_pref/pref_service.dart';
 import 'package:flutter_cache_manager/flutter_cache_manager.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> clearCached() async {
   final cacheManager = DefaultCacheManager();
@@ -7,9 +7,10 @@ Future<void> clearCached() async {
 }
 
 Future<void> scheduleCacheClearing() async {
-  final prefs = await SharedPreferences.getInstance();
-  final lastCacheClearTimestamp =
-      prefs.getInt('last_cache_clear_timestamp') ?? 0;
+  final SecureStorage secureStorage = SecureStorage();
+  final lastCacheClearTimestamp = await secureStorage.readInt(
+          key: 'last_cache_clear_timestamp', isEncrypted: true) ??
+      0;
   final currentTime = DateTime.now().millisecondsSinceEpoch;
 
   if (currentTime - lastCacheClearTimestamp >=
@@ -18,14 +19,15 @@ Future<void> scheduleCacheClearing() async {
     await clearCached();
 
     // Update the last cache clear timestamp
-    await prefs.setInt('last_cache_clear_timestamp', currentTime);
+    await secureStorage.writeInt(
+        key: 'last_cache_clear_timestamp', value: currentTime);
   }
 }
 
 Future<void> initializeCacheTimestampAndSchedule() async {
-  final prefs = await SharedPreferences.getInstance();
+  final SecureStorage secureStorage = SecureStorage();
   final lastCacheClearTimestamp =
-      prefs.getInt('last_cache_clear_timestamp') ?? 0;
+      await secureStorage.readInt(key: 'last_cache_clear_timestamp') ?? 0;
   final currentTime = DateTime.now().millisecondsSinceEpoch;
 
   if (currentTime - lastCacheClearTimestamp >=
@@ -33,7 +35,8 @@ Future<void> initializeCacheTimestampAndSchedule() async {
     await clearCached();
 
     // Update the last cache clear timestamp
-    await prefs.setInt('last_cache_clear_timestamp', currentTime);
+    await secureStorage.writeInt(
+        key: 'last_cache_clear_timestamp', value: currentTime);
   }
 
   // Schedule cache clearing for future runs
