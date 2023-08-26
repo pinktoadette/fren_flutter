@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:iconsax/iconsax.dart';
+import 'package:lottie/lottie.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
@@ -16,12 +16,22 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final _controller = PageController(viewportFraction: 1.0, keepPage: true);
+
+  /// language localization.
+  late AppLocalizations _i18n;
+
+  /// size of media
+  late Size _size;
+
+  /// background images
   final listBackgrounds = [
     'assets/images/onboard/onboard1.png',
     'assets/images/onboard/onboard2.png',
     'assets/images/onboard/onboard3.png',
     'assets/images/blank.png'
   ];
+
+  /// sequence
   final steps = [1, 2, 3, 4];
 
   int currentPageIndex = 0;
@@ -38,10 +48,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    Size size = MediaQuery.of(context).size;
-    AppLocalizations i18n = AppLocalizations.of(context);
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _i18n = AppLocalizations.of(context);
+    _size = MediaQuery.of(context).size;
+  }
 
+  @override
+  Widget build(BuildContext context) {
     final pages = List.generate(
       steps.length,
       (index) => Container(
@@ -54,7 +68,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   AssetImage(listBackgrounds[index % listBackgrounds.length]),
               fit: BoxFit.cover,
               colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(0.3), BlendMode.darken),
+                  Colors.black.withOpacity(0.4), BlendMode.darken),
             ),
           ),
           child: Column(
@@ -68,9 +82,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 alignment:
                     index == 0 ? Alignment.center : Alignment.bottomCenter,
                 child: Semantics(
-                  label: i18n.translate("onboarding_step${index + 1}"),
+                  label: _i18n.translate("onboarding_step${index + 1}"),
                   child: TextBorder(
-                      text: i18n.translate("onboarding_step${index + 1}"),
+                      text: _i18n.translate("onboarding_step${index + 1}"),
                       textAlign: TextAlign.center,
                       size: 24,
                       useTheme: false),
@@ -78,9 +92,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               const Spacer(),
               if (index != steps.length - 1)
-                const Align(
+                Align(
                   alignment: Alignment.bottomCenter,
-                  child: Icon(Iconsax.arrow_down_1, size: 20),
+                  child: Lottie.asset(
+                    'assets/lottie/down_arrow.json',
+                    width: 100,
+                    height: 50,
+                  ),
                 ),
               const SizedBox(
                 height: 30,
@@ -120,15 +138,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           Positioned(
             left: 10,
             width: 10,
-            top: size.height / 3,
+            top: _size.height / 2.5,
             child: SmoothPageIndicator(
               controller: _controller,
               count: pages.length,
               axisDirection: Axis.vertical,
               effect: const ExpandingDotsEffect(
-                  dotHeight: 10,
-                  dotWidth: 18,
-                  activeDotColor: APP_ACCENT_COLOR),
+                  dotHeight: 5, dotWidth: 5, activeDotColor: APP_ACCENT_COLOR),
             ),
           ),
         ],

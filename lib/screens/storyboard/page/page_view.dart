@@ -25,6 +25,7 @@ import 'package:machi_app/widgets/common/chat_bubble_container.dart';
 import 'package:machi_app/widgets/report_list.dart';
 import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_caption.dart';
 import 'package:machi_app/widgets/storyboard/story/add_new_story.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_story.dart';
@@ -288,23 +289,28 @@ class _StoryPageViewState extends State<StoryPageView> {
               double alphaValue =
                   hasBackground ? story?.pages![index].backgroundAlpha ?? 0 : 0;
 
+              /// Caption Mode
+              if (story!.layout == Layout.CAPTION) {
+                return Container(
+                    height: size.height - 100,
+                    margin: const EdgeInsets.only(bottom: 0),
+                    decoration: _boxDecoration(
+                        backgroundUrl: backgroundUrl, alphaValue: alphaValue),
+                    child: Stack(
+                      children: [
+                        Positioned(
+                            bottom: 80,
+                            child: PageTextCaption(
+                                script: story!.pages![index].scripts![0]))
+                      ],
+                    ));
+              }
+
               return Container(
                 height: size.height - 100,
                 margin: const EdgeInsets.only(bottom: 0),
-                decoration: BoxDecoration(
-                    image: DecorationImage(
-                        colorFilter: ColorFilter.mode(
-                            const Color.fromARGB(255, 0, 0, 0)
-                                .withOpacity(alphaValue),
-                            BlendMode.darken),
-                        image: backgroundUrl != ""
-                            ? ImageCacheWrapper(backgroundUrl)
-                            : Image.asset(
-                                "assets/images/blank.png",
-                                scale: 0.2,
-                                width: 100,
-                              ).image,
-                        fit: BoxFit.cover)),
+                decoration: _boxDecoration(
+                    backgroundUrl: backgroundUrl, alphaValue: alphaValue),
                 padding: const EdgeInsets.only(left: 40, top: 20, right: 20),
                 child: SingleChildScrollView(
                   child: ConstrainedBox(
@@ -390,6 +396,8 @@ class _StoryPageViewState extends State<StoryPageView> {
     /// @todo need to create a common layout. See under storyboard_item_widget the display creates two separate layouts.
     /// edit_page_reorder also shares same logic
     Widget widget = const SizedBox.shrink();
+
+    /// Other Modes
     switch (script.type) {
       case "text":
         widget = Padding(
@@ -475,5 +483,22 @@ class _StoryPageViewState extends State<StoryPageView> {
               ))
       ],
     );
+  }
+
+  BoxDecoration _boxDecoration(
+      {required String backgroundUrl, required double alphaValue}) {
+    return BoxDecoration(
+        image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                const Color.fromARGB(255, 0, 0, 0).withOpacity(alphaValue),
+                BlendMode.darken),
+            image: backgroundUrl != ""
+                ? ImageCacheWrapper(backgroundUrl)
+                : Image.asset(
+                    "assets/images/blank.png",
+                    scale: 0.2,
+                    width: 100,
+                  ).image,
+            fit: BoxFit.cover));
   }
 }

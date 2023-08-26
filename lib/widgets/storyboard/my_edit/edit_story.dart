@@ -123,6 +123,12 @@ class _EditPageState extends State<EditPage> {
             onUpdateSeq: (update) {
               _onUpdateSequence(update);
             },
+            onSingleUpdate: (update) {
+              // updates that involve not moving entire page components
+              setState(() {
+                story = update;
+              });
+            },
             onLayoutSelection: (layout) {
               selectedLayout = layout;
               _onUpdateLayout(layout);
@@ -198,6 +204,12 @@ class _EditPageState extends State<EditPage> {
                           onUpdateSeq: (update) {
                             /// will save if there is updated sequence on exit
                             _onUpdateSequence(update);
+                          },
+                          onSingleUpdate: (update) {
+                            // updates that involve not moving entire page components
+                            setState(() {
+                              story = update;
+                            });
                           },
                           onLayoutSelection: (layout) {
                             selectedLayout = layout;

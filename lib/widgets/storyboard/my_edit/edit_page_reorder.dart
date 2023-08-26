@@ -31,6 +31,7 @@ import 'package:machi_app/widgets/story_cover.dart';
 import 'package:machi_app/widgets/storyboard/bottom_sheets/add_edit_text.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/add_ai_image.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/edit_page_background.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/page_caption.dart';
 import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/subscribe/subscription_product.dart';
 
@@ -42,6 +43,7 @@ class EditPageReorder extends StatefulWidget {
   final Function(List<Script> data) onUpdateSeq;
   final Function(dynamic data) onMoveInsertPages;
   final Function(Layout data) onLayoutSelection;
+  final Function(Story story) onSingleUpdate;
   Layout? layout;
 
   EditPageReorder(
@@ -51,6 +53,7 @@ class EditPageReorder extends StatefulWidget {
       required this.onMoveInsertPages,
       required this.onUpdateSeq,
       required this.onLayoutSelection,
+      required this.onSingleUpdate,
       this.pageIndex = 0,
       this.layout})
       : super(key: key);
@@ -127,56 +130,111 @@ class _EditPageReorderState extends State<EditPageReorder> {
 
   @override
   Widget build(BuildContext context) {
+    if (layout == Layout.CAPTION &&
+        story.pages![widget.pageIndex].scripts != null) {
+      return Container(
+        decoration: _backgroundDecoration(),
+        height: size.height,
+        child: Stack(
+          children: [
+            Positioned.fill(
+              child: Container(),
+            ),
+            Positioned(
+              bottom: 70,
+              left: 0,
+              right: 0,
+              child: PageTextCaption(
+                script: story.pages![widget.pageIndex].scripts![0],
+                onUpdateText: (edits) =>
+                    _addEditText(index: 0, newContent: edits),
+                isPublished: false,
+              ),
+            ),
+            _footer()
+          ],
+        ),
+      );
+    }
     return Stack(
-      children: [
-        _reorderListWidget(),
-        Positioned(
+      children: [_reorderListWidget(), _footer()],
+    );
+  }
+
+  Positioned _footer() {
+    return Positioned(
+        height: 70,
+        bottom: Platform.isAndroid ? 0 : 30,
+        child: Column(children: [
+          Container(
+            color: Theme.of(context).colorScheme.background,
+            width: size.width,
             height: 70,
-            bottom: Platform.isAndroid ? 0 : 30,
-            child: Column(children: [
-              Container(
-                color: Theme.of(context).colorScheme.background,
-                width: size.width,
-                height: 70,
-                child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Iconsax.text_block),
-                        onPressed: () {
-                          _onPageEditText();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.image),
-                        onPressed: () {
-                          /// check if there's a subscription
-                          _onGenerateClick();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.gallery),
-                        onPressed: () {
-                          _onPageImageEdit();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.grid_3),
-                        onPressed: () {
-                          _onShowLayoutSelection();
-                        },
-                      ),
-                      IconButton(
-                        icon: const Icon(Iconsax.element_plus),
-                        onPressed: () {
-                          widget.onMoveInsertPages({"action": "add"});
-                        },
-                      ),
-                    ]),
-              )
-            ])),
-      ],
+            child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  IconButton(
+                    icon: const Icon(Iconsax.text_block),
+                    onPressed: () {
+                      _onPageEditText();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Iconsax.image),
+                    onPressed: () {
+                      /// check if there's a subscription
+                      _onGenerateClick();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Iconsax.gallery),
+                    onPressed: () {
+                      _onPageImageEdit();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Iconsax.grid_3),
+                    onPressed: () {
+                      _onShowLayoutSelection();
+                    },
+                  ),
+                  IconButton(
+                    icon: const Icon(Iconsax.element_plus),
+                    onPressed: () {
+                      widget.onMoveInsertPages({"action": "add"});
+                    },
+                  ),
+                ]),
+          )
+        ]));
+  }
+
+  BoxDecoration _backgroundDecoration() {
+    bool hasBackground =
+        !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl) ||
+            !isEmptyString(urlPreview) ||
+            !isEmptyString(attachmentPreview?.path ?? "");
+    double alphaValue = hasBackground ? _alphaValue : 0;
+
+    return BoxDecoration(
+      color: Theme.of(context).colorScheme.background,
+      image: DecorationImage(
+          colorFilter: ColorFilter.mode(
+              Colors.black.withOpacity(alphaValue), BlendMode.darken),
+          image: attachmentPreview != null
+              ? FileImage(
+                  attachmentPreview!,
+                )
+              : urlPreview != null
+                  ? ImageCacheWrapper(urlPreview!)
+                  : story.pages![widget.pageIndex].backgroundImageUrl != null
+                      ? ImageCacheWrapper(
+                          story.pages![widget.pageIndex].backgroundImageUrl!)
+                      : const AssetImage(
+                          "assets/images/blank.png",
+                        ),
+          fit: BoxFit.cover),
     );
   }
 
@@ -189,35 +247,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
         width: size.width,
       );
     }
-    bool hasBackground =
-        !isEmptyString(story.pages![widget.pageIndex].backgroundImageUrl) ||
-            !isEmptyString(urlPreview) ||
-            !isEmptyString(attachmentPreview?.path ?? "");
-    double alphaValue = hasBackground ? _alphaValue : 0;
 
     return Container(
         margin: const EdgeInsets.only(bottom: 100),
         constraints: BoxConstraints(minHeight: size.width),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.background,
-          image: DecorationImage(
-              colorFilter: ColorFilter.mode(
-                  Colors.black.withOpacity(alphaValue), BlendMode.darken),
-              image: attachmentPreview != null
-                  ? FileImage(
-                      attachmentPreview!,
-                    )
-                  : urlPreview != null
-                      ? ImageCacheWrapper(urlPreview!)
-                      : story.pages![widget.pageIndex].backgroundImageUrl !=
-                              null
-                          ? ImageCacheWrapper(story
-                              .pages![widget.pageIndex].backgroundImageUrl!)
-                          : const AssetImage(
-                              "assets/images/blank.png",
-                            ),
-              fit: BoxFit.cover),
-        ),
+        decoration: _backgroundDecoration(),
         child: ReorderableListView(
             children: [
               for (int index = 0; index < scripts.length; index += 1)
@@ -794,6 +828,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       Story updateStory = story.copyWith(pages: story.pages);
       storyboardController.updateStory(story: updateStory);
       await storyApi.updateStory(story: updateStory);
+      widget.onSingleUpdate(updateStory);
       setState(() {
         story = updateStory;
       });
