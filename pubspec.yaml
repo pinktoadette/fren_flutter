@@ -21,14 +21,17 @@ environment:
   sdk: ^3.0.6
 
 flavorDimensions: flavor
-productFlavors:
+flavors:
   dev:
+    name: "dev"
     flavorDimension: flavor
     main: lib/main_dev.dart
-  staging:
+  uat:
+    name: "uat"
     flavorDimension: flavor
     main: lib/main_uat.dart
   prod:
+    name: "release"
     flavorDimension: flavor
     main: lib/main.dart
 
