@@ -44,6 +44,20 @@
             ]
         },
         {
+            "name": "machi (prod mode)",
+            "request": "launch",
+            "program": "lib/main.dart",
+            "type": "dart",
+            "flutterMode": "debug",
+            "args": [
+                "--dart-define",
+                "flavor=prod"
+            ],
+            "toolArgs": [
+                "--flavor=prod"
+            ]
+        },
+        {
             "name": "machi (release mode)",
             "request": "launch",
             "program": "lib/main.dart",
