@@ -9,7 +9,9 @@
             "flutterMode":"debug",
             "args": [
                 "--dart-define",
-                "flavor=dev"
+                "flavor=dev",
+                "--flavor",
+                "dev"
             ],
             "toolArgs": [
                 "--flavor=dev"
@@ -23,7 +25,9 @@
             "flutterMode": "profile",
             "args": [
                 "--dart-define",
-                "flavor=dev"
+                "flavor=dev",
+                "--flavor",
+                "dev"
             ],
             "toolArgs": [
                 "--flavor=dev"
@@ -37,7 +41,9 @@
             "flutterMode": "profile",
             "args": [
                 "--dart-define",
-                "flavor=uat"
+                "flavor=uat",
+                "--flavor",
+                "uat"
             ],
             "toolArgs": [
                 "--flavor=uat"
@@ -65,7 +71,9 @@
             "flutterMode": "release",
             "args": [
                 "--dart-define",
-                "flavor=prod"
+                "flavor=prod",
+                "--flavor",
+                "prod"
             ],
             "toolArgs": [
                 "--flavor=prod"

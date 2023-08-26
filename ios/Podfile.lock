@@ -640,7 +640,7 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.24):
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Interface (0.0.24)
-  - cloud_firestore (4.8.5):
+  - cloud_firestore (4.9.0):
     - Firebase/Firestore (= 10.12.0)
     - firebase_core
     - Flutter
@@ -665,7 +665,7 @@ PODS:
   - Firebase/Storage (10.12.0):
     - Firebase/CoreOnly
     - FirebaseStorage (~> 10.12.0)
-  - firebase_auth (4.7.3):
+  - firebase_auth (4.8.0):
     - Firebase/Auth (= 10.12.0)
     - firebase_core
     - Flutter
@@ -676,7 +676,7 @@ PODS:
     - Firebase/Crashlytics (= 10.12.0)
     - firebase_core
     - Flutter
-  - firebase_messaging (14.6.6):
+  - firebase_messaging (14.6.7):
     - Firebase/Messaging (= 10.12.0)
     - firebase_core
     - Flutter
@@ -780,6 +780,8 @@ PODS:
   - flutter_keyboard_visibility (0.0.1):
     - Flutter
   - flutter_native_splash (0.0.1):
+    - Flutter
+  - flutter_secure_storage (6.0.0):
     - Flutter
   - FMDB (2.7.5):
     - FMDB/standard (= 2.7.5)
@@ -986,6 +988,7 @@ DEPENDENCIES:
   - flutter_image_compress_common (from `.symlinks/plugins/flutter_image_compress_common/ios`)
   - flutter_keyboard_visibility (from `.symlinks/plugins/flutter_keyboard_visibility/ios`)
   - flutter_native_splash (from `.symlinks/plugins/flutter_native_splash/ios`)
+  - flutter_secure_storage (from `.symlinks/plugins/flutter_secure_storage/ios`)
   - google_mobile_ads (from `.symlinks/plugins/google_mobile_ads/ios`)
   - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
@@ -1069,6 +1072,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_keyboard_visibility/ios"
   flutter_native_splash:
     :path: ".symlinks/plugins/flutter_native_splash/ios"
+  flutter_secure_storage:
+    :path: ".symlinks/plugins/flutter_secure_storage/ios"
   google_mobile_ads:
     :path: ".symlinks/plugins/google_mobile_ads/ios"
   google_sign_in_ios:
@@ -1104,12 +1109,12 @@ SPEC CHECKSUMS:
   abseil: 926fb7a82dc6d2b8e1f2ed7f3a718bce691d1e46
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
-  cloud_firestore: c556fefce96568e422e453bf9aeda683dd435367
+  cloud_firestore: 2d219f5d2eec836c5525699e777f907c9d3cd3eb
   Firebase: 07150e75d142fb9399f6777fa56a187b17f833a0
-  firebase_auth: 95f4a6acafa6a7a0d902aa467dd4d7ca336ee4be
+  firebase_auth: 604e47908bc2dcd7baa113bbd37ab74000bff488
   firebase_core: 4a3246a02f828a01c74a2c26427037786d90f17f
   firebase_crashlytics: df144edf7d04ace42beb3a3e29d825bfa49dd04b
-  firebase_messaging: 13b378c8449cae7ec96c79570170943dd73d4738
+  firebase_messaging: 0b4f7997f491343b90d9300af54fe55c72135833
   firebase_performance: 9277c037aba44142df6dc5f5b1b184168f36973a
   firebase_storage: 90a6038e00d3903c7f665dcfc57a9a98c7c8366b
   FirebaseABTesting: 86ac5a4fc749088bb4d55a1cbfb2c4cb42c6d5de
@@ -1131,6 +1136,7 @@ SPEC CHECKSUMS:
   flutter_image_compress_common: ec1d45c362c9d30a3f6a0426c297f47c52007e3e
   flutter_keyboard_visibility: 0339d06371254c3eb25eeb90ba8d17dca8f9c069
   flutter_native_splash: 52501b97d1c0a5f898d687f1646226c1f93c56ef
+  flutter_secure_storage: 23fc622d89d073675f2eaa109381aefbcf5a49be
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
   Google-Mobile-Ads-SDK: 32fe7836431a06a29f7734ae092b600137c8108d
   google_mobile_ads: 53b1f0d74445963e5810e34ac38dfb27aabe278e
@@ -1169,6 +1175,6 @@ SPEC CHECKSUMS:
   url_launcher_ios: 08a3dfac5fb39e8759aeb0abbd5d9480f30fc8b4
   webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
 
-PODFILE CHECKSUM: 2ec93b81ccf0d086594cd73114c8ca49475dc5f6
+PODFILE CHECKSUM: 2ac0095bbe6cbd80bb7359d20a14b6b7ea738bbe
 
 COCOAPODS: 1.12.1
