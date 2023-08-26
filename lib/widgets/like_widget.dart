@@ -7,7 +7,9 @@ class LikeItemWidget extends StatelessWidget {
   final int likes;
   final int mylikes;
   final double? size;
+  final double? buttonSize;
   final Color? fontColor;
+  final bool? isVertical;
   final Function(dynamic data) onLike;
 
   const LikeItemWidget(
@@ -16,6 +18,8 @@ class LikeItemWidget extends StatelessWidget {
       required this.likes,
       required this.mylikes,
       this.fontColor,
+      this.buttonSize,
+      this.isVertical = false,
       this.size})
       : super(key: key);
 
@@ -25,6 +29,7 @@ class LikeItemWidget extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       size: size ?? 30,
       isLiked: mylikes == 1 ? true : false,
+      countPostion: isVertical! ? CountPostion.bottom : CountPostion.right,
       onTap: (value) async {
         onLike(!value);
         return !value;
@@ -35,15 +40,19 @@ class LikeItemWidget extends StatelessWidget {
       ),
       likeBuilder: (bool isLiked) {
         return Icon(isLiked ? Icons.favorite : Icons.favorite_border,
-            color: isLiked ? APP_LIKE_COLOR : Colors.grey, size: 18);
+            color: isLiked ? APP_LIKE_COLOR : APP_INVERSE_PRIMARY_COLOR,
+            size: buttonSize ?? 24);
       },
       likeCount: likes,
       countDecoration: (count, likeCount) {
-        return Text(likeCount.toString(),
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall!
-                .copyWith(color: fontColor));
+        return Container(
+          padding: const EdgeInsets.only(top: 5),
+          child: Text(likeCount.toString(),
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall!
+                  .copyWith(color: fontColor)),
+        );
       },
     );
   }

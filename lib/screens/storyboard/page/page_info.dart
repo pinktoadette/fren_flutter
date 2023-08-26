@@ -48,19 +48,18 @@ class _StoryPageInfoWidgetState extends State<StoryPageInfoWidget> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-        color: Colors.black.withOpacity(0.8),
-        width: size.width,
-        height: 180,
-        padding: const EdgeInsets.only(top: 10),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        width: 80,
+        height: size.height / 2,
+        padding: const EdgeInsets.only(right: 10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
               Padding(
-                  padding: const EdgeInsets.only(left: 20),
+                  padding: const EdgeInsets.only(right: 0, bottom: 10),
                   child: AvatarInitials(
-                      radius: 16,
+                      radius: 25,
                       userId:
                           storyboardController.currentStory.createdBy.userId,
                       photoUrl:
@@ -68,26 +67,28 @@ class _StoryPageInfoWidgetState extends State<StoryPageInfoWidget> {
                       username: storyboardController
                           .currentStory.createdBy.username)),
               Container(
-                  padding: const EdgeInsets.only(left: 0),
+                  padding: const EdgeInsets.only(top: 20),
                   child: Obx(() => LikeItemWidget(
+                      isVertical: true,
                       onLike: (val) {
                         _onLikePressed(storyboardController.currentStory, val);
                       },
                       fontColor: APP_INVERSE_PRIMARY_COLOR,
-                      size: 40,
+                      size: 20,
+                      buttonSize: 24,
                       likes: timelineController.currentStory.likes ?? 0,
                       mylikes: timelineController.currentStory.mylikes ?? 0))),
               Container(
-                  padding: const EdgeInsets.only(left: 30, top: 12),
-                  child: Row(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: Column(
                     children: [
                       const Icon(
                         Iconsax.message,
-                        size: 16,
+                        size: 24,
                         color: APP_INVERSE_PRIMARY_COLOR,
                       ),
                       const SizedBox(
-                        width: 20,
+                        width: 18,
                       ),
                       Obx(() => Text(
                             timelineController.currentStory.commentCount
@@ -96,20 +97,16 @@ class _StoryPageInfoWidgetState extends State<StoryPageInfoWidget> {
                                 fontSize: 12, color: APP_INVERSE_PRIMARY_COLOR),
                           ))
                     ],
-                  ))
+                  )),
+              Container(
+                  padding: const EdgeInsets.only(top: 20),
+                  child: IconButton(
+                    onPressed: () => {_copyLink(context)},
+                    icon: const Icon(Icons.share),
+                    iconSize: 16,
+                    color: APP_INVERSE_PRIMARY_COLOR,
+                  )),
             ]),
-            Container(
-                padding: const EdgeInsets.only(right: 20),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () => {_copyLink(context)},
-                      icon: const Icon(Icons.share),
-                      iconSize: 16,
-                      color: APP_INVERSE_PRIMARY_COLOR,
-                    ),
-                  ],
-                ))
           ],
         ));
   }

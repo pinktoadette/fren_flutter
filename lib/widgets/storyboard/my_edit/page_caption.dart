@@ -53,7 +53,7 @@ class _PageTextCaptionState extends State<PageTextCaption> {
             const EdgeInsets.only(left: 20, top: 20, right: 50, bottom: 10),
         width: size.width,
         height: 200,
-        color: const Color.fromARGB(255, 20, 20, 20).withAlpha(150),
+        color: const Color.fromARGB(255, 20, 20, 20).withAlpha(130),
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,

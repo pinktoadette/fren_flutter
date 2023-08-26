@@ -299,7 +299,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                     child: Stack(
                       children: [
                         Positioned(
-                            bottom: 80,
+                            bottom: 150,
                             child: PageTextCaption(
                                 script: story!.pages![index].scripts![0]))
                       ],
@@ -347,7 +347,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                                       Text(script.characterName ?? ""),
                                   ]);
                             }).toList())),
-                            if (((index + 1) % 2 == 0) &
+                            if (((index + 1) == story!.pages!.length) &
                                 (story!.status == StoryStatus.PUBLISHED))
                               const Align(
                                 alignment: Alignment.bottomCenter,
@@ -385,7 +385,7 @@ class _StoryPageViewState extends State<StoryPageView> {
       if (story!.status == StoryStatus.PUBLISHED)
         const Positioned(
           bottom: 0,
-          left: 0,
+          right: 0,
           child: StoryPageInfoWidget(),
         )
     ]);
