@@ -13,7 +13,7 @@ class ApiConfiguration {
 
   String getApiUrl() {
     String activeEnv =
-        const String.fromEnvironment('FLAVOR', defaultValue: 'dev');
+        const String.fromEnvironment('flavor', defaultValue: 'dev');
 
     if (activeEnv == 'prod') {
       return prod.PY_API;
@@ -23,6 +23,6 @@ class ApiConfiguration {
       return dev.PY_API;
     }
 
-    return dev.PY_API;
+    return prod.PY_API;
   }
 }
