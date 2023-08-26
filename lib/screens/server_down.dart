@@ -5,11 +5,8 @@ class ServerPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Server Down'),
-      ),
-      body: const Center(
+    return const Scaffold(
+      body: Center(
         child: Text('The server is currently down 😔'),
       ),
     );
