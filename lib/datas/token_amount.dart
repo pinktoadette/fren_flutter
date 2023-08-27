@@ -47,12 +47,12 @@ class TokenAccounting {
 
   factory TokenAccounting.fromJson(Map<String, dynamic> doc) {
     return TokenAccounting(
-        subscribeTotal: doc[TOTAL_SUBSCRIBE_CREDITS],
+        subscribeTotal: doc[TOTAL_SUBSCRIBE_CREDITS] ?? 0,
         subscribedAt: doc[SUBSCRIBED_AT],
         expiredDate: doc[EXPIRED_DATE],
-        rewardTotal: doc[TOTAL_REWARDS_CREDITS],
-        debitTotal: doc[TOTAL_DEBIT],
-        creditTotal: doc[TOTAL_CREDITS],
-        netCredits: doc[NET_CREDITS]);
+        rewardTotal: doc[TOTAL_REWARDS_CREDITS] ?? 0,
+        debitTotal: doc[TOTAL_DEBIT] ?? 0,
+        creditTotal: doc[TOTAL_CREDITS] ?? 0,
+        netCredits: doc[NET_CREDITS] ?? 0);
   }
 }
