@@ -3,16 +3,16 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/helpers/cache_manager.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:get_storage/get_storage.dart';
 
 Future<void> commonInitialization() async {
   // Initialized before calling runApp to init firebase app
@@ -20,9 +20,12 @@ Future<void> commonInitialization() async {
 
   /// ***  Initialize Firebase App *** ///
   /// 👉 Please check the [Documentation - README FIRST] instructions in the
-  /// Table of Contents at section: [NEW - Firebase initialization for Fren App]
-  /// in order to fix it and generate the required [firebase_options.dart] for your app.
   await Firebase.initializeApp();
+
+  String activeEnv =
+      const String.fromEnvironment('flavor', defaultValue: 'dev');
+  debugPrint("===== Running Env: $activeEnv ====");
+
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
   FlutterError.onError = (errorDetails) async {
     if (errorDetails.library == "image resource service" &&

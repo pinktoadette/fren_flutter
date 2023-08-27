@@ -9,10 +9,10 @@ import 'package:machi_app/models/app_model.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/server_down.dart';
-import 'package:machi_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:machi_app/screens/splash_screen.dart';
 import 'package:scoped_model/scoped_model.dart';
 import 'package:get/get.dart';
 
@@ -124,7 +124,7 @@ class _MyAppState extends State<MyApp> {
             return supportedLocales.first;
           },
           home: serverStatus == ServerStatus.up
-              ? const HomeScreen()
+              ? const SplashScreen()
               : const ServerPage(),
           themeMode: ThemeHelper().themeMode,
           theme: MainTheme.lightTheme(),

@@ -7,7 +7,7 @@ class ServerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('The server is currently down 😔'),
+        child: Text('The server is currently down \n🔗‍💥😔'),
       ),
     );
   }

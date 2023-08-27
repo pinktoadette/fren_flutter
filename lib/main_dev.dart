@@ -2,10 +2,12 @@
 import 'package:machi_app/common_main.dart';
 import 'package:machi_app/common_theme.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/server_status.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/models/app_model.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/screens/server_down.dart';
 import 'package:machi_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -32,6 +34,7 @@ class _MyAppState extends State<MyApp> {
 // Define the Navigator global key state to be used when the build context is not available!
   final navigatorKey = GlobalKey<NavigatorState>();
   final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  ServerStatus serverStatus = ServerStatus.up;
 
   @override
   void initState() {
@@ -61,6 +64,12 @@ class _MyAppState extends State<MyApp> {
       } else if (event.type == DetectorEventType.endAnalyze) {
         debugPrint("=============== Detector Ended *********************");
       }
+    });
+
+    checkServerStatusWithRetries().then((status) {
+      setState(() {
+        serverStatus = status;
+      });
     });
   }
 
@@ -113,7 +122,9 @@ class _MyAppState extends State<MyApp> {
             /// from the list (English, in this case).
             return supportedLocales.first;
           },
-          home: const SplashScreen(),
+          home: serverStatus == ServerStatus.up
+              ? const SplashScreen()
+              : const ServerPage(),
           themeMode: ThemeHelper().themeMode,
           theme: MainTheme.lightTheme(),
           darkTheme: MainTheme.darkTheme(),
