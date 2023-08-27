@@ -379,8 +379,8 @@ class UserModel extends Model {
             fatal: true);
       });
     } catch (err, s) {
-      await FirebaseCrashlytics.instance
-          .recordError(err, s, reason: 'Unable to sign in', fatal: true);
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Unable to sign in ${err.toString()}', fatal: true);
       rethrow;
     }
   }
