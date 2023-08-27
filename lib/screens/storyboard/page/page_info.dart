@@ -50,7 +50,7 @@ class _StoryPageInfoWidgetState extends State<StoryPageInfoWidget> {
     return Container(
         width: 80,
         height: size.height / 2,
-        padding: const EdgeInsets.only(right: 10),
+        padding: const EdgeInsets.only(right: 7),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

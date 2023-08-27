@@ -22,12 +22,6 @@
 	<string>$(FLUTTER_BUILD_NAME)</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
-	<key>NSAppleMusicUsageDescription</key>
-	<string>Not using this</string>
-	<key>NSCameraUsageDescription</key>
-	<string>Camera permission is required to save images.</string>
-	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Photo library access is required to save images.</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -50,8 +44,14 @@
 	<true/>
 	<key>NSAppTransportSecurity</key>
 	<dict/>
+	<key>NSAppleMusicUsageDescription</key>
+	<string>Not using this</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera permission is required to save images.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Allow user speech to text input</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Photo library access is required to save images.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Allow users to create content and interact with AI generative images</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -68,7 +68,7 @@
 	<key>UIRequiresFullScreen</key>
 	<true/>
 	<key>UIStatusBarStyle</key>
-	<string>UIStatusBarStyleDarkContent</string>
+	<string></string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
