@@ -10,7 +10,6 @@ import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/screens/first_time/steps_counter.dart';
 import 'package:machi_app/screens/home_screen.dart';
 
@@ -137,14 +136,10 @@ class _InterestScreenState extends State<InterestScreen> {
       await UserModel().updateUserData(
           userId: user.userId, data: {USER_INTERESTS: _selectedInterest});
 
-      Get.lazyPut(() => UserController());
-
-      UserController userController = Get.find(tag: 'user');
+      UserController userController = Get.put(UserController(), tag: 'user');
       userController.updateUser(user);
 
-      UserModel().authUserAccount(
-          homeScreen: () => _nextScreen(const HomeScreen()),
-          signUpScreen: () => _nextScreen(const SignUpScreen()));
+      Get.offAll(() => const HomeScreen());
     } catch (err, s) {
       Get.snackbar(
           _i18n.translate("Error"), _i18n.translate("an_error_has_occurred"),
@@ -154,14 +149,5 @@ class _InterestScreenState extends State<InterestScreen> {
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error saving users interest', fatal: false);
     }
-  }
-
-  /// Navigate to next page
-  void _nextScreen(screen) {
-    // Go to next page route
-    Future(() {
-      Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => screen), (route) => false);
-    });
   }
 }

@@ -299,7 +299,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                     child: Stack(
                       children: [
                         Positioned(
-                            bottom: 150,
+                            bottom: 120,
                             child: PageTextCaption(
                                 script: story!.pages![index].scripts![0]))
                       ],

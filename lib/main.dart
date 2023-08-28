@@ -7,7 +7,6 @@ import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/models/app_model.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/server_down.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
