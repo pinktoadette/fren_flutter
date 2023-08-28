@@ -85,23 +85,19 @@ class TimelineApi {
     }
 
     final response = await auth.retryGetRequest(url);
-
-    await cachingHelper.cacheUrl(
-        url, response.data, const Duration(minutes: 5));
-    Map<String, dynamic> result = _homeDatafromJson(response.data);
-    return result;
+    if (response.statusCode == 200) {
+      await cachingHelper.cacheUrl(
+          url, response.data, const Duration(minutes: 5));
+      Map<String, dynamic> result = _homeDatafromJson(response.data);
+      return result;
+    }
+    return {};
   }
 
   Map<String, dynamic> _homeDatafromJson(Map<String, dynamic> data) {
     List<Bot> bots = [];
     List<Bot> mybots = [];
 
-    if (data.isEmpty) {
-      return {
-        'machi': bots.toList(),
-        'mymachi': mybots.toList(),
-      };
-    }
     for (var machi in data['machi']) {
       Bot bot = Bot.fromDocument(machi);
       bots.add(bot);

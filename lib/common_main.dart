@@ -15,13 +15,6 @@ import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 Future<void> commonInitialization() async {
-  // Initialized before calling runApp to init firebase app
-  WidgetsFlutterBinding.ensureInitialized();
-
-  /// ***  Initialize Firebase App *** ///
-  /// 👉 Please check the [Documentation - README FIRST] instructions in the
-  await Firebase.initializeApp();
-
   String activeEnv =
       const String.fromEnvironment('flavor', defaultValue: 'dev');
   debugPrint("===== Running Env: $activeEnv ====");

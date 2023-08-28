@@ -9,15 +9,54 @@ import Firebase
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     if FirebaseApp.app() == nil {
-        
-        let environment = "dev"
+        FirebaseApp.configure()
+
+        let args = CommandLine.arguments
+                
+        // Initialize a variable to store the environment ("env" or "flavor").
+        var environment: String? = "dev"
         let plistFileName = "GoogleService-Info"
         
-        let path = Bundle.main.path(forResource: "env/" + environment + "/" + plistFileName, ofType: "plist")
-        let firbaseOptions = FirebaseOptions(contentsOfFile: path!)
-        FirebaseApp.configure(options: firbaseOptions!)
+        // Find the "flavor" argument and extract the environment value from terminal args.
+        if let dartDefineIndex = args.firstIndex(where: { $0.hasPrefix("--dart-define=") }) {
+            let dartDefine = args[dartDefineIndex]
+            let parts = dartDefine.components(separatedBy: "=")
+            
+            if parts.count == 3 && parts[0] == "--dart-define" {
+                environment = parts[2]
+                print("Environment: \(environment!)")
+            }
+        }
+        
+        // If environment is not set from terminal args, check the scheme-specific setting.
+        let processInfo = ProcessInfo.processInfo
+        for arg in processInfo.arguments {
+            if arg.hasPrefix("--dart-define=") {
+                let parts = arg.components(separatedBy: "=")
+                if parts.count == 3 && parts[0] == "--dart-define" {
+                    environment = parts[2]
+                    print("Environment: \(environment!)")
+                    // Use environment to determine your configuration dynamically
+                    break // You can exit the loop since you found the value
+                }
+            }
+        }
+        
+        
+        print("After loop, Environment: \(environment!)")
+
+    
+        if let path = Bundle.main.path(forResource: "env/" + environment! + "/" + plistFileName, ofType: "plist") {
+            let firbaseOptions = FirebaseOptions(contentsOfFile: path)
+            FirebaseApp.configure(options: firbaseOptions!)
+        } else {
+            // Handle the case where the plist file doesn't exist
+            print("Plist file not found.")
+            exit(0)
+        }
+        
     }
-    GeneratedPluginRegistrant.register(with: self)
+      GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
 }
