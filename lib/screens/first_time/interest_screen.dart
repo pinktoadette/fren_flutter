@@ -8,7 +8,7 @@ import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart' show SystemUiOverlayStyle, rootBundle;
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/steps_counter.dart';
 import 'package:machi_app/screens/home_screen.dart';
@@ -60,74 +60,81 @@ class _InterestScreenState extends State<InterestScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Container(
-      color: Theme.of(context).colorScheme.background,
-      padding: const EdgeInsets.only(left: 40, right: 40),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const StepCounterSignup(step: 3),
-          Text(
-            "Ok, ${UserModel().user.username}. Last step!",
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          Text(
-            _i18n.translate("select_three"),
-            style: Theme.of(context).textTheme.labelMedium,
-          ),
-          Text(
-            _i18n.translate("select_interest"),
-            style: Theme.of(context).textTheme.labelSmall,
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          if (_category.isNotEmpty)
-            SizedBox(
-                width: _width,
-                child: ChipsChoice<String>.multiple(
-                  value: _selectedInterest,
-                  onChanged: (val) => setState(() => _selectedInterest = val),
-                  choiceItems: C2Choice.listFrom<String, String>(
-                    source: _category,
-                    value: (i, v) => v,
-                    label: (i, v) => v,
-                    tooltip: (i, v) => v,
+        child: Scaffold(
+            appBar: AppBar(
+                systemOverlayStyle: SystemUiOverlayStyle(
+                    statusBarColor: Theme.of(context).colorScheme.background)),
+            body: Container(
+              color: Theme.of(context).colorScheme.background,
+              padding: const EdgeInsets.only(left: 40, right: 40),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const StepCounterSignup(step: 3),
+                  Text(
+                    "Ok, ${UserModel().user.username}. Last step!",
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
-                  choiceStyle: C2ChipStyle.filled(
-                    borderRadius: const BorderRadius.all(Radius.circular(20)),
-                    selectedStyle: const C2ChipStyle(
-                      backgroundColor: APP_ACCENT_COLOR,
-                    ),
+                  Text(
+                    _i18n.translate("select_three"),
+                    style: Theme.of(context).textTheme.labelMedium,
                   ),
-                  choiceCheckmark: true,
-                  wrapped: true,
-                )),
-          const Spacer(),
-          Align(
-              alignment: Alignment.bottomCenter,
-              child: ElevatedButton(
-                child: Text(
-                  _i18n.translate("DONE"),
-                ),
-                onPressed: () {
-                  if (_selectedInterest.length != _numSelection) {
-                    Get.snackbar(_i18n.translate("validation_warning"),
-                        _i18n.translate("select_three_interest"),
-                        snackPosition: SnackPosition.TOP,
-                        backgroundColor: APP_WARNING,
-                        colorText: Colors.black);
-                  } else {
-                    _saveUserInterest();
-                  }
-                },
-              )),
-          const SizedBox(
-            height: 50,
-          )
-        ],
-      ),
-    ));
+                  Text(
+                    _i18n.translate("select_interest"),
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  if (_category.isNotEmpty)
+                    SizedBox(
+                        width: _width,
+                        child: ChipsChoice<String>.multiple(
+                          padding: const EdgeInsets.all(0),
+                          value: _selectedInterest,
+                          onChanged: (val) =>
+                              setState(() => _selectedInterest = val),
+                          choiceItems: C2Choice.listFrom<String, String>(
+                            source: _category,
+                            value: (i, v) => v,
+                            label: (i, v) => v,
+                            tooltip: (i, v) => v,
+                          ),
+                          choiceStyle: C2ChipStyle.filled(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(20)),
+                            selectedStyle: const C2ChipStyle(
+                              backgroundColor: APP_ACCENT_COLOR,
+                            ),
+                          ),
+                          choiceCheckmark: true,
+                          wrapped: true,
+                        )),
+                  const Spacer(),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: ElevatedButton(
+                        child: Text(
+                          _i18n.translate("DONE"),
+                        ),
+                        onPressed: () {
+                          if (_selectedInterest.length != _numSelection) {
+                            Get.snackbar(_i18n.translate("validation_warning"),
+                                _i18n.translate("select_three_interest"),
+                                snackPosition: SnackPosition.TOP,
+                                backgroundColor: APP_WARNING,
+                                colorText: Colors.black);
+                          } else {
+                            _saveUserInterest();
+                          }
+                        },
+                      )),
+                  const SizedBox(
+                    height: 50,
+                  )
+                ],
+              ),
+            )));
   }
 
   void _saveUserInterest() async {

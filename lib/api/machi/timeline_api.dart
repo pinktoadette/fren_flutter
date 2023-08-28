@@ -95,6 +95,13 @@ class TimelineApi {
   Map<String, dynamic> _homeDatafromJson(Map<String, dynamic> data) {
     List<Bot> bots = [];
     List<Bot> mybots = [];
+
+    if (data.isEmpty) {
+      return {
+        'machi': bots.toList(),
+        'mymachi': mybots.toList(),
+      };
+    }
     for (var machi in data['machi']) {
       Bot bot = Bot.fromDocument(machi);
       bots.add(bot);

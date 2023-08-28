@@ -9,11 +9,11 @@ import Firebase
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     if FirebaseApp.app() == nil {
+        
         let environment = "dev"
         let plistFileName = "GoogleService-Info"
         
         let path = Bundle.main.path(forResource: "env/" + environment + "/" + plistFileName, ofType: "plist")
-//        let path = Bundle.main.path(forResource: "GoogleService-Info", ofType: "plist")
         let firbaseOptions = FirebaseOptions(contentsOfFile: path!)
         FirebaseApp.configure(options: firbaseOptions!)
     }

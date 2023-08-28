@@ -1,4 +1,5 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
@@ -45,6 +46,20 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
     return SafeArea(
         child: Scaffold(
             key: _scaffoldKey,
+            appBar: AppBar(
+                systemOverlayStyle: const SystemUiOverlayStyle(
+                    statusBarColor: APP_PRIMARY_COLOR),
+                actions: [
+                  TextButton(
+                      onPressed: () {
+                        _onSkippedImage();
+                      },
+                      child: Text(
+                        _i18n.translate("skip"),
+                        style: const TextStyle(
+                            fontSize: 10, color: APP_INVERSE_PRIMARY_COLOR),
+                      ))
+                ]),
             body: Container(
                 padding: const EdgeInsets.only(left: 40, right: 40),
                 child: SingleChildScrollView(
@@ -155,6 +170,30 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
       /// upload to user model
       await UserModel().updateUserData(
           userId: UserModel().user.userId, data: {USER_PROFILE_PHOTO: url});
+
+      Get.offAll(() => const InterestScreen());
+    } catch (err, s) {
+      Get.snackbar(
+        _i18n.translate("Error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Error saving users profile', fatal: false);
+    }
+  }
+
+  void _onSkippedImage() async {
+    try {
+      /// upload this image
+      final botApi = BotApi();
+      // String url =
+      //     await botApi.uploadImageUrl(uri: "", pathLocation: 'profile');
+
+      /// upload to user model
+      await UserModel().updateUserData(
+          userId: UserModel().user.userId, data: {USER_PROFILE_PHOTO: ""});
 
       Get.offAll(() => const InterestScreen());
     } catch (err, s) {

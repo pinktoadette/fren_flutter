@@ -49,6 +49,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return SafeArea(
         child: Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+          systemOverlayStyle: SystemUiOverlayStyle(
+              statusBarColor: Theme.of(context).colorScheme.background)),
       body: ScopedModelDescendant<UserModel>(
           builder: (context, child, userModel) {
         return Container(

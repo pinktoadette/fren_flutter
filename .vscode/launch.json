@@ -57,7 +57,9 @@
             "flutterMode": "debug",
             "args": [
                 "--dart-define",
-                "flavor=prod"
+                "flavor=prod",
+                "--flavor",
+                "prod"
             ],
             "toolArgs": [
                 "--flavor=prod"
