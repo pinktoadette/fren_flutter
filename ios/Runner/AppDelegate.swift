@@ -9,7 +9,6 @@ import Firebase
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
   ) -> Bool {
     if FirebaseApp.app() == nil {
-        FirebaseApp.configure()
 
         let args = CommandLine.arguments
                 
