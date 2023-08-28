@@ -17,13 +17,14 @@ import Firebase
         let plistFileName = "GoogleService-Info"
         
         // Find the "flavor" argument and extract the environment value from terminal args.
-        if let dartDefineIndex = args.firstIndex(where: { $0.hasPrefix("--dart-define=") }) {
-            let dartDefine = args[dartDefineIndex]
-            let parts = dartDefine.components(separatedBy: "=")
-            
-            if parts.count == 3 && parts[0] == "--dart-define" {
-                environment = parts[2]
-                print("Environment: \(environment!)")
+        for arg in args {
+            if arg.hasPrefix("--dart-define=flavor=") {
+                let parts = arg.components(separatedBy: "=")
+                if parts.count == 2 {
+                    environment = parts[1]
+                    print("Environment: \(environment!)")
+                    break // You can exit the loop since you found the value
+                }
             }
         }
         
