@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:io';
+
 import 'package:machi_app/common_main.dart';
 import 'package:machi_app/common_theme.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -20,11 +22,13 @@ import 'package:leak_detector/leak_detector.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel('app.machi.channel');
 
-// Pass the environment variable to iOS
-  channel.invokeMethod('setEnvironment', {'flavor': 'uat'});
+  if (Platform.isIOS) {
+    const MethodChannel channel = MethodChannel('app.machi.channel');
 
+    /// Pass the environment variable to iOS
+    channel.invokeMethod('setEnvironment', {'flavor': 'uat'});
+  }
   await commonInitialization();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));

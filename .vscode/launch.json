@@ -1,6 +1,38 @@
 {
     "version": "0.2.0",
     "configurations": [
+        /// android
+        {
+            "name": "dev",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_dev.dart",
+            "args": [
+                "--flavor", "dev", 
+                "--dart-define", "flavor=dev",
+            ]
+        },
+        {
+            "name": "uat",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main_uat.dart",
+            "args": [
+                "--flavor", "uat", 
+                "--dart-define", "flavor=uat",
+            ]
+        },
+        {
+            "name": "prod",
+            "request": "launch",
+            "type": "dart",
+            "program": "lib/main.dart",
+            "args": [
+                "--flavor", "prod", 
+                "--dart-define", "flavor=prod",
+            ]
+        },
+        /// ios
         {
             "name": "machi (dev)",
             "request": "launch",

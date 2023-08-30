@@ -21,6 +21,14 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+// Properties for Release
+// Uncomment 5/8/2023 https://docs.flutter.dev/deployment/android
+def keystoreProperties = new Properties()
+def keystorePropertiesFile = rootProject.file('key.properties')
+if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 apply plugin: 'com.android.application'
 // START: FlutterFire Configuration
 apply plugin: 'com.google.gms.google-services'
@@ -30,16 +38,9 @@ apply plugin: 'com.google.firebase.crashlytics'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
-// Properties for Release
-// Uncomment 5/8/2023 https://docs.flutter.dev/deployment/android
-def keystoreProperties = new Properties()
-def keystorePropertiesFile = rootProject.file('key.properties')
-if (keystorePropertiesFile.exists()) {
-    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
-}
+android{
 
-android {
-    compileSdkVersion 33 // flutter.compileSdkVersion
+    compileSdkVersion flutter.compileSdkVersion
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -83,21 +84,21 @@ android {
         }
     }
 
-    flavorDimensions "environment"
+    flavorDimensions "flavor"
     productFlavors {
         dev {
-            dimension "environment"
-            applicationIdSuffix ".dev"
+            dimension "flavor"
+            applicationId "app.machi.dev" 
         }
         uat {
-            dimension "environment"
-            applicationIdSuffix ".uat"
+            dimension "flavor"
+            applicationId "app.machi.uat" 
         }
         prod {
-            dimension "environment"
+            dimension "flavor"
+            applicationId "app.machi" 
         }
     }
-    
 }
 
 flutter {

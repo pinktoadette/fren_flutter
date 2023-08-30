@@ -288,6 +288,9 @@ class _StoryPageViewState extends State<StoryPageView> {
               bool hasBackground = !isEmptyString(backgroundUrl);
               double alphaValue =
                   hasBackground ? story?.pages![index].backgroundAlpha ?? 0 : 0;
+              if (backgroundUrl != "") {
+                Image.network(backgroundUrl);
+              }
 
               /// Caption Mode
               if (story!.layout == Layout.CAPTION) {
