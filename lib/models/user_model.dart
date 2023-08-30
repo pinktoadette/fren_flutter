@@ -26,13 +26,7 @@ class UserModel extends Model {
   final _firestore = FirebaseFirestore.instance;
   final _storageRef = FirebaseStorage.instance;
   final _fcm = FirebaseMessaging.instance;
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: [
-      'email',
-      'https://www.googleapis.com/auth/userinfo.email',
-      'https://www.googleapis.com/auth/userinfo.profile'
-    ],
-  );
+  late GoogleSignIn _googleSignIn;
 
   /// Initialize geoflutterfire instance
   final _geo = Geoflutterfire();
@@ -58,8 +52,54 @@ class UserModel extends Model {
   factory UserModel() {
     return _userModel;
   }
-  UserModel._internal();
+  // UserModel._internal();
   // End
+
+  /// set env for google signin
+  UserModel._internal() {
+    const String activeEnv =
+        String.fromEnvironment('flavor', defaultValue: 'dev');
+
+    debugPrint("===== Running Env: $activeEnv ====");
+
+    switch (activeEnv) {
+      case 'dev':
+        _googleSignIn = GoogleSignIn(
+          scopes: [
+            'email',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+          ],
+          clientId:
+              "828462630730-ba43v2hur4l6o4gf5p4djc7rn33dtpst.apps.googleusercontent.com",
+        );
+        break;
+      case 'uat':
+        _googleSignIn = GoogleSignIn(
+          scopes: [
+            'email',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+          ],
+          clientId:
+              "607537888382-ra994jco7f9d5qrcs7h8oe8l47p4fis6.apps.googleusercontent.com",
+        );
+        break;
+      // Add more cases for other environments if needed.
+      default:
+        _googleSignIn = GoogleSignIn(
+          scopes: [
+            'email',
+            'https://www.googleapis.com/auth/userinfo.email',
+            'https://www.googleapis.com/auth/userinfo.profile',
+          ],
+          clientId:
+              "350828450571-rcpa6q64itdohbh2ojssve4ce0jnn157.apps.googleusercontent.com",
+        );
+
+        break;
+    }
+  }
 
   ///*** FirebaseAuth and Firestore Methods ***///
 

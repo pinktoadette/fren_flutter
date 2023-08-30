@@ -22,16 +22,19 @@ environment:
 
 flavorDimensions: flavor
 flavors:
-  dev:
+  machi-dev:
     name: "dev"
+    flavor: "machi-dev"
     flavorDimension: flavor
     main: lib/main_dev.dart
-  uat:
+  machi-uat:
     name: "uat"
+    flavor: "machi-uat"
     flavorDimension: flavor
     main: lib/main_uat.dart
-  prod:
+  machi-prod:
     name: "release"
+    flavor: "machi-prod"
     flavorDimension: flavor
     main: lib/main.dart
 
@@ -60,7 +63,6 @@ dependencies:
   chips_choice: ^3.0.0
   cloud_firestore: ^4.4.5
   dio: ^5.0.1
-  encrypt_shared_pref: ^0.0.1
   firebase_auth: ^4.3.0
   firebase_core: ^2.8.0
   firebase_crashlytics: ^3.3.3
@@ -101,7 +103,7 @@ dependencies:
   rxdart: 0.27.7 # required by geoflutterfire plugin that helps us to query users by geolocation center
   scoped_model: 2.0.0 # Used to Manage Application State
   screenshot: ^2.1.0
-  share: 2.0.4 # Used to share application content in other applications
+  share: 2.0.4
   smooth_page_indicator: ^1.1.0
   url_launcher: 6.1.12 # Used to open link schemes in application or browser
   uuid: ^3.0.7

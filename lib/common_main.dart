@@ -10,11 +10,12 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:machi_app/controller/main_binding.dart';
-import 'package:machi_app/helpers/cache_manager.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
 Future<void> commonInitialization() async {
+  await Firebase.initializeApp();
+
   String activeEnv =
       const String.fromEnvironment('flavor', defaultValue: 'dev');
   debugPrint("===== Running Env: $activeEnv ====");
@@ -80,7 +81,4 @@ Future<void> commonInitialization() async {
 
   // Load Theme
   await ThemeHelper().initialize();
-
-  /// Schedule and Clear Cache
-  await initializeCacheTimestampAndSchedule();
 }
