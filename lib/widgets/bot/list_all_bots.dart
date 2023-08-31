@@ -72,7 +72,6 @@ class _ListPromptBotState extends State<ListPromptBots> {
 
   void _updateSearchTerm(String searchTerm) {
     _searchTerm = searchTerm.trim();
-    _fetchAllBots(0);
     _pagingController.refresh();
   }
 

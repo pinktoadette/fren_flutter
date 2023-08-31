@@ -112,6 +112,7 @@ class _StoryPageViewState extends State<StoryPageView> {
 
   @override
   void didChangeDependencies() {
+    _preloadBackgroundImages();
     super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
   }
@@ -514,5 +515,20 @@ class _StoryPageViewState extends State<StoryPageView> {
         story = val;
       });
     });
+  }
+
+  void _preloadBackgroundImages() async {
+    if (story != null && story?.pages != null) {
+      for (var i = 0; i < story!.pages!.length; i++) {
+        String backgroundUrl = story!.pages![i].backgroundImageUrl ?? "";
+        if (backgroundUrl != "") {
+          try {
+            await precacheImage(NetworkImage(backgroundUrl), context);
+          } catch (err) {
+            debugPrint(err.toString());
+          }
+        }
+      }
+    }
   }
 }

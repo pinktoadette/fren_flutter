@@ -62,33 +62,41 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ...timelineController.machiList.map((bot) {
-                        return Container(
-                            width: size.width / botWidth,
-                            margin: const EdgeInsets.only(left: 10),
-                            child: _showBotAvatar(bot: bot, size: size));
-                      })
-                    ])),
-            if (timelineController.mymachiList.isNotEmpty)
-              _botHeader(_i18n.translate("latest_machi_yours")),
-            if (timelineController.mymachiList.isNotEmpty)
-              SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        _addBot(size),
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      _addBot(size),
+                      if (timelineController.mymachiList.isNotEmpty)
                         ...timelineController.mymachiList.map((bot) {
                           return Container(
-                              width: size.width / 5.5,
+                              width: size.width / botWidth,
+                              margin: const EdgeInsets.only(left: 10),
+                              child: _showBotAvatar(bot: bot, size: size));
+                        }),
+                      if (timelineController.mymachiList.isEmpty)
+                        ...timelineController.machiList.map((bot) {
+                          return Container(
+                              width: size.width / botWidth,
                               margin: const EdgeInsets.only(left: 10),
                               child: _showBotAvatar(bot: bot, size: size));
                         })
-                      ])),
+                    ])),
+            // if (timelineController.mymachiList.isNotEmpty)
+            //   _botHeader(_i18n.translate("latest_machi_yours")),
+            // if (timelineController.mymachiList.isNotEmpty)
+            //   SingleChildScrollView(
+            //       scrollDirection: Axis.horizontal,
+            //       child: Row(
+            //           crossAxisAlignment: CrossAxisAlignment.start,
+            //           mainAxisAlignment: MainAxisAlignment.center,
+            //           children: [
+            //             ...timelineController.mymachiList.map((bot) {
+            //               return Container(
+            //                   width: size.width / 5.5,
+            //                   margin: const EdgeInsets.only(left: 10),
+            //                   child: _showBotAvatar(bot: bot, size: size));
+            //             })
+            //           ])),
             const SizedBox(height: 20),
             const CreateStoryCard(),
             if (userController.user != null) ..._showSubscriptionCard(),

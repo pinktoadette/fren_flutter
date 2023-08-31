@@ -54,6 +54,7 @@ class _SearchTextFieldState extends State<SearchMachiField> {
         },
         style: TextStyle(color: Theme.of(context).colorScheme.primary),
         decoration: InputDecoration(
+          border: InputBorder.none,
           prefixIcon: const Icon(
             Icons.search,
           ),

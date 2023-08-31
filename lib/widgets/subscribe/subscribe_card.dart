@@ -68,7 +68,7 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
   Widget build(BuildContext context) {
     if (!isUserSubscribed) {
       return Container(
-          color: APP_ACCENT_COLOR,
+          color: Theme.of(context).colorScheme.background,
           child: InkWell(
               onTap: () {
                 _showSubscription();
