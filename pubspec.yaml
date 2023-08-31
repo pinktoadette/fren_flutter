@@ -204,11 +204,11 @@ flutter_icons:
   android: true
   ios: true
   remove_alpha_ios: true
-  image_path: "assets/images/logo.png"
+  image_path: "assets/images/dog.png"
 
 # Generate app logo for splash screen
 flutter_native_splash:
   color: "#000000"
-  image: "assets/images/logo.png"
+  image: "assets/images/dog.png"
   android: true
   ios: true   

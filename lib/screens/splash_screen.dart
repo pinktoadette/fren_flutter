@@ -81,7 +81,7 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Center(
         child: SizedBox(
           width: 70,
-          child: Image.asset("assets/images/logo.png"),
+          child: Image.asset("assets/images/dog.png"),
         ),
       ),
     );
