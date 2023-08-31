@@ -67,19 +67,26 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           automaticallyImplyLeading: false,
           leadingWidth: 50,
           centerTitle: false,
-          title: Row(children: [
-            const AppLogo(),
-            Container(
-              margin: const EdgeInsets.only(left: 10),
-              decoration: const BoxDecoration(
-                  color: APP_ACCENT_COLOR,
-                  borderRadius: BorderRadius.all(Radius.circular(10))),
-              padding: const EdgeInsets.all(5),
-              child: Text(
-                _i18n.translate("subscribe_pro"),
-                style: const TextStyle(fontSize: 12, color: Colors.black),
-              ),
-            )
+          title:
+              Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Row(
+              children: [
+                const AppLogo(),
+                Container(
+                  margin: const EdgeInsets.only(left: 10),
+                  decoration: const BoxDecoration(
+                      color: APP_ACCENT_COLOR,
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    _i18n.translate("subscribe_pro"),
+                    style: const TextStyle(fontSize: 12, color: Colors.black),
+                  ),
+                )
+              ],
+            ),
+            RewardAds(
+                text: "Earn", onAdStatus: (e) {}, titleOnly: true, width: 100)
           ]),
         ),
         body: SingleChildScrollView(
@@ -130,7 +137,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
               child: Column(
                 children: [
                   Text(
-                    "Imaginfy",
+                    "AI IMAGE: Imaginfy",
                     style: Theme.of(context).textTheme.headlineMedium,
                   ),
                   Text(
@@ -327,7 +334,6 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ))),
           const SizedBox(height: 30),
-          RewardAds(text: "Earn Ads", onAdStatus: (e) {}),
         ]));
   }
 

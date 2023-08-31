@@ -11,8 +11,15 @@ import 'package:machi_app/widgets/button/loading_button.dart'; // Make sure to i
 
 class RewardAds extends StatefulWidget {
   final String text;
+  final bool titleOnly;
+  final double? width;
   final Function(dynamic data) onAdStatus;
-  const RewardAds({Key? key, required this.text, required this.onAdStatus})
+  const RewardAds(
+      {Key? key,
+      required this.text,
+      required this.onAdStatus,
+      this.titleOnly = false,
+      this.width})
       : super(key: key);
 
   @override
@@ -82,9 +89,10 @@ class _RewardAdsState extends State<RewardAds> {
                 },
                 // Called when a click is recorded for an ad.
                 onAdClicked: (ad) {});
-            if (_isAdShown == false) {
-              _loadAds();
+            if (_ad != null) {
+              _showRewardAd();
             }
+
             debugPrint(
                 '================================================================== $ad loaded.');
             // Keep a reference to the ad so you can show it later.
@@ -129,6 +137,9 @@ class _RewardAdsState extends State<RewardAds> {
         await _purchaseApi.getRewards();
         subscribeController.addCredits(rewardItem.amount.toInt());
       });
+      setState(() {
+        _isLoading = false;
+      });
     } else {
       _loadAds();
       _numRewardedInterstitialLoadAttempts = 0;
@@ -148,13 +159,13 @@ class _RewardAdsState extends State<RewardAds> {
           _showRewardAd();
         },
         child: Card(
-            elevation: 6,
+            elevation: widget.titleOnly == false ? 6 : 0,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.zero,
             ),
             child: Container(
                 padding: const EdgeInsets.only(left: 10, right: 10),
-                width: MediaQuery.of(context).size.width,
+                width: widget.width ?? MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
                     Padding(
@@ -176,10 +187,11 @@ class _RewardAdsState extends State<RewardAds> {
                               color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold),
                         ),
-                        Text(_i18n.translate("watch_ads_earn_2"),
-                            style: TextStyle(
-                                color: Theme.of(context).colorScheme.primary,
-                                fontSize: 14)),
+                        if (widget.titleOnly == false)
+                          Text(_i18n.translate("watch_ads_earn_2"),
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                  fontSize: 14)),
                       ],
                     ),
                   ],

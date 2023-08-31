@@ -553,7 +553,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
                   child: Text(_i18n.translate("OK"))),
             ],
           );
-        });
+        }).whenComplete(() => Navigator.of(context).pop());
   }
 
   void _aiImage() {
