@@ -473,7 +473,7 @@ class _BotChatScreenState extends State<BotChatScreen> {
 
       _addMessages(newMessage);
     } on DioException catch (error) {
-      String errorMessage = "Sorry, got an error 😕. Try again.";
+      String errorMessage = "Sorry, got an error 😕.";
 
       if (error.response != null &&
           error.response is Map<String, dynamic> &&

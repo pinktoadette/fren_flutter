@@ -226,10 +226,12 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       _isLoading = true;
     });
     try {
+      /// if it is profile, do not debit to subscribe.
       final botApi = BotApi();
       List<dynamic> imageUrl = await botApi.machiImage(
           text: "${_promptController.text} $_appendPrompt",
           numImages: widget.numImages ?? 1,
+          isSubscribed: widget.isProfile == true ? false : true,
           cancelToken: _cancelToken);
       setState(() {
         _items = imageUrl;
