@@ -31,7 +31,6 @@ class _RewardAdsState extends State<RewardAds> {
 
   RewardedAd? _ad;
   bool _isAdLoaded = false;
-  bool _isAdShown = false;
   bool _isLoading = false;
   int _numRewardedInterstitialLoadAttempts = 0;
   static int maxFailedLoadAttempts = 3;
@@ -73,7 +72,6 @@ class _RewardAdsState extends State<RewardAds> {
                 onAdShowedFullScreenContent: (ad) {},
                 // Called when an impression occurs on the ad.
                 onAdImpression: (ad) {
-                  _isAdShown = true;
                   _isLoading = false;
                 },
                 // Called when the ad failed to show full screen content.
@@ -84,7 +82,6 @@ class _RewardAdsState extends State<RewardAds> {
                 // Called when the ad dismissed full screen content.
                 onAdDismissedFullScreenContent: (ad) {
                   // Dispose the ad here to free resources.
-                  _isAdShown = false;
                   ad.dispose();
                 },
                 // Called when a click is recorded for an ad.

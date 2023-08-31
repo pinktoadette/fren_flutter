@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "LaunchImage-1125@3x~iphoneX-portrait_1125x2436.png",
+      "filename" : "LaunchImage-568h@2x~iphone_640x1136.png",
       "idiom" : "iphone",
       "scale" : "1x"
     },
     {
-      "filename" : "LaunchImage-Portrait~ipad_768x1024.png",
+      "filename" : "LaunchImage-Portrait@2x~ipad_1668x2224.png",
       "idiom" : "iphone",
       "scale" : "2x"
     },
     {
-      "filename" : "LaunchImage-Portrait@2x~ipad_1536x2008.png",
+      "filename" : "LaunchImage.png",
       "idiom" : "iphone",
       "scale" : "3x"
     }

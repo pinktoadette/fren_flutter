@@ -288,10 +288,6 @@ class _StoryPageViewState extends State<StoryPageView> {
               bool hasBackground = !isEmptyString(backgroundUrl);
               double alphaValue =
                   hasBackground ? story?.pages![index].backgroundAlpha ?? 0 : 0;
-              if (backgroundUrl != "") {
-                /// Preload the image
-                Image.network(backgroundUrl);
-              }
 
               /// Caption Mode
               if (story!.layout == Layout.CAPTION) {
@@ -454,6 +450,23 @@ class _StoryPageViewState extends State<StoryPageView> {
     return widgetScript;
   }
 
+  BoxDecoration _boxDecoration(
+      {required String backgroundUrl, required double alphaValue}) {
+    return BoxDecoration(
+        image: DecorationImage(
+            colorFilter: ColorFilter.mode(
+                const Color.fromARGB(255, 0, 0, 0).withOpacity(alphaValue),
+                BlendMode.darken),
+            image: backgroundUrl != ""
+                ? ImageCacheWrapper(backgroundUrl)
+                : Image.asset(
+                    "assets/images/blank.png",
+                    scale: 0.2,
+                    width: 100,
+                  ).image,
+            fit: BoxFit.cover));
+  }
+
   /// Shows action tools when story status is not published.
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
@@ -501,22 +514,5 @@ class _StoryPageViewState extends State<StoryPageView> {
         story = val;
       });
     });
-  }
-
-  BoxDecoration _boxDecoration(
-      {required String backgroundUrl, required double alphaValue}) {
-    return BoxDecoration(
-        image: DecorationImage(
-            colorFilter: ColorFilter.mode(
-                const Color.fromARGB(255, 0, 0, 0).withOpacity(alphaValue),
-                BlendMode.darken),
-            image: backgroundUrl != ""
-                ? ImageCacheWrapper(backgroundUrl)
-                : Image.asset(
-                    "assets/images/blank.png",
-                    scale: 0.2,
-                    width: 100,
-                  ).image,
-            fit: BoxFit.cover));
   }
 }
