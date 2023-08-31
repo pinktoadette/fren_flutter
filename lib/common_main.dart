@@ -15,7 +15,7 @@ import 'package:purchases_flutter/purchases_flutter.dart';
 Future<void> commonInitialization() async {
   await Firebase.initializeApp();
 
-  const activeEnv = String.fromEnvironment('flavor', defaultValue: 'dev');
+  const activeEnv = String.fromEnvironment('flavor', defaultValue: 'prod');
   debugPrint("===== Running Env: $activeEnv ====");
 
   await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(true);
