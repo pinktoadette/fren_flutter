@@ -1,25 +1,24 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:machi_app/api/machi/user_api.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/app_model.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:machi_app/plugins/geoflutterfire/geoflutterfire.dart';
-import 'package:get/get.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-
 import 'package:scoped_model/scoped_model.dart';
-import 'package:machi_app/constants/constants.dart';
-import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 
 class UserModel extends Model {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;

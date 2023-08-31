@@ -1,22 +1,21 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:machi_app/common_main.dart';
-import 'package:machi_app/common_theme.dart';
-import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/helpers/server_status.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
-import 'package:machi_app/models/user_model.dart';
-import 'package:machi_app/models/app_model.dart';
-import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/screens/server_down.dart';
-import 'package:machi_app/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:scoped_model/scoped_model.dart';
 import 'package:get/get.dart';
-
 import 'package:leak_detector/leak_detector.dart';
+import 'package:machi_app/common_main.dart';
+import 'package:machi_app/common_theme.dart';
+import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/helpers/app_localizations.dart';
+import 'package:machi_app/helpers/server_status.dart';
+import 'package:machi_app/helpers/theme_helper.dart';
+import 'package:machi_app/models/app_model.dart';
+import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/server_down.dart';
+import 'package:machi_app/screens/splash_screen.dart';
+import 'package:scoped_model/scoped_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

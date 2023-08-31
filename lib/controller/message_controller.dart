@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:machi_app/constants/constants.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/constants/constants.dart';
 
 // Message controller controls the message in the current active room
 // Message controller receives initial message from chatroom controller

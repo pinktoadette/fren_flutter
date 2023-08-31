@@ -1,10 +1,10 @@
 import 'package:dio/dio.dart';
+import 'package:get/get.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:machi_app/api/machi/comment_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
-import 'package:get/get.dart';
 
 /// tracks replies to who
 /// listens for list of comment widget for pagination

@@ -1,7 +1,6 @@
 import 'dart:developer';
-
-import 'package:machi_app/constants/constants.dart';
 import 'package:get/get.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/datas/interactive.dart';
 
 class InteractiveBoardController extends GetxController implements GetxService {

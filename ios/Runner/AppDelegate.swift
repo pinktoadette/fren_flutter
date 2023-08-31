@@ -8,7 +8,7 @@ import UIKit
     // Initialize Firebase when the app launches.
     private func initializeFirebase(completion: @escaping () -> Void) {
         if FirebaseApp.app() == nil {
-            var environment: String? = "prod"
+            var environment: String? = "dev"
             let plistFileName = "GoogleService-Info"
 
             let controller = window?.rootViewController as! FlutterViewController

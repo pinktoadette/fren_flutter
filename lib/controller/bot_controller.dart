@@ -1,8 +1,8 @@
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/bot_api.dart';
 import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/helpers/date_format.dart';
-import 'package:get/get.dart';
 import 'package:machi_app/datas/bot.dart';
+import 'package:machi_app/helpers/date_format.dart';
 
 Bot frankie = Bot(
     botId: DEFAULT_BOT_ID,

@@ -1,7 +1,8 @@
 import 'dart:async';
 import 'dart:math';
-
 import 'package:dio/dio.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:get/get.dart';
 import 'package:machi_app/api/machi/message_api.dart';
 import 'package:machi_app/controller/bot_controller.dart';
 import 'package:machi_app/datas/bot.dart';
@@ -9,8 +10,6 @@ import 'package:machi_app/datas/chatroom.dart';
 import 'package:machi_app/helpers/date_format.dart';
 import 'package:machi_app/helpers/message_format.dart';
 import 'package:machi_app/models/user_model.dart';
-import 'package:get/get.dart';
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:web_socket_channel/web_socket_channel.dart';
 
 // Chat controller controls the roomlist and the room
