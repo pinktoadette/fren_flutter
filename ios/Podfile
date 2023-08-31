@@ -8,17 +8,17 @@ ENV['COCOAPODS_DISABLE_STATS'] = 'true'
 
 project 'Runner', {
   'Debug' => :debug,
-  'Debug-dev' => :debug,
-  'Debug-uat' => :debug,
-  'Debug-prod' => :debug,
+  'Debug-machi-dev' => :debug,
+  'Debug-machi-uat' => :debug,
+  'Debug-machi-prod' => :debug,
   'Profile' => :release,
-  'Profile-dev' => :release,
-  'Profile-uat' => :release,
-  'Profile-prod' => :release,
-  'Release' => :release,
-  'Release-dev' => :release,
-  'Release-uat' => :release,
-  'Release-prod' => :release,
+  'Profile-machi-dev' => :release,
+  'Profile-machi-uat' => :release,
+  'Profile-machi-prod' => :release,
+  'Release-machi' => :release,
+  'Release-machi-dev' => :release,
+  'Release-machi-uat' => :release,
+  'Release-machi-prod' => :release,
 }
 
 

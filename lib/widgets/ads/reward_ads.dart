@@ -6,7 +6,8 @@ import 'package:machi_app/api/machi/purchases_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
-import 'package:machi_app/widgets/ads/ad_helper.dart'; // Make sure to import your AdManager with interstitialAdUnitId defined
+import 'package:machi_app/widgets/ads/ad_helper.dart';
+import 'package:machi_app/widgets/button/loading_button.dart'; // Make sure to import your AdManager with interstitialAdUnitId defined
 
 class RewardAds extends StatefulWidget {
   final String text;
@@ -24,6 +25,7 @@ class _RewardAdsState extends State<RewardAds> {
   RewardedAd? _ad;
   bool _isAdLoaded = false;
   bool _isAdShown = false;
+  bool _isLoading = false;
   int _numRewardedInterstitialLoadAttempts = 0;
   static int maxFailedLoadAttempts = 3;
   late AppLocalizations _i18n;
@@ -65,6 +67,7 @@ class _RewardAdsState extends State<RewardAds> {
                 // Called when an impression occurs on the ad.
                 onAdImpression: (ad) {
                   _isAdShown = true;
+                  _isLoading = false;
                 },
                 // Called when the ad failed to show full screen content.
                 onAdFailedToShowFullScreenContent: (ad, err) {
@@ -102,6 +105,9 @@ class _RewardAdsState extends State<RewardAds> {
               if (error.code == 3) {
                 message = _i18n.translate("watch_ads_limit");
               }
+              setState(() {
+                _isLoading = false;
+              });
               Get.snackbar(_i18n.translate("error"), message,
                   snackPosition: SnackPosition.TOP,
                   backgroundColor: APP_ERROR,
@@ -135,7 +141,12 @@ class _RewardAdsState extends State<RewardAds> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-        onTap: () => _showRewardAd(),
+        onTap: () {
+          setState(() {
+            _isLoading = true;
+          });
+          _showRewardAd();
+        },
         child: Card(
             elevation: 6,
             shape: const RoundedRectangleBorder(
@@ -146,13 +157,15 @@ class _RewardAdsState extends State<RewardAds> {
                 width: MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
-                    const Padding(
-                        padding: EdgeInsets.only(
+                    Padding(
+                        padding: const EdgeInsets.only(
                             top: 20, bottom: 20, left: 10, right: 10),
-                        child: Icon(
-                          Iconsax.coin,
-                          color: APP_ACCENT_COLOR,
-                        )),
+                        child: _isLoading
+                            ? loadingButton(size: 16)
+                            : const Icon(
+                                Iconsax.coin,
+                                color: APP_ACCENT_COLOR,
+                              )),
                     Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       crossAxisAlignment: CrossAxisAlignment.start,

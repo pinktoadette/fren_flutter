@@ -90,7 +90,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       useTheme: false),
                 ),
               ),
-              const Spacer(),
               if (index != steps.length - 1)
                 Align(
                   alignment: Alignment.bottomCenter,
@@ -100,9 +99,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     height: 50,
                   ),
                 ),
-              const SizedBox(
-                height: 30,
-              )
+              const Spacer(),
             ],
           )),
     );

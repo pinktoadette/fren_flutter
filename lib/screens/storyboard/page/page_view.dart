@@ -288,6 +288,10 @@ class _StoryPageViewState extends State<StoryPageView> {
               bool hasBackground = !isEmptyString(backgroundUrl);
               double alphaValue =
                   hasBackground ? story?.pages![index].backgroundAlpha ?? 0 : 0;
+              if (backgroundUrl != "") {
+                /// Preload the image
+                Image.network(backgroundUrl);
+              }
 
               /// Caption Mode
               if (story!.layout == Layout.CAPTION) {
@@ -298,6 +302,16 @@ class _StoryPageViewState extends State<StoryPageView> {
                         backgroundUrl: backgroundUrl, alphaValue: alphaValue),
                     child: Stack(
                       children: [
+                        if (backgroundUrl == "" &&
+                            story!.status == StoryStatus.UNPUBLISHED)
+                          Center(
+                            child: TextButton(
+                                onPressed: () async {
+                                  _onEditStoryPressed();
+                                },
+                                child: const Text(
+                                    "Click Edit to Edit Story and Add Image")),
+                          ),
                         Positioned(
                             bottom: 120,
                             child: PageTextCaption(
@@ -463,18 +477,7 @@ class _StoryPageViewState extends State<StoryPageView> {
         if (story?.status != StoryStatus.PUBLISHED)
           IconButton(
               onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditPage(
-                      passStory: story ?? widget.story,
-                    ),
-                  ),
-                ).then((val) {
-                  setState(() {
-                    story = val;
-                  });
-                });
+                _onEditStoryPressed();
               },
               icon: Icon(
                 Iconsax.edit,
@@ -483,6 +486,21 @@ class _StoryPageViewState extends State<StoryPageView> {
               ))
       ],
     );
+  }
+
+  void _onEditStoryPressed() async {
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditPage(
+          passStory: story ?? widget.story,
+        ),
+      ),
+    ).then((val) {
+      setState(() {
+        story = val;
+      });
+    });
   }
 
   BoxDecoration _boxDecoration(

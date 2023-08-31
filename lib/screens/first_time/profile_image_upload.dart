@@ -187,7 +187,7 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
   void _onSkippedImage() async {
     try {
       /// upload this image
-      final botApi = BotApi();
+      // final botApi = BotApi();
       // String url =
       //     await botApi.uploadImageUrl(uri: "", pathLocation: 'profile');
 

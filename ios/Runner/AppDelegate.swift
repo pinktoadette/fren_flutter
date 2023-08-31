@@ -10,21 +10,9 @@ import UIKit
         if FirebaseApp.app() == nil {
             var environment: String? = "dev"
             let plistFileName = "GoogleService-Info"
-
-            let controller = window?.rootViewController as! FlutterViewController
-            let channel = FlutterMethodChannel(name: "app.myapp.channel", binaryMessenger: controller.binaryMessenger)
             
-            channel.setMethodCallHandler { (call, result) in
-                print ("in setMethodCall")
-                if let arguments = call.arguments as? [String: Any], let flavor = arguments["flavor"] as? String {
-                    // 'flavor' now contains "prod"
-                    print("********************* FLAVA \(flavor)")
-                    environment = flavor;
-                }
-            }
-
             let processInfo = ProcessInfo.processInfo
-            
+            print("*******************  ProcessInfo.processInfo.environment: \(processInfo.environment)  *******************")
             for arg in processInfo.arguments {
                 if arg.hasPrefix("--dart-define=") {
                   print("Has flavors: \(processInfo)")
@@ -33,6 +21,16 @@ import UIKit
                         environment = parts[2]
                         print("Processing Info Environment: \(environment!)")
                         break
+                    }
+                }
+                /// @todo Probably not the right way, but spending too much time and running out of ideas on getting env
+                let components = arg.components(separatedBy: "/")
+                if let lastComponent = components.last {
+                    let parts = lastComponent.components(separatedBy: " ")
+                    if let runnerWord = parts.last, runnerWord == "dev" || runnerWord == "prod"  || runnerWord == "uat" {
+                        print("Extracted Env: \(runnerWord)")
+                        environment = runnerWord
+                        break // Stop processing after the first matching argument
                     }
                 }
             }

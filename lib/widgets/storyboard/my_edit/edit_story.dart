@@ -71,37 +71,39 @@ class _EditPageState extends State<EditPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          centerTitle: false,
-          leadingWidth: 50,
-          title: Text(
-            _i18n.translate("creative_mix_edit"),
-            style: Theme.of(context).textTheme.headlineMedium,
-          ),
-          leading: BackButton(
-            color: Theme.of(context).primaryColor,
-            onPressed: () async {
-              _onSaveAllSequence(); // on last page, if page didn't move
-              Navigator.pop(context, story);
-            },
-          ),
-          actions: [
-            Container(
-                padding: const EdgeInsets.all(10.0),
-                child: TextButton(
-                    onPressed: () {
-                      Get.to(
-                          () => StoryPageView(story: story, isPreview: true));
-                    },
-                    child: Text(_i18n.translate("creative_mix_preview"))))
-          ],
-        ),
-        body: Stack(
-          children: [
-            ..._showPageWidget(),
-          ],
-        ));
+    return WillPopScope(
+        onWillPop: () {
+          return Future.value(true);
+        },
+        child: Scaffold(
+            appBar: AppBar(
+              centerTitle: false,
+              leadingWidth: 50,
+              title: Text(
+                _i18n.translate("creative_mix_edit"),
+                style: Theme.of(context).textTheme.headlineMedium,
+              ),
+              leading: BackButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () async {
+                  _onSaveAllSequence(); // on last page, if page didn't move
+                  Navigator.pop(context, story);
+                },
+              ),
+              actions: [
+                Container(
+                    padding: const EdgeInsets.all(10.0),
+                    child: TextButton(
+                        onPressed: () {
+                          Get.to(() =>
+                              StoryPageView(story: story, isPreview: true));
+                        },
+                        child: Text(_i18n.translate("creative_mix_preview"))))
+              ],
+            ),
+            body: Stack(
+              children: _showPageWidget(),
+            )));
   }
 
   List<Widget> _showPageWidget() {

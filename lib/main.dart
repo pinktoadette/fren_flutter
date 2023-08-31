@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,12 +21,13 @@ import 'package:scoped_model/scoped_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel('app.machi.channel');
 
-  /// Pass the environment variable to iOS to set GoogleService-Info.plist
-  /// In ios: GoogleService-Info.plist is read at AppDelegate and in Buildscripts
-  /// Url schemes contains 1 array for 3 reverse client Id from firebase
-  channel.invokeMethod('setEnvironment', {'flavor': 'prod'});
+  if (Platform.isIOS) {
+    const MethodChannel channel = MethodChannel('app.machi.channel');
+
+    /// Pass the environment variable to iOS
+    channel.invokeMethod('setEnvironment', {'flavor': 'prod'});
+  }
 
   await commonInitialization();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])

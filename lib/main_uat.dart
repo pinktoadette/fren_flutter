@@ -1,5 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,11 +21,13 @@ import 'package:scoped_model/scoped_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  const MethodChannel channel = MethodChannel('app.machi.channel');
 
-// Pass the environment variable to iOS
-  channel.invokeMethod('setEnvironment', {'flavor': 'uat'});
+  if (Platform.isIOS) {
+    const MethodChannel channel = MethodChannel('app.machi.channel');
 
+    /// Pass the environment variable to iOS
+    channel.invokeMethod('setEnvironment', {'flavor': 'uat'});
+  }
   await commonInitialization();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((value) => runApp(const MyApp()));
