@@ -16,7 +16,7 @@ class Frankloader extends StatelessWidget {
         child: Column(
       children: [
         Lottie.asset(
-          'assets/lottie/pup.json',
+          'assets/lottie/astronaut.json',
           width: width ?? 200,
           height: height ?? 200,
         ),

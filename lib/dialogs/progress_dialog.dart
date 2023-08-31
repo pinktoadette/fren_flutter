@@ -29,7 +29,7 @@ class ProgressDialog {
                 children: [
                   Frankloader(
                     text: message,
-                    height: 100,
+                    height: 250,
                   ),
                 ],
               )

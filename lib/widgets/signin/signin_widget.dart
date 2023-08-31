@@ -66,7 +66,7 @@ class _SignInWidgetState extends State<SignInWidget> {
         style: Theme.of(context).textTheme.bodyLarge,
       ),
       if (isLoading == true)
-        Lottie.asset('assets/lottie/pup.json', height: 60)
+        Lottie.asset('assets/lottie/astronaut.json', height: 60)
       else
         const SizedBox(height: 60),
       SignInButton(Buttons.Google,

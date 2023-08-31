@@ -8,7 +8,7 @@ import UIKit
     // Initialize Firebase when the app launches.
     private func initializeFirebase(completion: @escaping () -> Void) {
         if FirebaseApp.app() == nil {
-            var environment: String? = "dev"
+            var environment: String? = "prod"
             let plistFileName = "GoogleService-Info"
             
             let processInfo = ProcessInfo.processInfo
