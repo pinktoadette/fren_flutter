@@ -80,7 +80,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
       body: Center(
         child: SizedBox(
-          width: 150,
+          width: 200,
           child: Image.asset("assets/images/astronaut.png"),
         ),
       ),

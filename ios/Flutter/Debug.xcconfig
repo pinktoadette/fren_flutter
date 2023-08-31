@@ -1,6 +1,6 @@
 #include? "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug.xcconfig"
 #include "Generated.xcconfig"
-#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-dev.xcconfig"
-#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-uat.xcconfig"
-#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-prod.xcconfig"
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-machi-dev.xcconfig"
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-machi-uat.xcconfig"
+#include "Pods/Target Support Files/Pods-Runner/Pods-Runner.debug-machi-prod.xcconfig"
 
