@@ -136,7 +136,7 @@ class _StoryPageViewState extends State<StoryPageView> {
                 const Size.fromHeight(80), // Set the desired height here
             child: AppBar(
               centerTitle: false,
-              backgroundColor: Colors.white24,
+              backgroundColor: Colors.transparent,
               title: Container(
                 padding: const EdgeInsets.only(
                   top: 20,

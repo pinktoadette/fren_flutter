@@ -62,10 +62,6 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const SizedBox(
-                        width: 20,
-                      ),
-                      _addBot(size),
                       ...timelineController.machiList.map((bot) {
                         return Container(
                             width: size.width / botWidth,
@@ -81,9 +77,13 @@ class _LatestMachiWidgetState extends State<LatestWidget> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
+                      const SizedBox(
+                        width: 20,
+                      ),
+                      _addBot(size),
                       ...timelineController.mymachiList.map((bot) {
                         return Container(
-                            width: size.width / 4.5,
+                            width: size.width / 5.5,
                             margin: const EdgeInsets.only(left: 10),
                             child: _showBotAvatar(bot: bot, size: size));
                       })

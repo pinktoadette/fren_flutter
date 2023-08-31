@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/helpers/navigation_helper.dart';
@@ -49,7 +50,7 @@ class _CreateStoryCardState extends State<CreateStoryCard> {
             borderRadius: BorderRadius.zero,
           ),
           child: Container(
-              color: Colors.white,
+              color: APP_ACCENT_COLOR,
               width: width,
               padding: const EdgeInsets.only(bottom: 20, top: 20),
               child: InkWell(

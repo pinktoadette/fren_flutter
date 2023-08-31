@@ -48,7 +48,7 @@ class _StoryPageInfoWidgetState extends State<StoryPageInfoWidget> {
     Size size = MediaQuery.of(context).size;
 
     return Container(
-        width: 80,
+        width: 50,
         height: size.height / 2,
         padding: const EdgeInsets.only(right: 7),
         child: Column(
