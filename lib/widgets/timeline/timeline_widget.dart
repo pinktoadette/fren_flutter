@@ -4,6 +4,7 @@ import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/announcement/inline_survey.dart';
 import 'package:machi_app/widgets/common/no_data.dart';
 import 'package:machi_app/widgets/storyboard/storyboard_item_widget.dart';
@@ -60,7 +61,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                 pagingController: timelineController.pagingController,
                 builderDelegate: PagedChildBuilderDelegate<Storyboard>(
                     firstPageProgressIndicatorBuilder: (_) =>
-                        const SizedBox.shrink(),
+                        const Frankloader(),
                     newPageProgressIndicatorBuilder: (_) =>
                         const SizedBox.shrink(),
                     noItemsFoundIndicatorBuilder: (_) =>

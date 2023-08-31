@@ -69,8 +69,9 @@ class UserModel extends Model {
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
           ],
-          clientId:
-              "828462630730-ba43v2hur4l6o4gf5p4djc7rn33dtpst.apps.googleusercontent.com",
+          clientId: Platform.isIOS
+              ? "828462630730-ba43v2hur4l6o4gf5p4djc7rn33dtpst.apps.googleusercontent.com"
+              : null,
         );
         break;
       case 'uat':
@@ -80,8 +81,9 @@ class UserModel extends Model {
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
           ],
-          clientId:
-              "607537888382-ra994jco7f9d5qrcs7h8oe8l47p4fis6.apps.googleusercontent.com",
+          clientId: Platform.isIOS
+              ? "607537888382-ra994jco7f9d5qrcs7h8oe8l47p4fis6.apps.googleusercontent.com"
+              : null,
         );
         break;
       // Add more cases for other environments if needed.
@@ -92,8 +94,9 @@ class UserModel extends Model {
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
           ],
-          clientId:
-              "350828450571-rcpa6q64itdohbh2ojssve4ce0jnn157.apps.googleusercontent.com",
+          clientId: Platform.isIOS
+              ? "350828450571-fnfe7b8ui4pph8ctfhimg2i9tpt3brg2.apps.googleusercontent.com"
+              : null,
         );
 
         break;
