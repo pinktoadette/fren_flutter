@@ -36,6 +36,7 @@ flavors:
   prod:
     name: "prod"
     flavor: "prod"
+    dimension: "flavor"
     flavorDimension: flavor
     main: lib/main.dart
   # ios
