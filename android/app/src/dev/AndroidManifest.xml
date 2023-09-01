@@ -46,7 +46,7 @@
         android:usesCleartextTraffic="true"
         android:label="Machi"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher_foreground">
         
             <!-- android:name=".MainActivity" -->
             <!-- android:name="com.ryanheise.audioservice.AudioServiceActivity"  -->
