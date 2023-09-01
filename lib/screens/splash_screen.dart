@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/onboarding.dart';
