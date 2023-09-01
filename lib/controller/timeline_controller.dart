@@ -58,6 +58,9 @@ class TimelineController extends GetxController {
 
   Future<void> fetchPage(int pageKey, {bool refresh = false}) async {
     try {
+      if (refresh == true) {
+        pagingController.itemList?.clear();
+      }
       final newItems =
           await _timelineApi.getTimeline(_pageSize, pageKey, refresh);
       final isLastPage = newItems.length < _pageSize;
