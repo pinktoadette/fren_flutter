@@ -137,7 +137,7 @@ class _MyAppState extends State<MyApp> {
               ? const SplashScreen()
               : const ServerPage(),
           themeMode: ThemeHelper().themeMode,
-          theme: MainTheme.darkTheme(),
+          theme: MainTheme.lightTheme(),
           darkTheme: MainTheme.darkTheme(),
         ),
       ),
