@@ -559,10 +559,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
   void _aiImage() {
     Get.to(() => ImageGenerator(
           story: story,
-          onError: (errorMessage) {
+          onError: (errorMessage) async {
+            await subscribeController.getCredits();
             Get.snackbar(
               _i18n.translate("error"),
-              _i18n.translate(errorMessage),
+              errorMessage,
               snackPosition: SnackPosition.TOP,
               backgroundColor: APP_ERROR,
             );
