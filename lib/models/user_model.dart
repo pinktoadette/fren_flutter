@@ -60,46 +60,39 @@ class UserModel extends Model {
         String.fromEnvironment('flavor', defaultValue: 'dev');
 
     debugPrint("===== Running Env: $activeEnv ====");
-
-    switch (activeEnv) {
-      case 'dev':
-        _googleSignIn = GoogleSignIn(
-          scopes: [
-            'email',
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile',
-          ],
-          clientId: Platform.isIOS
-              ? "828462630730-4td8phsvl7ojes7huj0ou28ecr60ft47.apps.googleusercontent.com"
-              : null,
-        );
-        break;
-      case 'uat':
-        _googleSignIn = GoogleSignIn(
-          scopes: [
-            'email',
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile',
-          ],
-          clientId: Platform.isIOS
-              ? "607537888382-ra994jco7f9d5qrcs7h8oe8l47p4fis6.apps.googleusercontent.com"
-              : null,
-        );
-        break;
-      // Add more cases for other environments if needed.
-      default:
-        _googleSignIn = GoogleSignIn(
-          scopes: [
-            'email',
-            'https://www.googleapis.com/auth/userinfo.email',
-            'https://www.googleapis.com/auth/userinfo.profile',
-          ],
-          clientId: Platform.isIOS
-              ? "350828450571-rcpa6q64itdohbh2ojssve4ce0jnn157.apps.googleusercontent.com"
-              : null,
-        );
-
-        break;
+    if (activeEnv.contains('prod')) {
+      _googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+        ],
+        clientId: Platform.isIOS
+            ? "828462630730-4td8phsvl7ojes7huj0ou28ecr60ft47.apps.googleusercontent.com"
+            : null,
+      );
+    } else if (activeEnv.contains('prod')) {
+      _googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+        ],
+        clientId: Platform.isIOS
+            ? "607537888382-ra994jco7f9d5qrcs7h8oe8l47p4fis6.apps.googleusercontent.com"
+            : null,
+      );
+    } else {
+      _googleSignIn = GoogleSignIn(
+        scopes: [
+          'email',
+          'https://www.googleapis.com/auth/userinfo.email',
+          'https://www.googleapis.com/auth/userinfo.profile',
+        ],
+        clientId: Platform.isIOS
+            ? "350828450571-rcpa6q64itdohbh2ojssve4ce0jnn157.apps.googleusercontent.com"
+            : null,
+      );
     }
   }
 

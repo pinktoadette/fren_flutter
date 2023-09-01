@@ -47,11 +47,12 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: SizedBox(
-        height: height,
-        child: const Frankloader(
-          width: 400,
-        ),
-      ),
+          height: height,
+          child: const Center(
+            child: Frankloader(
+              width: 400,
+            ),
+          )),
     );
   }
 }

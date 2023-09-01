@@ -15,11 +15,11 @@ class ApiConfiguration {
     String activeEnv =
         const String.fromEnvironment('flavor', defaultValue: 'prod');
 
-    if (activeEnv == 'prod') {
+    if (activeEnv.contains('prod')) {
       return prod.PY_API;
-    } else if (activeEnv == 'uat') {
+    } else if (activeEnv.contains('uat')) {
       return uat.PY_API;
-    } else if (activeEnv == 'dev') {
+    } else if (activeEnv.contains('dev')) {
       return dev.PY_API;
     }
 

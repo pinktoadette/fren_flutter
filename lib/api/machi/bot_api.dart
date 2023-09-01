@@ -150,7 +150,7 @@ class BotApi {
           data: {
             "text": text,
             "numImages": numImages,
-            "subscribe": isSubscribed ?? false
+            "isSubscribe": isSubscribed ?? false
           },
           cancelToken: cancelToken);
       return response.data;

@@ -169,7 +169,7 @@ class _RewardAdsState extends State<RewardAds> {
                         padding: const EdgeInsets.only(
                             top: 20, bottom: 20, left: 10, right: 10),
                         child: _isLoading
-                            ? loadingButton(size: 16)
+                            ? loadingButton(size: 16, color: APP_ACCENT_COLOR)
                             : const Icon(
                                 Iconsax.coin,
                                 color: APP_ACCENT_COLOR,

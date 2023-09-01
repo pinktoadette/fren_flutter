@@ -34,11 +34,12 @@ Future<void> commonInitialization() async {
   /// Revenue CAt
   late PurchasesConfiguration configuration;
 
-  if (Platform.isAndroid | Platform.isIOS) {
-    /// Revenue cat for subscription and payments
-    await Purchases.setLogLevel(LogLevel.info);
+  /// Revenue cat for subscription and payments
+  await Purchases.setLogLevel(
+      activeEnv.contains('prod') ? LogLevel.debug : LogLevel.info);
 
-    /// Revenue cat
+  if (Platform.isAndroid) {
+    /// Google Play Revenue cat
     configuration = PurchasesConfiguration('goog_EutdJZovasmfuBudvjOKZpEkGcx');
 
     /// firebase
@@ -53,10 +54,9 @@ Future<void> commonInitialization() async {
   await MobileAds.instance.initialize();
 
   /// Update the iOS foreground notification presentation options to allow
-  /// heads up notifications.
   /// Check iOS device
   if (Platform.isIOS) {
-    /// Revenue cat setup
+    /// Apple Revenue cat setup
     configuration = PurchasesConfiguration('appl_StnVJbAaVHGAiEcqkJSBLnlhgFp');
 
     await FirebaseMessaging.instance
