@@ -13,6 +13,7 @@ import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
+import 'package:machi_app/widgets/animations/loader.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -76,12 +77,15 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
-            const SystemUiOverlayStyle(statusBarColor: APP_TERTIARY),
+            const SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
-      body: Center(
+      backgroundColor: Colors.black,
+      body: const Center(
         child: SizedBox(
-          width: 200,
-          child: Image.asset("assets/images/astronaut.png"),
+          width: 400,
+          child: Frankloader(
+            width: 400,
+          ),
         ),
       ),
     );

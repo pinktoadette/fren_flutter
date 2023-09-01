@@ -57,7 +57,7 @@ class UserModel extends Model {
   /// set env for google signin
   UserModel._internal() {
     const String activeEnv =
-        String.fromEnvironment('flavor', defaultValue: 'prod');
+        String.fromEnvironment('flavor', defaultValue: 'dev');
 
     debugPrint("===== Running Env: $activeEnv ====");
 
@@ -70,7 +70,7 @@ class UserModel extends Model {
             'https://www.googleapis.com/auth/userinfo.profile',
           ],
           clientId: Platform.isIOS
-              ? "828462630730-ba43v2hur4l6o4gf5p4djc7rn33dtpst.apps.googleusercontent.com"
+              ? "828462630730-4td8phsvl7ojes7huj0ou28ecr60ft47.apps.googleusercontent.com"
               : null,
         );
         break;
@@ -94,6 +94,9 @@ class UserModel extends Model {
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
           ],
+          clientId: Platform.isIOS
+              ? "350828450571-rcpa6q64itdohbh2ojssve4ce0jnn157.apps.googleusercontent.com"
+              : null,
         );
 
         break;
