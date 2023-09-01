@@ -240,7 +240,8 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       subscribeController.getCredits();
       widget.onImageReturned(true);
     } on DioException catch (err, s) {
-      widget.onError(err.toString());
+      String message = err.response?.data["message"] ?? "";
+      widget.onError(message);
       setState(() {
         _isLoading = false;
       });

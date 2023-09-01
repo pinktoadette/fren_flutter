@@ -98,8 +98,8 @@ class _SignInWidgetState extends State<SignInWidget> {
         }, onError: (error) async {
           // Show error message to user
           Get.snackbar(
-            _i18n.translate("Error"),
-            _i18n.translate("an_error_has_occurred"),
+            _i18n.translate("error"),
+            error,
             snackPosition: SnackPosition.TOP,
             backgroundColor: APP_ERROR,
           );

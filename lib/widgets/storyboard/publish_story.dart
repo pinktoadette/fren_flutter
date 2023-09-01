@@ -56,11 +56,8 @@ class _PublishStoryState extends State<PublishStory> {
       Story updateStory = widget.story.copyWith(status: StoryStatus.PUBLISHED);
       storyboardController.updateStory(story: updateStory);
 
-      /// in current story. We know current storyboard
-      /// add to timeline
-      Storyboard newStoryboard =
-          storyboardController.findStoryboardByStory(widget.story);
-      timelineController.insertPublishStoryboard(newStoryboard);
+      /// Refresh the entire thing because pagination does not have insert to beginning of item list.
+      timelineController.fetchPage(0, refresh: true);
 
       _goToNextStep(3);
     } catch (err, s) {

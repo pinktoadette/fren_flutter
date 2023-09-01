@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:iconsax/iconsax.dart';
 import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/storyboard/create_new/quick_create.dart';
 import 'package:machi_app/widgets/signin/signin_widget.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 import 'package:machi_app/widgets/timeline/timeline_widget.dart';
@@ -35,7 +38,7 @@ class _ActivityTabState extends State<ActivityTab> {
         ),
         automaticallyImplyLeading: false,
         actions: [
-          if (user.getFirebaseUser != null) const SubscribeTokenCounter(),
+          if (user.getFirebaseUser != null) ..._isSignedIn(),
           if (user.getFirebaseUser == null)
             TextButton(
                 onPressed: () {
@@ -56,5 +59,19 @@ class _ActivityTabState extends State<ActivityTab> {
       ),
       body: const TimelineWidget(),
     );
+  }
+
+  List<Widget> _isSignedIn() {
+    return [
+      IconButton(
+          onPressed: () {
+            Get.to(() => const QuickCreateNewBoard());
+          },
+          icon: const Icon(
+            Iconsax.book,
+            size: 14,
+          )),
+      const SubscribeTokenCounter(),
+    ];
   }
 }

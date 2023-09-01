@@ -60,7 +60,7 @@ class UserModel extends Model {
         String.fromEnvironment('flavor', defaultValue: 'dev');
 
     debugPrint("===== Running Env: $activeEnv ====");
-    if (activeEnv.contains('prod')) {
+    if (activeEnv.contains('dev')) {
       _googleSignIn = GoogleSignIn(
         scopes: [
           'email',
@@ -71,7 +71,7 @@ class UserModel extends Model {
             ? "828462630730-4td8phsvl7ojes7huj0ou28ecr60ft47.apps.googleusercontent.com"
             : null,
       );
-    } else if (activeEnv.contains('prod')) {
+    } else if (activeEnv.contains('uat')) {
       _googleSignIn = GoogleSignIn(
         scopes: [
           'email',
@@ -407,7 +407,7 @@ class UserModel extends Model {
         checkUserAccount();
       }).catchError((error, stack) async {
         // Callback function
-        onError(error);
+        onError(error.toString());
 
         await FirebaseCrashlytics.instance.recordError(error, stack,
             reason: 'Error signing in from google: ${error.toString()} ',

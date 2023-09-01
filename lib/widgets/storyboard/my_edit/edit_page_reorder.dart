@@ -99,7 +99,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   String? thumbnail;
 
   /// Adjusting background alpha color to see text.
-  double _alphaValue = 0.25;
+  double _alphaValue = 0.5;
 
   @override
   void initState() {
@@ -110,6 +110,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
       layout = widget.layout;
       if (story.pages?.isNotEmpty == true) {
         urlPreview = story.pages![widget.pageIndex].backgroundImageUrl;
+        _alphaValue = story.pages![widget.pageIndex].backgroundAlpha ?? 0.5;
       }
     });
   }
