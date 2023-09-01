@@ -12,7 +12,6 @@ import UIKit
             let plistFileName = "GoogleService-Info"
             
             let processInfo = ProcessInfo.processInfo
-            print("*******************  ProcessInfo.processInfo.environment: \(processInfo.environment)  *******************")
             for arg in processInfo.arguments {
                 if arg.hasPrefix("--dart-define=") {
                   print("Has flavors: \(processInfo)")
@@ -58,14 +57,14 @@ import UIKit
     }
 
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
-        print(">> initializeFirebase <<<<<<<<< ")
+        print(">>>>>>> InitializeFirebase <<<<<<<<< ")
 
         // Call initializeFirebase with a completion handler
         initializeFirebase {
             // This code block will be executed after Firebase is configured
-            print("> >GeneratedPluginRegistrant<<<<<<< ")
+            print(">>>>>>> GeneratedPluginRegistrant<<<<<<< ")
             GeneratedPluginRegistrant.register(with: self)
-            print(">> after init firebase <<<<<<<")
+            print(">>>>>>> after init firebase <<<<<<<")
         }
 
         return true

@@ -74,16 +74,17 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
       appBar: AppBar(
         systemOverlayStyle:
             const SystemUiOverlayStyle(statusBarColor: Colors.black),
       ),
       backgroundColor: Colors.black,
-      body: const Center(
+      body: Center(
         child: SizedBox(
-          width: 400,
-          child: Frankloader(
+          height: height,
+          child: const Frankloader(
             width: 400,
           ),
         ),
