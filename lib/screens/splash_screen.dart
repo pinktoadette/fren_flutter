@@ -38,38 +38,16 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    _appHelper.getAppStoreVersion().then((storeVersion) async {
-      debugPrint('storeVersion: $storeVersion');
 
-      // Get hard coded App current version
-      int appCurrentVersion = 1;
-      // Check Platform
-      if (Platform.isAndroid) {
-        // Get Android version number
-        appCurrentVersion = ANDROID_APP_VERSION_NUMBER;
-      } else if (Platform.isIOS) {
-        // Get iOS version number
-        appCurrentVersion = IOS_APP_VERSION_NUMBER;
-      }
-
-      /// Compare both versions
-      if (storeVersion > appCurrentVersion) {
-        /// Go to update app screen
-        _nextScreen(const UpdateAppScreen());
-        debugPrint("Go to update screen");
-      } else {
-        /// Authenticate User Account
-        UserModel().authUserAccount(
-            signInScreen: () => _nextScreen(const ActivityTab()),
-            signUpScreen: () => _nextScreen(const SignUpScreen()),
-            walkthruScreen: () => _nextScreen(const OnboardingScreen()),
-            profileImageScreen: () =>
-                _nextScreen(const ProfileImageGenerator()),
-            interestScreen: () => _nextScreen(const InterestScreen()),
-            homeScreen: () => _nextScreen(const HomeScreen()),
-            blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
-      }
-    });
+    /// Authenticate User Account
+    UserModel().authUserAccount(
+        signInScreen: () => _nextScreen(const ActivityTab()),
+        signUpScreen: () => _nextScreen(const SignUpScreen()),
+        walkthruScreen: () => _nextScreen(const OnboardingScreen()),
+        profileImageScreen: () => _nextScreen(const ProfileImageGenerator()),
+        interestScreen: () => _nextScreen(const InterestScreen()),
+        homeScreen: () => _nextScreen(const HomeScreen()),
+        blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
   }
 
   @override
