@@ -13,7 +13,7 @@ class ApiConfiguration {
 
   String getApiUrl() {
     String activeEnv =
-        const String.fromEnvironment('flavor', defaultValue: 'dev');
+        const String.fromEnvironment('flavor', defaultValue: 'prod');
 
     if (activeEnv == 'prod') {
       return prod.PY_API;

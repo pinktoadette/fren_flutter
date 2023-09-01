@@ -57,7 +57,7 @@ class UserModel extends Model {
   /// set env for google signin
   UserModel._internal() {
     const String activeEnv =
-        String.fromEnvironment('flavor', defaultValue: 'dev');
+        String.fromEnvironment('flavor', defaultValue: 'prod');
 
     debugPrint("===== Running Env: $activeEnv ====");
 
