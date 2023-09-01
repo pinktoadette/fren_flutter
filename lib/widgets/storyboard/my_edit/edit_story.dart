@@ -87,7 +87,11 @@ class _EditPageState extends State<EditPage> {
                 color: Theme.of(context).primaryColor,
                 onPressed: () async {
                   _onSaveAllSequence(); // on last page, if page didn't move
-                  Navigator.pop(context, story);
+                  Map<String, dynamic> myData = {
+                    'story': story,
+                    'isPreview': true,
+                  };
+                  Navigator.pop(context, myData);
                 },
               ),
               actions: [

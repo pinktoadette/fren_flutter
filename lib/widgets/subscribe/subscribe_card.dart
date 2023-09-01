@@ -78,12 +78,12 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                   child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        const SizedBox(
+                        SizedBox(
                           width: 50,
                           height: 50,
                           child: Icon(
                             Iconsax.buy_crypto,
-                            color: Colors.black,
+                            color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
                         Column(
@@ -91,14 +91,16 @@ class _SubscriptionCardState extends State<SubscriptionCard> {
                           children: [
                             Text(
                               _i18n.translate("subscription"),
-                              style: const TextStyle(
-                                  color: Colors.black,
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
                                 _i18n.translate("become_a_subscription_member"),
-                                style: const TextStyle(
-                                    color: Colors.black, fontSize: 14)),
+                                style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    fontSize: 14)),
                           ],
                         )
                       ]))));

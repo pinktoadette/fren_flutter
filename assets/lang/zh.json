@@ -56,6 +56,9 @@
   "privacy_policy": "隱私政策",
   "terms_condition": "使用條款",
   "skip": "跳躍",
+  "not_allowed": "停",
+  "caption_mode_no_more_text": "字幕模式僅允許一個文本",
+
 
   "_ProfileSettings": "*** 設定 ***",
   "account": "帳戶",

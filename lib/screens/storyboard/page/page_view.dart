@@ -15,7 +15,6 @@ import 'package:get/get.dart';
 import 'package:machi_app/helpers/image_aspect_ratio.dart';
 import 'package:machi_app/helpers/image_cache_wrapper.dart';
 import 'package:machi_app/helpers/text_link_preview.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/helpers/truncate_text.dart';
 import 'package:machi_app/screens/storyboard/confirm_publish.dart';
 import 'package:machi_app/screens/storyboard/page/page_comment.dart';
@@ -71,8 +70,6 @@ class _StoryPageViewState extends State<StoryPageView> {
   @override
   void initState() {
     super.initState();
-    bool isDarkMode = ThemeHelper().isDark;
-    textColor = isDarkMode ? Colors.white54 : Colors.black;
 
     if (widget.isPreview == true) {
       setState(() {
@@ -115,6 +112,7 @@ class _StoryPageViewState extends State<StoryPageView> {
     _preloadBackgroundImages();
     super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
+    textColor = Theme.of(context).colorScheme.primary;
   }
 
   @override
@@ -306,8 +304,17 @@ class _StoryPageViewState extends State<StoryPageView> {
                                 onPressed: () async {
                                   _onEditStoryPressed();
                                 },
-                                child: const Text(
-                                    "Click Edit to Edit Story and Add Image")),
+                                child: const Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      TextSpan(text: 'Click '),
+                                      WidgetSpan(child: Icon(Iconsax.edit)),
+                                      TextSpan(
+                                          text:
+                                              ' to edit content and add Image'),
+                                    ],
+                                  ),
+                                )),
                           ),
                         Positioned(
                             bottom: 120,
@@ -471,8 +478,6 @@ class _StoryPageViewState extends State<StoryPageView> {
   /// Shows action tools when story status is not published.
   Widget _unpublishedTools() {
     Storyboard storyboard = storyboardController.currentStoryboard;
-    bool isDarkMode = ThemeHelper().isDark;
-    Color color = isDarkMode == true ? APP_INVERSE_PRIMARY_COLOR : Colors.black;
 
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -485,7 +490,7 @@ class _StoryPageViewState extends State<StoryPageView> {
             },
             icon: Icon(
               Iconsax.add,
-              color: color,
+              color: textColor,
             ),
           ),
         if (story?.status != StoryStatus.PUBLISHED)
@@ -496,7 +501,7 @@ class _StoryPageViewState extends State<StoryPageView> {
               icon: Icon(
                 Iconsax.edit,
                 size: 20,
-                color: color,
+                color: textColor,
               ))
       ],
     );

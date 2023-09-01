@@ -4,6 +4,7 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
 import 'package:machi_app/widgets/common/app_logo.dart';
+import 'package:machi_app/widgets/subscribe/subscribe_card.dart';
 import 'package:purchases_flutter/models/customer_info_wrapper.dart';
 
 class SubscribePurchaseDetails extends StatefulWidget {
@@ -125,6 +126,8 @@ class _SubscribePurchaseDetailsState extends State<SubscribePurchaseDetails> {
               const SizedBox(
                 height: 80,
               ),
+              if (activeSubscription == "") const SubscriptionCard(),
+
               // ElevatedButton(
               //     onPressed: () {},
               //     child: Text(_i18n.translate("subscribed_manage_plan"))),

@@ -32,7 +32,7 @@
   "validation_select_1": "Select at least one",
   "validation_username": "Username is taken",
   "validation_prompt": "Write something sufficient so I can create it",
-
+  
   "VerificationCodeScreen": "*** Verification Code Screen Translations ***",
   "verification_code": "Verification Code",
   "please_enter_the_sms_code_sent": "Please enter the SMS code sent\n to your device",
@@ -56,6 +56,8 @@
   "privacy_policy": "Privacy Policy",
   "terms_condition": "Terms and Condition",
   "skip": "skip",
+  "not_allowed": "Not Allowed",
+  "caption_mode_no_more_text": "Caption mode only allows one text",
 
   "_ProfileSettings": "*** Settings ***",
   "account": "Account",

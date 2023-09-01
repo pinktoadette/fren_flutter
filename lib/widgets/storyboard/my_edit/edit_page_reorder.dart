@@ -529,7 +529,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             content: SizedBox(
-                height: 150,
+                height: 180,
                 child: Column(
                   children: [
                     Text(_i18n.translate("creative_mix_ai_image_credits")),
@@ -548,12 +548,11 @@ class _EditPageReorderState extends State<EditPageReorder> {
                 )),
             actions: <Widget>[
               ElevatedButton(
-                  onPressed: () =>
-                      {Navigator.of(context).pop(false), Get.back()},
+                  onPressed: () => {Navigator.of(context).pop(false)},
                   child: Text(_i18n.translate("OK"))),
             ],
           );
-        }).whenComplete(() => Navigator.of(context).pop());
+        });
   }
 
   void _aiImage() {
@@ -836,10 +835,31 @@ class _EditPageReorderState extends State<EditPageReorder> {
   }
 
   void _onPageEditText({int? index}) async {
-    Get.to(() => AddEditTextWidget(
-        script: index != null ? scripts[index] : null,
-        onTextComplete: (content) =>
-            _addEditText(newContent: content, index: index)));
+    if (layout == Layout.CAPTION) {
+      await showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text(
+                _i18n.translate("not_allowed"),
+                style: Theme.of(context).textTheme.bodyMedium,
+              ),
+              content: Text(_i18n.translate("caption_mode_no_more_text")),
+              actions: <Widget>[
+                OutlinedButton(
+                    onPressed: () => {
+                          Navigator.of(context).pop(false),
+                        },
+                    child: Text(_i18n.translate("OK"))),
+              ],
+            );
+          });
+    } else {
+      Get.to(() => AddEditTextWidget(
+          script: index != null ? scripts[index] : null,
+          onTextComplete: (content) =>
+              _addEditText(newContent: content, index: index)));
+    }
   }
 
   /// edit background image of the page.

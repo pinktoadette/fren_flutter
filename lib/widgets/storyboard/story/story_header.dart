@@ -4,7 +4,6 @@ import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/datas/storyboard.dart';
-import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/storyboard/story/story_edit.dart';
 import 'package:machi_app/widgets/storyboard/story/story_info.dart';
@@ -21,6 +20,7 @@ class StoryHeaderWidget extends StatefulWidget {
 
 class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   late Story thisStory;
+  late Color textColor;
 
   @override
   void initState() {
@@ -36,11 +36,15 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    textColor = Theme.of(context).colorScheme.primary;
+  }
+
+  @override
   Widget build(BuildContext context) {
     double padding = 0;
     double width = MediaQuery.of(context).size.width;
-    bool isDarkMode = ThemeHelper().isDark;
-    Color textColor = isDarkMode ? Colors.white54 : Colors.black;
     return InkWell(
       onTap: () async {
         _showEditStory(context);
