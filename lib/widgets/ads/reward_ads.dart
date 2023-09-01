@@ -161,7 +161,9 @@ class _RewardAdsState extends State<RewardAds> {
               borderRadius: BorderRadius.zero,
             ),
             child: Container(
-                padding: const EdgeInsets.only(left: 10, right: 10),
+                padding: widget.titleOnly == false
+                    ? const EdgeInsets.only(left: 10, right: 10)
+                    : null,
                 width: widget.width ?? MediaQuery.of(context).size.width,
                 child: Row(
                   children: [
