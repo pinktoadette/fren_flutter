@@ -94,9 +94,6 @@ class UserModel extends Model {
             'https://www.googleapis.com/auth/userinfo.email',
             'https://www.googleapis.com/auth/userinfo.profile',
           ],
-          clientId: Platform.isIOS
-              ? "350828450571-fnfe7b8ui4pph8ctfhimg2i9tpt3brg2.apps.googleusercontent.com"
-              : null,
         );
 
         break;
