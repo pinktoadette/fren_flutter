@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/services.dart';
-import 'package:machi_app/screens/blocked_account_screen.dart';
-import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:machi_app/constants/constants.dart';
-import 'package:machi_app/helpers/app_helper.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/screens/first_time/onboarding.dart';
 import 'package:machi_app/screens/first_time/profile_image_upload.dart';
-import 'package:machi_app/screens/update_app_screen.dart';
-import 'package:machi_app/models/user_model.dart';
+import 'package:machi_app/screens/blocked_account_screen.dart';
+import 'package:machi_app/screens/first_time/interest_screen.dart';
 import 'package:machi_app/screens/home_screen.dart';
 import 'package:machi_app/screens/first_time/sign_up_screen.dart';
 import 'package:machi_app/tabs/activity_tab.dart';
@@ -23,9 +18,6 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  // Variables
-  final AppHelper _appHelper = AppHelper();
-
   /// Navigate to next page
   void _nextScreen(screen) {
     // Go to next page route
