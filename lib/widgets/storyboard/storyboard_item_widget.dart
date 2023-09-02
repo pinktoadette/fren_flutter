@@ -131,13 +131,14 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         : null;
 
     String title = storyboard.title;
-    String subtitle =
-        truncateText(maxLength: 150, text: storyboard.summary ?? "");
+    String subtitle = truncateText(
+        maxLength: storyboard.title.length > 30 ? 90 : 130,
+        text: storyboard.summary ?? "");
     String category = storyboard.category;
     if (storyboard.story!.length == 1) {
       title = firstStory.title;
       subtitle = truncateText(
-        maxLength: 180,
+        maxLength: storyboard.title.length > 30 ? 90 : 130,
         text: firstStory.summary ?? "",
       );
       category = firstStory.category;

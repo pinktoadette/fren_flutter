@@ -166,7 +166,8 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   /// Uploads selected url. Selected url will create 2 images, one that is fullsize and another thumbnail (for timeline/storyboard_item_widget).
   void _saveSelectedPhoto(String photoUrl) async {
     _pr.show(_i18n.translate("uploading_image"));
-    bool isBackground = _prompt.contains(Dimension.vertical.value);
+    bool isBackground = _prompt.contains(Dimension.vertical.value) ||
+        widget.story != null && widget.story!.layout == Layout.CAPTION;
     try {
       Map<String, String> newUrl = await uploadUrl(
           url: photoUrl,

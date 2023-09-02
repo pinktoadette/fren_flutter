@@ -48,8 +48,12 @@ class TokenAccounting {
   factory TokenAccounting.fromJson(Map<String, dynamic> doc) {
     return TokenAccounting(
         subscribeTotal: doc[TOTAL_SUBSCRIBE_CREDITS] ?? 0,
-        subscribedAt: doc[SUBSCRIBED_AT],
-        expiredDate: doc[EXPIRED_DATE],
+        subscribedAt: doc[SUBSCRIBED_AT] != null
+            ? DateTime.parse(doc[SUBSCRIBED_AT])
+            : null,
+        expiredDate: doc[EXPIRED_DATE] != null
+            ? DateTime.parse(doc[EXPIRED_DATE])
+            : null,
         rewardTotal: doc[TOTAL_REWARDS_CREDITS] ?? 0,
         debitTotal: doc[TOTAL_DEBIT] ?? 0,
         creditTotal: doc[TOTAL_CREDITS] ?? 0,

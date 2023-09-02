@@ -6,9 +6,14 @@ import 'package:machi_app/widgets/common/default_card_border.dart';
 import 'package:flutter/material.dart';
 import 'package:purchases_flutter/purchases_flutter.dart';
 
-class SignOutButtonCard extends StatelessWidget {
-  const SignOutButtonCard({Key? key}) : super(key: key);
+class SignOutButtonCard extends StatefulWidget {
+  const SignOutButtonCard({super.key});
 
+  @override
+  State<SignOutButtonCard> createState() => _SignOutButtonCardState();
+}
+
+class _SignOutButtonCardState extends State<SignOutButtonCard> {
   @override
   Widget build(BuildContext context) {
     final i18n = AppLocalizations.of(context);
