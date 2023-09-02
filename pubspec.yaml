@@ -208,8 +208,15 @@ flutter_icons:
   image_path: "assets/images/astronaut.png"
 
 # Generate app logo for splash screen
+# Run dart run flutter_native_splash:creat
 flutter_native_splash:
-  color: "#000000"
-  image: "assets/images/astronaut.png"
+  color: "#FFFFFF"
+  color_dark: "#000000"
+  image: assets/images/astronaut.png
   android: true
+  android_12:
+    image: assets/images/astronaut.png
+    icon_background_color: "#FFFFFF"
+    image_dark: assets/images/astronaut.png
+    icon_background_color_dark: "#000000"
   ios: true   
