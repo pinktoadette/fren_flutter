@@ -131,12 +131,13 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         : null;
 
     String title = storyboard.title;
-    String subtitle = storyboard.summary ?? "";
+    String subtitle =
+        truncateText(maxLength: 150, text: storyboard.summary ?? "");
     String category = storyboard.category;
     if (storyboard.story!.length == 1) {
       title = firstStory.title;
       subtitle = truncateText(
-        maxLength: 140,
+        maxLength: 180,
         text: firstStory.summary ?? "",
       );
       category = firstStory.category;
@@ -174,7 +175,7 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             child: Container(
               color: Colors.black.withOpacity(0.6),
               width: width,
-              height: min(260, width * 0.45),
+              height: min(260, width * 0.4),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,

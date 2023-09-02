@@ -488,6 +488,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
               onSelection: (value) {
                 setState(() {
                   layout = value;
+                  story = story.copyWith(layout: value);
                 });
                 widget.onLayoutSelection(value);
                 Get.back();

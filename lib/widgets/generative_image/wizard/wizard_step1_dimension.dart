@@ -20,9 +20,15 @@ extension DimensionExtension on Dimension {
 }
 
 class WizardImageDimension extends StatefulWidget {
+  /// disable content image
+  final bool? disableContentImage;
+
   final Function(String dimension) onSelectedDimension;
 
-  const WizardImageDimension({Key? key, required this.onSelectedDimension})
+  const WizardImageDimension(
+      {Key? key,
+      this.disableContentImage = false,
+      required this.onSelectedDimension})
       : super(key: key);
 
   @override
@@ -36,7 +42,7 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
   @override
   void initState() {
     super.initState();
-    _selectedDimension = Dimension.square.value;
+    _setSelection();
   }
 
   @override
@@ -44,9 +50,19 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
     super.dispose();
   }
 
-  void startCarousel() {
-    if (!mounted) {
-      return;
+  @override
+  void didUpdateWidget(WizardImageDimension oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.disableContentImage != oldWidget.disableContentImage) {
+      _setSelection();
+    }
+  }
+
+  void _setSelection() {
+    if (widget.disableContentImage == true) {
+      _selectedDimension = Dimension.vertical.value;
+    } else {
+      _selectedDimension = Dimension.square.value;
     }
   }
 
@@ -56,6 +72,11 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
 
     return Column(children: [
       Text(i18n.translate("creative_mix_ai_select_dimension")),
+      if (widget.disableContentImage == true)
+        const Text(
+          "In content image disabled in caption mode",
+          style: TextStyle(fontSize: 14),
+        ),
       const SizedBox(
         height: 20,
       ),
@@ -87,7 +108,11 @@ class _WizardImageDimensionState extends State<WizardImageDimension> {
           ),
           GestureDetector(
             onTap: () {
-              _setDimension(Dimension.square);
+              if (widget.disableContentImage == true) {
+                return;
+              } else {
+                _setDimension(Dimension.square);
+              }
             },
             child: Container(
               width: 120,

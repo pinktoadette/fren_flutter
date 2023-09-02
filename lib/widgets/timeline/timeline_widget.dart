@@ -67,27 +67,38 @@ class _TimelineWidgetState extends State<TimelineWidget> {
                     noItemsFoundIndicatorBuilder: (_) =>
                         const NoData(text: "No stories"),
                     itemBuilder: (context, item, index) {
-                      return StoryboardItemWidget(
-                          item: timelineController
-                              .pagingController.itemList![index]);
+                      if (index <
+                          timelineController
+                              .pagingController.itemList!.length) {
+                        return StoryboardItemWidget(
+                            item: timelineController
+                                .pagingController.itemList![index]);
+                      } else {
+                        return const SizedBox.shrink();
+                      }
                     }),
                 separatorBuilder: (BuildContext context, int index) {
-                  if ((index) % 3 == 0) {
-                    return const InlineAdaptiveAds();
-                  } else if ((index + 1) % 2 == 0 &&
-                      (index == 1) &&
-                      userController.user != null) {
-                    return Padding(
-                      padding:
-                          const EdgeInsetsDirectional.only(top: 10, bottom: 10),
-                      child: Container(
-                        width: width,
-                        color: Theme.of(context).colorScheme.background,
-                        child: const InlineSurvey(),
-                      ),
-                    );
+                  if (index <
+                      timelineController.pagingController.itemList!.length) {
+                    if ((index) % 3 == 0) {
+                      return const InlineAdaptiveAds();
+                    } else if ((index + 1) % 2 == 0 &&
+                        (index == 1) &&
+                        userController.user != null) {
+                      return Padding(
+                        padding: const EdgeInsetsDirectional.only(
+                            top: 10, bottom: 10),
+                        child: Container(
+                          width: width,
+                          color: Theme.of(context).colorScheme.background,
+                          child: const InlineSurvey(),
+                        ),
+                      );
+                    } else {
+                      return const Divider();
+                    }
                   } else {
-                    return const Divider();
+                    return const SizedBox.shrink();
                   }
                 },
               )

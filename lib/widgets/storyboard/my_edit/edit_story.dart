@@ -87,11 +87,13 @@ class _EditPageState extends State<EditPage> {
                 color: Theme.of(context).primaryColor,
                 onPressed: () async {
                   _onSaveAllSequence(); // on last page, if page didn't move
-                  Map<String, dynamic> myData = {
-                    'story': story,
-                    'isPreview': true,
-                  };
-                  Navigator.pop(context, myData);
+
+                  Navigator.of(context).pop();
+
+                  /// go back to list of storyboard
+                  /// 1. if there are updates, the page view doesnt get updated
+                  /// 2. there's too many back to press
+                  Navigator.of(context).pop();
                 },
               ),
               actions: [
@@ -292,6 +294,7 @@ class _EditPageState extends State<EditPage> {
     setState(() {
       story = updateStory;
     });
+    storyboardController.updateStory(story: updateStory);
   }
 
   /// When the user swipes to another page, indicate a chage.

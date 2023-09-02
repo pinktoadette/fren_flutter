@@ -13,6 +13,7 @@ import 'package:machi_app/helpers/uploader.dart';
 import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_step1_dimension.dart';
 import 'package:machi_app/widgets/generative_image/wizard/wizard_wrapper.dart';
+import 'package:machi_app/widgets/storyboard/my_edit/layout_edit.dart';
 import 'package:machi_app/widgets/subscribe/subscribe_token_counter.dart';
 
 /// AI image generator.
@@ -58,6 +59,10 @@ class _ImageGeneratorState extends State<ImageGenerator> {
 
   @override
   Widget build(BuildContext context) {
+    bool disableContentImage =
+        widget.story != null && widget.story!.layout == Layout.CAPTION
+            ? true
+            : false;
     return Scaffold(
         key: _scaffoldKey,
         appBar: AppBar(
@@ -99,6 +104,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                         height: 20,
                       ),
                       ImageWizardWidget(
+                          disableContentImage: disableContentImage,
                           onComplete: (photoUrl) {
                             _saveSelectedPhoto(photoUrl);
                           },

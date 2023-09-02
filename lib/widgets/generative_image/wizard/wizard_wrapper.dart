@@ -7,6 +7,9 @@ import 'package:machi_app/widgets/generative_image/wizard/wizard_step3_prompt.da
 /// AI image wizard that walks through in creating an ai image.
 /// This wizard contains 3 steps.
 class ImageWizardWidget extends StatefulWidget {
+  /// disables content image
+  final bool? disableContentImage;
+
   /// The url that user selects.
   final Function(String url) onComplete;
 
@@ -24,7 +27,8 @@ class ImageWizardWidget extends StatefulWidget {
       required this.onComplete,
       required this.onAppendPrompt,
       required this.onLoading,
-      required this.onError});
+      required this.onError,
+      this.disableContentImage = false});
 
   @override
   State<ImageWizardWidget> createState() => _ImageWizardWidgetState();
@@ -56,6 +60,7 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
   Widget build(BuildContext context) {
     List<Widget> pages = [
       WizardImageDimension(
+        disableContentImage: widget.disableContentImage,
         onSelectedDimension: (dimension) {
           if (!mounted) {
             return;
