@@ -1,6 +1,8 @@
 import 'dart:math';
 
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
+import 'package:machi_app/api/machi/script_api.dart';
 import 'package:machi_app/api/machi/timeline_api.dart';
 import 'package:machi_app/constants/constants.dart';
 import 'package:machi_app/controller/comment_controller.dart';
@@ -53,6 +55,9 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   late Storyboard storyboard;
   late AppLocalizations _i18n;
   final _timelineApi = TimelineApi();
+  final _scriptApi = ScriptApi();
+  bool isLoading = false;
+
   double padding = 15;
   late String timestampLabel;
 
@@ -130,19 +135,11 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
         ? firstStory.pages![0].thumbnail
         : null;
 
-    String title = storyboard.title;
+    String title = firstStory.title;
     String subtitle = truncateText(
-        maxLength: storyboard.title.length > 30 ? 90 : 130,
-        text: storyboard.summary ?? "");
-    String category = storyboard.category;
-    if (storyboard.story!.length == 1) {
-      title = firstStory.title;
-      subtitle = truncateText(
-        maxLength: storyboard.title.length > 30 ? 90 : 130,
-        text: firstStory.summary ?? "",
-      );
-      category = firstStory.category;
-    }
+        maxLength: firstStory.title.length > 30 ? 90 : 130,
+        text: firstStory.summary ?? "");
+    String category = firstStory.category;
 
     if (photoUrl == null) {
       return InkWell(
@@ -233,34 +230,34 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
   }
 
   List<Widget> _showCollectionFooter() {
-    bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
+    //   bool hasSeries = storyboard.story != null && storyboard.story!.length > 1;
     return [
-      if (hasSeries && userController.user != null)
-        ...storyboard.story!.take(4).map((s) {
-          String thumbnail = s.pages
-                  ?.firstWhere(
-                    (element) => element.thumbnail != "",
-                  )
-                  .thumbnail ??
-              "";
+      //     if (hasSeries && userController.user != null)
+      //       ...storyboard.story!.take(4).map((s) {
+      //         String thumbnail = s.pages
+      //                 ?.firstWhere(
+      //                   (element) => element.thumbnail != "",
+      //                 )
+      //                 .thumbnail ??
+      //             "";
 
-          return InkWell(
-            onTap: () {
-              storyboardController.setCurrentBoard(storyboard);
-              timelineController.setStoryTimelineControllerCurrent(s);
-              storyboardController.onGoToPageView(s);
-              Get.to(() => StoryPageView(story: s));
-            },
-            child: StoryCover(
-                height: 80,
-                width: 80,
-                radius: 0,
-                photoUrl: thumbnail,
-                title: s.title),
-          );
-        })
-      else
-        _likeItemWidget(storyboard.story![0], false),
+      //         return InkWell(
+      //           onTap: () {
+      //             storyboardController.setCurrentBoard(storyboard);
+      //             timelineController.setStoryTimelineControllerCurrent(s);
+      //             storyboardController.onGoToPageView(s);
+      //             Get.to(() => StoryPageView(story: s));
+      //           },
+      //           child: StoryCover(
+      //               height: 80,
+      //               width: 80,
+      //               radius: 0,
+      //               photoUrl: thumbnail,
+      //               title: s.title),
+      //         );
+      //       })
+      //     else
+      _likeItemWidget(storyboard.story![0], false),
       const SizedBox(
         height: 20,
       )
@@ -282,7 +279,8 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
     /// if theres more than one, then show entire collection
     storyboardController.setCurrentBoard(storyboard);
     if (widget.message != null) {
-      Get.to(() => StoriesView(message: widget.message!));
+      _addMessage();
+      // Get.to(() => StoriesView(message: widget.message!));
     } else {
       Get.lazyPut<CommentController>(() => CommentController(), tag: "comment");
 
@@ -353,5 +351,49 @@ class _StoryboardItemWidgettState extends State<StoryboardItemWidget> {
             ],
           )),
     );
+  }
+
+  void _addMessage() async {
+    /// always first story.
+    try {
+      Map<String, dynamic> messageMap = widget.message!.toJson();
+      StoryPages pages = await _scriptApi.addScriptToStory(
+          type: messageMap["type"],
+          character: messageMap["author"]["firstName"],
+          text: messageMap["text"],
+          characterId: messageMap["author"]["id"],
+          image: messageMap["uri"] != null
+              ? {
+                  "uri": messageMap["uri"],
+                  "size": messageMap["size"],
+                  "height": messageMap["height"],
+                  "width": messageMap["width"]
+                }
+              : null,
+          pageNum: 1,
+          storyId: storyboard.story![0].storyId);
+      storyboardController.setCurrentStory(storyboard.story![0]);
+      storyboardController.addNewScriptToStory(pages);
+
+      int count = 0;
+      Get.until((route) => count++ >= 1);
+      Get.snackbar(_i18n.translate("creative_mix_added"),
+          _i18n.translate("creative_mix_save_text"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
+    } catch (err, s) {
+      debugPrint(err.toString());
+      Get.snackbar(
+        _i18n.translate("error"),
+        _i18n.translate("an_error_has_occurred"),
+        snackPosition: SnackPosition.TOP,
+        backgroundColor: APP_ERROR,
+      );
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Cannot add message from story item', fatal: true);
+    } finally {
+      storyboardController.clearStory();
+    }
   }
 }

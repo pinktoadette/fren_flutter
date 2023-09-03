@@ -101,6 +101,7 @@ class _EditPageState extends State<EditPage> {
                     padding: const EdgeInsets.all(10.0),
                     child: TextButton(
                         onPressed: () {
+                          _onSaveAllSequence();
                           Get.to(() =>
                               StoryPageView(story: story, isPreview: true));
                         },

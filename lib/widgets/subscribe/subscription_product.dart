@@ -377,7 +377,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
           Map<String, dynamic> response = await purchaseApi.purchaseCredits(3);
 
           /// this is to double check backend and revenue cat are aligned in number of credits
-          int responseQty = response["subscribeTotal"] ?? "0";
+          int responseQty = response["subscribeTotal"] ?? 0;
 
           if (responseQty == int.parse(qty)) {
             subscribeController.addCredits(responseQty);
