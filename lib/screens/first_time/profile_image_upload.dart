@@ -57,7 +57,7 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
                       child: Text(
                         _i18n.translate("skip"),
                         style: const TextStyle(
-                            fontSize: 10, color: APP_INVERSE_PRIMARY_COLOR),
+                            fontSize: 12, color: APP_INVERSE_PRIMARY_COLOR),
                       ))
                 ]),
             body: Container(

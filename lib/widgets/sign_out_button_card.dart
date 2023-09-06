@@ -38,13 +38,11 @@ class _SignOutButtonCardState extends State<SignOutButtonCard> {
 
           // Log out button
           UserModel().signOut().then((_) {
-            /// Go to login screen
-            Future(() {
-              Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const ActivityTab()));
-            });
+            /// Go to activity tab
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => const ActivityTab()));
           }).catchError((err, s) async {
+            debugPrint(err.toString());
             await FirebaseCrashlytics.instance.recordError(err, s,
                 reason: 'User cannot sign out ${err.toString()}', fatal: false);
           });

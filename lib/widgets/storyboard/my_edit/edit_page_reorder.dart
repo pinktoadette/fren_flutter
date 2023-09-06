@@ -662,6 +662,7 @@ class _EditPageReorderState extends State<EditPageReorder> {
   Future<Script> _addNewTextImage(AddEditTextCharacter content) async {
     late Script newScript;
     Script newItem = Script.fromJson({
+      "scriptId": createUUID(),
       "character": content.characterName,
       "characterId": content.characterId,
       "textAlign": content.textAlign?.name,

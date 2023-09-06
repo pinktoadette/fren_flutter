@@ -209,6 +209,10 @@ class UserModel extends Model {
     return age;
   }
 
+  bool isSignedIn() {
+    return getFirebaseUser != null;
+  }
+
   /// Authenticate User Account
   Future<void> authUserAccount({
     // Callback functions for route
@@ -288,11 +292,7 @@ class UserModel extends Model {
       });
     } else {
       debugPrint("firebaseUser not logged in");
-      // final box = GetStorage();
-
       walkthruScreen!();
-
-      // signInScreen!();
     }
   }
 
@@ -424,7 +424,7 @@ class UserModel extends Model {
     }
   }
 
-  /// Sign in with Google
+  /// Sign in with Apple
   Future<void> signInWithApple(
       {required Function() checkUserAccount,
       required Function(String error) onError}) async {
@@ -449,6 +449,8 @@ class UserModel extends Model {
       await _firebaseAuth
           .signInWithCredential(credential)
           .then((fire_auth.UserCredential userCredential) {
+        debugPrint(userCredential.additionalUserInfo!.toString());
+
         /// Auth user account
         checkUserAccount();
       }).catchError((error, stack) async {
@@ -456,7 +458,7 @@ class UserModel extends Model {
         onError(error.toString());
 
         await FirebaseCrashlytics.instance.recordError(error, stack,
-            reason: 'Error signing in from google: ${error.toString()} ',
+            reason: 'Error signing in from apple: ${error.toString()} ',
             fatal: true);
       });
     } catch (err, s) {
@@ -758,19 +760,20 @@ class UserModel extends Model {
       if (isGoogleSignedIn == true) {
         await _googleSignIn.signOut();
       }
-
-      await _firebaseAuth.signOut();
-
-      notifyListeners();
-      debugPrint("signOut() -> success");
       Get.deleteAll();
-      ThemeHelper().deleteThemePreference();
 
       /// Need to reassign
       MainBinding mainBinding = MainBinding();
       await mainBinding.dependencies();
+
+      ThemeHelper().deleteThemePreference();
+
+      await _firebaseAuth.signOut();
+      notifyListeners();
+      debugPrint("signOut() -> success");
     } catch (e) {
       debugPrint(e.toString());
+      rethrow;
     }
   }
 }

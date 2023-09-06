@@ -36,7 +36,7 @@ Future<void> commonInitialization() async {
 
   /// Revenue cat for subscription and payments
   await Purchases.setLogLevel(
-      activeEnv.contains('prod') ? LogLevel.debug : LogLevel.info);
+      activeEnv.contains('dev') ? LogLevel.debug : LogLevel.info);
 
   if (Platform.isAndroid) {
     /// Google Play Revenue cat

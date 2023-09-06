@@ -64,7 +64,7 @@ class _StoryPageViewState extends State<StoryPageView> {
   Story? story;
 
   /// Textcolor is determined by the theme of the app.
-  late Color textColor;
+  Color textColor = APP_INVERSE_PRIMARY_COLOR;
   var pages = [];
 
   @override
@@ -112,7 +112,6 @@ class _StoryPageViewState extends State<StoryPageView> {
     _preloadBackgroundImages();
     super.didChangeDependencies();
     _i18n = AppLocalizations.of(context);
-    textColor = Theme.of(context).colorScheme.primary;
   }
 
   @override
@@ -215,7 +214,12 @@ class _StoryPageViewState extends State<StoryPageView> {
               itemType: "story",
             ));
       },
-    );
+    ).whenComplete(() {
+      Get.snackbar(_i18n.translate("success"), _i18n.translate("submitted"),
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_SUCCESS,
+          colorText: Colors.black);
+    });
   }
 
   /// Displays the structure scaffold of the story.

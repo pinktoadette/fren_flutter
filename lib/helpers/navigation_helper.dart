@@ -1,6 +1,7 @@
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/material.dart';
 import 'package:machi_app/controller/user_controller.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/signin/signin_widget.dart';
 
 class NavigationHelper {
@@ -11,7 +12,7 @@ class NavigationHelper {
         navigateAction, // Function that performs the navigation
   }) async {
     try {
-      if (userController.user == null) {
+      if (UserModel().isSignedIn() == false) {
         showModalBottomSheet<void>(
           context: context,
           builder: (context) => FractionallySizedBox(

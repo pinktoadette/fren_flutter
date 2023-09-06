@@ -4,6 +4,7 @@ import 'package:chips_choice/chips_choice.dart';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/main_binding.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/user.dart';
 import 'package:machi_app/helpers/app_localizations.dart';
@@ -21,6 +22,7 @@ class InterestScreen extends StatefulWidget {
 }
 
 class _InterestScreenState extends State<InterestScreen> {
+  UserController userController = Get.put(UserController(), tag: 'user');
   late AppLocalizations _i18n;
   late double _width;
   List<String> _category = [];
@@ -84,7 +86,7 @@ class _InterestScreenState extends State<InterestScreen> {
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                   const SizedBox(
-                    height: 20,
+                    height: 10,
                   ),
                   if (_category.isNotEmpty)
                     SizedBox(
@@ -140,11 +142,19 @@ class _InterestScreenState extends State<InterestScreen> {
   void _saveUserInterest() async {
     try {
       User user = UserModel().user;
-      await UserModel().updateUserData(
-          userId: user.userId, data: {USER_INTERESTS: _selectedInterest});
 
-      UserController userController = Get.put(UserController(), tag: 'user');
-      userController.updateUser(user);
+      /// clear timeline from public view
+      Get.deleteAll();
+      MainBinding mainBinding = MainBinding();
+      await mainBinding.dependencies();
+
+      UserModel().updateUserData(
+          userId: user.userId,
+          data: {USER_INTERESTS: _selectedInterest}).then((_) {
+        debugPrint('Save interest');
+
+        userController.updateUser(user);
+      });
 
       Get.offAll(() => const HomeScreen());
     } catch (err, s) {

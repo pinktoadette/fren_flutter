@@ -12,7 +12,7 @@ class StepCounterSignup extends StatelessWidget {
         label: text,
         child: Container(
           alignment: Alignment.topCenter,
-          padding: const EdgeInsets.only(top: 10, bottom: 20),
+          padding: const EdgeInsets.only(top: 5, bottom: 10),
           child: Text(text,
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.labelSmall),

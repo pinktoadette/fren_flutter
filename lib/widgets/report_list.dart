@@ -133,11 +133,7 @@ class _ReportFormState extends State<ReportForm> {
           reason: _selectedCategory.join(", "),
           comments: _commentController.text);
 
-      Get.snackbar(_i18n.translate("success"), _i18n.translate("submitted"),
-          snackPosition: SnackPosition.TOP,
-          backgroundColor: APP_SUCCESS,
-          colorText: Colors.black);
-      Get.back(result: true);
+      Get.back();
     } catch (err, s) {
       Get.snackbar(
         _i18n.translate("error"),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:machi_app/controller/storyboard_controller.dart';
 import 'package:machi_app/controller/timeline_controller.dart';
 import 'package:machi_app/controller/user_controller.dart';
 import 'package:machi_app/datas/storyboard.dart';
+import 'package:machi_app/models/user_model.dart';
 import 'package:machi_app/widgets/ads/inline_ads.dart';
 import 'package:machi_app/widgets/animations/loader.dart';
 import 'package:machi_app/widgets/announcement/inline_survey.dart';
@@ -25,6 +27,9 @@ class _TimelineWidgetState extends State<TimelineWidget> {
   @override
   void initState() {
     super.initState();
+    if (!GetInstance().isRegistered<StoryboardController>()) {
+      Get.put(StoryboardController(), tag: 'storyboard');
+    }
   }
 
   @override
@@ -34,7 +39,7 @@ class _TimelineWidgetState extends State<TimelineWidget> {
 
   void _getContent() async {
     await Future.wait([
-      timelineController.fetchHomepageItems(userController.user != null),
+      timelineController.fetchHomepageItems(UserModel().isSignedIn()),
       timelineController.fetchPage(0, refresh: true),
     ]);
   }

@@ -20,7 +20,7 @@ class StoryHeaderWidget extends StatefulWidget {
 
 class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   late Story thisStory;
-  late Color textColor;
+  Color textColor = APP_INVERSE_PRIMARY_COLOR;
 
   @override
   void initState() {
@@ -33,12 +33,6 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
   @override
   void dispose() {
     super.dispose();
-  }
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    textColor = Theme.of(context).colorScheme.primary;
   }
 
   @override
@@ -86,11 +80,11 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => FractionallySizedBox(
-              heightFactor: MODAL_HEIGHT_LARGE_FACTOR,
+              heightFactor: MODAL_HEIGHT_SMALL_FACTOR / 2,
               child: DraggableScrollableSheet(
                 snap: true,
                 initialChildSize: 1,
-                minChildSize: 0.9,
+                minChildSize: MODAL_HEIGHT_SMALL_FACTOR,
                 builder: (context, scrollController) => SingleChildScrollView(
                     controller: scrollController,
                     child: showInfo == false

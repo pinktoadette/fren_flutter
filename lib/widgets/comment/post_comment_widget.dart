@@ -162,11 +162,10 @@ class _PostCommentWidgetState extends State<PostCommentWidget> {
                               onPressed: () {
                                 if (_canType == false) {
                                   Get.snackbar(
-                                    "Ayo",
-                                    _i18n.translate("post_too_fast"),
-                                    snackPosition: SnackPosition.TOP,
-                                    backgroundColor: APP_TERTIARY,
-                                  );
+                                      "Ayo", _i18n.translate("post_too_fast"),
+                                      snackPosition: SnackPosition.TOP,
+                                      backgroundColor: APP_TERTIARY,
+                                      colorText: Colors.white);
                                 } else {
                                   _postComment();
                                   Timer(

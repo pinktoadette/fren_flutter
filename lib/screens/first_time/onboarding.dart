@@ -104,8 +104,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           )),
     );
 
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
       body: Stack(
         children: [
           PageView.builder(
@@ -141,6 +146,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           ),
         ],
       ),
-    ));
+    );
   }
 }
