@@ -126,6 +126,8 @@ dependencies:
   url_launcher: 6.1.12 # Used to open link schemes in application or browser
   uuid: ^3.0.7
   web_socket_channel: ^2.3.0
+  sign_in_with_apple: ^5.0.0
+  crypto: ^3.0.3
 
 dependency_overrides:
   modal_bottom_sheet: ^3.0.0-pre

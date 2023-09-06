@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:get/get.dart';
 import 'package:machi_app/constants/constants.dart';
+import 'package:machi_app/controller/subscription_controller.dart';
 import 'package:machi_app/datas/add_edit_text.dart';
 import 'package:machi_app/datas/story.dart';
 import 'package:machi_app/dialogs/progress_dialog.dart';
@@ -31,6 +32,7 @@ class ImageGenerator extends StatefulWidget {
 }
 
 class _ImageGeneratorState extends State<ImageGenerator> {
+  SubscribeController subscribeController = Get.find(tag: 'subscribe');
   final _scaffoldKey = GlobalKey<ScaffoldState>();
   String _prompt = "";
   bool _isLoading = false;
@@ -182,6 +184,10 @@ class _ImageGeneratorState extends State<ImageGenerator> {
           characterName: UserModel().user.username);
 
       widget.onSelection(newItem);
+
+      /// update credits
+      subscribeController.getCredits();
+
       Get.back();
     } catch (error, stack) {
       await FirebaseCrashlytics.instance.recordError(error, stack,

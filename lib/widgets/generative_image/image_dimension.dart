@@ -15,7 +15,7 @@ class ImageStyleDimension extends StatefulWidget {
 class _ImageDimensionState extends State<ImageStyleDimension> {
   final List<Script> script = [];
   String _selectedDimension = "480v";
-  String _selectedStyle = "sdxl";
+  String _selectedStyle = "sd";
 
   @override
   void initState() {

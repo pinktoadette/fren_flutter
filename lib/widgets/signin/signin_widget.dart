@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -72,41 +73,77 @@ class _SignInWidgetState extends State<SignInWidget> {
       SignInButton(Buttons.Google,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.0),
-          ), onPressed: () async {
-        setState(() {
-          isLoading = true;
-        });
-
-        /// clear timeline from public view
-        Get.deleteAll();
-
-        /// Need to reassign
-        MainBinding mainBinding = MainBinding();
-        await mainBinding.dependencies();
-
-        UserModel().signInWithGoogle(checkUserAccount: () {
-          /// Authenticate User Account
-          UserModel().authUserAccount(
-              signInScreen: () => _nextScreen(const SignInScreen()),
-              signUpScreen: () => _nextScreen(const SignUpScreen()),
-              profileImageScreen: () =>
-                  _nextScreen(const ProfileImageGenerator()),
-              walkthruScreen: () => _nextScreen(const OnboardingScreen()),
-              interestScreen: () => _nextScreen(const InterestScreen()),
-              homeScreen: () => _nextScreen(const HomeScreen()),
-              blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
-        }, onError: (error) async {
-          // Show error message to user
-          Get.snackbar(
-            _i18n.translate("error"),
-            error,
-            snackPosition: SnackPosition.TOP,
-            backgroundColor: APP_ERROR,
-          );
-        }).whenComplete(() => setState(() {
-              isLoading = false;
-            }));
-      })
+          ), onPressed: () {
+        _signin(Buttons.Google);
+      }),
+      SignInButton(Buttons.Apple,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0),
+          ), onPressed: () {
+        _signin(Buttons.Apple);
+      }),
     ]);
+  }
+
+  void _signin(Buttons type) async {
+    setState(() {
+      isLoading = true;
+    });
+
+    /// clear timeline from public view
+    Get.deleteAll();
+
+    /// Need to reassign
+    MainBinding mainBinding = MainBinding();
+    await mainBinding.dependencies();
+
+    if (type == Buttons.Apple) {
+      UserModel().signInWithApple(checkUserAccount: () {
+        /// Authenticate User Account
+        UserModel().authUserAccount(
+            signInScreen: () => _nextScreen(const SignInScreen()),
+            signUpScreen: () => _nextScreen(const SignUpScreen()),
+            profileImageScreen: () =>
+                _nextScreen(const ProfileImageGenerator()),
+            walkthruScreen: () => _nextScreen(const OnboardingScreen()),
+            interestScreen: () => _nextScreen(const InterestScreen()),
+            homeScreen: () => _nextScreen(const HomeScreen()),
+            blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
+      }, onError: (error) async {
+        // Show error message to user
+        Get.snackbar(
+          _i18n.translate("error"),
+          error,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+        );
+      }).whenComplete(() => setState(() {
+            isLoading = false;
+          }));
+    }
+    if (type == Buttons.Google) {
+      UserModel().signInWithGoogle(checkUserAccount: () {
+        /// Authenticate User Account
+        UserModel().authUserAccount(
+            signInScreen: () => _nextScreen(const SignInScreen()),
+            signUpScreen: () => _nextScreen(const SignUpScreen()),
+            profileImageScreen: () =>
+                _nextScreen(const ProfileImageGenerator()),
+            walkthruScreen: () => _nextScreen(const OnboardingScreen()),
+            interestScreen: () => _nextScreen(const InterestScreen()),
+            homeScreen: () => _nextScreen(const HomeScreen()),
+            blockedScreen: () => _nextScreen(const BlockedAccountScreen()));
+      }, onError: (error) async {
+        // Show error message to user
+        Get.snackbar(
+          _i18n.translate("error"),
+          error,
+          snackPosition: SnackPosition.TOP,
+          backgroundColor: APP_ERROR,
+        );
+      }).whenComplete(() => setState(() {
+            isLoading = false;
+          }));
+    }
   }
 }

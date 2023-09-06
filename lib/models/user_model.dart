@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
@@ -19,6 +21,8 @@ import 'package:machi_app/helpers/theme_helper.dart';
 import 'package:machi_app/models/app_model.dart';
 import 'package:machi_app/plugins/geoflutterfire/geoflutterfire.dart';
 import 'package:scoped_model/scoped_model.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
+import 'package:crypto/crypto.dart';
 
 class UserModel extends Model {
   final _firebaseAuth = fire_auth.FirebaseAuth.instance;
@@ -418,6 +422,63 @@ class UserModel extends Model {
           reason: 'Unable to sign in ${err.toString()}', fatal: true);
       rethrow;
     }
+  }
+
+  /// Sign in with Google
+  Future<void> signInWithApple(
+      {required Function() checkUserAccount,
+      required Function(String error) onError}) async {
+    try {
+      final rawNonce = generateNonce();
+      final nonce = sha256ofString(rawNonce);
+
+      final appleCredential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+        ],
+        nonce: nonce,
+      );
+
+      // Create an `OAuthCredential` from the credential returned by Apple.
+      final credential = fire_auth.OAuthProvider("apple.com").credential(
+        idToken: appleCredential.identityToken,
+        rawNonce: rawNonce,
+      );
+
+      /// Try to sign in with provided credential
+      await _firebaseAuth
+          .signInWithCredential(credential)
+          .then((fire_auth.UserCredential userCredential) {
+        /// Auth user account
+        checkUserAccount();
+      }).catchError((error, stack) async {
+        // Callback function
+        onError(error.toString());
+
+        await FirebaseCrashlytics.instance.recordError(error, stack,
+            reason: 'Error signing in from google: ${error.toString()} ',
+            fatal: true);
+      });
+    } catch (err, s) {
+      await FirebaseCrashlytics.instance.recordError(err, s,
+          reason: 'Unable to sign in ${err.toString()}', fatal: true);
+      rethrow;
+    }
+  }
+
+  String generateNonce([int length = 32]) {
+    const charset =
+        '0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._';
+    final random = Random.secure();
+    return List.generate(length, (_) => charset[random.nextInt(charset.length)])
+        .join();
+  }
+
+  /// Returns the sha256 hash of [input] in hex notation.
+  String sha256ofString(String input) {
+    final bytes = utf8.encode(input);
+    final digest = sha256.convert(bytes);
+    return digest.toString();
   }
 
   ///

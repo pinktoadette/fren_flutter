@@ -15,7 +15,7 @@ class NavigationHelper {
         showModalBottomSheet<void>(
           context: context,
           builder: (context) => FractionallySizedBox(
-            heightFactor: 0.45,
+            heightFactor: 0.55,
             widthFactor: 1,
             child: Container(
               padding: const EdgeInsets.all(20),
