@@ -135,6 +135,7 @@ class _RewardAdsState extends State<RewardAds> {
         widget.onAdStatus(rewardItem.amount);
         await _purchaseApi.getRewards();
       });
+
       setState(() {
         _isLoading = false;
       });

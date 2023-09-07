@@ -283,6 +283,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         _items = imageUrl;
         _counter -= 1;
         status = '';
+        _isLoading = false;
       });
       subscribeController.getCredits();
       widget.onImageReturned(true);
@@ -294,10 +295,6 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       });
       await FirebaseCrashlytics.instance.recordError(err, s,
           reason: 'Error in image generator ${err.toString()}', fatal: true);
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
     }
   }
 }
