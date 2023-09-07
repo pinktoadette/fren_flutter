@@ -13,8 +13,8 @@ class ImageWizardWidget extends StatefulWidget {
   /// The url that user selects.
   final Function(String url) onComplete;
 
-  /// Determines the model type and the dimension.
-  final Function(String prompt) onAppendPrompt;
+  /// Determines the dimension.
+  final Function(String prompt) onAppendDimension;
 
   /// Shows loading indicator when AI image model is processing.
   final Function(bool isLoading) onLoading;
@@ -25,7 +25,7 @@ class ImageWizardWidget extends StatefulWidget {
   const ImageWizardWidget(
       {super.key,
       required this.onComplete,
-      required this.onAppendPrompt,
+      required this.onAppendDimension,
       required this.onLoading,
       required this.onError,
       this.disableContentImage = false});
@@ -35,13 +35,17 @@ class ImageWizardWidget extends StatefulWidget {
 }
 
 class _ImageWizardWidgetState extends State<ImageWizardWidget> {
-  String _appendPrompt = "";
+  String _appendPrompt = "sdxl";
+  String _appendDimension = "";
   int _step = 0;
   late AppLocalizations _i18n;
 
   @override
   void initState() {
     super.initState();
+    if (widget.disableContentImage == true) {
+      _appendDimension = "480v";
+    }
   }
 
   @override
@@ -66,9 +70,9 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
             return;
           }
           setState(() {
-            _appendPrompt += dimension;
+            _appendDimension = dimension;
           });
-          widget.onAppendPrompt(_appendPrompt);
+          widget.onAppendDimension(_appendDimension);
         },
       ),
       WizardImageStyle(onSelectedStyle: (onSelectedStyle) {
@@ -76,15 +80,13 @@ class _ImageWizardWidgetState extends State<ImageWizardWidget> {
           return;
         }
         setState(() {
-          _appendPrompt += " $onSelectedStyle";
+          _appendPrompt = onSelectedStyle;
         });
-        widget.onAppendPrompt(_appendPrompt);
       }),
       WizardPrompt(
-        appendPrompt: _appendPrompt,
+        appendPrompt: "$_appendPrompt $_appendDimension",
         onSelectedImageUrl: (imageUrl) {
           widget.onComplete(imageUrl);
-          widget.onAppendPrompt(_appendPrompt);
         },
         onError: (errorMessage) {
           widget.onError(errorMessage);

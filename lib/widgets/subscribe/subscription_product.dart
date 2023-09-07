@@ -416,6 +416,7 @@ class _SubscriptionProductState extends State<SubscriptionProduct> {
             snackPosition: SnackPosition.TOP, backgroundColor: APP_ERROR);
       }
     } finally {
+      await subscribeController.getCredits();
       if (mounted) {
         setState(() {
           isLoading = false;

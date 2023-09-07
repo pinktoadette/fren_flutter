@@ -15,7 +15,7 @@ class ImageStyleDimension extends StatefulWidget {
 class _ImageDimensionState extends State<ImageStyleDimension> {
   final List<Script> script = [];
   String _selectedDimension = "480v";
-  String _selectedStyle = "sd";
+  String _selectedStyle = "sdxl";
 
   @override
   void initState() {
@@ -98,7 +98,7 @@ class _ImageDimensionState extends State<ImageStyleDimension> {
                   GestureDetector(
                       onTap: () {
                         setState(() {
-                          _selectedStyle = "sd";
+                          _selectedStyle = "sdxl";
                         });
                       },
                       child: Container(

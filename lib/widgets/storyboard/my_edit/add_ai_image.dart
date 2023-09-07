@@ -34,7 +34,7 @@ class ImageGenerator extends StatefulWidget {
 class _ImageGeneratorState extends State<ImageGenerator> {
   SubscribeController subscribeController = Get.find(tag: 'subscribe');
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  String _prompt = "";
+  String _dimension = "";
   bool _isLoading = false;
   Timer? _timer;
   late ProgressDialog _pr;
@@ -119,8 +119,8 @@ class _ImageGeneratorState extends State<ImageGenerator> {
                             }
                             _pr.hide();
                           },
-                          onAppendPrompt: (prompt) => setState(() {
-                                _prompt += prompt;
+                          onAppendDimension: (dimension) => setState(() {
+                                _dimension += dimension;
                               }))
                     ],
                   ),
@@ -168,7 +168,7 @@ class _ImageGeneratorState extends State<ImageGenerator> {
   /// Uploads selected url. Selected url will create 2 images, one that is fullsize and another thumbnail (for timeline/storyboard_item_widget).
   void _saveSelectedPhoto(String photoUrl) async {
     _pr.show(_i18n.translate("uploading_image"));
-    bool isBackground = _prompt.contains(Dimension.vertical.value) ||
+    bool isBackground = _dimension.contains(Dimension.vertical.value) ||
         widget.story != null && widget.story!.layout == Layout.CAPTION;
     try {
       Map<String, String> newUrl = await uploadUrl(

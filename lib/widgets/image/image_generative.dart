@@ -72,6 +72,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     if (widget.isProfile == false) {
       _counter = subscribeController.token.netCredits;
     }
+    _appendPrompt = widget.appendPrompt;
   }
 
   @override
@@ -225,9 +226,10 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
           id: data['id'],
           isSubscribed: widget.isProfile == true ? false : true,
           cancelToken: _cancelToken,
-          statusCallback: (status) => {
+          statusCallback: (s) => {
                 setState(() {
-                  status = status;
+                  status = s;
+                  _isLoading = true;
                 })
               });
       if (response['status'] == 'succeeded') {
@@ -239,6 +241,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         widget.onImageReturned(true);
         setState(() {
           _isLoading = false;
+          status = '';
         });
       }
     } catch (err, stack) {
@@ -271,6 +274,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
         _listenForChanges(imageUrl);
         setState(() {
           status = 'starting';
+          _isLoading = true;
         });
         return;
       }
@@ -278,6 +282,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
       setState(() {
         _items = imageUrl;
         _counter -= 1;
+        status = '';
       });
       subscribeController.getCredits();
       widget.onImageReturned(true);

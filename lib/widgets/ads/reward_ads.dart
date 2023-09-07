@@ -129,10 +129,11 @@ class _RewardAdsState extends State<RewardAds> {
       _ad!.show(
           onUserEarnedReward: (AdWithoutView ad, RewardItem rewardItem) async {
         // Reward the user for watching an ad.
-        debugPrint(rewardItem.amount.toString());
+        debugPrint(
+            "======================= reward ${rewardItem.amount.toString()}");
+        subscribeController.updateRewards(rewardItem.amount.toInt());
         widget.onAdStatus(rewardItem.amount);
         await _purchaseApi.getRewards();
-        subscribeController.updateRewards(rewardItem.amount.toInt());
       });
       setState(() {
         _isLoading = false;

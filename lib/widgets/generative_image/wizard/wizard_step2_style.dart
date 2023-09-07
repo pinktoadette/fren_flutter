@@ -15,28 +15,28 @@ class WizardImageStyle extends StatefulWidget {
 
 class _WizardImageStyleState extends State<WizardImageStyle> {
   final List<Script> script = [];
-  String _selectedStyle = "sd";
+  String _selectedStyle = "sdxl";
 
   List<Map<String, dynamic>> imageKeyLookup = [
     {
-      "model": "sd",
-      "name": "stable diffusion",
+      "model": "sdxl",
+      "name": "",
       "imagePath": "assets/images/ai_style/sd.png",
     },
     {
-      "model": "epic-realism",
-      "name": "realism *",
-      "imagePath": "assets/images/ai_style/epic-realism.png",
-    },
-    {
       "model": "anime", // anythingv3
-      "name": "anime *",
+      "name": "anime*",
       "imagePath": "assets/images/ai_style/anime.png",
     },
     {
       "model": "dall-e",
-      "name": "Dall-E \n\n ** square only",
+      "name": "Dall-E",
       "imagePath": "assets/images/ai_style/dall-e.png",
+    },
+    {
+      "model": "",
+      "name": "None. Input manually.",
+      "imagePath": "",
     },
   ];
 
@@ -85,6 +85,39 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
                     true, // Allow the grid to take only the space it needs
                 itemBuilder: (context, index) {
                   var styleInfo = imageKeyLookup[index];
+                  if (index == imageKeyLookup.length - 1) {
+                    return OutlinedButton(
+                      onPressed: () {
+                        widget.onSelectedStyle("");
+                        setState(() {
+                          _selectedStyle = "";
+                        });
+                      },
+                      style: ButtonStyle(
+                        side: MaterialStateProperty.resolveWith<BorderSide>(
+                          (Set<MaterialState> states) {
+                            if (_selectedStyle == "") {
+                              return const BorderSide(
+                                color: APP_ACCENT_COLOR,
+                                width: 2.0,
+                              );
+                            }
+                            return const BorderSide(
+                              color: Colors.transparent,
+                              width: 2.0,
+                            );
+                          },
+                        ),
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
+                      ),
+                      child: const Text("None. I'll input it manually"),
+                    );
+                  }
                   return _imageSelect(styleInfo: styleInfo);
                 },
               ),
@@ -92,27 +125,6 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
                 "* ${i18n.translate("take_time_to_load")}",
                 style: Theme.of(context).textTheme.labelSmall,
               ),
-              OutlinedButton(
-                onPressed: () {
-                  widget.onSelectedStyle("");
-                  setState(() {
-                    _selectedStyle = "";
-                  });
-                },
-                style: ButtonStyle(
-                  side: MaterialStateProperty.resolveWith<BorderSide>(
-                    (Set<MaterialState> states) {
-                      if (_selectedStyle == "") {
-                        return const BorderSide(
-                            color: APP_ACCENT_COLOR, width: 2.0);
-                      }
-                      return const BorderSide(
-                          color: Colors.transparent, width: 2.0);
-                    },
-                  ),
-                ),
-                child: const Text("None. I'll input it manually"),
-              )
             ],
           ),
         ],
@@ -137,7 +149,7 @@ class _WizardImageStyleState extends State<WizardImageStyle> {
               color: _selectedStyle == styleInfo["model"]
                   ? APP_ACCENT_COLOR
                   : Colors.transparent,
-              width: 2.0, // Set the width of the outline
+              width: 3.0, // Set the width of the outline
             ),
           ),
           child: Container(
