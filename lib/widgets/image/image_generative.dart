@@ -52,6 +52,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
   String _selectedUrl = '';
   String _appendPrompt = '';
   bool _isLoading = false;
+  String status = '';
   int _counter = 1;
   late AppLocalizations _i18n;
   late Size size;
@@ -181,7 +182,7 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
                       ? loadingButton(size: 12, color: APP_ACCENT_COLOR)
                       : const SizedBox.shrink(),
                   label: Text(
-                    _i18n.translate("profile_image_generate_button"),
+                    "${_i18n.translate("profile_image_generate_button")} $status",
                   ),
                   onPressed: () {
                     if (_promptController.text.length < 10) {
@@ -217,6 +218,37 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
             ));
   }
 
+  void _listenForChanges(dynamic data) async {
+    try {
+      final botApi = BotApi();
+      final response = await botApi.imageListener(
+          id: data['id'],
+          isSubscribed: widget.isProfile == true ? false : true,
+          cancelToken: _cancelToken,
+          statusCallback: (status) => {
+                setState(() {
+                  status = status;
+                })
+              });
+      if (response['status'] == 'succeeded') {
+        setState(() {
+          _items = response['output'];
+          _counter -= 1;
+        });
+        subscribeController.getCredits();
+        widget.onImageReturned(true);
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    } catch (err, stack) {
+      widget.onError(err.toString());
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   void _generatePhoto() async {
     if (_counter == 0) {
       return;
@@ -228,11 +260,21 @@ class _ImagePromptGeneratorWidgetState extends State<ImagePromptGeneratorWidget>
     try {
       /// if it is profile, do not debit to subscribe.
       final botApi = BotApi();
-      List<dynamic> imageUrl = await botApi.machiImage(
-          text: "${_promptController.text} $_appendPrompt",
+      String sdxlProfile = widget.isProfile == true ? 'sdxl' : '';
+      dynamic imageUrl = await botApi.machiImage(
+          text: "${_promptController.text} $_appendPrompt $sdxlProfile",
           numImages: widget.numImages ?? 1,
           isSubscribed: widget.isProfile == true ? false : true,
           cancelToken: _cancelToken);
+
+      if (imageUrl['status'] != 'succeeded') {
+        _listenForChanges(imageUrl);
+        setState(() {
+          status = 'starting';
+        });
+        return;
+      }
+
       setState(() {
         _items = imageUrl;
         _counter -= 1;

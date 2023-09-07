@@ -9,6 +9,7 @@ import 'package:machi_app/helpers/date_format.dart';
 import 'package:get/get.dart';
 import 'package:firebase_auth/firebase_auth.dart' as fire_auth;
 import 'package:uuid/uuid.dart';
+import 'package:dio/dio.dart' as diopackage;
 
 /// Interactions with ChatGPT or AI image models or creation of prompts.
 class BotApi {
@@ -138,7 +139,7 @@ class BotApi {
     }
   }
 
-  Future<List<dynamic>> machiImage(
+  Future<Map<String, dynamic>> machiImage(
       {required String text,
       required int numImages,
       bool? isSubscribed,
@@ -153,9 +154,48 @@ class BotApi {
             "isSubscribe": isSubscribed ?? false
           },
           cancelToken: cancelToken);
-      return response.data;
+      Map<String, dynamic> data = response.data;
+      return data;
     } catch (err) {
       rethrow;
+    }
+  }
+
+  Future<dynamic> imageListener({
+    required String id,
+    bool? isSubscribed,
+    CancelToken? cancelToken,
+    Duration delay = const Duration(seconds: 2),
+    required Function statusCallback,
+  }) async {
+    bool status = true;
+
+    while (status) {
+      try {
+        String url = '${baseUri}image_listener';
+        final getdio = await auth.getDio();
+        diopackage.Response<dynamic> response = await getdio.post(
+          url,
+          data: {"id": id, "isSubscribe": isSubscribed ?? false},
+          cancelToken: cancelToken,
+        );
+
+        dynamic responseData = response.data;
+        status = (responseData['status'] != 'succeeded');
+
+        if (status) {
+          statusCallback(responseData['status']); // Send status update to UI
+          await Future.delayed(delay);
+        } else {
+          statusCallback(responseData['status']);
+          return responseData; // Return the entire response data
+        }
+      } catch (err) {
+        debugPrint('Error while checking for changes: $err');
+        status = false;
+        statusCallback('Status: Error occurred');
+        return;
+      }
     }
   }
 

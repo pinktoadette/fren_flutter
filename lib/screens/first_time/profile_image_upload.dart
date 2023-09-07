@@ -134,6 +134,9 @@ class _ProfileImageGeneratorState extends State<ProfileImageGenerator> {
                             });
                           },
                           onError: (errorMessage) {
+                            setState(() {
+                              _showWalkthru = false;
+                            });
                             Get.snackbar(
                               _i18n.translate("error"),
                               _i18n.translate(errorMessage),
