@@ -80,7 +80,7 @@ class _StoryHeaderWidgetState extends State<StoryHeaderWidget> {
         isScrollControlled: true,
         enableDrag: true,
         builder: (context) => FractionallySizedBox(
-              heightFactor: MODAL_HEIGHT_SMALL_FACTOR / 2,
+              heightFactor: MODAL_HEIGHT_SMALL_FACTOR,
               child: DraggableScrollableSheet(
                 snap: true,
                 initialChildSize: 1,

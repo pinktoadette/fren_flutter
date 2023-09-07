@@ -132,7 +132,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       hintText: _i18n.translate("write_your_bio"),
                       isDense: true,
                       contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 0, vertical: 0),
+                        horizontal: 10, // Adjust horizontal padding as desired
+                        vertical: 15, // Adjust vertical padding as desired
+                      ),
                     ),
                     textCapitalization: TextCapitalization.sentences,
                     controller: _bioController,
