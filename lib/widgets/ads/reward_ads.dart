@@ -71,8 +71,10 @@ class _RewardAdsState extends State<RewardAds> {
                 // Called when the ad showed the full screen content.
                 onAdShowedFullScreenContent: (ad) {},
                 // Called when an impression occurs on the ad.
-                onAdImpression: (ad) {
+                onAdImpression: (ad) async {
                   _isLoading = false;
+                  subscribeController.addCredits(2);
+                  await _purchaseApi.getRewards();
                 },
                 // Called when the ad failed to show full screen content.
                 onAdFailedToShowFullScreenContent: (ad, err) {
@@ -131,9 +133,7 @@ class _RewardAdsState extends State<RewardAds> {
         // Reward the user for watching an ad.
         debugPrint(
             "======================= reward ${rewardItem.amount.toString()}");
-        subscribeController.updateRewards(rewardItem.amount.toInt());
         widget.onAdStatus(rewardItem.amount);
-        await _purchaseApi.getRewards();
       });
 
       setState(() {

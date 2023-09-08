@@ -65,10 +65,10 @@ class SubscribeController extends GetxController {
   }
 
   /// Adds credits from earning via ads and adjust the rewards total.
-  void updateRewards(int qty) {
-    int netTotal = token.netCredits + qty;
-    int rewardTotal = token.rewardTotal + qty;
-    _token.value =
-        _token.value.copyWith(rewardTotal: rewardTotal, netCredits: netTotal);
-  }
+  // void updateRewards(int qty) {
+  //   int netTotal = token.netCredits + qty;
+  //   int rewardTotal = token.rewardTotal + qty;
+  //   _token.value =
+  //       _token.value.copyWith(rewardTotal: rewardTotal, netCredits: netTotal);
+  // }
 }
